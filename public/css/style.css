@@ -8,12 +8,6 @@
   display: flex;
 }
 
-.logo-img {
-  width: 25%;
-  margin-top: 3em;
-  padding: 0 0 1.5em 3em;
-}
-
 .input-text {
   color: #bcbec0;
 }
@@ -75,17 +69,11 @@ Section : Imports
 ---------------------------
 */
 
-.no-padding {
-  padding: 0;
-}
-
-.no-margin {
-  margin: 0;
-}
-
-.right-border {
-  border-right: .3em solid white;
-}
+/*
+---------------------------
+Section : Fonts
+---------------------------
+*/
 
 /*
 ---------------------------
@@ -120,9 +108,65 @@ Section : Media Queries
 
 /*
 ---------------------------
+Section : Helper Classes
+---------------------------
+*/
+
+.no-padding {
+  padding: 0;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.right-border {
+  border-right: .3em solid white;
+}
+
+/*
+---------------------------
+Section : General
+---------------------------
+*/
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/*
+---------------------------
 Section : Header
 ---------------------------
 */
+
+.header-logo > img {
+  width: 100%;
+  padding-left: 3em;
+}
+
+.header-menu {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.menu-item {
+  color: #8b8e90;
+  font-size: 1.1em;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.menu-item:hover {
+  color: #00b5eb;
+  cursor: pointer;
+}
+
+.header {
+  padding: 2em 1em;
+}
 
 /*
 ---------------------------
@@ -131,21 +175,21 @@ Section : Body
 */
 
 .content-padding {
-  padding: 3em 1em;
+  padding: 3em 2em;
 }
 
 .content-left {
-  padding: 0;
   border-right: .3em solid white;
+  padding: 3em 2em;
   background: #e2e3e4;
-  box-shadow: inset 0 20px 20px -10px #b7b9bb;
+  box-shadow: inset 0 20px 40px -10px #b7b9bb, inset 0 -8px 8px -8px #b7b9bb;
 }
 
 .content-right {
-  padding: 3em 1em;
+  padding: 3em 2em;
   padding-left: 3em;
   background: #00b5eb;
-  box-shadow: inset 0 20px 20px -10px #0d98db;
+  box-shadow: inset 0 20px 40px -10px #0d98db, inset 0 -8px 8px -8px #0d98db;
   color: #ffffff;
 }
 
@@ -167,7 +211,6 @@ Section : Footer
   padding: 2em 0;
   border-right: .3em solid white;
   background: #e2e3e4;
-  box-shadow: 0 -3px 25px 0 #b7b9bb;
   color: #8b8e90;
 }
 
@@ -176,6 +219,5 @@ Section : Footer
   padding-left: 3em;
   background: #00b5eb;
   box-shadow: 8px -5px 25px 0 #0d98db;
-  border-top: 1px solid #20c4f4;
   color: #abe1fa;
 }

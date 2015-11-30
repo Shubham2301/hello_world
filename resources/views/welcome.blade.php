@@ -5,5 +5,3 @@
 @section('content')
     @include('auth.login')
 @endsection
-
-

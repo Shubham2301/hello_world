@@ -6,12 +6,6 @@
     display: flex;
 }
 
-.logo-img {
-    width: 25%;
-    margin-top: 3em;
-    padding: 0 0 1.5em 3em;
-}
-
 .input-text {
     color: #bcbec0;
 }
@@ -58,7 +52,6 @@
     box-shadow: inset -5px 5px 10px 0px #77787b;
 }
 
-
 .vertical-line {
     width: 1px;
     height: 1.45em;
@@ -67,7 +60,6 @@
     position: relative;
     right: 3.5em;
 }
-
 /*
 ---------------------------
 Section : Imports
@@ -75,44 +67,47 @@ Section : Imports
 */
 
 @import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
 @import 'helper.less';
-
 /*
 ---------------------------
-Section : Media Queries
+Section : General
 ---------------------------
 */
 
-@media only screen and (max-width: 767px) {
-    .logo-img {
-        width: 50%;
-        margin-top: 1.5em;
-    }
-    .top-margin {
-        margin-top: 2em;
-    }
-    .bottom-margin {
-        margin-bottom: 3em;
-    }
+body {
+    font-family: 'Montserrat', sans-serif;
 }
-
-@media only screen and (max-width: 468px) {
-    .left-padding {
-        padding-left: 2.5em;
-    }
-    .logo-img {
-        padding: 0 0 1.5em 1.5em;
-    }
-}
-
 /*
 ---------------------------
 Section : Header
 ---------------------------
 */
 
+.header-logo>img {
+    width: 100%;
+    padding-left: 3em;
+}
 
+.header-menu{
+    display: flex;
+}
 
+.menu-item{
+    color: @font-color-2;
+    font-size: 1.1em;
+    align-self: center;
+    &:hover{
+        color: @font-color-4;
+        cursor: pointer;
+    }
+
+}
+
+.header{
+    padding: 2em 1em;
+}
 
 /*
 ---------------------------
@@ -120,52 +115,49 @@ Section : Body
 ---------------------------
 */
 
-.content-padding{
-    padding: 3em 1em;
+.content-padding {
+    padding: 3em 2em;
 }
 
-.content-left{
-    .no-padding;
+.content-left {
     .right-border;
+    .content-padding;
     background: @background-color-2;
-    box-shadow: inset 0 20px 20px -10px #b7b9bb;
+    box-shadow: inset 0 20px 40px -10px #b7b9bb, inset 0 -8px 8px -8px #b7b9bb;
 }
 
-.content-right{
+.content-right {
     .content-padding;
     padding-left: 3em;
     background: @background-color-3;
-    box-shadow: inset 0 20px 20px -10px #0d98db;
-    color:@font-color-1;
-    
-}
-.content-row-margin{
-    margin: 1em 0;
+    box-shadow: inset 0 20px 40px -10px #0d98db, inset 0 -8px 8px -8px #0d98db;
+    color: @font-color-1;
 }
 
+.content-row-margin {
+    margin: 1em 0;
+}
 /*
 ---------------------------
 Section : Footer
 ---------------------------
 */
 
-.footer-padding{
+.footer-padding {
     padding: 2em 0;
 }
 
-.footer-left{
+.footer-left {
     .footer-padding;
     .right-border;
     background: @background-color-2;
-    box-shadow: 0 -3px 25px 0 #b7b9bb;
-    color:@font-color-2;
+    color: @font-color-2;
 }
 
-.footer-right{
+.footer-right {
     .footer-padding;
     padding-left: 3em;
     background: @background-color-3;
     box-shadow: 8px -5px 25px 0 #0d98db;
-    border-top: 1px solid #20c4f4;
     color: @font-color-3;
 }
