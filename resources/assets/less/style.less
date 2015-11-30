@@ -1,0 +1,171 @@
+.container {
+    width: 100%;
+}
+
+.height {
+    display: flex;
+}
+
+.logo-img {
+    width: 25%;
+    margin-top: 3em;
+    padding: 0 0 1.5em 3em;
+}
+
+.input-text {
+    color: #bcbec0;
+}
+
+.left-padding {
+    padding-left: 4em;
+}
+
+.top-padding {
+    padding-top: 2em;
+}
+
+.top-margin {
+    margin-top: 4em;
+}
+
+.bottom-margin {
+    margin-bottom: 6em;
+}
+
+.text-margin {
+    margin: 1em 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.white-border {
+    border: 1px solid white;
+}
+
+.input {
+    padding: .6em 4em .6em 1em;
+    border-radius: .5em;
+    box-shadow: inset -5px 5px 10px 0px #b7b9bb;
+}
+
+.signin-button {
+    text-align: center;
+    background: #a9abae;
+    padding: .4em 1em .4em 1em;
+    border-radius: .5em;
+    box-shadow: inset -5px 5px 10px 0px #77787b;
+}
+
+
+.vertical-line {
+    width: 1px;
+    height: 1.45em;
+    background: #20c4f4;
+    float: right;
+    position: relative;
+    right: 3.5em;
+}
+
+/*
+---------------------------
+Section : Imports
+---------------------------
+*/
+
+@import 'variables.less';
+@import 'helper.less';
+
+/*
+---------------------------
+Section : Media Queries
+---------------------------
+*/
+
+@media only screen and (max-width: 767px) {
+    .logo-img {
+        width: 50%;
+        margin-top: 1.5em;
+    }
+    .top-margin {
+        margin-top: 2em;
+    }
+    .bottom-margin {
+        margin-bottom: 3em;
+    }
+}
+
+@media only screen and (max-width: 468px) {
+    .left-padding {
+        padding-left: 2.5em;
+    }
+    .logo-img {
+        padding: 0 0 1.5em 1.5em;
+    }
+}
+
+/*
+---------------------------
+Section : Header
+---------------------------
+*/
+
+
+
+
+/*
+---------------------------
+Section : Body
+---------------------------
+*/
+
+.content-padding{
+    padding: 3em 1em;
+}
+
+.content-left{
+    .no-padding;
+    .right-border;
+    background: @background-color-2;
+    box-shadow: inset 0 20px 20px -10px #b7b9bb;
+}
+
+.content-right{
+    .content-padding;
+    padding-left: 3em;
+    background: @background-color-3;
+    box-shadow: inset 0 20px 20px -10px #0d98db;
+    color:@font-color-1;
+    
+}
+.content-row-margin{
+    margin: 1em 0;
+}
+
+/*
+---------------------------
+Section : Footer
+---------------------------
+*/
+
+.footer-padding{
+    padding: 2em 0;
+}
+
+.footer-left{
+    .footer-padding;
+    .right-border;
+    background: @background-color-2;
+    box-shadow: 0 -3px 25px 0 #b7b9bb;
+    color:@font-color-2;
+}
+
+.footer-right{
+    .footer-padding;
+    padding-left: 3em;
+    background: @background-color-3;
+    box-shadow: 8px -5px 25px 0 #0d98db;
+    border-top: 1px solid #20c4f4;
+    color: @font-color-3;
+}

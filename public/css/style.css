@@ -1,0 +1,181 @@
+.container {
+  width: 100%;
+}
+
+.height {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.logo-img {
+  width: 25%;
+  margin-top: 3em;
+  padding: 0 0 1.5em 3em;
+}
+
+.input-text {
+  color: #bcbec0;
+}
+
+.left-padding {
+  padding-left: 4em;
+}
+
+.top-padding {
+  padding-top: 2em;
+}
+
+.top-margin {
+  margin-top: 4em;
+}
+
+.bottom-margin {
+  margin-bottom: 6em;
+}
+
+.text-margin {
+  margin: 1em 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.white-border {
+  border: 1px solid white;
+}
+
+.input {
+  padding: .6em 4em .6em 1em;
+  border-radius: .5em;
+  box-shadow: inset -5px 5px 10px 0px #b7b9bb;
+}
+
+.signin-button {
+  text-align: center;
+  background: #a9abae;
+  padding: .4em 1em .4em 1em;
+  border-radius: .5em;
+  box-shadow: inset -5px 5px 10px 0px #77787b;
+}
+
+.vertical-line {
+  width: 1px;
+  height: 1.45em;
+  background: #20c4f4;
+  float: right;
+  position: relative;
+  right: 3.5em;
+}
+
+/*
+---------------------------
+Section : Imports
+---------------------------
+*/
+
+.no-padding {
+  padding: 0;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.right-border {
+  border-right: .3em solid white;
+}
+
+/*
+---------------------------
+Section : Media Queries
+---------------------------
+*/
+
+@media only screen and (max-width: 767px) {
+  .logo-img {
+    width: 50%;
+    margin-top: 1.5em;
+  }
+
+  .top-margin {
+    margin-top: 2em;
+  }
+
+  .bottom-margin {
+    margin-bottom: 3em;
+  }
+}
+
+@media only screen and (max-width: 468px) {
+  .left-padding {
+    padding-left: 2.5em;
+  }
+
+  .logo-img {
+    padding: 0 0 1.5em 1.5em;
+  }
+}
+
+/*
+---------------------------
+Section : Header
+---------------------------
+*/
+
+/*
+---------------------------
+Section : Body
+---------------------------
+*/
+
+.content-padding {
+  padding: 3em 1em;
+}
+
+.content-left {
+  padding: 0;
+  border-right: .3em solid white;
+  background: #e2e3e4;
+  box-shadow: inset 0 20px 20px -10px #b7b9bb;
+}
+
+.content-right {
+  padding: 3em 1em;
+  padding-left: 3em;
+  background: #00b5eb;
+  box-shadow: inset 0 20px 20px -10px #0d98db;
+  color: #ffffff;
+}
+
+.content-row-margin {
+  margin: 1em 0;
+}
+
+/*
+---------------------------
+Section : Footer
+---------------------------
+*/
+
+.footer-padding {
+  padding: 2em 0;
+}
+
+.footer-left {
+  padding: 2em 0;
+  border-right: .3em solid white;
+  background: #e2e3e4;
+  box-shadow: 0 -3px 25px 0 #b7b9bb;
+  color: #8b8e90;
+}
+
+.footer-right {
+  padding: 2em 0;
+  padding-left: 3em;
+  background: #00b5eb;
+  box-shadow: 8px -5px 25px 0 #0d98db;
+  border-top: 1px solid #20c4f4;
+  color: #abe1fa;
+}

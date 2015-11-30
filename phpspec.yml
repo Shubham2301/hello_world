@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: myocuhub
+        psr4_prefix: myocuhub
+        src_path: app
