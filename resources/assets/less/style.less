@@ -85,30 +85,30 @@ Section : Header
 ---------------------------
 */
 
-.header-logo>img {
-    width: 100%;
-    padding-left: 3em;
+.header-logo {
+    > img {
+        width: 100%;
+        padding-left: 3em;
+    }
 }
 
-.header-menu{
+.header-menu {
     display: flex;
 }
 
-.menu-item{
+.menu-item {
     color: @font-color-2;
     font-size: 1.1em;
     align-self: center;
-    &:hover{
+    &:hover, &.active {
         color: @font-color-4;
         cursor: pointer;
     }
-
 }
 
-.header{
+.header {
     padding: 2em 1em;
 }
-
 /*
 ---------------------------
 Section : Body
@@ -136,6 +136,13 @@ Section : Body
 
 .content-row-margin {
     margin: 1em 0;
+}
+
+.content-section {
+    display: none;
+    &.active {
+        display: block;
+    }
 }
 /*
 ---------------------------

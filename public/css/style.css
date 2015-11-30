@@ -159,7 +159,8 @@ Section : Header
   align-self: center;
 }
 
-.menu-item:hover {
+.menu-item:hover,
+.menu-item.active {
   color: #00b5eb;
   cursor: pointer;
 }
@@ -195,6 +196,14 @@ Section : Body
 
 .content-row-margin {
   margin: 1em 0;
+}
+
+.content-section {
+  display: none;
+}
+
+.content-section.active {
+  display: block;
 }
 
 /*

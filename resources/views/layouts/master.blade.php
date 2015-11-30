@@ -9,9 +9,14 @@
 			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
             <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 		<![end if]-->
-    <link rel="stylesheet" href="{{URL::asset('css/bootstrap.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{URL::asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/lib/bootstrap.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    
+    <script type="text/javascript" src="{{asset('js/lib/jquery-1.11.3.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/lib/bootstrap.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/main.js')}}"></script>
+    
 </head>
 
 <body>
