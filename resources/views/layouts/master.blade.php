@@ -24,7 +24,7 @@
         @section('header')
             @include('layouts.header')
         @show
-        <div class="row height">
+        <div class="row height content">
             <div class="hidden-xs col-sm-3 content-left">
                 @yield('sidebar')
             </div>
@@ -32,7 +32,7 @@
                 @yield('content')
             </div>
         </div>
-        <div class="row height">
+        <div class="row height footer">
             @section('footer')
                 @include('layouts.footer')
             @show

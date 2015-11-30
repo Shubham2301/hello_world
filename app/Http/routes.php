@@ -15,7 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/home', function () {
-    return view('home');
+    if(Auth::check())
+        return view('home');
+    else
+        return Redirect::to('/');
 });
 
 

@@ -1,5 +1,8 @@
 .container {
     width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-flow: column;
 }
 
 .height {
@@ -85,6 +88,11 @@ Section : Header
 ---------------------------
 */
 
+.header {
+    padding: 2em 1em;
+    flex: 0 1 auto;
+}
+
 .header-logo {
     > img {
         width: 100%;
@@ -105,15 +113,15 @@ Section : Header
         cursor: pointer;
     }
 }
-
-.header {
-    padding: 2em 1em;
-}
 /*
 ---------------------------
 Section : Body
 ---------------------------
 */
+
+.content {
+    flex: 1 1 auto;
+}
 
 .content-padding {
     padding: 3em 2em;
@@ -149,6 +157,10 @@ Section : Body
 Section : Footer
 ---------------------------
 */
+
+.footer {
+    flex: 0 1 auto;
+}
 
 .footer-padding {
     padding: 2em 0;
