@@ -14,6 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::get('/home', function () {
     if(Auth::check())
         return view('home');
@@ -21,4 +22,16 @@ Route::get('/home', function () {
         return Redirect::to('/');
 });
 
+//Route::resource('roletest', 'TestroleController');
 
+Route::get('/start', 'TestroleController@start');
+
+Route::get('/show', 'TestroleController@show');
+
+
+Route:: controllers([
+	'auth' => 'Auth\AuthController',
+	'password' => 'Auth\PasswordController',
+]);
+
+Route::resource('users', 'Admin\UserController');
