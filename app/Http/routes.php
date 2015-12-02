@@ -12,17 +12,27 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    if(!Auth::check()){
+        return view('welcome');
+    }
+    else{
+        //return Redirect::to('/home');
+        return view('welcome');
+    }
 });
 
 Route::get('/home', function () {
-    if(Auth::check())
+
+    if(Auth::check()){
         return view('home');
-    else
+    }
+    else{
         return Redirect::to('/');
+    }
 });
 
-//Route::resource('roletest', 'TestroleController');
+Route::resource('roletest', 'TestroleController');
 
 Route::get('/start', 'TestroleController@start');
 

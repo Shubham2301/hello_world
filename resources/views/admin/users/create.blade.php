@@ -17,97 +17,201 @@
     {!! csrf_field() !!}
     {{ method_field('POST') }}
 
-    <div>
-        User Type
-        <input type="text" name="usertype" value="{{ old('usertype') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('usertype', 'User Type') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('usertype', old('usertype'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Title*
-        <input type="text" name="title" value="{{ old('title') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('title', 'Title*') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('title', old('title'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        First Name*
-        <input type="text" name="firstname" value="{{ old('firstname') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('firstname', 'First Name*') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('firstname', old('firstname'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Middle Name
-        <input type="text" name="middlename" value="{{ old('middlename') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('middlename', 'Middle Name') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('middlename', old('middlename'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Last Name*
-        <input type="text" name="lastname" value="{{ old('lastname') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('lastname', 'Last Name*') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('lastname', old('lastname'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Email*
-        <input type="email" name="email" value="{{ old('email') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('email', 'Email*') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::email('email', old('email'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        NPI*
-        <input type="text" name="npi" value="{{ old('npi') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('npi', 'NPI*') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('npi', old('npi'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Cell Phone
-        <input type="text" name="cellphone" value="{{ old('celphone') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('celphone', 'Cell Phone') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('celphone', old('celphone'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Direct Address
-        <input type="email" name="sesemail" value="{{ old('sesemail') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('sesemail', 'Direct Address') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::email('sesemail', old('sesemail'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Calendar
-        <input type="checkbox" name="calendar" value="{{ old('calendar') }}">
-    </div>  
-
-    <div>
-        Address1
-        <input type="text" name="address1" value="{{ old('address1') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('calendar', 'Calendar') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::checkbox('calendar', old('calendar')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Address2
-        <input type="text" name="address2" value="{{ old('address2') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('address1', 'Address 1') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('address1', old('address1'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        City
-        <input type="text" name="city" value="{{ old('city') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('address2', 'Address 2') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('address2', old('address2'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        State
-        <input type="text" name="state" value="{{ old('state') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('city', 'City') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('city', old('city'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Zip
-        <input type="text" name="zip" value="{{ old('zip') }}">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('zip', 'Zip') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('zip', old('zip'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Password
-        <input type="password" name="password">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('password', 'Password') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('password', old('password'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Confirm Password
-        <input type="password" name="password_confirmation">
+
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('password_confirmation', 'Confirm Password') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('password_confirmation', old('password_confirmation'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        Role Name
-        <input type="role" name="role">
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::label('role', 'Role Name') !!}
+            </div>
+            <div class="col-sm-10">
+                {!! Form::text('role', old('role'), array('class' => 'input')) !!}
+            </div>
+        </div>
     </div>
 
-    <div>
-        <button type="submit">Save</button>
+    <div class="row content-row-margin">
+        <div class="form-group">
+            <div class="col-sm-2">
+                {!! Form::submit('Save', array('class' => 'button')) !!}
+            </div>
+            <div class="col-sm-10"></div>
+        </div>
     </div>
+
 </form>

@@ -1,3 +1,5 @@
  <div class="content-section" id="admin-console">
-     <p>This is the Admin console</p>
+     <div id="admin-create-user">
+         @include('admin.users.create')
+     </div>
  </div>

@@ -11,25 +11,26 @@
     
     <div class="row content-row-margin">
         <div class="col-sm-12">
-            <input type="email" name="email" value="{{ old('email') }}" placeholder="EMAIL/USERNAME" class="input white-border input-text white-bg">
+            <input type="email" name="email" value="{{ old('email') }}" placeholder="EMAIL/USERNAME" class="input">
+            {!! Form::email('email', old('email'), array('class' => 'awesome', placeholder => 'EMAIL/USERNAME', id => 'password')) !!}
         </div>
     </div>
     
     <div class="row content-row-margin">
         <div class="col-sm-12">
-            <input type="password" name="password" id="password" placeholder="PASSWORD" class="input white-border input-text white-bg">
+            {!! Form::password('password', array('class' => 'awesome', placeholder => 'PASSWORD', id='password')) !!}
         </div>
     </div>
 
     <div class="row content-row-margin">
         <div class="col-sm-12">
-            <button class="white-border signin-button white-border white-text" type="submit">SIGN IN</button>
+            {!! Form::submit('SIGN IN', array('class' => 'button')) !!}
         </div>
     </div> 
 
     <div class="row content-row-margin">
         <div class="col-sm-12">
-            <input type="checkbox" name="remember" class="white-bg">&nbsp;Remember me on this computer<br> 
+            {!! Form::checkbox('remember') !!}&nbsp;Remember me on this computer<br>
         </div>
     </div> 
     

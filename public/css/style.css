@@ -131,6 +131,23 @@ Section : Helper Classes
   border-right: .3em solid white;
 }
 
+.input {
+  padding: .6em 4em .6em 1em;
+  border-radius: .5em;
+  border: 1px solid white;
+  box-shadow: inset -5px 5px 10px 0px #b7b9bb;
+  color: #bcbec0;
+}
+
+.button {
+  text-align: center;
+  background: #a9abae;
+  padding: .4em 1em .4em 1em;
+  border-radius: .5em;
+  box-shadow: inset -5px 5px 10px 0px #77787b;
+  border: 1px solid white;
+}
+
 /*
 ---------------------------
 Section : General
@@ -149,9 +166,9 @@ Section : Header
 
 .header {
   padding: 2em 1em;
-  -webkit-flex: 0 1 auto;
-  -ms-flex: 0 1 auto;
-  flex: 0 1 auto;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
 }
 
 .header-logo > img {
