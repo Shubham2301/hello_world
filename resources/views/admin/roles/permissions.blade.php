@@ -1,3 +1,10 @@
+<div class="row content-row-margin">
+    <div class="form-group">
+        <div class="col-sm-12">
+            <h3>Define Permissions</h3>
+        </div>
+    </div>
+</div>
 @if (count($errors) > 0)
     <!-- Form Error List -->
     <div class="alert alert-danger">
@@ -24,22 +31,22 @@
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <colgroup>
-                            <col class="col-xs-2">
-                            <col class="col-xs-10">
+                            <col class="col-xs-1">
+                            <col class="col-xs-11">
                         </colgroup>
-                        <thead>
+                        <thead class="table-header">
                             <tr>
-                                <th>{!! Form::checkbox('name','value') !!}</th>
+                                <th class="table-check">{!! Form::checkbox('name','value') !!}</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <th>{!! Form::checkbox('name','value') !!}</th>
+                                <th class="table-check">{!! Form::checkbox('name','value') !!}</th>
                                 <th>Permission 1</th>
                             </tr>
                             <tr>
-                                <th>{!! Form::checkbox('name','value') !!}</th>
+                                <th class="table-check">{!! Form::checkbox('name','value') !!}</th>
                                 <th>Permission 2</th>
                             </tr>
                         </tbody>

@@ -183,7 +183,7 @@ Section : Header
 }
 
 .menu-item {
-  color: #8b8e90;
+  color: #82888f;
   font-size: 1.1em;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
@@ -192,7 +192,7 @@ Section : Header
 
 .menu-item:hover,
 .menu-item.active {
-  color: #00b5eb;
+  color: #0193d7;
   cursor: pointer;
 }
 
@@ -238,6 +238,20 @@ Section : Body
   display: block;
 }
 
+.table {
+  color: #82888f;
+  background-color: #ffffff;
+}
+
+.table-header {
+  color: #0193d7;
+  background-color: #ffffff;
+}
+
+.table-check {
+  text-align: center;
+}
+
 /*
 ---------------------------
 Section : Footer
@@ -258,7 +272,7 @@ Section : Footer
   padding: 1em 0;
   border-right: .3em solid white;
   background: #e2e3e4;
-  color: #8b8e90;
+  color: #82888f;
 }
 
 .footer-right {
