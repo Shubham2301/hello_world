@@ -11,14 +11,13 @@
     
     <div class="row content-row-margin">
         <div class="col-sm-12">
-            <input type="email" name="email" value="{{ old('email') }}" placeholder="EMAIL/USERNAME" class="input">
-            {!! Form::email('email', old('email'), array('class' => 'awesome', placeholder => 'EMAIL/USERNAME', id => 'password')) !!}
+            {!! Form::email('email', old('email'), array('class' => 'input', 'placeholder' => 'EMAIL/USERNAME', 'id' => 'password')) !!}
         </div>
     </div>
     
     <div class="row content-row-margin">
         <div class="col-sm-12">
-            {!! Form::password('password', array('class' => 'awesome', placeholder => 'PASSWORD', id='password')) !!}
+            {!! Form::password('password', array('class' => 'input', 'placeholder' => 'PASSWORD', 'id' => 'password')) !!}
         </div>
     </div>
 
