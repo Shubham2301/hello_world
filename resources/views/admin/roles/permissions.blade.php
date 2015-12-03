@@ -29,25 +29,25 @@
         <div class="form-group">
             <div class="col-sm-12">
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table">
                         <colgroup>
-                            <col class="col-xs-1">
                             <col class="col-xs-11">
+                            <col class="col-xs-1">
                         </colgroup>
                         <thead class="table-header">
                             <tr>
-                                <th class="table-check">{!! Form::checkbox('name','value') !!}</th>
                                 <th>Action</th>
+                                <th class="table-check">{!! Form::checkbox('name','value') !!}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <th class="table-check">{!! Form::checkbox('name','value') !!}</th>
                                 <th>Permission 1</th>
+                                <th class="table-check">{!! Form::checkbox('name','value') !!}</th>
                             </tr>
                             <tr>
-                                <th class="table-check">{!! Form::checkbox('name','value') !!}</th>
                                 <th>Permission 2</th>
+                                <th class="table-check">{!! Form::checkbox('name','value') !!}</th>
                             </tr>
                         </tbody>
                     </table>
