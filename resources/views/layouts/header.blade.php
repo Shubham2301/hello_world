@@ -5,31 +5,17 @@
     </div>
 </div>
 <div class="row height header">
-    <div class="col-sm-3 hidden-xs"></div>
-    <div class="col-sm-2 header-logo">
+    <div class="col-sm-4 hidden-xs"></div>
+    <div class="col-sm-4 col-md-3 header-logo">
         <img src="{{URL::asset('images/ocuhub-logo.png')}}" class="img-responsive">
     </div>
 
-    <div class="col-sm-7 header-menu">
+    <div class="col-sm-5 col-md-6 header-menu">
         @if(Auth::check())
-        <div class="menu-item active" data-id="care-console">
-            <span>Care Console</span>
-        </div>
-        <div class="menu-item" data-id="payer-console">
-            <span>Payer Console</span>
-        </div>
-        <div class="menu-item" data-id="admin-console">
-            <span>Administration</span>
-        </div>
-        @endif
-    </div>
-<!--
-
-    <div class="col-sm-6 header-menu">
         <nav class="navbar navbar-default" role="navigation">
 
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#ocuhub-navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -37,16 +23,15 @@
                 </button>
             </div>
 
-            <div class="collapse navbar-collapse" id="example-navbar-collapse">
+            <div class="collapse navbar-collapse" id="ocuhub-navbar-collapse">
 
                 <ul class="nav navbar-nav">
-                    <li class="menu-item active" data-id="care-console">Care Console</li>
-                    <li class="menu-item" data-id="payer-console">Payer Console</li>
+                    <li class="menu-item" >Reporting</li>
                     <li class="dropdown">
                         <span  class="menu-item dropdown-toggle" data-toggle="dropdown">Administration  <b class = "caret"></b></span>
                         <ul class="dropdown-menu">
-                            <li class="menu-item" data-id="user-admin-console"><span>Users</span></li>
-                            <li class="menu-item" data-id="roles-admin-console"><span>Roles</span></li>
+                            <li class="menu-item" data-id="admin-user-console"><a href="/admin/user">Users</a></li>
+                            <li class="menu-item" data-id="admin-role-console"><a href="/admin/role">Roles</a></li>
                         </ul>
 
                     </li>
@@ -55,6 +40,7 @@
             </div>
 
         </nav>
+        @endif
     </div>
--->
+
 </div>

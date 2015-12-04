@@ -1,3 +1,10 @@
+<div class="row content-row-margin">
+    <div class="form-group">
+        <div class="col-sm-12">
+            <h3>Create User</h3>
+        </div>
+    </div>
+</div>
 @if (count($errors) > 0)
     <!-- Form Error List -->
     <div class="alert alert-danger">
@@ -187,7 +194,7 @@
                 {!! Form::label('password', 'Password') !!}
             </div>
             <div class="col-sm-10">
-                {!! Form::text('password', old('password'), array('class' => 'input')) !!}
+                {!! Form::password('password', array('class' => 'input')) !!}
             </div>
         </div>
     </div>
@@ -199,7 +206,7 @@
                 {!! Form::label('password_confirmation', 'Confirm Password') !!}
             </div>
             <div class="col-sm-10">
-                {!! Form::text('password_confirmation', old('password_confirmation'), array('class' => 'input')) !!}
+                {!! Form::password('password_confirmation', array('class' => 'input')) !!}
             </div>
         </div>
     </div>

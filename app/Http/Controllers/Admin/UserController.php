@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('admin.users.index')->with('users', $users); 
+        return view('admin.user')->with('users', $users);
     }
 
     /**
@@ -77,6 +77,7 @@ class UserController extends Controller
         } else {
 
         }
+
         return redirect()->back();
     }
 

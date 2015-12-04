@@ -1,7 +1,7 @@
 <div class="row content-row-margin">
     <div class="form-group">
         <div class="col-sm-12">
-            <h3>Create User Role</h3>
+            <h3>Create Role</h3>
         </div>
     </div>
 </div>
