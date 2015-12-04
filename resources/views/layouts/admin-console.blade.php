@@ -3,5 +3,6 @@
          @include('admin.roles.create')
          @include('admin.roles.permissions')
          @include('admin.roles.listing')
+         @include('admin.users.create')
      </div>
  </div>

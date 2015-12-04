@@ -97,10 +97,10 @@
     <div class="row content-row-margin">
         <div class="form-group">
             <div class="col-sm-2">
-                {!! Form::label('celphone', 'Cell Phone') !!}
+                {!! Form::label('cellphone', 'Cell Phone') !!}
             </div>
             <div class="col-sm-10">
-                {!! Form::text('celphone', old('celphone'), array('class' => 'input')) !!}
+                {!! Form::text('cellphone', old('cellphone'), array('class' => 'input')) !!}
             </div>
         </div>
     </div>
@@ -177,7 +177,7 @@
                 {!! Form::label('password', 'Password') !!}
             </div>
             <div class="col-sm-10">
-                {!! Form::text('password', old('password'), array('class' => 'input')) !!}
+                {!! Form::password('password', old('password'), array('class' => 'input')) !!}
             </div>
         </div>
     </div>
@@ -189,7 +189,7 @@
                 {!! Form::label('password_confirmation', 'Confirm Password') !!}
             </div>
             <div class="col-sm-10">
-                {!! Form::text('password_confirmation', old('password_confirmation'), array('class' => 'input')) !!}
+                {!! Form::password('password_confirmation', old('password_confirmation'), array('class' => 'input')) !!}
             </div>
         </div>
     </div>
