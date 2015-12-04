@@ -17,27 +17,38 @@ Route::get('/', function () {
         return view('welcome');
     }
     else{
-        //return Redirect::to('/home');
-        return view('home');
+        return Redirect::to('/home');
     }
 });
 
 Route::get('/home', function () {
+    if(!Auth::check()){
 
-    if(Auth::check()){
-        return view('home');
-    }
-    else{
         return Redirect::to('/');
     }
+    else{
+        return view('home');
+    }
 });
+
+Route::get('/admin/user', 'Admin\UserController@index');
+Route::get('/admin/role', function () {
+    return view('admin.role');
+});
+
+
+
+
+//// Authentication routes...
+//Route::get('/login', 'Auth\AuthController@getLogin');
+//Route::post('/login', 'Auth\AuthController@postLogin');
+//Route::get('/logout', 'Auth\AuthController@getLogout');
 
 Route::resource('roletest', 'TestroleController');
 
 Route::get('/start', 'TestroleController@start');
 
 Route::get('/show', 'TestroleController@show');
-
 
 Route:: controllers([
 	'auth' => 'Auth\AuthController',

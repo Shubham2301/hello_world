@@ -71,8 +71,24 @@ Section : Header
     display: flex;
     text-align: right;
     justify-content: flex-end;
+    width: 100%;
 }
 
+.header-menu > nav {
+    background-color: #fff;
+    border-color: #fff;
+    margin: 0;
+    min-height: 0;
+}
+.navbar-toggle{
+    border:none;
+    margin: 0;
+}
+.dropdown-menu{
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+}
 
 .menu-item {
     color: @font-color-2;
@@ -112,13 +128,14 @@ Section : Body
     background: @background-color-3;
     box-shadow: inset 0 20px 40px -10px #0d98db, inset 0 -8px 8px -8px #0d98db;
     color: @font-color-1;
+    overflow: hidden;
 }
 
 .content-row-margin {
     margin: 1em 0;
 }
 
-.content-section {
+.content-section, .admin-console-section {
     display: none;
     &.active {
         display: block;
@@ -147,6 +164,11 @@ Section : Body
     top: 5em;
     position: absolute;
 }
+
+.subheading{
+    font-size: 1.5em;
+}
+
 /*
 ---------------------------
 Section : Footer

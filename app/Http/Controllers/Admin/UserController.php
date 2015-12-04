@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('admin.users.index')->with('users', $users); 
+        return view('admin.user')->with('users', $users);
     }
 
     /**
@@ -71,7 +71,7 @@ class UserController extends Controller
         // var_dump($userType);
         //$userType->users()->save($user);
 
-        // Session::flash('flash_message', 'Task successfully added!');
+        //Session::flash('create_user_status', 'User successfully added!');
         return redirect()->back();
     }
 

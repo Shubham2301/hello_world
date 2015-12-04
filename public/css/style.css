@@ -156,6 +156,25 @@ Section : Header
   -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
   justify-content: flex-end;
+  width: 100%;
+}
+
+.header-menu > nav {
+  background-color: #fff;
+  border-color: #fff;
+  margin: 0;
+  min-height: 0;
+}
+
+.navbar-toggle {
+  border: none;
+  margin: 0;
+}
+
+.dropdown-menu {
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
 }
 
 .menu-item {
@@ -201,17 +220,20 @@ Section : Body
   background: #00b5eb;
   box-shadow: inset 0 20px 40px -10px #0d98db, inset 0 -8px 8px -8px #0d98db;
   color: #ffffff;
+  overflow: hidden;
 }
 
 .content-row-margin {
   margin: 1em 0;
 }
 
-.content-section {
+.content-section,
+.admin-console-section {
   display: none;
 }
 
-.content-section.active {
+.content-section.active,
+.admin-console-section.active {
   display: block;
 }
 
@@ -234,6 +256,10 @@ Section : Body
   right: 0;
   top: 5em;
   position: absolute;
+}
+
+.subheading {
+  font-size: 1.5em;
 }
 
 /*

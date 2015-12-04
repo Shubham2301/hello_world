@@ -1,7 +1,7 @@
 <div class="row content-row-margin">
     <div class="form-group">
         <div class="col-sm-12">
-            <h3>Define Permissions</h3>
+            <h3>Assign Permissions</h3>
         </div>
     </div>
 </div>

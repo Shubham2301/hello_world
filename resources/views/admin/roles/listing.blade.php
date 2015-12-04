@@ -1,7 +1,10 @@
 <div class="row content-row-margin">
     <div class="form-group">
-        <div class="col-sm-12">
-            <h3>Roles</h3>
+        <div class="col-sm-10">
+            <p class="subheading">Roles</p>
+        </div>
+        <div class="col-sm-2">
+            {!! Form::button('Add Role', array('type' => 'button', 'data-id' => "admin-create-role" ,'class' => 'button admin-console-item')) !!}
         </div>
     </div>
 </div>
