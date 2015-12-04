@@ -15,16 +15,16 @@ class AlterUserTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('title');
             $table->string('firstname');
-            $table->string('middlename');
+            $table->string('middlename')->nullable();
             $table->string('lastname');
             $table->string('npi');
-            $table->string('cellphone');
-            $table->boolean('calendar');
-            $table->string('address1');
-            $table->string('address2');
-            $table->string('city');
-            $table->string('state');
-            $table->string('zip');
+            $table->string('cellphone')->nullable();
+            $table->boolean('calendar')->nullable();
+            $table->string('address1')->nullable();
+            $table->string('address2')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zip')->nullable();
         });
     }
 

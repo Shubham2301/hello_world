@@ -60,6 +60,7 @@ class UserController extends Controller
         $user->state = $request->input('state');
         $user->zip = $request->input('zip');
         $user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
+        $user->usertype_id = $request->input('usertype');
 
         $user->save();
 
@@ -69,9 +70,13 @@ class UserController extends Controller
         //$user->assignUserType($request->input('usertype'));
         //$userType = Usertype::findorFail($request->input('usertype'));
         // var_dump($userType);
-        //$userType->users()->save($user);
+        // $userType->users()->save($user);
 
-        // Session::flash('flash_message', 'Task successfully added!');
+        if($user) {
+            $request->session()->flash('success', 'User Created Successfully!');
+        } else {
+
+        }
         return redirect()->back();
     }
 
@@ -95,7 +100,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        return view('admin.users.create')->with('user', $user);
     }
 
     /**

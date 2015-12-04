@@ -77,11 +77,4 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->belongsTo(Usertype::class);
     }
-
-    public function assignUserType($usertype)
-    {
-        // return $this->usertype()->save(
-        //     Usertype::find($usertype)
-        // );
-    }
 }

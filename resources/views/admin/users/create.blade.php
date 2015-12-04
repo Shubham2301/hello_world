@@ -13,6 +13,16 @@
     </div>
 @endif
 
+@if (Session::has('success'))
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>
+            <i class="fa fa-check-circle fa-lg fa-fw"></i> Success. &nbsp;
+        </strong>
+        {{ Session::get('success') }}
+    </div>
+@endif
+
 <form method="POST" action="/users">
     {!! csrf_field() !!}
     {{ method_field('POST') }}
@@ -97,10 +107,10 @@
     <div class="row content-row-margin">
         <div class="form-group">
             <div class="col-sm-2">
-                {!! Form::label('celphone', 'Cell Phone') !!}
+                {!! Form::label('cellphone', 'Cell Phone') !!}
             </div>
             <div class="col-sm-10">
-                {!! Form::text('celphone', old('celphone'), array('class' => 'input')) !!}
+                {!! Form::text('cellphone', old('cellphone'), array('class' => 'input')) !!}
             </div>
         </div>
     </div>
