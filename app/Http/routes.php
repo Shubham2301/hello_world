@@ -31,10 +31,10 @@ Route::get('/home', function () {
     }
 });
 
-Route::get('/admin/user', 'Admin\UserController@index');
-Route::get('/admin/role', function () {
-    return view('admin.role');
-});
+// Route::get('/admin/user', 'Admin\UserController@index');
+// Route::get('/admin/role', function () {
+//     return view('admin.role');
+// });
 
 
 
@@ -50,9 +50,14 @@ Route::get('/start', 'TestroleController@start');
 
 Route::get('/show', 'TestroleController@show');
 
+
 Route:: controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
 
-Route::resource('users', 'Admin\UserController');
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('users', 'Admin\UserController');
+    Route::resource('roles', 'Admin\RoleController');
+    Route::resource('permissions', 'Admin\PermissionController');
+});

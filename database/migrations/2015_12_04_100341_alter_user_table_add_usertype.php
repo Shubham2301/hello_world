@@ -12,12 +12,13 @@ class AlterUserTableAddUsertype extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        /*Schema::table('users', function (Blueprint $table) {
             $table->integer('usertype_id')->unsigned();
             
             $table->foreign('usertype_id')->references('id')->on('usertypes')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
+        */
     }
 
     /**

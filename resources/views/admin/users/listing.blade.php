@@ -4,7 +4,7 @@
             <p class="subheading">Users</p>
         </div>
         <div class="col-sm-2">
-            {!! Form::button('Add User', array('type' => 'button', 'data-id' => "admin-create-user" ,'class' => 'button admin-console-item')) !!}
+            <a href="/users/create" class="button">Add User</a>
         </div>
     </div>
 </div>
@@ -24,7 +24,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Organization</th>
+                            <th>NPI</th>
                             <th>User Type</th>
                             <th></th>
                         </tr>
@@ -34,8 +34,8 @@
                         <tr>
                             <th>{{ $user->title }} {{ $user->firstname }} {{ $user->lastname }}</th>
                             <th>{{ $user->email }}</th>
-                            <th>Ocuhub LLC. <br><small>Sushant Lok 1</small></th>
-                            <th>Provider</span></th>
+                            <th>{{ $user->npi }}</small></th>
+                            <th>{{ $user->usertype->name }}</span></th>
                             <th>
                             </th>
                         </tr>

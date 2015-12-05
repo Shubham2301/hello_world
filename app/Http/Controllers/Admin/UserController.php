@@ -4,6 +4,7 @@ namespace myocuhub\Http\Controllers\Admin;
 
 use myocuhub\User;
 use myocuhub\Usertype;
+use myocuhub\Role;
 use Illuminate\Http\Request;
 
 use myocuhub\Http\Requests;
@@ -20,7 +21,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('admin.user')->with('users', $users);
+        return view('admin.users.index')->with('users', $users);
     }
 
     /**
@@ -30,7 +31,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        $userTypes = $this->getUserTypes();
+        $roles = $this->getRoles();
+        return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles]);
     }
 
     /**
@@ -66,19 +69,12 @@ class UserController extends Controller
 
         $user->assign($request->input('role'));
 
-        //$user->usertype()->associate($request->input('usertype'));
-        //$user->assignUserType($request->input('usertype'));
-        //$userType = Usertype::findorFail($request->input('usertype'));
-        // var_dump($userType);
-        // $userType->users()->save($user);
-
         if($user) {
             $request->session()->flash('success', 'User Created Successfully!');
+            return redirect('users');
         } else {
-
+            return redirect()->back();
         }
-
-        return redirect()->back();
     }
 
     /**
@@ -126,6 +122,26 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getUserTypes()
+    {
+        $userTypes = Usertype::all();
+        $userTypeArray = array();
+        foreach ($userTypes as $userType) {
+            $userTypeArray[$userType->id] = $userType->name;
+        }
+        return $userTypeArray;
+    }
+
+    public function getRoles()
+    {
+        $roles = Role::all();
+        $roleArray = array();
+        foreach ($roles as $role) {
+            $roleArray[$role->id] = $role->display_name;
+        }
+        return $roleArray;
     }
 
 }
