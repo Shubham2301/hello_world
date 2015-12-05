@@ -1,10 +1,10 @@
 <div class="row content-row-margin">
     <div class="form-group">
         <div class="col-sm-10">
-            <p class="subheading">Roles</p>
+            <p class="subheading">Permissions</p>
         </div>
         <div class="col-sm-2">
-            <a href="/roles/create" class="button">Add Role</a>
+            <a href="/permissions/create" class="button">Add Permissions</a>
         </div>
     </div>
 </div>
@@ -20,15 +20,15 @@
                     </colgroup>
                     <thead class="table-header">
                         <tr>
-                            <th>Role</th>
+                            <th>Permission</th>
                             <th class="table-check"></th>
                             <th class="table-check"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($roles as $role)
+                        @foreach($permissions as $permission)
                         <tr>
-                            <th>{{ $role->display_name }}</th>
+                            <th>{{ $permission->display_name }}</th>
                             <th class="table-check"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             </th>
                             <th class="table-check"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
