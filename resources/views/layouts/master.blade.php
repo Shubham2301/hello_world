@@ -26,7 +26,9 @@
         @show
         <div class="row height content">
             <div class="hidden-xs col-sm-3 content-left">
-                @yield('sidebar')
+                @section('sidebar')
+                    @include('layouts.sidebar')
+                @show
             </div>
             <div class="col-xs-12 col-sm-9 content-right">
                 <img src="{{asset('images/ocuhub-watermark.png')}}" class="content-watermark" alt="">
