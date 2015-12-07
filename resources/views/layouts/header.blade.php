@@ -1,9 +1,11 @@
+@if(Auth::check())
 <div class="row height header-user">
     <div class="col-xs-3 header-user-left hidden-xs"></div>
     <div class="col-xs-12 col-sm-9 header-user-right">
         <div class="header-user-item"><a href="/auth/logout">LOGOUT</a></div>
     </div>
 </div>
+@endif
 <div class="row height header">
     <div class="col-sm-4 hidden-xs"></div>
     <div class="col-sm-4 col-md-3 header-logo">
