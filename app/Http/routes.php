@@ -60,4 +60,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'Admin\UserController');
     Route::resource('roles', 'Admin\RoleController');
     Route::resource('permissions', 'Admin\PermissionController');
+    Route::resource('directmail', 'DirectMail\DirectMailController');
 });

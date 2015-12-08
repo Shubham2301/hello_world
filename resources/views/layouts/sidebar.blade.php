@@ -34,5 +34,19 @@
         </div>
     </div>
     @endcan
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="item-2">
+        <h4 class="panel-title">
+            <a class="sidebar-item" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-2" aria-expanded="true" aria-controls="collapse-2">Integrated Care</a>
+        </h4>
+        </div>
+        <div id="collapse-2" class="panel-collapse collapse " role="tabpanel" aria-labelledby="item-2">
+            <div class="panel-body">
+                <ul class="sidebar-item-list">
+                    <li><a class="sidebar-item" href="/directmail">Direct Mail</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 @endif
