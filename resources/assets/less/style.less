@@ -35,21 +35,27 @@ Section : Header
 */
 
 .header {
-    padding: 1em 1em;
+    padding: 0em;
     flex: 0 0 auto;
+    &>div{
+        padding:1em 0em;
+    }
 }
-.header-user{
-    flex: 0 0 auto;
 
+.header-user {
+    flex: 0 0 auto;
 }
-.header-user-left{
+
+.header-user-left {
     background-color: #e2e3e4;
     .right-border;
 }
-.header-user-right{
-    background-color: #b0b1b2;
+
+.header-user-right {
+    background-color: @background-color-5;
 }
-.header-user-item{
+
+.header-user-item {
     background-color: #82888f;
     border-right: .2em solid white;
     border-left: .2em solid white;
@@ -60,10 +66,19 @@ Section : Header
     padding: 0.1em 0.4em;
     font-size: 0.9em;
 }
+
+.header-left{
+    .right-border-grey;
+}
+.header-right{
+    display: flex;
+    align-items: flex-end;
+}
+
 .header-logo {
     > img {
         width: 100%;
-        padding-left: 2em;
+        padding: 0em 1em;
     }
 }
 
@@ -71,7 +86,6 @@ Section : Header
     display: flex;
     text-align: right;
     justify-content: flex-end;
-    width: 100%;
 }
 
 .header-menu > nav {
@@ -80,11 +94,13 @@ Section : Header
     margin: 0;
     min-height: 0;
 }
-.navbar-toggle{
-    border:none;
+
+.navbar-toggle {
+    border: none;
     margin: 0;
 }
-.dropdown-menu{
+
+.dropdown-menu {
     border-radius: 0;
     border: none;
     box-shadow: none;
@@ -100,7 +116,6 @@ Section : Header
         cursor: pointer;
     }
 }
-
 /*
 ---------------------------
 Section : Body
@@ -119,31 +134,33 @@ Section : Body
     .right-border;
     .content-padding;
     background: @background-color-2;
-    box-shadow: inset 0 20px 40px -10px #b7b9bb, inset 0 -8px 8px -8px #b7b9bb;
+    box-shadow: inset 0 30px 60px -10px #b7b9bb, inset 0 -12px 20px -8px #b7b9bb;
 }
 
 .content-right {
     .content-padding;
-    //.gradient(left, @background-color-4, @background-color-3);
-    background: @background-color-3;
-    box-shadow: inset 0 20px 40px -10px #0d98db, inset 0 -8px 8px -8px #0d98db;
+    box-shadow: inset 0 30px 60px -10px #0193d7, inset 0 -12px 20px -8px #0193d7;
     color: @font-color-1;
     overflow: hidden;
+    background: @background-color-3;
+    background: -moz-linear-gradient(to right, rgb(0, 161, 228) 20%, rgb(66, 198, 244) 100%);
+    background: -webkit-linear-gradient(to right, rgb(0, 161, 228) 20%, rgb(66, 198, 244) 100%);
+    background: linear-gradient(to right, rgb(0, 161, 228) 20%, rgb(66, 198, 244) 100%);
 }
 
 .content-row-margin {
     margin: 1em 0;
 }
 
-.content-section, .admin-console-section {
+.content-section,
+.admin-console-section {
     display: none;
     &.active {
         display: block;
     }
 }
 
-.table {
-}
+.table {}
 
 .table-header {
     color: @font-color-4;
@@ -152,21 +169,45 @@ Section : Body
 
 .table-check {
     text-align: center;
-
-    &:hover{
+    &:hover {
         color: @font-color-4;
         cursor: pointer;
     }
 }
-.content-watermark{
-    width: 70%;
-    right: 0;
+
+.content-watermark {
+    width: 60%;
+    right: -20%;
     top: 5em;
     position: absolute;
 }
 
-.subheading{
+.subheading {
     font-size: 1.5em;
+}
+
+.panel{
+    background-color: transparent;
+    box-shadow: none;
+    color: @font-color-2;
+    border: none;
+}
+.panel-default{
+    &>.panel-heading{
+        color: inherit;
+        background-color: transparent;
+    }
+}
+.panel-default>.panel-heading+.panel-collapse>.panel-body{
+    border: none;
+}
+
+.sidebar-item-list{
+    list-style-type: none;
+
+    &>li{
+        margin:0.5em 0;
+    }
 }
 
 /*
@@ -186,8 +227,9 @@ Section : Footer
 .footer-left {
     .footer-padding;
     .right-border;
-    background: @background-color-2;
+    background: @background-color-5;
     color: @font-color-2;
+    border-top: 1px solid #9ea0a3;
 }
 
 .footer-right {
@@ -196,4 +238,16 @@ Section : Footer
     background: @background-color-3;
     box-shadow: 8px -5px 25px 0 #0d98db;
     color: @font-color-3;
+    border-top: 1px solid #20c3f3;
+}
+
+.footer-item {
+    text-align:center;
+    &.border{
+        border-right: 1px solid @font-color-3;
+    }
+
+    &>p{
+        margin:0;
+    }
 }
