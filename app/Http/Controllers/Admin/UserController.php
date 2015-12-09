@@ -139,7 +139,7 @@ class UserController extends Controller
         $roles = Role::all();
         $roleArray = array();
         foreach ($roles as $role) {
-            $roleArray[$role->id] = $role->display_name;
+            $roleArray[$role->name] = $role->display_name;
         }
         return $roleArray;
     }
