@@ -17,6 +17,8 @@
     <script type="text/javascript" src="{{asset('js/lib/bootstrap.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/main.js')}}"></script>
     
+    @yield('imports')
+
 </head>
 
 <body>
