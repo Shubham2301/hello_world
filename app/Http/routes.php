@@ -21,29 +21,6 @@ Route::get('/', function () {
     }
 });
 
-Route::get('/home', function () {
-    if(!Auth::check()){
-
-        return Redirect::to('/');
-    }
-    else{
-        return view('home');
-    }
-});
-
-// Route::get('/admin/user', 'Admin\UserController@index');
-// Route::get('/admin/role', function () {
-//     return view('admin.role');
-// });
-
-
-
-
-//// Authentication routes...
-//Route::get('/login', 'Auth\AuthController@getLogin');
-//Route::post('/login', 'Auth\AuthController@postLogin');
-//Route::get('/logout', 'Auth\AuthController@getLogout');
-
 Route::resource('roletest', 'TestroleController');
 
 Route::get('/start', 'TestroleController@start');
@@ -60,5 +37,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'Admin\UserController');
     Route::resource('roles', 'Admin\RoleController');
     Route::resource('permissions', 'Admin\PermissionController');
-    Route::resource('directmail', 'DirectMail\DirectMailController');
+    Route::resource('home', 'HomeController');
 });

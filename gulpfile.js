@@ -15,6 +15,7 @@ elixir(function (mix) {
 
     mix.less(['style.less'],'public/css/style.css');
     mix.less(['directmail.less'],'public/css/directmail.css');
+    mix.less(['referral.less'],'public/css/referral.css');
 
     mix.babel(['main.js'],'public/js/main.js');
     mix.babel(['sesconnect.js'],'public/js/sesconnect.js');

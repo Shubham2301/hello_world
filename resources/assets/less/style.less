@@ -8,6 +8,7 @@ Section : Imports
 @import 'fonts.less';
 @import 'media.less';
 @import 'helper.less';
+
 /*
 ---------------------------
 Section : General
@@ -28,6 +29,8 @@ body {
 .height {
     display: flex;
 }
+
+
 /*
 ---------------------------
 Section : Header
@@ -37,8 +40,8 @@ Section : Header
 .header {
     padding: 0em;
     flex: 0 0 auto;
-    &>div{
-        padding:1em 0em;
+    &>div {
+        padding: 1em 0em;
     }
 }
 
@@ -67,10 +70,11 @@ Section : Header
     font-size: 0.9em;
 }
 
-.header-left{
+.header-left {
     .right-border-grey;
 }
-.header-right{
+
+.header-right {
     display: flex;
     align-items: flex-end;
 }
@@ -111,11 +115,14 @@ Section : Header
     font-size: 1em;
     align-self: center;
     margin: 0 1em;
-    &:hover, &.active {
+    &:hover,
+    &.active {
         color: @font-color-4;
         cursor: pointer;
     }
 }
+
+
 /*
 ---------------------------
 Section : Body
@@ -186,29 +193,31 @@ Section : Body
     font-size: 1.5em;
 }
 
-.panel{
+.panel {
     background-color: transparent;
     box-shadow: none;
     color: @font-color-2;
     border: none;
 }
-.panel-default{
-    &>.panel-heading{
+
+.panel-default {
+    &>.panel-heading {
         color: inherit;
         background-color: transparent;
     }
 }
-.panel-default>.panel-heading+.panel-collapse>.panel-body{
+
+.panel-default>.panel-heading+.panel-collapse>.panel-body {
     border: none;
 }
 
-.sidebar-item-list{
+.sidebar-item-list {
     list-style-type: none;
-
-    &>li{
-        margin:0.5em 0;
+    &>li {
+        margin: 0.5em 0;
     }
 }
+
 
 /*
 ---------------------------
@@ -242,12 +251,11 @@ Section : Footer
 }
 
 .footer-item {
-    text-align:center;
-    &.border{
+    text-align: center;
+    &.border {
         border-right: 1px solid @font-color-3;
     }
-
-    &>p{
-        margin:0;
+    &>p {
+        margin: 0;
     }
 }
