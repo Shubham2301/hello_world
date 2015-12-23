@@ -40,6 +40,7 @@
   color: #ffffff;
   border-radius: 100%;
   padding: 5px;
+  display: none;
   position: absolute;
   right: 0;
   opacity: 0.9;
@@ -48,4 +49,21 @@
 .referral_tile .remove_referral_type:hover {
   opacity: 1;
   box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.referral_tile .remove_referral_type.active {
+  display: inline-block;
+}
+
+.referral_tile.configuration_tile {
+  opacity: 0.6;
+}
+
+.referral_tile.configuration_tile > p {
+  margin: 0.5em 0;
+}
+
+.referral_tile.configuration_tile:hover,
+.referral_tile.configuration_tile.active {
+  opacity: 1;
 }

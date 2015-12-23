@@ -37,7 +37,6 @@
 
         <form id="ocuhubSESFm" action="{{ $ses['sso_logon_url'] }}" method="post" target="_blank">
             <input id="id_token" type='hidden' name='token' value="" />
-            <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
         </form>
 
         <iframe id="ocuhubSESiframeId" name="ocuhubSESiframe" src="" frameborder="0" style="display:none;position:relative;width: 100%;flex: 1 1 auto;"></iframe>

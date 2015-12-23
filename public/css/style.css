@@ -229,6 +229,10 @@ Section : Header
   cursor: pointer;
 }
 
+.navbar-nav > li > a {
+  padding: 0;
+}
+
 /*
 ---------------------------
 Section : Body

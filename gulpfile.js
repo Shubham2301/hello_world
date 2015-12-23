@@ -19,5 +19,6 @@ elixir(function (mix) {
 
     mix.babel(['main.js'],'public/js/main.js');
     mix.babel(['sesconnect.js'],'public/js/sesconnect.js');
+    mix.babel(['referraltype.js'],'public/js/referraltype.js');
 
 });

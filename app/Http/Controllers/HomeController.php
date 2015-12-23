@@ -2,7 +2,8 @@
 
 namespace myocuhub\Http\Controllers;
 
-use myocuhub\ReferralType;
+
+use myocuhub\NetworkReferraltype;
 use myocuhub\Network;
 
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // TODO: change network_id : 1 to network id  of logged in user
         $referralType = Network::find(1)->referralTypes;
         return view('home')->with('referralTypes', $referralType);
     }
@@ -30,6 +32,7 @@ class HomeController extends Controller
     public function create()
     {
         //
+        echo "yp";
     }
 
     /**
@@ -86,5 +89,23 @@ class HomeController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    // Functions for Referral Type Tiles
+    
+    public function removeReferral(Request $request){
+        
+        // TODO: change network_id : 1 to network id  of logged in user
+        
+        $id = $request->input('id');
+        
+        NetworkReferraltype::where('network_id', 1) 
+            ->where('referraltype_id', $id)
+            ->delete();
+        return;
+    }
+    
+    public function addReferral(){
+        // TODO: code to add entry into NetworkReferraltype
     }
 }
