@@ -12,7 +12,7 @@ class ReferralType extends Migration
      */
     public function up()
     {
-        Schema::create('referral_type', function (Blueprint $table) {
+        Schema::create('referraltypes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('display_name')->nullable();
@@ -28,6 +28,6 @@ class ReferralType extends Migration
      */
     public function down()
     {
-        Schema::drop('referral_type');
+        Schema::drop('referraltypes');
     }
 }

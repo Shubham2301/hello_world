@@ -16,22 +16,16 @@
            </div>
         </div>
         <div class="row">
-            @foreach($referralType as $type)
+            @foreach($referralTypes as $type)
             <div class="col-xs-2 referral_tile_outer">
                 <div class="referral_tile" data-id="{{ $type->name }}">
+<!--                    <span class=" remove_referral_type glyphicon glyphicon-remove" data-id="{{ $type->name }}" aria-hidden="true"></span>-->
                     <div class="referral_tile_inner" ></div>
                     <p>{{ $type->name }}</p>
                 </div>
                 <p>{{ $type->display_name }}</p>
             </div>
             @endforeach
-            <div class="col-xs-2 referral_tile_outer">
-                <div class="referral_tile" data-id="{{ $type->name }}">
-                    <div class="referral_tile_inner" ></div>
-                    <p>OTH</p>
-                </div>
-                <p>Others</p>
-            </div>
         </div>
     </div>
 

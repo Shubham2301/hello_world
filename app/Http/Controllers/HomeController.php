@@ -3,6 +3,7 @@
 namespace myocuhub\Http\Controllers;
 
 use myocuhub\ReferralType;
+use myocuhub\Network;
 
 use Illuminate\Http\Request;
 use myocuhub\Http\Requests;
@@ -17,8 +18,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $referralType = ReferralType::all();
-        return view('home')->with('referralType', $referralType);
+        $referralType = Network::find(1)->referralTypes;
+        return view('home')->with('referralTypes', $referralType);
     }
 
     /**

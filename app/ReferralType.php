@@ -4,7 +4,7 @@ namespace myocuhub;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ReferralType extends Model
+class Referraltype extends Model
 {
-    protected $table = 'referral_type';
+    //protected $table = 'referraltypes';
 }
