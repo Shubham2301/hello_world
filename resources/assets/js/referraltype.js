@@ -3,7 +3,7 @@ $(document).ready(function () {
     $('.configuration_tile').on('click', function () {
         $(this).addClass('active');
         $(this).children('p').children('span').removeClass('glyphicon-pencil');
-        $(this).children('p').children('span').addClass('glyphicon-plus');
+        $(this).children('p').children('span').addClass('glyphicon-ok');
         $('.remove_referral_type').addClass('active');
     });
     
