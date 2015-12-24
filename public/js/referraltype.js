@@ -3,10 +3,17 @@
 $(document).ready(function () {
 
     $('.configuration_tile').on('click', function () {
-        $(this).addClass('active');
-        $(this).children('p').children('span').removeClass('glyphicon-pencil');
-        $(this).children('p').children('span').addClass('glyphicon-ok');
-        $('.remove_referral_type').addClass('active');
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            $(this).children('p').children('span').removeClass('glyphicon-ok');
+            $(this).children('p').children('span').addClass('glyphicon-pencil');
+            $('.remove_referral_type').removeClass('active');
+        } else {
+            $(this).addClass('active');
+            $(this).children('p').children('span').removeClass('glyphicon-pencil');
+            $(this).children('p').children('span').addClass('glyphicon-ok');
+            $('.remove_referral_type').addClass('active');
+        }
     });
 
     $('.remove_referral_type').on('click', function () {
