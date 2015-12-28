@@ -12,7 +12,7 @@
 		<![end if]-->
     <link rel="stylesheet" href="{{asset('css/lib/bootstrap.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     
     <script type="text/javascript" src="{{asset('js/lib/jquery-1.11.3.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/lib/bootstrap.js')}}"></script>

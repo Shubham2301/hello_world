@@ -16,9 +16,11 @@ elixir(function (mix) {
     mix.less(['style.less'],'public/css/style.css');
     mix.less(['directmail.less'],'public/css/directmail.css');
     mix.less(['referral.less'],'public/css/referral.css');
+    mix.less(['patient.less'],'public/css/patient.css');
 
     mix.babel(['main.js'],'public/js/main.js');
     mix.babel(['sesconnect.js'],'public/js/sesconnect.js');
     mix.babel(['referraltype.js'],'public/js/referraltype.js');
+    mix.babel(['patient.js'],'public/js/patient.js');
 
 });
