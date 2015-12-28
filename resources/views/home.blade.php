@@ -34,7 +34,11 @@
                     </p>
                 </div>
             </div>
-            <!--  TODO: add tile to select referral type from database and add it for current network   -->
+            <!--
+             TODO:
+             add tile to select referral type from database and add it for current network
+             Pankaj 28/12
+            -->
         </div>
     </div>
 

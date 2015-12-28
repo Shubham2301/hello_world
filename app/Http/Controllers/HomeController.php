@@ -32,7 +32,6 @@ class HomeController extends Controller
     public function create()
     {
         //
-        echo "yp";
     }
 
     /**
@@ -105,7 +104,10 @@ class HomeController extends Controller
         return;
     }
     
-    public function addReferral(){
-        // TODO: code to add entry into NetworkReferraltype
+    public function addReferral( ){
+        /*TODO:
+        code to add entry into NetworkReferraltype
+        Pankaj 28/12
+        input : referraltype_ID */
     }
 }
