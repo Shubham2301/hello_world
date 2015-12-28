@@ -35,10 +35,12 @@ Route:: controllers([
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home/removereferral', 'HomeController@removeReferral');
+    Route::get('patients/search', 'Patient\PatientController@search');
     
     Route::resource('users', 'Admin\UserController');
     Route::resource('roles', 'Admin\RoleController');
     Route::resource('permissions', 'Admin\PermissionController');
     Route::resource('directmail', 'DirectMail\DirectMailController');
+    Route::resource('patients', 'Patient\PatientController');
     Route::resource('home', 'HomeController');
 });

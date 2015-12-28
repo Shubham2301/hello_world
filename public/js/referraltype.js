@@ -20,7 +20,18 @@ $(document).ready(function () {
         var id = $(this).attr('data-id');
         removeReferralType(id);
     });
+
+    $('.referr_patient').on('click', function () {
+        var id = $(this).attr('data-id');
+        selectPatient(id);
+    });
 });
+
+function selectPatient(id) {
+
+    $('#form_referraltype_id').val(id);
+    $('#form_select_patient').submit();
+}
 
 function removeReferralType(id) {
 
