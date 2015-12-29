@@ -1,39 +1,6 @@
 <!-- TODO: Add pagination to patient list to avoid scrolling of elements -->
-<div class="row content-row-margin patient_list">
-    <div class="col-xs-12 patient_list_item">
-        <div class="row content-row-margin">
-            <div class="col-xs-6">
-                <br> dob </div>
-            <div class="col-xs-6">Email
-                <br> city </div>
-        </div>
-    </div>
-    <div class="col-xs-12 patient_list_item">
-        <div class="row content-row-margin">
-            <div class="col-xs-6">Name
-                <br> dob </div>
-            <div class="col-xs-6">Email
-                <br> city </div>
-        </div>
-    </div>
-    <div class="col-xs-12 patient_list_item">
-        <div class="row content-row-margin">
-            <div class="col-xs-6">Name
-                <br> dob </div>
-            <div class="col-xs-6">Email
-                <br> city </div>
-        </div>
-    </div>
-    <div class="col-xs-12 patient_list_item">
-        <div class="row content-row-margin">
-            <div class="col-xs-6">Name
-                <br> dob </div>
-            <div class="col-xs-6">Email
-                <br> city </div>
-        </div>
-    </div>
-</div>
-<div class="row content-row-margin patient_info">
+<div class="row content-row-margin patient_list"></div>
+<div class="row content-row-margin patient_info" data-id="">
     <div class="col-xs-12">
         <div class="col-xs-4 center-align">
             <img src="{{asset('images/patient.png')}}" alt="">

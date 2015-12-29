@@ -47,6 +47,12 @@
 
 .patient_list_item {
   border-top: 1px solid;
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.patient_list_item:hover {
+  opacity: 1;
 }
 
 .patient_info {
@@ -60,6 +66,10 @@
   color: #000;
   padding: 0.5em 15px;
   margin: 1em 0;
+}
+
+.patient_info.active {
+  display: block;
 }
 
 #search_patient_button {
