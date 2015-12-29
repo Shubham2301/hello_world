@@ -54,9 +54,15 @@ class PatientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $id = $request->input('id');
+        
+        $patientData = [];
+        
+        $patient = Patient::find($id);
+        
+        return json_encode($patient);
     }
 
     /**
@@ -136,6 +142,7 @@ class PatientController extends Controller
         $data = [];
         $i = 0;
         foreach($patients as $patient){
+            $data[$i]['id'] = $patient->id;
             $data[$i]['fname'] = $patient->firstname;
             $data[$i]['lname'] = $patient->lastname;
             $data[$i]['email'] = $patient->email;

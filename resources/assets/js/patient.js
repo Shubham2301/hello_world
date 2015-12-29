@@ -4,8 +4,7 @@ $(document).ready(function () {
         var type = $('#search_patient_input_type').val();
         var value = $('#search_patient_input').val();
 
-        if(value ==='')
-        {
+        if (value === '') {
             $('#search_patient_input').focus();
         }
         var formData = {
@@ -14,7 +13,48 @@ $(document).ready(function () {
         };
         getPatients(formData);
     });
+    
+    $('.patient_list').on('click', '.patient_list_item', function () {
+        var id = $(this).attr('data-id');
+        var formData = {
+            'id': id
+        };
+        console.log(id);
+        getPatientInfo(formData);
+    });
+    
+    
 });
+
+
+
+function showPatientInfo(data) {
+    
+    $('.patient_list').removeClass('active');
+    $('.patient_info').addClass('active');
+    
+}
+
+function getPatientInfo(formData){
+    
+    $.ajax({
+        url: '/patients/show',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            var info = $.parseJSON(e);
+            showPatientInfo(info);
+        },
+        error: function () {
+            alert('Error getting patient information');
+        },
+        cache: false,
+        processData: false
+    });
+    
+}
 
 function getPatients(formData) {
 
@@ -29,8 +69,8 @@ function getPatients(formData) {
             var content = '<p><bold>' + patients.length + '<bold> results found</p><br>';
 
             if (patients.length > 0) {
-                patients.forEach(function (elem) {
-                    content += '<div class="col-xs-12 patient_list_item"><div class="row content-row-margin"><div class="col-xs-6">' + elem.fname + ' ' + elem.lname + '<br> ' + elem.birthdate + ' </div><div class="col-xs-6">' + elem.email + '<br> ' + elem.city + ' </div></div></div>';
+                patients.forEach(function (patient) {
+                    content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin"><div class="col-xs-6">' + patient.fname + ' ' + patient.lname + '<br> ' + patient.birthdate + ' </div><div class="col-xs-6">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
                 });
             }
             $('.patient_list').html(content);
