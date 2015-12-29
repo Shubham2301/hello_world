@@ -24,4 +24,13 @@ $(document).ready(function () {
         $('#' + id).addClass('active');
     });
 });
+
+//TODO: Based on the size and orientation of devide hide or show sidebar
+/*
+sidebar begin
+*/
+
+/*
+sidebar end
+*/
 //# sourceMappingURL=main.js.map
