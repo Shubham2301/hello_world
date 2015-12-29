@@ -50,3 +50,9 @@
     </div>
 </div>
 @endif
+
+<!--sidebar begin-->
+
+
+
+<!--sidebar end-->
