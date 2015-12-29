@@ -12,4 +12,10 @@ class Network extends Model
         return $this->hasMany('myocuhub\NetworkReferraltype')
             ->leftJoin('referraltypes', 'network_referraltype.referraltype_id', '=', 'referraltypes.id');
     }
+    public function newReferralTypes()
+    {
+        // TODO : optimize
+        return $this->hasMany('myocuhub\NetworkReferraltype')
+            ->leftJoin('referraltypes', 'network_referraltype.referraltype_id', '=', 'referraltypes.id');
+    }
 }

@@ -1,0 +1,77 @@
+.search_input {
+  background-color: #ffffff;
+  font-size: 1.2em;
+}
+
+.search_input > input,
+.search_input > input:focus {
+  width: 100%;
+  border: none;
+  padding: 1em;
+  color: #4d4d4d;
+  outline: none;
+}
+
+.search_input > span {
+  color: #0071bc;
+  position: absolute;
+  margin: 1.2em;
+  right: 0;
+}
+
+.search_dropdown {
+  background-color: #ececec;
+}
+
+.search_dropdown > select {
+  width: 100%;
+  background: none;
+  color: #4d4d4d;
+  border: none;
+  border-radius: 0;
+  font-size: 1.2em;
+  height: 3.4em;
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.patient_list {
+  overflow-y: scroll;
+  display: none;
+}
+
+.patient_list.active {
+  display: block;
+}
+
+.patient_list_item {
+  border-top: 1px solid;
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.patient_list_item:hover {
+  opacity: 1;
+}
+
+.patient_info {
+  display: none;
+  margin-top: 2em;
+}
+
+.patient_info > .patient_table_header {
+  border-bottom: 2px solid #fff;
+  border-top: 1px solid #fff;
+  color: #000;
+  padding: 0.5em 15px;
+  margin: 1em 0;
+}
+
+.patient_info.active {
+  display: block;
+}
+
+#search_patient_button {
+  cursor: pointer;
+}
