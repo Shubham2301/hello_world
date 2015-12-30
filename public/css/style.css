@@ -97,6 +97,38 @@ a:focus.sidebar-item {
   border: 1px solid white;
 }
 
+.button_type {
+  display: inline-block;
+  color: black;
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+}
+
+.button_type_1 {
+  display: inline-block;
+  color: black;
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+  background-color: #cde8f4;
+}
+
+.button_type_2 {
+  display: inline-block;
+  color: black;
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+  background-color: transparent;
+  border: solid 1px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.center-align {
+  text-align: center;
+}
+
 /*
 ---------------------------
 Section : General
@@ -341,6 +373,19 @@ sidebar end
 Section : Sidebar
 ---------------------------
 */
+
+.section-header {
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.subsection-header {
+  text-align: center;
+  font-size: 1.5em;
+  background-color: #cde8f4;
+  color: #0071bc;
+  padding: 0.5em 0em;
+}
 
 /*
 ---------------------------
