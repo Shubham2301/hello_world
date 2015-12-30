@@ -60,6 +60,7 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home/removereferral', 'HomeController@removeReferral');
+    Route::get('home/addreferral', 'HomeController@addReferral');
     Route::get('patients/search', 'Patient\PatientController@search');
     
     Route::resource('users', 'Admin\UserController');

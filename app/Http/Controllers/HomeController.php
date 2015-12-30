@@ -5,7 +5,7 @@ namespace myocuhub\Http\Controllers;
 
 use myocuhub\NetworkReferraltype;
 use myocuhub\Network;
-
+use myocuhub\ReferralType;
 use Illuminate\Http\Request;
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
@@ -20,8 +20,10 @@ class HomeController extends Controller
     public function index()
     {
         // TODO: change network_id : 1 to network id  of logged in user
-        $referralType = Network::find(1)->referralTypes;
-        return view('home')->with('referralTypes', $referralType);
+         $referralType = Network::find(1)->referralTypes;
+         $referralTypeList=ReferralType::all();
+        return view('home',compact('referralTypeList'))->with('referralTypes', $referralType);
+
     }
 
     /**
@@ -32,7 +34,6 @@ class HomeController extends Controller
     public function create()
     {
         //
-        echo "yp";
     }
 
     /**
@@ -105,7 +106,13 @@ class HomeController extends Controller
         return;
     }
     
-    public function addReferral(){
-        // TODO: code to add entry into NetworkReferraltype
+    public function addReferral(Request $request){
+
+        $id = $request->input('id');
+        $newref = new NetworkReferraltype;
+        $newref->network_id=1;
+        $newref->referraltype_id=$id;
+        $newref->save();
+        return;
     }
 }
