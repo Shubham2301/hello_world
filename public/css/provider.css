@@ -1,28 +1,28 @@
-.patient_list {
+.provider_list {
   overflow-y: scroll;
   display: none;
 }
 
-.patient_list.active {
+.provider_list.active {
   display: block;
 }
 
-.patient_list_item {
+.provider_list_item {
   border-top: 1px solid;
   opacity: 0.9;
   cursor: pointer;
 }
 
-.patient_list_item:hover {
+.provider_list_item:hover {
   opacity: 1;
 }
 
-.patient_info {
+.provider_info {
   display: none;
   margin-top: 2em;
 }
 
-.patient_info > .patient_table_header {
+.provider_info > .provider_table_header {
   border-bottom: 2px solid #fff;
   border-top: 1px solid #fff;
   color: #000;
@@ -30,10 +30,10 @@
   margin: 1em 0;
 }
 
-.patient_info.active {
+.provider_info.active {
   display: block;
 }
 
-#search_patient_button {
+#search_provider_button {
   cursor: pointer;
 }

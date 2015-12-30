@@ -222,6 +222,7 @@ Section : Body
     }
 }
 
+
 /*
 ---------------------------
 Section : Sidebar
@@ -232,6 +233,7 @@ Section : Sidebar
     text-align: center;
     font-size: 1.5em;
 }
+
 .subsection-header {
     .section-header;
     background-color: #cde8f4;
@@ -239,8 +241,40 @@ Section : Sidebar
     padding: 0.5em 0em;
 }
 
-//TODO: Add styling for sidebar here
+.search_input {
+    background-color: #ffffff;
+    font-size: 1.2em;
+    &>input,
+    &>input:focus {
+        width: 100%;
+        border: none;
+        padding: 1em;
+        color: #4d4d4d;
+        outline: none;
+    }
+    &>span {
+        color: #0071bc;
+        position: absolute;
+        margin: 1.2em;
+        right: 0;
+    }
+}
 
+.search_dropdown {
+    background-color: rgb(236, 236, 236);
+    &>select {
+        width: 100%;
+        background: none;
+        color: #4d4d4d;
+        border: none;
+        border-radius: 0;
+        font-size: 1.2em;
+        height: 3.4em;
+        box-shadow: none;
+        outline: none;
+        cursor: pointer
+    }
+}
 
 
 /*
@@ -248,26 +282,27 @@ Section : Sidebar
 Section : Sidebar
 ---------------------------
 */
-.section_1
-{
-padding: .5em 0em 1em 0em;
+
+.section_1 {
+    padding: .5em 0em 1em 0em;
 }
-.section_2
-{
-color: @background-color-3;
+
+.section_2 {
+    color: @background-color-3;
 }
-.section_4
-{
-padding-top: 1em;
+
+.section_4 {
+    padding-top: 1em;
 }
-.center
-{
-text-align: center;
+
+.center {
+    text-align: center;
 }
-.image
-{
-padding-right: .5em;
+
+.image {
+    padding-right: .5em;
 }
+
 
 /*
 ---------------------------

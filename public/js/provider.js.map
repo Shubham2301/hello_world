@@ -1,0 +1,1 @@
+{"version":3,"sources":["provider.js"],"names":[],"mappings":";;AAAA,CAAA,CAAA,QAAA,CAAA,CAAA,KAAA,CAAA,YAAA,EAEA,CAAA,CAAA","file":"provider.js","sourcesContent":["$(document).ready(function () {\n    \n});\n"],"sourceRoot":"/source/"}
