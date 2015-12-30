@@ -110,6 +110,7 @@ a:focus.sidebar-item {
   padding: 0.5em 1em;
   border-radius: 0.25em;
   background-color: #cde8f4;
+  cursor: pointer;
 }
 
 .button_type_2 {
@@ -119,6 +120,7 @@ a:focus.sidebar-item {
   border-radius: 0.25em;
   background-color: transparent;
   border: solid 1px;
+  cursor: pointer;
 }
 
 .bold {

@@ -24,12 +24,34 @@ $(document).ready(function () {
         console.log(id);
         getPatientInfo(formData);
     });
+
+    $('#change-patient').on('click', function () {
+
+        $('.patient_list').addClass('active');
+        $('.patient_info').removeClass('active');
+    });
+
+    $('#show-provider').on('click', function () {
+
+        alert($(this).attr('data-id'));
+    });
 });
 
 function showPatientInfo(data) {
 
     $('.patient_list').removeClass('active');
     $('.patient_info').addClass('active');
+    $('#patient-name').text(data.firstname);
+    $('#patient-email').text(data.email);
+    $('#patient-dob').text(data.birthdate);
+    $('.patient-add1').text(data.addressline1 + ',');
+    $('#patient-add2').text(data.addressline2 + ',');
+    $('#patient-add3').text(data.city);
+    $('#patient-phone').text(data.cellphone);
+    $('#patient-ssn').text(data.lastfourssn);
+    $('#show-provider').attr('data-id', data.id);
+    //console.log(data.firstname);
+    //console.log(data.cellphone)
 }
 
 function getPatientInfo(formData) {
@@ -53,6 +75,8 @@ function getPatientInfo(formData) {
 }
 
 function getPatients(formData) {
+    $('.patient_list').addClass('active');
+    $('.patient_info').removeClass('active');
 
     $.ajax({
         url: '/patients/search',
