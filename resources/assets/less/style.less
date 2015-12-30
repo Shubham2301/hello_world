@@ -272,6 +272,64 @@ text-align: center;
 {
 padding-right: .5em;
 }
+.dropdown-menu {
+  min-width: 0px;
+}
+ul.dropdown-menu, .dropdown-menu > li > a:hover
+{
+    border: solid 1px @background-color-5;
+    background: @background-color-2;
+}
+
+.dropdown-menu>li>a
+{
+    padding: 3px 10px;
+}
+h3.title
+{
+margin-top: 12px;
+}
+.drop_image
+{
+padding: 5px 0 0 0;
+}
+.admin_button
+{
+background: transparent;
+    border: none;
+}
+.admin{
+padding: 1em;
+    border-left: solid .7em transparent;
+    font-size: 1em;
+}
+
+    .admin:hover
+{
+    background-color: @background-color-5;
+    border-left: solid .7em @background-color-6;
+}
+    .admin:hover .patients
+    {
+        color: @font-color-5;
+    }
+    .admin:hover .practice
+    {
+        color: @font-color-6;
+    }
+    .admin:hover .users
+    {
+        color: @font-color-7;
+    }
+    .admin:hover .files
+    {
+        color: @font-color-8;
+    }
+    .admin:hover .font_change
+    {
+        font-size: 1.2em;
+    }
+
 
 /*
 ---------------------------

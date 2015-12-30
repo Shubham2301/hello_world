@@ -329,6 +329,14 @@ Section : Body
 }
 
 /*
+sidebar begin
+*/
+
+/*
+sidebar end
+*/
+
+/*
 ---------------------------
 Section : Sidebar
 ---------------------------
@@ -358,6 +366,64 @@ Section : Sidebar
 
 .image {
   padding-right: .5em;
+}
+
+.dropdown-menu {
+  min-width: 0px;
+}
+
+ul.dropdown-menu,
+.dropdown-menu > li > a:hover {
+  border: solid 1px #cbcbcb;
+  background: #e3e3e3;
+}
+
+.dropdown-menu > li > a {
+  padding: 3px 10px;
+}
+
+h3.title {
+  margin-top: 12px;
+}
+
+.drop_image {
+  padding: 5px 0 0 0;
+}
+
+.admin_button {
+  background: transparent;
+  border: none;
+}
+
+.admin {
+  padding: 1em;
+  border-left: solid .7em transparent;
+  font-size: 1em;
+}
+
+.admin:hover {
+  background-color: #cbcbcb;
+  border-left: solid 0.7em #82888f;
+}
+
+.admin:hover .patients {
+  color: #de3c4b;
+}
+
+.admin:hover .practice {
+  color: #7e6551;
+}
+
+.admin:hover .users {
+  color: #6b31d7;
+}
+
+.admin:hover .files {
+  color: #e28413;
+}
+
+.admin:hover .font_change {
+  font-size: 1.2em;
 }
 
 /*
