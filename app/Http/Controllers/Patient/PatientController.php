@@ -101,32 +101,28 @@ class PatientController extends Controller
 
     public function search(Request $request)
     {
-        $type = $request->input('type');
-        $value = $request->input('value');
 
-        $filters = [['type' => $type, 'value' => $value]];
+        $filters = json_decode($request->input('data'),true);
+
         /*
         TODO:
-            recieve request in JSON format and add multiple filters in $filters
-            search patients on multiple filters are the same time.
-
-            sample array:
-                $filters = [
-                    ['type' => 'name', 'value' => 'Abhishek'],
-                    ['type' => 'ssn', 'value' => '5151']
-                ];
+            kd: where clause is faulty and
+            does not do a proper AND on differen search fields
         */
 
-        $patients = Patient::where(function ($query) use ($filters) {
+       $patients = Patient::where(function ($query) use ($filters) {
                 foreach($filters as $filter) {
+
                     switch($filter['type']){
                         case 'name' :
                             $query->where('firstname', $filter['value'])
                             ->orWhere('middlename', $filter['value'])
                             ->orWhere('lastname', $filter['value']);
+                            echo $filter['type'];
                             break;
                         case 'ssn' :
                             $query->where('lastfourssn', $filter['value']);
+                            echo $filter['type'];
                             break;
                         case 'all' :
                             $query->where('firstname', $filter['value'])
@@ -155,6 +151,35 @@ class PatientController extends Controller
             $i++;
         }
 
-        return json_encode($data);
+       return json_encode($data);
+
+       // return json_encode($request->input('data'));
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

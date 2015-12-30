@@ -3,17 +3,22 @@
 $(document).ready(function () {
 
     $('#search_patient_button').on('click', function () {
+
+        var searchdata = getsearchtype();
+
         var type = $('#search_patient_input_type').val();
         var value = $('#search_patient_input').val();
 
         if (value === '') {
             $('#search_patient_input').focus();
+        } else {
+            searchdata.push({
+                "type": stype,
+                "value": name
+
+            });
         }
-        var formData = {
-            'type': type,
-            'value': value
-        };
-        getPatients(formData);
+        getPatients(searchdata);
     });
 
     $('.patient_list').on('click', '.patient_list_item', function () {
@@ -34,6 +39,17 @@ $(document).ready(function () {
     $('#show-provider').on('click', function () {
 
         alert($(this).attr('data-id'));
+    });
+
+    $('#add_search_option').on('click', function () {
+
+        var type = $('#search_patient_input_type').val();
+        var value = $('#search_patient_input').val();
+        var searchoption = getOptionContent(type, value);
+        $('.search_filter').append(searchoption);
+    });
+    $('.search_filter').on('click', '.remove_option', function () {
+        $(this).parent().remove();
     });
 });
 
@@ -78,13 +94,17 @@ function getPatients(formData) {
     $('.patient_list').addClass('active');
     $('.patient_info').removeClass('active');
 
+    var tojson = JSON.stringify(formData);
     $.ajax({
         url: '/patients/search',
         type: 'GET',
-        data: $.param(formData),
+        data: $.param({
+            data: tojson
+        }),
         contentType: 'text/html',
         async: false,
         success: function success(e) {
+            //console.log(e);
             var patients = $.parseJSON(e);
             var content = '<p><bold>' + patients.length + '<bold> results found</p><br>';
 
@@ -102,5 +122,25 @@ function getPatients(formData) {
         cache: false,
         processData: false
     });
+}
+
+function getsearchtype() {
+    var searchdata = [];
+    $('.search_filter_item').each(function () {
+        var stype = $(this).children('.item_type').text();
+        var name = $(this).children('.item_value').text();
+        searchdata.push({
+            "type": stype,
+            "value": name
+
+        });
+    });
+    return searchdata;
+}
+
+function getOptionContent(type, value) {
+    var content = '<div class="search_filter_item"><span class="item_type">' + type + '</span>:<span class="item_value">' + value + '</span><span class="remove_option ">x</span></div>';
+
+    return content;
 }
 //# sourceMappingURL=patient.js.map
