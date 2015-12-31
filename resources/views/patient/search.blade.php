@@ -1,8 +1,8 @@
 <div class="row content-row-margin">
     <div class="col-xs-10 search_input">
-        <input type="text" class="" id="search_patient_input" >
-        <span class="glyphicon glyphicon-search" id="search_patient_button"  aria-hidden="true"></span>
-        <span class="glyphicon glyphicon-plus-sign" id="add_search_option"  aria-hidden="true" style="position: inherit"></span>
+        <input type="text" class="" id="search_patient_input">
+        <span class="glyphicon glyphicon-search" id="search_patient_button" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-plus-sign add_search_option" style="position: inherit;" id="add_search_option" aria-hidden="true"></span>
 
     </div>
 
@@ -17,19 +17,17 @@
     </div>
 
 
-<div class="col-xs-12 search_filter">
+    <div class="col-xs-12 search_filter">
+        <!---
+        <div class="search_filter_item">
+           <span class="item_type">Name</span>:
+            <span class="item_value">Nishanth</span>
+            <span class="remove_option">x</span>
+        </div>
+         --->
 
-    <div class="search_filter_item"><span class="item_type">name</span>:
-        <span class="item_value">Nishanth</span>
-        <span class="remove_option">x</span>
-    </div>
-    <div class="search_filter_item">
-        <span class="item_type">ssn</span>:
-        <span class="item_value">5151</span>
-        <span class="remove_option">x</span>
-    </div>
 
-</div>
+    </div>
 
 
 </div>

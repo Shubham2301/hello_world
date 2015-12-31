@@ -1,23 +1,9 @@
 $(document).ready(function () {
 
     $('#search_patient_button').on('click', function () {
-
+        $("#add_search_option").trigger("click");
+        $('#search_patient_input').val('');
         var searchdata = getsearchtype();
-
-        var type = $('#search_patient_input_type').val();
-        var value = $('#search_patient_input').val();
-
-
-        if (value === '') {
-            $('#search_patient_input').focus();
-        }
-        else{
-        searchdata.push({
-        "type" : stype,
-        "value"  : name,
-
-        });
-        }
         getPatients(searchdata);
     });
 
@@ -29,7 +15,6 @@ $(document).ready(function () {
         console.log(id);
         getPatientInfo(formData);
     });
-
 
     $('#change-patient').on('click', function () {
 
@@ -44,15 +29,15 @@ $(document).ready(function () {
     });
 
     $('#add_search_option').on('click', function () {
-
-
         var type = $('#search_patient_input_type').val();
         var value = $('#search_patient_input').val();
+        if(value!=''){
         var searchoption = getOptionContent(type,value);
         $('.search_filter').append(searchoption);
-
+        $('#search_patient_input').val('');
+        }
     });
-     $('.search_filter').on('click', '.remove_option', function () {
+    $('.search_filter').on('click', '.remove_option', function () {
          $(this).parent().remove();
 
       });
@@ -153,7 +138,7 @@ function getsearchtype() {
 
 function getOptionContent(type,value)
 {
-    var content = '<div class="search_filter_item"><span class="item_type">' + type + '</span>:<span class="item_value">'+ value +'</span><span class="remove_option ">x</span></div>';
+    var content = '<div class="search_filter_item"><span class="item_type">' + type + '</span>:<span class="item_value">'+ value +'</span><span class="remove_option">x</span></div>';
 
     return content;
 
