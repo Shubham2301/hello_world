@@ -2,12 +2,12 @@
 
 $(document).ready(function () {
 
-    $('#search_provider_button').on('click', function () {
-        var type = $('#search_provider_input_type').val();
-        var value = $('#search_provider_input').val();
+    $('#search_practice_button').on('click', function () {
+        var type = $('#search_practice_input_type').val();
+        var value = $('#search_practice_input').val();
 
         if (value === '') {
-            $('#search_provider_input').focus();
+            $('#search_practice_input').focus();
         }
         var formData = {
             'type': type,
@@ -16,26 +16,25 @@ $(document).ready(function () {
         getProviders(formData);
     });
 
-    $('.provider_list').on('click', '.provider_list_item', function () {
+    $('.practice_list').on('click', '.practice_list_item', function () {
         var id = $(this).attr('data-id');
         var formData = {
             'id': id
         };
-
         getProviderInfo(formData);
     });
 });
 
 function showProviderInfo(data) {
 
-    $('.provider_list').removeClass('active');
-    $('.provider_info').addClass('active');
+    $('.practice_list').removeClass('active');
+    $('.practice_info').addClass('active');
 }
 
 function getProviderInfo(formData) {
 
     $.ajax({
-        url: '/providers/show',
+        url: '/practices/show',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',
@@ -45,7 +44,7 @@ function getProviderInfo(formData) {
             showProviderInfo(info);
         },
         error: function error() {
-            alert('Error getting provider information');
+            alert('Error getting practice information');
         },
         cache: false,
         processData: false
@@ -55,22 +54,22 @@ function getProviderInfo(formData) {
 function getProviders(formData) {
 
     $.ajax({
-        url: '/providers/search',
+        url: '/practices/search',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-            var providers = $.parseJSON(e);
-            var content = '<p><bold>' + providers.length + '<bold> results found</p><br>';
+            var practices = $.parseJSON(e);
+            var content = '<p><bold>' + practices.length + '<bold> results found</p><br>';
 
-            if (providers.length > 0) {
-                providers.forEach(function (provider) {
-                    content += '<div class="col-xs-12 provider_list_item" data-id="' + provider.id + '"><div class="row content-row-margin"><div class="col-xs-6">' + provider.name + ' <br> ' + provider.email + ' </div><div class="col-xs-6">' + '' + '<br> ' + '' + ' </div></div></div>';
+            if (practices.length > 0) {
+                practices.forEach(function (practice) {
+                    content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.id + '"><div class="row content-row-margin"><div class="col-xs-6">' + practice.name + ' <br> ' + practice.email + ' </div><div class="col-xs-6">' + '' + '<br> ' + '' + ' </div></div></div>';
                 });
             }
-            $('.provider_list').html(content);
-            $('.provider_list').addClass('active');
+            $('.practice_list').html(content);
+            $('.practice_list').addClass('active');
         },
         error: function error() {
             alert('Error searching');
@@ -79,4 +78,4 @@ function getProviders(formData) {
         processData: false
     });
 }
-//# sourceMappingURL=provider.js.map
+//# sourceMappingURL=practice.js.map

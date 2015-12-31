@@ -1,14 +1,14 @@
 <?php
 
-namespace myocuhub\Http\Controllers\Provider;
+namespace myocuhub\Http\Controllers\Practice;
 
 use Illuminate\Http\Request;
-use myocuhub\Models\Provider;
+use myocuhub\Models\Practice;
 
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
 
-class ProviderController extends Controller
+class PracticeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,7 +26,7 @@ class ProviderController extends Controller
             $data['patient_id'] = $request->input('patient_id');
         }
 
-        return view('provider.index')->with('data', $data);
+        return view('practice.index')->with('data', $data);
     }
 
     /**
@@ -58,12 +58,11 @@ class ProviderController extends Controller
      */
     public function show($id)
     {
-        $id = $request->input('id');
+        $id = 1;
 
-
-        $provider = Provider::find($id);
-
-        return json_encode($provider);
+        $practice = Practice::find($id);
+        
+        return json_encode($practice);
     }
 
     /**
@@ -100,8 +99,36 @@ class ProviderController extends Controller
         //
     }
 
-        public function search(Request $request)
+    public function search(Request $request)
     {
+        /*$type = $request->input('type');
+        $value = $request->input('value');
 
+        $filters = [['type' => $type, 'value' => $value]];
+            */
+        /*
+        TODO:
+            recieve request in JSON format and add multiple filters in $filters
+            search patients on multiple filters are the same time.
+
+            sample array:
+                $filters = [
+                    ['type' => 'name', 'value' => 'Abhishek'],
+                    ['type' => 'ssn', 'value' => '5151']
+                ];
+        */    
+            
+        $data = [];
+        $i = 0;
+        $practices = Practice::find(1)->get();
+        foreach($practices as $practice){
+            $data[$i]['id'] = $practice->id;
+            $data[$i]['name'] = $practice->name;
+            $data[$i]['email'] = $practice->email;
+            $data[$i]['locations'] = $practice->locations;
+            $i++;
+        }
+
+        return json_encode($data);    
     }
 }
