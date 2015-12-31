@@ -54,6 +54,7 @@
 
 -->
 <!--sidebar begin-->
+@if(Auth::check())
 <div class="section_1 center">
     <h3 class="title"><span><img src="{{URL::asset('images/sidebar/care_coordination_small.png')}}" class="image"></span>Care Coordination</h3>
 </div>
@@ -75,6 +76,6 @@
     </div>
 </div>
 </div>
-
+@endif
 
 <!--sidebar end-->
