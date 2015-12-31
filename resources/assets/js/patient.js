@@ -4,6 +4,7 @@ $(document).ready(function () {
         $("#add_search_option").trigger("click");
         $('#search_patient_input').val('');
         var searchdata = getsearchtype();
+        console.info(searchdata);
         getPatients(searchdata);
     });
 
@@ -16,14 +17,14 @@ $(document).ready(function () {
         getPatientInfo(formData);
     });
 
-    $('#change-patient').on('click', function () {
+    $('#change_patient_button').on('click', function () {
 
         $('.patient_list').addClass('active');
         $('.patient_info').removeClass('active');
 
     });
 
-    $('#show-provider').on('click', function () {
+    $('#select_provider_button').on('click', function () {
 
         alert($(this).attr('data-id'));
     });
@@ -49,17 +50,19 @@ $(document).ready(function () {
 
 function showPatientInfo(data) {
 
+    console.log('data');
+    console.log(data);
     $('.patient_list').removeClass('active');
     $('.patient_info').addClass('active');
-    $('#patient-name').text(data.firstname);
-    $('#patient-email').text(data.email);
-    $('#patient-dob').text(data.birthdate);
-    $('.patient-add1').text(data.addressline1 + ',');
-    $('#patient-add2').text(data.addressline2 + ',');
-    $('#patient-add3').text(data.city);
-    $('#patient-phone').text(data.cellphone);
-    $('#patient-ssn').text(data.lastfourssn);
-    $('#show-provider').attr('data-id', data.id);
+    $('#patient_name').text(data.firstname);
+    $('#patient_email').text(data.email);
+    $('#patient_dob').text(data.birthdate);
+    $('.patient_add1').text(data.addressline1 + ',');
+    $('#patient_add2').text(data.addressline2 + ',');
+    $('#patient_add3').text(data.city);
+    $('#patient_phone').text(data.cellphone);
+    $('#patient_ssn').text(data.lastfourssn);
+    $('#select_provider_button').attr('data-id', data.id);
     //console.log(data.firstname);
     //console.log(data.cellphone)
 

@@ -103,6 +103,7 @@ class PatientController extends Controller
     {
 
         $filters = json_decode($request->input('data'),true);
+        //dd($filters);
 
         /*
         TODO:
@@ -118,11 +119,9 @@ class PatientController extends Controller
                             $query->where('firstname', $filter['value'])
                             ->orWhere('middlename', $filter['value'])
                             ->orWhere('lastname', $filter['value']);
-                            echo $filter['type'];
                             break;
                         case 'ssn' :
                             $query->where('lastfourssn', $filter['value']);
-                            echo $filter['type'];
                             break;
                         case 'all' :
                             $query->where('firstname', $filter['value'])
