@@ -136,7 +136,7 @@ Section : General
 */
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Arial', sans-serif;
 }
 
 .container {
@@ -180,12 +180,12 @@ Section : Header
 }
 
 .header-user-left {
-  background-color: #e2e3e4;
+  background-color: #ebeced;
   border-right: 2px solid white;
 }
 
 .header-user-right {
-  background-color: #cbcbcb;
+  background-color: #d2d3d5;
 }
 
 .header-user-item {
@@ -284,7 +284,7 @@ Section : Body
 .content-left {
   border-right: 2px solid white;
   padding: 1em;
-  background: #e3e3e3;
+  background: #d2d3d5;
   box-shadow: inset 0 30px 60px -10px #b7b9bb, inset 0 -12px 20px -8px #b7b9bb;
 }
 
@@ -293,8 +293,7 @@ Section : Body
   box-shadow: inset 0 30px 60px -10px #0193d7, inset 0 -12px 20px -8px #0193d7;
   color: #ffffff;
   overflow: hidden;
-  background: #00a1e4;
-  background: linear-gradient(to right, #00a1e4 20%, #42c6f4 100%);
+  background: #00b6f1;
 }
 
 .content-row-margin {
@@ -361,6 +360,14 @@ Section : Body
 }
 
 /*
+sidebar begin
+*/
+
+/*
+sidebar end
+*/
+
+/*
 ---------------------------
 Section : Sidebar
 ---------------------------
@@ -379,21 +386,15 @@ Section : Sidebar
   padding: 0.5em 0em;
 }
 
-/*
----------------------------
-Section : Sidebar
----------------------------
-*/
-
-.section_1 {
+.sidebar_header {
   padding: .5em 0em 1em 0em;
 }
 
-.section_2 {
+.sidebar_user_info {
   color: #00a1e4;
 }
 
-.section_4 {
+.sidebar_menu_item {
   padding-top: 1em;
 }
 
@@ -403,6 +404,64 @@ Section : Sidebar
 
 .image {
   padding-right: .5em;
+}
+
+.dropdown-menu {
+  min-width: 0px;
+}
+
+ul.dropdown-menu,
+.dropdown-menu > li > a:hover {
+  border: solid 1px #cbcbcb;
+  background: #e3e3e3;
+}
+
+.dropdown-menu > li > a {
+  padding: 3px 10px;
+}
+
+h3.title {
+  margin-top: 12px;
+}
+
+.drop_image {
+  padding: 5px 0 0 0;
+}
+
+.admin_button {
+  background: transparent;
+  border: none;
+}
+
+.admin {
+  padding: 1em;
+  border-left: solid .7em transparent;
+  font-size: 1em;
+}
+
+.admin:hover {
+  background-color: #cbcbcb;
+  border-left: solid 0.7em #82888f;
+}
+
+.admin:hover .patients {
+  color: #de3c4b;
+}
+
+.admin:hover .practice {
+  color: #7e6551;
+}
+
+.admin:hover .users {
+  color: #6b31d7;
+}
+
+.admin:hover .files {
+  color: #e28413;
+}
+
+.admin:hover .font_change {
+  font-size: 1.2em;
 }
 
 /*
