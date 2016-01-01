@@ -6,7 +6,6 @@ $(document).ready(function () {
         $("#add_search_option").trigger("click");
         $('#search_patient_input').val('');
         var searchdata = getsearchtype();
-        console.info(searchdata);
         getPatients(searchdata);
     });
 
@@ -15,7 +14,6 @@ $(document).ready(function () {
         var formData = {
             'id': id
         };
-        console.log(id);
         getPatientInfo(formData);
     });
 
@@ -46,8 +44,6 @@ $(document).ready(function () {
 
 function showPatientInfo(data) {
 
-    console.log('data');
-    console.log(data);
     $('.patient_list').removeClass('active');
     $('.patient_info').addClass('active');
     $('#patient_name').text(data.firstname);
@@ -59,8 +55,6 @@ function showPatientInfo(data) {
     $('#patient_phone').text(data.cellphone);
     $('#patient_ssn').text(data.lastfourssn);
     $('#select_provider_button').attr('data-id', data.id);
-    //console.log(data.firstname);
-    //console.log(data.cellphone)
 }
 
 function getPatientInfo(formData) {
@@ -97,7 +91,6 @@ function getPatients(formData) {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-            //console.log(e);
             var patients = $.parseJSON(e);
             var content = '<p><bold>' + patients.length + '<bold> results found</p><br>';
 

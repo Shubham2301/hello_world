@@ -103,24 +103,15 @@ class PatientController extends Controller
     {
 
         $filters = json_decode($request->input('data'),true);
-        //dd($filters);
 
-        /*
-        TODO:
-            kd: where clause is faulty and
-            does not do a proper AND on differen search fields
-        */
-
-       $patients = Patient::where(function ($query) use ($filters) {
-                foreach($filters as $filter) {
-                        $query->where(function ($query) use ($filter) {
-
-                        switch($filter['type']){
+        $patients = Patient::where(function ($query) use ($filters) {
+            foreach($filters as $filter) {
+                $query->where(function ($query) use ($filter) {
+                    switch($filter['type']){
                         case 'name' :
-                             $query->where('firstname', $filter['value'])
+                            $query->where('firstname', $filter['value'])
                             ->orWhere('middlename', $filter['value'])
                             ->orWhere('lastname', $filter['value']);
-
                             break;
 
                         case 'ssn' :
@@ -157,34 +148,7 @@ class PatientController extends Controller
         }
 
        return json_encode($data);
-
-       // return json_encode($request->input('data'));
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

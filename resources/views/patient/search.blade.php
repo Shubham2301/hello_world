@@ -2,7 +2,7 @@
     <div class="col-xs-10 search_input">
         <input type="text" class="" id="search_patient_input">
         <span class="glyphicon glyphicon-search" id="search_patient_button" aria-hidden="true"></span>
-        <span class="glyphicon glyphicon-plus-sign add_search_option" style="position: inherit;" id="add_search_option" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-plus-sign add_search_option" id="add_search_option" aria-hidden="true"></span>
 
     </div>
 
