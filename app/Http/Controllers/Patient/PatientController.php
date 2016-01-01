@@ -23,6 +23,9 @@ class PatientController extends Controller
         if ($request->has('referraltype_id')) {
             $data['referraltype_id'] = $request->input('referraltype_id');
         }
+        if ($request->has('action')) {
+            $data['action'] = $request->input('action');
+        }
 
         return view('patient.index')->with('data', $data);
     }

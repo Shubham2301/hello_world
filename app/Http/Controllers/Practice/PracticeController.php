@@ -22,6 +22,9 @@ class PracticeController extends Controller
         if ($request->has('referraltype_id')) {
             $data['referraltype_id'] = $request->input('referraltype_id');
         }
+        if ($request->has('action')) {
+            $data['action'] = $request->input('action');
+        }
         if ($request->has('patient_id')) {
             $data['patient_id'] = $request->input('patient_id');
         }
@@ -101,21 +104,10 @@ class PracticeController extends Controller
 
     public function search(Request $request)
     {
-        /*$type = $request->input('type');
-        $value = $request->input('value');
-
-        $filters = [['type' => $type, 'value' => $value]];
-            */
         /*
-        TODO:
-            recieve request in JSON format and add multiple filters in $filters
-            search patients on multiple filters are the same time.
 
-            sample array:
-                $filters = [
-                    ['type' => 'name', 'value' => 'Abhishek'],
-                    ['type' => 'ssn', 'value' => '5151']
-                ];
+        TODO: 1. Add Search on multiple fields.
+
         */    
             
         $data = [];

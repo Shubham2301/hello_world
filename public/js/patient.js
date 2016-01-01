@@ -24,8 +24,8 @@ $(document).ready(function () {
     });
 
     $('#select_provider_button').on('click', function () {
-
-        alert($(this).attr('data-id'));
+        var id = $(this).attr('data-id');
+        selectProvider(id);
     });
 
     $('#add_search_option').on('click', function () {
@@ -128,5 +128,11 @@ function getOptionContent(type, value) {
     var content = '<div class="search_filter_item"><span class="item_type">' + type + '</span>:<span class="item_value">' + value + '</span><span class="remove_option">x</span></div>';
 
     return content;
+}
+
+function selectProvider(id) {
+
+    $('#form_patient_id').val(id);
+    $('#form_select_provider').submit();
 }
 //# sourceMappingURL=patient.js.map

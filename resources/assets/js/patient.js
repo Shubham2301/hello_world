@@ -23,23 +23,23 @@ $(document).ready(function () {
     });
 
     $('#select_provider_button').on('click', function () {
-
-        alert($(this).attr('data-id'));
+        var id = $(this).attr('data-id');
+        selectProvider(id);
     });
 
     $('#add_search_option').on('click', function () {
         var type = $('#search_patient_input_type').val();
         var value = $('#search_patient_input').val();
-        if(value!=''){
-        var searchoption = getOptionContent(type,value);
-        $('.search_filter').append(searchoption);
-        $('#search_patient_input').val('');
+        if (value != '') {
+            var searchoption = getOptionContent(type, value);
+            $('.search_filter').append(searchoption);
+            $('#search_patient_input').val('');
         }
     });
     $('.search_filter').on('click', '.remove_option', function () {
-         $(this).parent().remove();
+        $(this).parent().remove();
 
-      });
+    });
 
 
 });
@@ -100,13 +100,13 @@ function getPatients(formData) {
             var patients = $.parseJSON(e);
             var content = '<p><bold>' + patients.length + '<bold> results found</p><br>';
 
-             if (patients.length > 0) {
-                 patients.forEach(function (patient) {
-                     content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin"><div class="col-xs-6">' + patient.fname + ' ' + patient.lname + '<br> ' + patient.birthdate + ' </div><div class="col-xs-6">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
-                 });
-             }
-             $('.patient_list').html(content);
-             $('.patient_list').addClass('active');
+            if (patients.length > 0) {
+                patients.forEach(function (patient) {
+                    content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin"><div class="col-xs-6">' + patient.fname + ' ' + patient.lname + '<br> ' + patient.birthdate + ' </div><div class="col-xs-6">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
+                });
+            }
+            $('.patient_list').html(content);
+            $('.patient_list').addClass('active');
         },
         error: function () {
             alert('Error searching');
@@ -123,8 +123,8 @@ function getsearchtype() {
         var stype = $(this).children('.item_type').text();
         var name = $(this).children('.item_value').text();
         searchdata.push({
-        "type" : stype,
-        "value"  : name,
+            "type": stype,
+            "value": name,
 
         });
 
@@ -132,14 +132,15 @@ function getsearchtype() {
     return searchdata;
 }
 
-function getOptionContent(type,value)
-{
-    var content = '<div class="search_filter_item"><span class="item_type">' + type + '</span>:<span class="item_value">'+ value +'</span><span class="remove_option">x</span></div>';
+function getOptionContent(type, value) {
+    var content = '<div class="search_filter_item"><span class="item_type">' + type + '</span>:<span class="item_value">' + value + '</span><span class="remove_option">x</span></div>';
 
     return content;
 
 }
 
+function selectProvider(id) {
 
-
-
+    $('#form_patient_id').val(id);
+    $('#form_select_provider').submit();
+}
