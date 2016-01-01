@@ -16,7 +16,7 @@ Section : General
 */
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Arial', sans-serif;
 }
 
 .container {
@@ -50,12 +50,12 @@ Section : Header
 }
 
 .header-user-left {
-    background-color: #e2e3e4;
+    background-color: @light-gray;
     .right-border;
 }
 
 .header-user-right {
-    background-color: @background-color-5;
+    background-color: @medium-gray;
 }
 
 .header-user-item {
@@ -144,7 +144,7 @@ Section : Body
 .content-left {
     .right-border;
     .content-padding;
-    background: @background-color-2;
+    background: @medium-gray;
     box-shadow: inset 0 30px 60px -10px #b7b9bb, inset 0 -12px 20px -8px #b7b9bb;
 }
 
@@ -153,10 +153,7 @@ Section : Body
     box-shadow: inset 0 30px 60px -10px #0193d7, inset 0 -12px 20px -8px #0193d7;
     color: @font-color-1;
     overflow: hidden;
-    background: @background-color-3;
-    background: -moz-linear-gradient(to right, rgb(0, 161, 228) 20%, rgb(66, 198, 244) 100%);
-    background: -webkit-linear-gradient(to right, rgb(0, 161, 228) 20%, rgb(66, 198, 244) 100%);
-    background: linear-gradient(to right, rgb(0, 161, 228) 20%, rgb(66, 198, 244) 100%);
+    background: @primary-blue;
 }
 
 .content-row-margin {
@@ -241,57 +238,15 @@ Section : Sidebar
     padding: 0.5em 0em;
 }
 
-.search_input {
-    background-color: #ffffff;
-    font-size: 1.2em;
-    &>input,
-    &>input:focus {
-        width: 100%;
-        border: none;
-        padding: 1em;
-        color: #4d4d4d;
-        outline: none;
-    }
-    &>span {
-        color: #0071bc;
-        position: absolute;
-        margin: 1.2em;
-        right: 0;
-    }
-}
-
-.search_dropdown {
-    background-color: rgb(236, 236, 236);
-    &>select {
-        width: 100%;
-        background: none;
-        color: #4d4d4d;
-        border: none;
-        border-radius: 0;
-        font-size: 1.2em;
-        height: 3.4em;
-        box-shadow: none;
-        outline: none;
-        cursor: pointer
-    }
-}
-
-
-/*
----------------------------
-Section : Sidebar
----------------------------
-*/
-
-.section_1 {
+.sidebar_header {
     padding: .5em 0em 1em 0em;
 }
 
-.section_2 {
+.sidebar_user_info {
     color: @background-color-3;
 }
 
-.section_4 {
+.sidebar_menu_item {
     padding-top: 1em;
 }
 
@@ -301,6 +256,64 @@ Section : Sidebar
 
 .image {
     padding-right: .5em;
+}
+
+.dropdown-menu {
+    min-width: 0px;
+}
+
+ul.dropdown-menu,
+.dropdown-menu > li > a:hover {
+    border: solid 1px @background-color-5;
+    background: @background-color-2;
+}
+
+.dropdown-menu>li>a {
+    padding: 3px 10px;
+}
+
+h3.title {
+    margin-top: 12px;
+}
+
+.drop_image {
+    padding: 5px 0 0 0;
+}
+
+.admin_button {
+    background: transparent;
+    border: none;
+}
+
+.admin {
+    padding: 1em;
+    border-left: solid .7em transparent;
+    font-size: 1em;
+}
+
+.admin:hover {
+    background-color: @background-color-5;
+    border-left: solid .7em @background-color-6;
+}
+
+.admin:hover .patients {
+    color: @font-color-5;
+}
+
+.admin:hover .practice {
+    color: @font-color-6;
+}
+
+.admin:hover .users {
+    color: @font-color-7;
+}
+
+.admin:hover .files {
+    color: @font-color-8;
+}
+
+.admin:hover .font_change {
+    font-size: 1.2em;
 }
 
 

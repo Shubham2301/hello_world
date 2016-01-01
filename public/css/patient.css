@@ -1,3 +1,44 @@
+.search_input {
+  background-color: #ffffff;
+  font-size: 1.2em;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.search_input > input,
+.search_input > input:focus {
+  width: 100%;
+  border: none;
+  padding: 1em;
+  color: #4d4d4d;
+  outline: none;
+}
+
+.search_input > span {
+  color: #0071bc;
+  position: absolute;
+  margin: 1.2em;
+  right: 0;
+}
+
+.search_dropdown {
+  background-color: #ececec;
+}
+
+.search_dropdown > select {
+  width: 100%;
+  background: none;
+  color: #4d4d4d;
+  border: none;
+  border-radius: 0;
+  font-size: 1.2em;
+  height: 3.4em;
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+}
+
 .patient_list {
   overflow-y: scroll;
   display: none;
@@ -35,5 +76,37 @@
 }
 
 #search_patient_button {
+  cursor: pointer;
+}
+
+.search_filter {
+  color: black;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  padding-left: 1px;
+  padding-top: 4px;
+}
+
+.search_filter_item {
+  background: #f5f5f5;
+  padding: 2px 5px 2px 5px;
+  border: dashed 2px;
+  border-radius: 5px;
+  margin: 2px;
+}
+
+.search_filter_item > .remove_option {
+  color: red;
+  cursor: pointer;
+  margin: 1px;
+}
+
+.add_search_option {
+  padding-right: 25px;
+}
+
+#add_search_option {
+  position: inherit;
   cursor: pointer;
 }
