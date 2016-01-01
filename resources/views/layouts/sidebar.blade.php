@@ -53,37 +53,7 @@
 @endif
 
 -->
-<<<<<<< HEAD
 
-@if(Auth::check())
-<div class="section_1 center">
-    <h3 class="title"><span><img src="{{URL::asset('images/sidebar/care_coordination_small.png')}}" class="image"></span>Care Coordination</h3>
-</div>
-<div class="section_2 center">
-    <h4>Stephen Kendig</h4>
-
-</div>
-<div class="section_3 center">
-    <img src="{{URL::asset('images/sidebar/care_coordinator.png')}}">
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-offset-2">
-            <ul class="sidebar-item-list">
-                <li class="section_4"><a class="sidebar-item" href="/directmail"><span><img src="{{URL::asset('images/sidebar/messages.png')}}" class="image"></span>Messages</a></li>
-                <li class="section_4"><a class="sidebar-item" href="#"><span><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="image"></span>File Update</a></li>
-                <li class="section_4"><a class="sidebar-item" href="#"><span><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="image"></span>Announcements</a></li>
-                <li class="section_4"><a class="sidebar-item" href="#"><span><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="image"></span>Schedule a Patient</a></li>
-                <li class="section_4"><a class="sidebar-item" href="#"><span><img src="{{URL::asset('images/sidebar/records.png')}}" class="image"></span>Records</a></li>
-                <li class="section_4"><a class="sidebar-item" href="#"><span><img src="{{URL::asset('images/sidebar/care_coordination.png')}}" class="image"></span>Care Coordination</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-@endif
-
-<!--sidebar end-->
-=======
 @if(Auth::check())
 <div class="sidebar_header center">
 <h3 class="title"><span><img src="{{URL::asset('images/sidebar/care_coordination_small.png')}}" class="image"></span>Care Coordination</h3>
@@ -144,4 +114,3 @@
 </div>
 -->
 @endif
->>>>>>> sidebar
