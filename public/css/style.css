@@ -361,14 +361,6 @@ Section : Body
 }
 
 /*
-sidebar begin
-*/
-
-/*
-sidebar end
-*/
-
-/*
 ---------------------------
 Section : Sidebar
 ---------------------------
@@ -417,14 +409,18 @@ Section : Sidebar
   min-width: 0px;
 }
 
-ul.dropdown-menu,
-.dropdown-menu > li > a:hover {
+ul.dropdown-menu {
   border: solid 1px #cbcbcb;
   background: #e3e3e3;
 }
 
 .dropdown-menu > li > a {
   padding: 3px 10px;
+}
+
+.dropdown-menu > li > a:hover {
+  border: solid 1px #cbcbcb;
+  background: #e3e3e3;
 }
 
 h3.title {

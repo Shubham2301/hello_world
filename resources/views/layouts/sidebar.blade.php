@@ -56,7 +56,7 @@
 <!--sidebar begin-->
 
 
-<!--
+
 <div class="section_1 center">
     <h3 class="title"><span><img src="{{URL::asset('images/sidebar/care_coordination_small.png')}}" class="image"></span>Care Coordination</h3>
 </div>
@@ -78,8 +78,8 @@
     </div>
 </div>
 </div>
--->
 
+<!--
 <div class="container no-padding">
 <div class="row section_1 center">
 <div class="col-lg-2 col-md-2">
@@ -116,6 +116,6 @@
     </div>
 </div>
 
-
+-->
 
 <!--sidebar end-->
