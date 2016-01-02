@@ -1,17 +1,10 @@
 $(document).ready(function () {
 
     $('#search_practice_button').on('click', function () {
-        var type = $('#search_practice_input_type').val();
-        var value = $('#search_practice_input').val();
-
-        if (value === '') {
-            $('#search_practice_input').focus();
-        }
-        var formData = {
-            'type': type,
-            'value': value
-        };
-        getProviders(formData);
+        $("#add_practice_search_option").trigger("click");
+        $('#search_practice_input').val('');
+        var searchdata = getSearchType();
+        getProviders(searchdata);
     });
 
     $('.practice_list').on('click', '.practice_list_item', function () {
@@ -21,8 +14,31 @@ $(document).ready(function () {
         };
         getProviderInfo(formData);
     });
+    $('#change_practice_button').on('click', function () {
+
+        $('.practice_list').addClass('active');
+        $('.practice_info').removeClass('active');
+
+    });
+
+    $('#add_practice_search_option').on('click', function () {
+        var type = $('#search_practice_input_type').val();
+        var value = $('#search_practice_input').val();
+        if (value != '') {
+            var searchoption = getOptionContent(type, value);
+            $('.search_filter').append(searchoption);
+            $('#search_practice_input').val('');
+        }
+    });
+
+    $('.search_filter').on('click', '.remove_option', function () {
+        $(this).parent().remove();
+
+    });
 
 });
+
+
 
 function showProviderInfo(data) {
 
@@ -53,11 +69,15 @@ function getProviderInfo(formData) {
 }
 
 function getProviders(formData) {
-
+     $('.practice_list').addClass('active');
+     $('.practice_info').removeClass('active');
+     var tojson = JSON.stringify(formData);
     $.ajax({
         url: '/practices/search',
         type: 'GET',
-        data: $.param(formData),
+        data: $.param({
+            data: tojson
+        }),
         contentType: 'text/html',
         async: false,
         success: function (e) {
@@ -79,4 +99,30 @@ function getProviders(formData) {
         processData: false
     });
 
+}
+
+function getOptionContent(type, value) {
+    var content = '<div class="search_filter_item"><span class="item_type">' + type + '</span>:<span class="item_value">' + value + '</span><span class="remove_option">x</span></div>';
+
+    return content;
+
+}
+
+function getSearchType() {
+    var searchdata = [];
+    searchdata.push({
+            "patient-id": $('.search_dropdown').attr('patient-id')
+
+        });
+    $('.search_filter_item').each(function () {
+        var stype = $(this).children('.item_type').text();
+        var name = $(this).children('.item_value').text();
+        searchdata.push({
+            "type": stype,
+            "value": name,
+
+        });
+
+    });
+    return searchdata;
 }

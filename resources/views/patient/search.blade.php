@@ -18,14 +18,13 @@
 
 
     <div class="col-xs-12 search_filter">
-        <!---
+        <!--
         <div class="search_filter_item">
-           <span class="item_type">Name</span>:
+           <span class="item_type">name</span>:
             <span class="item_value">Nishanth</span>
             <span class="remove_option">x</span>
         </div>
-         --->
-
+    -->
 
     </div>
 

@@ -104,11 +104,12 @@ class PracticeController extends Controller
 
     public function search(Request $request)
     {
-        /*
 
-        TODO: 1. Add Search on multiple fields.
+        $filters = json_decode($request->input('data'),true);
+        $patient_id =$filters[0]['patient-id'];
+        unset($filters[0]);
 
-        */    
+        //search quary
             
         $data = [];
         $i = 0;

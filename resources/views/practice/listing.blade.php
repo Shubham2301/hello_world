@@ -3,8 +3,8 @@
 <div class="row content-row-margin practice_info" data-id="">
     <div class="col-xs-12">
         <div class="col-xs-4 center-align">
-            <img src="{{asset('images/patient.png')}}" alt="">
-            <p class="button_type_1">Change Provider</p>
+            <img src="{{asset('images/patient.png')}}" alt=""><br>
+            <p class="button_type_1" id="change_practice_button">Change Provider</p><br>
             <p class="button_type_2">Schedule</p>
         </div>
         <div class="col-xs-8">
