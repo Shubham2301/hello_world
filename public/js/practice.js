@@ -20,6 +20,7 @@ $(document).ready(function () {
 
         $('.practice_list').addClass('active');
         $('.practice_info').removeClass('active');
+        $('.patient_previous_information').addClass('active');
     });
 
     $('#add_practice_search_option').on('click', function () {
@@ -40,11 +41,19 @@ $(document).ready(function () {
 $(document).ready(function () {
 
     $('.provider_near_patient').on('click', function () {
-        showPreviousProvider();
+        $('.provider_near_patient_list').toggleClass("active");
+        if ($('.provider_near_patient_list').hasClass("active")) showPreviousProvider();else {
+            $('.provider_near').removeClass('glyphicon-chevron-down');
+            $('.provider_near').addClass('glyphicon-chevron-right');
+        }
     });
 
     $('.previous_provider_patient').on('click', function () {
-        showProviderNear();
+        $('.previous_provider_patient_list').toggleClass("active");
+        if ($('.previous_provider_patient_list').hasClass("active")) showProviderNear();else {
+            $('.provider_previous').removeClass('glyphicon-chevron-down');
+            $('.provider_previous').addClass('glyphicon-chevron-right');
+        }
     });
 });
 
@@ -70,6 +79,7 @@ function showProviderInfo(data) {
 
     $('.practice_list').removeClass('active');
     $('.practice_info').addClass('active');
+    $('.patient_previous_information').removeClass('active');
 }
 
 function getProviderInfo(formData) {
