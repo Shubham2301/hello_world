@@ -151,6 +151,12 @@
 .provider_near_patient_list,
 .previous_provider_patient_list {
   margin: 1em 2em;
+  display: none;
+}
+
+.provider_near_patient_list.active,
+.previous_provider_patient_list.active {
+  display: block;
 }
 
 .selected_patient {

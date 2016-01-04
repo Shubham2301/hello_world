@@ -41,11 +41,19 @@ $(document).ready(function () {
 $(document).ready(function () {
 
     $('.provider_near_patient').on('click', function () {
-        showPreviousProvider();
+        $('.provider_near_patient_list').toggleClass("active");
+        if ($('.provider_near_patient_list').hasClass("active")) showPreviousProvider();else {
+            $('.provider_near').removeClass('glyphicon-chevron-down');
+            $('.provider_near').addClass('glyphicon-chevron-right');
+        }
     });
 
     $('.previous_provider_patient').on('click', function () {
-        showProviderNear();
+        $('.previous_provider_patient_list').toggleClass("active");
+        if ($('.previous_provider_patient_list').hasClass("active")) showProviderNear();else {
+            $('.provider_previous').removeClass('glyphicon-chevron-down');
+            $('.provider_previous').addClass('glyphicon-chevron-right');
+        }
     });
 });
 
