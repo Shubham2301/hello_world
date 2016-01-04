@@ -23,6 +23,9 @@ class PatientController extends Controller
         if ($request->has('referraltype_id')) {
             $data['referraltype_id'] = $request->input('referraltype_id');
         }
+        if ($request->has('action')) {
+            $data['action'] = $request->input('action');
+        }
 
         return view('patient.index')->with('data', $data);
     }
@@ -101,40 +104,32 @@ class PatientController extends Controller
 
     public function search(Request $request)
     {
-        $type = $request->input('type');
-        $value = $request->input('value');
 
-        $filters = [['type' => $type, 'value' => $value]];
-        /*
-        TODO:
-            recieve request in JSON format and add multiple filters in $filters
-            search patients on multiple filters are the same time.
-
-            sample array:
-                $filters = [
-                    ['type' => 'name', 'value' => 'Abhishek'],
-                    ['type' => 'ssn', 'value' => '5151']
-                ];
-        */
+        $filters = json_decode($request->input('data'),true);
 
         $patients = Patient::where(function ($query) use ($filters) {
-                foreach($filters as $filter) {
+            foreach($filters as $filter) {
+                $query->where(function ($query) use ($filter) {
                     switch($filter['type']){
                         case 'name' :
                             $query->where('firstname', $filter['value'])
                             ->orWhere('middlename', $filter['value'])
                             ->orWhere('lastname', $filter['value']);
                             break;
+
                         case 'ssn' :
                             $query->where('lastfourssn', $filter['value']);
                             break;
+
                         case 'all' :
                             $query->where('firstname', $filter['value'])
                             ->orWhere('middlename', $filter['value'])
                             ->orWhere('lastname', $filter['value'])
                             ->orWhere('lastfourssn', $filter['value']);
+
                             break;
                     }
+                            });
                 }
             })
             ->get();
@@ -155,6 +150,8 @@ class PatientController extends Controller
             $i++;
         }
 
-        return json_encode($data);
+       return json_encode($data);
     }
+
+
 }

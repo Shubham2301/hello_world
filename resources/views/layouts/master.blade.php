@@ -34,7 +34,6 @@
                 @show
             </div>
             <div class="col-xs-12 col-sm-9 content-right">
-                <img src="{{asset('images/ocuhub-watermark.png')}}" class="content-watermark" alt="">
                 @yield('content')
             </div>
         </div>
