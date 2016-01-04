@@ -53,6 +53,7 @@
 @endif
 
 -->
+
 @if(Auth::check())
 <div class="sidebar_header center">
 <h3 class="title"><span><img src="{{URL::asset('images/sidebar/care_coordination_small.png')}}" class="image"></span>Care Coordination</h3>
@@ -113,3 +114,4 @@
 </div>
 -->
 @endif
+
