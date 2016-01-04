@@ -106,9 +106,6 @@ class PracticeController extends Controller
     {
 
         $filters = json_decode($request->input('data'),true);
-        $patient_id =$filters[0]['patient-id'];
-        unset($filters[0]);
-
         //search quary
             
         $data = [];

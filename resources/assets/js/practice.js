@@ -110,10 +110,6 @@ function getOptionContent(type, value) {
 
 function getSearchType() {
     var searchdata = [];
-    searchdata.push({
-            "patient-id": $('.search_dropdown').attr('patient-id')
-
-        });
     $('.search_filter_item').each(function () {
         var stype = $(this).children('.item_type').text();
         var name = $(this).children('.item_value').text();
