@@ -18,7 +18,7 @@
 }
 
 .provider_info {
-  display: none;
+  display: block;
   margin-top: 2em;
 }
 
@@ -36,4 +36,60 @@
 
 #search_provider_button {
   cursor: pointer;
+}
+
+.section_seperator {
+  border-bottom: solid 2px white;
+  display: block;
+  position: relative;
+}
+
+.patient_previous_information {
+  display: none;
+  margin: 2em 4em;
+}
+
+.patient_previous_information p {
+  color: black;
+  font-size: 1.2em;
+  margin-top: 1em;
+  font-weight: 600;
+}
+
+.patient_previous_information.active {
+  display: none;
+}
+
+.list_seperator {
+  padding: 1em 2em;
+  border-bottom: solid 1px white;
+  color: #f2f2f2;
+}
+
+.list_seperator:hover {
+  cursor: pointer;
+  color: #fff;
+}
+
+.provider_near_patient,
+.previous_provider_patient {
+  cursor: pointer;
+}
+
+.provider_near_patient_list,
+.previous_provider_patient_list {
+  margin: 1em 2em;
+}
+
+.selected_patient {
+  padding-top: 1em;
+}
+
+.selected_patient > p {
+  color: #f2f2f2;
+}
+
+.availability_display > .col-xs-1 {
+  background-color: #f2f2f2;
+  color: black;
 }

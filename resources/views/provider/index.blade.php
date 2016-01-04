@@ -38,8 +38,32 @@
         <div class="provider_section active" id="provider_listing">
             @include('provider.listing')
         </div>
-
+        <div class="row">
+        <div class="patient_previous_information active">
+            <div class="provider_near_patient">
+                <p>Providers near the patient address&nbsp;<span class="glyphicon glyphicon-chevron-right provider_near"></span></p>
+            </div>
+            <div class="section_seperator">
+            </div>
+            <div class="provider_near_patient_list row">
+            </div>
+            <div class="previous_provider_patient">
+                <p>Previous providers for this patient&nbsp;<span class="glyphicon glyphicon-chevron-right provider_previous"></span></p>
+            </div>
+            <div class="section_seperator">
+            </div>
+            <div class="previous_provider_patient_list">
+            </div>
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-xs-12 selected_patient center-align">
+            <p>You have selected a patient</p>
+           <img src="{{URL::asset('images/patient.png')}}">
+        </div>
+        </div>
     </div>
+
 
 
 @endsection

@@ -3,25 +3,26 @@
 <div class="row content-row-margin provider_info" data-id="">
     <div class="col-xs-12">
         <div class="col-xs-4 center-align">
-            <img src="{{asset('images/patient.png')}}" alt="">
-            <p class="button_type_1">Change Provider</p>
-            <p class="button_type_2">Select Provider</p>
+            <img src="{{asset('images/patient.png')}}" alt=""><br>
+            <p class="button_type_1">Change Provider</p><br>
+            <p class="button_type_2">Schedule</p>
         </div>
         <div class="col-xs-8">
-            <p class="bold">Allen Rovenstine</p>
+            <p class="bold">Opthalmic Consultants of Long Island</p>
             <hr>
             <div class="row">
                 <div class="col-xs-6">
-                    <p><span class="bold">Email</span>
-                        <br> allen@gmail.com</p>
-                    <p><span class="bold">Date of Birth</span>
-                        <br> 12 March 1969</p>
+                    <p><span class="bold">Speciality</span>
+                        <br> Cataract</p>
+                    <p><span class="bold">Doctor Name</span>
+                        <br> Daniel Garibaldi</p>
                 </div>
                 <div class="col-xs-6">
-                    <p><span class="bold">Address</span>
-                        <br>G-747, Suncity,
-                        <br>Sector-54, Gurgaon,
-                        <br>Haryana, India </p>
+                    <p><span class="bold">Zip Code</span>
+                        <br>12200
+                        </p>
+                     <p><span class="bold">Insurance</span>
+                        <br> <span class="glyphicon glyphicon-ok glyphicon_insurance"></span></p>
                 </div>
             </div>
             <div class="row">
@@ -30,10 +31,47 @@
                         <br> +0123456789</p>
                 </div>
                 <div class="col-xs-6">
-                    <p><span class="bold">SSN</span>
-                        <br> 1234</p>
+                    <p><span class="bold">Appointment</span>
+                        <br> <select>
+                        <option>Availability</option>
+                        </select></p>
                 </div>
             </div>
         </div>
+           <!--Redesign this section in a more scalable way-->
+           <!--
+            <div class="row">
+            <div class="col-xs-12 availability_display center-align">
+        <div class="col-xs-offset-2 col-xs-1">
+            <p><span class="bold">Sun</span>
+                        <br> Closed</p>
+        </div>
+        <div class="col-xs-1">
+            <p><span class="bold">Mon</span>
+                        <br> Closed</p>
+        </div>
+        <div class="col-xs-1">
+            <p><span class="bold">Tue</span>
+                        <br> Closed</p>
+        </div>
+        <div class="col-xs-1">
+            <p><span class="bold">Wed</span>
+                        <br> Closed</p>
+        </div>
+        <div class="col-xs-1">
+            <p><span class="bold">Thu</span>
+                        <br> Closed</p>
+        </div>
+        <div class="col-xs-1">
+            <p><span class="bold">Fri</span>
+                        <br> Closed</p>
+        </div>
+        <div class="col-xs-1">
+            <p><span class="bold">Sat</span>
+                        <br> Closed</p>
+        </div>
+                </div>
+        </div>
+        -->
     </div>
 </div>
