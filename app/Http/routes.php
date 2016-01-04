@@ -70,5 +70,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('directmail', 'DirectMail\DirectMailController');
     Route::resource('patients', 'Patient\PatientController');
     Route::resource('practices', 'Practice\PracticeController');
+    Route::resource('appointments', 'Appointment\AppointmentController');
     Route::resource('home', 'HomeController');
 });
