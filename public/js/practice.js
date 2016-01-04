@@ -20,6 +20,7 @@ $(document).ready(function () {
 
         $('.practice_list').addClass('active');
         $('.practice_info').removeClass('active');
+        $('.patient_previous_information').addClass('active');
     });
 
     $('#add_practice_search_option').on('click', function () {
@@ -70,6 +71,7 @@ function showProviderInfo(data) {
 
     $('.practice_list').removeClass('active');
     $('.practice_info').addClass('active');
+    $('.patient_previous_information').removeClass('active');
 }
 
 function getProviderInfo(formData) {

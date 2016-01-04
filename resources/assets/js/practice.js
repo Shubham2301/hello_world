@@ -18,6 +18,7 @@ $(document).ready(function () {
 
         $('.practice_list').addClass('active');
         $('.practice_info').removeClass('active');
+        $('.patient_previous_information').addClass('active');
 
     });
 
@@ -74,6 +75,7 @@ function showProviderInfo(data) {
 
     $('.practice_list').removeClass('active');
     $('.practice_info').addClass('active');
+    $('.patient_previous_information').removeClass('active');
 
 }
 
