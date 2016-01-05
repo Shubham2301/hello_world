@@ -14,7 +14,10 @@ $(document).ready(function () {
         var formData = {
             'id': id
         };
-        getProviderInfo(formData);
+
+        showProviderInfo(fetcheddata[id]);
+
+        //getProviderInfo(formData);
     });
     $('#change_practice_button').on('click', function () {
 
@@ -35,6 +38,10 @@ $(document).ready(function () {
 
     $('.search_filter').on('click', '.remove_option', function () {
         $(this).parent().remove();
+    });
+    $('.schedule_button').on('click', function () {
+
+        alert($(this).attr('data-id'));
     });
 });
 
@@ -57,6 +64,8 @@ $(document).ready(function () {
     });
 });
 
+var fetcheddata = [];
+
 //function that displays the providers near patients
 function showPreviousProvider() {
     var provider_list = new Array("2536", "ColoredCow", "Tushar", "Gurgaon", "Eyes");
@@ -76,7 +85,10 @@ function showProviderNear() {
 }
 
 function showProviderInfo(data) {
-
+    $('#docter_name').text(data.doctor_name);
+    $('#zipcode').text(data.zipcode);
+    $('#phone').text(data.user_phone);
+    $('.schedule_button').attr('data-id', data.user_id);
     $('.practice_list').removeClass('active');
     $('.practice_info').addClass('active');
     $('.patient_previous_information').removeClass('active');
@@ -117,10 +129,12 @@ function getProviders(formData) {
         success: function success(e) {
             var practices = $.parseJSON(e);
             var content = '<p><bold>' + practices.length + '<bold> results found</p><br>';
-
+            var provider_index = 0;
             if (practices.length > 0) {
                 practices.forEach(function (practice) {
-                    content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.id + '"><div class="row content-row-margin"><div class="col-xs-6">' + practice.name + ' <br> ' + practice.email + ' </div><div class="col-xs-6">' + '' + '<br> ' + '' + ' </div></div></div>';
+                    content += '<div class="col-xs-12 practice_list_item" data-id="' + provider_index + '"><div class="row content-row-margin"><div class="col-xs-6">' + practice.doctor_name + ' <br> ' + practice.name + ' </div><div class="col-xs-6">' + '' + '<br> ' + '' + ' </div></div></div>';
+                    fetcheddata.push(practice);
+                    provider_index++;
                 });
             }
             $('.practice_list').html(content);

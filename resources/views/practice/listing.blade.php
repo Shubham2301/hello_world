@@ -5,7 +5,7 @@
         <div class="col-xs-4 center-align">
             <img src="{{asset('images/patient.png')}}" alt=""><br>
             <p class="button_type_1" id="change_practice_button">Change Provider</p><br>
-            <p class="button_type_2">Schedule</p>
+            <p class="button_type_2 schedule_button" data-id="">Schedule</p>
         </div>
         <div class="col-xs-8">
             <p class="bold">Opthalmic Consultants of Long Island</p>
@@ -13,13 +13,13 @@
             <div class="row">
                 <div class="col-xs-6">
                     <p><span class="bold">Speciality</span>
-                        <br>Cataract</p>
+                        <br><span id="speciality">Cataract</span></p>
                     <p><span class="bold">Doctor Name</span>
-                        <br>Daniel Garibaldi</p>  
+                        <br><span id="docter_name">Daniel Garibaldi</span></p>
                 </div>
                 <div class="col-xs-6">
                     <p><span class="bold">Zip Code</span>
-                        <br>110091</p>
+                        <br><span id="zipcode">110091</span></p>
                     <p><span class="bold">Insurance</span>
                         <br> <span class="glyphicon glyphicon-ok glyphicon_insurance"></span></p>
                     
@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-xs-6">
                     <p><span class="bold">Phone</span>
-                        <br> +0123456789</p>
+                        <br><span id="phone"> +0123456789</span></p>
                 </div>
                 <div class="col-xs-6">
                     <p><span class="bold">Appointments</span>

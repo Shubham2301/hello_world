@@ -81,8 +81,7 @@ $(document).ready(function () {
 
     });
 
-
-       $('.insurance_provider_show').on('click',function(){
+    $('.insurance_provider_show').on('click',function(){
 
        $('.insurance_provider_content').toggleClass('active');
 

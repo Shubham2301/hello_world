@@ -117,6 +117,10 @@ class PracticeController extends Controller
             $data[$i]['name'] = $provider->name;
             $data[$i]['email'] = $provider->email;
             $data[$i]['locations'] = $provider->locationname;
+            $data[$i]['doctor_name'] = $provider->firstname.' '.$provider->lastname;
+            $data[$i]['user_id'] = $provider->user_id;
+            $data[$i]['user_phone'] = $provider->phone;
+            $data[$i]['zipcode'] = $provider->zip;
             $i++;
         }
 
