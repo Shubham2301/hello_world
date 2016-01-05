@@ -8,7 +8,7 @@ class Patient extends Model
 {
 
 
-    public static function getFilteredData($filters)
+    public static function getPatients($filters)
     {
        return self::where(function ($query) use ($filters) {
             foreach($filters as $filter) {
