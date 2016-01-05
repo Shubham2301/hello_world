@@ -4,6 +4,7 @@ namespace myocuhub\Http\Controllers\Practice;
 
 use Illuminate\Http\Request;
 use myocuhub\Models\Practice;
+use myocuhub\User;
 
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
@@ -106,16 +107,16 @@ class PracticeController extends Controller
     {
 
         $filters = json_decode($request->input('data'),true);
-        //search quary
-            
+        //search quar
+        $providers = User::practiceUser($filters);
         $data = [];
         $i = 0;
-        $practices = Practice::find(1)->get();
-        foreach($practices as $practice){
-            $data[$i]['id'] = $practice->id;
-            $data[$i]['name'] = $practice->name;
-            $data[$i]['email'] = $practice->email;
-            $data[$i]['locations'] = $practice->locations;
+
+        foreach($providers as $provider){
+            $data[$i]['id'] = $provider->id;
+            $data[$i]['name'] = $provider->name;
+            $data[$i]['email'] = $provider->email;
+            $data[$i]['locations'] = $provider->locationname;
             $i++;
         }
 

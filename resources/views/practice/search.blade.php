@@ -8,9 +8,9 @@
         <!-- TODO: Create custom dropdown and write css in style.less and write js in main.js -->
         <select type="text" class="" id="search_practice_input_type">
             <option value="all">All</option>
-            <option value="name">Practice Name</option>
+            <option value="pratice_name">Practice Name</option>
             <option value="location">Location</option>
-            <option value="docter name">Doctor name</option>
+            <option value="doctor_name">Doctor name</option>
             <option value="zip">zip code</option>
         </select>
     </div>
