@@ -5,6 +5,7 @@
 
 .practice_list.active {
   display: block;
+  overflow-y: hidden;
 }
 
 .practice_list_item {
