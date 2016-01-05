@@ -6,6 +6,7 @@ $(document).ready(function () {
         $("#add_practice_search_option").trigger("click");
         $('#search_practice_input').val('');
         var searchdata = getSearchType();
+        fetcheddata = [];
         getProviders(searchdata);
     });
 

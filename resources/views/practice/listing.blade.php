@@ -13,13 +13,13 @@
             <div class="row">
                 <div class="col-xs-6">
                     <p><span class="bold">Speciality</span>
-                        <br><span id="speciality">Cataract</span></p>
+                        <br><span id="speciality"></span></p>
                     <p><span class="bold">Doctor Name</span>
-                        <br><span id="docter_name">Daniel Garibaldi</span></p>
+                        <br><span id="docter_name"></span></p>
                 </div>
                 <div class="col-xs-6">
                     <p><span class="bold">Zip Code</span>
-                        <br><span id="zipcode">110091</span></p>
+                        <br><span id="zipcode"></span></p>
                     <p><span class="bold">Insurance</span>
                         <br> <span class="glyphicon glyphicon-ok glyphicon_insurance"></span></p>
                     
@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-xs-6">
                     <p><span class="bold">Phone</span>
-                        <br><span id="phone"> +0123456789</span></p>
+                        <br><span id="phone"></span></p>
                 </div>
                 <div class="col-xs-6">
                     <p><span class="bold">Appointments</span>
