@@ -21,6 +21,39 @@
 
     <div class="content-section active" id="appointment_section">
         <div class="appointment_section active" id="confirm-appointment">
+            <h3 class="center-align">Schedule an appointment</h3>
+            <div class="row appointment_info center-align">
+                <div class="col-xs-4">
+                    <div class="appointment_info_box patient">
+                        <h4>Patient</h4>
+                        <img src="{{URL::asset('images/provider.png')}}"><br><br><br>
+                        <h4>Allen Rovenstine</h4>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="appointment_info_box schedule">
+                        <h4>5PM,<br>Tuesday,<br>5-Jan-2015</h4><br><br>
+                        <h4 class="schedule_place" style="padding-top:10px;">Rockville Center</h4>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="appointment_info_box provider">
+                        <h4>Provider</h4>
+                        <img src="{{URL::asset('images/provider.png')}}"><br><br><br>
+                        <h4>Daniel Garibaldi</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="appointment_message">
+                <p><span><input type="checkbox"></span> Send a direct message to the provider</p>
+            </div>
+            <div class="appointment_confirm center-align">
+                <p><button id="confirm_appointment">Confirm</button>&nbsp;                                            <button id="cancel_appointment">Cancel</button></p>
+            </div>
+         <div class="appointment_confirmed center-align">
+                <button class="confirmed" disabled>Confirmed</button>
+             <h4>You have scheduled an appointment</h4>
+            </div>
             
         </div>
     </div>
