@@ -42,6 +42,66 @@ $(document).ready(function () {
     });
 
 
+    $('.lastseenby_show').on('click',function(){
+
+       $('.lastseen_content').toggleClass('active');
+
+        if($('.lastseen_content').hasClass('active'))
+            {
+                $('.lastseenby_icon').removeClass('glyphicon-chevron-right');
+                $('.lastseenby_icon').addClass('glyphicon-chevron-down');
+            }
+        else
+            {
+                $('.lastseenby_icon').removeClass('glyphicon-chevron-down');
+                $('.lastseenby_icon').addClass('glyphicon-chevron-right');
+
+            }
+
+
+    });
+
+
+    $('.referredby_show').on('click',function(){
+
+       $('.referredby_content').toggleClass('active');
+
+        if($('.referredby_content').hasClass('active'))
+            {
+                $('.referredby_icon').removeClass('glyphicon-chevron-right');
+                $('.referredby_icon').addClass('glyphicon-chevron-down');
+            }
+        else
+            {
+                $('.referredby_icon').removeClass('glyphicon-chevron-down');
+                $('.referredby_icon').addClass('glyphicon-chevron-right');
+
+            }
+
+
+    });
+
+    $('.insurance_provider_show').on('click',function(){
+
+       $('.insurance_provider_content').toggleClass('active');
+
+        if($('.insurance_provider_content').hasClass('active'))
+            {
+                $('.insurance_provider_icon').removeClass('glyphicon-chevron-right');
+                $('.insurance_provider_icon').addClass('glyphicon-chevron-down');
+            }
+        else
+            {
+                $('.insurance_provider_icon').removeClass('glyphicon-chevron-down');
+                $('.insurance_provider_icon').addClass('glyphicon-chevron-right');
+
+            }
+
+
+    });
+
+
+
 });
 
 

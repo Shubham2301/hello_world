@@ -69,3 +69,39 @@
   position: inherit;
   cursor: pointer;
 }
+
+.lastseen_content {
+  visibility: hidden;
+}
+
+.lastseen_content.active {
+  visibility: visible;
+}
+
+.lastseenby_show {
+  cursor: pointer;
+}
+
+.referredby_content {
+  visibility: hidden;
+}
+
+.referredby_content.active {
+  visibility: visible;
+}
+
+.referredby_show {
+  cursor: pointer;
+}
+
+.insurance_provider_show {
+  cursor: pointer;
+}
+
+.insurance_provider_content {
+  visibility: hidden;
+}
+
+.insurance_provider_content.active {
+  visibility: visible;
+}

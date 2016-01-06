@@ -5,36 +5,53 @@
         <div class="col-xs-4 center-align">
             <img src="{{asset('images/patient.png')}}" alt=""><br>
             <p class="button_type_1" id="change_practice_button">Change Provider</p><br>
-            <p class="button_type_2">Schedule</p>
+            <p class="button_type_2 schedule_button" data-id="">Schedule</p>
         </div>
         <div class="col-xs-8">
-            <p class="bold">Opthalmic Consultants of Long Island</p>
+            <p class="bold" id="practice_name">Opthalmic Consultants of Long Island</p>
             <hr>
             <div class="row">
                 <div class="col-xs-6">
-                    <p><span class="bold">Speciality</span>
-                        <br>Cataract</p>
                     <p><span class="bold">Doctor Name</span>
-                        <br>Daniel Garibaldi</p>  
+                        <br><span id="provider_name"></span></p>
                 </div>
                 <div class="col-xs-6">
-                    <p><span class="bold">Zip Code</span>
-                        <br>110091</p>
-                    <p><span class="bold">Insurance</span>
-                        <br> <span class="glyphicon glyphicon-ok glyphicon_insurance"></span></p>
-                    
+                    <p><span class="bold">Speciality</span>
+                        <br><span id="speciality"></span></p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-6">
                     <p><span class="bold">Phone</span>
-                        <br> +0123456789</p>
+                        <br><span id="phone"></span></p>
                 </div>
                 <div class="col-xs-6">
                     <p><span class="bold">Appointments</span>
                         <br>Availability</p>    
                 </div>
             </div>
+
+            <div class="row">
+            <div class = "col-xs-6 ">
+             <p><span class="bold">Locations</span><br>
+                  <ul class="locations">
+                   <li> <p>location 1</p></li>
+
+                </ul>
+
+            </div>
+            <div class="col-xs-6">
+
+            </div>
+
+            </div>
+
+
+
+
+
+
+
         </div>
     </div>
 </div>

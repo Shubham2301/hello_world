@@ -77,4 +77,45 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->belongsTo(Usertype::class);
     }
+
+    public static function practiceUser($filters)
+
+    {
+        return self::query()
+            ->leftjoin('organization_user','users.id','=','organization_user.user_id')
+
+            ->leftjoin('organizations','organization_user.organization_id','=','organizations.id')
+            ->leftjoin('practices','organizations.practice_id','=','practices.id')
+            ->where( function($query) use($filters){
+                foreach($filters as $filter)  {
+                  $query->where(function($query) use ($filter){
+                   switch($filter['type']){
+                        case 'pratice_name' :
+                           $query->where('practices.name', $filter['value']);
+                           break;
+                       case 'location' :
+                           $query->where('locationname','LIKE','%'.$filter['value'].'%')
+                               ->orWhere('city','LIKE','%'.$filter['value'].'%')
+                               ->orWhere('state','LIKE','%'.$filter['value'].'%')
+                               ->orWhere('addressline1','LIKE','%'.$filter['value'].'%')
+                               ->orWhere('addressline2','LIKE','%'.$filter['value'].'%')
+                               ->orWhere('country','LIKE','%'.$filter['value'].'%');
+                           break;
+                       case 'zip' :
+                           $query->where('zip',$filter['value']);
+                           break;
+                       case 'doctor_name' :
+                           $query->where('firstname','LIKE','%'.$filter['value'].'%')
+                               ->orWhere('middlename','LIKE','%'.$filter['value'].'%')
+                               ->orWhere('lastname','LIKE','%'.$filter['value'].'%');
+                           break;
+                    }
+
+                  });
+                }
+            })->get();
+
+    }
+
+
 }

@@ -107,32 +107,7 @@ class PatientController extends Controller
 
         $filters = json_decode($request->input('data'),true);
 
-        $patients = Patient::where(function ($query) use ($filters) {
-            foreach($filters as $filter) {
-                $query->where(function ($query) use ($filter) {
-                    switch($filter['type']){
-                        case 'name' :
-                            $query->where('firstname', $filter['value'])
-                            ->orWhere('middlename', $filter['value'])
-                            ->orWhere('lastname', $filter['value']);
-                            break;
-
-                        case 'ssn' :
-                            $query->where('lastfourssn', $filter['value']);
-                            break;
-
-                        case 'all' :
-                            $query->where('firstname', $filter['value'])
-                            ->orWhere('middlename', $filter['value'])
-                            ->orWhere('lastname', $filter['value'])
-                            ->orWhere('lastfourssn', $filter['value']);
-
-                            break;
-                    }
-                            });
-                }
-            })
-            ->get();
+        $patients = Patient::getPatients($filters);
 
         $data = [];
         $i = 0;

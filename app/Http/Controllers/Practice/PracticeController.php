@@ -4,6 +4,7 @@ namespace myocuhub\Http\Controllers\Practice;
 
 use Illuminate\Http\Request;
 use myocuhub\Models\Practice;
+use myocuhub\User;
 
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
@@ -59,13 +60,20 @@ class PracticeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        $id = 1;
+        $data = array();
+        $provider_id= $request->input('provider_id');
+        $practice_id =$request->input('practice_id');
 
-        $practice = Practice::find($id);
+        $provider = User::find($provider_id);
+        $practice_name = Practice::find($practice_id)->name;
+        $practice_locations =Practice::find($practice_id)->locations;
         
-        return json_encode($practice);
+        $data['practice_name'] = $practice_name;
+        $data['provider'] = $provider;
+        $data['locations'] = $practice_locations;
+        return json_encode($data);
     }
 
     /**
@@ -106,16 +114,16 @@ class PracticeController extends Controller
     {
 
         $filters = json_decode($request->input('data'),true);
-        //search quary
-            
+        //search quar
+        $providers = User::practiceUser($filters);
         $data = [];
         $i = 0;
-        $practices = Practice::find(1)->get();
-        foreach($practices as $practice){
-            $data[$i]['id'] = $practice->id;
-            $data[$i]['name'] = $practice->name;
-            $data[$i]['email'] = $practice->email;
-            $data[$i]['locations'] = $practice->locations;
+
+        foreach($providers as $provider){
+            $data[$i]['provider_id'] = $provider->user_id;
+            $data[$i]['practice_id'] = $provider->id;
+            $data[$i]['provider_name'] =  $provider->firstname.' '.$provider->lastname;
+            $data[$i]['practice_name'] = $provider->name;
             $i++;
         }
 

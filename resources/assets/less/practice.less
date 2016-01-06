@@ -3,6 +3,7 @@
     display: none;
     &.active {
         display: block;
+        overflow-y: hidden;
     }
 }
 
@@ -138,7 +139,12 @@ border-bottom: solid 1px white;
     cursor: pointer;
 }
 .provider_near_patient_list, .previous_provider_patient_list {
-margin: 1em 2em;
+    margin: 1em 2em;
+    display: none;
+     &.active
+        {
+            display: block;
+        }
 }
 .selected_patient
 {
@@ -154,3 +160,8 @@ background-color: #f2f2f2;
     color: black;
 }
 
+
+#practice_listing {
+     width: 90%;
+     margin-left: 40px;
+}
