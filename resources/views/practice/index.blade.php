@@ -44,7 +44,7 @@
             </div>
             <div class="row content-row-margin">
                 <div class="col-xs-12 subsection-header">
-                    <span>2. Select a Provider</span>
+                    <span>2. Search for Provider</span>
                 </div>
             </div>
             @endif
