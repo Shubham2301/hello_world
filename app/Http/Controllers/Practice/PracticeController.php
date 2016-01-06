@@ -120,6 +120,8 @@ class PracticeController extends Controller
         $i = 0;
 
         foreach($providers as $provider){
+            if(!$provider->id || !$provider->user_id) //TODO : check for providers based on entity_type instead of manual check in controller
+                continue;
             $data[$i]['provider_id'] = $provider->user_id;
             $data[$i]['practice_id'] = $provider->id;
             $data[$i]['provider_name'] =  $provider->firstname.' '.$provider->lastname;
