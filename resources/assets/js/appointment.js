@@ -1,7 +1,6 @@
-$(document).ready(function(){
-        $('.appointment_confirmed').hide();
-    $('#confirm_appointment').on('click', function(){
-        alert('Appoitment has been scheduled!');
+$(document).ready(function () {
+    $('.appointment_confirmed').hide();
+    $('#confirm_appointment').on('click', function () {
         $('.appointment_confirm').hide();
         $('.appointment_confirmed').show();
     });

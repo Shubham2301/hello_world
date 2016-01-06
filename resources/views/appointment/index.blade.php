@@ -27,7 +27,7 @@
                     <div class="appointment_info_box patient">
                         <h4>Patient</h4>
                         <img src="{{URL::asset('images/provider.png')}}"><br><br><br>
-                        <h4>Allen Rovenstine</h4>
+                        <h4>{{ $data['patient_name'] }}</h4>
                     </div>
                 </div>
                 <div class="col-xs-4">
@@ -40,7 +40,7 @@
                     <div class="appointment_info_box provider">
                         <h4>Provider</h4>
                         <img src="{{URL::asset('images/provider.png')}}"><br><br><br>
-                        <h4>Daniel Garibaldi</h4>
+                        <h4><strong>{{ $data['provider_name'] }}</strong><br>{{ $data['practice_name'] }}</h4>
                     </div>
                 </div>
             </div>

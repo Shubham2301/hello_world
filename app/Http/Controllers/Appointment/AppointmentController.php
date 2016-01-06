@@ -3,6 +3,9 @@
 namespace myocuhub\Http\Controllers\Appointment;
 
 use Illuminate\Http\Request;
+use myocuhub\User;
+use myocuhub\Patient;
+use myocuhub\Models\Practice;
 
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
@@ -14,9 +17,19 @@ class AppointmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('appointment.index');
+        $provider_id = $request->input('provider_id');
+        $practice_id = $request->input('practice_id');
+        $patient_id = $request->input('patient_id');
+        
+        $data = [];
+        $data['provider_name'] = User::find($provider_id)->name;
+        $data['practice_name'] = Practice::find($practice_id)->name;
+        $patient = Patient::find($patient_id);
+        $data['patient_name'] = $patient->firstname.' '.$patient->lastname;
+        
+        return view('appointment.index')->with('data', $data);
     }
 
     /**

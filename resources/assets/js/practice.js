@@ -39,13 +39,11 @@ $(document).ready(function () {
         $(this).parent().remove();
 
     });
-    $('.schedule_button').on('click',function(){
-
-        alert($(this).attr('data-id'));
-
-
-    })
-
+    $('.schedule_button').on('click', function () {
+        console.log($(this).attr('data-id'), $(this).attr('data-practice-id'));
+        
+        scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
+    });
 
 });
 
@@ -53,21 +51,19 @@ $(document).ready(function () {
 
     $('.provider_near_patient').on('click', function () {
         $('.provider_near_patient_list').toggleClass("active");
-        if($('.provider_near_patient_list').hasClass("active"))
-                showPreviousProvider();
-        else{
-                $('.provider_near').removeClass('glyphicon-chevron-down');
-                $('.provider_near').addClass('glyphicon-chevron-right');
+        if ($('.provider_near_patient_list').hasClass("active"))
+            showPreviousProvider();
+        else {
+            $('.provider_near').removeClass('glyphicon-chevron-down');
+            $('.provider_near').addClass('glyphicon-chevron-right');
         }
-
-
     });
 
     $('.previous_provider_patient').on('click', function () {
         $('.previous_provider_patient_list').toggleClass("active");
-        if($('.previous_provider_patient_list').hasClass("active"))
+        if ($('.previous_provider_patient_list').hasClass("active"))
             showProviderNear();
-        else{
+        else {
             $('.provider_previous').removeClass('glyphicon-chevron-down');
             $('.provider_previous').addClass('glyphicon-chevron-right');
         }
@@ -78,46 +74,43 @@ $(document).ready(function () {
 
 //function that displays the providers near patients
 function showPreviousProvider() {
-        var provider_list = new Array("2536","ColoredCow", "Tushar", "Gurgaon", "Eyes");
-        var content = '<div class="col-xs-12 list_seperator" data-id="' + provider_list[0] + '"><div class="row"><div class="col-xs-12">' + provider_list[1] + '<br> ' + provider_list[2] + ' </div><div class="col-xs-6">' + provider_list[3] + ' </div><div class="col-xs-6">' + provider_list[4] + ' </div></div></div>';
-        $('.provider_near_patient_list').html(content);
-        $('.provider_near').removeClass('glyphicon-chevron-right');
-        $('.provider_near').addClass('glyphicon-chevron-down');
+    var provider_list = new Array("2536", "ColoredCow", "Tushar", "Gurgaon", "Eyes");
+    var content = '<div class="col-xs-12 list_seperator" data-id="' + provider_list[0] + '"><div class="row"><div class="col-xs-12">' + provider_list[1] + '<br> ' + provider_list[2] + ' </div><div class="col-xs-6">' + provider_list[3] + ' </div><div class="col-xs-6">' + provider_list[4] + ' </div></div></div>';
+    $('.provider_near_patient_list').html(content);
+    $('.provider_near').removeClass('glyphicon-chevron-right');
+    $('.provider_near').addClass('glyphicon-chevron-down');
 }
 
 //function that displays the previous providers of the patients
 function showProviderNear() {
-        var provider_list = new Array("2536","ColoredCow", "Tushar", "Gurgaon", "Eyes");
-        var content = '<div class="col-xs-12 list_seperator" data-id="' + provider_list[0] + '"><div class="row"><div class="col-xs-12">' + provider_list[1] + '<br> ' + provider_list[2] + ' </div><div class="col-xs-6">' + provider_list[3] + ' </div><div class="col-xs-6">' + provider_list[4] + ' </div></div></div>';
-        $('.previous_provider_patient_list').html(content);
-        $('.provider_previous').removeClass('glyphicon-chevron-right');
-        $('.provider_previous').addClass('glyphicon-chevron-down');
+    var provider_list = new Array("2536", "ColoredCow", "Tushar", "Gurgaon", "Eyes");
+    var content = '<div class="col-xs-12 list_seperator" data-id="' + provider_list[0] + '"><div class="row"><div class="col-xs-12">' + provider_list[1] + '<br> ' + provider_list[2] + ' </div><div class="col-xs-6">' + provider_list[3] + ' </div><div class="col-xs-6">' + provider_list[4] + ' </div></div></div>';
+    $('.previous_provider_patient_list').html(content);
+    $('.provider_previous').removeClass('glyphicon-chevron-right');
+    $('.provider_previous').addClass('glyphicon-chevron-down');
 }
 
 function showProviderInfo(data) {
-
-
 
     $('#practice_name').text(data.practice_name);
     $('#provider_name').text(data.provider['name']);
     $('#zipcode').text(data.provider['zip']);
     $('#phone').text(data.provider['cellphone']);
-    $('.schedule_button').attr('data-id',data.provider['id']);
+    $('.schedule_button').attr('data-id', data.provider['id']);
+    $('.schedule_button').attr('data-practice-id', data.practice_id);
     var locations = data.locations;
     var content = '';
 
-      if (locations.length > 0) {
-                locations.forEach(function (location) {
-                    content += '<li><p>'+location.addressline1+','+location.addressline1 +' '+location.city+' '+ location.phone +'</p></li>';
-                });
-            }
+    if (locations.length > 0) {
+        locations.forEach(function (location) {
+            content += '<li><p>' + location.addressline1 + ',' + location.addressline1 + ' ' + location.city + ' ' + location.phone + '</p></li>';
+        });
+    }
 
     $('.locations').html(content);
-
     $('.practice_list').removeClass('active');
     $('.practice_info').addClass('active');
     $('.patient_previous_information').removeClass('active');
-
 
 }
 
@@ -131,7 +124,6 @@ function getProviderInfo(formData) {
         async: false,
         success: function (e) {
             var info = $.parseJSON(e);
-        console.log(info);
             showProviderInfo(info);
         },
         error: function () {
@@ -144,9 +136,9 @@ function getProviderInfo(formData) {
 }
 
 function getProviders(formData) {
-     $('.practice_list').addClass('active');
-     $('.practice_info').removeClass('active');
-     var tojson = JSON.stringify(formData);
+    $('.practice_list').addClass('active');
+    $('.practice_info').removeClass('active');
+    var tojson = JSON.stringify(formData);
     $.ajax({
         url: '/practices/search',
         type: 'GET',
@@ -161,9 +153,7 @@ function getProviders(formData) {
             var content = '<p><bold>' + practices.length + '<bold> results found</p><br>';
             if (practices.length > 0) {
                 practices.forEach(function (practice) {
-                    content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.provider_id + '" practice-id="'+practice.practice_id +'" ><div class="row content-row-margin"><div class="col-xs-6">' + practice.provider_name + ' <br> ' + practice.practice_name + ' </div><div class="col-xs-6">' + '' + '<br> ' + '' + ' </div></div></div>';
-
-
+                    content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.provider_id + '"  practice-id="' + practice.practice_id + '" ><div class="row content-row-margin"><div class="col-xs-6">' + practice.provider_name + ' <br> ' + practice.practice_name + ' </div><div class="col-xs-6">' + '' + '<br> ' + '' + ' </div></div></div>';
                 });
             }
             $('.practice_list').html(content);
@@ -182,20 +172,25 @@ function getOptionContent(type, value) {
     var content = '<div class="search_filter_item"><span class="item_type">' + type + '</span>:<span class="item_value">' + value + '</span><span class="remove_option">x</span></div>';
 
     return content;
-
 }
 
 function getSearchType() {
     var searchdata = [];
+
     $('.search_filter_item').each(function () {
         var stype = $(this).children('.item_type').text();
         var name = $(this).children('.item_value').text();
         searchdata.push({
             "type": stype,
             "value": name,
-
         });
-
     });
+
     return searchdata;
+}
+
+function scheduleAppointment(providerId, practiceID) {
+    $('#form_provider_id').val(providerId);
+    $('#form_practice_id').val(practiceID);
+    $('#form_select_provider').submit();
 }
