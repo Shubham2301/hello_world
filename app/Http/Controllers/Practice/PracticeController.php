@@ -60,13 +60,20 @@ class PracticeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        $id = 1;
+        $data = array();
+        $provider_id= $request->input('provider_id');
+        $practice_id =$request->input('practice_id');
 
-        $practice = Practice::find($id);
+        $provider = User::find($provider_id);
+        $practice_name = Practice::find($practice_id)->name;
+        $practice_locations =Practice::find($practice_id)->locations;
         
-        return json_encode($practice);
+        $data['practice_name'] = $practice_name;
+        $data['provider'] = $provider;
+        $data['locations'] = $practice_locations;
+        return json_encode($data);
     }
 
     /**
@@ -113,10 +120,10 @@ class PracticeController extends Controller
         $i = 0;
 
         foreach($providers as $provider){
-            $data[$i]['id'] = $provider->id;
-            $data[$i]['name'] = $provider->name;
-            $data[$i]['email'] = $provider->email;
-            $data[$i]['locations'] = $provider->locationname;
+            $data[$i]['provider_id'] = $provider->user_id;
+            $data[$i]['practice_id'] = $provider->id;
+            $data[$i]['provider_name'] =  $provider->firstname.' '.$provider->lastname;
+            $data[$i]['practice_name'] = $provider->name;
             $i++;
         }
 

@@ -10,10 +10,13 @@ $(document).ready(function () {
     });
 
     $('.practice_list').on('click', '.practice_list_item', function () {
-        var id = $(this).attr('data-id');
+        var provider_id = $(this).attr('data-id');
+        var practice_id = $(this).attr('practice-id');
         var formData = {
-            'id': id
+            'provider_id': provider_id,
+            'practice_id': practice_id
         };
+
         getProviderInfo(formData);
     });
     $('#change_practice_button').on('click', function () {
@@ -35,6 +38,10 @@ $(document).ready(function () {
 
     $('.search_filter').on('click', '.remove_option', function () {
         $(this).parent().remove();
+    });
+    $('.schedule_button').on('click', function () {
+
+        alert($(this).attr('data-id'));
     });
 });
 
@@ -77,6 +84,22 @@ function showProviderNear() {
 
 function showProviderInfo(data) {
 
+    $('#practice_name').text(data.practice_name);
+    $('#provider_name').text(data.provider['name']);
+    $('#zipcode').text(data.provider['zip']);
+    $('#phone').text(data.provider['cellphone']);
+    $('.schedule_button').attr('data-id', data.provider['id']);
+    var locations = data.locations;
+    var content = '';
+
+    if (locations.length > 0) {
+        locations.forEach(function (location) {
+            content += '<li><p>' + location.addressline1 + ',' + location.addressline1 + ' ' + location.city + ' ' + location.phone + '</p></li>';
+        });
+    }
+
+    $('.locations').html(content);
+
     $('.practice_list').removeClass('active');
     $('.practice_info').addClass('active');
     $('.patient_previous_information').removeClass('active');
@@ -92,6 +115,7 @@ function getProviderInfo(formData) {
         async: false,
         success: function success(e) {
             var info = $.parseJSON(e);
+            console.log(info);
             showProviderInfo(info);
         },
         error: function error() {
@@ -116,11 +140,11 @@ function getProviders(formData) {
         async: false,
         success: function success(e) {
             var practices = $.parseJSON(e);
+            console.log(practices);
             var content = '<p><bold>' + practices.length + '<bold> results found</p><br>';
-
             if (practices.length > 0) {
                 practices.forEach(function (practice) {
-                    content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.id + '"><div class="row content-row-margin"><div class="col-xs-6">' + practice.name + ' <br> ' + practice.email + ' </div><div class="col-xs-6">' + '' + '<br> ' + '' + ' </div></div></div>';
+                    content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.provider_id + '" practice-id="' + practice.practice_id + '" ><div class="row content-row-margin"><div class="col-xs-6">' + practice.provider_name + ' <br> ' + practice.practice_name + ' </div><div class="col-xs-6">' + '' + '<br> ' + '' + ' </div></div></div>';
                 });
             }
             $('.practice_list').html(content);

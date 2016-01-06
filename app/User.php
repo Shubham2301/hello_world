@@ -86,7 +86,6 @@ class User extends Model implements AuthenticatableContract,
 
             ->leftjoin('organizations','organization_user.organization_id','=','organizations.id')
             ->leftjoin('practices','organizations.practice_id','=','practices.id')
-            ->leftjoin('practice_location','practices.id','=','practice_location.practice_id')
             ->where( function($query) use($filters){
                 foreach($filters as $filter)  {
                   $query->where(function($query) use ($filter){
