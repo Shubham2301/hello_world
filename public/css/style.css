@@ -396,6 +396,9 @@ Section : Body
 
 .sidebar-item-list {
   list-style-type: none;
+  padding: 0;
+  width: 70%;
+  margin: 0 auto;
 }
 
 .sidebar-item-list > li {
@@ -430,15 +433,33 @@ Section : Sidebar
 }
 
 .sidebar_menu_item {
-  padding-top: 1em;
+  display: block;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  padding: 0;
+}
+
+.sidebar_menu_item > a > .menu_item_icon {
+  display: inline-block;
+  width: 30%;
+  border-right: solid 2px #fff;
+  padding: 0.5em 0.25em;
+}
+
+.sidebar_menu_item > a > .menu_item_icon > img {
+  width: 100%;
+}
+
+.sidebar_menu_item > a > .menu_item_label {
+  display: inline-block;
+  width: 70%;
+  border-left: solid 2px #fff;
+  padding: 0.5em 0.25em;
+  color: black;
 }
 
 .center {
   text-align: center;
-}
-
-.image {
-  padding-right: .5em;
 }
 
 .dropdown-menu {
