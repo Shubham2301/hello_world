@@ -29,7 +29,7 @@
             </div>
             <div class="row content-row-margin">
                 <div class="col-xs-12 subsection-header">
-                    <span>1. Select for a patient</span>
+                    <span>1. Search for a patient</span>
                 </div>
             </div>
             @endif
