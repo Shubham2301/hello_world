@@ -71,6 +71,7 @@ class PracticeController extends Controller
         $practice_locations =Practice::find($practice_id)->locations;
         
         $data['practice_name'] = $practice_name;
+        $data['practice_id'] = $practice_id;
         $data['provider'] = $provider;
         $data['locations'] = $practice_locations;
         return json_encode($data);

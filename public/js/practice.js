@@ -40,8 +40,9 @@ $(document).ready(function () {
         $(this).parent().remove();
     });
     $('.schedule_button').on('click', function () {
+        console.log($(this).attr('data-id'), $(this).attr('data-practice-id'));
 
-        alert($(this).attr('data-id'));
+        scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
     });
 });
 
@@ -89,6 +90,7 @@ function showProviderInfo(data) {
     $('#zipcode').text(data.provider['zip']);
     $('#phone').text(data.provider['cellphone']);
     $('.schedule_button').attr('data-id', data.provider['id']);
+    $('.schedule_button').attr('data-practice-id', data.practice_id);
     var locations = data.locations;
     var content = '';
 
@@ -99,7 +101,6 @@ function showProviderInfo(data) {
     }
 
     $('.locations').html(content);
-
     $('.practice_list').removeClass('active');
     $('.practice_info').addClass('active');
     $('.patient_previous_information').removeClass('active');
@@ -115,7 +116,6 @@ function getProviderInfo(formData) {
         async: false,
         success: function success(e) {
             var info = $.parseJSON(e);
-            console.log(info);
             showProviderInfo(info);
         },
         error: function error() {
@@ -144,7 +144,7 @@ function getProviders(formData) {
             var content = '<p><bold>' + practices.length + '<bold> results found</p><br>';
             if (practices.length > 0) {
                 practices.forEach(function (practice) {
-                    content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.provider_id + '" practice-id="' + practice.practice_id + '" ><div class="row content-row-margin"><div class="col-xs-6">' + practice.provider_name + ' <br> ' + practice.practice_name + ' </div><div class="col-xs-6">' + '' + '<br> ' + '' + ' </div></div></div>';
+                    content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.provider_id + '"  practice-id="' + practice.practice_id + '" ><div class="row content-row-margin"><div class="col-xs-6">' + practice.provider_name + ' <br> ' + practice.practice_name + ' </div><div class="col-xs-6">' + '' + '<br> ' + '' + ' </div></div></div>';
                 });
             }
             $('.practice_list').html(content);
@@ -166,15 +166,22 @@ function getOptionContent(type, value) {
 
 function getSearchType() {
     var searchdata = [];
+
     $('.search_filter_item').each(function () {
         var stype = $(this).children('.item_type').text();
         var name = $(this).children('.item_value').text();
         searchdata.push({
             "type": stype,
             "value": name
-
         });
     });
+
     return searchdata;
+}
+
+function scheduleAppointment(providerId, practiceID) {
+    $('#form_provider_id').val(providerId);
+    $('#form_practice_id').val(practiceID);
+    $('#form_select_provider').submit();
 }
 //# sourceMappingURL=practice.js.map
