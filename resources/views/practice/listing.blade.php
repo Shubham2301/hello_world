@@ -8,21 +8,16 @@
             <p class="button_type_2 schedule_button" data-id="">Schedule</p>
         </div>
         <div class="col-xs-8">
-            <p class="bold">Opthalmic Consultants of Long Island</p>
+            <p class="bold" id="practice_name">Opthalmic Consultants of Long Island</p>
             <hr>
             <div class="row">
                 <div class="col-xs-6">
-                    <p><span class="bold">Speciality</span>
-                        <br><span id="speciality"></span></p>
                     <p><span class="bold">Doctor Name</span>
-                        <br><span id="docter_name"></span></p>
+                        <br><span id="provider_name"></span></p>
                 </div>
                 <div class="col-xs-6">
-                    <p><span class="bold">Zip Code</span>
-                        <br><span id="zipcode"></span></p>
-                    <p><span class="bold">Insurance</span>
-                        <br> <span class="glyphicon glyphicon-ok glyphicon_insurance"></span></p>
-                    
+                    <p><span class="bold">Speciality</span>
+                        <br><span id="speciality"></span></p>
                 </div>
             </div>
             <div class="row">
@@ -35,6 +30,28 @@
                         <br>Availability</p>    
                 </div>
             </div>
+
+            <div class="row">
+            <div class = "col-xs-6 ">
+             <p><span class="bold">Locations</span><br>
+                  <ul class="locations">
+                   <li> <p>location 1</p></li>
+
+                </ul>
+
+            </div>
+            <div class="col-xs-6">
+
+            </div>
+
+            </div>
+
+
+
+
+
+
+
         </div>
     </div>
 </div>

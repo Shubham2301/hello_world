@@ -12,4 +12,8 @@ class Practice extends Model
         // TODO : optimize
         return $this->hasMany('myocuhub\Models\PracticeLocation');
     }
+
+
+
+
 }
