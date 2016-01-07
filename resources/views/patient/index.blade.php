@@ -38,7 +38,7 @@
         <div class="patients_section active" id="patient_listing">
             @include('patient.listing')
         </div>
-        {!! Form::open(array('url' => '/practices', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
+        {!! Form::open(array('url' => '/providers', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
 
                 {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!}
                 {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}

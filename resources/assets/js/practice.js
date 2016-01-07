@@ -117,7 +117,7 @@ function showProviderInfo(data) {
 function getProviderInfo(formData) {
 
     $.ajax({
-        url: '/practices/show',
+        url: '/providers/show',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',
@@ -140,7 +140,7 @@ function getProviders(formData) {
     $('.practice_info').removeClass('active');
     var tojson = JSON.stringify(formData);
     $.ajax({
-        url: '/practices/search',
+        url: '/providers/search',
         type: 'GET',
         data: $.param({
             data: tojson

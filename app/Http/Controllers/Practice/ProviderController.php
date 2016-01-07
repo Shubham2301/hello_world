@@ -9,7 +9,7 @@ use myocuhub\User;
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
 
-class PracticeController extends Controller
+class ProviderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,19 @@ class PracticeController extends Controller
      */
     public function index(Request $request)
     {
- 
+        $data = array();
+
+        if ($request->has('referraltype_id')) {
+            $data['referraltype_id'] = $request->input('referraltype_id');
+        }
+        if ($request->has('action')) {
+            $data['action'] = $request->input('action');
+        }
+        if ($request->has('patient_id')) {
+            $data['patient_id'] = $request->input('patient_id');
+        }
+
+        return view('provider.index')->with('data', $data);
     }
 
     /**
@@ -50,6 +62,19 @@ class PracticeController extends Controller
      */
     public function show(Request $request)
     {
+        $data = array();
+        $provider_id= $request->input('provider_id');
+        $practice_id =$request->input('practice_id');
+
+        $provider = User::find($provider_id);
+        $practice_name = Practice::find($practice_id)->name;
+        $practice_locations =Practice::find($practice_id)->locations;
+        
+        $data['practice_name'] = $practice_name;
+        $data['practice_id'] = $practice_id;
+        $data['provider'] = $provider;
+        $data['locations'] = $practice_locations;
+        return json_encode($data);
     }
 
     /**
@@ -85,10 +110,24 @@ class PracticeController extends Controller
     {
         //
     }
-
+    
     public function search(Request $request)
     {
-        
+
+        $filters = json_decode($request->input('data'),true);
+        //search quar
+        $providers = User::practiceUser($filters);
+        $data = [];
+        $i = 0;
+
+        foreach($providers as $provider){
+            $data[$i]['id'] = $provider->id;
+            $data[$i]['name'] = $provider->name;
+            $data[$i]['email'] = $provider->email;
+            $data[$i]['locations'] = $provider->locationname;
+            $i++;
+        }
+
+        return json_encode($data);    
     }
-    
 }

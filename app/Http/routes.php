@@ -62,13 +62,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home/removereferral', 'HomeController@removeReferral');
     Route::get('home/addreferral', 'HomeController@addReferral');
     Route::get('patients/search', 'Patient\PatientController@search');
-    Route::get('practices/search', 'Practice\PracticeController@search');
+    Route::get('providers/search', 'Practice\ProviderController@search');
+    Route::get('practice/search', 'Practice\PracticeController@search');
     
     Route::resource('users', 'Admin\UserController');
     Route::resource('roles', 'Admin\RoleController');
     Route::resource('permissions', 'Admin\PermissionController');
     Route::resource('directmail', 'DirectMail\DirectMailController');
     Route::resource('patients', 'Patient\PatientController');
+    Route::resource('providers', 'Practice\ProviderController');
     Route::resource('practices', 'Practice\PracticeController');
     Route::resource('appointments', 'Appointment\AppointmentController');
     Route::resource('home', 'HomeController');
