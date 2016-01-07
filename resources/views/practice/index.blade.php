@@ -3,8 +3,8 @@
 @section('title', 'My Ocuhub - Select Provider')
 
 @section('imports')
-<link rel="stylesheet" type="text/css" href="{{asset('css/practice.css')}}">
-<script type="text/javascript" src="{{asset('js/practice.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{asset('css/provider.css')}}">
+<script type="text/javascript" src="{{asset('js/provider.js')}}"></script>
 @endsection
 
 @section('content')
@@ -19,63 +19,12 @@
     </div>
     @endif
 
-    <div class="content-section active" id="practice_section">
-       {!! Form::open(array('url' => '/appointments', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
-           
-            @if(array_key_exists('referraltype_id', $data))
-                {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!}
-            @endif
-            @if(array_key_exists('action', $data))
-                {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
-            @endif
-            @if(array_key_exists('patient_id', $data))    
-                {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patient_id')) !!}
-            @endif    
-                {!! Form::hidden('provider_id', '', array('id' => 'form_provider_id')) !!}
-                {!! Form::hidden('practice_id', '', array('id' => 'form_practice_id')) !!}
-        {!! Form::close() !!}
-       
-        <div class="practice_section active" id="select_practice">
-            @if(array_key_exists('referraltype_id', $data) and array_key_exists('patient_id', $data))
-            <div class="row content-row-margin">
-                <div class="col-xs-12 section-header">
-                    <span class="">Schedule an appointment</span>
-                </div>
-            </div>
-            <div class="row content-row-margin">
-                <div class="col-xs-12 subsection-header">
-                    <span>2. Search for Provider</span>
-                </div>
-            </div>
-            @endif
+    <div class="content-section active">
+        <div class="practice_section active">
             @include('practice.search')
         </div>
-        <div class="practice_section active" id="practice_listing">
+        <div class="practice_section active">
             @include('practice.listing')
-        </div>
-        <div class="row">
-        <div class="patient_previous_information active">
-            <div class="provider_near_patient">
-                <p>Providers near the patient address&nbsp;<span class="glyphicon glyphicon-chevron-right provider_near"></span></p>
-            </div>
-            <div class="section_seperator">
-            </div>
-            <div class="provider_near_patient_list row">
-            </div>
-            <div class="previous_provider_patient">
-                <p>Previous providers for this patient&nbsp;<span class="glyphicon glyphicon-chevron-right provider_previous"></span></p>
-            </div>
-            <div class="section_seperator">
-            </div>
-            <div class="previous_provider_patient_list">
-            </div>
-            </div>
-        </div>
-        <div class="row">
-        <div class="col-xs-12 selected_patient center-align">
-            <p>You have selected a patient</p>
-           <img src="{{URL::asset('images/patient.png')}}">
-        </div>
         </div>
     </div>
 @endsection

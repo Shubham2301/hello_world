@@ -112,22 +112,24 @@ class ProviderController extends Controller
     }
     
     public function search(Request $request)
-    {
+   {
 
-        $filters = json_decode($request->input('data'),true);
-        //search quar
-        $providers = User::practiceUser($filters);
-        $data = [];
-        $i = 0;
+       $filters = json_decode($request->input('data'),true);
+       //search quar
+       $providers = User::practiceUser($filters);
+       $data = [];
+       $i = 0;
 
-        foreach($providers as $provider){
-            $data[$i]['id'] = $provider->id;
-            $data[$i]['name'] = $provider->name;
-            $data[$i]['email'] = $provider->email;
-            $data[$i]['locations'] = $provider->locationname;
-            $i++;
-        }
+       foreach($providers as $provider){
+           if(!$provider->id || !$provider->user_id) //TODO : check for providers based on entity_type instead of manual check in controller
+               continue;
+           $data[$i]['provider_id'] = $provider->user_id;
+           $data[$i]['practice_id'] = $provider->id;
+           $data[$i]['provider_name'] =  $provider->firstname.' '.$provider->lastname;
+           $data[$i]['practice_name'] = $provider->name;
+           $i++;
+       }
 
-        return json_encode($data);    
-    }
+       return json_encode($data);    
+   }
 }

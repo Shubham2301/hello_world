@@ -18,7 +18,7 @@ class PracticeController extends Controller
      */
     public function index(Request $request)
     {
- 
+        
     }
 
     /**
@@ -86,9 +86,9 @@ class PracticeController extends Controller
         //
     }
 
-    public function search(Request $request)
-    {
-        
+    
+    public function search(Request $request){
+    
     }
     
 }

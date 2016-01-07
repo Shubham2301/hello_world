@@ -39,7 +39,6 @@
                     </ul>
                 </div>
                 <div class="col-xs-6">
-
                 </div>
             </div>
         </div>
