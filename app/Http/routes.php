@@ -63,7 +63,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home/addreferral', 'HomeController@addReferral');
     Route::get('patients/search', 'Patient\PatientController@search');
     Route::get('providers/search', 'Practice\ProviderController@search');
-    Route::get('practice/search', 'Practice\PracticeController@search');
+    Route::get('practices/search', 'Practice\PracticeController@search');
+    Route::get('practices/create', 'Practice\PracticeController@create');
     
     Route::resource('users', 'Admin\UserController');
     Route::resource('roles', 'Admin\RoleController');
