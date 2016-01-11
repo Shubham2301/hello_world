@@ -251,7 +251,7 @@ Section : Body
 .sidebar-item-list {
     list-style-type: none;
     padding: 0;
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
     &>li {
         margin: 0.5em 0;
@@ -290,23 +290,29 @@ Section : Sidebar
     border: 1px solid #fff;
     border-radius: 5px;
     padding: 0;
+    overflow-x: hidden;
+    .gradient(0, #c4c5c7, #fff, #ecedee);
     &>a{
     
         &>.menu_item_icon{
             display:inline-block;
-            width:30%;
-            border-right: solid 2px #fff;
-            padding: 0.5em 0.25em;
+            width:20%;
+            height: 70%;
+            padding: 8px 8px;
             &>img{
                 width: 100%;
+                height: 20px;
             }
         }
         &>.menu_item_label{
             display:inline-block;
-            width:70%;
-            border-left: solid 2px #fff;
-            padding: 0.5em 0.25em;
+            width:80%;
+            padding: 0.5em 0.5em;
+            border-left: solid 2px #c4c5c7;
+            box-shadow: -5px 0px 5px -1px #fff;
             color:black;
+            font-size: 1em;
+            font-weight: 600;
         }
     }
 }
