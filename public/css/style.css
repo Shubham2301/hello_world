@@ -279,6 +279,15 @@ Section : Body
   flex: 1 1 auto;
 }
 
+.ocuhub_logo {
+  background: url(../images/signin_logo_bg.png) no-repeat left bottom;
+  background-size: 750px 300px;
+}
+
+.logo_opacity {
+  opacity: 0.8;
+}
+
 .content-padding {
   padding: 1em;
 }
