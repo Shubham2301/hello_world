@@ -18,11 +18,15 @@ elixir(function (mix) {
     mix.less(['referral.less'],'public/css/referral.css');
     mix.less(['patient.less'],'public/css/patient.css');
     mix.less(['practice.less'],'public/css/practice.css');
+    mix.less(['provider.less'],'public/css/provider.css');
+    mix.less(['appointment.less'],'public/css/appointment.css');
 
     mix.babel(['main.js'],'public/js/main.js');
     mix.babel(['sesconnect.js'],'public/js/sesconnect.js');
     mix.babel(['referraltype.js'],'public/js/referraltype.js');
     mix.babel(['patient.js'],'public/js/patient.js');
+    mix.babel(['provider.js'],'public/js/provider.js');
     mix.babel(['practice.js'],'public/js/practice.js');
+    mix.babel(['appointment.js'],'public/js/appointment.js');
 
 });

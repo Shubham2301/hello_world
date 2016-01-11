@@ -29,7 +29,7 @@
             </div>
             <div class="row content-row-margin">
                 <div class="col-xs-12 subsection-header">
-                    <span>1. Select for a patient</span>
+                    <span>1. Search for a patient</span>
                 </div>
             </div>
             @endif
@@ -38,7 +38,7 @@
         <div class="patients_section active" id="patient_listing">
             @include('patient.listing')
         </div>
-        {!! Form::open(array('url' => '/practices', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
+        {!! Form::open(array('url' => '/providers', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
 
                 {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!}
                 {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}

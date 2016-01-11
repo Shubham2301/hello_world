@@ -1,0 +1,67 @@
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
+
+
+.appointment_info
+{
+    display: flex;
+    margin: 6em 10em 2em 10em;
+    &>.col-xs-4
+    {
+    padding: 0px;
+        order: 1;
+        display: flex;
+        flex: 0 1 auto;
+        flex-grow: 1;
+    }
+
+}
+.appointment_info_box
+{
+    margin: 1em 2px;
+    border: solid 1px #fff;
+            order: 1;
+        flex: 0 1 auto;
+        flex-grow: 1;
+}
+.appointment_message
+{
+    border-bottom: solid 2px #fff;
+    margin: 3em 10em 1em 10em;
+    &>p
+    {
+    text-align: left;
+    }
+}
+.appointment_confirm
+{
+    &>p>button
+    {
+        background: transparent;
+        color: #fff;
+        border-radius: 4px;
+        border: solid 2px #fff;
+        padding: 5px 20px;
+        &:hover
+        {
+            background: #fff;
+            color: black;
+        }
+    }
+}
+h4.schedule_place
+{
+padding-top: 10px;
+}
+.appointment_confirmed{
+    &>button
+    {
+    background: #fff;
+    color: green;
+    border-radius: 4px;
+    border: solid 2px #fff;
+    padding: 5px 20px;
+    }
+}

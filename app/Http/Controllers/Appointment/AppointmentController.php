@@ -1,15 +1,16 @@
 <?php
 
-namespace myocuhub\Http\Controllers\Practice;
+namespace myocuhub\Http\Controllers\Appointment;
 
 use Illuminate\Http\Request;
-use myocuhub\Models\Practice;
 use myocuhub\User;
+use myocuhub\Patient;
+use myocuhub\Models\Practice;
 
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
 
-class PracticeController extends Controller
+class AppointmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +19,17 @@ class PracticeController extends Controller
      */
     public function index(Request $request)
     {
+        $provider_id = $request->input('provider_id');
+        $practice_id = $request->input('practice_id');
+        $patient_id = $request->input('patient_id');
 
+        $data = [];
+        $data['provider_name'] = User::find($provider_id)->name;
+        $data['practice_name'] = Practice::find($practice_id)->name;
+        $patient = Patient::find($patient_id);
+        $data['patient_name'] = $patient->firstname.' '.$patient->lastname;
+
+        return view('appointment.index')->with('data', $data);
     }
 
     /**
@@ -48,8 +59,9 @@ class PracticeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show($id)
     {
+        //
     }
 
     /**
@@ -85,10 +97,4 @@ class PracticeController extends Controller
     {
         //
     }
-
-
-    public function search(Request $request){
-
-    }
-
 }
