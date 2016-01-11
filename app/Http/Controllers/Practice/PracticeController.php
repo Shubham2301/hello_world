@@ -69,6 +69,27 @@ class PracticeController extends Controller
      */
     public function show(Request $request)
     {
+        $data = array();
+        $practice_id            =$request->input('practice_id');
+       // $practice_id            =1;
+        $practice_name          =Practice::find($practice_id)->name;
+        $practice_locations     =Practice::find($practice_id)->locations;
+        $practice_users         =User::practiceUserById($practice_id);
+        $data['practice_name']  = $practice_name;
+        $data['practice_id']    = $practice_id;
+        $data['locations']      = $practice_locations;
+        $data['users']          = $practice_users;
+
+        return json_encode($data);
+
+
+
+
+
+
+
+
+
     }
 
     /**
@@ -104,8 +125,6 @@ class PracticeController extends Controller
     {
         //
     }
-
-
 
     public function search(Request $request){
         $tosearchdata = json_decode($request->input('data'),true);

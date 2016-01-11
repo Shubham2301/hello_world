@@ -117,5 +117,19 @@ class User extends Model implements AuthenticatableContract,
 
     }
 
+    public static function practiceUserById($practice_id)
+    {
+         return self::query()
+            ->leftjoin('organization_user','users.id','=','organization_user.user_id')
+
+            ->leftjoin('organizations','organization_user.organization_id','=','organizations.id')
+            ->leftjoin('practices','organizations.practice_id','=','practices.id')
+            ->where('practice_id',$practice_id)
+            ->get();
+
+    }
+
+
+
 
 }

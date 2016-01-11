@@ -22,7 +22,7 @@
     </div>
     <div class="practice_search_content">
         <!--
-        <div class="row search_item" data-id="">
+        <div class="row search_list_item" data-id="">
             <div class="col-md-1">
                 <input type="checkbox">
             </div>
@@ -43,11 +43,76 @@
 
         </div>
         -->
+
     </div>
 
 </div>
 <div class="row content-row-margin practice_info" data-id="">
     <div class="col-xs-12">
+        <div class="row practice_info_header">
+            <div class="col-md-1">
+                <button>back</button>
+            </div>
+            <div class="col-md-2">
+                <p id="the_practice_name">Wichita Optometry</p>
+            </div>
+            <div class="col-md-2">
+                <p style="padding-top:8px;font-size:12px;">Assign roles</p>
+            </div>
+            <div class="col-md-2">
+                <p style="padding-top:8px;font-size:12px;">Assign User</p>
+            </div>
+            <div class="col-md-1">
+                <p style="padding-top:8px;font-size:12px;">Edit</p>
+            </div>
+            <div class="col-md-1"><img src="" alt="delete" style="padding-top:4px;float:left;"></div>
+            <div class="col-md-3"></div>
+        </div>
+        <div class="row location_info_header">
+            <div class="col-md-3">
+                <p style="color:black;">Location</p>
+            </div>
+            <div class="col-md-2">
+                <img src="" alt="add+">
+            </div>
+            <div class="col-md-7">
+                <p style="margin-left:100px;color:black;">Users</p>
+            </div>
+        </div>
+        <div class="practice_location_item_list">
+            <div class="row practice_location_item">
+                <div class="col-md-3">
+                    <p>WichitaOptometry_3801</p>
+                    <br>
+                    <br>
+                    <p>2330 N amidon</p>
+                    <p>wichita,kanas</p>
+                    <br>
+                    <p>316-942-7496 Fax</p>
+                </div>
+                <div class="col-md-2">
+                    <p>Assign roles </p>
+                    <p>Assign users</p>
+                    <p>edit</p>
+                    <img src="" alt="x">
+                </div>
+                <div class="col-md-7">
+                    <div class="practice_users">
+                        <input type="checkbox"> <span><p class="user_name">practice user1</p></span><span><img src="" alt="0"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
 
     </div>
 </div>

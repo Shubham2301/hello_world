@@ -60,5 +60,74 @@
 }
 
 .delete_practice_img {
-  content: url("{{asset('images/delete.png');
+  content: url('images/delete.png');
+}
+
+.main_info {
+  border: 1px solid #fff;
+  margin: 8em;
+  margin-right: 13em;
+}
+
+.fel {
+  color: black;
+}
+
+.practice_info {
+  display: none;
+  margin: 8em;
+  margin-right: 13em;
+}
+
+.practice_info.active {
+  display: block;
+}
+
+.practice_users {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  margin-left: 3em;
+  width: inherit;
+  border-bottom: 1px solid;
+}
+
+.practice_users > input {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.practice_users > img {
+  margin-left: 1em;
+}
+
+.user_name {
+  margin-right: 62px;
+}
+
+.location_info_header {
+  border: 1px solid;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.practice_info_header {
+  margin-top: 1em;
+}
+
+.practice_location_item {
+  border-bottom: 1px solid;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.practice_location_item_list {
+  border: 1px solid;
+}
+
+.search_list_item {
+  margin-left: 112px;
+  margin-top: 32px;
+  margin-right: 62px;
+  border-bottom: 1px solid #fff;
 }

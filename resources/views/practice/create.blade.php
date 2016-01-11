@@ -45,12 +45,11 @@
                             <div class="col-md-6">
                                 <p><strong>Location Details</strong></p>
                             </div>
-                            <div class="col-md-1 change_location"></div>
+                            <div class="col-md-1 change_location"><img src="" alt="0"></div>
                             <div class="col-md-2 add_location">
-
+                                <button id="add_location">add+</button>
                             </div>
-                            <div class="col-md-3 remove-location">
-                            </div>
+                            <div class="col-md-3 remove-location"><img src="" alt="remove-"></div>
                         </div>
                         <div class="row content-row-margin">
                             <div class="col-md-12" style="margin-left:0px;padding-left: 0px;">

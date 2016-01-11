@@ -125,7 +125,7 @@ class ProviderController extends Controller
                continue;
            $data[$i]['provider_id'] = $provider->user_id;
            $data[$i]['practice_id'] = $provider->id;
-           $data[$i]['provider_name'] =  $provider->firstname.' '.$provider->lastname;
+           $data[$i]['provider_name'] = $provider->firstname.' '.$provider->lastname;
            $data[$i]['practice_name'] = $provider->name;
            $i++;
        }
