@@ -177,3 +177,20 @@
   width: 90%;
   margin-left: 40px;
 }
+<<<<<<< HEAD
+=======
+
+.practice_list {
+  overflow-y: scroll;
+  display: none;
+}
+
+.practice_list.active {
+  display: block;
+  overflow-y: hidden;
+}
+
+.practice_search_content {
+  margin-left: 112px;
+}
+>>>>>>> 8bf978fcdfb1644ae3b91378de07eb7fb1db3226

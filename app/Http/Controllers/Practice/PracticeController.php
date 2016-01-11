@@ -4,6 +4,7 @@ namespace myocuhub\Http\Controllers\Practice;
 
 use Illuminate\Http\Request;
 use myocuhub\Models\Practice;
+use myocuhub\Models\PracticeLocation;
 use myocuhub\User;
 
 use myocuhub\Http\Requests;
@@ -19,6 +20,7 @@ class PracticeController extends Controller
     public function index(Request $request)
     {
 
+        return view('practice.index');
     }
 
     /**
@@ -26,9 +28,26 @@ class PracticeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $practicedata = json_decode($request->input('data'),true);
+        $practice = new Practice;
+        $practice->name = $practicedata[0]['practice_name'];
+        $practice->save();
+        $practiceid = $practice->id;
+         foreach($practicedata[0]['locations'] as $location){
+             $practicelocation = new PracticeLocation;
+             $practicelocation->locationname =$location['location_name'];
+             $practicelocation->practice_id =$practiceid;
+             $practicelocation->phone =$location['location_phone'];
+             $practicelocation->addressline1 =$location['location_address1'];
+             $practicelocation->addressline2 =$location['location_address2'];
+             $practicelocation->city =$location['location_city'];
+             $practicelocation->state =$location['location_state'];
+             $practicelocation->zip =$location['location_zip'];
+             $practicelocation->save();
+        }
+        return;
     }
 
     /**
@@ -87,7 +106,22 @@ class PracticeController extends Controller
     }
 
 
+
     public function search(Request $request){
+        $tosearchdata = json_decode($request->input('data'),true);
+        $practices =Practice::where('name','like',$tosearchdata['value'])->get();
+        $data = [];
+        $i=0;
+        foreach($practices as $practice){
+            $data[$i]['id'] = $practice->id;
+            $data[$i]['name'] = $practice->name;
+            $data[$i]['email'] =  $practice->email;
+            $data[$i]['address'] = 'asd123,gurgaon';
+            $data[$i]['ocuapps'] = 'Calender Intregation';
+            $i++;
+        }
+        return json_encode($data);
+
 
     }
 
