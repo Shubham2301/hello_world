@@ -161,11 +161,18 @@
 }
 
 .selected_patient {
-  padding-top: 1em;
+  background-color: #faf5b4;
+  color: black;
+  padding: 5px;
 }
 
-.selected_patient > p {
-  color: #f2f2f2;
+.selected_patient a {
+  color: black;
+  text-decoration: underline;
+}
+
+.selected_patient.col-xs-2 {
+  text-align: right;
 }
 
 .availability_display > .col-xs-1 {

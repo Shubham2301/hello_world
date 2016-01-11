@@ -71,11 +71,5 @@
             </div>
             </div>
         </div>
-        <div class="row">
-        <div class="col-xs-12 selected_patient center-align">
-            <p>You have selected a patient</p>
-           <img src="{{URL::asset('images/patient.png')}}">
-        </div>
-        </div>
     </div>
 @endsection

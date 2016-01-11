@@ -14,6 +14,13 @@
             <option value="zip">zip code</option>
         </select>
     </div>
+    <div class="col-xs-10 selected_patient">
+        Selected Patient: Allen Rovenstine
+    </div>
+    <div class="col-xs-2 selected_patient">
+        <a href="#">View</a>&nbsp;&nbsp;
+        <a href="#">Change</a>
+    </div>
 
   <div class="col-xs-12 search_filter">
         <!--
