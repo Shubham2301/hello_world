@@ -23,6 +23,18 @@ class Patient extends Model
                         case 'ssn' :
                             $query->where('lastfourssn', $filter['value']);
                             break;
+                        case 'email' :
+                            $query->where('email', $filter['value']);
+                            break;
+                        case 'phone' :
+                            $query->Where('cellphone','LIKE','%'.$filter['value'].'%');
+                            break;
+                        case 'address' :
+                            $query->Where('city','LIKE','%'.$filter['value'].'%')
+                               ->orWhere('addressline1','LIKE','%'.$filter['value'].'%')
+                               ->orWhere('addressline2','LIKE','%'.$filter['value'].'%')
+                               ->orWhere('country','LIKE','%'.$filter['value'].'%');
+                            break;
 
                         case 'all' :
                             $query->where('firstname', $filter['value'])

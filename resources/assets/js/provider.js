@@ -41,7 +41,7 @@ $(document).ready(function () {
     });
     $('.schedule_button').on('click', function () {
         console.log($(this).attr('data-id'), $(this).attr('data-practice-id'));
-        
+
         scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
     });
 

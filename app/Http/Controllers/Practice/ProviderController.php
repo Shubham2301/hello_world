@@ -69,7 +69,7 @@ class ProviderController extends Controller
         $provider = User::find($provider_id);
         $practice_name = Practice::find($practice_id)->name;
         $practice_locations =Practice::find($practice_id)->locations;
-        
+
         $data['practice_name'] = $practice_name;
         $data['practice_id'] = $practice_id;
         $data['provider'] = $provider;
@@ -110,7 +110,7 @@ class ProviderController extends Controller
     {
         //
     }
-    
+
     public function search(Request $request)
    {
 
@@ -130,6 +130,6 @@ class ProviderController extends Controller
            $i++;
        }
 
-       return json_encode($data);    
+       return json_encode($data);
    }
 }

@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-xs-6">
                     <p><span class="bold">Appointments</span>
-                        <br>Availability</p>    
+                        <br>Availability</p>
                 </div>
             </div>
 

@@ -21,20 +21,20 @@
 
     <div class="content-section active" id="practice_section">
        {!! Form::open(array('url' => '/appointments', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
-           
+
             @if(array_key_exists('referraltype_id', $data))
                 {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!}
             @endif
             @if(array_key_exists('action', $data))
                 {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
             @endif
-            @if(array_key_exists('patient_id', $data))    
+            @if(array_key_exists('patient_id', $data))
                 {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patient_id')) !!}
-            @endif    
+            @endif
                 {!! Form::hidden('provider_id', '', array('id' => 'form_provider_id')) !!}
                 {!! Form::hidden('practice_id', '', array('id' => 'form_practice_id')) !!}
         {!! Form::close() !!}
-       
+
         <div class="practice_section active" id="select_practice">
             @if(array_key_exists('referraltype_id', $data) and array_key_exists('patient_id', $data))
             <div class="row content-row-margin">

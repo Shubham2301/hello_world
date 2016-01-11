@@ -13,6 +13,10 @@
             <option value="all">All</option>
             <option value="name">Name</option>
             <option value="ssn">SSN</option>
+            <option value="email">Email</option>
+            <option value="phone">Phone</option>
+            <option value="address">Address</option>
+
         </select>
     </div>
 
