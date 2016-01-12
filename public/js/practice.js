@@ -107,7 +107,6 @@ $(document).ready(function () {
     $('#editPractice').on('click', function () {
         var val = $(this).attr('data-id');
         $('#editmode').val(val);
-        console.log(currentPractice);
         setEditMode();
     });
 });
@@ -118,7 +117,6 @@ var currentPractice = [];
 function getLocationData() {
 
     if (validateLocation()) {
-        alert('push');
         locations.push({
             "locationname": $('#locationname').val(),
             "location_code": $('#location_code').val(),
@@ -272,7 +270,6 @@ function setEditMode() {
     popupLocationFields(locations[0]);
     $('.location_counter').text(0);
     $('#practice_name').val(currentPractice.practice_name);
-    //alert('heloo');
 }
 
 function updatePracticedata(formdata) {
