@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        {!! Form::open(array('url' => '#', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
+                         <input id="editmode" type="hidden" value="">
                     </div>
                 </div>
                 <div class="row">
@@ -45,7 +45,12 @@
                             <div class="col-md-6">
                                 <p><strong>Location Details</strong></p>
                             </div>
-                            <div class="col-md-1 change_location"><img src="" alt="0"></div>
+                            <div class="col-md-1 change_location">
+                            <span class="glyphicon glyphicon-chevron-up " id="location_next"></span>
+                            <span><p class="location_counter">0</p></span>
+                            <span class="glyphicon glyphicon-chevron-down" id="location_previous"></span>
+
+                            </div>
                             <div class="col-md-2 add_location">
                                 <button id="add_location">add+</button>
                             </div>
@@ -58,7 +63,7 @@
                                         <p>Location Name</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <input id="location_name" type="text">
+                                        <input class = "location_input" id="locationname" type="text">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -66,7 +71,7 @@
                                         <p>Location Code</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <input id="location_code" type="text">
+                                        <input class = "location_input" id="location_code" type="text">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -74,7 +79,7 @@
                                         <p>AddressLine1</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <input id="location_address1" type="text">
+                                        <input class = "location_input" id="addressline1" type="text">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -82,7 +87,7 @@
                                         <p>AddressLine2</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <input id="location_address2" type="text">
+                                        <input class = "location_input" id="addressline2" type="text">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -90,7 +95,7 @@
                                         <p>City</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <input id="location_city" type="text">
+                                        <input class = "location_input" id="city" type="text">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -98,7 +103,7 @@
                                         <p>State</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <input id="location_state" type="text">
+                                        <input class = "location_input" id="state" type="text">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -106,7 +111,7 @@
                                         <p>Zip</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <input id="location_zip" type="text">
+                                        <input class = "location_input" id="zip" type="text">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -114,7 +119,7 @@
                                         <p>Phone Number</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <input id="location_phone" type="text">
+                                        <input class = "location_input" id="phone" type="text">
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +130,7 @@
             <div class="modal-footer">
                 <div style="margin-right:40%">
                     <span id="savepractice"><button type="button"  class="btn btn-primary" >Save</button></span>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Don't Save</button>
+                    <button type="button" id="dontsave" class="btn btn-primary" data-dismiss="modal">Don't Save</button>
                 </div>
             </div>
         </div>

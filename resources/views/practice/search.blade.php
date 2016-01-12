@@ -1,6 +1,6 @@
 <div class="row content-row-margin">
     <div class="col-lg-2">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_practice">Add New</button>
+        <button id ="openModel" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_practice">Add New</button>
     </div>
     <div class="col-lg-3 search_input">
         <input type="text" class="" id="search_practice_input">

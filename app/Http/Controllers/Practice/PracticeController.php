@@ -30,6 +30,7 @@ class PracticeController extends Controller
      */
     public function create(Request $request)
     {
+
         $practicedata = json_decode($request->input('data'),true);
         $practice = new Practice;
         $practice->name = $practicedata[0]['practice_name'];
@@ -37,17 +38,18 @@ class PracticeController extends Controller
         $practiceid = $practice->id;
          foreach($practicedata[0]['locations'] as $location){
              $practicelocation = new PracticeLocation;
-             $practicelocation->locationname =$location['location_name'];
+             $practicelocation->locationname =$location['locationname'];
              $practicelocation->practice_id =$practiceid;
-             $practicelocation->phone =$location['location_phone'];
-             $practicelocation->addressline1 =$location['location_address1'];
-             $practicelocation->addressline2 =$location['location_address2'];
-             $practicelocation->city =$location['location_city'];
-             $practicelocation->state =$location['location_state'];
-             $practicelocation->zip =$location['location_zip'];
+             $practicelocation->phone =$location['phone'];
+             $practicelocation->addressline1 =$location['addressline1'];
+             $practicelocation->addressline2 =$location['addressline2'];
+             $practicelocation->city =$location['city'];
+             $practicelocation->state =$location['state'];
+             $practicelocation->zip =$location['zip'];
              $practicelocation->save();
         }
-        return;
+
+        return json_encode($practiceid);
     }
 
     /**
@@ -82,14 +84,6 @@ class PracticeController extends Controller
 
         return json_encode($data);
 
-
-
-
-
-
-
-
-
     }
 
     /**
@@ -98,9 +92,36 @@ class PracticeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $practicedata   = json_decode($request->input('data'),true);
+        $practicename   = $practicedata[0]['practice_name'];
+        $practiceid     = $practicedata[0]['practice_id'];
+        $locations      = $practicedata[0]['locations'];
+
+        foreach($locations as $location){
+            $practicelocation = '';
+            if (array_key_exists('id', $location))
+            $practicelocation = PracticeLocation::find($location['id']);
+            else
+                $practicelocation = new PracticeLocation;
+
+             $practicelocation->locationname =$location['locationname'];
+             $practicelocation->practice_id =$practiceid;
+             $practicelocation->phone =$location['phone'];
+             $practicelocation->addressline1 =$location['addressline1'];
+             $practicelocation->addressline2 =$location['addressline2'];
+             $practicelocation->city =$location['city'];
+             $practicelocation->state =$location['state'];
+             $practicelocation->zip =$location['zip'];
+             $practicelocation->save();
+
+        }
+
+        return json_encode($practiceid);
+
+
+
     }
 
     /**

@@ -63,7 +63,7 @@
                 <p style="padding-top:8px;font-size:12px;">Assign User</p>
             </div>
             <div class="col-md-1">
-                <p style="padding-top:8px;font-size:12px;">Edit</p>
+                <button style="padding-top:8px;font-size:12px;" id ="editPractice" type="button"  data-toggle="modal" data-target="#create_practice" data-id="">Edit</button>
             </div>
             <div class="col-md-1"><img src="" alt="delete" style="padding-top:4px;float:left;"></div>
             <div class="col-md-3"></div>

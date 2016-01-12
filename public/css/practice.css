@@ -131,3 +131,9 @@
   margin-right: 62px;
   border-bottom: 1px solid #fff;
 }
+
+.location_counter {
+  margin: 0px;
+  padding: 0px;
+  padding-left: 2px;
+}
