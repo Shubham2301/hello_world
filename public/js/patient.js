@@ -94,6 +94,7 @@ function showPatientInfo(data) {
     $('#patient_phone').text(data.cellphone);
     $('#patient_ssn').text(data.lastfourssn);
     $('#select_provider_button').attr('data-id', data.id);
+    $('#select_provider_button').addClass('active');
 }
 
 function getPatientInfo(formData) {
@@ -119,6 +120,8 @@ function getPatientInfo(formData) {
 function getPatients(formData) {
     $('.patient_list').addClass('active');
     $('.patient_info').removeClass('active');
+    $('#select_provider_button').removeClass('active');
+    $('#select_provider_button').attr('data-id', 0);
 
     var tojson = JSON.stringify(formData);
     $.ajax({

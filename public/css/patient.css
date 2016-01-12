@@ -38,6 +38,14 @@
   cursor: pointer;
 }
 
+.select_provider_button {
+  display: none;
+}
+
+.select_provider_button.active {
+  display: inline-block;
+}
+
 .search_filter {
   color: black;
   display: -webkit-inline-flex;

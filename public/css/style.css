@@ -123,6 +123,18 @@ a:focus.sidebar-item {
   cursor: pointer;
 }
 
+.button_type_3 {
+  display: inline-block;
+  color: white;
+  background-color: #f13923;
+  cursor: pointer;
+  border-radius: 0.25em;
+  padding: 0.25em 0.25em;
+  font-size: .8em;
+  position: absolute;
+  right: 0px;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -360,6 +372,14 @@ Section : Body
   box-shadow: none;
   outline: none;
   cursor: pointer;
+}
+
+.select_provider_button {
+  display: none;
+}
+
+.select_provider_button.active {
+  display: inline-block;
 }
 
 .table-header {
