@@ -151,20 +151,89 @@ border-bottom: solid 1px white;
     background-color: #faf5b4;
     color: black;
     padding: 5px;
-        & a
+        & p
         {
             color: black;
             text-decoration: underline;
+            display: inline-block;
+            margin: 0 0 1px;
+
+                &.view_selected_patient, &.change_selected_patient
+                {
+                    cursor: pointer;
+                }
         }
     &.col-xs-2
     {
         text-align: right;
     }
 }
+
+.patient_info {
+    display: none;
+    margin-top: 2em;
+    &>.patient_table_header {
+        border-bottom: 2px solid #fff;
+        border-top: 1px solid #fff;
+        color: #000;
+        padding: 0.5em 15px;
+        margin: 1em 0;
+    }
+    &.active {
+        display: block;
+    }
+}
+
+.button_type_1 {
+    background-color: #ed1c24;
+    color: #fff;
+    display: none;
+    &.active
+    {
+        display: inline-block;
+    }
+}
 .availability_display>.col-xs-1
 {
 background-color: #f2f2f2;
     color: black;
+}
+
+
+
+.lastseen_content {
+    display: none;
+     &.active {
+         display: inline-block;
+    }
+
+
+}
+
+.lastseenby_show {
+    cursor: pointer;
+}
+
+.referredby_content {
+     display: none;
+     &.active {
+        display: inline-block;
+    }
+}
+
+.referredby_show {
+    cursor: pointer;
+}
+
+.insurance_provider_show {
+    cursor: pointer;
+}
+
+.insurance_provider_content {
+     display: none;
+     &.active {
+        display: inline-block;
+    }
 }
 
 

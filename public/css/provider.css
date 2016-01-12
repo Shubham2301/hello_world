@@ -166,18 +166,88 @@
   padding: 5px;
 }
 
-.selected_patient a {
+.selected_patient p {
   color: black;
   text-decoration: underline;
+  display: inline-block;
+  margin: 0 0 1px;
+}
+
+.selected_patient p.view_selected_patient,
+.selected_patient p.change_selected_patient {
+  cursor: pointer;
 }
 
 .selected_patient.col-xs-2 {
   text-align: right;
 }
 
+.patient_info {
+  display: none;
+  margin-top: 2em;
+}
+
+.patient_info > .patient_table_header {
+  border-bottom: 2px solid #fff;
+  border-top: 1px solid #fff;
+  color: #000;
+  padding: 0.5em 15px;
+  margin: 1em 0;
+}
+
+.patient_info.active {
+  display: block;
+}
+
+.button_type_1 {
+  background-color: #ed1c24;
+  color: #fff;
+  display: none;
+}
+
+.button_type_1.active {
+  display: inline-block;
+}
+
 .availability_display > .col-xs-1 {
   background-color: #f2f2f2;
   color: black;
+}
+
+.lastseen_content {
+  display: none;
+}
+
+.lastseen_content.active {
+  display: inline-block;
+}
+
+.lastseenby_show {
+  cursor: pointer;
+}
+
+.referredby_content {
+  display: none;
+}
+
+.referredby_content.active {
+  display: inline-block;
+}
+
+.referredby_show {
+  cursor: pointer;
+}
+
+.insurance_provider_show {
+  cursor: pointer;
+}
+
+.insurance_provider_content {
+  display: none;
+}
+
+.insurance_provider_content.active {
+  display: inline-block;
 }
 
 #practice_listing {
