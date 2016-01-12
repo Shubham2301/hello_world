@@ -81,7 +81,9 @@ function showPatientInfo(data) {
     $('.patient_info').addClass('active');
     $('#patient_name').text(data.firstname);
     $('#patient_email').text(data.email);
-    $('#patient_dob').text(data.birthdate);
+    var d = new Date(data.birthdate);
+    var date = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
+    $('#patient_dob').text(date);
     $('#patient_add1').text(data.addressline1 + ',');
     $('#patient_add2').text(data.addressline2 + ',');
     $('#patient_add3').text(data.city);
