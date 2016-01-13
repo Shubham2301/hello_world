@@ -7,6 +7,8 @@ use myocuhub\User;
 use myocuhub\Patient;
 use myocuhub\Models\Practice;
 
+use myocuhub\Services\FourPatientCare\FourPatientCare;
+
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
 
@@ -17,6 +19,13 @@ class AppointmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $fourPatientCare;
+
+    function __construct(FourPatientCare $fourPatientCare)
+    {
+        $this->fourPatientCare = $fourPatientCare;
+    }
+
     public function index(Request $request)
     {
         $provider_id = $request->input('provider_id');
@@ -96,5 +105,12 @@ class AppointmentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function schedule(Request $request){
+        $apptInfo = array();
+
+        $apptResult = $this->fourPatientCare->requestApptInsert($apptInfo);
+        return $apptResult;
     }
 }
