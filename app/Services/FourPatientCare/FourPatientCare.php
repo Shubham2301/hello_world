@@ -2,6 +2,8 @@
 
 namespace myocuhub\Services\FourPatientCare;
 
+use myocuhub\Services\ArrayToXML\ArrayToXML;
+
 class FourPatientCare
 {
     protected $accessID;
@@ -13,22 +15,47 @@ class FourPatientCare
     }
 
     public function getApptTypes($input){
-        $output = array();
+        $input['@attributes'] = ['xmlns' => 'http://WebScheduling.4PatientCare.Com/'];
+        $input['AccessID'] = $this->accessID;
+        $input['SecurityCode'] = $this->securityCode;
 
-        return $output;
+        $soapRequest = ArrayToXML::createXML('RequestApptInsert', $input);
+        dd($soapRequest);
+
+        /*
+            Make API call to 4PC
+            SOAP request payload : $soapRequest
+            SOAP response payload : $soapResponse
+        */
     }
 
     public function getOpenApptSlots($input){
-        $output = array();
+        $input['@attributes'] = ['xmlns' => 'http://WebScheduling.4PatientCare.Com/'];
+        $input['AccessID'] = $this->accessID;
+        $input['SecurityCode'] = $this->securityCode;
 
-        return $output;
+        $soapRequest = ArrayToXML::createXML('RequestApptInsert', $input);
+        dd($soapRequest);
+
+        /*
+            Make API call to 4PC
+            SOAP request payload : $soapRequest
+            SOAP response payload : $soapResponse
+        */
     }
 
     public function requestApptInsert($input){
-        $output = array();
+        $input['@attributes'] = ['xmlns' => 'http://WebScheduling.4PatientCare.Com/'];
+        $input['AccessID'] = $this->accessID;
+        $input['SecurityCode'] = $this->securityCode;
 
+        $soapRequest = ArrayToXML::createXML('RequestApptInsert', $input);
+        dd($soapRequest);
 
-
-        return $output;
+        /*
+            Make API call to 4PC
+            SOAP request payload : $soapRequest
+            SOAP response payload : $soapResponse
+        */
     }
 }

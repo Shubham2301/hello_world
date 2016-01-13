@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use myocuhub\Models\Practice;
 use myocuhub\User;
 
+use myocuhub\Services\FourPatientCare\FourPatientCare;
+
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
 
@@ -16,6 +18,13 @@ class ProviderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $fourPatientCare;
+
+    function __construct(FourPatientCare $fourPatientCare)
+    {
+        $this->fourPatientCare = $fourPatientCare;
+    }
+
     public function index(Request $request)
     {
         $data = array();
@@ -112,24 +121,40 @@ class ProviderController extends Controller
     }
 
     public function search(Request $request)
-   {
+    {
 
-       $filters = json_decode($request->input('data'),true);
-       //search quar
-       $providers = User::practiceUser($filters);
-       $data = [];
-       $i = 0;
+        $filters = json_decode($request->input('data'),true);
+        //search quar
+        $providers = User::practiceUser($filters);
+        $data = [];
+        $i = 0;
 
-       foreach($providers as $provider){
-           if(!$provider->id || !$provider->user_id) //TODO : check for providers based on entity_type instead of manual check in controller
-               continue;
-           $data[$i]['provider_id'] = $provider->user_id;
-           $data[$i]['practice_id'] = $provider->id;
-           $data[$i]['provider_name'] =  $provider->firstname.' '.$provider->lastname;
-           $data[$i]['practice_name'] = $provider->name;
-           $i++;
-       }
+        foreach($providers as $provider){
+            if(!$provider->id || !$provider->user_id) //TODO : check for providers based on entity_type instead of manual check in controller
+                continue;
+            $data[$i]['provider_id'] = $provider->user_id;
+            $data[$i]['practice_id'] = $provider->id;
+            $data[$i]['provider_name'] =  $provider->firstname.' '.$provider->lastname;
+            $data[$i]['practice_name'] = $provider->name;
+            $i++;
+        }
 
-       return json_encode($data);
-   }
+        return json_encode($data);
+    }
+
+    public function getAppointmentTypes(){
+        $providerInfo = array();
+
+        $apptTypes = $this->fourPatientCare->getApptTypes($providerInfo);
+
+        return $apptTypes;
+    }
+
+    public function getOpenSlots(){
+        $providerInfo = array();
+
+        $openSlots = $this->fourPatientCare->getOpenApptSlots($providerInfo);
+
+        return $openSlots;
+    }
 }
