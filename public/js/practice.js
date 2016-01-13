@@ -8,6 +8,11 @@ $(document).ready(function () {
         };
         getPractices(formData);
     });
+
+    $('#back').on('click', function () {
+        $('.practice_info').removeClass('active');
+        $('.practice_action').addClass('active');
+    });
     $('#savepractice').on('click', function () {
         var formdata = [];
         var practice_name = $('#practice_name').val();
@@ -151,7 +156,9 @@ function getPractices(formData) {
     var tojson = JSON.stringify(formData);
     var scheduleimg = $('#schedule_practice_img').val();
     var deleteimage = $('#delete_practice_img').val();
+
     $('.practice_info').removeClass('active');
+    $('.practice_action').addClass('active');
     $.ajax({
         url: '/practices/search',
         type: 'GET',
@@ -163,10 +170,10 @@ function getPractices(formData) {
         success: function success(e) {
             var practices = $.parseJSON(e);
             var content = '';
-            $('#search_results').text(practices.length + ' results found');
+            $('#search_results').text(practices.length + ' Results found');
             if (practices.length > 0) {
                 practices.forEach(function (practice) {
-                    content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-md-1"><input type="checkbox"></div><div class="col-md-2"><p>' + practice.name + '</p></div><div class="col-md-2">' + practice.address + '</div><div class="col-md-1"><img src="ass.gpg"></div><div class="col-md-3"><p>' + practice.ocuapps + '</p></div> <div class="col-md-1"><p ><img class="schedule_practice_img" src="' + scheduleimg + '"></p></div><div class="col-md-1"><p>Edit</p></div><div class="col-md-1"><img class="delete_practice_im" src="' + deleteimage + '"></div></div>';
+                    content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3 search_name"><input type="checkbox">&nbsp;&nbsp;<p>' + practice.name + '</p></div><div class="col-xs-3">' + practice.address + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + practice.ocuapps + '</p></div> <div class="col-xs-2 search_edit"><p ><img class="schedule_practice_img" src="' + scheduleimg + '"></p>&nbsp;&nbsp;<p>Edit</p>&nbsp;&nbsp;<img class="delete_practice_im" src="' + deleteimage + '"></div></div>';
                 });
                 $('.practice_list').addClass('active');
                 $('.practice_search_content').html(content);
@@ -252,16 +259,17 @@ function showPracticeInfo(info) {
     var content = '';
     if (true) {
         info.locations.forEach(function (location) {
-            content += '<div class="row practice_location_item"><div class="col-md-3"><p>' + location.locationname + '</p><br><br><p>' + location.addressline1 + '</p><p>' + location.addressline2 + '</p><br><p>' + location.phone + '</p></div><div class="col-md-2"><p>Assign roles </p><p>Assign users</p><p>edit</p><img src="" alt="x"></div><div class="col-md-7">';
+            content += '<div class="row practice_location_item"><div class="col-xs-3 practice_info"><p>' + location.locationname + '</p><p>' + location.addressline1 + '<br>' + location.addressline2 + '</p><p>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p>Assign roles </p><p>Assign users</p><p>edit</p><br><center><img src="" alt="x"></center></div><div class="col-xs-5"><div class="row">';
             info.users.forEach(function (user) {
-                content += '<div class="practice_users"><input type="checkbox"><span><p class="user_name">' + user.firstname + '</p></span><span><img src="" alt="0"></span></div>';
+                content += '<div class="col-xs-12 practice_users "><p><input type="checkbox"><span>' + user.firstname + '</span><span><img src="" alt="0" style="margin-left:8em;"></span></p></div>';
             });
-            content += '</div></div>';
+            content += '</div></div></div>';
         });
 
         $('.practice_location_item_list').html(content);
         $('.practice_list').removeClass('active');
         $('.practice_info').addClass('active');
+        $('.practice_action').removeClass('active');
     }
 }
 

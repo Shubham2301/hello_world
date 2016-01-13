@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" style="margin-left:40%;">Create Practice</h4>
+                <h4 class="modal-title center-align">Create Practice</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -52,9 +52,9 @@
 
                             </div>
                             <div class="col-md-2 add_location">
-                                <button id="add_location">add+</button>
+                                <button id="add_location" class="remove_location_btn">add +</button>
                             </div>
-                            <div class="col-md-3 remove-location"><img src="" alt="remove-"></div>
+                            <div class="col-md-3 remove-location"><button id="add_location" class="add_location_btn">remove -</button></div>
                         </div>
                         <div class="row content-row-margin">
                             <div class="col-md-12" style="margin-left:0px;padding-left: 0px;">
@@ -129,8 +129,8 @@
             </div>
             <div class="modal-footer">
                 <div style="margin-right:40%">
-                    <span id="savepractice"><button type="button"  class="btn btn-primary" >Save</button></span>
-                    <button type="button" id="dontsave" class="btn btn-primary" data-dismiss="modal">Don't Save</button>
+                    <span id="savepractice"><button type="button"  class="btn modal-action-btn" >Save</button></span>
+                    <button type="button" id="dontsave" class="btn modal-action-btn" data-dismiss="modal">Don't Save</button>
                 </div>
             </div>
         </div>

@@ -1,15 +1,14 @@
-<div class="row content-row-margin">
-    <div class="col-lg-2">
-        <button id ="openModel" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_practice">Add New</button>
+<div class="row content-row-margin practice_action active">
+    <div class="col-xs-2">
+        <button id ="openModel" type="button" class="btn add-btn" data-toggle="modal" data-target="#create_practice" style="float:right;">Add New</button>
     </div>
-    <div class="col-lg-3 search_input">
-        <input type="text" class="" id="search_practice_input">
-        <span class="glyphicon glyphicon-search" id="search_practice_button" aria-hidden="true"></span>
+    <div class="col-xs-2 search_input_box">
+        <input type="text" class="" id="search_practice_input" placeholder="search">
+        <span class="glyphicon glyphicon-search glyp" id="search_practice_button" aria-hidden="true"></span>
 
     </div>
-    <div class="col-lg-5"></div>
-    <div class="col-lg-2">
-        <button type="button" class="btn btn-default">import</button>
+    <div class="col-xs-8">
+        <button type="button" class="btn import-btn">Import</button>
 
     </div>
 
