@@ -304,6 +304,12 @@ Section : Body
   padding: 1em;
 }
 
+p.error {
+  padding: 0px;
+  margin: 0px;
+  line-height: 0;
+}
+
 .content-left {
   border-right: 2px solid white;
   padding: 1em;
