@@ -139,7 +139,11 @@ class AppointmentController extends Controller
         $apptInfo['PatientData']['Gender'] = $patient->gender;
         $apptInfo['PatientData']['L4dssn'] = $patient->lastfourssn;
         $apptInfo['PatientData']['InsuranceCarrier'] = $patient->insurancecarrier;
+        
         /*
+        
+        Add once data is available.
+
         $apptInfo['PatientData']['OtherInsurance'] = $patient->lastname;
         $apptInfo['PatientData']['SubscriberName'] = $patient->lastname;
         $apptInfo['PatientData']['SubscriberDOB'] = $patient->lastname;
@@ -148,6 +152,7 @@ class AppointmentController extends Controller
         $apptInfo['PatientData']['RelationshipToPatient'] = $patient->lastname;
         $apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = $patient->lastname;
         $apptInfo['PatientData']['ReferredBy'] = $patient->lastname;
+
         */
 
         $apptResult = $this->fourPatientCare->requestApptInsert($apptInfo);
