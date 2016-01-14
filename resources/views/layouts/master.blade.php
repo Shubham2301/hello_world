@@ -27,13 +27,13 @@
         @section('header')
             @include('layouts.header')
         @show
-        <div class="row height content @if(!Auth::check()) {{'ocuhub_logo'}} @endif">
-               <div class="hidden-xs col-sm-3 content-left @if(!Auth::check()) {{'logo_opacity'}} @endif">
+        <div class="row height content @if(!Auth::check()) @endif">
+               <div class="hidden-xs col-sm-3 content-left @if(!Auth::check()) {{'ocuhub_logo_grey'}} @endif">
                 @section('sidebar')
                     @include('layouts.sidebar')
                 @show
             </div>
-            <div class="col-xs-12 col-sm-9 content-right @if(!Auth::check()) {{'logo_opacity'}} @endif">
+            <div class="col-xs-12 col-sm-9 content-right @if(!Auth::check()) {{'ocuhub_logo_blue'}} @endif">
                 @yield('content')
             </div>
         </div>

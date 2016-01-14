@@ -291,15 +291,6 @@ Section : Body
   flex: 1 1 auto;
 }
 
-.ocuhub_logo {
-  background: url(../images/signin_logo_bg.png) no-repeat left bottom;
-  background-size: 750px 300px;
-}
-
-.logo_opacity {
-  opacity: 0.8;
-}
-
 .content-padding {
   padding: 1em;
 }
@@ -323,6 +314,18 @@ p.error {
   color: #ffffff;
   overflow: hidden;
   background: #00b6f1;
+}
+
+.ocuhub_logo_blue {
+  background: #00b6f1 url(../images/signin_logo_bg.png) no-repeat left bottom;
+  background-size: 57%;
+  background-position: bottom left;
+}
+
+.ocuhub_logo_grey {
+  background: #ebeced url(../images/signin_logo_bg_grey.png) no-repeat left bottom;
+  background-size: 100%;
+  background-position: bottom right;
 }
 
 .content-row-margin {
