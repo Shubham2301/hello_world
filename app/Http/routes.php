@@ -75,3 +75,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('appointments', 'Appointment\AppointmentController');
     Route::resource('home', 'HomeController');
 });
+
+//Ccda routes
+Route::post('/saveccd','CcdaController@saveCcda');
+Route::get('/modify','CcdaController@updateJson');
+Route::get('ccdaform','CcdaController@index');
+Route::get('/addvital','CcdaController@addVital');
+Route::post('/savevitals','CcdaController@saveVitals');
+Route::get('/download','CcdaController@getxml');
+
+
+
