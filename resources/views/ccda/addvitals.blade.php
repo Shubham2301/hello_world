@@ -13,6 +13,7 @@
 
 <div style="color:black;">
     {!! Form::open(array('url' => '/savevitals', 'method' => 'Post', )) !!}
+    <input type="hidden" name="ccda_id" value="{{$id}}">
 
     <p>Date</p>         {!! Form::date('v_date')  !!}
     <p>name</p>         {!! Form::text('v_name')  !!}
@@ -29,7 +30,7 @@
 
 <div style="color:black;">
 
-<a href="/download" class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download file</a>
+<a href="/download/{{$id}}" class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download file</a>
 
 
 </div>

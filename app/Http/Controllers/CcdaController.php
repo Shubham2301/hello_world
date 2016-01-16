@@ -21,7 +21,6 @@ class CcdaController extends Controller
     {
         if ($request->hasFile('ccda')) {
             $file = $request->file('ccda');
-
             $destinationPath = 'ccda';
             $extension = $file->getClientOriginalExtension();
             $filename = str_random(4).".{$extension}";
@@ -51,7 +50,7 @@ class CcdaController extends Controller
 
     public function updateVitals($id)
     {
-        $ccda = Ccda::find(16);
+        $ccda = Ccda::find($id);
         $jsonobject = json_decode($ccda->ccdablob,true);
         $vitals = Vital::select('v_date')->groupBy('v_date')->where('ccda_id',$id)->get();
         $vitalsize = sizeof($jsonobject['vitals']);
@@ -64,6 +63,7 @@ class CcdaController extends Controller
             foreach($vsigns as $signs){
                 $newVitals['results'][$i]['name']            = $signs->name;
                 $newVitals['results'][$i]['code']            = $signs->code;
+                $newVitals['results'][$i]['value']           = $signs->value;
                 $newVitals['results'][$i]['code_system']     = $signs->code_system;
                 $newVitals['results'][$i]['code_system_name']= $signs->code_system_name;
                 $newVitals['results'][$i]['unit']            = $signs->unit;
@@ -82,20 +82,17 @@ class CcdaController extends Controller
         $this->genrateXml();
     }
 
-    public function addVital()
+    public function addVital($id)
     {
-       return view('ccda.addvitals');
+       return view('ccda.addvitals')->with('id',$id);
     }
     public function saveVitals(Request $request)
     {
         $date = $request->input('v_date');
-        //$dt = \DateTime::format('m-d-Y', $date);
-         // return $dt;
-        //$datenew = date('m-d-Y', strtotime($date));
-       // return $datenew;
+        $id = $request->input('ccda_id');
 
         $vital = new Vital;
-        $vital->ccda_id             = 16;
+        $vital->ccda_id             = $id;
         $vital->v_date              = $date;
         $vital->name                = $request->input('v_name');
         $vital->code                = '8302-2';
@@ -130,14 +127,14 @@ class CcdaController extends Controller
         }
     }
 
-    public function getxml()
+    public function getxml($id)
     {
-        $this->updateVitals(14);
+        $this->updateVitals($id);
         $file= public_path().'/updatedjson.xml';
         $headers = array(
               'Content-Type: application/xml',
             );
-        return Response()->download($file, 'amrsing.xml', $headers);
+        return Response()->download($file, 'ccdafile.xml', $headers);
 
     }
 
