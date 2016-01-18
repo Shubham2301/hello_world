@@ -13,7 +13,6 @@ class CcdaController extends Controller
 
     public function index()
     {
-
         return view('ccda.ccdatest');
     }
 
@@ -111,26 +110,6 @@ class CcdaController extends Controller
             return 'successfull';
         }
         return 'fail';
-    }
-
-    public function modifiedxml()
-    {
-        foreach ($data as $vitalsign) {
-            $date =$vitalsign['date'];
-            foreach ($vitalsign['results'] as $results) {
-                $vital = new Vital;
-                $vital->ccda_id             = $id;
-                $vital->v_date              = $date;
-                $vital->name                = $results['name'];
-                $vital->code                = $results['code'];
-                $vital->code_system         = $results['code_system'];
-                $vital->code_system_name    = $results['code_system_name'];
-                $vital->value               = $results['value'];
-                $vital->unit                = $results['unit'];
-                $vital->save();
-            }
-
-        }
     }
 
     public function getxml($id)
