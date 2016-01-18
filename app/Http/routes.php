@@ -78,7 +78,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 //Ccda routes
 Route::post('/saveccd','CcdaController@saveCcda');
-Route::get('/modify','CcdaController@updateJson');
 Route::get('ccdaform','CcdaController@index');
 Route::get('/addvital/{id}','CcdaController@addVital');
 Route::post('/savevitals','CcdaController@saveVitals');

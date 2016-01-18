@@ -10,4 +10,7 @@ var myccd = BlueButton(json, {
   template: template
 });
 
-console.log(myccd.data);
+fs.writeFile(process.argv[3], myccd.data, function (err) {
+        console.log('hello');
+    });
+//console.log(myccd.data);

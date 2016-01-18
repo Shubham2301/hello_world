@@ -27,13 +27,20 @@ class CcdaController extends Controller
             $upload_success = $file->move(public_path().'/'.$destinationPath, $filename);
             $xmlfile = public_path().'/'.$destinationPath.'/'.$filename;
             $jsonfile = public_path().'/patientjson.json';
-            $a = exec("node ".app_path()."/tojson.js ". $xmlfile." >".$jsonfile);
+            $a = exec("node ".app_path()."/tojson.js ". $xmlfile." ".$jsonfile);
             $jsonstring = file_get_contents($jsonfile, true);
+            $validator = \Validator::make(array('jsson' => $jsonstring), array('jsson'=>'Required|json'));
+
+            if ($validator->fails()) {
+                return 'please provide a valid ccd file';
+            }
             $ccda = new Ccda;
             $ccda->ccdablob = $jsonstring;
-            if($ccda->save()){
+            if ($ccda->save()) {
+                //echo $ccda->id;
                 return $ccda->ccdablob;
-                return 'successfull'; }
+                return 'successfull';
+            }
         }
 
         return 'unsuccessful';
@@ -43,24 +50,22 @@ class CcdaController extends Controller
     {
         $xmlfile = public_path().'/updatedjson.xml';
         $jsonfile = public_path().'/patientjson.json';
-        $a = exec("node ".app_path()."/toxml.js ". $jsonfile." >".$xmlfile);
+        $a = exec("node ".app_path()."/toxml.js ". $jsonfile." ".$xmlfile);
 
     }
-
 
     public function updateVitals($id)
     {
         $ccda = Ccda::find($id);
-        $jsonobject = json_decode($ccda->ccdablob,true);
-        $vitals = Vital::select('v_date')->groupBy('v_date')->where('ccda_id',$id)->get();
+        $jsonobject = json_decode($ccda->ccdablob, true);
+        $vitals = Vital::select('v_date')->groupBy('v_date')->where('ccda_id', $id)->get();
         $vitalsize = sizeof($jsonobject['vitals']);
-        foreach($vitals as $vital)
-        {
-            $vsigns = Vital::where('ccda_id',$id)->where('v_date',$vital->v_date)->get();
+        foreach ($vitals as $vital) {
+            $vsigns = Vital::where('ccda_id', $id)->where('v_date', $vital->v_date)->get();
             $newVitals=[];
             $i=0;
             $newVitals['date'] = date('m-d-Y', strtotime($vital->v_date));
-            foreach($vsigns as $signs){
+            foreach ($vsigns as $signs) {
                 $newVitals['results'][$i]['name']            = $signs->name;
                 $newVitals['results'][$i]['code']            = $signs->code;
                 $newVitals['results'][$i]['value']           = $signs->value;
@@ -77,15 +82,16 @@ class CcdaController extends Controller
         $ccda->save();
         $jsonfile = public_path().'/patientjson.json';
         $myfile = fopen($jsonfile, "w");
-        $ss     = fwrite($myfile,$ccda->ccdablob);
+        $ss     = fwrite($myfile, $ccda->ccdablob);
 
         $this->genrateXml();
     }
 
     public function addVital($id)
     {
-       return view('ccda.addvitals')->with('id',$id);
+        return view('ccda.addvitals')->with('id', $id);
     }
+
     public function saveVitals(Request $request)
     {
         $date = $request->input('v_date');
@@ -101,17 +107,17 @@ class CcdaController extends Controller
         $vital->value               = $request->input('v_value');
         $vital->unit                = $request->input('v_unit');
 
-        if($vital->save())
+        if ($vital->save()) {
             return 'successfull';
+        }
         return 'fail';
-
-
     }
 
-    public function modifiedxml(){
-        foreach($data as $vitalsign){
+    public function modifiedxml()
+    {
+        foreach ($data as $vitalsign) {
             $date =$vitalsign['date'];
-            foreach($vitalsign['results'] as $results){
+            foreach ($vitalsign['results'] as $results) {
                 $vital = new Vital;
                 $vital->ccda_id             = $id;
                 $vital->v_date              = $date;
@@ -137,6 +143,4 @@ class CcdaController extends Controller
         return Response()->download($file, 'ccdafile.xml', $headers);
 
     }
-
-
 }
