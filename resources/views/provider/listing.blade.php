@@ -5,7 +5,6 @@
         <div class="col-xs-4 center-align">
             <img src="{{asset('images/patient.png')}}" alt=""><br>
             <p class="button_type_1" id="change_practice_button">Change Provider</p><br>
-            <p class="button_type_2 schedule_button" data-id="" data-practice-id="">Schedule</p>
         </div>
         <div class="col-xs-8">
             <p class="bold" id="practice_name">Opthalmic Consultants of Long Island</p>
