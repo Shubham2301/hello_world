@@ -1,5 +1,13 @@
 <!-- resources/views/auth/login.blade.php -->
 
+@if (count($errors) > 0)
+    <div class="row content-row-margin alert alert-danger">
+            @foreach ($errors->all() as $error)
+                <p class="error">Email and password do not match. Please try again.</p>
+            @endforeach
+    </div>
+@endif
+
 <form method="POST" action="/auth/login">
     {!! csrf_field() !!}
     

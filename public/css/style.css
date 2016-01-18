@@ -123,6 +123,18 @@ a:focus.sidebar-item {
   cursor: pointer;
 }
 
+.button_type_3 {
+  display: inline-block;
+  color: white;
+  background-color: #f13923;
+  cursor: pointer;
+  border-radius: 0.25em;
+  padding: 0.25em 0.25em;
+  font-size: .8em;
+  position: absolute;
+  right: 0px;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -283,6 +295,12 @@ Section : Body
   padding: 1em;
 }
 
+p.error {
+  padding: 0px;
+  margin: 0px;
+  line-height: 0;
+}
+
 .content-left {
   border-right: 2px solid white;
   padding: 1em;
@@ -296,6 +314,18 @@ Section : Body
   color: #ffffff;
   overflow: hidden;
   background: #00b6f1;
+}
+
+.ocuhub_logo_blue {
+  background: #00b6f1 url(../images/signin_logo_bg.png) no-repeat left bottom;
+  background-size: 57%;
+  background-position: bottom left;
+}
+
+.ocuhub_logo_grey {
+  background: #ebeced url(../images/signin_logo_bg_grey.png) no-repeat left bottom;
+  background-size: 100%;
+  background-position: bottom right;
 }
 
 .content-row-margin {
@@ -351,6 +381,14 @@ Section : Body
   box-shadow: none;
   outline: none;
   cursor: pointer;
+}
+
+.select_provider_button {
+  display: none;
+}
+
+.select_provider_button.active {
+  display: inline-block;
 }
 
 .table-header {

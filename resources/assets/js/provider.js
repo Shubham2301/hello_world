@@ -1,10 +1,61 @@
 $(document).ready(function () {
 
+    var id = $('#form_patient_id').attr('value');
+    var formData = {
+        'id': id
+    };
+    getPatientInfo(formData);
+    $('.view_selected_patient').on('click', showPatientInfo);
+    $('.change_selected_patient').on('click', changePatientInfo);
+    $('#change_patient_button').on('click', function () {
+        $('#form_select_provider').attr('action', "http://ocuhub.dev/patients");
+        $('#form_provider_id').prop('disabled', true);
+        $('#form_practice_id').prop('disabled', true);
+        $('#form_select_provider').submit();
+    });
     $('#search_practice_button').on('click', function () {
+        $('.schedule_button').removeClass('active');
+        $('.schedule_button').attr('data-id', 0);
+        $('.schedule_button').attr('data-practice-id', 0);
         $("#add_practice_search_option").trigger("click");
         $('#search_practice_input').val('');
         var searchdata = getSearchType();
+        if ($('.view_selected_patient').hasClass('remove')) {
+            showPatientInfo();
+        }
         getProviders(searchdata);
+    });
+
+    $('.lastseenby_show').on('click', function () {
+        $('.lastseen_content').toggleClass('active');
+        if ($('.lastseen_content').hasClass('active')) {
+            $('.lastseenby_icon').removeClass('glyphicon-chevron-right');
+            $('.lastseenby_icon').addClass('glyphicon-chevron-down');
+        } else {
+            $('.lastseenby_icon').removeClass('glyphicon-chevron-down');
+            $('.lastseenby_icon').addClass('glyphicon-chevron-right');
+        }
+    });
+
+    $('.referredby_show').on('click', function () {
+        $('.referredby_content').toggleClass('active');
+        if ($('.referredby_content').hasClass('active')) {
+            $('.referredby_icon').removeClass('glyphicon-chevron-right');
+            $('.referredby_icon').addClass('glyphicon-chevron-down');
+        } else {
+            $('.referredby_icon').removeClass('glyphicon-chevron-down');
+            $('.referredby_icon').addClass('glyphicon-chevron-right');
+        }
+    });
+    $('.insurance_provider_show').on('click', function () {
+        $('.insurance_provider_content').toggleClass('active');
+        if ($('.insurance_provider_content').hasClass('active')) {
+            $('.insurance_provider_icon').removeClass('glyphicon-chevron-right');
+            $('.insurance_provider_icon').addClass('glyphicon-chevron-down');
+        } else {
+            $('.insurance_provider_icon').removeClass('glyphicon-chevron-down');
+            $('.insurance_provider_icon').addClass('glyphicon-chevron-right');
+        }
     });
 
     $('.practice_list').on('click', '.practice_list_item', function () {
@@ -21,6 +72,9 @@ $(document).ready(function () {
 
         $('.practice_list').addClass('active');
         $('.practice_info').removeClass('active');
+        $('.schedule_button').removeClass('active');
+        $('.schedule_button').attr('data-id', 0);
+        $('.schedule_button').attr('data-practice-id', 0);
         $('.patient_previous_information').addClass('active');
 
     });
@@ -29,6 +83,9 @@ $(document).ready(function () {
         var type = $('#search_practice_input_type').val();
         var value = $('#search_practice_input').val();
         if (value != '') {
+            if ($('.view_selected_patient').hasClass('remove')) {
+                showPatientInfo();
+            }
             var searchoption = getOptionContent(type, value);
             $('.search_filter').append(searchoption);
             $('#search_practice_input').val('');
@@ -69,6 +126,74 @@ $(document).ready(function () {
         }
     });
 });
+
+function changePatientInfo() {
+    $('.change_selected_patient').text("");
+    $('.change_selected_patient').removeClass('view');
+    $('.change_selected_patient').addClass('remove');
+    $('.button_type_11').addClass('active');
+    if ($('.view_selected_patient').hasClass('remove')) {
+        $('.view_selected_patient').addClass('view');
+    }
+    showPatientInfo();
+}
+
+function showPatientInfo() {
+    if ($('.view_selected_patient').hasClass('view')) {
+        $('.patient_info').addClass('active')
+        $('.view_selected_patient').text("Hide");
+        $('.view_selected_patient').removeClass('view');
+        $('.view_selected_patient').addClass('remove');
+    } else if ($('.view_selected_patient').hasClass('remove')) {
+        $('.patient_info').removeClass('active')
+        $('.view_selected_patient').text("View");
+        $('.view_selected_patient').removeClass('remove');
+        $('.view_selected_patient').addClass('view');
+        $('.change_selected_patient').text("Change");
+        $('.change_selected_patient').removeClass('remove');
+        $('.change_selected_patient').addClass('view')
+        $('.button_type_11').removeClass('active');
+    }
+}
+
+//function that is used to fetch the information of the patient that is being scheduled
+function getPatientInfo(formData) {
+
+    $.ajax({
+        url: '/patients/show',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            var info = $.parseJSON(e);
+            fillPatientInfo(info);
+        },
+        error: function () {
+            alert('Error getting patient information');
+        },
+        cache: false,
+        processData: false
+    });
+
+}
+
+//function that is used to fill the information about the patient
+function fillPatientInfo(data) {
+
+    $('#patient_name').text(data.firstname);
+    $('#patient_email').text(data.email);
+    var d = new Date(data.birthdate);
+    var date = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
+    $('#patient_dob').text(date);
+    $('#patient_add1').text(data.addressline1 + ',');
+    $('#patient_add2').text(data.addressline2 + ',');
+    $('#patient_add3').text(data.city);
+    $('#patient_phone').text(data.cellphone);
+    $('#patient_ssn').text(data.lastfourssn);
+    $('.selected_patient_name').text(data.firstname);
+
+}
 
 
 
@@ -111,6 +236,8 @@ function showProviderInfo(data) {
     $('.practice_list').removeClass('active');
     $('.practice_info').addClass('active');
     $('.patient_previous_information').removeClass('active');
+    $('.schedule_button').addClass('active');
+
 
 }
 
