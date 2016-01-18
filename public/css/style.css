@@ -317,7 +317,7 @@ p.error {
 }
 
 .ocuhub_logo_blue {
-  background: #00b6f1 url(../images/signin_logo_bg.png) no-repeat left bottom;
+  background: #00b6f1 url(../images/signin_logo_bg_blue.png) no-repeat left bottom;
   background-size: 57%;
   background-position: bottom left;
 }
