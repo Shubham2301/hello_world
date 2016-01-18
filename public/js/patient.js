@@ -18,9 +18,10 @@ $(document).ready(function () {
     });
 
     $('#change_patient_button').on('click', function () {
-
         $('.patient_list').addClass('active');
         $('.patient_info').removeClass('active');
+        $('#select_provider_button').removeClass('active');
+        $('#select_provider_button').attr('data-id', 0);
     });
 
     $('#select_provider_button').on('click', function () {
@@ -42,9 +43,7 @@ $(document).ready(function () {
     });
 
     $('.lastseenby_show').on('click', function () {
-
         $('.lastseen_content').toggleClass('active');
-
         if ($('.lastseen_content').hasClass('active')) {
             $('.lastseenby_icon').removeClass('glyphicon-chevron-right');
             $('.lastseenby_icon').addClass('glyphicon-chevron-down');
@@ -55,9 +54,7 @@ $(document).ready(function () {
     });
 
     $('.referredby_show').on('click', function () {
-
         $('.referredby_content').toggleClass('active');
-
         if ($('.referredby_content').hasClass('active')) {
             $('.referredby_icon').removeClass('glyphicon-chevron-right');
             $('.referredby_icon').addClass('glyphicon-chevron-down');
@@ -68,9 +65,7 @@ $(document).ready(function () {
     });
 
     $('.insurance_provider_show').on('click', function () {
-
         $('.insurance_provider_content').toggleClass('active');
-
         if ($('.insurance_provider_content').hasClass('active')) {
             $('.insurance_provider_icon').removeClass('glyphicon-chevron-right');
             $('.insurance_provider_icon').addClass('glyphicon-chevron-down');
@@ -82,18 +77,20 @@ $(document).ready(function () {
 });
 
 function showPatientInfo(data) {
-
     $('.patient_list').removeClass('active');
     $('.patient_info').addClass('active');
     $('#patient_name').text(data.firstname);
     $('#patient_email').text(data.email);
-    $('#patient_dob').text(data.birthdate);
+    var d = new Date(data.birthdate);
+    var date = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
+    $('#patient_dob').text(date);
     $('#patient_add1').text(data.addressline1 + ',');
     $('#patient_add2').text(data.addressline2 + ',');
     $('#patient_add3').text(data.city);
     $('#patient_phone').text(data.cellphone);
     $('#patient_ssn').text(data.lastfourssn);
     $('#select_provider_button').attr('data-id', data.id);
+    $('#select_provider_button').addClass('active');
 }
 
 function getPatientInfo(formData) {
@@ -119,6 +116,8 @@ function getPatientInfo(formData) {
 function getPatients(formData) {
     $('.patient_list').addClass('active');
     $('.patient_info').removeClass('active');
+    $('#select_provider_button').removeClass('active');
+    $('#select_provider_button').attr('data-id', 0);
 
     var tojson = JSON.stringify(formData);
     $.ajax({
@@ -157,7 +156,6 @@ function getsearchtype() {
         searchdata.push({
             "type": stype,
             "value": name
-
         });
     });
     return searchdata;
@@ -165,12 +163,10 @@ function getsearchtype() {
 
 function getOptionContent(type, value) {
     var content = '<div class="search_filter_item"><span class="item_type">' + type + '</span>:<span class="item_value">' + value + '</span><span class="remove_option">x</span></div>';
-
     return content;
 }
 
 function selectProvider(id) {
-
     $('#form_patient_id').val(id);
     $('#form_select_provider').submit();
 }

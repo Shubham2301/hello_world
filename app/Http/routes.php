@@ -67,6 +67,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('practices/create', 'Practice\PracticeController@create');
     Route::get('practices/edit',   'Practice\PracticeController@edit');
     
+    Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
+    Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
+    Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
+
     Route::resource('users', 'Admin\UserController');
     Route::resource('roles', 'Admin\RoleController');
     Route::resource('permissions', 'Admin\PermissionController');

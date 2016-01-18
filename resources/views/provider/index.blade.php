@@ -40,6 +40,7 @@
             <div class="row content-row-margin">
                 <div class="col-xs-12 section-header">
                     <span class="">Schedule an appointment</span>
+            <p class="button_type_3 schedule_button" data-id="" data-practice-id="" align="right">Schedule<span class="glyphicon glyphicon-chevron-right"></span></p>
                 </div>
             </div>
             <div class="row content-row-margin">
@@ -70,12 +71,6 @@
             <div class="previous_provider_patient_list">
             </div>
             </div>
-        </div>
-        <div class="row">
-        <div class="col-xs-12 selected_patient center-align">
-            <p>You have selected a patient</p>
-           <img src="{{URL::asset('images/patient.png')}}">
-        </div>
         </div>
     </div>
 @endsection

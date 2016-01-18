@@ -16,7 +16,7 @@ class SESConnect extends SES
 //    protected $clientId;
 
 
-    function __construct()
+    public function __construct()
     {
 
 //        $this->$tokenURL = 'https://test.directaddress.net/SESIDPServer/connect/token';
