@@ -11,8 +11,7 @@
 @endif
 
 <div class="content-section active">
-    <?php/* */ ?>
-        @include('practice.search')
+    @include('practice.search')
 </div>
 
 <div class="practice_section active" id="practice_listing">

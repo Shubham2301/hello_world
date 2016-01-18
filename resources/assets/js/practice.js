@@ -193,7 +193,9 @@ function getPractices(formData) {
             $('#search_results').text(practices.length + ' Results found');
             if (practices.length > 0) {
                 practices.forEach(function(practice) {
-                    content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3 search_name"><input type="checkbox">&nbsp;&nbsp;<p>' + practice.name + '</p></div><div class="col-xs-3">' + practice.address + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + practice.ocuapps + '</p></div> <div class="col-xs-2 search_edit"><p ><img class="schedule_practice_img" src="' + scheduleimg + '"></p>&nbsp;&nbsp;<p>Edit</p>&nbsp;&nbsp;<img class="delete_practice_im" src="' + deleteimage + '"></div></div>';
+                    content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3 search_name"><input type="checkbox">&nbsp;&nbsp;<p>' + practice.name + '</p></div><div class="col-xs-3">' + practice.address + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + practice.ocuapps + '</p></div> <div class="col-xs-2 search_edit"><p ><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span></p>&nbsp;&nbsp;<p>Edit</p>&nbsp;&nbsp;<span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></div></div>';
+//<img class="delete_practice_im" src="' + deleteimage + '">
+//<img class="schedule_practice_img" src="' + scheduleimg + '">
                 });
                 $('.practice_list').addClass('active');
                 $('.practice_search_content').html(content);
@@ -282,10 +284,9 @@ function showPracticeInfo(info) {
     var content = '';
     if (true) {
         info.locations.forEach(function(location) {
-            content += '<div class="row practice_location_item"><div class="col-xs-3 practice_info"><p>' + location.locationname + '</p><p>' + location.addressline1 + '<br>' + location.addressline2 + '</p><p>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p>Assign roles </p><p>Assign users</p><p>edit</p><br><center><img src="" alt="x"></center></div><div class="col-xs-5"><div class="row">';
+            content += '<div class="row practice_location_item"><div class="col-xs-3 practice_info"><p>' + location.locationname + '</p><p>' + location.addressline1 + '<br>' + location.addressline2 + '</p><p>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p>Assign roles </p><p>Assign users</p><p>Edit</p><br><center><span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></center></div><div class="col-xs-5"><div class="row">';
             info.users.forEach(function(user) {
-                content += '<div class="col-xs-12 practice_users "><p><input type="checkbox"><span>' + user.firstname + '</span><span><img src="" alt="0" style="margin-left:8em;"></span></p></div>';
-
+                content += '<div class="col-xs-12 practice_users "><p style="width: 100%;"><input type="checkbox"><span>' + user.firstname + '</span><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background:#e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;float: right;margin-bottom: 5px;"></span></p></div>';
             });
             content += '</div></div></div>';
         });

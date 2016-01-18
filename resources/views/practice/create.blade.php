@@ -42,13 +42,13 @@
 
                     <div class="col-md-6">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <p><strong>Location Details</strong></p>
                             </div>
-                            <div class="col-md-1 change_location">
-                            <span class="glyphicon glyphicon-chevron-up " id="location_next"></span>
+                            <div class="col-md-2 change_location">
+                            <span class="glyphicon glyphicon-chevron-up glyph_design" id="location_next"></span>
                             <span><p class="location_counter">0</p></span>
-                            <span class="glyphicon glyphicon-chevron-down" id="location_previous"></span>
+                            <span class="glyphicon glyphicon-chevron-down glyph_design" id="location_previous"></span>
 
                             </div>
                             <div class="col-md-2 add_location">

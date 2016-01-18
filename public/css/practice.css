@@ -269,7 +269,9 @@ p.table_header {
 .location_counter {
   margin: 0px;
   padding: 0px;
-  padding-left: 2px;
+  padding-left: 3px;
+  margin-top: -16px;
+  margin-bottom: 3px;
 }
 
 .modal-header {
@@ -319,4 +321,9 @@ p.table_header {
 .remove-location {
   margin: 0px;
   padding: 0px;
+}
+
+.glyph_design {
+  top: -7px;
+  line-height: 0;
 }

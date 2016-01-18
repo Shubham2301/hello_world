@@ -51,17 +51,17 @@
             <div class="col-md-2">
                 <button type="button" id="back" class="btn back">Back</button>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-5" style="font-size: 0.8em;">
                 <p id="the_practice_name" class="the_practice_name">Wichita Optometry</p>
             </div>
-            <div class="col-md-5 top_assign">
+            <div class="col-md-4 top_assign">
                 <p>Assign roles</p>
             &nbsp;&nbsp;&nbsp;
                 <p>Assign User</p>
             &nbsp;&nbsp;&nbsp;
                 <p>Edit</p>
-                &nbsp;&nbsp;&nbsp;
-            <img src="" alt="delete" style="margin-top:.8em;">
+            &nbsp;&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span>
             </div>
         </div>
         <div class="row location_info_header">

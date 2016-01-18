@@ -149,14 +149,14 @@ class PracticeController extends Controller
 
     public function search(Request $request){
         $tosearchdata = json_decode($request->input('data'),true);
-        $practices =Practice::where('name','like',$tosearchdata['value'])->get();
+        $practices =Practice::where('name','like','%'.$tosearchdata['value'].'%')->get();
         $data = [];
         $i=0;
         foreach($practices as $practice){
             $data[$i]['id'] = $practice->id;
             $data[$i]['name'] = $practice->name;
             $data[$i]['email'] =  $practice->email;
-            $data[$i]['address'] = 'asd123,gurgaon';
+            $data[$i]['address'] = '4885 Olde Towne Parkway, Marietta, GA 30076';
             $data[$i]['ocuapps'] = 'Calender Intregation';
             $i++;
         }
