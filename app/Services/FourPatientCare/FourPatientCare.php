@@ -54,7 +54,7 @@ class FourPatientCare
         $soapRequest = ArrayToXML::createXML('RequestApptInsert', $input);
         //dd($soapRequest);
         $soapRequest = $soapRequest->saveXML();
-        
+        dd($soapRequest);
 //        $client = new \SoapClient($this->url, array("trace" => 1, "exception" => 0));
 //        
 //        $result = $client->__soapCall("RequestApptInsert", [ "RequestApptInsert" => $input ], NULL, NULL);
