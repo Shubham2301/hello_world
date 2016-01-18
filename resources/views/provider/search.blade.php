@@ -38,7 +38,7 @@
     <div class="col-xs-12">
         <div class="col-xs-4 center-align">
             <img src="{{asset('images/patient.png')}}" alt=""><br>
-            <p class="button_type_1" id="change_patient_button"  >Change Patient</p><br>
+            <p class="button_type_11" id="change_patient_button"  >Change Patient</p><br>
         </div>
         <div class="col-xs-8">
             <p class="bold" id="patient_name"></p>

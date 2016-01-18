@@ -184,10 +184,20 @@ border-bottom: solid 1px white;
     }
 }
 
-.button_type_1 {
+.schedule_button {
+    display: none;
+    &.active{
+        display: inline-block;
+    }
+}
+.button_type_11 {
+    color: black;
+    padding: 0.5em 1em;
+    border-radius: 0.25em;
     background-color: #ed1c24;
     color: #fff;
     display: none;
+    cursor: pointer;
     &.active
     {
         display: inline-block;

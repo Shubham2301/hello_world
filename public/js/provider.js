@@ -16,6 +16,9 @@ $(document).ready(function () {
         $('#form_select_provider').submit();
     });
     $('#search_practice_button').on('click', function () {
+        $('.schedule_button').removeClass('active');
+        $('.schedule_button').attr('data-id', 0);
+        $('.schedule_button').attr('data-practice-id', 0);
         $("#add_practice_search_option").trigger("click");
         $('#search_practice_input').val('');
         var searchdata = getSearchType();
@@ -71,6 +74,9 @@ $(document).ready(function () {
 
         $('.practice_list').addClass('active');
         $('.practice_info').removeClass('active');
+        $('.schedule_button').removeClass('active');
+        $('.schedule_button').attr('data-id', 0);
+        $('.schedule_button').attr('data-practice-id', 0);
         $('.patient_previous_information').addClass('active');
     });
 
@@ -120,7 +126,7 @@ function changePatientInfo() {
     $('.change_selected_patient').text("");
     $('.change_selected_patient').removeClass('view');
     $('.change_selected_patient').addClass('remove');
-    $('.button_type_1').addClass('active');
+    $('.button_type_11').addClass('active');
     if ($('.view_selected_patient').hasClass('remove')) {
         $('.view_selected_patient').addClass('view');
     }
@@ -141,7 +147,7 @@ function showPatientInfo() {
         $('.change_selected_patient').text("Change");
         $('.change_selected_patient').removeClass('remove');
         $('.change_selected_patient').addClass('view');
-        $('.button_type_1').removeClass('active');
+        $('.button_type_11').removeClass('active');
     }
 }
 
@@ -221,6 +227,7 @@ function showProviderInfo(data) {
     $('.practice_list').removeClass('active');
     $('.practice_info').addClass('active');
     $('.patient_previous_information').removeClass('active');
+    $('.schedule_button').addClass('active');
 }
 
 function getProviderInfo(formData) {
