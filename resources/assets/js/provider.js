@@ -194,3 +194,59 @@ function scheduleAppointment(providerId, practiceID) {
     $('#form_practice_id').val(practiceID);
     $('#form_select_provider').submit();
 }
+
+function getOpenSlots(){
+
+    var provider_id = 1;
+    var location_id = 1;
+    var appointment_type = 1;
+    var appointment_date = 1;
+
+    var formData = {
+        'provider_id': provider_id,
+        'location_id': location_id,
+        'appointment_type': appointment_type,
+        'appointment_date': appointment_date,
+    };
+
+    $.ajax({
+        url: '/providers/openslots',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            alert('successfull');
+        },
+        error: function () {
+        },
+        cache: false,
+        processData: false
+    });
+
+}
+function getAppointmentTypes(){
+
+    var provider_id = 1;
+    var location_id = 1;
+
+    var formData = {
+        'provider_id': provider_id,
+        'location_id': location_id,
+    };
+
+     $.ajax({
+        url: '/providers/appointmenttypes',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            alert('successfull');
+        },
+        error: function () {
+        },
+        cache: false,
+        processData: false
+    });
+}

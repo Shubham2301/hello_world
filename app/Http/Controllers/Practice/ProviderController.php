@@ -142,16 +142,32 @@ class ProviderController extends Controller
         return json_encode($data);
     }
 
-    public function getAppointmentTypes(){
+    public function getAppointmentTypes(Request $request){
         $providerInfo = array();
+
+        $providerID = $request->input('provider_id');
+        $locationID = $request->input('location_id');
+
+        $providerInfo['LocKey'] = $locationID;
+        $providerInfo['AcctKey'] = $providerID;
 
         $apptTypes = $this->fourPatientCare->getApptTypes($providerInfo);
 
         return $apptTypes;
     }
 
-    public function getOpenSlots(){
+    public function getOpenSlots(Request $request){
         $providerInfo = array();
+
+        $providerID = $request->input('provider_id');
+        $locationID = $request->input('location_id');
+        $AppointmentType = $request->input('appointment_type');
+        $AppointmentDate = $request->input('appointment_date');
+
+        $providerInfo['LocKey'] = $locationID;
+        $providerInfo['AcctKey'] = $providerID;
+        $providerInfo['ApptTypeKey'] = $AppointmentType;
+        $providerInfo['ApptDate'] = $AppointmentDate;
 
         $openSlots = $this->fourPatientCare->getOpenApptSlots($providerInfo);
 
