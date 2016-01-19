@@ -73,7 +73,6 @@ class FourPatientCare
 
         $reponse = $this->objectToArray($response);
         dd($response);
-
     }
 
     public function requestApptInsert($input){

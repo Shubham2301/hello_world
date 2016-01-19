@@ -5,8 +5,11 @@ $(document).ready(function () {
         'id': id
     };
     getPatientInfo(formData);
+
     $('.view_selected_patient').on('click', showPatientInfo);
+
     $('.change_selected_patient').on('click', changePatientInfo);
+
     $('#change_patient_button').on('click', function () {
         $('#form_select_provider').attr('action', "http://ocuhub.dev/patients");
         $('#form_provider_id').prop('disabled', true);
@@ -101,7 +104,11 @@ $(document).ready(function () {
 
         scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
     });
-
+    $('.locations').on('click', '.practice_location', function () {
+        $('.practice_location').removeClass('active');
+        $(this).addClass('active');
+        getAppointmentTypes();
+    });
 });
 
 $(document).ready(function () {
@@ -228,7 +235,7 @@ function showProviderInfo(data) {
 
     if (locations.length > 0) {
         locations.forEach(function (location) {
-            content += '<li><p>' + location.addressline1 + ',' + location.addressline1 + ' ' + location.city + ' ' + location.phone + '</p></li>';
+            content += '<div class="practice_location"><span>' + location.addressline1 + ',' + location.addressline1 + ' ' + location.city + ' ' + location.phone + '</span></div>';
         });
     }
 
@@ -320,7 +327,7 @@ function scheduleAppointment(providerId, practiceID) {
     $('#form_select_provider').submit();
 }
 
-function getOpenSlots(){
+function getOpenSlots() {
 
     var provider_id = 991234567;
     var location_id = 3839;
@@ -343,14 +350,14 @@ function getOpenSlots(){
         success: function (e) {
             alert('successfull');
         },
-        error: function () {
-        },
+        error: function () {},
         cache: false,
         processData: false
     });
 
 }
-function getAppointmentTypes(){
+
+function getAppointmentTypes() {
 
     var provider_id = 991234567;
     var location_id = 3839;
@@ -360,17 +367,18 @@ function getAppointmentTypes(){
         'location_id': location_id,
     };
 
-     $.ajax({
+    $.ajax({
         url: '/providers/appointmenttypes',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
         success: function (e) {
-            alert('successfull');
+            $('#appointment-type').removeClass('hidden');
+            $('#appointment-type').append('<option value="0">Annual Eye Exam</option>');
+            $('#appointment-type').append('<option value="1">Eye Exam</option>');
         },
-        error: function () {
-        },
+        error: function () {},
         cache: false,
         processData: false
     });
