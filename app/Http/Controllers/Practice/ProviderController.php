@@ -148,10 +148,8 @@ class ProviderController extends Controller
         $providerID = $request->input('provider_id');
         $locationID = $request->input('location_id');
 
-        $providerInfo['AcctKey']['@value'] = $providerID;
-        $providerInfo['AcctKey']['@attributes'] = ['type' => 'long'];
-        $providerInfo['LocKey']['@value'] = $locationID;
-        $providerInfo['LocKey']['@attributes'] = ['type' => 'long'];
+        $providerInfo['AcctKey'] = $providerID;
+        $providerInfo['LocKey'] = $locationID;
 
         $apptTypes = $this->fourPatientCare->getApptTypes($providerInfo);
 
