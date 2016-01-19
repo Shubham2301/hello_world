@@ -32,7 +32,7 @@
     <code codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" code="34133-9" displayName="Summarization of Episode Note"/>
     <title>
 
-            Good Health Health Summary
+            Good Health Discharge Summary
 
     </title>
 
@@ -146,7 +146,7 @@
 
 
         <author>
-            <time value="20160119120825+0000" />
+            <time value="20160119112141+0000" />
             <assignedAuthor>
                 <!-- TODO support real NPI -->
                 <id extension="99999999" root="2.16.840.1.113883.4.6"/>
@@ -193,56 +193,6 @@
 
                     <high nullFlavor="UNK" />
                 </effectiveTime>
-
-                    <performer typeCode="PRF">
-                        <assignedEntity>
-                            <id extension="99999999" root="2.16.840.1.113883.4.6"/>
-                            <code code="261QP2300X" displayName="Primary Care [Ambulatory Health Care Facilities\Clinic/Center]"
-                                codeSystemName="NUCC Provider Codes" codeSystem="2.16.840.1.113883.6.101"/>
-                                                            <addr use="WP">
-                                    <streetAddressLine nullFlavor="UNK" />
-<city nullFlavor="UNK" />
-<state nullFlavor="UNK" />
-<postalCode nullFlavor="UNK" />
-<country nullFlavor="UNK" />
-
-                                </addr>
-                                                                                        <telecom use="WP" value="tel:+1-301-975-3251"/>
-                                                        <assignedPerson>
-                                <name>
-                                    <prefix>Dr.</prefix>
-<given>Pseudo</given>
-<family>Physician-1</family>
-
-                                </name>
-                            </assignedPerson>
-                        </assignedEntity>
-                    </performer>
-
-                    <performer typeCode="PRF">
-                        <assignedEntity>
-                            <id extension="99999999" root="2.16.840.1.113883.4.6"/>
-                            <code code="261QP2300X" displayName="Primary Care [Ambulatory Health Care Facilities\Clinic/Center]"
-                                codeSystemName="NUCC Provider Codes" codeSystem="2.16.840.1.113883.6.101"/>
-                                                            <addr use="WP">
-                                    <streetAddressLine nullFlavor="UNK" />
-<city nullFlavor="UNK" />
-<state nullFlavor="UNK" />
-<postalCode nullFlavor="UNK" />
-<country nullFlavor="UNK" />
-
-                                </addr>
-                                                                                        <telecom use="WP" value="tel:+1-301-975-3251"/>
-                                                        <assignedPerson>
-                                <name>
-                                    <prefix>Dr.</prefix>
-<given>Pseudo</given>
-<family>Physician-3</family>
-
-                                </name>
-                            </assignedPerson>
-                        </assignedEntity>
-                    </performer>
 
             </serviceEvent>
         </documentationOf>
@@ -295,7 +245,7 @@
 
                                             <tr>
                                                 <td>ASPIRIN</td>
-                                                <td>R16CO5Y76E</td>
+                                                <td>1191</td>
                                                 <td>Wheezing</td>
                                                 <td>Moderate to severe</td>
                                                 <td>Active</td>
@@ -303,7 +253,7 @@
 
                                             <tr>
                                                 <td>Codeine</td>
-                                                <td>Q830PW7520</td>
+                                                <td>2670</td>
                                                 <td>Nausea</td>
                                                 <td>Moderate to severe</td>
                                                 <td>Active</td>
@@ -414,7 +364,7 @@
                                                 <participant typeCode="CSM">
                                                     <participantRole classCode="MANU">
                                                         <playingEntity classCode="MMAT">
-                                                            <code displayName="ASPIRIN" code="R16CO5Y76E" codeSystem="2.16.840.1.113883.4.9" codeSystemName="UNII" >
+                                                            <code displayName="ASPIRIN" code="1191" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RxNorm" >
                                                             </code>
                                                         </playingEntity>
                                                     </participantRole>
@@ -485,7 +435,7 @@
                                                 <participant typeCode="CSM">
                                                     <participantRole classCode="MANU">
                                                         <playingEntity classCode="MMAT">
-                                                            <code displayName="Codeine" code="Q830PW7520" codeSystem="2.16.840.1.113883.4.9" codeSystemName="UNII" >
+                                                            <code displayName="Codeine" code="2670" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RxNorm" >
                                                             </code>
                                                         </playingEntity>
                                                     </participantRole>
@@ -690,8 +640,72 @@
                       codeSystem="2.16.840.1.113883.6.1"/>
                     <title>Functional Status</title>
                     <text>
+                                                    <table>
+                                <thead>
+                                    <tr>
+                                        <th>Condition</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                                                            <tr>
+                                            <td>Dependence on Cane</td>
+                                            <td>03/01/1998</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td>Memory Impairment</td>
+                                            <td>10/01/1999</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>2000-03-23T14:30:00Z</td>
+                                        </tr>
+                                                                    </tbody>
+                            </table>
                                             </text>
-                                                                               </section>
+
+                            <entry typeCode = "DRIV">
+                                <observation classCode = "OBS" moodCode = "EVN">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.68"/>
+                                    <id root="ab1791b0-5c71-11db-b0de-0800200c9a66"/>
+                                    <code nullFlavor="UNK" />
+                                    <statusCode code = "completed"/>
+                                    <effectiveTime>
+                                        <low value="19980301" />
+                                    </effectiveTime>
+                                    <value xsi:type="CD" displayName="Dependence on Cane" code="105504002" codeSystem="2.16.840.1.113883.6.96" />
+                                </observation>
+                            </entry>
+
+
+                            <entry typeCode = "DRIV">
+                                <observation classCode = "OBS" moodCode = "EVN">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.68"/>
+                                    <id root="ab1791b0-5c71-11db-b0de-0800200c9a66"/>
+                                    <code nullFlavor="UNK" />
+                                    <statusCode code = "completed"/>
+                                    <effectiveTime>
+                                        <low value="19991001" />
+                                    </effectiveTime>
+                                    <value xsi:type="CD" displayName="Memory Impairment" code="386807006" codeSystem="2.16.840.1.113883.6.96" />
+                                </observation>
+                            </entry>
+
+
+                            <entry typeCode = "DRIV">
+                                <observation classCode = "OBS" moodCode = "EVN">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.68"/>
+                                    <id root="ab1791b0-5c71-11db-b0de-0800200c9a66"/>
+                                    <code nullFlavor="UNK" />
+                                    <statusCode code = "completed"/>
+                                    <effectiveTime>
+                                        <low value="20000323143000+0000" />
+                                    </effectiveTime>
+                                    <value xsi:type="CD" nullFlavor="UNK" />
+                                </observation>
+                            </entry>
+
+                                                          </section>
             </component>
 
             <!--
@@ -756,7 +770,7 @@
                               displayName="CHIEF COMPLAINT AND REASON FOR VISIT"/>
                         <title>Chief Complaint</title>
 
-                            <text></text>
+                            <text>Dark stools.</text>
 
                       </section>
                 </component>
@@ -778,111 +792,33 @@
                         <title>Medications</title>
                         <text>
 
-                                <table>
-                                    <thead>
-                                        <tr>
-                                           <th>Medication</th>
-                                           <th>Notes</th>
-                                           <th>Start Date</th>
-                                           <th>End Date</th>
-                                           <th>Reason</th>
-                                           <th>Prescriber</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                            <tr>
-                                                <td>Albuterol 0.09 MG/ACTUAT inhalant solution</td>
-                                                <td>0.09 MG/ACTUAT inhalant solution, 2 puffs QID PRN wheezing</td>
-                                                <td>03/01/2011</td>
-                                                <td>03/01/2012</td>
-                                                <td>Bronchitis</td>
-                                                <td></td>
-                                            </tr>
-
-                                    </tbody>
-                                </table>
+                                No medications data provided.
 
                         </text>
 
 
-
-
-                                <entry typeCode="DRIV">
-                                    <substanceAdministration classCode="SBADM" moodCode="EVN">
-                                        <templateId root="2.16.840.1.113883.10.20.22.4.16"/>
-                                        <!-- ** MEDICATION ACTIVITY -->
-                                        <id root="cdbd33f0-6cde-11db-9fe1-0800200c9a66"/>
-
-                                            <text>0.09 MG/ACTUAT inhalant solution, 2 puffs QID PRN wheezing</text>
-
-                                        <statusCode code="completed"/>
-                                        <effectiveTime xsi:type="IVL_TS">
-                                            <low value="20110301" />
-                                            <high value="20120301" />
-                                        </effectiveTime>
-
-                                            <effectiveTime xsi:type="PIVL_TS" institutionSpecified="true" operator="A">
-                                                <period value="6" unit="h"/>
-                                            </effectiveTime>
-
-                                        <routeCode displayName="RESPIRATORY (INHALATION)" code="C38216" codeSystem="2.16.840.1.113883.3.26.1.1" codeSystemName="NCI Thesaurus" />
-
-                                            <doseQuantity value="1"  />
-
-
-                                            <rateQuantity value="90" unit="ml/min"/>
-
-                                        <maxDoseQuantity nullFlavor="UNK">
-                                            <numerator nullFlavor="UNK"/>
-                                            <denominator nullFlavor="UNK"/>
-                                        </maxDoseQuantity>
-                                        <administrationUnitCode displayName="INHALANT" code="C42944" codeSystem="2.16.840.1.113883.3.26.1.1" codeSystemName="NCI Thesaurus" />
-                                        <consumable>
-                                            <manufacturedProduct classCode="MANU">
-                                                <templateId root="2.16.840.1.113883.10.20.22.4.23"/>
-                                                <id nullFlavor="UNK" />
-                                                <manufacturedMaterial>
-                                                    <code displayName="Albuterol 0.09 MG/ACTUAT inhalant solution" code="329498" codeSystem="2.16.840.1.113883.6.88" >
-                                                        <translation displayName="Proventil 0.09 MG/ACTUAT inhalant solution" code="573621" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RxNorm"/>
-
-                                                    </code>
-                                                </manufacturedMaterial>
-                                                <manufacturerOrganization/>
-                                            </manufacturedProduct>
-                                        </consumable>
-                                                                                    <participant typeCode="CSM">
-                                               <participantRole classCode="MANU">
-                                                  <templateId root="2.16.840.1.113883.10.20.22.4.24"/>
-                                                  <code code="412307009" displayName="drug vehicle" codeSystem="2.16.840.1.113883.6.96"/>
-                                                  <playingEntity classCode="MMAT">
-                                                     <code displayName="Diethylene Glycol" code="5955009" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" />
-                                                     <name>Diethylene Glycol</name>
-                                                  </playingEntity>
-                                               </participantRole>
-                                            </participant>
-
-                                        <entryRelationship typeCode="RSON">
-                                            <observation classCode="OBS" moodCode="EVN">
-                                                <templateId root="2.16.840.1.113883.10.20.22.4.19"/>
-                                                <id root="db734647-fc99-424c-a864-7e3cda82e703" extension="45665"/>
-                                                <code code="404684003" displayName="Finding" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                                <statusCode code="completed"/>
-                                                <value xsi:type="CE" displayName="Bronchitis" code="32398004" codeSystem="2.16.840.1.113883.6.96"/>
-                                            </observation>
-                                        </entryRelationship>
-                                        <precondition typeCode="PRCN">
-                                            <templateId root="2.16.840.1.113883.10.20.22.4.25"/>
-                                            <criterion>
-                                                <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
-                                                <value xsi:type="CE" displayName="Wheezing" code="56018004" codeSystem="2.16.840.1.113883.6.96"/>
-                                            </criterion>
-                                        </precondition>
-                                    </substanceAdministration>
-                                </entry>
-
-
-
+                            <entry>
+                              <substanceAdministration moodCode="EVN" classCode="SBADM" negationInd="true">
+                                <!-- ** Medication activity ** -->
+                                <templateId root="2.16.840.1.113883.10.20.22.4.16" />
+                                <id root="37c20f19-f327-b5cc-3a5d-0587eb9deb3f" />
+                                <statusCode code="completed" />
+                                <effectiveTime xsi:type="IVL_TS">
+                                  <low nullFlavor="NA" />
+                                  <high nullFlavor="NA" />
+                                </effectiveTime>
+                                <consumable>
+                                  <manufacturedProduct classCode="MANU">
+                                    <!-- ** Medication information ** -->
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.23" />
+                                    <id root="70260742-c295-154c-4e2e-9f68b1a7397f" />
+                                    <manufacturedMaterial>
+                                      <code nullFlavor="NI" />
+                                    </manufacturedMaterial>
+                                  </manufacturedProduct>
+                                </consumable>
+                              </substanceAdministration>
+                            </entry>
 
 
                     </section>
@@ -1097,182 +1033,35 @@
                         <title>Results</title>
                         <text>
 
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Panel Name</th>
-                                            <th>Test Name</th>
-                                            <th>Value</th>
-                                            <th>Unit</th>
-                                            <th>Reference Range</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-
-                                                <tr>
-                                                    <td>CBC WO DIFFERENTIAL</td>
-                                                    <td>HGB</td>
-                                                    <td>13.2</td>
-                                                    <td>g/dl</td>
-                                                                                                            <td></td>
-
-                                                    <td>2000-03-23T14:30:00Z</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>CBC WO DIFFERENTIAL</td>
-                                                    <td>WBC</td>
-                                                    <td>6.7</td>
-                                                    <td>10+3/ul</td>
-                                                                                                            <td>4.3 to 10.8</td>
-
-                                                    <td>2000-03-23T14:30:00Z</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>CBC WO DIFFERENTIAL</td>
-                                                    <td>PLT</td>
-                                                    <td>123</td>
-                                                    <td>10+3/ul</td>
-                                                                                                            <td>150 to 350</td>
-
-                                                    <td>2000-03-23T14:30:00Z</td>
-                                                </tr>
-
-
-                                    </tbody>
-                                </table>
+                                No lab results data provided.
 
                         </text>
 
 
 
-
-
-                            <entry typeCode="DRIV">
-                                <organizer classCode="BATTERY" moodCode="EVN">
-                                    <!-- Result organizer template -->
-                                    <templateId root="2.16.840.1.113883.10.20.22.4.1"/>
-                                    <id root="7d5a02b0-67a4-11db-bd13-0800200c9a66"/>
-                                    <code displayName="CBC WO DIFFERENTIAL" code="43789009" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" />
-                                    <statusCode code="completed"/>
-
-
-
-
-                                    <component>
-                                        <observation classCode="OBS" moodCode="EVN">
-                                            <!-- Result observation template -->
-                                            <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
-                                            <id root="107c2dc0-67a5-11db-bd13-0800200c9a66"/>
-                                            <code displayName="HGB" code="30313-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" >
-                                                                                            </code>
-                                            <statusCode code="completed"/>
-                                            <effectiveTime value="20000323143000+0000" />
-
-                                                <value
-
-                                                        xsi:type="PQ"
-                                                        value="13.2"
-                                                         unit="g/dl"
-
-                                                />
-
-                                            <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
-                                            <methodCode/>
-                                            <targetSiteCode/>
-                                            <referenceRange>
-                                                <observationRange>
-                                                                                                            <text>M 13-18 g/dl; F 12-16 g/dl</text>
-                                                                                                    </observationRange>
-                                            </referenceRange>
-                                        </observation>
-                                    </component>
-
-
-
-
-
-                                    <component>
-                                        <observation classCode="OBS" moodCode="EVN">
-                                            <!-- Result observation template -->
-                                            <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
-                                            <id root="107c2dc0-67a5-11db-bd13-0800200c9a66"/>
-                                            <code displayName="WBC" code="33765-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" >
-                                                                                            </code>
-                                            <statusCode code="completed"/>
-                                            <effectiveTime value="20000323143000+0000" />
-
-                                                <value
-
-                                                        xsi:type="PQ"
-                                                        value="6.7"
-                                                         unit="10+3/ul"
-
-                                                />
-
-                                            <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
-                                            <methodCode/>
-                                            <targetSiteCode/>
-                                            <referenceRange>
-                                                <observationRange>
-                                                                                                            <value xsi:type="IVL_PQ">
-                                                           <low value="4.3"
-                                                                unit="10+3/ul"/>
-                                                           <high value="10.8"
-                                                                unit="10+3/ul"/>
-                                                        </value>
-                                                                                                    </observationRange>
-                                            </referenceRange>
-                                        </observation>
-                                    </component>
-
-
-
-
-
-                                    <component>
-                                        <observation classCode="OBS" moodCode="EVN">
-                                            <!-- Result observation template -->
-                                            <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
-                                            <id root="107c2dc0-67a5-11db-bd13-0800200c9a66"/>
-                                            <code displayName="PLT" code="26515-7" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" >
-                                                                                            </code>
-                                            <statusCode code="completed"/>
-                                            <effectiveTime value="20000323143000+0000" />
-
-                                                <value
-
-                                                        xsi:type="PQ"
-                                                        value="123"
-                                                         unit="10+3/ul"
-
-                                                />
-
-                                            <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
-                                            <methodCode/>
-                                            <targetSiteCode/>
-                                            <referenceRange>
-                                                <observationRange>
-                                                                                                            <value xsi:type="IVL_PQ">
-                                                           <low value="150"
-                                                                unit="10+3/ul"/>
-                                                           <high value="350"
-                                                                unit="10+3/ul"/>
-                                                        </value>
-                                                                                                    </observationRange>
-                                            </referenceRange>
-                                        </observation>
-                                    </component>
-
-
-
-
-                                </organizer>
+                            <entry>
+                               <organizer classCode="BATTERY" moodCode="EVN">
+                                  <templateId root="2.16.840.1.113883.10.20.22.4.1"/>
+                                  <id nullFlavor="NI"/>
+                                  <code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+                                  <statusCode code="completed"/>
+                                  <effectiveTime>
+                                     <low nullFlavor="UNK"/>
+                                  </effectiveTime>
+                                  <component>
+                                     <observation classCode="OBS" moodCode="EVN">
+                                        <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
+                                        <id nullFlavor="NI"/>
+                                        <code nullFlavor="NI"/>
+                                        <statusCode code="completed"/>
+                                        <effectiveTime>
+                                           <low nullFlavor="UNK"/>
+                                        </effectiveTime>
+                                        <value nullFlavor="NI" xsi:type="ST"/>
+                                     </observation>
+                                  </component>
+                               </organizer>
                             </entry>
-
 
 
 
@@ -1294,52 +1083,9 @@
                         <code code="46240-8" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of encounters"/>
                         <title>Encounters</title>
                         <text>
-                                                            <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Encounter Diagnosis</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                                                                                                                                                                        <tr>
-                                                        <td>Bronchitis</td>
-                                                        <td>04/07/2000</td>
-                                                    </tr>
-                                                                                                                                                                        </tbody>
-                                </table>
+                                                            No encounters data provided.
                                                     </text>
 
-
-
-
-                                <entry typeCode="DRIV">
-                                    <encounter classCode="ENC" moodCode="EVN">
-                                        <templateId root="2.16.840.1.113883.10.20.22.4.49"/>
-                                        <!-- Encounter Activities -->
-                                        <!--  ********  Encounter activity template   ******** -->
-                                        <id root="2a620155-9d11-439e-92b3-5d9815ff4de8"/>
-                                        <code displayName="Office consultation - 15 minutes" code="99241" codeSystem="2.16.840.1.113883.6.12" codeSystemName="CPT" codeSystemVersion="4" >
-                                                                                            <translation displayName="Ambulatory" code="AMB" codeSystem="2.16.840.1.113883.5.4" codeSystemName="HL7 ActEncounterCode" />
-                                                                                    </code>
-                                        <effectiveTime value="20000407" />
-                                        <performer>
-                                            <assignedEntity>
-                                                <id nullFlavor="UNK" />
-                                                <code displayName="General Physician" code="59058001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" />
-                                            </assignedEntity>
-                                        </performer>
-                                                                                    <entryRelationship typeCode="RSON">
-                                                <observation classCode="OBS" moodCode="EVN">
-                                                    <templateId root="2.16.840.1.113883.10.20.22.4.19"/>
-                                                    <id root="db734647-fc99-424c-a864-7e3cda82e703" extension="45665"/>
-                                                    <code code="404684003" displayName="Finding" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                                    <statusCode code="completed"/>
-                                                    <value xsi:type="CD" displayName="Bronchitis" code="32398004" codeSystem="2.16.840.1.113883.6.96" />
-                                                </observation>
-                                            </entryRelationship>
-                                                                            </encounter>
-                                </entry>
 
 
 
@@ -1582,24 +1328,26 @@
 
 
                                                 <tr>
-                                                    <td>11-14-1999</td>
-                                                    <td>Height</td>
-                                                    <td>177</td>
-                                                    <td>cm</td>
+                                                    <td>01-21-2016</td>
+                                                    <td>pankaj</td>
+                                                    <td>123</td>
+                                                    <td>asd</td>
+                                                </tr>
+
+
+
+                                                <tr>
+                                                    <td>01-21-2016</td>
+                                                    <td>pankaj</td>
+                                                    <td>123</td>
+                                                    <td>asd</td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td>11-14-1999</td>
-                                                    <td>Patient Body Weight - Measured</td>
-                                                    <td>86</td>
-                                                    <td>kg</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>11-14-1999</td>
-                                                    <td>Intravascular Systolic</td>
-                                                    <td>132</td>
-                                                    <td>mm[Hg]</td>
+                                                    <td>01-21-2016</td>
+                                                    <td>pankaj2</td>
+                                                    <td>123</td>
+                                                    <td>asd2</td>
                                                 </tr>
 
 
@@ -1626,15 +1374,6 @@
                                                 </tr>
 
 
-
-                                                <tr>
-                                                    <td>01-11-2016</td>
-                                                    <td>pankaj</td>
-                                                    <td>pankaj</td>
-                                                    <td>cm</td>
-                                                </tr>
-
-
                                     </tbody>
                                 </table>
 
@@ -1651,7 +1390,7 @@
                                             <id root="c6f88320-67ad-11db-bd13-0800200c9a66"/>
                                             <code code="46680005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Vital signs"/>
                                             <statusCode code="completed"/>
-                                            <effectiveTime value="19991114" />
+                                            <effectiveTime value="20160121" />
 
 
                                             <component>
@@ -1659,10 +1398,41 @@
                                                     <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
                                                     <!-- Vital Sign Observation template -->
                                                     <id root="c6f88321-67ad-11db-bd13-0800200c9a66"/>
-                                                    <code displayName="Height" code="8302-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+                                                    <code displayName="pankaj" code="8302-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
                                                     <statusCode code="completed"/>
-                                                    <effectiveTime value="19991114" />
-                                                    <value xsi:type="PQ" value="177" unit="cm"/>
+                                                    <effectiveTime value="20160121" />
+                                                    <value xsi:type="PQ" value="123" unit="asd"/>
+                                                    <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
+                                                </observation>
+                                            </component>
+
+
+                                        </organizer>
+                                    </entry>
+
+
+
+
+
+                                    <entry typeCode="DRIV">
+                                        <organizer classCode="CLUSTER" moodCode="EVN">
+                                            <templateId root="2.16.840.1.113883.10.20.22.4.26"/>
+                                            <!-- Vital signs organizer template -->
+                                            <id root="c6f88320-67ad-11db-bd13-0800200c9a66"/>
+                                            <code code="46680005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Vital signs"/>
+                                            <statusCode code="completed"/>
+                                            <effectiveTime value="20160121" />
+
+
+                                            <component>
+                                                <observation classCode="OBS" moodCode="EVN">
+                                                    <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
+                                                    <!-- Vital Sign Observation template -->
+                                                    <id root="c6f88321-67ad-11db-bd13-0800200c9a66"/>
+                                                    <code displayName="pankaj" code="8302-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+                                                    <statusCode code="completed"/>
+                                                    <effectiveTime value="20160121" />
+                                                    <value xsi:type="PQ" value="123" unit="asd"/>
                                                     <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
                                                 </observation>
                                             </component>
@@ -1672,23 +1442,10 @@
                                                     <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
                                                     <!-- Vital Sign Observation template -->
                                                     <id root="c6f88321-67ad-11db-bd13-0800200c9a66"/>
-                                                    <code displayName="Patient Body Weight - Measured" code="3141-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+                                                    <code displayName="pankaj2" code="8302-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
                                                     <statusCode code="completed"/>
-                                                    <effectiveTime value="19991114" />
-                                                    <value xsi:type="PQ" value="86" unit="kg"/>
-                                                    <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
-                                                </observation>
-                                            </component>
-
-                                            <component>
-                                                <observation classCode="OBS" moodCode="EVN">
-                                                    <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
-                                                    <!-- Vital Sign Observation template -->
-                                                    <id root="c6f88321-67ad-11db-bd13-0800200c9a66"/>
-                                                    <code displayName="Intravascular Systolic" code="8480-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
-                                                    <statusCode code="completed"/>
-                                                    <effectiveTime value="19991114" />
-                                                    <value xsi:type="PQ" value="132" unit="mm[Hg]"/>
+                                                    <effectiveTime value="20160121" />
+                                                    <value xsi:type="PQ" value="123" unit="asd2"/>
                                                     <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
                                                 </observation>
                                             </component>
@@ -1746,37 +1503,6 @@
                                                     <statusCode code="completed"/>
                                                     <effectiveTime value="20000407" />
                                                     <value xsi:type="PQ" value="145" unit="mm[Hg]"/>
-                                                    <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
-                                                </observation>
-                                            </component>
-
-
-                                        </organizer>
-                                    </entry>
-
-
-
-
-
-                                    <entry typeCode="DRIV">
-                                        <organizer classCode="CLUSTER" moodCode="EVN">
-                                            <templateId root="2.16.840.1.113883.10.20.22.4.26"/>
-                                            <!-- Vital signs organizer template -->
-                                            <id root="c6f88320-67ad-11db-bd13-0800200c9a66"/>
-                                            <code code="46680005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Vital signs"/>
-                                            <statusCode code="completed"/>
-                                            <effectiveTime value="20160111" />
-
-
-                                            <component>
-                                                <observation classCode="OBS" moodCode="EVN">
-                                                    <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
-                                                    <!-- Vital Sign Observation template -->
-                                                    <id root="c6f88321-67ad-11db-bd13-0800200c9a66"/>
-                                                    <code displayName="pankaj" code="8302-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
-                                                    <statusCode code="completed"/>
-                                                    <effectiveTime value="20160111" />
-                                                    <value xsi:type="PQ" value="pankaj" unit="cm"/>
                                                     <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
                                                 </observation>
                                             </component>

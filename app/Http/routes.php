@@ -82,3 +82,4 @@ Route::get('ccdaform', 'CcdaController@index');
 Route::get('/addvital/{id}', 'CcdaController@addVital');
 Route::post('/savevitals', 'CcdaController@saveVitals');
 Route::get('/download/{id}', 'CcdaController@getxml');
+Route::get('/showvitals/{id}', array('uses'=>'CcdaController@showVitals','as'=>'showvitals'));

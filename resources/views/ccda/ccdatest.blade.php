@@ -10,6 +10,14 @@
 
 
 @section('content')
+
+
+@if(Session::has('error'))
+
+<h3 style="color:red">{{ Session::pull('error', 'default')}}</h3>
+ @endif
+
+
    <h3>Select a CCDA file</h3>
     {!! Form::open(array('url' => '/saveccd', 'method' => 'post','files'=>true)) !!}
     {!!Form::file('ccda')!!}

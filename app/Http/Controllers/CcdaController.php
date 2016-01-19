@@ -31,19 +31,48 @@ class CcdaController extends Controller
             $validator = \Validator::make(array('jsson' => $jsonstring), array('jsson'=>'Required|json'));
 
             if ($validator->fails()) {
-                return 'please provide a valid ccd file';
+               // return 'please provide a valid ccd file';
+                $request->session()->flash('error','please provide a valid ccda file');
+                return back()->withInput();
             }
             $ccda = new Ccda;
             $ccda->ccdablob = $jsonstring;
             if ($ccda->save()) {
                 //echo $ccda->id;
-                return $ccda->ccdablob;
-                return 'successfull';
+                $this->savePreviousVitals(json_decode($ccda->ccdablob, true)['vitals'], $ccda->id );
+                return redirect()->route('showvitals',$ccda->id );
+                //return $ccda->ccdablob;
+                //return 'successfull';
             }
         }
 
         return 'unsuccessful';
     }
+
+    public function savePreviousVitals($data,$id)
+    {
+        foreach ($data as $vitals)
+        {
+            $date = date('Y-m-d',strtotime($vitals['date']));
+            $results = $vitals['results'];
+            foreach ($results as $result)
+            {
+                $vital = new Vital;
+                $vital->ccda_id             = $id;
+                $vital->v_date              = $date;
+                $vital->name                = $result['name'];
+                $vital->code                = $result['code'];
+                $vital->code_system         = $result['code_system'];
+                $vital->code_system_name    = $result['code_system_name'];
+                $vital->value               = $result['value'];
+                $vital->unit                = $result['unit'];
+                $vital->save();
+            }
+        }
+
+    }
+
+
 
     public function genrateXml()
     {
@@ -58,7 +87,7 @@ class CcdaController extends Controller
         $ccda = Ccda::find($id);
         $jsonobject = json_decode($ccda->ccdablob, true);
         $vitals = Vital::select('v_date')->groupBy('v_date')->where('ccda_id', $id)->get();
-        $vitalsize = sizeof($jsonobject['vitals']);
+        $vitalsize = 0;
         foreach ($vitals as $vital) {
             $vsigns = Vital::where('ccda_id', $id)->where('v_date', $vital->v_date)->get();
             $newVitals=[];
@@ -75,7 +104,6 @@ class CcdaController extends Controller
             }
             $jsonobject['vitals'][$vitalsize]=$newVitals;
             $vitalsize++;
-
         }
         $ccda->ccdablob = json_encode($jsonobject);
         $ccda->save();
@@ -107,7 +135,7 @@ class CcdaController extends Controller
         $vital->unit                = $request->input('v_unit');
 
         if ($vital->save()) {
-            return 'successfull';
+            return redirect()->route('showvitals',$id );
         }
         return 'fail';
     }
@@ -122,4 +150,18 @@ class CcdaController extends Controller
         return Response()->download($file, 'ccdafile.xml', $headers);
 
     }
+
+    public function showVitals($id)
+    {
+        $vitals = Vital::where('ccda_id',$id)->get();
+
+        return view('ccda.showvitals')->with('vitals',$vitals)->with('id',$id);
+
+
+    }
+
+
+
+
+
 }
