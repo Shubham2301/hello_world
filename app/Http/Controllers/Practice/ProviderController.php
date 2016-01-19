@@ -175,5 +175,4 @@ class ProviderController extends Controller
 
         return $openSlots;
     }
-
 }

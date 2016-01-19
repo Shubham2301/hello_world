@@ -54,7 +54,7 @@
                 <button class="confirmed" disabled>Confirmed</button>
              <h4>You have scheduled an appointment</h4>
             </div>
-            
+
         </div>
     </div>
 

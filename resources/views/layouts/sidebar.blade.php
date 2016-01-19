@@ -64,14 +64,14 @@
 <div class="sidebar_menu center">
 <img src="{{URL::asset('images/sidebar/care_coordinator.png')}}">
 </div>
-<div class="container"><div class="row"><div class="col-lg-offset-2">
+<div class="container"><div class="row"><div class="col-md-12">
 <ul class="sidebar-item-list">
-    <li class="sidebar_menu_item"><a class="sidebar-item" href="/directmail"><span><img src="{{URL::asset('images/sidebar/messages.png')}}" class="image"></span>Messages</a></li>
-    <li class="sidebar_menu_item"><a class="sidebar-item" href="#"><span><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="image"></span>File Update</a></li>
-    <li class="sidebar_menu_item"><a class="sidebar-item" href="#"><span><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="image"></span>Announcements</a></li>
-    <li class="sidebar_menu_item"><a class="sidebar-item" href="#"><span><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="image"></span>Schedule a Patient</a></li>
-    <li class="sidebar_menu_item"><a class="sidebar-item" href="#"><span><img src="{{URL::asset('images/sidebar/records.png')}}" class="image"></span>Records</a></li>
-    <li class="sidebar_menu_item"><a class="sidebar-item" href="/home"><span><img src="{{URL::asset('images/sidebar/care_coordination.png')}}" class="image"></span>Care Coordination</a></li>
+    <li class="sidebar_menu_item"><a class="sidebar-item" href="/directmail"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="image"></span><span class="menu_item_label">Messages</span></a></li>
+    <li class="sidebar_menu_item"><a class="sidebar-item" href="#"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="image"></span><span class="menu_item_label">File Update</span></a></li>
+    <li class="sidebar_menu_item"><a class="sidebar-item" href="#"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="image"></span><span class="menu_item_label">Announcements</span></a></li>
+    <li class="sidebar_menu_item"><a class="sidebar-item" href="#"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="image"></span><span class="menu_item_label">Schedule a Patient</span></a></li>
+    <li class="sidebar_menu_item"><a class="sidebar-item" href="#"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/records.png')}}" class="image"></span><span class="menu_item_label">Records</span></a></li>
+    <li class="sidebar_menu_item"><a class="sidebar-item" href="/home"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/care_coordination.png')}}" class="image"></span><span class="menu_item_label">Care Coordination</span></a></li>
     </ul>
     </div>
 </div>
