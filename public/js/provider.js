@@ -311,10 +311,10 @@ function scheduleAppointment(providerId, practiceID) {
 
 function getOpenSlots() {
 
-    var provider_id = 1;
-    var location_id = 1;
-    var appointment_type = 1;
-    var appointment_date = 1;
+    var provider_id = 991234567;
+    var location_id = 3839;
+    var appointment_type = 28632;
+    var appointment_date = '1/25/2016 11:00:00 AM';
 
     var formData = {
         'provider_id': provider_id,
@@ -339,8 +339,8 @@ function getOpenSlots() {
 }
 function getAppointmentTypes() {
 
-    var provider_id = 1;
-    var location_id = 1;
+    var provider_id = 991234567;
+    var location_id = 3839;
 
     var formData = {
         'provider_id': provider_id,
