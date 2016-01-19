@@ -104,14 +104,16 @@ $(document).ready(function () {
 
         scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
     });
+
     $('.locations').on('click', '.practice_location', function () {
         $('.practice_location').removeClass('active');
         $(this).addClass('active');
         getAppointmentTypes();
     });
-});
 
-$(document).ready(function () {
+    $('#appointment-type').on('change', function () {
+        getOpenSlots();
+    });
 
     $('.provider_near_patient').on('click', function () {
         $('.provider_near_patient_list').toggleClass("active");
@@ -129,6 +131,8 @@ $(document).ready(function () {
         }
     });
 });
+
+$(document).ready(function () {});
 
 function changePatientInfo() {
     $('.change_selected_patient').text("");
@@ -338,7 +342,8 @@ function getOpenSlots() {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-            alert('successfull');
+            $('#appointment-datetime').removeClass('hidden');
+            $('#appointment-datetime').append('<option value="0">Select Date and Time</option>');
         },
         error: function error() {},
         cache: false,
@@ -364,8 +369,9 @@ function getAppointmentTypes() {
         async: false,
         success: function success(e) {
             $('#appointment-type').removeClass('hidden');
-            $('#appointment-type').append('<option value="0">Annual Eye Exam</option>');
-            $('#appointment-type').append('<option value="1">Eye Exam</option>');
+            $('#appointment-type').append('<option value="0">Select Appointment Type</option>');
+            $('#appointment-type').append('<option value="1">Annual Eye Exam</option>');
+            $('#appointment-type').append('<option value="2">Eye Exam</option>');
         },
         error: function error() {},
         cache: false,

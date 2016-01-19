@@ -41,8 +41,12 @@
                     </div>
                 </div>
                 <div class="col-xs-6">
-                    <p><span class="bold">Appointment Availability</span>
-                        <br>-</p>
+                    <p>
+                        <span class="bold">Appointment Availability</span>
+                        <br>
+                        <select name="appointment-datetime" class="hidden" id="appointment-datetime">
+                        </select>
+                    </p>
                 </div>
             </div>
         </div>
