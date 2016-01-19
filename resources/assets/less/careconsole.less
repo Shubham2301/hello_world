@@ -1,0 +1,113 @@
+.search{
+    float: right;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.8);
+    padding: .1em .1em;
+    margin-right: -15px;
+    cursor: pointer;
+    border-top-left-radius: .5em;
+    border-bottom-left-radius: .5em;
+    &>.glyphicon-chevron-left{
+        color: #9d9fa2;
+        margin-right: -5px;
+    }
+    &>.glyphicon-search{
+        color: #f15a24;
+        margin-right: 5px;
+    }
+}
+.overview{
+    margin: 1em 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.overview_section{
+    display: flex;
+    order: 1;
+    padding: 0;
+}
+.info_box{
+    width: 100%;
+    border-radius: .5em;
+    background-color:rgba(255, 255, 255, 0.8);
+    margin: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.info_section{
+    display: inline-flex;
+//    justify-content: flex-end;
+    flex-direction: row;
+    flex-wrap: wrap;
+//    align-items: flex-end;
+    padding: 0 0 .2em .2em;
+    margin: 0;
+    width: 100%;
+    cursor: pointer;
+}
+.top{
+    flex-grow: 1;
+    width: 100%;
+}
+.circle {
+    margin: .95em .4em;
+    width: .8em;
+    height: .8em;
+    border-radius: 50%;
+    align-self: flex-end;
+    &.green{
+        background: #34a853;
+    }
+    &.yellow{
+        background: #fbbc05;
+    }
+    &.red{
+        background: #ea4335;
+    }
+}
+.info_section_number{
+    background-color: #0071bc;
+    padding: 5px;
+    font-size: 1.5em;
+    margin-bottom: .2em;
+//    align-self: flex-end;
+//    width: 17%;
+    text-align: center;
+    word-break: break-all;
+}
+.info_section_title{
+//    width: 80%;
+    padding: 11px 2px;
+    color: #0071bc;
+    font-size: .85em;
+//    justify-content: flex-start;
+}
+.section_break{
+    border-bottom: solid 2px #00b6f1;
+    display: flex;
+    width: 100%;
+}
+.bottom{
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    background-color: #006d91;
+    padding: 1em 0;
+    font-size: 1em;
+    align-self: flex-end;
+    &>p{
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+    }
+}
+.right{
+    justify-content: flex-end;
+}
+.left{
+    justify-content: flex-start;
+}
