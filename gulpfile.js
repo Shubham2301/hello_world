@@ -28,5 +28,7 @@ elixir(function (mix) {
     mix.babel(['provider.js'],'public/js/provider.js');
     mix.babel(['practice.js'],'public/js/practice.js');
     mix.babel(['appointment.js'],'public/js/appointment.js');
+    mix.babel(['patient_import.js'],'public/js/patient_import.js');
+
 
 });

@@ -113,3 +113,19 @@
 .insurance_provider_content.active {
   visibility: visible;
 }
+
+.import_form {
+  color: black;
+}
+
+.input_lable {
+  margin-right: 1em;
+}
+
+.input_row {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 2em;
+  width: 15em;
+}
