@@ -19,10 +19,16 @@
 }
 
 .import-btn {
+  background: transparent;
+  color: #cde8f4;
+  border: 1px solid;
+  float: right;
+}
+
+.import-btn:hover {
   color: black;
   background-color: #cde8f4;
   border-color: #cde8f4;
-  float: right;
 }
 
 .inputfile {
