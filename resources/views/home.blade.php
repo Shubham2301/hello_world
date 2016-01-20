@@ -7,6 +7,10 @@
 <script type="text/javascript" src="{{asset('js/referraltype.js')}}"></script>
 @endsection
 
+@section('sidebar')
+    @include('layouts.sidebar')
+@endsection
+
 @section('content')
 
 

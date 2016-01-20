@@ -27,19 +27,6 @@ Route::get('/start', 'TestroleController@start');
 
 Route::get('/show', 'TestroleController@show');
 
-
-/*
-
--> Deprecated in 5.2 => Route::controllers();
--> Replaced with explicit route registration
-
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
-
-*/
-
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
@@ -81,7 +68,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('practices', 'Practice\PracticeController');
     Route::resource('appointments', 'Appointment\AppointmentController');
     Route::resource('home', 'HomeController');
+    Route::resource('careconsole', 'CareConsoleController');
 });
 
 Route::get('import/location', 'BulkImportController@getLocations');
-Route::post('import/csv', 'BulkImportController@importPatientsCsv');
+Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');

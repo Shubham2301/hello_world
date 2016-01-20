@@ -5,8 +5,11 @@ $(document).ready(function () {
         'id': id
     };
     getPatientInfo(formData);
+
     $('.view_selected_patient').on('click', showPatientInfo);
+
     $('.change_selected_patient').on('click', changePatientInfo);
+
     $('#change_patient_button').on('click', function () {
         $('#form_select_provider').attr('action', "http://ocuhub.dev/patients");
         $('#form_provider_id').prop('disabled', true);
@@ -102,9 +105,15 @@ $(document).ready(function () {
         scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
     });
 
-});
+    $('.locations').on('click', '.practice_location', function () {
+        $('.practice_location').removeClass('active');
+        $(this).addClass('active');
+        getAppointmentTypes();
+    });
 
-$(document).ready(function () {
+    $('#appointment-type').on('change', function () {
+        getOpenSlots();
+    });
 
     $('.provider_near_patient').on('click', function () {
         $('.provider_near_patient_list').toggleClass("active");
@@ -125,6 +134,11 @@ $(document).ready(function () {
             $('.provider_previous').addClass('glyphicon-chevron-right');
         }
     });
+});
+
+$(document).ready(function () {
+
+
 });
 
 function changePatientInfo() {
@@ -228,7 +242,7 @@ function showProviderInfo(data) {
 
     if (locations.length > 0) {
         locations.forEach(function (location) {
-            content += '<li><p>' + location.addressline1 + ',' + location.addressline1 + ' ' + location.city + ' ' + location.phone + '</p></li>';
+            content += '<div class="practice_location"><span>' + location.addressline1 + ',' + location.addressline1 + ' ' + location.city + ' ' + location.phone + '</span></div>';
         });
     }
 
@@ -237,8 +251,6 @@ function showProviderInfo(data) {
     $('.practice_info').addClass('active');
     $('.patient_previous_information').removeClass('active');
     $('.schedule_button').addClass('active');
-
-
 }
 
 function getProviderInfo(formData) {
@@ -322,12 +334,12 @@ function scheduleAppointment(providerId, practiceID) {
     $('#form_select_provider').submit();
 }
 
-function getOpenSlots(){
+function getOpenSlots() {
 
-    var provider_id = 1;
-    var location_id = 1;
-    var appointment_type = 1;
-    var appointment_date = 1;
+    var provider_id = 991234567;
+    var location_id = 3839;
+    var appointment_type = 28632;
+    var appointment_date = '1/25/2016 11:00:00 AM';
 
     var formData = {
         'provider_id': provider_id,
@@ -343,36 +355,39 @@ function getOpenSlots(){
         contentType: 'text/html',
         async: false,
         success: function (e) {
-            alert('successfull');
+            $('#appointment-datetime').removeClass('hidden');
+            $('#appointment-datetime').append('<option value="0">Select Date and Time</option>');
         },
-        error: function () {
-        },
+        error: function () {},
         cache: false,
         processData: false
     });
 
 }
-function getAppointmentTypes(){
 
-    var provider_id = 1;
-    var location_id = 1;
+function getAppointmentTypes() {
+
+    var provider_id = 991234567;
+    var location_id = 3839;
 
     var formData = {
         'provider_id': provider_id,
         'location_id': location_id,
     };
 
-     $.ajax({
+    $.ajax({
         url: '/providers/appointmenttypes',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
         success: function (e) {
-            alert('successfull');
+            $('#appointment-type').removeClass('hidden');
+            $('#appointment-type').append('<option value="0">Select Appointment Type</option>');
+            $('#appointment-type').append('<option value="1">Annual Eye Exam</option>');
+            $('#appointment-type').append('<option value="2">Eye Exam</option>');
         },
-        error: function () {
-        },
+        error: function () {},
         cache: false,
         processData: false
     });

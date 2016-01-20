@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "46f1985e9001a379af7bcca7dbfea2d0",
+    "hash": "ffa03bdf3abfaaaf78a5e2fbd969a2ff",
     "content-hash": "be6cddab5d3aaca1126adaffc77c5cfb",
     "packages": [
         {
@@ -308,16 +308,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.2.10",
+            "version": "v5.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "93dc5b0089eef468157fd7200e575c3861ec59a5"
+                "reference": "1d165631b90d104c517d54455a5e867584645473"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/93dc5b0089eef468157fd7200e575c3861ec59a5",
-                "reference": "93dc5b0089eef468157fd7200e575c3861ec59a5",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/1d165631b90d104c517d54455a5e867584645473",
+                "reference": "1d165631b90d104c517d54455a5e867584645473",
                 "shasum": ""
             },
             "require": {
@@ -344,7 +344,7 @@
                 "symfony/routing": "2.8.*|3.0.*",
                 "symfony/translation": "2.8.*|3.0.*",
                 "symfony/var-dumper": "2.8.*|3.0.*",
-                "vlucas/phpdotenv": "~2.2"
+                "vlucas/phpdotenv": "~2.0"
             },
             "replace": {
                 "illuminate/auth": "self.version",
@@ -378,6 +378,7 @@
             },
             "require-dev": {
                 "aws/aws-sdk-php": "~3.0",
+                "iron-io/iron_mq": "~2.0",
                 "mockery/mockery": "~0.9.2",
                 "pda/pheanstalk": "~3.0",
                 "phpunit/phpunit": "~4.1",
@@ -432,20 +433,20 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2016-01-13 20:29:10"
+            "time": "2015-12-24 15:39:57"
         },
         {
             "name": "laravelcollective/html",
-            "version": "v5.2.2",
+            "version": "v5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LaravelCollective/html.git",
-                "reference": "c88b2d59a56ed2290fc5082a1a6099e357c9fdbc"
+                "reference": "5a8f1380a0d5ef21cdef37e775d86566307f8358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/c88b2d59a56ed2290fc5082a1a6099e357c9fdbc",
-                "reference": "c88b2d59a56ed2290fc5082a1a6099e357c9fdbc",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/5a8f1380a0d5ef21cdef37e775d86566307f8358",
+                "reference": "5a8f1380a0d5ef21cdef37e775d86566307f8358",
                 "shasum": ""
             },
             "require": {
@@ -486,7 +487,7 @@
             ],
             "description": "HTML and Form Builders for the Laravel Framework",
             "homepage": "http://laravelcollective.com",
-            "time": "2016-01-16 16:54:49"
+            "time": "2015-12-23 07:46:46"
         },
         {
             "name": "league/flysystem",
@@ -2257,16 +2258,16 @@
         },
         {
             "name": "phpspec/phpspec",
-            "version": "2.4.1",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/phpspec.git",
-                "reference": "5528ce1e93a1efa090c9404aba3395c329b4e6ed"
+                "reference": "1d3938e6d9ffb1bd4805ea8ddac62ea48767f358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/5528ce1e93a1efa090c9404aba3395c329b4e6ed",
-                "reference": "5528ce1e93a1efa090c9404aba3395c329b4e6ed",
+                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/1d3938e6d9ffb1bd4805ea8ddac62ea48767f358",
+                "reference": "1d3938e6d9ffb1bd4805ea8ddac62ea48767f358",
                 "shasum": ""
             },
             "require": {
@@ -2331,7 +2332,7 @@
                 "testing",
                 "tests"
             ],
-            "time": "2016-01-01 10:17:54"
+            "time": "2015-11-29 02:03:49"
         },
         {
             "name": "phpspec/prophecy",

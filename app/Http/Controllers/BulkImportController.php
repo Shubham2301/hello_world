@@ -38,12 +38,12 @@ class BulkImportController extends Controller
 
     }
 
-    public function importPatientsCsv(Request $request)
+    public function importPatientsXlsx(Request $request)
     {
-        if ($request->hasFile('patient_csv')) {
+        if ($request->hasFile('patient_xlsx')) {
             $i=0;
-            $excels = Excel::load($request->file('patient_csv'))->get();
-            //dd($excels);
+            $excels = Excel::load($request->file('patient_xlsx'))->get();
+
             foreach ($excels as $sheet) {
                 $title = $sheet->getTitle();
                 switch($title)
@@ -95,8 +95,10 @@ class BulkImportController extends Controller
                         foreach ($sheet as $data) {
                             $patients = [];
                             if (array_filter($data->toArray())) {
+                                $name = explode(' ', $data['patient_name']);
                                 $patients['title']              = 'Mr';
-                                $patients['firstname']          = $data['patient_name'];
+                                $patients['firstname']          = $name[0];
+                                $patients['lastname']          = $name[1];
                                 $patients['workphone']          = $data['phone_number'];
                                 $patients['email']              = $data['email'];
                                 $patients['addressline1']       = $data['address_1'];
@@ -117,7 +119,7 @@ class BulkImportController extends Controller
 
                             }
                         }
-                        //$request->session()->put('success','you have imported '.$i.' patients');
+                        
                         break;
                 }
 

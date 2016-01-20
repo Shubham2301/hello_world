@@ -19,7 +19,6 @@ class PracticeController extends Controller
      */
     public function index(Request $request)
     {
-
         return view('practice.index');
     }
 
@@ -146,7 +145,7 @@ class PracticeController extends Controller
     {
         //
     }
-
+    
     public function search(Request $request){
         $tosearchdata = json_decode($request->input('data'),true);
         $practices =Practice::where('name','like','%'.$tosearchdata['value'].'%')->get();
@@ -161,8 +160,6 @@ class PracticeController extends Controller
             $i++;
         }
         return json_encode($data);
-
-
     }
 
 }

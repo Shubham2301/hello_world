@@ -7,6 +7,10 @@
 <script type="text/javascript" src="{{asset('js/appointment.js')}}"></script>
 @endsection
 
+@section('sidebar')
+    @include('layouts.sidebar')
+@endsection
+
 @section('content')
 
 	@if (Session::has('success'))
@@ -54,7 +58,7 @@
                 <button class="confirmed" disabled>Confirmed</button>
              <h4>You have scheduled an appointment</h4>
             </div>
-            
+
         </div>
     </div>
 

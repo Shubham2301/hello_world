@@ -5,7 +5,11 @@
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{asset('css/patient.css')}}">
 <script type="text/javascript" src="{{asset('js/patient.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/patient_import.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/import.js')}}"></script>
+@endsection
+
+@section('sidebar')
+    @include('layouts.sidebar')
 @endsection
 
 @section('content')
@@ -40,7 +44,7 @@
         <div class="patients_section active" id="patient_listing">
             @include('patient.listing')
         </div>
-        @include('patient.import-model');
+        @include('patient.import')
         {!! Form::open(array('url' => '/providers', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
 
                 {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!}

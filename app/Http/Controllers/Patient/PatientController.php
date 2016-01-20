@@ -28,7 +28,7 @@ class PatientController extends Controller
         }
         $practicedata = Practice::all()->lists('name', 'id')->toArray();
         array_unshift($practicedata, "0");
-        $practicedata['0']="select patient";
+        $practicedata['0']="Select Practice";
         return view('patient.index')->with('data', $data)->with('practice_data', $practicedata);
     }
 

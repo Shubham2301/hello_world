@@ -25,19 +25,28 @@
                         <br><span id="phone"></span></p>
                 </div>
                 <div class="col-xs-6">
-                    <p><span class="bold">Appointments</span>
-                        <br>Availability</p>
+                    <p>
+                        <span class="bold">Appointment Type</span>
+                        <br>
+                        <select name="appointment-type" class="hidden" id="appointment-type">
+                        </select>
+                    </p>
                 </div>
             </div>
 
             <div class="row">
                 <div class = "col-xs-6 ">
                     <p><span class="bold">Locations</span><br>
-                    <ul class="locations">
-                       <li> <p>location 1</p></li>
-                    </ul>
+                    <div class="locations">
+                    </div>
                 </div>
                 <div class="col-xs-6">
+                    <p>
+                        <span class="bold">Appointment Availability</span>
+                        <br>
+                        <select name="appointment-datetime" class="hidden" id="appointment-datetime">
+                        </select>
+                    </p>
                 </div>
             </div>
         </div>

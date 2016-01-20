@@ -148,8 +148,8 @@ class ProviderController extends Controller
         $providerID = $request->input('provider_id');
         $locationID = $request->input('location_id');
 
-        $providerInfo['LocKey'] = $locationID;
         $providerInfo['AcctKey'] = $providerID;
+        $providerInfo['LocKey'] = $locationID;
 
         $apptTypes = $this->fourPatientCare->getApptTypes($providerInfo);
 
@@ -164,8 +164,8 @@ class ProviderController extends Controller
         $AppointmentType = $request->input('appointment_type');
         $AppointmentDate = $request->input('appointment_date');
 
-        $providerInfo['LocKey'] = $locationID;
-        $providerInfo['AcctKey'] = $providerID;
+        $providerInfo['AcctKey'] = 991234567;
+        $providerInfo['LocKey'] = 3839;
         $providerInfo['ApptTypeKey'] = $AppointmentType;
         $providerInfo['ApptDate'] = $AppointmentDate;
 
@@ -173,5 +173,4 @@ class ProviderController extends Controller
 
         return $openSlots;
     }
-
 }

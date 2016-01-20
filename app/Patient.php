@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model
 {
 
-    protected $fillable = ['title','firstname','workphone','email','addressline1','addressline2','city',
+    protected $fillable = ['title','firstname','lastname','workphone','email','addressline1','addressline2','city',
                            'zip','lastfourssn','birthdate','gender','insurancecarrier'];
     public static function getPatients($filters)
     {

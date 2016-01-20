@@ -35,15 +35,13 @@
     cursor: pointer
 }
 
-
-
 #add_practice_search_option {
     position: inherit;
     cursor: pointer;
 }
 
 .search_filter {
-    color:black;
+    color: black;
     display: inline-flex;
     padding-left: 1px;
     padding-top: 4px;
@@ -55,10 +53,10 @@
     border: dashed 2px;
     border-radius: 5px;
     margin: 2px;
-      &>.remove_option {
-      color: red;
-      cursor:pointer;
-      margin: 1px;
+    &>.remove_option {
+        color: red;
+        cursor: pointer;
+        margin: 1px;
     }
 }
 
@@ -101,70 +99,66 @@
 #search_provider_button {
     cursor: pointer
 }
-.section_seperator
-{
+
+.section_seperator {
     border-bottom: solid 2px white;
     display: block;
     position: relative
 }
-.patient_previous_information
-{
+
+.patient_previous_information {
     display: none;
     margin: 2em 4em;
-    & p
-        {
-            color: black;
-            font-size: 1.2em;
-            margin-top: 1em;
-            font-weight: 600;
-        }
-    &.active
-        {
-            display: block;
-        }
+    & p {
+        color: black;
+        font-size: 1.2em;
+        margin-top: 1em;
+        font-weight: 600;
+    }
+    &.active {
+        display: block;
+    }
 }
-.list_seperator
-{
-padding: 1em 2em;
-border-bottom: solid 1px white;
+
+.list_seperator {
+    padding: 1em 2em;
+    border-bottom: solid 1px white;
     color: #f2f2f2;
-    &:hover
-    {
-    cursor: pointer;
+    &:hover {
+        cursor: pointer;
         color: #fff;
     }
 }
-.provider_near_patient, .previous_provider_patient
-{
+
+.provider_near_patient,
+.previous_provider_patient {
     cursor: pointer;
 }
-.provider_near_patient_list, .previous_provider_patient_list {
+
+.provider_near_patient_list,
+.previous_provider_patient_list {
     margin: 1em 2em;
     display: none;
-     &.active
-        {
-            display: block;
-        }
+    &.active {
+        display: block;
+    }
 }
-.selected_patient
-{
+
+.selected_patient {
     background-color: #faf5b4;
     color: black;
     padding: 5px;
-        & p
-        {
-            color: black;
-            text-decoration: underline;
-            display: inline-block;
-            margin: 0 0 1px;
-
-                &.view_selected_patient, &.change_selected_patient
-                {
-                    cursor: pointer;
-                }
+    & p {
+        color: black;
+        text-decoration: underline;
+        display: inline-block;
+        margin: 0 0 1px;
+        &.view_selected_patient,
+        &.change_selected_patient {
+            cursor: pointer;
         }
-    &.col-xs-2
-    {
+    }
+    &.col-xs-2 {
         text-align: right;
     }
 }
@@ -186,10 +180,11 @@ border-bottom: solid 1px white;
 
 .schedule_button {
     display: none;
-    &.active{
+    &.active {
         display: inline-block;
     }
 }
+
 .button_type_11 {
     color: black;
     padding: 0.5em 1em;
@@ -198,26 +193,21 @@ border-bottom: solid 1px white;
     color: #fff;
     display: none;
     cursor: pointer;
-    &.active
-    {
+    &.active {
         display: inline-block;
     }
 }
-.availability_display>.col-xs-1
-{
-background-color: #f2f2f2;
+
+.availability_display>.col-xs-1 {
+    background-color: #f2f2f2;
     color: black;
 }
 
-
-
 .lastseen_content {
     display: none;
-     &.active {
-         display: inline-block;
+    &.active {
+        display: inline-block;
     }
-
-
 }
 
 .lastseenby_show {
@@ -225,8 +215,8 @@ background-color: #f2f2f2;
 }
 
 .referredby_content {
-     display: none;
-     &.active {
+    display: none;
+    &.active {
         display: inline-block;
     }
 }
@@ -240,19 +230,16 @@ background-color: #f2f2f2;
 }
 
 .insurance_provider_content {
-     display: none;
-     &.active {
+    display: none;
+    &.active {
         display: inline-block;
     }
 }
 
-
 #practice_listing {
-     width: 90%;
-     margin-left: 40px;
+    width: 90%;
+    margin-left: 40px;
 }
-
-
 
 .practice_list {
     overflow-y: scroll;
@@ -264,6 +251,15 @@ background-color: #f2f2f2;
 }
 
 .practice_search_content {
+    margin-left: 112px;
+}
 
-margin-left: 112px;
+.practice_location {
+    border: 1px solid;
+    padding: 0.25em 0.5em;
+    border-radius: 5px;
+    cursor: pointer;
+    &.active,&:hover{
+        font-weight: bold;
+    }
 }

@@ -1,7 +1,19 @@
-@extends('layouts.master') @section('title', 'My Ocuhub - Select Provider') @section('imports')
+@extends('layouts.master')
+
+@section('title', 'My Ocuhub - Select Provider')
+
+@section('imports')
 <link rel="stylesheet" type="text/css" href="{{asset('css/practice.css')}}">
 <script type="text/javascript" src="{{asset('js/practice.js')}}"></script>
-@endsection @section('content') @if (Session::has('success'))
+@endsection
+
+@section('sidebar')
+    @include('layouts.sidebar')
+@endsection
+
+@section('content')
+
+@if (Session::has('success'))
 <div class="alert alert-success">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <strong>

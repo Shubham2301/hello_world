@@ -280,3 +280,15 @@
 .practice_search_content {
   margin-left: 112px;
 }
+
+.practice_location {
+  border: 1px solid;
+  padding: 0.25em 0.5em;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.practice_location.active,
+.practice_location:hover {
+  font-weight: bold;
+}
