@@ -134,26 +134,23 @@ class AppointmentController extends Controller
         $apptInfo['PatientData']['WorkPhone'] = $patient->workphone;
         $apptInfo['PatientData']['CellPhone'] = $patient->cellphone;
         $apptInfo['PatientData']['Email'] = $patient->email;
-        $apptInfo['PatientData']['DOB'] = $patient->birthdate;
+        $apptInfo['PatientData']['DOB'] = $patient->birthdate; // convert to MM/DD/YYYY HH:MM 24
         $apptInfo['PatientData']['PreferredLanguage'] = $patient->preferredlanguage;
         $apptInfo['PatientData']['Gender'] = $patient->gender;
         $apptInfo['PatientData']['L4dssn'] = $patient->lastfourssn;
         $apptInfo['PatientData']['InsuranceCarrier'] = $patient->insurancecarrier;
 
-        /*
+        $apptInfo['PatientData']['OtherInsurance'] = '';
+        $apptInfo['PatientData']['SubscriberName'] = '';
+        $apptInfo['PatientData']['SubscriberDOB'] = '';
+        $apptInfo['PatientData']['SubscriberID'] = '';
+        $apptInfo['PatientData']['GroupNum'] = '';
+        $apptInfo['PatientData']['RelationshipToPatient'] = '';
+        $apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
+        $apptInfo['PatientData']['ReferredBy'] = '';
+        $apptInfo['PatientData']['IsPatKnown'] = '';
 
-        Add once data is available.
 
-        $apptInfo['PatientData']['OtherInsurance'] = $patient->lastname;
-        $apptInfo['PatientData']['SubscriberName'] = $patient->lastname;
-        $apptInfo['PatientData']['SubscriberDOB'] = $patient->lastname;
-        $apptInfo['PatientData']['SubscriberID'] = $patient->lastname;
-        $apptInfo['PatientData']['GroupNum'] = $patient->lastname;
-        $apptInfo['PatientData']['RelationshipToPatient'] = $patient->lastname;
-        $apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = $patient->lastname;
-        $apptInfo['PatientData']['ReferredBy'] = $patient->lastname;
-
-        */
 
         $apptResult = $this->fourPatientCare->requestApptInsert($apptInfo);
 

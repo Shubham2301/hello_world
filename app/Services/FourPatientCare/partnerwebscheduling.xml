@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://WebScheduling.4PatientCare.Com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://WebScheduling.4PatientCare.Com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://WebScheduling.4PatientCare.Com/">
+      <s:element name="GetApptTypes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AcctKey" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="LocKey" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccessID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="SecurityCode" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetApptTypesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetApptTypesResult" type="tns:ArrayOfApptType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfApptType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ApptType" nillable="true" type="tns:ApptType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ApptType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ApptTypeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ApptTypeKey" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetOpenApptSlots">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LocKey" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="AcctKey" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="ApptTypeKey" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="GetSlotsOnDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccessID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="SecurityCode" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOpenApptSlotsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetOpenApptSlotsResult" type="tns:ArrayOfApptSlots" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfApptSlots">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ApptSlots" nillable="true" type="tns:ApptSlots" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ApptSlots">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ApptDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApptStartTime" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RequestApptInsert">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LocKey" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="AcctKey" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="ApptTypeKey" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="ApptStartDateTime" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccessID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="SecurityCode" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="PatientData" type="tns:WSPatientData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="WSPatientData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Zip" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HomePhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WorkPhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CellPhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DOB" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="PreferredLanguage" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="L4DSSN" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="InsuranceCarrier" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="OtherInsurance" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubscriberName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SubscriberDOB" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubscriberID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GroupNum" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RelationshipToPatient" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerServiceNumForInsCarrier" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferredBy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotesBox" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferredBy2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferredBy3" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferredBy4" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferredBy5" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsPatKnown" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RequestApptInsertResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RequestApptInsertResult" type="tns:WSApptDetail" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="WSApptDetail">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ApptKey" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Result" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsNewPatient" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetInsList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AcctKey" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="LocKey" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccessID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="SecurityCode" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInsListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInsListResult" type="tns:ArrayOfInsItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInsItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="InsItem" nillable="true" type="tns:InsItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="InsItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="InsKey" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetApptTypesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetApptTypes" />
+  </wsdl:message>
+  <wsdl:message name="GetApptTypesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetApptTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetOpenApptSlotsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetOpenApptSlots" />
+  </wsdl:message>
+  <wsdl:message name="GetOpenApptSlotsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetOpenApptSlotsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestApptInsertSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestApptInsert" />
+  </wsdl:message>
+  <wsdl:message name="RequestApptInsertSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestApptInsertResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInsListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInsList" />
+  </wsdl:message>
+  <wsdl:message name="GetInsListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInsListResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PartnerWebSchedulingSoap">
+    <wsdl:operation name="GetApptTypes">
+      <wsdl:input message="tns:GetApptTypesSoapIn" />
+      <wsdl:output message="tns:GetApptTypesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOpenApptSlots">
+      <wsdl:input message="tns:GetOpenApptSlotsSoapIn" />
+      <wsdl:output message="tns:GetOpenApptSlotsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestApptInsert">
+      <wsdl:input message="tns:RequestApptInsertSoapIn" />
+      <wsdl:output message="tns:RequestApptInsertSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInsList">
+      <wsdl:input message="tns:GetInsListSoapIn" />
+      <wsdl:output message="tns:GetInsListSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PartnerWebSchedulingSoap" type="tns:PartnerWebSchedulingSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetApptTypes">
+      <soap:operation soapAction="http://WebScheduling.4PatientCare.Com/GetApptTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOpenApptSlots">
+      <soap:operation soapAction="http://WebScheduling.4PatientCare.Com/GetOpenApptSlots" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestApptInsert">
+      <soap:operation soapAction="http://WebScheduling.4PatientCare.Com/RequestApptInsert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInsList">
+      <soap:operation soapAction="http://WebScheduling.4PatientCare.Com/GetInsList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="PartnerWebSchedulingSoap12" type="tns:PartnerWebSchedulingSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetApptTypes">
+      <soap12:operation soapAction="http://WebScheduling.4PatientCare.Com/GetApptTypes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOpenApptSlots">
+      <soap12:operation soapAction="http://WebScheduling.4PatientCare.Com/GetOpenApptSlots" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestApptInsert">
+      <soap12:operation soapAction="http://WebScheduling.4PatientCare.Com/RequestApptInsert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInsList">
+      <soap12:operation soapAction="http://WebScheduling.4PatientCare.Com/GetInsList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PartnerWebScheduling">
+    <wsdl:port name="PartnerWebSchedulingSoap" binding="tns:PartnerWebSchedulingSoap">
+      <soap:address location="http://www.4patientcare.ws/v5dn/partnerwebscheduling.asmx" />
+    </wsdl:port>
+    <wsdl:port name="PartnerWebSchedulingSoap12" binding="tns:PartnerWebSchedulingSoap12">
+      <soap12:address location="http://www.4patientcare.ws/v5dn/partnerwebscheduling.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
