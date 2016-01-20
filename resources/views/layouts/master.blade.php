@@ -29,9 +29,7 @@
         @show
         <div class="row height content @if(!Auth::check()) @endif">
                <div class="hidden-xs col-sm-3 content-left @if(!Auth::check()) {{'ocuhub_logo_grey'}} @endif">
-                @section('sidebar')
-                    @include('layouts.sidebar')
-                @show
+                @yield('sidebar')
             </div>
             <div class="col-xs-12 col-sm-9 content-right @if(!Auth::check()) {{'ocuhub_logo_blue'}} @endif">
                 @yield('content')

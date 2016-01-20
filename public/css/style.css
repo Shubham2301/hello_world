@@ -443,6 +443,10 @@ p.error {
   margin: 0.5em 0;
 }
 
+.sidebar-item .sidebar-item-left {
+  text-align: right;
+}
+
 /*
 ---------------------------
 Section : Sidebar
@@ -512,30 +516,37 @@ Section : Sidebar
 }
 
 ul.dropdown-menu {
-  border: solid 1px #cbcbcb;
-  background: #e3e3e3;
+  background: #ebeced;
+  background-color: #ebeced;
+  box-shadow: 0 0 3px #000;
+  border-radius: 5em;
+  text-align: center;
+  width: 3em;
+  margin: 0 0.5em;
 }
 
 .dropdown-menu > li > a {
-  padding: 3px 10px;
+  margin: 0.85em 0.25em;
+  padding: 0 0.5em;
 }
 
 .dropdown-menu > li > a:hover {
-  border: solid 1px #cbcbcb;
-  background: #e3e3e3;
+  background-color: transparent;
+}
+
+.dropdown-menu > li > a > img {
+  width: 70%;
 }
 
 h3.title {
   margin-top: 12px;
-}
-
-.drop_image {
-  padding: 5px 0 0 0;
+  font-weight: bold;
 }
 
 .admin_button {
   background: transparent;
   border: none;
+  width: 4em;
 }
 
 .admin {
