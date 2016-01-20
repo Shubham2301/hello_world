@@ -137,14 +137,14 @@ Section : Body
     flex: 1 1 auto;
 }
 
-
 //.logo_opacity {
 //    opacity: 0.8;
 //}
 .content-padding {
     padding: 1em;
 }
-p.error{
+
+p.error {
     padding: 0px;
     margin: 0px;
     line-height: 0;
@@ -155,7 +155,7 @@ p.error{
     .content-padding;
     background: @light-gray;
     box-shadow: inset 0 30px 60px -10px #d1d1d1, inset 0 -12px 20px -8px #d1d1d1;
-    }
+}
 
 .content-right {
     .content-padding;
@@ -165,14 +165,13 @@ p.error{
     background: @primary-blue;
 }
 
-.ocuhub_logo_blue
-{
+.ocuhub_logo_blue {
     background: @primary-blue url(../images/signin_logo_bg_blue.png) no-repeat left bottom;
     background-size: 57%;
     background-position: bottom left;
 }
-.ocuhub_logo_grey
-{
+
+.ocuhub_logo_grey {
     background: @light-gray url(../images/signin_logo_bg_grey.png) no-repeat left bottom;
     background-size: 100%;
     background-position: bottom right;
@@ -189,10 +188,10 @@ p.error{
         display: block;
     }
 }
+
 .search_input {
     background-color: #ffffff;
     font-size: 1.2em;
-
     display: flex;
     &>input,
     &>input:focus {
@@ -228,7 +227,7 @@ p.error{
 
 .select_provider_button {
     display: none;
-    &.active{
+    &.active {
         display: inline-block;
     }
 }
@@ -287,6 +286,12 @@ p.error{
     }
 }
 
+.sidebar-item {
+    .sidebar-item-left {
+        text-align: right;
+    }
+}
+
 
 /*
 ---------------------------
@@ -321,25 +326,24 @@ Section : Sidebar
     padding: 0;
     overflow-x: hidden;
     .gradient(0, #c4c5c7, #fff, #ecedee);
-    &>a{
-    
-        &>.menu_item_icon{
-            display:inline-block;
-            width:20%;
+    &>a {
+        &>.menu_item_icon {
+            display: inline-block;
+            width: 20%;
             height: 70%;
             padding: 8px 8px;
-            &>img{
+            &>img {
                 width: 100%;
                 height: 20px;
             }
         }
-        &>.menu_item_label{
-            display:inline-block;
-            width:80%;
+        &>.menu_item_label {
+            display: inline-block;
+            width: 80%;
             padding: 0.5em 0.5em;
             border-left: solid 2px #c4c5c7;
             box-shadow: -5px 0px 5px -1px #fff;
-            color:black;
+            color: black;
             font-size: 1em;
             font-weight: 600;
         }
@@ -354,60 +358,60 @@ Section : Sidebar
     min-width: 0px;
 }
 
-ul.dropdown-menu
-{
-    border: solid 1px @background-color-5;
-    background: @background-color-2;
+ul.dropdown-menu {
+    background: @light-gray;
+    background-color: #ebeced;
+    box-shadow: 0 0 3px #000;
+    border-radius: 5em;
+    text-align: center;
+    width: 3em;
+    margin: 0 0.5em;
 }
 
 .dropdown-menu>li>a {
-    padding: 3px 10px;
-    &:hover
-    {
-    border: solid 1px @background-color-5;
-    background: @background-color-2;
+    margin: 0.85em 0.25em;
+    padding: 0 0.5em;
+    &:hover {
+        background-color: transparent;
+    }
+    &>img{
+        width: 70%;
     }
 }
 
 h3.title {
     margin-top: 12px;
+    font-weight: bold;
 }
 
-.drop_image {
-    padding: 5px 0 0 0;
-}
+.drop_image {}
 
 .admin_button {
     background: transparent;
     border: none;
+    width: 4em;
 }
 
 .admin {
     padding: 1em;
     border-left: solid .7em transparent;
     font-size: 1em;
-    &:hover
-    {
+    &:hover {
         background-color: @background-color-5;
         border-left: solid .7em @background-color-6;
-        & .patients
-        {
+        & .patients {
             color: @font-color-5;
         }
-        & .practice
-        {
+        & .practice {
             color: @font-color-6;
         }
-        & .users
-        {
+        & .users {
             color: @font-color-7;
         }
-        & .files
-        {
+        & .files {
             color: @font-color-8;
         }
-        & .font_change
-        {
+        & .font_change {
             font-size: 1.2em;
         }
     }

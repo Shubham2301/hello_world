@@ -7,6 +7,10 @@
 <script type="text/javascript" src="{{asset('js/careconsole.js')}}"></script>
 @endsection
 
+@section('sidebar')
+    @include('careconsole.sidebar')
+@endsection
+
 @section('content')
 
  <div class="content-row-margin">

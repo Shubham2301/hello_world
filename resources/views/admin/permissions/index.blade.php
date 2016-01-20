@@ -2,6 +2,10 @@
 
 @section('title', 'My Ocuhub - Administration')
 
+@section('sidebar')
+    @include('admin.sidebar')
+@endsection
+
 @section('content')
 
 	@if (Session::has('success'))
