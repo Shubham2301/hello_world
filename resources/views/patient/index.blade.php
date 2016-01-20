@@ -26,10 +26,18 @@
 
     <div class="content-section active" id="patients_section">
         <div class="patients_section active" id="select_patient">
+            {!! Form::open(array('url' => '/providers', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
+
+                {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!}
+                {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
+                {!! Form::hidden('patient_id', '', array('id' => 'form_patient_id')) !!}
+
+            {!! Form::close() !!}
+
             @if(array_key_exists('referraltype_id', $data))
             <div class="row content-row-margin">
                 <div class="col-xs-12 section-header">
-                    <span class="">Schedule an appointment</span> <span><button type="button" class="btn import-btn open_import" data-toggle="modal" data-target="#importModal">Import</button></span>
+                    <span class="">Schedule an appointment</span> <span><button type="button" class="btn import-btn open_import" data-toggle="modal" data-target="#importModal" id="import_patients">Import</button></span>
                     <p class="button_type_3 select_provider_button" id="select_provider_button" data-id="0" align="right">Select Provider<span class="glyphicon glyphicon-chevron-right"></span></p>
                 </div>
             </div>
@@ -45,13 +53,6 @@
             @include('patient.listing')
         </div>
         @include('patient.import')
-        {!! Form::open(array('url' => '/providers', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
-
-                {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!}
-                {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
-                {!! Form::hidden('patient_id', '', array('id' => 'form_patient_id')) !!}
-
-        {!! Form::close() !!}
     </div>
 
 
