@@ -83,6 +83,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('home', 'HomeController');
 });
 
-Route::get('foo', 'BulkImportController@index');
 Route::get('import/location', 'BulkImportController@getLocations');
 Route::post('import/csv', 'BulkImportController@importPatientsCsv');
