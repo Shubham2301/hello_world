@@ -1,7 +1,27 @@
 @if(Auth::check())
+
 <div class="sidebar_header center">
 <h3 class="title"><span><img src="{{URL::asset('images/sidebar/care_coordination_small.png')}}" class="image"></span>Care Coordination</h3>
 </div>
+
+
+    <div class="row admin c3_sidebar_item">
+        <p>Contact Status</p>
+    </div>
+    <div class="row admin c3_sidebar_item">
+        <p>Schedule for appointment</p>
+    </div>
+    <div class="row admin c3_sidebar_item">
+        <p>Post appointment status</p>
+    </div>
+    <div class="row admin c3_sidebar_item">
+        <p>Examination report status</p>
+    </div>
+    <div class="row admin c3_sidebar_item">
+        <p>Finalization</p>
+    </div>
+
+<!--
 <div class="sidebar_user_info center"><h4>{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</h4>
 
 </div>
@@ -20,6 +40,8 @@
     </div>
 </div>
 </div>
+
+-->
 
 <!--
 <div class="container no-padding">

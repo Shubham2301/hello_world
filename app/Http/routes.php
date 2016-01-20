@@ -67,4 +67,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('practices', 'Practice\PracticeController');
     Route::resource('appointments', 'Appointment\AppointmentController');
     Route::resource('home', 'HomeController');
+    Route::resource('careconsole', 'CareConsoleController');
 });
