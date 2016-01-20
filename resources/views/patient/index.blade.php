@@ -5,6 +5,7 @@
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{asset('css/patient.css')}}">
 <script type="text/javascript" src="{{asset('js/patient.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/import.js')}}"></script>
 @endsection
 
 @section('sidebar')
@@ -19,7 +20,7 @@
         <strong>
             <i class="fa fa-check-circle fa-lg fa-fw"></i> Success. &nbsp;
         </strong>
-        {{ Session::get('success') }}
+        {{ Session::pull('success') }}
     </div>
     @endif
 
@@ -28,7 +29,7 @@
             @if(array_key_exists('referraltype_id', $data))
             <div class="row content-row-margin">
                 <div class="col-xs-12 section-header">
-                    <span class="">Schedule an appointment</span>
+                    <span class="">Schedule an appointment</span> <span><button type="button" class="btn import-btn open_import" data-toggle="modal" data-target="#importModal">Import</button></span>
                     <p class="button_type_3 select_provider_button" id="select_provider_button" data-id="0" align="right">Select Provider<span class="glyphicon glyphicon-chevron-right"></span></p>
                 </div>
             </div>
@@ -43,6 +44,7 @@
         <div class="patients_section active" id="patient_listing">
             @include('patient.listing')
         </div>
+        @include('patient.import')
         {!! Form::open(array('url' => '/providers', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
 
                 {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!}
