@@ -134,6 +134,8 @@ function getPatients(formData) {
 
             if (patients.length > 0) {
                 patients.forEach(function (patient) {
+                    var d = new Date(patient.birthdate);
+                    patient.birthdate = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
                     content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin"><div class="col-xs-6">' + patient.fname + ' ' + patient.lname + '<br> ' + patient.birthdate + ' </div><div class="col-xs-6">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
                 });
             }
