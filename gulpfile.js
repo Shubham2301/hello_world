@@ -20,6 +20,7 @@ elixir(function (mix) {
     mix.less(['practice.less'],'public/css/practice.css');
     mix.less(['provider.less'],'public/css/provider.css');
     mix.less(['appointment.less'],'public/css/appointment.css');
+    mix.less(['careconsole.less'],'public/css/careconsole.css');
 
     mix.babel(['main.js'],'public/js/main.js');
     mix.babel(['sesconnect.js'],'public/js/sesconnect.js');
@@ -28,5 +29,6 @@ elixir(function (mix) {
     mix.babel(['provider.js'],'public/js/provider.js');
     mix.babel(['practice.js'],'public/js/practice.js');
     mix.babel(['appointment.js'],'public/js/appointment.js');
+    mix.babel(['careconsole.js'],'public/js/careconsole.js');
 
 });
