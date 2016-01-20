@@ -2,9 +2,6 @@
 
 namespace myocuhub\Services\FourPatientCare;
 
-use myocuhub\Services\ArrayToXML\ArrayToXML;
-use myocuhub\Services\ArrayToXML\XMLToArray;
-
 class FourPatientCare
 {
     protected $accessID;
