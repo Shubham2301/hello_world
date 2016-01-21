@@ -7,6 +7,10 @@
 <script type="text/javascript" src="{{asset('js/appointment.js')}}"></script>
 @endsection
 
+@section('sidebar')
+    @include('layouts.sidebar')
+@endsection
+
 @section('content')
 
 	@if (Session::has('success'))
@@ -45,7 +49,7 @@
                 </div>
             </div>
             <div class="appointment_message">
-                <p><span><input type="checkbox"></span> Send a direct message to the provider</p>
+                <p><span><input type="checkbox"></span> Send patient CCD file to provider</p>
             </div>
             <div class="appointment_confirm center-align">
                 <p><button id="confirm_appointment">Confirm</button>&nbsp;                                            <button id="cancel_appointment">Cancel</button></p>
@@ -54,7 +58,7 @@
                 <button class="confirmed" disabled>Confirmed</button>
              <h4>You have scheduled an appointment</h4>
             </div>
-            
+
         </div>
     </div>
 

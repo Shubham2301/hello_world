@@ -2,11 +2,65 @@
 
 $(document).ready(function () {
 
+    var id = $('#form_patient_id').attr('value');
+    var formData = {
+        'id': id
+    };
+    getPatientInfo(formData);
+
+    $('.view_selected_patient').on('click', showPatientInfo);
+
+    $('.change_selected_patient').on('click', changePatientInfo);
+
+    $('#change_patient_button').on('click', function () {
+        $('#form_select_provider').attr('action', "http://ocuhub.dev/patients");
+        $('#form_provider_id').prop('disabled', true);
+        $('#form_practice_id').prop('disabled', true);
+        $('#form_select_provider').submit();
+    });
     $('#search_practice_button').on('click', function () {
+        $('.schedule_button').removeClass('active');
+        $('.schedule_button').attr('data-id', 0);
+        $('.schedule_button').attr('data-practice-id', 0);
         $("#add_practice_search_option").trigger("click");
         $('#search_practice_input').val('');
         var searchdata = getSearchType();
+        if ($('.view_selected_patient').hasClass('remove')) {
+            showPatientInfo();
+        }
         getProviders(searchdata);
+    });
+
+    $('.lastseenby_show').on('click', function () {
+        $('.lastseen_content').toggleClass('active');
+        if ($('.lastseen_content').hasClass('active')) {
+            $('.lastseenby_icon').removeClass('glyphicon-chevron-right');
+            $('.lastseenby_icon').addClass('glyphicon-chevron-down');
+        } else {
+            $('.lastseenby_icon').removeClass('glyphicon-chevron-down');
+            $('.lastseenby_icon').addClass('glyphicon-chevron-right');
+        }
+    });
+
+    $('.referredby_show').on('click', function () {
+        $('.referredby_content').toggleClass('active');
+        if ($('.referredby_content').hasClass('active')) {
+            $('.referredby_icon').removeClass('glyphicon-chevron-right');
+            $('.referredby_icon').addClass('glyphicon-chevron-down');
+        } else {
+            $('.referredby_icon').removeClass('glyphicon-chevron-down');
+            $('.referredby_icon').addClass('glyphicon-chevron-right');
+        }
+    });
+    $('.insurance_provider_show').on('click', function () {
+        $('.insurance_provider_content').toggleClass('active');
+        if ($('.insurance_provider_content').hasClass('active')) {
+            $('.insurance_provider_icon').removeClass('glyphicon-chevron-right');
+            $('.insurance_provider_icon').addClass('glyphicon-chevron-down');
+        } else {
+            $('.insurance_provider_icon').removeClass('glyphicon-chevron-down');
+            $('.insurance_provider_icon').addClass('glyphicon-chevron-right');
+        }
     });
 
     $('.practice_list').on('click', '.practice_list_item', function () {
@@ -23,6 +77,9 @@ $(document).ready(function () {
 
         $('.practice_list').addClass('active');
         $('.practice_info').removeClass('active');
+        $('.schedule_button').removeClass('active');
+        $('.schedule_button').attr('data-id', 0);
+        $('.schedule_button').attr('data-practice-id', 0);
         $('.patient_previous_information').addClass('active');
     });
 
@@ -30,6 +87,9 @@ $(document).ready(function () {
         var type = $('#search_practice_input_type').val();
         var value = $('#search_practice_input').val();
         if (value != '') {
+            if ($('.view_selected_patient').hasClass('remove')) {
+                showPatientInfo();
+            }
             var searchoption = getOptionContent(type, value);
             $('.search_filter').append(searchoption);
             $('#search_practice_input').val('');
@@ -44,9 +104,16 @@ $(document).ready(function () {
 
         scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
     });
-});
 
-$(document).ready(function () {
+    $('.locations').on('click', '.practice_location', function () {
+        $('.practice_location').removeClass('active');
+        $(this).addClass('active');
+        getAppointmentTypes();
+    });
+
+    $('#appointment-type').on('change', function () {
+        getOpenSlots();
+    });
 
     $('.provider_near_patient').on('click', function () {
         $('.provider_near_patient_list').toggleClass("active");
@@ -64,6 +131,74 @@ $(document).ready(function () {
         }
     });
 });
+
+$(document).ready(function () {});
+
+function changePatientInfo() {
+    $('.change_selected_patient').text("");
+    $('.change_selected_patient').removeClass('view');
+    $('.change_selected_patient').addClass('remove');
+    $('.button_type_11').addClass('active');
+    if ($('.view_selected_patient').hasClass('remove')) {
+        $('.view_selected_patient').addClass('view');
+    }
+    showPatientInfo();
+}
+
+function showPatientInfo() {
+    if ($('.view_selected_patient').hasClass('view')) {
+        $('.patient_info').addClass('active');
+        $('.view_selected_patient').text("Hide");
+        $('.view_selected_patient').removeClass('view');
+        $('.view_selected_patient').addClass('remove');
+    } else if ($('.view_selected_patient').hasClass('remove')) {
+        $('.patient_info').removeClass('active');
+        $('.view_selected_patient').text("View");
+        $('.view_selected_patient').removeClass('remove');
+        $('.view_selected_patient').addClass('view');
+        $('.change_selected_patient').text("Change");
+        $('.change_selected_patient').removeClass('remove');
+        $('.change_selected_patient').addClass('view');
+        $('.button_type_11').removeClass('active');
+    }
+}
+
+//function that is used to fetch the information of the patient that is being scheduled
+function getPatientInfo(formData) {
+
+    $.ajax({
+        url: '/patients/show',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function success(e) {
+            var info = $.parseJSON(e);
+            fillPatientInfo(info);
+        },
+        error: function error() {
+            alert('Error getting patient information');
+        },
+        cache: false,
+        processData: false
+    });
+}
+
+//function that is used to fill the information about the patient
+function fillPatientInfo(data) {
+
+    $('#patient_name').text(data.firstname);
+    $('#patient_email').text(data.email);
+    var d = new Date(data.birthdate);
+    var date = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
+    $('#patient_dob').text(date);
+    $('#patient_add1').text(data.addressline1 + ',');
+    $('#patient_add2').text(data.addressline2 + ',');
+    $('#patient_add3').text(data.city);
+    $('#patient_phone').text(data.cellphone);
+    $('#patient_ssn').text(data.lastfourssn);
+    $('.selected_patient_name').text(data.firstname);
+}
 
 //function that displays the providers near patients
 function showPreviousProvider() {
@@ -96,7 +231,7 @@ function showProviderInfo(data) {
 
     if (locations.length > 0) {
         locations.forEach(function (location) {
-            content += '<li><p>' + location.addressline1 + ',' + location.addressline1 + ' ' + location.city + ' ' + location.phone + '</p></li>';
+            content += '<div class="practice_location"><span>' + location.addressline1 + ',' + location.addressline1 + ' ' + location.city + ' ' + location.phone + '</span></div>';
         });
     }
 
@@ -104,6 +239,7 @@ function showProviderInfo(data) {
     $('.practice_list').removeClass('active');
     $('.practice_info').addClass('active');
     $('.patient_previous_information').removeClass('active');
+    $('.schedule_button').addClass('active');
 }
 
 function getProviderInfo(formData) {
@@ -183,5 +319,63 @@ function scheduleAppointment(providerId, practiceID) {
     $('#form_provider_id').val(providerId);
     $('#form_practice_id').val(practiceID);
     $('#form_select_provider').submit();
+}
+
+function getOpenSlots() {
+
+    var provider_id = 991234567;
+    var location_id = 3839;
+    var appointment_type = 28632;
+    var appointment_date = '1/25/2016 11:00:00 AM';
+
+    var formData = {
+        'provider_id': provider_id,
+        'location_id': location_id,
+        'appointment_type': appointment_type,
+        'appointment_date': appointment_date
+    };
+
+    $.ajax({
+        url: '/providers/openslots',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function success(e) {
+            $('#appointment-datetime').removeClass('hidden');
+            $('#appointment-datetime').append('<option value="0">Select Date and Time</option>');
+        },
+        error: function error() {},
+        cache: false,
+        processData: false
+    });
+}
+
+function getAppointmentTypes() {
+
+    var provider_id = 991234567;
+    var location_id = 3839;
+
+    var formData = {
+        'provider_id': provider_id,
+        'location_id': location_id
+    };
+
+    $.ajax({
+        url: '/providers/appointmenttypes',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function success(e) {
+            $('#appointment-type').removeClass('hidden');
+            $('#appointment-type').append('<option value="0">Select Appointment Type</option>');
+            $('#appointment-type').append('<option value="1">Annual Eye Exam</option>');
+            $('#appointment-type').append('<option value="2">Eye Exam</option>');
+        },
+        error: function error() {},
+        cache: false,
+        processData: false
+    });
 }
 //# sourceMappingURL=provider.js.map

@@ -7,6 +7,8 @@ use myocuhub\User;
 use myocuhub\Patient;
 use myocuhub\Models\Practice;
 
+use myocuhub\Services\FourPatientCare\FourPatientCare;
+
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
 
@@ -17,18 +19,25 @@ class AppointmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $fourPatientCare;
+
+    function __construct(FourPatientCare $fourPatientCare)
+    {
+        $this->fourPatientCare = $fourPatientCare;
+    }
+
     public function index(Request $request)
     {
         $provider_id = $request->input('provider_id');
         $practice_id = $request->input('practice_id');
         $patient_id = $request->input('patient_id');
-        
+
         $data = [];
         $data['provider_name'] = User::find($provider_id)->name;
         $data['practice_name'] = Practice::find($practice_id)->name;
         $patient = Patient::find($patient_id);
         $data['patient_name'] = $patient->firstname.' '.$patient->lastname;
-        
+
         return view('appointment.index')->with('data', $data);
     }
 
@@ -96,5 +105,55 @@ class AppointmentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function schedule(Request $request){
+        $apptInfo = array();
+
+        $patientID = $request->input('patient_id');
+        $providerID = $request->input('provider_id');
+        $locationID = $request->input('location_id');
+        $AppointmentType = $request->input('appointment_type');
+        $AppointmentTime = $request->input('appointment_time');
+        $patient = Patient::find($patientID);
+
+        $apptInfo['LocKey'] = $locationID;
+        $apptInfo['AcctKey'] = $providerID;
+        $apptInfo['ApptTypeKey'] = $AppointmentType;
+        $apptInfo['ApptStartDateTime'] = $AppointmentTime;
+        $apptInfo['PatientData']['Title'] = $patient->title;
+        $apptInfo['PatientData']['FirstName'] = $patient->firstname;
+        $apptInfo['PatientData']['LastName'] = $patient->lastname;
+        $apptInfo['PatientData']['Address1'] = $patient->addressline1;
+        $apptInfo['PatientData']['Address2'] = $patient->addressline2;
+        $apptInfo['PatientData']['City'] = $patient->city;
+        $apptInfo['PatientData']['State'] = $patient->state;
+        $apptInfo['PatientData']['Zip'] = $patient->zip;
+        $apptInfo['PatientData']['Country'] = $patient->country;
+        $apptInfo['PatientData']['HomePhone'] = $patient->homephone;
+        $apptInfo['PatientData']['WorkPhone'] = $patient->workphone;
+        $apptInfo['PatientData']['CellPhone'] = $patient->cellphone;
+        $apptInfo['PatientData']['Email'] = $patient->email;
+        $apptInfo['PatientData']['DOB'] = $patient->birthdate; // convert to MM/DD/YYYY HH:MM 24
+        $apptInfo['PatientData']['PreferredLanguage'] = $patient->preferredlanguage;
+        $apptInfo['PatientData']['Gender'] = $patient->gender;
+        $apptInfo['PatientData']['L4dssn'] = $patient->lastfourssn;
+        $apptInfo['PatientData']['InsuranceCarrier'] = $patient->insurancecarrier;
+
+        $apptInfo['PatientData']['OtherInsurance'] = '';
+        $apptInfo['PatientData']['SubscriberName'] = '';
+        $apptInfo['PatientData']['SubscriberDOB'] = '';
+        $apptInfo['PatientData']['SubscriberID'] = '';
+        $apptInfo['PatientData']['GroupNum'] = '';
+        $apptInfo['PatientData']['RelationshipToPatient'] = '';
+        $apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
+        $apptInfo['PatientData']['ReferredBy'] = '';
+        $apptInfo['PatientData']['IsPatKnown'] = '';
+
+
+
+        $apptResult = $this->fourPatientCare->requestApptInsert($apptInfo);
+
+        return $apptResult;
     }
 }

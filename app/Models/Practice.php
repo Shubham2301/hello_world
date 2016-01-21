@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Practice extends Model
 {
+    protected $fillable = ['name','	email'];
     
     public function locations()
     {

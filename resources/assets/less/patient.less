@@ -1,3 +1,5 @@
+@import "import.less";
+
 .patient_list {
     overflow-y: scroll;
     display: none;
@@ -31,9 +33,18 @@
 }
 
 #search_patient_button {
-    cursor: pointer
+    cursor: pointer;
 }
 
+.select_provider_button
+    {
+        display: none;
+        &.active
+        {
+            display: inline-block;
+        }
+
+    }
 .search_filter {
     color:black;
     display: inline-flex;

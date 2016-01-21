@@ -6,6 +6,10 @@
 <link rel="stylesheet" type="text/css" href="{{asset('css/directmail.css')}}">
 @endsection
 
+@section('sidebar')
+    @include('layouts.sidebar')
+@endsection
+
 @section('content')
 
     @if (Session::has('no_direct_mail'))

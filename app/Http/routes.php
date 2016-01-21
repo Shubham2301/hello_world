@@ -27,19 +27,6 @@ Route::get('/start', 'TestroleController@start');
 
 Route::get('/show', 'TestroleController@show');
 
-
-/*
-
--> Deprecated in 5.2 => Route::controllers();
--> Replaced with explicit route registration
-
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
-
-*/
-
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
@@ -63,8 +50,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home/addreferral', 'HomeController@addReferral');
     Route::get('patients/search', 'Patient\PatientController@search');
     Route::get('providers/search', 'Practice\ProviderController@search');
-    Route::get('practice/search', 'Practice\PracticeController@search');
+    Route::get('practices/search', 'Practice\PracticeController@search');
+    Route::get('practices/create', 'Practice\PracticeController@create');
+    Route::get('practices/edit',   'Practice\PracticeController@edit');
     
+    Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
+    Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
+    Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
+    Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
+
     Route::resource('users', 'Admin\UserController');
     Route::resource('roles', 'Admin\RoleController');
     Route::resource('permissions', 'Admin\PermissionController');
@@ -74,12 +68,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('practices', 'Practice\PracticeController');
     Route::resource('appointments', 'Appointment\AppointmentController');
     Route::resource('home', 'HomeController');
+    Route::resource('careconsole', 'CareConsoleController');
+
+    //Ccda routes
+    Route::post('/saveccd', 'CcdaController@saveCcda');
+    Route::get('ccdaform', 'CcdaController@index');
+    Route::get('/addvital/{id}', 'CcdaController@addVital');
+    Route::post('/savevitals', 'CcdaController@saveVitals');
+    Route::get('/download/{id}', 'CcdaController@getxml');
+    Route::get('/showvitals/{id}', array('uses'=>'CcdaController@showVitals','as'=>'showvitals'));
+    Route::get('import/location', 'BulkImportController@getLocations');
+    Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
+
 });
 
-//Ccda routes
-Route::post('/saveccd', 'CcdaController@saveCcda');
-Route::get('ccdaform', 'CcdaController@index');
-Route::get('/addvital/{id}', 'CcdaController@addVital');
-Route::post('/savevitals', 'CcdaController@saveVitals');
-Route::get('/download/{id}', 'CcdaController@getxml');
-Route::get('/showvitals/{id}', array('uses'=>'CcdaController@showVitals','as'=>'showvitals'));
+
+

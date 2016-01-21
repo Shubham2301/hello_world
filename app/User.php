@@ -28,8 +28,7 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'sesemail', 'password', 'firstname', 'lastname', 'npi'];
-
+    protected $fillable = ['name', 'email', 'sesemail', 'password', 'firstname','lastname','npi','cellphone','state','address1','address2','city','zip'];
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -116,6 +115,20 @@ class User extends Model implements AuthenticatableContract,
             })->get();
 
     }
+
+    public static function practiceUserById($practice_id)
+    {
+         return self::query()
+            ->leftjoin('organization_user','users.id','=','organization_user.user_id')
+
+            ->leftjoin('organizations','organization_user.organization_id','=','organizations.id')
+            ->leftjoin('practices','organizations.practice_id','=','practices.id')
+            ->where('practice_id',$practice_id)
+            ->get();
+
+    }
+
+
 
 
 }
