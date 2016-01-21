@@ -11,7 +11,7 @@ $(document).ready(function () {
     $('.change_selected_patient').on('click', changePatientInfo);
 
     $('#change_patient_button').on('click', function () {
-        $('#form_select_provider').attr('action', "http://ocuhub.dev/patients");
+        $('#form_select_provider').attr('action', "/patients");
         $('#form_provider_id').prop('disabled', true);
         $('#form_practice_id').prop('disabled', true);
         $('#form_select_provider').submit();

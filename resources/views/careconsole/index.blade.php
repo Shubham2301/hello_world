@@ -3,8 +3,8 @@
 @section('title', 'Care Console')
 
 @section('imports')
-<link rel="stylesheet" type="text/css" href="{{asset('css/careconsole.css')}}">
-<script type="text/javascript" src="{{asset('js/careconsole.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{elixir('css/careconsole.css')}}">
+<script type="text/javascript" src="{{elixir('js/careconsole.js')}}"></script>
 @endsection
 
 @section('sidebar')
