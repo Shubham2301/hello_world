@@ -1,5 +1,5 @@
 <div class="overview row">
-    <div class="overview_section col-lg-3 col-md-4 col-xs-6">
+    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
         <div class="info_box">
            <div class="top">
                 <div class="info_section">
@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <div class="overview_section col-lg-3 col-md-4 col-xs-6">
+    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
         <div class="info_box">
            <div class="top">
                 <div class="info_section">
@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    <div class="overview_section col-lg-3 col-md-4 col-xs-6">
+    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
         <div class="info_box">
            <div class="top">
                 <div class="info_section">
@@ -87,7 +87,7 @@
             </div>
         </div>
     </div>
-    <div class="overview_section col-lg-3 col-md-4 col-xs-6">
+    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
         <div class="info_box">
            <div class="top">
                 <div class="info_section">
@@ -111,28 +111,28 @@
             </div>
         </div>
     </div>
-        <div class="overview_section col-lg-3 col-md-4 col-xs-6">
-        <div class="info_box">
-           <div class="top">
-                <div class="info_section">
-                    <div class="info_section_title">Ready to be completed</div>
-                    <div class="right">
-                    <div class="circle green"></div>
-                    <div class="info_section_number">4</div>
-                    </div>
-                </div>
-                <div class="section_break"></div>
-                <div class="info_section">
-                    <div class="info_section_title">Overdue</div>
-                    <div class="right">
-                    <div class="circle red"></div>
-                    <div class="info_section_number">11</div>
-                    </div>
+    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
+    <div class="info_box">
+       <div class="top">
+            <div class="info_section">
+                <div class="info_section_title">Ready to be completed</div>
+                <div class="right">
+                <div class="circle green"></div>
+                <div class="info_section_number">4</div>
                 </div>
             </div>
-            <div class="bottom">
-                <p>Finalization</p>
+            <div class="section_break"></div>
+            <div class="info_section">
+                <div class="info_section_title">Overdue</div>
+                <div class="right">
+                <div class="circle red"></div>
+                <div class="info_section_number">11</div>
+                </div>
             </div>
         </div>
+        <div class="bottom">
+            <p>Finalization</p>
+        </div>
     </div>
+</div>
 </div>
