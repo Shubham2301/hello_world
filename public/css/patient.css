@@ -1,3 +1,114 @@
+.import_form {
+  color: black;
+  padding-left: 29px;
+  display: none;
+}
+
+.import_form.active {
+  display: block;
+}
+
+.input_lable {
+  margin-right: 1em;
+}
+
+.input_row {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.import-btn {
+  background: transparent;
+  color: #cde8f4;
+  border: 1px solid;
+  float: right;
+}
+
+.import-btn:hover {
+  color: black;
+  background-color: #cde8f4;
+  border-color: #cde8f4;
+}
+
+.inputfile {
+  display: inline-block;
+  width: 100%;
+  padding: 120px 0 0 0;
+  height: 100px;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: url('http://archisnapper.com/cloud.png') center center no-repeat #e4e4e4;
+  border-radius: 20px;
+  background-size: 150px 100px;
+}
+
+.file-input {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d2d3d5;
+  border-radius: 3px;
+  background-color: #9d9fa2;
+  color: white;
+  padding: 5px 10px;
+  display: inline-block;
+  font-family: 'Trebuchet MS';
+  font-weight: bold;
+}
+
+.file-input input[type="file"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  display: block;
+  cursor: pointer;
+}
+
+.filename {
+  font-family: 'Trebuchet MS';
+  padding: 5px 10px;
+  display: inline-block;
+  vertical-align: top;
+  font-style: italic;
+}
+
+.success_message {
+  color: black;
+  display: none;
+}
+
+.success_message.active {
+  display: block;
+}
+
+.import_button {
+  display: none;
+  color: black;
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.import_button.active {
+  display: inline;
+}
+
+.import_button:hover {
+  background-color: #0071bc;
+  border-color: #0071bc;
+  color: #fff;
+}
+
+.form_model {
+  margin-top: 10em;
+  margin-left: 34em;
+}
+
 .patient_list {
   overflow-y: scroll;
   display: none;

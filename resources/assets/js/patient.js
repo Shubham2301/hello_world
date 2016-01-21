@@ -20,6 +20,7 @@ $(document).ready(function () {
         $('.patient_info').removeClass('active');
         $('#select_provider_button').removeClass('active');
         $('#select_provider_button').attr('data-id', 0);
+        $('#import_patients').show();
     });
 
     $('#select_provider_button').on('click', function () {
@@ -90,6 +91,8 @@ function showPatientInfo(data) {
     $('#patient_ssn').text(data.lastfourssn);
     $('#select_provider_button').attr('data-id', data.id);
     $('#select_provider_button').addClass('active');
+    $('#import_patients').hide();
+
 
 }
 
@@ -119,6 +122,7 @@ function getPatients(formData) {
     $('.patient_info').removeClass('active');
     $('#select_provider_button').removeClass('active');
     $('#select_provider_button').attr('data-id', 0);
+    $('#import_patients').show();
 
     var tojson = JSON.stringify(formData);
     $.ajax({
@@ -171,6 +175,7 @@ function getOptionContent(type, value) {
 }
 
 function selectProvider(id) {
+
     $('#form_patient_id').val(id);
     $('#form_select_provider').submit();
 }

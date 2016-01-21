@@ -4,7 +4,7 @@ namespace myocuhub\Http\Controllers\Patient;
 
 use Illuminate\Http\Request;
 use myocuhub\Patient;
-
+use myocuhub\Models\Practice;
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
 
@@ -26,8 +26,10 @@ class PatientController extends Controller
         if ($request->has('action')) {
             $data['action'] = $request->input('action');
         }
-
-        return view('patient.index')->with('data', $data);
+        $practicedata = Practice::all()->lists('name', 'id')->toArray();
+        array_unshift($practicedata, "0");
+        $practicedata['0']="Select Practice";
+        return view('patient.index')->with('data', $data)->with('practice_data', $practicedata);
     }
 
     /**
