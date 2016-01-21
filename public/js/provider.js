@@ -28,7 +28,7 @@ $(document).ready(function () {
         if ($('.view_selected_patient').hasClass('remove')) {
             showPatientInfo();
         }
-        if (searchdata.length != 0) getProviders(searchdata);
+        if (searchdata.length != 0) getProviders(searchdata);else $('#search_practice_input').focus();
     });
 
     $('.lastseenby_show').on('click', function () {
@@ -129,6 +129,12 @@ $(document).ready(function () {
         if ($('.previous_provider_patient_list').hasClass("active")) showProviderNear();else {
             $('.provider_previous').removeClass('glyphicon-chevron-down');
             $('.provider_previous').addClass('glyphicon-chevron-right');
+        }
+    });
+
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            $("#search_practice_button").trigger("click");
         }
     });
 });
