@@ -82,9 +82,8 @@ class User extends Model implements AuthenticatableContract,
     public static function practiceUser($filters)
     {
         return self::query()
-            ->leftjoin('organization_user', 'users.id', '=', 'organization_user.user_id')
-            ->leftjoin('organizations', 'organization_user.organization_id', '=', 'organizations.id')
-            ->leftjoin('practices', 'organizations.practice_id', '=', 'practices.id')
+            ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
+            ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
             ->where(function($query) use ($filters) {
                 foreach ($filters as $filter) {
                     $query->where(function($query) use ($filter) {
@@ -130,10 +129,8 @@ class User extends Model implements AuthenticatableContract,
     public static function practiceUserById($practice_id)
     {
          return self::query()
-            ->leftjoin('organization_user', 'users.id', '=', 'organization_user.user_id')
-
-            ->leftjoin('organizations', 'organization_user.organization_id', '=', 'organizations.id')
-            ->leftjoin('practices', 'organizations.practice_id', '=', 'practices.id')
+            ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
+            ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
             ->where('practice_id', $practice_id)
             ->get();
 

@@ -12,8 +12,6 @@ class PracticeUser extends Migration
      */
     public function up()
     {
-        Schema::drop('organization_user');
-        Schema::drop('organizations');
 
         Schema::create('practice_user', function (Blueprint $table) {
             $table->increments('id');

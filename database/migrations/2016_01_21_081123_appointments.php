@@ -20,7 +20,8 @@ class Appointments extends Migration
             $table->integer('patient_id')->unsigned();
             $table->integer('network_id')->unsigned();
             $table->integer('appointmenttype_key')->unsigned();
-            $table->integer('network_id')->unsigned();
+            $table->datetime('start_datetime');
+            $table->datetime('end_datetime');
             $table->timestamps();
         });
 
