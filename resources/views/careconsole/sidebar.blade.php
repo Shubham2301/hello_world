@@ -11,6 +11,7 @@
       <li><a href="/home"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a></li>
       <li><a href="#"><img src="{{URL::asset('images/sidebar/records.png')}}" class="drop_image"></a></li>
       <li><a href="/careconsole"><img src="{{URL::asset('images/sidebar/care_coordination.png')}}" class="drop_image"></a></li>
+      <li><a href="/administration/practices"><img src="{{URL::asset('images/sidebar/care_coordination.png')}}" class="drop_image"></a></li>
     </ul>
     </div>
     </div>
