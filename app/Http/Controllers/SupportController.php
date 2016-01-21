@@ -13,4 +13,30 @@ class SupportController extends Controller
     {
         return view('support.support');
     }
+
+    public function contactusIndex()
+    {
+        return view('support.contactus');
+    }
+
+    public function investorsIndex()
+    {
+        return view('support.investors');
+    }
+
+    public function privacyIndex()
+    {
+        return view('support.privacy');
+    }
+
+    public function sitemapIndex()
+    {
+        return view('support.sitemap');
+    }
+
+    public function termsIndex()
+    {
+        return view('support.terms');
+    }
+
 }

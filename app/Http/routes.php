@@ -71,5 +71,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('careconsole', 'CareConsoleController');
     Route::get('import/location', 'BulkImportController@getLocations');
     Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
+
+    //support routes
+    Route::get('terms', 'SupportController@termsIndex');
+    Route::get('privacy', 'SupportController@privacyIndex');
+    Route::get('sitemap', 'SupportController@sitemapIndex');
+    Route::get('contactus', 'SupportController@contactusIndex');
+    Route::get('investors', 'SupportController@investorsIndex');
     Route::get('techsupport', 'SupportController@techSupportIndex');
+
 });
