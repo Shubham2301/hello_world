@@ -6,6 +6,9 @@ $(document).ready(function () {
     $('#schedule_new_patient').on('click', function(){
         $('#form_schedule_another_appointment').submit();
     });
+    $('#cancel_appointment').on('click', function(){
+        $('#form_schedule_another_appointment').submit();
+    });
 });
 
 function scheduleAppointment(){
