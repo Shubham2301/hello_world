@@ -59,9 +59,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
 
-    Route::resource('users', 'Admin\UserController');
-    Route::resource('roles', 'Admin\RoleController');
-    Route::resource('permissions', 'Admin\PermissionController');
     Route::resource('directmail', 'DirectMail\DirectMailController');
     Route::resource('patients', 'Patient\PatientController');
     Route::resource('providers', 'Practice\ProviderController');
@@ -72,4 +69,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('import/location', 'BulkImportController@getLocations');
     Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
     Route::get('techsupport', 'SupportController@techSupportIndex');
+
+    Route::resource('administration/users', 'Admin\UserController');
+    Route::resource('administration/roles', 'Admin\RoleController');
+    Route::resource('administration/permissions', 'Admin\PermissionController');
+
+    Route::get('administration/practices', 'Practice\PracticeController@administration');
+    Route::get('administration/patients', 'Patient\PatientController@administration');
+    Route::get('administration/providers', 'Practice\ProviderController@administration');
 });

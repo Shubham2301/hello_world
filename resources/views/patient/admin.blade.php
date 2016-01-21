@@ -1,14 +1,14 @@
 @extends('layouts.master')
 
-@section('title', 'My Ocuhub - Select Provider')
+@section('title', 'My Ocuhub - Administration')
 
 @section('imports')
-<link rel="stylesheet" type="text/css" href="{{elixir('css/practice.css')}}">
-<script type="text/javascript" src="{{elixir('js/practice.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{elixir('css/patient.css')}}">
+<script type="text/javascript" src="{{elixir('js/patient.js')}}"></script>
 @endsection
 
 @section('sidebar')
-    @include('layouts.sidebar')
+    @extends('admin.sidebar')
 @endsection
 
 @section('content')
@@ -23,13 +23,6 @@
 @endif
 
 <div class="content-section active">
-    @include('practice.search')
-</div>
 
-<div class="practice_section active" id="practice_listing">
-    @include('practice.listing')
-</div>
-<div class="practice_section active">
-    @include('practice.create')
 </div>
 @endsection

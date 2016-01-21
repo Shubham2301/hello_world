@@ -130,5 +130,9 @@ class PatientController extends Controller
        return json_encode($data);
     }
 
+    public function administration(Request $request)
+    {
+        return view('provider.admin');
+    }
 
 }

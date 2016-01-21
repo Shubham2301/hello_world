@@ -19,7 +19,7 @@ class PracticeController extends Controller
      */
     public function index(Request $request)
     {
-        return view('practice.index');
+        //return view('practice.index');
     }
 
     /**
@@ -160,6 +160,11 @@ class PracticeController extends Controller
             $i++;
         }
         return json_encode($data);
+    }
+
+    public function administration(Request $request)
+    {
+        return view('practice.admin');
     }
 
 }
