@@ -141,9 +141,11 @@ class PracticeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $practice_id = $request->input('practice_id');
+        $practicelocation = PracticeLocation::where('practice_id',$practice_id)->delete();
+        $practices = Practice::where('id',$practice_id)->delete();
     }
     
     public function search(Request $request){

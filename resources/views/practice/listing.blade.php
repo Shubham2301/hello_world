@@ -20,7 +20,7 @@
     </div>
     <div class="practice_search_content">
 <!--
-        <div class="row search_item" data-id="12">
+        <div class="row search_item" data-id="11">
             <div class="col-xs-3 search_name">
                 <input type="checkbox">&nbsp;&nbsp;
                 <p> practice.name </p>
@@ -36,7 +36,7 @@
                 </span>
                 </p>&nbsp;&nbsp;
                 <p class="editPractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;
-                <span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span>
+                <span class="glyphicon glyphicon-remove removepractice_from_row" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span>
             </div>
         </div>
 -->
@@ -60,7 +60,7 @@
                 &nbsp;&nbsp;&nbsp;
                 <button id="editPractice" type="button" class="btn" data-toggle="modal" data-target="#create_practice" data-id="">Edit</button>
                 &nbsp;&nbsp;&nbsp;
-                <span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span>
+                <span class="glyphicon glyphicon-remove" id="remove_practice" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span>
             </div>
         </div>
         <div class="row location_info_header">

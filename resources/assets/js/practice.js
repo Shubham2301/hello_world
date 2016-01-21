@@ -48,7 +48,6 @@ $(document).ready(function() {
             alert('practice name is missing');
         }
     });
-
     $('#add_location').on('click', function() {
         var counter = parseInt($('.location_counter').text());
         if (!locations[counter]) {
@@ -118,13 +117,11 @@ $(document).ready(function() {
         refreshAttributes();
 
     });
-
     $('#editPractice').on('click', function() {
         var val = $(this).attr('data-id');
         $('#editmode').val(val);
         setEditMode();
     });
-
     $('.practice_list').on('click', '.editPractice_from_row', function() {
         var val = $(this).parents('.search_item').attr('data-id');
         showinfo = false;
@@ -135,6 +132,29 @@ $(document).ready(function() {
         $('#editmode').val(val);
         setNewLocationField();
         setEditMode();
+    });
+
+    $('.practice_list').on('click', '.removepractice_from_row', function(){
+        var val = $(this).parents('.search_item').attr('data-id');
+        if (confirm("Are you sure?")) {
+        var formData = {
+            'practice_id': val
+        };
+        removePractice(formData);
+        }
+        $(this).parents('.search_item').remove();
+    });
+
+    $('#remove_practice').on('click',function(){
+        var val = $('#editPractice').attr('data-id');
+        if (confirm("Are you sure?")) {
+            var formData = {
+                'practice_id': val
+            };
+            removePractice(formData);
+        }
+        $('#back').trigger('click');
+
     });
 
 });
@@ -206,7 +226,7 @@ function getPractices(formData) {
             $('#search_results').text(practices.length + ' Results found');
             if (practices.length > 0) {
                 practices.forEach(function(practice) {
-                    content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3 search_name"><input type="checkbox">&nbsp;&nbsp;<p>' + practice.name + '</p></div><div class="col-xs-3">' + practice.address + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + practice.ocuapps + '</p></div> <div class="col-xs-2 search_edit"><p ><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span></p>&nbsp;&nbsp;<p class="editPractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;<span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></div></div>';
+        content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3 search_name"><input type="checkbox">&nbsp;&nbsp;<p>' + practice.name + '</p></div><div class="col-xs-3">' + practice.address + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + practice.ocuapps + '</p></div> <div class="col-xs-2 search_edit"><p ><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span></p>&nbsp;&nbsp;<p class="editPractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;<span class="glyphicon glyphicon-remove removepractice_from_row " area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></div></div>';
                     //<img class="delete_practice_im" src="' + deleteimage + '">
                     //<img class="schedule_practice_img" src="' + scheduleimg + '">
                 });
@@ -355,3 +375,29 @@ function updatePracticedata(formdata) {
         processData: false
     });
 }
+
+function removePractice(formdata)
+{
+    var tojson = JSON.stringify(formdata);
+    $.ajax({
+        url: 'practices/remove',
+        type: 'GET',
+        data: $.param(formdata),
+        contentType: 'text/html',
+        async: false,
+        success: function success(e) {
+        },
+    error: function error() {
+        alert('Error searching');
+    },
+        cache: false,
+            processData: false
+});
+
+}
+
+
+
+
+
+
