@@ -9,11 +9,12 @@ $(document).ready(function() {
         getPractices(formData);
     });
 
-    $('#back').on('click', function(){
-    $('.practice_info').removeClass('active');
-    $('.practice_action').addClass('active');
+    $('#back').on('click', function() {
+        $('.practice_info').removeClass('active');
+        $('.practice_action').addClass('active');
     });
     $('#savepractice').on('click', function() {
+        showinfo = true;
         var formdata = [];
         var practice_name = $('#practice_name').val();
 
@@ -103,8 +104,9 @@ $(document).ready(function() {
 
 
     });
-    $('.practice_list').on('click', '.search_item', function() {
-        var practice_id = $(this).attr('data-id');
+    $('.practice_list').on('click', '.search_name', function() {
+        var practice_id = $(this).parent('.search_item').attr('data-id');
+        showinfo = true;
         var formData = {
             'practice_id': practice_id
         };
@@ -121,14 +123,25 @@ $(document).ready(function() {
         var val = $(this).attr('data-id');
         $('#editmode').val(val);
         setEditMode();
-
     });
 
+    $('.practice_list').on('click', '.editPractice_from_row', function() {
+        var val = $(this).parents('.search_item').attr('data-id');
+        showinfo = false;
+        var formData = {
+            'practice_id': val
+        };
+        getPracticeInfo(formData)
+        $('#editmode').val(val);
+        setNewLocationField();
+        setEditMode();
+    });
 
 });
 
 var locations = [];
 var currentPractice = [];
+var showinfo = true;
 
 function getLocationData() {
 
@@ -193,9 +206,9 @@ function getPractices(formData) {
             $('#search_results').text(practices.length + ' Results found');
             if (practices.length > 0) {
                 practices.forEach(function(practice) {
-                    content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3 search_name"><input type="checkbox">&nbsp;&nbsp;<p>' + practice.name + '</p></div><div class="col-xs-3">' + practice.address + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + practice.ocuapps + '</p></div> <div class="col-xs-2 search_edit"><p ><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span></p>&nbsp;&nbsp;<p>Edit</p>&nbsp;&nbsp;<span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></div></div>';
-//<img class="delete_practice_im" src="' + deleteimage + '">
-//<img class="schedule_practice_img" src="' + scheduleimg + '">
+                    content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3 search_name"><input type="checkbox">&nbsp;&nbsp;<p>' + practice.name + '</p></div><div class="col-xs-3">' + practice.address + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + practice.ocuapps + '</p></div> <div class="col-xs-2 search_edit"><p ><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span></p>&nbsp;&nbsp;<p class="editPractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;<span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></div></div>';
+                    //<img class="delete_practice_im" src="' + deleteimage + '">
+                    //<img class="schedule_practice_img" src="' + scheduleimg + '">
                 });
                 $('.practice_list').addClass('active');
                 $('.practice_search_content').html(content);
@@ -266,7 +279,9 @@ function getPracticeInfo(formdata) {
         async: false,
         success: function(e) {
             var info = $.parseJSON(e);
-            showPracticeInfo(info);
+            currentPractice = info;
+            if (showinfo)
+                showPracticeInfo(info);
         },
         error: function() {
             alert('Error getting practice information');
@@ -278,7 +293,7 @@ function getPracticeInfo(formdata) {
 }
 
 function showPracticeInfo(info) {
-    currentPractice = info;
+
     $('#editPractice').attr('data-id', info.practice_id);
     $('#the_practice_name').text(info.practice_name);
     var content = '';
@@ -302,9 +317,15 @@ function showPracticeInfo(info) {
 
 function setEditMode() {
     locations = currentPractice.locations;
-    popupLocationFields(locations[0]);
-    $('.location_counter').text(0);
+    var practice_name = currentPractice.practice_name;
+    if (locations.length > 0) {
+        var index = locations.length - 1;
+        popupLocationFields(locations[index]);
+        $('.location_counter').text(index);
+    } else
+        $('.location_counter').text(0);
     $('#practice_name').val(currentPractice.practice_name);
+
 
 }
 

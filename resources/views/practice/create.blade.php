@@ -20,7 +20,7 @@
                                 <p><strong>Name</strong></p>
                             </div>
                             <div class="col-md-8">
-                                <input id="practice_name" type="text">
+                                <input id="practice_name" type="text" value="">
                             </div>
                         </div>
                         <div class="row">
