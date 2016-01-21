@@ -20,7 +20,12 @@
 
    <h3>Select a CCDA file</h3>
     {!! Form::open(array('url' => '/saveccd', 'method' => 'post','files'=>true)) !!}
-    {!!Form::file('ccda')!!}
+    <div style="display:flex;color:black;">
+        <p style="margin-right:2em;">Patient id </p> {!!Form::text('patient_id')!!}
+    </div>
+    <div style="display:flex;margin-top:2em;margin-bottom:2em">
+        <p style="margin-right:2em;"><strong>CCDA file</strong></p> {!!Form::file('ccda')!!}
+    </div>
     {!!Form::submit('save')!!}
     {!! Form::close() !!}
 @endsection
