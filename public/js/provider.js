@@ -28,7 +28,7 @@ $(document).ready(function () {
         if ($('.view_selected_patient').hasClass('remove')) {
             showPatientInfo();
         }
-        getProviders(searchdata);
+        if (searchdata.length != 0) getProviders(searchdata);
     });
 
     $('.lastseenby_show').on('click', function () {
@@ -84,13 +84,14 @@ $(document).ready(function () {
     });
 
     $('#add_practice_search_option').on('click', function () {
-        var type = $('#search_practice_input_type').val();
+        var stype = $('#search_practice_input_type').val();
+        var type = $('#search_practice_input_type').find(":selected").text();
         var value = $('#search_practice_input').val();
         if (value != '') {
             if ($('.view_selected_patient').hasClass('remove')) {
                 showPatientInfo();
             }
-            var searchoption = getOptionContent(type, value);
+            var searchoption = getOptionContent(type, value, stype);
             $('.search_filter').append(searchoption);
             $('#search_practice_input').val('');
         }
@@ -131,8 +132,6 @@ $(document).ready(function () {
         }
     });
 });
-
-$(document).ready(function () {});
 
 function changePatientInfo() {
     $('.change_selected_patient').text("");
@@ -266,6 +265,7 @@ function getProviders(formData) {
     $('.practice_list').addClass('active');
     $('.practice_info').removeClass('active');
     var tojson = JSON.stringify(formData);
+    console.log(tojson);
     $.ajax({
         url: '/providers/search',
         type: 'GET',
@@ -294,8 +294,8 @@ function getProviders(formData) {
     });
 }
 
-function getOptionContent(type, value) {
-    var content = '<div class="search_filter_item"><span class="item_type">' + type + '</span>:<span class="item_value">' + value + '</span><span class="remove_option">x</span></div>';
+function getOptionContent(type, value, stype) {
+    var content = '<div class="search_filter_item"><span class="item_type" data-stype="' + stype + '">' + type + '</span>:<span class="item_value">' + value + '</span><span class="remove_option">x</span></div>';
 
     return content;
 }
@@ -304,7 +304,7 @@ function getSearchType() {
     var searchdata = [];
 
     $('.search_filter_item').each(function () {
-        var stype = $(this).children('.item_type').text();
+        var stype = $(this).children('.item_type').attr('data-stype');
         var name = $(this).children('.item_value').text();
         searchdata.push({
             "type": stype,
