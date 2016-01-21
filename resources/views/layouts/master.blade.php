@@ -15,7 +15,7 @@
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     
     <script type="text/javascript" src="{{asset('lib/js/jquery-1.11.3.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('lib/js/bootstrap.js')}}"></script>
+    <script type="text/javascript" src="{{asset('lib/js/bootstrap.min.js')}}"></script>
     <script type="text/javascript" src="{{elixir('js/main.js')}}"></script>
     
     @yield('imports')
