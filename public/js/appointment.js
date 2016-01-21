@@ -5,6 +5,9 @@ $(document).ready(function () {
     $('#confirm_appointment').on('click', function () {
         scheduleAppointment();
     });
+    $('#schedule_new_patient').on('click', function () {
+        $('#form_schedule_another_appointment').submit();
+    });
 });
 
 function scheduleAppointment() {

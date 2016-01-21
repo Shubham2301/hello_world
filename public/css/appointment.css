@@ -207,3 +207,9 @@ h4.schedule_place {
   border: solid 2px #fff;
   padding: 5px 20px;
 }
+
+.appointment_confirmed > p {
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 1.2em;
+}
