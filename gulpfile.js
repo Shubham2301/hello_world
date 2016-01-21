@@ -32,4 +32,22 @@ elixir(function (mix) {
     mix.babel(['import.js'],'public/js/import.js');
     mix.babel(['careconsole.js'],'public/js/careconsole.js');
 
+    mix.version(['css/style.css',
+                'css/directmail.css',
+                'css/referral.css',
+                'css/patient.css',
+                'css/practice.css',
+                'css/provider.css',
+                'css/appointment.css',
+                'css/careconsole.css',
+                'js/main.js',
+                'js/sesconnect.js',
+                'js/referraltype.js',
+                'js/patient.js',
+                'js/provider.js',
+                'js/practice.js',
+                'js/appointment.js',
+                'js/import.js',
+                'js/careconsole.js']);
+
 });

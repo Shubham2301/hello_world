@@ -3,8 +3,8 @@
 @section('title', 'My Ocuhub - Schedule Appointment')
 
 @section('imports')
-<link rel="stylesheet" type="text/css" href="{{asset('css/appointment.css')}}">
-<script type="text/javascript" src="{{asset('js/appointment.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{elixir('css/appointment.css')}}">
+<script type="text/javascript" src="{{elixir('js/appointment.js')}}"></script>
 @endsection
 
 @section('sidebar')

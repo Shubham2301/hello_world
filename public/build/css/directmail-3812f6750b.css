@@ -1,0 +1,17 @@
+#directmail-console {
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.content-right {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
