@@ -26,10 +26,10 @@ class FourPatientCare
         $input['AccessID']= $this->accessID;
         $input['SecurityCode']= $this->securityCode;
 
-//        $client = new CustomSoapClient($this->wsdl , array('trace' => 1,  'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
-//        $response = $client->__soapCall("GetApptTypes", array($input), array('soapaction' => $this->getApptTypesAction, 'uri' => $this->host));
-//
-//        return json_encode($response);
+        $client = new CustomSoapClient($this->wsdl , array('trace' => 1,  'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
+        $response = $client->__soapCall("GetApptTypes", array(), array('soapaction' => $this->getApptTypesAction, 'uri' => $this->host));
+
+        return json_encode($response);
     }
 
     public function getOpenApptSlots($input){
@@ -37,21 +37,21 @@ class FourPatientCare
         $input['AccessID']= $this->accessID;
         $input['SecurityCode']= $this->securityCode;
 
-//        $client = new CustomSoapClient($this->wsdl , array('trace' => 1,  'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
-//        $response = $client->__soapCall("GetOpenApptSlots", array($input), array('soapaction' => $this->getOpenApptSlotsAction, 'uri' => $this->host));
-//
-//        return json_encode($response);
+        $client = new CustomSoapClient($this->wsdl , array('trace' => 1,  'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
+        $response = $client->__soapCall("GetOpenApptSlots", array($input), array('soapaction' => $this->getOpenApptSlotsAction, 'uri' => $this->host));
+
+        return json_encode($response);
     }
 
     public function requestApptInsert($input){
 
         $input['AccessID']= $this->accessID;
         $input['SecurityCode']= $this->securityCode;
-
-//        $client = new CustomSoapClient($this->wsdl , array('trace' => 1,  'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
-//        $response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => $this->requestApptInsertAction, 'uri' => $this->host));
-//
-//        return json_encode($response);
+        //dd($input);
+        $client = new \SoapClient($this->wsdl , array('trace' => 1,  'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
+        $response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => $this->requestApptInsertAction, 'uri' => $this->host));
+        dd($client->__getLastResponse());
+        return json_encode($response);
     }
 
 
@@ -72,27 +72,3 @@ class FourPatientCare
       return $result;
     }
 }
-
-//class CustomSoapClient extends \SoapClient {
-//
-//    function __doRequest( $request, $location, $action, $version, $one_way = 0 ) {
-//
-//        $namespace = 'http://WebScheduling.4PatientCare.Com/';
-//
-//        $request = str_replace( '<ns1:', '<', $request);
-//        $request = str_replace( '</ns1:', '</', $request );
-//
-//        $request = str_replace( 'SOAP-ENV', 'soap', $request );
-//        $request = str_replace( '<soap:Envelope', '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"', $request );
-//
-//        $request = str_replace( ' xmlns:ns1="' . $namespace . '"', '', $request );
-//
-//        $request = str_replace( '<GetApptTypes>', '<GetApptTypes xmlns="' . $namespace . '">', $request );
-//        $request = str_replace( '<GetOpenApptSlots>', '<GetOpenApptSlots  xmlns="' . $namespace . '">', $request );
-//        $request = str_replace( '<RequestApptInsert>', '<RequestApptInsert xmlns="' . $namespace . '">', $request );
-//        //dd($request);
-//        return parent::__doRequest( $request, $location, $action, $version, $one_way = 0 );
-//
-//    }
-//
-//}
