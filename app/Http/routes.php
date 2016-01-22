@@ -82,3 +82,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('techsupport', 'SupportController@techSupportIndex');
 
 });
+
+    Route::get('/foo', function(){
+        $u = myocuhub\Models\Practice::paginate(10);
+        return view('paginationtest')->with('u',$u);
+    });
+
+Route::get('/fooo', 'Practice\PracticeController@getpages');
+

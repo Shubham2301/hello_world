@@ -54,7 +54,7 @@
                             <div class="col-md-2 add_location">
                                 <button id="add_location" class="remove_location_btn">add +</button>
                             </div>
-                            <div class="col-md-3 remove-location"><button id="add_location" class="add_location_btn">remove -</button></div>
+                            <div class="col-md-3 remove_location"><button id="add_location" class="add_location_btn">remove -</button></div>
                         </div>
                         <div class="row content-row-margin">
                             <div class="col-md-12" style="margin-left:0px;padding-left: 0px;">

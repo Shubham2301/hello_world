@@ -15,7 +15,7 @@
         <div class="col-xs-2">
             <input type="hidden" id="schedule_practice_img" value="{{asset('images/schedule.png')}}">
             <input type="hidden" id="delete_practice_img" value="{{asset('images/delete.png')}}">
-            <p class="pagination"><span class="glyphicon glyphicon-chevron-left" id="search_practice_button" aria-hidden="true"></span><strong>2 of 2</strong><span class="glyphicon glyphicon-chevron-right" id="search_practice_button" aria-hidden="true"></span></p>
+            <p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong>2 of 2</strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
         </div>
     </div>
     <div class="practice_search_content">
@@ -58,7 +58,7 @@
                 &nbsp;&nbsp;&nbsp;
                 <p>Assign User</p>
                 &nbsp;&nbsp;&nbsp;
-                <button id="editPractice" type="button" class="btn" data-toggle="modal" data-target="#create_practice" data-id="">Edit</button>
+                <button id="edit_practice" type="button" class="btn" data-toggle="modal" data-target="#create_practice" data-id="">Edit</button>
                 &nbsp;&nbsp;&nbsp;
                 <span class="glyphicon glyphicon-remove" id="remove_practice" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span>
             </div>
