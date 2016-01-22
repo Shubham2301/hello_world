@@ -3,9 +3,9 @@
 @section('title', 'My Ocuhub - Select Patients')
 
 @section('imports')
-<link rel="stylesheet" type="text/css" href="{{asset('css/patient.css')}}">
-<script type="text/javascript" src="{{asset('js/patient.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/import.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{elixir('css/patient.css')}}">
+<script type="text/javascript" src="{{elixir('js/patient.js')}}"></script>
+<script type="text/javascript" src="{{elixir('js/import.js')}}"></script>
 @endsection
 
 @section('sidebar')
