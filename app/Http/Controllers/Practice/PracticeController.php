@@ -141,15 +141,20 @@ class PracticeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $practice_id = $request->input('practice_id');
+        $practicelocation = PracticeLocation::where('practice_id',$practice_id)->delete();
+        $practices = Practice::where('id',$practice_id)->delete();
     }
     
     public function search(Request $request){
         $tosearchdata = json_decode($request->input('data'),true);
-        $practices =Practice::where('name','like','%'.$tosearchdata['value'].'%')->get();
+        $practices =Practice::where('name','like','%'.$tosearchdata['value'].'%')->paginate(5);
         $data = [];
+        $data[0]['total'] = $practices->total();
+        $data[0]['lastpage']=$practices->lastPage();
+        $data[0]['currentPage']=$practices->currentPage();
         $i=0;
         foreach($practices as $practice){
             $data[$i]['id'] = $practice->id;
@@ -161,5 +166,4 @@ class PracticeController extends Controller
         }
         return json_encode($data);
     }
-
 }

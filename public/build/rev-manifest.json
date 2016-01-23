@@ -1,0 +1,19 @@
+{
+  "css/appointment.css": "css/appointment-d89111972b.css",
+  "css/careconsole.css": "css/careconsole-be0648bbea.css",
+  "css/directmail.css": "css/directmail-1c03ad146c.css",
+  "css/patient.css": "css/patient-3cecd8bdc8.css",
+  "css/practice.css": "css/practice-7151f3e155.css",
+  "css/provider.css": "css/provider-b3805fb652.css",
+  "css/referral.css": "css/referral-6397d1f4dd.css",
+  "css/style.css": "css/style-c3f48f6f91.css",
+  "js/appointment.js": "js/appointment-d691bede2a.js",
+  "js/careconsole.js": "js/careconsole-60d233e728.js",
+  "js/import.js": "js/import-3e781d44fa.js",
+  "js/main.js": "js/main-5e6a00f9e1.js",
+  "js/patient.js": "js/patient-306c181f8d.js",
+  "js/practice.js": "js/practice-13eb18fe41.js",
+  "js/provider.js": "js/provider-79abb449ba.js",
+  "js/referraltype.js": "js/referraltype-849ba481ad.js",
+  "js/sesconnect.js": "js/sesconnect-8971778a9c.js"
+}
