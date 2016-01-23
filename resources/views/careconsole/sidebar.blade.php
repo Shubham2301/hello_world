@@ -1,4 +1,4 @@
-<div class="container no-padding">
+<div class="no-padding">
 <div class="row sidebar_header center">
 <div class="col-lg-2 col-md-2">
 <div class="dropdown" >
