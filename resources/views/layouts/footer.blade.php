@@ -7,19 +7,19 @@
 </div>
 <div class="col-xs-12 col-sm-9 footer-right">
     <div class="col-sm-2 footer-item border">
-        <p>Contact Us</p>
+        <a href="/contactus">Contact Us</a>
     </div>
     <div class="col-sm-2 footer-item border">
-        <p>Privacy Policy</p>
+        <a href="/privacy">Privacy Policy</a>
     </div>
     <div class="col-sm-2 footer-item border">
-        <p>Terms of Use</p>
+        <a href="/terms">Terms of Use</a>
     </div>
     <div class="col-sm-2 footer-item border">
-        <p>Site Map</p>
+        <a href="/sitemap">Site Map</a>
     </div>
     <div class="col-sm-2 footer-item">
-        <p>Investors</p>
+        <a href="/investors">Investors</a>
     </div>
     <div class="row top-padding visible-xs">
         <div class="col-xs-12 text-center">

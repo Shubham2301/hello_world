@@ -1,8 +1,8 @@
-<div class="overview row">
-    <div class="overview_section col-lg-3 col-md-4 col-xs-6">
-        <div class="info_box">
+<div class="overview row before_drilldown">
+    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
+        <div class="info_box" id="0" data-name="Contact Status">
            <div class="top">
-                <div class="info_section">
+                <div class="info_section" id="0" data-name="Contact Attempted">
                        <div class="info_section_title">Contact Attempted</div>
                             <div class="right">
                                 <div class="circle green"></div>
@@ -10,7 +10,7 @@
                             </div>
                 </div>
                 <div class="section_break"></div>
-                <div class="info_section">
+                <div class="info_section" id="1" data-name="Contact Pending">
                     <div class="info_section_title">Contact Pending</div>
                     <div class="right">
                     <div class="circle red"></div>
@@ -18,12 +18,12 @@
                     </div>
                 </div>
                 </div>
-            <div class="bottom">
+            <div class="bottom stage">
                 <p>Contact Status</p>
             </div>
         </div>
     </div>
-    <div class="overview_section col-lg-3 col-md-4 col-xs-6">
+    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
         <div class="info_box">
            <div class="top">
                 <div class="info_section">
@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    <div class="overview_section col-lg-3 col-md-4 col-xs-6">
+    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
         <div class="info_box">
            <div class="top">
                 <div class="info_section">
@@ -87,7 +87,7 @@
             </div>
         </div>
     </div>
-    <div class="overview_section col-lg-3 col-md-4 col-xs-6">
+    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
         <div class="info_box">
            <div class="top">
                 <div class="info_section">
@@ -111,28 +111,28 @@
             </div>
         </div>
     </div>
-        <div class="overview_section col-lg-3 col-md-4 col-xs-6">
-        <div class="info_box">
-           <div class="top">
-                <div class="info_section">
-                    <div class="info_section_title">Ready to be completed</div>
-                    <div class="right">
-                    <div class="circle green"></div>
-                    <div class="info_section_number">4</div>
-                    </div>
-                </div>
-                <div class="section_break"></div>
-                <div class="info_section">
-                    <div class="info_section_title">Overdue</div>
-                    <div class="right">
-                    <div class="circle red"></div>
-                    <div class="info_section_number">11</div>
-                    </div>
+    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
+    <div class="info_box">
+       <div class="top">
+            <div class="info_section">
+                <div class="info_section_title">Ready to be completed</div>
+                <div class="right">
+                <div class="circle green"></div>
+                <div class="info_section_number">4</div>
                 </div>
             </div>
-            <div class="bottom">
-                <p>Finalization</p>
+            <div class="section_break"></div>
+            <div class="info_section">
+                <div class="info_section_title">Overdue</div>
+                <div class="right">
+                <div class="circle red"></div>
+                <div class="info_section_number">11</div>
+                </div>
             </div>
         </div>
+        <div class="bottom">
+            <p>Finalization</p>
+        </div>
     </div>
+</div>
 </div>

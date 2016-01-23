@@ -52,7 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('providers/search', 'Practice\ProviderController@search');
     Route::get('practices/search', 'Practice\PracticeController@search');
     Route::get('practices/create', 'Practice\PracticeController@create');
-    Route::get('practices/edit',   'Practice\PracticeController@edit');
+    Route::get('practices/edit', 'Practice\PracticeController@edit');
+    Route::get('practices/remove', 'Practice\PracticeController@destroy');
     
     Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
     Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
@@ -79,6 +80,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/showvitals/{id}', array('uses'=>'CcdaController@showVitals','as'=>'showvitals'));
     Route::get('import/location', 'BulkImportController@getLocations');
     Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
+
+    //support routes
+    Route::get('terms', 'SupportController@termsIndex');
+    Route::get('privacy', 'SupportController@privacyIndex');
+    Route::get('sitemap', 'SupportController@sitemapIndex');
+    Route::get('contactus', 'SupportController@contactusIndex');
+    Route::get('investors', 'SupportController@investorsIndex');
+    Route::get('techsupport', 'SupportController@techSupportIndex');
 
 });
 

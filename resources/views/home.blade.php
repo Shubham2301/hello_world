@@ -3,8 +3,8 @@
 @section('title', 'My Ocuhub')
 
 @section('imports')
-<link rel="stylesheet" type="text/css" href="{{asset('css/referral.css')}}">
-<script type="text/javascript" src="{{asset('js/referraltype.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{elixir('css/referral.css')}}">
+<script type="text/javascript" src="{{elixir('js/referraltype.js')}}"></script>
 @endsection
 
 @section('sidebar')

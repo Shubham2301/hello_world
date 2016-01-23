@@ -6,7 +6,7 @@ $(document).ready(function () {
         $("#add_search_option").trigger("click");
         $('#search_patient_input').val('');
         var searchdata = getsearchtype();
-        getPatients(searchdata);
+        if (searchdata.length != 0) getPatients(searchdata);else $('#search_patient_input').focus();
     });
 
     $('.patient_list').on('click', '.patient_list_item', function () {
@@ -73,6 +73,12 @@ $(document).ready(function () {
         } else {
             $('.insurance_provider_icon').removeClass('glyphicon-chevron-down');
             $('.insurance_provider_icon').addClass('glyphicon-chevron-right');
+        }
+    });
+
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            $("#search_patient_button").trigger("click");
         }
     });
 });

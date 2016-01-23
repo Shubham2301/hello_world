@@ -28,7 +28,9 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'sesemail', 'password', 'firstname','lastname','npi','cellphone','state','address1','address2','city','zip'];
+    protected $fillable = ['name', 'email', 'sesemail',
+                           'password', 'firstname', 'lastname', 'npi', 'cellphone', 'state',
+                           'address1', 'address2', 'city', 'zip'];
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -43,10 +45,10 @@ class User extends Model implements AuthenticatableContract,
 
     public function hasRole($role)
     {
-        if(is_string($role)) 
+        if (is_string($role))
         {
             return $this->roles->contains('name', $role);
-        }  
+        }
 
         return !! $role->intersect($this->roles)->count();
 
@@ -65,7 +67,7 @@ class User extends Model implements AuthenticatableContract,
         if(is_string($role))
         {
             return $this->roles()->save(
-                    Role::whereName($role)->firstOrFail()
+                Role::whereName($role)->firstOrFail()
             );
         }
 
@@ -78,39 +80,48 @@ class User extends Model implements AuthenticatableContract,
     }
 
     public static function practiceUser($filters)
-
     {
         return self::query()
-            ->leftjoin('organization_user','users.id','=','organization_user.user_id')
+            ->leftjoin('organization_user', 'users.id', '=', 'organization_user.user_id')
+            ->leftjoin('organizations', 'organization_user.organization_id', '=', 'organizations.id')
+            ->leftjoin('practices', 'organizations.practice_id', '=', 'practices.id')
+            ->where(function($query) use ($filters) {
+                foreach ($filters as $filter) {
+                    $query->where(function($query) use ($filter) {
+                        switch($filter['type']){
+                            case 'pratice_name':
+                                $query->where('practices.name', '%'.$filter['value'].'%');
+                                break;
+                            case 'location':
+                                $query->where('city', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orWhere('state', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orWhere('address1', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orWhere('address2', 'LIKE', '%'.$filter['value'].'%');
+                                break;
+                            case 'zip':
+                                $query->where('zip', $filter['value']);
+                                break;
+                            case 'doctor_name':
+                                $query->where('firstname', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orwhere('users.name', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orWhere('middlename', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orWhere('lastname', 'LIKE', '%'.$filter['value'].'%');
+                                break;
+                            case 'all':
+                                $query->where('practices.name', '%'.$filter['value'].'%')
+                                    ->orWhere('city', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orWhere('state', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orWhere('address1', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orWhere('address2', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orwhere('zip', $filter['value'])
+                                    ->orwhere('firstname', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orwhere('users.name', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orWhere('middlename', 'LIKE', '%'.$filter['value'].'%')
+                                    ->orWhere('lastname', 'LIKE', '%'.$filter['value'].'%');
+                                break;
 
-            ->leftjoin('organizations','organization_user.organization_id','=','organizations.id')
-            ->leftjoin('practices','organizations.practice_id','=','practices.id')
-            ->where( function($query) use($filters){
-                foreach($filters as $filter)  {
-                  $query->where(function($query) use ($filter){
-                   switch($filter['type']){
-                        case 'pratice_name' :
-                           $query->where('practices.name', $filter['value']);
-                           break;
-                       case 'location' :
-                           $query->where('locationname','LIKE','%'.$filter['value'].'%')
-                               ->orWhere('city','LIKE','%'.$filter['value'].'%')
-                               ->orWhere('state','LIKE','%'.$filter['value'].'%')
-                               ->orWhere('addressline1','LIKE','%'.$filter['value'].'%')
-                               ->orWhere('addressline2','LIKE','%'.$filter['value'].'%')
-                               ->orWhere('country','LIKE','%'.$filter['value'].'%');
-                           break;
-                       case 'zip' :
-                           $query->where('zip',$filter['value']);
-                           break;
-                       case 'doctor_name' :
-                           $query->where('firstname','LIKE','%'.$filter['value'].'%')
-                               ->orWhere('middlename','LIKE','%'.$filter['value'].'%')
-                               ->orWhere('lastname','LIKE','%'.$filter['value'].'%');
-                           break;
-                    }
-
-                  });
+                        }
+                    });
                 }
             })->get();
 
@@ -119,16 +130,12 @@ class User extends Model implements AuthenticatableContract,
     public static function practiceUserById($practice_id)
     {
          return self::query()
-            ->leftjoin('organization_user','users.id','=','organization_user.user_id')
+            ->leftjoin('organization_user', 'users.id', '=', 'organization_user.user_id')
 
-            ->leftjoin('organizations','organization_user.organization_id','=','organizations.id')
-            ->leftjoin('practices','organizations.practice_id','=','practices.id')
-            ->where('practice_id',$practice_id)
+            ->leftjoin('organizations', 'organization_user.organization_id', '=', 'organizations.id')
+            ->leftjoin('practices', 'organizations.practice_id', '=', 'practices.id')
+            ->where('practice_id', $practice_id)
             ->get();
 
     }
-
-
-
-
 }

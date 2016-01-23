@@ -27,7 +27,7 @@
                 <div class="collapse navbar-collapse" id="ocuhub-navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="menu-item" ><a href="/home">HOME</a></li>
-                        <li class="menu-item" ><a href="#">TECH SUPPORT</a></li>
+                        <li class="menu-item" ><a href="/techsupport">TECH SUPPORT</a></li>
                     </ul>
                 </div>
             </nav>
