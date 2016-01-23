@@ -8,7 +8,6 @@ class Ccda extends Model
 {
 
     protected $table = 'ccda';
-    public $timestamps = false;
 
 
 

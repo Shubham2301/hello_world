@@ -14,9 +14,10 @@ class CreateCcdaTable extends Migration
     {
         Schema::create('ccda', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('patient_id');
             $table->binary('ccdablob')->nullable();
+            $table->timestamps();
         });
-
     }
 
     /**
@@ -27,6 +28,5 @@ class CreateCcdaTable extends Migration
     public function down()
     {
         Schema::drop('ccda');
-
     }
 }

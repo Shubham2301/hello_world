@@ -37,12 +37,11 @@ class CcdaController extends Controller
             }
             $ccda = new Ccda;
             $ccda->ccdablob = $jsonstring;
+            $ccda->patient_id = $request->patient_id;
             if ($ccda->save()) {
-                //echo $ccda->id;
+                return  $this->showDemographics(json_decode($ccda->ccdablob, true));
                 $this->savePreviousVitals(json_decode($ccda->ccdablob, true)['vitals'], $ccda->id );
                 return redirect()->route('showvitals',$ccda->id );
-                //return $ccda->ccdablob;
-                //return 'successfull';
             }
         }
 
@@ -71,8 +70,6 @@ class CcdaController extends Controller
         }
 
     }
-
-
 
     public function genrateXml()
     {
@@ -160,7 +157,38 @@ class CcdaController extends Controller
 
     }
 
+    public function showDemographics($data)
+    {
+        $patient_data = [];
+        $patient_data['title']          = $data['demographics']['name']['prefix'];
+        $patient_data['firstname']      = $data['demographics']['name']['given'][0];
+        $patient_data['lastname']       = $data['demographics']['name']['family'];
+        $patient_data['workphone']      = $data['demographics']['phone']['work'];
+        $patient_data['homephone']      = $data['demographics']['phone']['home'];
+        $patient_data['cellphone']      = $data['demographics']['phone']['mobile'];
+        $patient_data['email']          = $data['demographics']['email'];
+        $patient_data['addressline1']   = $data['demographics']['address']['street'][0];
+        $patient_data['addressline2']   = $this->validateKey($data['demographics']['address']['street'],1);
+        $patient_data['city']           = $data['demographics']['address']['city'];
+        $patient_data['zip']            = $data['demographics']['address']['zip'];
+        $patient_data['country']        = $data['demographics']['address']['country'];
+        $patient_data['birthdate']      = date('Y-m-d',strtotime($data['demographics']['dob']));
+        $patient_data['gender']         = $data['demographics']['gender'];
+        $patient_data['preferredlanguage'] = $data['demographics']['language'];
+        // $patient_data['status']         = $data['demographics']['name']['family'];
+        // $patient_data['statusdate']     = $data['demographics']['name']['family'];
+        // $patient_data['insurancecarrier']= $data['demographics']['name']['family'];
+        // $patient_data['lastfourssn']    = $data['demographics']['name']['family'];
+        dd($patient_data);
+    }
 
+    public function validateKey($data,$key){
+        if (array_key_exists ( $key,$data))
+        {
+            return $data[$key];
+        }
+            return null;
+    }
 
 
 
