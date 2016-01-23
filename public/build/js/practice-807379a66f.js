@@ -1,6 +1,7 @@
 'use strict';
 
 $(document).ready(function () {
+    loadAllPractices();
     $('#search_practice_button').on('click', function () {
         var searchvalue = $('#search_practice_input').val();
         var formData = {
@@ -193,6 +194,13 @@ function setNewLocationField() {
     $('#state').val('');
     $('#zip').val('');
     $('#phone').val('');
+}
+
+function loadAllPractices() {
+    var formData = {
+        'value': ''
+    };
+    getPractices(formData);
 }
 
 function getPractices(formData) {
