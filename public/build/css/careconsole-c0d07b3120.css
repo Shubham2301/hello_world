@@ -489,3 +489,15 @@ input#search_data.active {
   border-left: solid 0.7em #82888f;
   font-weight: 600;
 }
+
+p.c3_overview_link {
+  color: #0193d7;
+  text-decoration: underline;
+  display: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+p.c3_overview_link.active {
+  display: block;
+}

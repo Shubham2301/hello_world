@@ -14,7 +14,10 @@
     </ul>
     </div>
     </div>
-    <div class="col-lg-9 col-md-10"> <h3 class="title"> Care Console</h3></div>
+    <div class="col-lg-9 col-md-10">
+        <h3 class="title"> Care Console</h3>
+        <p class="c3_overview_link">Overview</p>
+    </div>
 </div>
 
     <div class="row admin c3_sidebar_item stage" id="0" data-name="Contact Status">
