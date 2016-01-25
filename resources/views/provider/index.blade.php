@@ -54,6 +54,7 @@
             </div>
             @endif
             @include('provider.search')
+            @include('provider.preferences')
         </div>
         <div class="practice_section active" id="practice_listing">
             @include('provider.listing')
