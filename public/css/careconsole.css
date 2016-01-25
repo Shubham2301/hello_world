@@ -414,6 +414,7 @@ input#search_data.active {
 
 .drilldown {
   display: none;
+  margin: 1em;
 }
 
 .drilldown.active {
@@ -434,6 +435,8 @@ input#search_data.active {
 
 .subsection-header {
   display: none;
+  font-size: 1em;
+  padding: 0;
 }
 
 .subsection-header.active {
@@ -443,11 +446,13 @@ input#search_data.active {
 }
 
 .search_header {
-  margin: 1em;
+  padding: 1em 0;
+  margin: 0;
   border-bottom: 1.5px solid #fff;
   color: #000;
   text-align: left;
   font-weight: 600;
+  font-size: 0.9em;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -458,10 +463,12 @@ input#search_data.active {
 }
 
 .drilldown_item {
-  margin: 1em;
+  padding: 1em 0;
+  margin: 0;
   border-bottom: 1px solid #fff;
   color: #f2f2f2;
   cursor: pointer;
+  font-size: 0.9em;
 }
 
 .drilldown_item:hover {
