@@ -18,10 +18,10 @@
     <div class="col-lg-9 col-md-10"> <h3 class="title"> Care Console</h3></div>
 </div>
 
-    <div class="row admin c3_sidebar_item">
+    <div class="row admin c3_sidebar_item stage" id="0" data-name="Contact Status">
         <p>Contact Status</p>
     </div>
-    <div class="row admin c3_sidebar_item">
+    <div class="row admin c3_sidebar_item stage" id="1" data-name="Schedule for appointment">
         <p>Schedule for appointment</p>
     </div>
     <div class="row admin c3_sidebar_item">

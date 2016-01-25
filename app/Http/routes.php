@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('practices/search', 'Practice\PracticeController@search');
     Route::get('practices/create', 'Practice\PracticeController@create');
     Route::get('practices/edit', 'Practice\PracticeController@edit');
+    Route::get('practices/remove', 'Practice\PracticeController@destroy');
     
     Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
     Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
@@ -68,13 +69,28 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('careconsole', 'CareConsoleController');
     Route::get('import/location', 'BulkImportController@getLocations');
     Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
+
+    //support routes
+    Route::get('terms', 'SupportController@termsIndex');
+    Route::get('privacy', 'SupportController@privacyIndex');
+    Route::get('sitemap', 'SupportController@sitemapIndex');
+    Route::get('contactus', 'SupportController@contactusIndex');
+    Route::get('investors', 'SupportController@investorsIndex');
     Route::get('techsupport', 'SupportController@techSupportIndex');
 
     Route::resource('administration/users', 'Admin\UserController');
     Route::resource('administration/roles', 'Admin\RoleController');
     Route::resource('administration/permissions', 'Admin\PermissionController');
-
     Route::get('administration/practices', 'Practice\PracticeController@administration');
     Route::get('administration/patients', 'Patient\PatientController@administration');
     Route::get('administration/providers', 'Practice\ProviderController@administration');
+
 });
+
+    Route::get('/foo', function(){
+        $u = myocuhub\Models\Practice::paginate(10);
+        return view('paginationtest')->with('u',$u);
+    });
+
+Route::get('/fooo', 'Practice\PracticeController@getpages');
+

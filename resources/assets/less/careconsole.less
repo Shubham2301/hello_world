@@ -1,3 +1,14 @@
+/*
+---------------------------
+Section : Imports
+---------------------------
+*/
+
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
+
 .search{
     display: inline-block;
     position: absolute;
@@ -162,8 +173,46 @@ input#search_data{
     justify-content: flex-end;
     margin-left: auto;
 }
-
-
+.drilldown{
+    display: none;
+    &.active{
+        display: block;
+    }
+    &>.section-header, &>.subsection-header{
+        text-align: left;
+        background-color: transparent;
+        color: #fff;
+        &>.circle{
+                margin: .35em .5em 1.35em;
+        }
+    }
+}
+.subsection-header{
+    display: none;
+    &.active{
+        display: flex;
+    }
+}
+.search_header {
+    margin: 1em;
+    border-bottom: 1.5px solid #fff;
+    color: #000;
+    text-align: left;
+    font-weight: 600;
+    display: flex;
+    &>.drilldown_header_item{
+        margin-top: auto;
+    }
+}
+.drilldown_item {
+    margin: 1em;
+    border-bottom: 1px solid #fff;
+    color: #f2f2f2;
+    cursor: pointer;
+    &:hover {
+        color: #fff;
+    }
+}
 //--------------------------------
 //    Sidebar
 //--------------------------------
@@ -179,4 +228,9 @@ input#search_data{
         background-color: #d2d3d5;
         font-weight: 600;
     }
+}
+.sidebar_items_active{
+    background-color: @background-color-5;
+    border-left: solid .7em @background-color-6;
+    font-weight: 600;
 }

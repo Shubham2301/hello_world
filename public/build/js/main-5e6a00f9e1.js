@@ -1,0 +1,1 @@
+"use strict";$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}}),$(document).ready(function(){$(".admin-console-item").on("click",function(){var t=$(this).attr("data-id");$(".admin-console-section").removeClass("active"),$("#"+t).addClass("active")})});
