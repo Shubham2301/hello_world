@@ -20,7 +20,15 @@ $(document).ready(function () {
 
     $('#search_do').on('click', searchc3);
 
+    $('p.c3_overview_link').on('click', function(){
+        $('p.c3_overview_link').removeClass('active');
+        $('.before_drilldown').show();
+        $('.drilldown').removeClass('active');
+        $('.stage').removeClass('sidebar_items_active');
+    });
+
     $('.info_section').on('click', function () {
+        $('p.c3_overview_link').addClass('active');
         $('.before_drilldown').hide();
         $('.drilldown').addClass('active');
         var stage_id = $($(this).closest('.info_box')).attr('id');
@@ -31,6 +39,7 @@ $(document).ready(function () {
         showKPIData(stage_id, kpi_id, stage_name, kpi_name);
     });
     $('.stage').on('click', function () {
+        $('p.c3_overview_link').addClass('active');
         $('.before_drilldown').hide();
         $('.drilldown').addClass('active');
         $('.stage').removeClass('sidebar_items_active');
@@ -72,7 +81,6 @@ function showStageData(stage_id, stage_name) {
     $('.drilldown>.section-header').html(stage_name);
     content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Allen Rovenstine</p></div><div class="col-xs-2"><p>888-227-3365</p></div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">Atlanta Eye Associates</div><div class="col-xs-2"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span></div></div>';
     content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Allen Rovenstine</p></div><div class="col-xs-2"><p>888-227-3365</p></div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">Atlanta Eye Associates</div><div class="col-xs-2"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span></div></div>';
-    
     $('.drilldown_content').html(content);
 }
 

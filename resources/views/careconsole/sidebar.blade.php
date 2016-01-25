@@ -1,4 +1,4 @@
-<div class="container no-padding">
+<div class="no-padding">
 <div class="row sidebar_header center">
 <div class="col-lg-2 col-md-2">
 <div class="dropdown" >
@@ -15,7 +15,10 @@
     </ul>
     </div>
     </div>
-    <div class="col-lg-9 col-md-10"> <h3 class="title"> Care Console</h3></div>
+    <div class="col-lg-9 col-md-10">
+        <h3 class="title"> Care Console</h3>
+        <p class="c3_overview_link">Overview</p>
+    </div>
 </div>
 
     <div class="row admin c3_sidebar_item stage" id="0" data-name="Contact Status">

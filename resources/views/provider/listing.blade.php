@@ -5,6 +5,7 @@
         <div class="col-xs-4 center-align">
             <img src="{{asset('images/patient.png')}}" alt=""><br>
             <p class="button_type_1" id="change_practice_button">Change Provider</p><br>
+            <p id ="openModel" type="button" class="button_type_1" data-toggle="modal" data-target="#provider_preferences" >Provider Preferences</p>
         </div>
         <div class="col-xs-8">
             <p class="bold" id="practice_name">Opthalmic Consultants of Long Island</p>
