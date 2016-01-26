@@ -3,8 +3,8 @@
 @section('title', 'My Ocuhub - Select Provider')
 
 @section('imports')
-<link rel="stylesheet" type="text/css" href="{{asset('css/provider.css')}}">
-<script type="text/javascript" src="{{asset('js/provider.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{elixir('css/provider.css')}}">
+<script type="text/javascript" src="{{elixir('js/provider.js')}}"></script>
 @endsection
 
 @section('sidebar')
@@ -54,6 +54,7 @@
             </div>
             @endif
             @include('provider.search')
+            @include('provider.preferences')
         </div>
         <div class="practice_section active" id="practice_listing">
             @include('provider.listing')

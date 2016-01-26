@@ -31,10 +31,14 @@ class AppointmentController extends Controller
         $provider_id = $request->input('provider_id');
         $practice_id = $request->input('practice_id');
         $patient_id = $request->input('patient_id');
+        $referraltype_id = $request->input('referraltype_id');
+        $action = $request->input('action');
 
         $data = [];
         $data['provider_name'] = User::find($provider_id)->name;
         $data['practice_name'] = Practice::find($practice_id)->name;
+        $data['referraltype_id'] = $referraltype_id;
+        $data['action'] = $action;
         $patient = Patient::find($patient_id);
         $data['patient_name'] = $patient->firstname.' '.$patient->lastname;
 
@@ -120,35 +124,39 @@ class AppointmentController extends Controller
         $apptInfo['LocKey'] = $locationID;
         $apptInfo['AcctKey'] = $providerID;
         $apptInfo['ApptTypeKey'] = $AppointmentType;
-        $apptInfo['ApptStartDateTime'] = $AppointmentTime;
-        $apptInfo['PatientData']['Title'] = $patient->title;
+        $apptInfo['ApptStartDateTime'] = '01/22/2016 12:00';
+//        $apptInfo['PatientData']['Title'] = $patient->title;
         $apptInfo['PatientData']['FirstName'] = $patient->firstname;
         $apptInfo['PatientData']['LastName'] = $patient->lastname;
-        $apptInfo['PatientData']['Address1'] = $patient->addressline1;
-        $apptInfo['PatientData']['Address2'] = $patient->addressline2;
-        $apptInfo['PatientData']['City'] = $patient->city;
-        $apptInfo['PatientData']['State'] = $patient->state;
-        $apptInfo['PatientData']['Zip'] = $patient->zip;
-        $apptInfo['PatientData']['Country'] = $patient->country;
-        $apptInfo['PatientData']['HomePhone'] = $patient->homephone;
-        $apptInfo['PatientData']['WorkPhone'] = $patient->workphone;
-        $apptInfo['PatientData']['CellPhone'] = $patient->cellphone;
-        $apptInfo['PatientData']['Email'] = $patient->email;
-        $apptInfo['PatientData']['DOB'] = $patient->birthdate; // convert to MM/DD/YYYY HH:MM 24
+//        $apptInfo['PatientData']['Address1'] = $patient->addressline1;
+//        $apptInfo['PatientData']['Address2'] = $patient->addressline2;
+//        $apptInfo['PatientData']['City'] = $patient->city;
+//        $apptInfo['PatientData']['State'] = $patient->state;
+//        $apptInfo['PatientData']['Zip'] = $patient->zip;
+//        $apptInfo['PatientData']['Country'] = $patient->country;
+//        $apptInfo['PatientData']['HomePhone'] = $patient->homephone;
+        $apptInfo['PatientData']['HomePhone'] = '9876543219';
+//        $apptInfo['PatientData']['WorkPhone'] = $patient->workphone;
+//        $apptInfo['PatientData']['CellPhone'] = $patient->cellphone;
+//        $apptInfo['PatientData']['Email'] = $patient->email;
+        //$apptInfo['PatientData']['DOB'] = $patient->birthdate; // convert to MM/DD/YYYY HH:MM 24
+        $apptInfo['PatientData']['DOB'] = '2010-10-10'; // convert to MM/DD/YYYY HH:MM 24
+
         $apptInfo['PatientData']['PreferredLanguage'] = $patient->preferredlanguage;
         $apptInfo['PatientData']['Gender'] = $patient->gender;
         $apptInfo['PatientData']['L4dssn'] = $patient->lastfourssn;
-        $apptInfo['PatientData']['InsuranceCarrier'] = $patient->insurancecarrier;
+//        $apptInfo['PatientData']['InsuranceCarrier'] = $patient->insurancecarrier;
+        $apptInfo['PatientData']['InsuranceCarrier'] = 100;
 
-        $apptInfo['PatientData']['OtherInsurance'] = '';
-        $apptInfo['PatientData']['SubscriberName'] = '';
-        $apptInfo['PatientData']['SubscriberDOB'] = '';
-        $apptInfo['PatientData']['SubscriberID'] = '';
-        $apptInfo['PatientData']['GroupNum'] = '';
-        $apptInfo['PatientData']['RelationshipToPatient'] = '';
-        $apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
+//        $apptInfo['PatientData']['OtherInsurance'] = '';
+//        $apptInfo['PatientData']['SubscriberName'] = '';
+        $apptInfo['PatientData']['SubscriberDOB'] = '2010-10-10';
+//        $apptInfo['PatientData']['SubscriberID'] = '';
+//        $apptInfo['PatientData']['GroupNum'] = '';
+//        $apptInfo['PatientData']['RelationshipToPatient'] = '';
+//        $apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
         $apptInfo['PatientData']['ReferredBy'] = '';
-        $apptInfo['PatientData']['IsPatKnown'] = '';
+        $apptInfo['PatientData']['IsPatKnown'] = '1';
 
 
 

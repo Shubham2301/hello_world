@@ -15,32 +15,31 @@
         <div class="col-xs-2">
             <input type="hidden" id="schedule_practice_img" value="{{asset('images/schedule.png')}}">
             <input type="hidden" id="delete_practice_img" value="{{asset('images/delete.png')}}">
-            <p class="pagination"><span class="glyphicon glyphicon-chevron-left" id="search_practice_button" aria-hidden="true"></span><strong>2 of 2</strong><span class="glyphicon glyphicon-chevron-right" id="search_practice_button" aria-hidden="true"></span></p>
+            <p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong>2 of 2</strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
         </div>
     </div>
     <div class="practice_search_content">
-        <!--
-        <div class="row search_list_item" data-id="">
-            <div class="col-md-1">
-                <input type="checkbox">
+<!--
+        <div class="row search_item" data-id="11">
+            <div class="col-xs-3 search_name">
+                <input type="checkbox">&nbsp;&nbsp;
+                <p> practice.name </p>
             </div>
-            <div class="col-md-2">
-                <p>Nishanth</p>
+            <div class="col-xs-3">practice.address </div>
+            <div class="col-xs-1"></div>
+            <div class="col-xs-3">
+                <p>practice.ocuapps </p>
             </div>
-            <div class="col-md-2">123,asd,gurgaon</div>
-            <div class="col-md-1"><img src="ass.gpg"></div>
-            <div class="col-md-3">
-                <p>Calender Intregation</p>
+            <div class="col-xs-2 search_edit">
+                <p>
+                <span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;">
+                </span>
+                </p>&nbsp;&nbsp;
+                <p class="editPractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-remove removepractice_from_row" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span>
             </div>
-            <div class="col-md-1"><img class="schedule_practice_img" src="" ></div>
-            <div class="col-md-1">
-                <p>Edit</p>
-            </div>
-            <div class="col-md-1"><img class="delete_practice_img" src=""></div>
-
-
         </div>
-        -->
+-->
 
     </div>
 
@@ -56,12 +55,12 @@
             </div>
             <div class="col-md-4 top_assign">
                 <p>Assign roles</p>
-            &nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;
                 <p>Assign User</p>
-            &nbsp;&nbsp;&nbsp;
-                <p>Edit</p>
-            &nbsp;&nbsp;&nbsp;
-                <span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span>
+                &nbsp;&nbsp;&nbsp;
+                <button id="edit_practice" type="button" class="btn" data-toggle="modal" data-target="#create_practice" data-id="">Edit</button>
+                &nbsp;&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-remove" id="remove_practice" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span>
             </div>
         </div>
         <div class="row location_info_header">
@@ -69,7 +68,9 @@
                 <p class="table_header">Location</p>
             </div>
             <div class="col-xs-4">
-                <center><button type="button" class="btn add">add+</button></center>
+                <center>
+                    <button type="button" class="btn add">add+</button>
+                </center>
             </div>
             <div class="col-md-5">
                 <p class="table_header">Users</p>
@@ -100,15 +101,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
 
     </div>
 </div>

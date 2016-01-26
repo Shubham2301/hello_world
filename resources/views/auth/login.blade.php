@@ -2,9 +2,7 @@
 
 @if (count($errors) > 0)
     <div class="row content-row-margin alert alert-danger">
-            @foreach ($errors->all() as $error)
-                <p class="error">Email and password do not match. Please try again.</p>
-            @endforeach
+            <p>{{ $errors->first() }}</p>
     </div>
 @endif
 
@@ -19,13 +17,13 @@
     
     <div class="row content-row-margin">
         <div class="col-sm-12">
-            {!! Form::email('email', old('email'), array('class' => 'input', 'placeholder' => 'EMAIL/USERNAME', 'id' => 'password')) !!}
+            {!! Form::email('email', old('email'), array('class' => 'input', 'name' => 'email', 'placeholder' => 'EMAIL/USERNAME', 'id' => 'email')) !!}
         </div>
     </div>
     
     <div class="row content-row-margin">
         <div class="col-sm-12">
-            {!! Form::password('password', array('class' => 'input', 'placeholder' => 'PASSWORD', 'id' => 'password')) !!}
+            {!! Form::password('password', array('class' => 'input', 'name' => 'password','placeholder' => 'PASSWORD', 'id' => 'password')) !!}
         </div>
     </div>
 

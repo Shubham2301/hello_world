@@ -1,3 +1,14 @@
+/*
+---------------------------
+Section : Imports
+---------------------------
+*/
+
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
+
 .practice_list {
     overflow-y: scroll;
     display: none;
@@ -150,12 +161,12 @@
     padding: 5px;
     & p {
         color: black;
-        text-decoration: underline;
         display: inline-block;
         margin: 0 0 1px;
         &.view_selected_patient,
         &.change_selected_patient {
             cursor: pointer;
+            text-decoration: underline;
         }
     }
     &.col-xs-2 {
@@ -261,5 +272,17 @@
     cursor: pointer;
     &.active,&:hover{
         font-weight: bold;
+    }
+}
+.modal-dialog{
+    background-color: #f2f2f2;
+    padding: 10px;
+    color: #000;
+    border-radius: .5em;
+    &>p{
+        font-size: 1.2em;
+        color: @font-color-4;
+        text-align: center;
+        padding: .5em 0 0 0;
     }
 }
