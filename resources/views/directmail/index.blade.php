@@ -21,7 +21,7 @@
     @else
     <div class="content-section active" id="directmail-console">
 
-<!--        <button id="refreshBtn" class="btn-primary" onclick="refreshPage()">Refresh Page</button>-->
+        <button id="refreshBtn" class="btn-primary" onclick="refreshPage()">Refresh Page</button>
 
         <br>
 
@@ -48,8 +48,7 @@
     </div>
 
     <script>
-        submitform('token');
-        //getToken();
+
         var timerCount = '{{ $ses['display_count_timer'] }}';
 
         function refreshPage() {
@@ -81,7 +80,7 @@
             document.forms["ocuhubSESFm"].submit();
         }
 
-        var code = "code";
+        var code;
         var token;
 
         if (window.location.search) {
@@ -172,9 +171,9 @@
             xhr.send('grant_type=authorization_code&code=' + code + '&redirect_uri={{ $ses['redirect_uri'] }}');
         }
 
-//        if (!window.location.search) {
-//            document.getElementById("getCodeBtn").click();
-//        }
+        if (!window.location.search) {
+            document.getElementById("getCodeBtn").click();
+        }
     </script>
 
     @endif

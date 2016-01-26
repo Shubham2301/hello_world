@@ -50,11 +50,12 @@ class SESConnect extends SES
         $config = array();
 
         $config['sso_logon_url'] = 'http://test.directaddress.net/portal/Home/SSOLogOn';
-        $config['authorization_url'] = 'https://test.directaddress.net/SESIDPServer/connect/authorize';
-        $config['client_id'] = 'occuhub';
+        $config['authorization_url'] = 'https://direct.ocuhub.com/sesidpserver/connect/authorize';
+
+        $config['client_id'] = 'ocuhub_prod';
         $config['direct_mail_str'] = $this->hasDirectMail();
         $config['display_count_timer'] = '10';
-        $config['redirect_uri'] = '/directmail';
+        $config['redirect_uri'] = 'http://ec2-52-27-106-80.us-west-2.compute.amazonaws.com/directmail';
         $config['btoa_code'] = 'occuhub:f70846fec33e4debbe442f470c0bf2d4';
         $config['token_url'] = 'https://test.directaddress.net/SESIDPServer/connect/token';
         $config['iframe_height'] = 800;
