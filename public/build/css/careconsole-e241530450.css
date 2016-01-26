@@ -181,6 +181,14 @@ a:focus.sidebar-item {
   text-align: center;
 }
 
+.add-btn,
+.add-btn:hover {
+  float: right;
+  color: #fff;
+  background-color: #0086fb;
+  border-color: #0086fb;
+}
+
 .search {
   display: inline-block;
   position: absolute;
@@ -414,7 +422,6 @@ input#search_data.active {
 
 .drilldown {
   display: none;
-  margin: 1em;
 }
 
 .drilldown.active {
@@ -435,8 +442,6 @@ input#search_data.active {
 
 .subsection-header {
   display: none;
-  font-size: 1em;
-  padding: 0;
 }
 
 .subsection-header.active {
@@ -446,13 +451,11 @@ input#search_data.active {
 }
 
 .search_header {
-  padding: 1em 0;
-  margin: 0;
+  margin: 1em;
   border-bottom: 1.5px solid #fff;
   color: #000;
   text-align: left;
   font-weight: 600;
-  font-size: 0.9em;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -463,12 +466,10 @@ input#search_data.active {
 }
 
 .drilldown_item {
-  padding: 1em 0;
-  margin: 0;
+  margin: 1em;
   border-bottom: 1px solid #fff;
   color: #f2f2f2;
   cursor: pointer;
-  font-size: 0.9em;
 }
 
 .drilldown_item:hover {
@@ -495,16 +496,4 @@ input#search_data.active {
   background-color: #cbcbcb;
   border-left: solid 0.7em #82888f;
   font-weight: 600;
-}
-
-p.c3_overview_link {
-  color: #0193d7;
-  text-decoration: underline;
-  display: none;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-p.c3_overview_link.active {
-  display: block;
 }
