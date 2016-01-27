@@ -38,14 +38,6 @@
   cursor: pointer;
 }
 
-.add-btn,
-.add-btn:hover {
-  float: right;
-  color: #fff;
-  background-color: #0086fb;
-  border-color: #0086fb;
-}
-
 .import-btn {
   color: black;
   background-color: #cde8f4;

@@ -83,6 +83,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('administration/permissions', 'Admin\PermissionController');
     Route::get('administration/practices', 'Practice\PracticeController@administration');
     Route::get('administration/patients', 'Patient\PatientController@administration');
+    Route::post('administration/patients/add', 'Patient\PatientController@create');
     Route::get('administration/providers', 'Practice\ProviderController@administration');
 
 });

@@ -37,9 +37,21 @@ class PatientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $patient = new Patient;
+        $patient->firstname = $request->input('patient_fname');
+        $patient->lastname = $request->input('patient_lname');
+        $patient->email = $request->input('email');
+        $patient->gender = $request->input('gender');
+        $patient->lastfourssn = $request->input('last_4_ssn');
+        $patient->addressline1 = $request->input('address_1');
+        $patient->addressline2 = $request->input('address_2');
+        $patient->city = $request->input('city');
+        $patient->zip = $request->input('zip');
+        $patient->save();
+        $path = 'patients?referraltype_id='.$request->input('referraltype_id').'&action='.$request->input('action');
+        return redirect($path);
     }
 
     /**
@@ -132,7 +144,15 @@ class PatientController extends Controller
 
     public function administration(Request $request)
     {
-        return view('provider.admin');
+        $data = array();
+
+        if($request->has('referraltype_id')){
+            $data['referraltype_id'] = $request->input('referraltype_id');
+        }
+        if($request->has('action')){
+            $data['action'] = $request->input('action');
+        }
+        return view('patient.admin')->with('data', $data);
     }
 
 }
