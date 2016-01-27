@@ -102,6 +102,11 @@ p.pagination {
   display: block;
 }
 
+.p_right,
+.p_left {
+  cursor: pointer;
+}
+
 .ocuapps_input {
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
