@@ -4,7 +4,7 @@
             <p class="subheading">Roles</p>
         </div>
         <div class="col-sm-2">
-            <a href="/roles/create" class="button">Add Role</a>
+            <a href="/administration/roles/create" class="button">Add Role</a>
         </div>
     </div>
 </div>
