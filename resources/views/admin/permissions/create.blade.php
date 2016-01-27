@@ -28,7 +28,7 @@
                 </div>
             @endif
 
-            {!! Form::open(array('url' => '/permissions', 'method' => 'POST')) !!}
+            {!! Form::open(array('url' => '/administration/permissions', 'method' => 'POST')) !!}
 
                 {!! csrf_field() !!}
                 {{ method_field('POST') }}

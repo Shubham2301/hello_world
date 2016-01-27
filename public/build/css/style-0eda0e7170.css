@@ -554,19 +554,6 @@ Section : Sidebar
   font-weight: 600;
 }
 
-.profile_img_sidebar {
-  width: 8em;
-  border-radius: 4em;
-  margin: 1em 0;
-  box-shadow: 0px 0px 5px #82888f;
-}
-
-.profile_img_sidebar_mini {
-  width: 3em;
-  border-radius: 4em;
-  box-shadow: 0px 0px 3px #82888f;
-}
-
 .center {
   text-align: center;
 }
@@ -578,7 +565,7 @@ Section : Sidebar
 ul.dropdown-menu {
   background: #ebeced;
   background-color: #ebeced;
-  box-shadow: 0px 0px 3px #82888f;
+  box-shadow: 0 0 3px #000;
   border-radius: 5em;
   text-align: center;
   width: 3em;

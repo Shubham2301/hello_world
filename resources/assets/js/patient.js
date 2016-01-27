@@ -1,6 +1,6 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
-    $('#search_patient_button').on('click', function() {
+    $('#search_patient_button').on('click', function () {
         $("#add_search_option").trigger("click");
         $('#search_patient_input').val('');
         var searchdata = getsearchtype();
@@ -10,7 +10,38 @@ $(document).ready(function() {
             $('#search_patient_input').focus();
     });
 
-    $('.patient_list').on('click', '.patient_list_item', function() {
+    $('#add_patient_form').on('click', function () {
+        $('.add_patient_form').addClass('active');
+        $('.patient_admin_header').removeClass('active');
+    });
+
+    $('#back_to_select_patient_btn').on('click', function () {
+        $('#back_to_select_patient').submit();
+    });
+
+//    $('#form_add_patients').on('submit', function () {
+//
+//        $.ajax({
+//            type: "GET",
+//            url: '/administration/patients/add',
+////            data: ,
+//            dataType: 'json',
+//            success: function (data) {
+//                alert('sucess');
+//            },
+//            error: function (data) {
+//                alert('error');
+//            }
+//        });
+//
+//    });
+
+    $('#add_patient_btn').on('click', function () {
+        $('#form_patient_id').prop('disabled', true);
+        $('#form_select_provider').attr('action', "/administration/patients");
+        $('#form_select_provider').submit();
+    });
+    $('.patient_list').on('click', '.patient_list_item', function () {
         var id = $(this).attr('data-id');
         var formData = {
             'id': id
@@ -18,7 +49,11 @@ $(document).ready(function() {
         getPatientInfo(formData);
     });
 
-    $('#change_patient_button').on('click', function() {
+    $('#save_patient_info').on('click', function () {
+
+    });
+
+    $('#change_patient_button').on('click', function () {
         $('.patient_list').addClass('active');
         $('.patient_info').removeClass('active');
         $('#select_provider_button').removeClass('active');
@@ -26,12 +61,12 @@ $(document).ready(function() {
         $('#import_patients').show();
     });
 
-    $('#select_provider_button').on('click', function() {
+    $('#select_provider_button').on('click', function () {
         var id = $(this).attr('data-id');
         selectProvider(id);
     });
 
-    $('#add_search_option').on('click', function() {
+    $('#add_search_option').on('click', function () {
         var type = $('#search_patient_input_type').val();
         var value = $('#search_patient_input').val();
         if (value != '') {
@@ -40,12 +75,12 @@ $(document).ready(function() {
             $('#search_patient_input').val('');
         }
     });
-    $('.search_filter').on('click', '.remove_option', function() {
+    $('.search_filter').on('click', '.remove_option', function () {
         $(this).parent().remove();
     });
 
 
-    $('.lastseenby_show').on('click', function() {
+    $('.lastseenby_show').on('click', function () {
         $('.lastseen_content').toggleClass('active');
         if ($('.lastseen_content').hasClass('active')) {
             $('.lastseenby_icon').removeClass('glyphicon-chevron-right');
@@ -56,7 +91,7 @@ $(document).ready(function() {
         }
     });
 
-    $('.referredby_show').on('click', function() {
+    $('.referredby_show').on('click', function () {
         $('.referredby_content').toggleClass('active');
         if ($('.referredby_content').hasClass('active')) {
             $('.referredby_icon').removeClass('glyphicon-chevron-right');
@@ -67,7 +102,7 @@ $(document).ready(function() {
         }
     });
 
-    $('.insurance_provider_show').on('click', function() {
+    $('.insurance_provider_show').on('click', function () {
         $('.insurance_provider_content').toggleClass('active');
         if ($('.insurance_provider_content').hasClass('active')) {
             $('.insurance_provider_icon').removeClass('glyphicon-chevron-right');
@@ -78,7 +113,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).keypress(function(e) {
+    $(document).keypress(function (e) {
         if (e.which == 13) {
             $("#search_patient_button").trigger("click");
         }
@@ -114,11 +149,11 @@ function getPatientInfo(formData) {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var info = $.parseJSON(e);
             showPatientInfo(info);
         },
-        error: function() {
+        error: function () {
             alert('Error getting patient information');
         },
         cache: false,
@@ -143,21 +178,21 @@ function getPatients(formData) {
         }),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var patients = $.parseJSON(e);
             var content = '<p><bold>' + patients.length + '<bold> results found</p><br>';
 
             if (patients.length > 0) {
                 patients.forEach(function (patient) {
-                    var d = new Date (patient.birthdate);
-                    patient.birthdate = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+                    var d = new Date(patient.birthdate);
+                    patient.birthdate = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
                     content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin"><div class="col-xs-6">' + patient.fname + ' ' + patient.lname + '<br> ' + patient.birthdate + ' </div><div class="col-xs-6">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
                 });
             }
             $('.patient_list').html(content);
             $('.patient_list').addClass('active');
         },
-        error: function() {
+        error: function () {
             alert('Error searching');
         },
         cache: false,
@@ -168,7 +203,7 @@ function getPatients(formData) {
 
 function getsearchtype() {
     var searchdata = [];
-    $('.search_filter_item').each(function() {
+    $('.search_filter_item').each(function () {
         var stype = $(this).children('.item_type').text();
         var name = $(this).children('.item_value').text();
         searchdata.push({
