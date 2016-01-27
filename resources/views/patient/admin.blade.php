@@ -8,7 +8,7 @@
 @endsection
 
 @section('sidebar')
-    @extends('admin.sidebar')
+    @include('admin.sidebar')
 @endsection
 
 @section('content')
@@ -22,7 +22,10 @@
 </div>
 @endif
 
-<div class="content-section active">
+@if(! empty($data['referraltype_id']))
 
-</div>
+@include('patient.addnew')
+
+@endif
+
 @endsection

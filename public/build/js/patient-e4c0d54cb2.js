@@ -14,11 +14,32 @@ $(document).ready(function () {
         $('.patient_admin_header').removeClass('active');
     });
 
-    $('#back_to_patient_admin').on('click', function () {
-        $('.add_patient_form').removeClass('active');
-        $('.patient_admin_header').addClass('active');
+    $('#back_to_select_patient_btn').on('click', function () {
+        $('#back_to_select_patient').submit();
     });
 
+    //    $('#form_add_patients').on('submit', function () {
+    //
+    //        $.ajax({
+    //            type: "GET",
+    //            url: '/administration/patients/add',
+    ////            data: ,
+    //            dataType: 'json',
+    //            success: function (data) {
+    //                alert('sucess');
+    //            },
+    //            error: function (data) {
+    //                alert('error');
+    //            }
+    //        });
+    //
+    //    });
+
+    $('#add_patient_btn').on('click', function () {
+        $('#form_patient_id').prop('disabled', true);
+        $('#form_select_provider').attr('action', "/administration/patients");
+        $('#form_select_provider').submit();
+    });
     $('.patient_list').on('click', '.patient_list_item', function () {
         var id = $(this).attr('data-id');
         var formData = {
@@ -26,6 +47,8 @@ $(document).ready(function () {
         };
         getPatientInfo(formData);
     });
+
+    $('#save_patient_info').on('click', function () {});
 
     $('#change_patient_button').on('click', function () {
         $('.patient_list').addClass('active');
