@@ -13,11 +13,13 @@
         {!! Form::text('FirstName', old('patient_fname'), array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'patient_fname', 'placeholder' => 'First Name', 'id' => 'first_name')) !!}
         {!! Form::text('LastName', old('patient_lname'), array('class' => 'add_patient_input', 'name' => 'patient_lname', 'placeholder' => 'Last Name', 'id' => 'last_name')) !!}
         {!! Form::email('email', old('email'), array('class' => 'add_patient_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email')) !!}
+        {!! Form::text('phone', old('phone'), array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'phone', 'placeholder' => 'Phone', 'id' => 'phone')) !!}
     </div>
     <div class="col-sm-6 col-xs-12">
         {!! Form::text('Gender', old('gender'), array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'gender', 'placeholder' => 'Gender', 'id' => 'gender')) !!}
         {!! Form::text('DateOfBirth', old('dob'), array('class' => 'add_patient_input', 'name' => 'dob', 'placeholder' => 'Date of Birth', 'id' => 'dob')) !!}
         {!! Form::text('last_4_ssn', old('Last4SSN'), array('class' => 'add_patient_input', 'name' => 'last_4_ssn', 'placeholder' => 'Last 4 SSN', 'id' => 'last_4_ssn')) !!}
+        {!! Form::text('Preferred Language', old('preferredlanguage'), array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'preferredlanguage', 'placeholder' => 'Preferred Language', 'id' => 'preferredlanguage')) !!}
     </div>
 </div>
 <div class="section-break"></div>
