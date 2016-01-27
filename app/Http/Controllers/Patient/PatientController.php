@@ -50,7 +50,7 @@ class PatientController extends Controller
         $patient->city = $request->input('city');
         $patient->zip = $request->input('zip');
         $patient->preferredlanguage = $request->input('preferredlanguage');
-        $patient->homephone = $request->input('phone');
+        $patient->cellphone = $request->input('phone');
         $patient->save();
         $path = 'patients?referraltype_id='.$request->input('referraltype_id').'&action='.$request->input('action');
         return redirect($path);
