@@ -101,8 +101,6 @@ $(document).ready(function () {
         $(this).parent().remove();
     });
     $('.schedule_button').on('click', function () {
-        console.log($(this).attr('data-id'), $(this).attr('data-practice-id'));
-
         scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
     });
 
@@ -271,7 +269,6 @@ function getProviders(formData) {
     $('.practice_list').addClass('active');
     $('.practice_info').removeClass('active');
     var tojson = JSON.stringify(formData);
-    console.log(tojson);
     $.ajax({
         url: '/providers/search',
         type: 'GET',
@@ -282,7 +279,6 @@ function getProviders(formData) {
         async: false,
         success: function success(e) {
             var practices = $.parseJSON(e);
-            console.log(practices);
             var content = '<p><bold>' + practices.length + '<bold> results found</p><br>';
             if (practices.length > 0) {
                 practices.forEach(function (practice) {
@@ -329,10 +325,10 @@ function scheduleAppointment(providerId, practiceID) {
 
 function getOpenSlots() {
 
-    var provider_id = 991234567;
-    var location_id = 3839;
-    var appointment_type = 28632;
-    var appointment_date = '1/25/2016 11:00:00 AM';
+    var provider_id = 0;
+    var location_id = 0;
+    var appointment_type = $('#appointment-type').val();
+    var appointment_date = '1/25/2016 11:00 AM';
 
     var formData = {
         'provider_id': provider_id,
@@ -348,8 +344,15 @@ function getOpenSlots() {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-            $('#appointment-datetime').removeClass('hidden');
-            $('#appointment-datetime').append('<option value="0">Select Date and Time</option>');
+            e = $.parseJSON(e);
+            var apptSlots = e.GetOpenApptSlotsResult;
+            if (apptSlots.length) {
+                $('#appointment-datetime').html('<option value="0">Select Appointment Schedule</option>');
+                $('#appointment-datetime').removeClass('hidden');
+            } else if (apptSlots.length === 0) {
+                $('#appointment-datetime').html('<option value="-1">No Open Slots</option>');
+                $('#appointment-datetime').removeClass('hidden');
+            }
         },
         error: function error() {},
         cache: false,
@@ -359,8 +362,8 @@ function getOpenSlots() {
 
 function getAppointmentTypes() {
 
-    var provider_id = 991234567;
-    var location_id = 3839;
+    var provider_id = 0;
+    var location_id = 0;
 
     var formData = {
         'provider_id': provider_id,
@@ -374,10 +377,13 @@ function getAppointmentTypes() {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
+            e = $.parseJSON(e);
+            var apptTypes = e.GetApptTypesResult.ApptType;
+            $('#appointment-type').html('<option value="0">Select Appointment Type</option>');
+            apptTypes.forEach(function (elem) {
+                $('#appointment-type').append('<option value="' + elem.ApptTypeKey + '">' + elem.ApptTypeName + '</option>');
+            });
             $('#appointment-type').removeClass('hidden');
-            $('#appointment-type').append('<option value="0">Select Appointment Type</option>');
-            $('#appointment-type').append('<option value="1">Annual Eye Exam</option>');
-            $('#appointment-type').append('<option value="2">Eye Exam</option>');
         },
         error: function error() {},
         cache: false,
