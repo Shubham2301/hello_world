@@ -20,7 +20,15 @@ $(document).ready(function () {
 
     $('#search_do').on('click', searchc3);
 
+    $('p.c3_overview_link').on('click', function(){
+        $('p.c3_overview_link').removeClass('active');
+        $('.before_drilldown').show();
+        $('.drilldown').removeClass('active');
+        $('.stage').removeClass('sidebar_items_active');
+    });
+
     $('.info_section').on('click', function () {
+        $('p.c3_overview_link').addClass('active');
         $('.before_drilldown').hide();
         $('.drilldown').addClass('active');
         var stage_id = $($(this).closest('.info_box')).attr('id');
@@ -31,6 +39,7 @@ $(document).ready(function () {
         showKPIData(stage_id, kpi_id, stage_name, kpi_name);
     });
     $('.stage').on('click', function () {
+        $('p.c3_overview_link').addClass('active');
         $('.before_drilldown').hide();
         $('.drilldown').addClass('active');
         $('.stage').removeClass('sidebar_items_active');
@@ -61,7 +70,8 @@ function showKPIData(stage_id, kpi_id, stage_name, kpi_name) {
     $('.subsection-header').addClass('active');
     $('.drilldown>.section-header').html(stage_name);
     $('.drilldown>.subsection-header>p').html(kpi_name);
-    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Allen Rovenstine</p></div><div class="col-xs-2">December 08, 2015<br>12:00:00 PM</div><div class="col-xs-3">Dj and Chralie Eye Associates</div><div class="col-xs-2"><p >12</p></div> <div class="col-xs-2"><p>6</p></div><div class="col-xs-1"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span></div></div>';
+    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Allen Rovenstine</p></div><div class="col-xs-2"><p>888-227-3365</p></div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">Atlanta Eye Associates</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu" aria-labelledby="dropdownMenu2" style="width: 150%;border-radius: 3px;margin-left: -135%;text-align: right;"><li><a href="#">Schedule Appointment</a></li><li><a href="#">Archive Patient</a></li></ul></div></div></div>';
+    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Allen Rovenstine</p></div><div class="col-xs-2"><p>888-227-3365</p></div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">Atlanta Eye Associates</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="width: 150%;border-radius: 3px;margin-left: -135%;text-align: right;"><li><a href="#">Schedule Appointment</a></li><li><a href="#">Archive Patient</a></li></ul></div></div></div>';
     $('.drilldown_content').html(content);
 }
 
@@ -69,7 +79,8 @@ function showStageData(stage_id, stage_name) {
     var content = '';
     $('#' + stage_id).addClass('sidebar_items_active');
     $('.drilldown>.section-header').html(stage_name);
-    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Rovenstine</p></div><div class="col-xs-2">December 08, 2015<br>12:00:00 PM</div><div class="col-xs-3">Dj and Chralie Eye Associates</div><div class="col-xs-2"><p >12</p></div> <div class="col-xs-2"><p>6</p></div><div class="col-xs-1"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span></div></div>';
+    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Allen Rovenstine</p></div><div class="col-xs-2"><p>888-227-3365</p></div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">Atlanta Eye Associates</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu" aria-labelledby="dropdownMenu2" style="width: 150%;border-radius: 3px;margin-left: -135%;text-align: right;"><li><a href="#">Schedule Appointment</a></li><li><a href="#">Archive Patient</a></li></ul></div></div></div>';
+    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Allen Rovenstine</p></div><div class="col-xs-2"><p>888-227-3365</p></div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">Atlanta Eye Associates</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="width: 150%;border-radius: 3px;margin-left: -135%;text-align: right;"><li><a href="#">Schedule Appointment</a></li><li><a href="#">Archive Patient</a></li></ul></div></div></div>';
     $('.drilldown_content').html(content);
 }
 

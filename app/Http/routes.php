@@ -54,15 +54,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('practices/create', 'Practice\PracticeController@create');
     Route::get('practices/edit', 'Practice\PracticeController@edit');
     Route::get('practices/remove', 'Practice\PracticeController@destroy');
+    Route::get('networks/search', 'Admin\NetworkController@search');
     
     Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
     Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
 
-    Route::resource('users', 'Admin\UserController');
-    Route::resource('roles', 'Admin\RoleController');
-    Route::resource('permissions', 'Admin\PermissionController');
     Route::resource('directmail', 'DirectMail\DirectMailController');
     Route::resource('patients', 'Patient\PatientController');
     Route::resource('providers', 'Practice\ProviderController');
@@ -89,7 +87,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('investors', 'SupportController@investorsIndex');
     Route::get('techsupport', 'SupportController@techSupportIndex');
 
+    Route::resource('administration/users', 'Admin\UserController');
+    Route::resource('administration/roles', 'Admin\RoleController');
+    Route::resource('administration/networks', 'Admin\NetworkController');
+    Route::resource('administration/permissions', 'Admin\PermissionController');
+    Route::get('administration/practices', 'Practice\PracticeController@administration');
+    Route::get('administration/patients', 'Patient\PatientController@administration');
+    Route::post('administration/patients/add', 'Patient\PatientController@create');
+    Route::post('administration/network/add', 'Admin\NetworkController@add');
+    Route::get('administration/providers', 'Practice\ProviderController@administration');
+
 });
-
-
-

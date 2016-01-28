@@ -1,0 +1,81 @@
+.referral_tile_outer {
+  text-align: center;
+  font-weight: bold;
+}
+
+.referral_type_list {
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.referral_type_list > option {
+  background: #19AFEA;
+  border: none;
+  padding: 0;
+}
+
+.referral_tile {
+  background: #ffffff;
+  box-shadow: inset 0 3px 10px #e3e3e3, inset 0 -3px 10px #e3e3e3, -5px 5px 5px #0070a3;
+  padding: 0.5em 1em;
+  display: block;
+  color: #0193d7;
+  border-radius: 0.7em;
+  margin: 1em 0em 0.5em 0em;
+  cursor: pointer;
+}
+
+.referral_tile > p {
+  margin: 0;
+  font-size: 2em;
+}
+
+.referral_tile .referral_tile_inner {
+  display: block;
+  background-color: #0193d7;
+  height: 1.5em;
+  margin-top: 0.5em;
+  border-radius: 0.3em 0.3em 0 0;
+}
+
+.referral_tile:hover {
+  margin-top: 0.5em;
+}
+
+.referral_tile:hover .remove_referral_type {
+  margin-top: -0.5em;
+}
+
+.referral_tile .remove_referral_type {
+  background-color: #0193d7;
+  color: #ffffff;
+  border-radius: 100%;
+  padding: 5px;
+  display: none;
+  position: absolute;
+  right: 0;
+  opacity: 0.9;
+}
+
+.referral_tile .remove_referral_type:hover {
+  opacity: 1;
+  box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.referral_tile .remove_referral_type.active {
+  display: inline-block;
+}
+
+.referral_tile.configuration_tile {
+  opacity: 0.6;
+}
+
+.referral_tile.configuration_tile > p {
+  margin: 0.5em 0;
+}
+
+.referral_tile.configuration_tile:hover,
+.referral_tile.configuration_tile.active {
+  opacity: 1;
+}

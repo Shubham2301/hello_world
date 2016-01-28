@@ -1,8 +1,8 @@
-<div class="container no-padding">
+<div class="no-padding">
 <div class="row sidebar_header center">
 <div class="col-lg-2 col-md-2">
 <div class="dropdown" >
-    <button class="dropdown-toggle admin_button" type="button" data-toggle="dropdown" ><img src="{{URL::asset('images/sidebar/care_coordination_small.png')}}">
+    <button class="dropdown-toggle admin_button" type="button" data-toggle="dropdown" ><img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini">
     <span class="caret"></span></button>
     <ul class="dropdown-menu" >
       <li class="hello"><a href="/directmail"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="drop_image"></a></li>
@@ -11,10 +11,14 @@
       <li><a href="/home"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a></li>
       <li><a href="#"><img src="{{URL::asset('images/sidebar/records.png')}}" class="drop_image"></a></li>
       <li><a href="/careconsole"><img src="{{URL::asset('images/sidebar/care_coordination.png')}}" class="drop_image"></a></li>
+      <li><a href="/administration/practices"><img src="{{URL::asset('images/sidebar/care_coordination.png')}}" class="drop_image"></a></li>
     </ul>
     </div>
     </div>
-    <div class="col-lg-9 col-md-10"> <h3 class="title"> Care Console</h3></div>
+    <div class="col-lg-9 col-md-10">
+        <h3 class="title"> Care Console</h3>
+        <p class="c3_overview_link">Overview</p>
+    </div>
 </div>
 
     <div class="row admin c3_sidebar_item stage" id="0" data-name="Contact Status">

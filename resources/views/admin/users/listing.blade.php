@@ -4,7 +4,7 @@
             <p class="subheading">Users</p>
         </div>
         <div class="col-sm-2">
-            <a href="/users/create" class="button">Add User</a>
+            <a href="/administration/users/create" class="button">Add User</a>
         </div>
     </div>
 </div>

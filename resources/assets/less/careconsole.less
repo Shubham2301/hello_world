@@ -175,6 +175,7 @@ input#search_data{
 }
 .drilldown{
     display: none;
+    margin: 1em;
     &.active{
         display: block;
     }
@@ -189,26 +190,32 @@ input#search_data{
 }
 .subsection-header{
     display: none;
+    font-size: 1em;
+    padding:0;
     &.active{
         display: flex;
     }
 }
 .search_header {
-    margin: 1em;
+    padding: 1em 0;
+    margin: 0;
     border-bottom: 1.5px solid #fff;
     color: #000;
     text-align: left;
     font-weight: 600;
+    font-size: 0.9em;
     display: flex;
     &>.drilldown_header_item{
         margin-top: auto;
     }
 }
 .drilldown_item {
-    margin: 1em;
+    padding: 1em 0;
+    margin: 0;
     border-bottom: 1px solid #fff;
     color: #f2f2f2;
     cursor: pointer;
+    font-size: 0.9em;
     &:hover {
         color: #fff;
     }
@@ -233,4 +240,14 @@ input#search_data{
     background-color: @background-color-5;
     border-left: solid .7em @background-color-6;
     font-weight: 600;
+}
+p.c3_overview_link{
+    color: @font-color-4;
+    text-decoration: underline;
+    display: none;
+    cursor: pointer;
+    font-weight: 600;
+    &.active{
+        display: block;
+    }
 }

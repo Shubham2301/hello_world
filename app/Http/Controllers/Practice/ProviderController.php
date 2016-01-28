@@ -173,4 +173,8 @@ class ProviderController extends Controller
 
         return $openSlots;
     }
+    public function administration(Request $request)
+    {
+        return view('provider.admin');
+    }
 }

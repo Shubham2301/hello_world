@@ -4,7 +4,7 @@
             <p class="subheading">Permissions</p>
         </div>
         <div class="col-sm-2">
-            <a href="/permissions/create" class="button">Add Permissions</a>
+            <a href="/administration/permissions/create" class="button">Add Permissions</a>
         </div>
     </div>
 </div>

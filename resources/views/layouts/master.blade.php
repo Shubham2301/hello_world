@@ -11,6 +11,12 @@
             <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 		<![end if]-->
     <link rel="stylesheet" href="{{asset('lib/css/bootstrap.min.css')}}">
+<!--
+    <link rel="stylesheet" href="{{asset('lib/css/bootstrap-datetimepicker.css')}}">
+    <link rel="stylesheet" href="{{asset('lib/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('lib/css/bootstrap-datetimepicker-standalone.css')}}">
+    <link rel="stylesheet" href="{{asset('lib/js/bootstrap-datetimepicker.min.js')}}">
+-->
     <link rel="stylesheet" type="text/css" href="{{elixir('css/style.css')}}">
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     
