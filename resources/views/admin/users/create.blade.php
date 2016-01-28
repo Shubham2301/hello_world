@@ -38,7 +38,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="/users">
+            <form method="POST" action="/administration/users">
                 {!! csrf_field() !!}
                 {{ method_field('POST') }}
 

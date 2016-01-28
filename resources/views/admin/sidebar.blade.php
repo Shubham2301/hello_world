@@ -2,7 +2,7 @@
 <div class="row sidebar_header center">
 <div class="col-lg-2 col-md-2">
 <div class="dropdown" >
-    <button class="dropdown-toggle admin_button" type="button" data-toggle="dropdown" ><img src="{{URL::asset('images/sidebar/care_coordination_small.png')}}">
+    <button class="dropdown-toggle admin_button" type="button" data-toggle="dropdown" ><img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini">
     <span class="caret"></span></button>
     <ul class="dropdown-menu" >
       <li class="hello"><a href="/directmail"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="drop_image"></a></li>
@@ -36,6 +36,10 @@
     <div class="row admin @yield('roles-active')">
         <a class="sidebar-item" href="/administration/roles">
             <div class="col-lg-6 col-md-6 files font_change">Roles</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/files.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/files_add.png')}}" class="image"></span></div></a>
+    </div>
+    <div class="row admin @yield('roles-active')">
+        <a class="sidebar-item" href="/administration/networks">
+            <div class="col-lg-6 col-md-6 files font_change">Networks</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/files.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/files_add.png')}}" class="image"></span></div></a>
     </div>
     <div class="row admin @yield('permissions-active')">
         <a class="sidebar-item" href="/administration/permissions">

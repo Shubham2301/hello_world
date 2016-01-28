@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Network extends Model
 {
+    protected $fillable = ['id','name','email','phone','addressline1','addressline2','city','state','zip','country'];
+
     public function referralTypes()
     {
         // TODO : optimize

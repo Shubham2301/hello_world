@@ -21,6 +21,7 @@ elixir(function (mix) {
     mix.less(['provider.less'],'public/css/provider.css');
     mix.less(['appointment.less'],'public/css/appointment.css');
     mix.less(['careconsole.less'],'public/css/careconsole.css');
+    mix.less(['networks.less'],'public/css/networks.css');
 
     mix.babel(['main.js'],'public/js/main.js');
     mix.babel(['sesconnect.js'],'public/js/sesconnect.js');
@@ -31,6 +32,7 @@ elixir(function (mix) {
     mix.babel(['appointment.js'],'public/js/appointment.js');
     mix.babel(['import.js'],'public/js/import.js');
     mix.babel(['careconsole.js'],'public/js/careconsole.js');
+    mix.babel(['networks.js'],'public/js/networks.js');
 
     mix.version(['css/style.css',
                 'css/directmail.css',
@@ -40,6 +42,7 @@ elixir(function (mix) {
                 'css/provider.css',
                 'css/appointment.css',
                 'css/careconsole.css',
+                'css/networks.css',
                 'js/main.js',
                 'js/sesconnect.js',
                 'js/referraltype.js',
@@ -48,6 +51,7 @@ elixir(function (mix) {
                 'js/practice.js',
                 'js/appointment.js',
                 'js/import.js',
-                'js/careconsole.js']);
+                'js/careconsole.js',
+                'js/networks.js']);
 
 });

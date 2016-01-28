@@ -1,10 +1,10 @@
 @extends('layouts.master')
 
-@section('title', 'My Ocuhub - Administration')
+@section('title', 'My Ocuhub - Network Management')
 
 @section('imports')
-<link rel="stylesheet" type="text/css" href="{{elixir('css/patient.css')}}">
-<script type="text/javascript" src="{{elixir('js/patient.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{elixir('css/networks.css')}}">
+<script type="text/javascript" src="{{elixir('js/networks.js')}}"></script>
 @endsection
 
 @section('sidebar')
@@ -22,10 +22,12 @@
 </div>
 @endif
 
-@if(! empty($data['referraltype_id']))
+<div class="content-section active">
+    @include('admin.networks.search')
+</div>
 
-@include('patient.addnew')
-
-@endif
+<div class="network_section active">
+    @include('admin.networks.listing')
+</div>
 
 @endsection

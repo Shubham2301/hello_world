@@ -3,7 +3,7 @@
 
 </div>
 <div class="sidebar_menu center">
-<img src="{{URL::asset('images/sidebar/care_coordinator.png')}}">
+    <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar">
 </div>
 <div class="row"><div class="col-md-12">
 <ul class="sidebar-item-list">

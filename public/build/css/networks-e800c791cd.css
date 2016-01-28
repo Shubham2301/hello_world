@@ -189,165 +189,110 @@ a:focus.sidebar-item {
   border-color: #0086fb;
 }
 
-.patient_list {
-  overflow-y: scroll;
-  display: none;
+.search_input_box {
+  background-color: #ffffff;
+  font-size: 1em;
 }
 
-.patient_list.active {
-  display: block;
+.search_input_box > input,
+.search_input_box > input:focus {
+  width: 100%;
+  border: none;
+  padding: 6px 12px;
+  color: #4d4d4d;
+  outline: none;
 }
 
-.patient_list_item {
-  border-top: 1px solid;
-  opacity: 0.9;
+.search_input_box > span {
+  color: #0071bc;
+  position: absolute;
+  right: 0;
+}
+
+.glyp {
+  padding-top: 8px;
+  padding-right: 5px;
   cursor: pointer;
-}
-
-.patient_list_item:hover {
-  opacity: 1;
-}
-
-.patient_info {
-  display: none;
-  margin-top: 2em;
-}
-
-.patient_info > .patient_table_header {
-  border-bottom: 2px solid #fff;
-  border-top: 1px solid #fff;
-  color: #000;
-  padding: 0.5em 15px;
-  margin: 1em 0;
-}
-
-.patient_info.active {
-  display: block;
 }
 
 .import-btn {
-  background: transparent;
-  color: #cde8f4;
-  border: 1px solid;
-}
-
-.import-btn:hover {
   color: black;
   background-color: #cde8f4;
   border-color: #cde8f4;
+  float: right;
 }
 
-#search_patient_button {
-  cursor: pointer;
-}
-
-.select_provider_button {
-  display: none;
-}
-
-.select_provider_button.active {
-  display: inline-block;
-}
-
-.search_filter {
-  color: black;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  padding-left: 1px;
-  padding-top: 4px;
-}
-
-.search_filter_item {
-  background: #f5f5f5;
-  padding: 2px 5px 2px 5px;
-  border: dashed 2px;
-  border-radius: 5px;
-  margin: 2px;
-}
-
-.search_filter_item > .remove_option {
-  color: red;
-  cursor: pointer;
-  margin: 1px;
-}
-
-.add_search_option {
-  padding-right: 25px;
-}
-
-#add_search_option {
-  position: inherit;
-  cursor: pointer;
-}
-
-.lastseen_content {
-  visibility: hidden;
-}
-
-.lastseen_content.active {
-  visibility: visible;
-}
-
-.action-btns {
-  position: absolute;
-  display: none;
-  right: 0;
-  top: 0;
-}
-
-.action-btns.active {
-  display: block;
-}
-
-.lastseenby_show {
-  cursor: pointer;
-}
-
-.referredby_content {
-  visibility: hidden;
-}
-
-.referredby_content.active {
-  visibility: visible;
-}
-
-.referredby_show {
-  cursor: pointer;
-}
-
-.insurance_provider_show {
-  cursor: pointer;
-}
-
-.insurance_provider_content {
-  visibility: hidden;
-}
-
-.insurance_provider_content.active {
-  visibility: visible;
-}
-
-/*
-----------------------
-Patient admin section
------------------------
-*/
-
-.back {
-  color: #f2f2f2;
-  background-color: #808080;
+.btn {
   padding: 6px 22px;
 }
 
-.back:hover {
+.search_input_box {
+  background-color: #ffffff;
+  font-size: 1em;
+  padding-left: 0px;
+}
+
+p.search_result {
+  margin: 1em;
+}
+
+.search_header {
+  margin: 1em;
+  border-bottom: 1px solid #fff;
+}
+
+.search_name,
+.search_edit {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+
+.search_edit {
+  cursor: pointer;
+}
+
+p.pagination {
+  color: black;
+  display: inline-block;
+  margin: 0px;
+}
+
+.search_item {
+  margin: 1em;
+  border-bottom: 1px solid #fff;
   color: #f2f2f2;
 }
+
+.search_item:hover {
+  color: #fff;
+}
+
+.p_right,
+.p_left {
+  cursor: pointer;
+}
+
+/*
+--------------------------
+Style for create network
+--------------------------
+*/
 
 .add_header {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.back-btn {
+  color: #f2f2f2;
+  background-color: #808080;
+  padding: 6px 22px;
+}
+
+.back-btn:hover {
+  color: #f2f2f2;
 }
 
 p.add_title {
@@ -357,7 +302,7 @@ p.add_title {
   margin-top: auto;
 }
 
-.add_patient_input {
+.add_network_input {
   display: block;
   color: #fff;
   background-color: #0193d7;
@@ -368,49 +313,27 @@ p.add_title {
   width: 60%;
 }
 
-.add_patient_input::-webkit-input-placeholder {
+.add_network_input::-webkit-input-placeholder {
   color: #cbcbcb;
 }
 
-.add_patient_input::-moz-placeholder {
+.add_network_input::-moz-placeholder {
   color: #cbcbcb;
 }
 
-.add_patient_input:-ms-input-placeholder {
+.add_network_input:-ms-input-placeholder {
   color: #cbcbcb;
 }
 
-.add_patient_input::placeholder {
+.add_network_input::placeholder {
   color: #cbcbcb;
 }
 
-.add_patient_input:focus {
+.add_network_input:focus {
   border: 2px solid #fff;
 }
 
 .section-break {
   border-top: 1px solid #82888f;
   margin: 0 2em 0 2em;
-}
-
-p.address {
-  margin: 0 1em;
-  font-size: 1.3em;
-  color: #fff;
-}
-
-.patient_action {
-  display: none;
-}
-
-.patient_action.active {
-  display: block;
-}
-
-.add-btn {
-  float: left;
-}
-
-.add-btn:hover {
-  float: left;
 }
