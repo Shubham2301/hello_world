@@ -360,7 +360,6 @@ a:focus.sidebar-item {
 
 .selected_patient p {
   color: black;
-
   display: inline-block;
   margin: 0 0 1px;
 }
@@ -368,7 +367,6 @@ a:focus.sidebar-item {
 .selected_patient p.view_selected_patient,
 .selected_patient p.change_selected_patient {
   cursor: pointer;
-
   text-decoration: underline;
 }
 
