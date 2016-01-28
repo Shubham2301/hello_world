@@ -183,8 +183,4 @@ class ProviderController extends Controller
     {
         return view('provider.admin');
     }
-    public function administration(Request $request)
-    {
-        return view('provider.admin');
-    }
 }
