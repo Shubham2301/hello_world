@@ -31,8 +31,8 @@ class CcdaController extends Controller
             $a = exec("node ".public_path()."/js/tojson.js ". $xmlfile." ".$jsonfile);
             $jsonstring = file_get_contents($jsonfile, true);
             $validator = \Validator::make(array('jsson' => $jsonstring), array('jsson'=>'Required|json'));
-           // unlink($xmlfile);
-           // unlink($jsonfile);
+             unlink($xmlfile);
+             unlink($jsonfile);
             if ($validator->fails()) {
                 $request->session()->flash('error','please provide a valid ccda file');
                 return back()->withInput();
@@ -220,7 +220,7 @@ class CcdaController extends Controller
         $xmlfile = base_path().'/temp_ccda/'.$xmlfilename;
         $a = exec("node ".public_path()."/js/toxml.js ". $jsonfile." ".$xmlfile);
         fclose($myfile);
-        //unlink($jsonfile);
+        unlink($jsonfile);
         return $xmlfile;
 
     }
