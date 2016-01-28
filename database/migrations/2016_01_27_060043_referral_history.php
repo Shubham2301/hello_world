@@ -28,7 +28,7 @@ class ReferralHistory extends Migration
         Schema::table('referral_history', function (Blueprint $table) {
             $table->foreign('referred_to_practice_id')->references('id')->on('practices')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('referred_to_location_id')->references('id')->on('practice_locations')
+            $table->foreign('referred_to_location_id')->references('id')->on('practice_location')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('referred_to_practice_user_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
