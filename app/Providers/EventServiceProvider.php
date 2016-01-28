@@ -13,9 +13,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'myocuhub\Events\SomeEvent' => [
-            'myocuhub\Listeners\EventListener',
-        ],
+        'myocuhub\Events\MakeAuditEntry' => [],
     ];
 
     /**

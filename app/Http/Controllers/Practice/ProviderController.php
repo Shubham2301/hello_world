@@ -5,9 +5,9 @@ namespace myocuhub\Http\Controllers\Practice;
 use Illuminate\Http\Request;
 use myocuhub\Models\Practice;
 use myocuhub\User;
-
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Services\FourPatientCare\FourPatientCare;
-
+use Event;
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
 
@@ -47,9 +47,15 @@ class ProviderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+
+        $action = 'New provider created';
+        $description = 'users.id = 5';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
     }
 
     /**

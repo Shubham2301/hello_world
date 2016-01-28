@@ -18,7 +18,7 @@ class AuditLogs extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('action', 200);
-            $table->string('file', 200)->nullable();
+            $table->string('filename', 200)->nullable();
             $table->text('description', 200)->nullable();
             $table->string('ip', 200)->nullable();
             $table->timestamps();
