@@ -18,19 +18,38 @@ $(document).ready(function () {
         }
     });
 
+    $('.C3_day_box').on('click', function () {
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+        }
+        else{
+            $('.C3_day_box').removeClass('active');
+            $(this).addClass('active');
+        }
+    });
+
+    $('.day_box.active').on('click', function () {
+        $(this).removeClass('active');
+    });
+
     $('#search_do').on('click', searchc3);
 
-    $('p.c3_overview_link').on('click', function(){
-        $('p.c3_overview_link').removeClass('active');
+    $('.c3_overview_link').on('click', function () {
+        $('.c3_overview_link').removeClass('active');
+        $('.control_section').removeClass('active');
+        $('ul.c3_sidebar_list').removeClass('active');
         $('.before_drilldown').show();
         $('.drilldown').removeClass('active');
         $('.stage').removeClass('sidebar_items_active');
     });
 
     $('.info_section').on('click', function () {
-        $('p.c3_overview_link').addClass('active');
+        $('.c3_overview_link').addClass('active');
+        $('.control_section').addClass('active');
+        $('ul.c3_sidebar_list').addClass('active');
         $('.before_drilldown').hide();
         $('.drilldown').addClass('active');
+        $('.stage').removeClass('sidebar_items_active');
         var stage_id = $($(this).closest('.info_box')).attr('id');
         var stage_name = $($(this).closest('.info_box')).attr('data-name');
         var kpi_id = $(this).attr('id');
@@ -39,7 +58,9 @@ $(document).ready(function () {
         showKPIData(stage_id, kpi_id, stage_name, kpi_name);
     });
     $('.stage').on('click', function () {
-        $('p.c3_overview_link').addClass('active');
+        $('.c3_overview_link').addClass('active');
+        $('.control_section').addClass('active');
+        $('ul.c3_sidebar_list').addClass('active');
         $('.before_drilldown').hide();
         $('.drilldown').addClass('active');
         $('.stage').removeClass('sidebar_items_active');
