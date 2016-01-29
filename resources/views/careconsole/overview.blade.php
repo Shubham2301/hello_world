@@ -24,9 +24,9 @@
         </div>
     </div>
     <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
-        <div class="info_box">
+        <div class="info_box" id="11" data-name="Schedule for appointment">
            <div class="top">
-                <div class="info_section">
+                <div class="info_section" id="2" data-name="Future Appointment">
                     <div class="info_section_title">Future Appointment</div>
                     <div class="right">
                     <div class="circle green"></div>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="section_break"></div>
-                <div class="info_section">
+                <div class="info_section" id="3" data-name="Appointment Tommorow">
                     <div class="info_section_title">Appointment Tommorow</div>
                     <div class="right">
                     <div class="circle yellow"></div>
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="section_break"></div>
-                <div class="info_section">
+                <div class="info_section" id="4" data-name="Past Appointment">
                     <div class="info_section_title">Past Appointment</div>
                     <div class="right">
                     <div class="circle red"></div>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bottom">
+            <div class="bottom stage">
                 <p>Scheduled for appointment</p>
             </div>
         </div>
