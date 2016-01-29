@@ -9,14 +9,13 @@
 | It's a breeze. Simply tell Laravel the URIs it should respond to
 | and give it the controller to call when that URI is requested.
 |
-*/
+ */
 
 Route::get('/', function () {
 
-    if(!Auth::check()){
+    if (!Auth::check()) {
         return view('welcome');
-    }
-    else{
+    } else {
         return Redirect::to('/home');
     }
 });
@@ -44,7 +43,6 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 
-
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home/removereferral', 'HomeController@removeReferral');
     Route::get('home/addreferral', 'HomeController@addReferral');
@@ -55,12 +53,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('practices/edit', 'Practice\PracticeController@edit');
     Route::get('practices/remove', 'Practice\PracticeController@destroy');
     Route::get('networks/search', 'Admin\NetworkController@search');
-    
+
     Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
     Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
 
+    Route::resource('ccc', 'CareConsole\CareConsoleController');
     Route::resource('directmail', 'DirectMail\DirectMailController');
     Route::resource('patients', 'Patient\PatientController');
     Route::resource('providers', 'Practice\ProviderController');
@@ -91,10 +90,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-    Route::get('/foo', function(){
-        $u = myocuhub\Models\Practice::paginate(10);
-        return view('paginationtest')->with('u',$u);
-    });
+Route::get('/foo', function () {
+    $u = myocuhub\Models\Practice::paginate(10);
+    return view('paginationtest')->with('u', $u);
+});
 
 Route::get('/fooo', 'Practice\PracticeController@getpages');
-
