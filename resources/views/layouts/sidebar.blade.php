@@ -5,7 +5,6 @@
 <div class="sidebar_menu center">
     <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar">
 </div>
-<div class="row"><div class="col-md-12">
 <ul class="sidebar-item-list">
     <li class="sidebar_menu_item"><a class="sidebar-item" href="/directmail"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="image"></span><span class="menu_item_label">Direct Mail</span></a></li>
     <li class="sidebar_menu_item"><a class="sidebar-item" href="#"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="image"></span><span class="menu_item_label">File Exchange</span></a></li>
@@ -15,6 +14,5 @@
     <li class="sidebar_menu_item"><a class="sidebar-item" href="/careconsole"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/care_coordination.png')}}" class="image"></span><span class="menu_item_label">Care Console</span></a></li>
     <li class="sidebar_menu_item"><a class="sidebar-item" href="/administration/practices"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/care_coordination.png')}}" class="image"></span><span class="menu_item_label">Administration</span></a></li>
     </ul>
-    </div>
-</div>
+
 @endif
