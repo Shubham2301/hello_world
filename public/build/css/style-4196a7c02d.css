@@ -25,7 +25,7 @@ Section : Media Queries
     padding: 0 0 1.5em 1.5em;
   }
 
-  .sidebar-item-list {
+  .sidebar_item_list {
     width: 100%;
   }
 }
@@ -44,7 +44,7 @@ Section : Media Queries
     margin-bottom: 3em;
   }
 
-  .sidebar-item-list {
+  .sidebar_item_list {
     width: 100%;
   }
 }
@@ -54,7 +54,7 @@ Section : Media Queries
     font-size: 14px;
   }
 
-  .sidebar-item-list {
+  .sidebar_item_list {
     width: 90%;
   }
 }
@@ -64,7 +64,7 @@ Section : Media Queries
     font-size: 14px;
   }
 
-  .sidebar-item-list {
+  .sidebar_item_list {
     width: 80%;
   }
 }
@@ -74,7 +74,7 @@ Section : Media Queries
     font-size: 15px;
   }
 
-  .sidebar-item-list {
+  .sidebar_item_list {
     width: 70%;
   }
 }
@@ -88,7 +88,7 @@ Section : Media Queries
     font-size: 16px;
   }
 
-  .sidebar-item-list {
+  .sidebar_item_list {
     width: 60%;
   }
 }
@@ -102,7 +102,7 @@ Section : Media Queries
     width: 20%;
   }
 
-  .sidebar-item-list {
+  .sidebar_item_list {
     width: 50%;
   }
 }
@@ -512,17 +512,17 @@ Section : Sidebar
 ---------------------------
 */
 
-.sidebar-item-list {
+.sidebar_item_list {
   list-style-type: none;
   padding: 0;
   margin: 0 auto;
 }
 
-.sidebar-item-list > li {
+.sidebar_item_list > li {
   margin: 0.5em 0;
 }
 
-.sidebar-item .sidebar-item-left {
+.sidebar_item .sidebar-item-left {
   text-align: right;
 }
 
