@@ -39,6 +39,25 @@ class PatientController extends Controller
      */
     public function create(Request $request)
     {
+         $data = array();
+
+        if($request->has('referraltype_id')){
+            $data['referraltype_id'] = $request->input('referraltype_id');
+        }
+        if($request->has('action')){
+            $data['action'] = $request->input('action');
+        }
+        return view('patient.admin')->with('data', $data);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
         $patient = new Patient;
         $patient->firstname = $request->input('patient_fname');
         $patient->lastname = $request->input('patient_lname');
@@ -52,19 +71,8 @@ class PatientController extends Controller
         $patient->preferredlanguage = $request->input('preferredlanguage');
         $patient->cellphone = $request->input('phone');
         $patient->save();
-        $path = 'patients?referraltype_id='.$request->input('referraltype_id').'&action='.$request->input('action');
+        $path = 'providers?referraltype_id='.$request->input('referraltype_id').'&action='.$request->input('action').'&patient_id='.$patient->id;
         return redirect($path);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -146,15 +154,7 @@ class PatientController extends Controller
 
     public function administration(Request $request)
     {
-        $data = array();
 
-        if($request->has('referraltype_id')){
-            $data['referraltype_id'] = $request->input('referraltype_id');
-        }
-        if($request->has('action')){
-            $data['action'] = $request->input('action');
-        }
-        return view('patient.admin')->with('data', $data);
     }
 
 }
