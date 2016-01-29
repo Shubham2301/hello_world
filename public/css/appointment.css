@@ -39,17 +39,29 @@ Section : Media Queries
   body {
     font-size: 14px;
   }
+
+  .C3_day_row {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width: 993px) and (max-width: 1200px) {
   body {
     font-size: 14px;
   }
+
+  .C3_day_row {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width: 1201px) and (max-width: 1800px) {
   body {
     font-size: 15px;
+  }
+
+  .C3_day_row {
+    width: 80%;
   }
 }
 
@@ -61,6 +73,10 @@ Section : Media Queries
   body {
     font-size: 16px;
   }
+
+  .C3_day_row {
+    width: 60%;
+  }
 }
 
 @media only screen and (min-width: 2201px) {
@@ -70,6 +86,10 @@ Section : Media Queries
 
   .col-xl-2 {
     width: 20%;
+  }
+
+  .C3_day_row {
+    width: 50%;
   }
 }
 
