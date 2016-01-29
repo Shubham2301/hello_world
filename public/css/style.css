@@ -16,10 +16,6 @@ Section : Media Queries
 ---------------------------
 */
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 0f179a853692693439f8038bc91802fea50404e4
 @media only screen and (max-width: 468px) {
   .left-padding {
     padding-left: 2.5em;
@@ -31,10 +27,6 @@ Section : Media Queries
 }
 
 @media only screen and (min-width: 469px) and (max-width: 767px) {
-<<<<<<< HEAD
-
-=======
->>>>>>> 0f179a853692693439f8038bc91802fea50404e4
   .logo-img {
     width: 50%;
     margin-top: 1.5em;
@@ -49,10 +41,6 @@ Section : Media Queries
   }
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 0f179a853692693439f8038bc91802fea50404e4
 @media only screen and (min-width: 768px) and (max-width: 992px) {
   body {
     font-size: 14px;
@@ -201,10 +189,6 @@ a:focus.sidebar-item {
   border-color: #0086fb;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 0f179a853692693439f8038bc91802fea50404e4
 /*
 ---------------------------
 Section : General

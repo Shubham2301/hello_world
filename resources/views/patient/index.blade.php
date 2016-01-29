@@ -56,6 +56,7 @@
             @include('patient.listing')
         </div>
         @include('patient.import')
+        @include('patient.import_ccda')
     </div>
 
 

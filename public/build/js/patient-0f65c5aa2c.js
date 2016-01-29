@@ -132,6 +132,8 @@ function showPatientInfo(data) {
     $('#select_provider_button').attr('data-id', data.id);
     $('#select_provider_button').addClass('active');
     $('#import_patients').hide();
+    $('#import_ccda_button').attr('data-id', data.id);
+    $('#download_ccda').attr('href', '/download/' + data.id);
 }
 
 function getPatientInfo(formData) {

@@ -70,7 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('careconsole', 'CareConsoleController');
 
     //Ccda routes
-    Route::post('/saveccd', 'CcdaController@saveCcda');
+    Route::post('/import/ccda', 'CcdaController@saveCcda');
     Route::get('ccdaform', 'CcdaController@index');
     Route::get('/addvital/{id}', 'CcdaController@addVital');
     Route::post('/savevitals', 'CcdaController@saveVitals');

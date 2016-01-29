@@ -3,15 +3,21 @@
 <div class="row content-row-margin patient_info" data-id="">
     <div class="col-xs-12">
         <div class="col-xs-4 center-align">
-            <img src="{{asset('images/patient.png')}}" alt=""><br>
-            <p class="button_type_1" id="change_patient_button"  >Change Patient</p><br>
+            <img src="{{asset('images/patient.png')}}" alt="">
+            <br>
+            <p class="button_type_1" id="change_patient_button">Change Patient</p>
+            <br>
+            <p class="button_type_1" id="import_ccda_button" data-toggle="modal" data-target="#importCcda" data-id="">Import Ccda</p>
+            <br>
+            <a href="" class="btn btn-large" id="download_ccda"><i class="icon-download-alt"> </i> Download CCDA</a>
+            <br>
         </div>
         <div class="col-xs-8">
             <p class="bold" id="patient_name"></p>
             <hr>
             <div class="row">
                 <div class="col-xs-6">
-                    <p><span class="bold" >Email</span>
+                    <p><span class="bold">Email</span>
                         <br><span id="patient_email"> </span></p>
                     <p><span class="bold">Date of Birth</span>
                         <br><span id="patient_dob"> </span></p>
@@ -29,7 +35,7 @@
                         <br><span id="patient_phone">  </span></p>
                 </div>
                 <div class="col-xs-6">
-                    <p><span class="bold" >SSN</span>
+                    <p><span class="bold">SSN</span>
                         <br><span id="patient_ssn"></span> </p>
                 </div>
             </div>
@@ -39,44 +45,59 @@
     <div class="col-xs-12 patient_table_header">
         <div class="col-xs-4 lastseenby">
             <div class="lastseenby_show">
-            <p><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></p></div>
+                <p><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></p>
+            </div>
 
         </div>
 
         <div class="col-xs-4 referredby">
             <div class="referredby_show">
-            <p> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></p></div>
+                <p> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></p>
+            </div>
         </div>
 
         <div class="col-xs-4 insurance_provider">
             <div class="insurance_provider_show">
-            <p><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></p></div>
+                <p><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></p>
+            </div>
         </div>
     </div>
 
-     <div class="col-xs-12">
+    <div class="col-xs-12">
         <div class="col-xs-4 lastseen_content">
             <ul>
-            <li><p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p></li>
-            <li><p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p></li>
+                <li>
+                    <p><span class="bold">Provider</span>
+                        <br>Opthalmic Consultants</p>
+                </li>
+                <li>
+                    <p><span class="bold">Doctor</span>
+                        <br>Danial Garibaldi</p>
+                </li>
             </ul>
         </div>
         <div class="col-xs-4 referredby_content">
             <ul>
-            <li><p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p></li>
-            <li><p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p></li>
+                <li>
+                    <p><span class="bold">Provider</span>
+                        <br>Opthalmic Consultants</p>
+                </li>
+                <li>
+                    <p><span class="bold">Doctor</span>
+                        <br>Danial Garibaldi</p>
+                </li>
             </ul>
         </div>
         <div class="col-xs-4 insurance_provider_content">
             <ul>
-           <li> <p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p></li>
-            <li><p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p></li>
+                <li>
+                    <p><span class="bold">Provider</span>
+                        <br>Opthalmic Consultants</p>
+                </li>
+                <li>
+                    <p><span class="bold">Doctor</span>
+                        <br>Danial Garibaldi</p>
+                </li>
             </ul>
         </div>
     </div>

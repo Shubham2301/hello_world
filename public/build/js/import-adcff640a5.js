@@ -19,7 +19,20 @@ $(document).ready(function () {
         $('.success_message').text('');
         $('.success_message').removeClass('active');
         $('.import_button').addClass('active');
-        $('.dismiss_button').text('cancel');
+        $('.dismiss_button').text('Cancel');
+    });
+
+    $('#import_ccda_button').on('click', function () {
+        var id = $(this).attr('data-id');
+        $('#ccda_patient_id').val(id);
+        $('.import_form').addClass('active');
+        $('.success_message').text('');
+        $('.success_message').removeClass('active');
+        $('.save_ccda_button').addClass('active');
+        $('.dismiss_button').text('Cancel');
+    });
+    $('.save_ccda_button').on('click', function () {
+        saveCcdafile();
     });
 });
 
@@ -67,6 +80,28 @@ function importPatients() {
             $('.success_message').addClass('active');
             $('.import_button').removeClass('active');
             $('.dismiss_button').text('Ok');
+        }
+    });
+}
+
+function saveCcdafile() {
+    var myform = document.getElementById("import_ccda_form");
+    var fd = new FormData(myform);
+    $.ajax({
+        url: "import/ccda",
+        data: fd,
+        cache: false,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function success(dataofconfirm) {
+            if (dataofconfirm != 'unsuccessful') {
+                $('.import_form').removeClass('active');
+                $('.success_message').text(dataofconfirm);
+                $('.success_message').addClass('active');
+                $('.save_ccda_button').removeClass('active');
+                $('.dismiss_button').text('Ok');
+            }
         }
     });
 }

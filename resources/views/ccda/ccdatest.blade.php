@@ -19,7 +19,7 @@
 
 
    <h3>Select a CCDA file</h3>
-    {!! Form::open(array('url' => '/saveccd', 'method' => 'post','files'=>true)) !!}
+{!! Form::open(array('url' => 'import/ccda', 'method' => 'post','files'=>true)) !!}
     <div style="display:flex;color:black;">
         <p style="margin-right:2em;">Patient id </p> {!!Form::text('patient_id')!!}
     </div>

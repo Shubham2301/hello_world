@@ -19,8 +19,9 @@ class CcdaController extends Controller
 
     public function saveCcda(Request $request)
     {
-        if ($request->hasFile('ccda')) {
-            $file = $request->file('ccda');
+
+        if ($request->hasFile('patient_ccda')) {
+            $file = $request->file('patient_ccda');
             $destinationPath = 'temp_ccda';
             $extension = $file->getClientOriginalExtension();
             $xmlfilename = str_random(9).".{$extension}";
@@ -34,16 +35,16 @@ class CcdaController extends Controller
              unlink($xmlfile);
              unlink($jsonfile);
             if ($validator->fails()) {
-                $request->session()->flash('error','please provide a valid ccda file');
-                return back()->withInput();
+                //$request->session()->flash('error','please provide a valid ccda file');
+                //return back()->withInput();
+                return 'unsuccessful';
             }
             $ccda = new Ccda;
             $ccda->ccdablob = $jsonstring;
             $ccda->patient_id = $request->patient_id;
             if ($ccda->save()) {
                 return  $this->showDemographics(json_decode($ccda->ccdablob, true),$ccda->patient_id);
-               // $this->savePreviousVitals(json_decode($ccda->ccdablob, true)['vitals'], $ccda->id );
-                return redirect()->route('showvitals',$ccda->id );
+                //return redirect()->route('showvitals',$ccda->id );
             }
         }
 
@@ -175,9 +176,9 @@ class CcdaController extends Controller
         $patient = Patient::find($patient_id);
         if($patient){
             $patient->update($patient_data);
-            dd($patient);
+            return 'succesful';
         }
-        return 'unsuccessfull';
+        return 'unsuccessful';
     }
 
     public function updateDemographics($patient_id)
