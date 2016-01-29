@@ -59,14 +59,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
 
-    Route::resource('ccc', 'CareConsole\CareConsoleController');
+    Route::resource('careconsole', 'CareConsole\CareConsoleController');
     Route::resource('directmail', 'DirectMail\DirectMailController');
     Route::resource('patients', 'Patient\PatientController');
     Route::resource('providers', 'Practice\ProviderController');
     Route::resource('practices', 'Practice\PracticeController');
     Route::resource('appointments', 'Appointment\AppointmentController');
     Route::resource('home', 'HomeController');
-    Route::resource('careconsole', 'CareConsoleController');
     Route::get('import/location', 'BulkImportController@getLocations');
     Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
 

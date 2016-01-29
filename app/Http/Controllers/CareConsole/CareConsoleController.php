@@ -43,7 +43,7 @@ class CareConsoleController extends Controller
                 $overview['stages'][$i]['kpis'][$j]['display_name'] = $kpi->display_name;
                 $overview['stages'][$i]['kpis'][$j]['color_indicator'] = $kpi->color_indicator;
                 $overview['stages'][$i]['kpis'][$j]['description'] = $kpi->description;
-                $overview['stages'][$i]['kpis'][$j]['count'] = $this->KPIService->getCount($kpi->name, $networkID);
+                $overview['stages'][$i]['kpis'][$j]['count'] = $this->KPIService->getCount($kpi->name, $networkID, $stage->stage_id);
                 $j++;
             }
             $overview['stages'][$i]['kpi_count'] = $j;
