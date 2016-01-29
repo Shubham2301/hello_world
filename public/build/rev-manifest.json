@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "css/appointment.css": "css/appointment-ae72f5d150.css",
   "css/careconsole.css": "css/careconsole-9e086d4f33.css",
   "css/directmail.css": "css/directmail-3812f6750b.css",
@@ -18,4 +19,25 @@
   "js/provider.js": "js/provider-c91fdeae72.js",
   "js/referraltype.js": "js/referraltype-5cc1ecc17e.js",
   "js/sesconnect.js": "js/sesconnect-d1e8231031.js"
+=======
+  "css/appointment.css": "css/appointment-ffbb76ad78.css",
+  "css/careconsole.css": "css/careconsole-bee0663be5.css",
+  "css/directmail.css": "css/directmail-3812f6750b.css",
+  "css/networks.css": "css/networks-d75a544098.css",
+  "css/patient.css": "css/patient-19d236e1f2.css",
+  "css/practice.css": "css/practice-70d28fa3da.css",
+  "css/provider.css": "css/provider-8a902881d6.css",
+  "css/referral.css": "css/referral-774d6a00a9.css",
+  "css/style.css": "css/style-4196a7c02d.css",
+  "js/appointment.js": "js/appointment-c666f01713.js",
+  "js/careconsole.js": "js/careconsole-6ecacc3889.js",
+  "js/import.js": "js/import-b6416702e0.js",
+  "js/main.js": "js/main-81eb6526fd.js",
+  "js/networks.js": "js/networks-7c7a8eb6f3.js",
+  "js/patient.js": "js/patient-bf88654873.js",
+  "js/practice.js": "js/practice-3013df40c9.js",
+  "js/provider.js": "js/provider-36320694d3.js",
+  "js/referraltype.js": "js/referraltype-7fb73ca0be.js",
+  "js/sesconnect.js": "js/sesconnect-edb8204398.js"
+>>>>>>> origin/sidebar-buttons
 }

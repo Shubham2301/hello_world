@@ -54,10 +54,6 @@ Section : Media Queries
     font-size: 14px;
   }
 
-  .C3_day_row {
-    width: 100%;
-  }
-
   .sidebar_item_list {
     width: 90%;
   }
@@ -68,10 +64,6 @@ Section : Media Queries
     font-size: 14px;
   }
 
-  .C3_day_row {
-    width: 100%;
-  }
-
   .sidebar_item_list {
     width: 80%;
   }
@@ -80,10 +72,6 @@ Section : Media Queries
 @media only screen and (min-width: 1201px) and (max-width: 1800px) {
   body {
     font-size: 15px;
-  }
-
-  .C3_day_row {
-    width: 80%;
   }
 
   .sidebar_item_list {
@@ -100,10 +88,6 @@ Section : Media Queries
     font-size: 16px;
   }
 
-  .C3_day_row {
-    width: 60%;
-  }
-
   .sidebar_item_list {
     width: 60%;
   }
@@ -116,10 +100,6 @@ Section : Media Queries
 
   .col-xl-2 {
     width: 20%;
-  }
-
-  .C3_day_row {
-    width: 50%;
   }
 
   .sidebar_item_list {
@@ -422,7 +402,6 @@ input#search_data.active {
   font-size: 1.5em;
   margin-bottom: .2em;
   text-align: center;
-  color: #fff;
   min-width: 60%;
 }
 
@@ -532,197 +511,36 @@ input#search_data.active {
   color: #fff;
 }
 
+.c3_sidebar_item {
+  padding: 1em 1em 1em 2em;
+  font-size: 1.2em;
+}
+
+.c3_sidebar_item > p {
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+.c3_sidebar_item:hover {
+  background-color: #d2d3d5;
+  font-weight: 600;
+}
+
 .sidebar_items_active {
   background-color: #cbcbcb;
   border-left: solid 0.7em #82888f;
   font-weight: 600;
 }
 
-.c3_overview_link {
+p.c3_overview_link {
   color: #0193d7;
-  width: 60%;
-  visibility: hidden;
+  text-decoration: underline;
+  display: none;
   cursor: pointer;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
   font-weight: 600;
 }
 
-.c3_overview_link.active {
-  visibility: visible;
-}
-
-.c3_overview_link > img {
-  position: absolute;
-  margin-left: auto;
-  margin-top: 2%;
-  width: 10%;
-}
-
-.c3_overview_link > p {
-  margin-left: 25%;
-}
-
-ul.c3_sidebar_list {
-  list-style-type: none;
-  padding: 0;
-  margin-right: -15px;
-  margin-left: -15px;
-}
-
-ul.c3_sidebar_list li {
-  position: relative;
-}
-
-ul.c3_sidebar_list li > .box {
-  padding: 1em 1em 1em 2em;
-  font-size: 1.2em;
-}
-
-ul.c3_sidebar_list li > .box > p {
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
+p.c3_overview_link.active {
   display: block;
-}
-
-ul.c3_sidebar_list li:hover > .box {
-  border-left: solid 0.7em #82888f;
-  background-color: #d2d3d5;
-  font-weight: 600;
-}
-
-ul.c3_sidebar_list li > ul {
-  position: absolute;
-  display: none;
-  left: 100%;
-  width: 70%;
-  padding: 0;
-  margin: -15px 0 0 -15px;
-  top: 0;
-  z-index: 1;
-  border: none;
-  list-style-type: none;
-}
-
-ul.c3_sidebar_list li > ul > .info_box {
-  border-radius: 0;
-}
-
-ul.active li:hover ul {
-  display: block;
-}
-
-.C3_day_row {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: distribute;
-  justify-content: space-around;
-  padding: 0 0em 1em 0em;
-  margin: 0 auto;
-}
-
-.C3_day_row > .low {
-  color: #33a86a;
-}
-
-.C3_day_row > .low.active {
-  color: #009245;
-}
-
-.C3_day_row > .normal {
-  color: #e89d42;
-}
-
-.C3_day_row > .normal.active {
-  color: #e28413;
-}
-
-.C3_day_row > .urgent {
-  color: #ee685d;
-}
-
-.C3_day_row > .urgent.active {
-  color: #ea4335;
-}
-
-.C3_day_box {
-  background-color: #e3e3e3;
-  border-radius: .4em;
-  height: 4em;
-  width: 4.4em;
-  overflow: hidden;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0 0 5px #898989;
-}
-
-.C3_day_box > p {
-  margin: 0;
-}
-
-.C3_day_box > h4 {
-  margin: 11px 0 0 0;
-  font-size: 1.5em;
-}
-
-.C3_day_box.active {
-  background-color: #d2d3d5;
-  box-shadow: none;
-}
-
-.empty {
-  height: 4em;
-  width: 4em;
-  box-shadow: none;
-  cursor: auto;
-  margin: .3em;
-  padding: .5em;
-  background-color: transparent;
-}
-
-.control_header {
-  padding: 1em 2em 0 2em;
-  font-size: 1.3em;
-  font-weight: 600px;
-  color: #333;
-}
-
-.control_section {
-  background-color: #ddd;
-  display: none;
-  margin: 0 -15px 0 -15px;
-}
-
-.control_section.active {
-  display: block;
-}
-
-.control_label {
-  padding: 0 2em 0 2em;
-  -webkit-flex-flow: row;
-  -ms-flex-flow: row;
-  flex-flow: row;
-  font-size: 1em;
-}
-
-p.no_of_patients {
-  margin-left: auto;
-}
-
-.show_bar {
-  background-color: #4d4d4d;
-  margin: 4px 5px 5px 5px;
-  height: 7px;
-  border-radius: 3.5px;
-}
-
-.no_show_bar {
-  background-color: #ea4335;
-  margin: 4px 5px 5px 5px;
-  height: 7px;
-  border-radius: 3.5px;
 }
