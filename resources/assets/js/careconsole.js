@@ -17,7 +17,6 @@ $(document).ready(function () {
             $('.search_result').removeClass('active');
         }
     });
-
     $('.C3_day_box').on('click', function () {
         if($(this).hasClass('active')){
             $(this).removeClass('active');

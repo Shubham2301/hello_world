@@ -23,6 +23,6 @@ class Network extends Model
     public function careconsoleStages()
     {
         return $this->hasMany('myocuhub\Models\NetworkStage')
-                    ->leftJoin('careconsole_stages', 'network_stage.stage_id', '=', 'careconsole_stages.id');
+                    ->leftJoin('careconsole_stages', 'network_stage.stage_id', '=', 'careconsole_stages.id')->orderBy('stage_order');
     }
 }
