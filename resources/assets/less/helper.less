@@ -85,13 +85,13 @@ a:focus {
     font-weight: bold;
 }
 
-.gradient (@origin, @start, @mid, @stop) {
+.gradient (@origin, @start, @stop) {
     background-color: @start;
-    background-image: -webkit-linear-gradient(@origin, @start, @mid, @stop);
-    background-image: -moz-linear-gradient(@origin, @start, @mid, @stop);
-    background-image: -o-linear-gradient(@origin, @start, @mid, @stop);
-    background-image: -ms-linear-gradient(@origin, @start, @mid, @stop);
-    background-image: linear-gradient(@origin, @start, @mid, @stop);
+    background-image: -webkit-linear-gradient(@origin, @start 10%, @stop 90%);
+    background-image: -moz-linear-gradient(@origin, @start 10%, @stop 90%);
+    background-image: -o-linear-gradient(@origin, @start 10%, @stop 90%);
+    background-image: -ms-linear-gradient(@origin, @start 10%, @stop 90%);
+    background-image: linear-gradient(@origin, @start 10%, @stop 90%);
 }
 
 .reflect (@length: 50%, @opacity: 0.2) {
