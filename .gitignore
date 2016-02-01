@@ -1,5 +1,6 @@
-/public/js/*.js.map
-/public/build/js/*.js.map
+/public/js/
+/public/build/
+/public/css/
 /vendor
 /node_modules
 Homestead.yaml
