@@ -187,7 +187,6 @@ p.error {
     &.active {
         display: block;
     }
-
 }
 
 .search_input {
@@ -277,21 +276,7 @@ p.error {
     border: none;
 }
 
-.sidebar-item-list {
-    list-style-type: none;
-    padding: 0;
-    width: 80%;
-    margin: 0 auto;
-    &>li {
-        margin: 0.5em 0;
-    }
-}
 
-.sidebar-item {
-    .sidebar-item-left {
-        text-align: right;
-    }
-}
 
 
 /*
@@ -300,6 +285,20 @@ Section : Sidebar
 ---------------------------
 */
 
+.sidebar_item_list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    &>li {
+        margin: 0.5em 0;
+    }
+}
+
+.sidebar_item {
+    .sidebar-item-left {
+        text-align: right;
+    }
+}
 .section-header {
     text-align: center;
     font-size: 1.5em;
@@ -323,17 +322,23 @@ Section : Sidebar
 
 .sidebar_menu_item {
     display: block;
-    border: 1px solid #fff;
     border-radius: 5px;
     padding: 0;
+    box-shadow: 0 1px 1px #898989;
     overflow-x: hidden;
-    .gradient(0, #c4c5c7, #fff, #ecedee);
+    .gradient(0, #e0e3e6, #f0f2f5);
+    &:active{
+        background-color: #d2d3d5;
+        .gradient(0, #d2d3d5, #d2d3d5);
+        box-shadow: 0 1px 1px #d2d3d5;
+    }
     &>a {
         &>.menu_item_icon {
             display: inline-block;
-            width: 20%;
-            height: 70%;
-            padding: 8px 8px;
+            display: inline-block;
+            width: 2.7em;
+            margin: 0 .2em;
+            padding: .5em;
             &>img {
                 width: 100%;
                 height: 20px;
@@ -341,15 +346,26 @@ Section : Sidebar
         }
         &>.menu_item_label {
             display: inline-block;
-            width: 80%;
-            padding: 0.5em 0.5em;
-            border-left: solid 2px #c4c5c7;
-            box-shadow: -5px 0px 5px -1px #fff;
+            padding: 0.3em 0.5em;
+            border-left: solid 1px #b3b3b3;
+            margin: 3px 0;
             color: black;
             font-size: 1em;
             font-weight: 600;
         }
     }
+}
+
+.profile_img_sidebar {
+    width: 8em;
+    border-radius: 4em;
+    margin: 1em 0;
+    box-shadow: 0px 0px 5px #82888f;
+}
+.profile_img_sidebar_mini{
+    width: 3em;
+    border-radius: 4em;
+    box-shadow: 0px 0px 3px #82888f;
 }
 
 .center {
@@ -363,7 +379,7 @@ Section : Sidebar
 ul.dropdown-menu {
     background: @light-gray;
     background-color: #ebeced;
-    box-shadow: 0 0 3px #000;
+    box-shadow: 0px 0px 3px #82888f;
     border-radius: 5em;
     text-align: center;
     width: 3em;
@@ -376,7 +392,7 @@ ul.dropdown-menu {
     &:hover {
         background-color: transparent;
     }
-    &>img{
+    &>img {
         width: 70%;
     }
 }

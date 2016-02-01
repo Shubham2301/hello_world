@@ -1,0 +1,120 @@
+/*
+---------------------------
+Section : Imports
+---------------------------
+*/
+
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
+
+.search_input_box {
+    background-color: #ffffff;
+    font-size: 1em;
+    &>input,
+    &>input:focus {
+        width: 100%;
+        border: none;
+        padding: 6px 12px;
+        color: #4d4d4d;
+        outline: none;
+    }
+    &>span {
+        color: #0071bc;
+        position: absolute;
+        right: 0;
+    }
+}
+.glyp {
+    padding-top: 8px;
+    padding-right: 5px;
+    cursor: pointer;
+}
+.import-btn {
+    color: black;
+    background-color: #cde8f4;
+    border-color: #cde8f4;
+    float: right;
+}
+.btn {
+    padding: 6px 22px;
+}
+.search_input_box {
+    background-color: #ffffff;
+    font-size: 1em;
+    padding-left: 0px;
+}
+p.search_result {
+    margin: 1em;
+}
+.search_header {
+    margin: 1em;
+    border-bottom: 1px solid #fff;
+}
+.search_name,
+.search_edit {
+    display: inline-flex;
+}
+.search_edit{
+    cursor: pointer;
+}
+p.pagination {
+    color: black;
+    display: inline-block;
+    margin: 0px;
+}
+.search_item {
+    margin: 1em;
+    border-bottom: 1px solid #fff;
+    color: #f2f2f2;
+    &:hover {
+        color: #fff;
+    }
+}
+.p_right, .p_left{
+    cursor: pointer;
+}
+
+/*
+--------------------------
+Style for create network
+--------------------------
+*/
+.add_header{
+    display: flex;
+}
+.back-btn{
+    color: #f2f2f2;
+    background-color: #808080;
+    padding: 6px 22px;
+    &:hover{
+        color: #f2f2f2;
+    }
+}
+p.add_title{
+    font-size: 1.5em;
+    margin-bottom: 0;
+    margin-left: 1em;
+    margin-top: auto;
+}
+.add_network_input{
+    display: block;
+    color: #fff;
+    background-color: @font-color-4;
+    border: 2px solid @font-color-4;
+    margin: 1em;
+    border-radius: .2em;
+    padding: .5em;
+    width: 60%;
+    &::placeholder{
+        color: @background-color-5;
+    }
+    &:focus{
+        border: 2px solid #fff;
+    }
+}
+.section-break{
+    border-top: 1px solid @background-color-6;
+    margin: 0 2em 0 2em;
+}

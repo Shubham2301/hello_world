@@ -1,4 +1,13 @@
-@import "import.less";
+/*
+---------------------------
+Section : Imports
+---------------------------
+*/
+
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
 
 .patient_list {
     overflow-y: scroll;
@@ -30,6 +39,18 @@
     &.active {
         display: block;
     }
+}
+
+.import-btn {
+  background: transparent;
+  color: #cde8f4;
+  border: 1px solid;
+}
+
+.import-btn:hover {
+  color: black;
+  background-color: #cde8f4;
+  border-color: #cde8f4;
 }
 
 #search_patient_button {
@@ -64,31 +85,28 @@
       margin: 1px;
     }
 }
-
 .add_search_option {
     padding-right: 25px;
-
-
-
 }
-
 #add_search_option {
     position: inherit;
     cursor: pointer;
-
 }
-
-
-
 .lastseen_content {
     visibility: hidden;
      &.active {
          visibility: visible;
     }
-
-
 }
-
+.action-btns{
+    position: absolute;
+    display: none;
+    right: 0;
+    top: 0;
+    &.active{
+        display: block;
+    }
+}
 .lastseenby_show {
     cursor: pointer;
 }
@@ -112,5 +130,64 @@
      visibility: hidden;
      &.active {
         visibility: visible;
+    }
+}
+ /*
+----------------------
+Patient admin section
+-----------------------
+*/
+.back{
+    color: #f2f2f2;
+    background-color: #808080;
+    padding: 6px 22px;
+    &:hover{
+        color: #f2f2f2;
+    }
+}
+.add_header{
+    display: flex;
+}
+p.add_title{
+    font-size: 1.5em;
+    margin-bottom: 0;
+    margin-left: 1em;
+    margin-top: auto;
+}
+.add_patient_input{
+    display: block;
+    color: #fff;
+    background-color: @font-color-4;
+    border: 2px solid @font-color-4;
+    margin: 1em;
+    border-radius: .2em;
+    padding: .5em;
+    width: 60%;
+    &::placeholder{
+        color: @background-color-5;
+    }
+    &:focus{
+        border: 2px solid #fff;
+    }
+}
+.section-break{
+    border-top: 1px solid @background-color-6;
+    margin: 0 2em 0 2em;
+}
+p.address{
+    margin: 0 1em;
+    font-size: 1.3em;
+    color: #fff;
+}
+.patient_action {
+    display: none;
+    &.active {
+        display: block;
+    }
+}
+.add-btn{
+    float: left;
+    &:hover{
+        float: left;
     }
 }

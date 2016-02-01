@@ -5,9 +5,9 @@ namespace myocuhub\Http\Controllers\Practice;
 use Illuminate\Http\Request;
 use myocuhub\Models\Practice;
 use myocuhub\User;
-
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Services\FourPatientCare\FourPatientCare;
-
+use Event;
 use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
 
@@ -47,9 +47,15 @@ class ProviderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+
+        $action = 'New provider created';
+        $description = 'users.id = 5';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
     }
 
     /**
@@ -148,12 +154,12 @@ class ProviderController extends Controller
         $providerID = $request->input('provider_id');
         $locationID = $request->input('location_id');
 
-        $providerInfo['AcctKey'] = $providerID;
-        $providerInfo['LocKey'] = $locationID;
+        $providerInfo['AcctKey'] = 9290;
+        $providerInfo['LocKey'] = 4517;
 
         $apptTypes = $this->fourPatientCare->getApptTypes($providerInfo);
 
-        return $apptTypes;
+        return json_encode($apptTypes);
     }
 
     public function getOpenSlots(Request $request){
@@ -164,14 +170,14 @@ class ProviderController extends Controller
         $AppointmentType = $request->input('appointment_type');
         $AppointmentDate = $request->input('appointment_date');
 
-        $providerInfo['AcctKey'] = 991234567;
-        $providerInfo['LocKey'] = 3839;
+        $providerInfo['AcctKey'] = 9290;
+        $providerInfo['LocKey'] = 4517;
         $providerInfo['ApptTypeKey'] = $AppointmentType;
         $providerInfo['ApptDate'] = $AppointmentDate;
 
         $openSlots = $this->fourPatientCare->getOpenApptSlots($providerInfo);
 
-        return $openSlots;
+        return json_encode($openSlots);
     }
     public function administration(Request $request)
     {

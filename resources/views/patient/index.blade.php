@@ -37,7 +37,10 @@
             @if(array_key_exists('referraltype_id', $data))
             <div class="row content-row-margin">
                 <div class="col-xs-12 section-header">
-                    <span class="">Schedule an appointment</span> <span><button type="button" class="btn import-btn open_import" data-toggle="modal" data-target="#importModal" id="import_patients">Import</button></span>
+                    <span class="">Schedule an appointment</span>
+                    <span class="action-btns active">
+                    <button type="button" class="btn import-btn add_patient" id="add_patient_btn">Add New</button>
+                    <button type="button" class="btn import-btn open_import" data-toggle="modal" data-target="#importModal" id="import_patients">Import</button></span>
                     <p class="button_type_3 select_provider_button" id="select_provider_button" data-id="0" align="right">Select Provider<span class="glyphicon glyphicon-chevron-right"></span></p>
                 </div>
             </div>
