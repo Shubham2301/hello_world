@@ -17,11 +17,11 @@ $(document).ready(function () {
             $('.search_result').removeClass('active');
         }
     });
+
     $('.C3_day_box').on('click', function () {
-        if($(this).hasClass('active')){
+        if ($(this).hasClass('active')) {
             $(this).removeClass('active');
-        }
-        else{
+        } else {
             $('.C3_day_box').removeClass('active');
             $(this).addClass('active');
         }
@@ -49,12 +49,13 @@ $(document).ready(function () {
         $('.before_drilldown').hide();
         $('.drilldown').addClass('active');
         $('.stage').removeClass('sidebar_items_active');
-        var stage_id = $($(this).closest('.info_box')).attr('id');
+        var stage_id = $($(this).closest('.info_box')).attr('data-id');
         var stage_name = $($(this).closest('.info_box')).attr('data-name');
         var kpi_id = $(this).attr('id');
         var kpi_name = $(this).attr('data-name');
+        var kpi_indicator = $(this).attr('data-indicator');
         clearHTML();
-        showKPIData(stage_id, kpi_id, stage_name, kpi_name);
+        showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator);
     });
     $('.stage').on('click', function () {
         $('.c3_overview_link').addClass('active');
@@ -67,10 +68,10 @@ $(document).ready(function () {
         var stage_id = '';
         var stage_name = '';
         if ($(this).hasClass('bottom')) {
-            stage_id = $($(this).closest('.info_box')).attr('id');
+            stage_id = $($(this).closest('.info_box')).attr('data-id');
             stage_name = $($(this).closest('.info_box')).attr('data-name');
         } else {
-            stage_id = $(this).attr('id');
+            stage_id = $(this).attr('data-id');
             stage_name = $(this).attr('data-name');
         }
         clearHTML();
@@ -84,28 +85,57 @@ function searchc3() {
     }
 }
 
-function showKPIData(stage_id, kpi_id, stage_name, kpi_name) {
-    var content = '';
-    $('#' + stage_id).addClass('sidebar_items_active');
+function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator) {
+    $('#sidebar_' + stage_id).addClass('sidebar_items_active');
     $('.subsection-header').addClass('active');
     $('.drilldown>.section-header').html(stage_name);
     $('.drilldown>.subsection-header>p').html(kpi_name);
-    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Allen Rovenstine</p></div><div class="col-xs-2"><p>888-227-3365</p></div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">Atlanta Eye Associates</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu" aria-labelledby="dropdownMenu2" style="width: 150%;border-radius: 3px;margin-left: -135%;text-align: right;"><li><a href="#">Schedule Appointment</a></li><li><a href="#">Archive Patient</a></li></ul></div></div></div>';
-    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Allen Rovenstine</p></div><div class="col-xs-2"><p>888-227-3365</p></div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">Atlanta Eye Associates</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="width: 150%;border-radius: 3px;margin-left: -135%;text-align: right;"><li><a href="#">Schedule Appointment</a></li><li><a href="#">Archive Patient</a></li></ul></div></div></div>';
-    $('.drilldown_content').html(content);
+    $('.drilldown_kpi_indicator').css('background-color', kpi_indicator);
+
+    $patients = getPatientData(stage_id, kpi_id);
 }
 
 function showStageData(stage_id, stage_name) {
-    var content = '';
-    $('#' + stage_id).addClass('sidebar_items_active');
+    $('#sidebar_' + stage_id).addClass('sidebar_items_active');
     $('.drilldown>.section-header').html(stage_name);
-    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Allen Rovenstine</p></div><div class="col-xs-2"><p>888-227-3365</p></div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">Atlanta Eye Associates</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu" aria-labelledby="dropdownMenu2" style="width: 150%;border-radius: 3px;margin-left: -135%;text-align: right;"><li><a href="#">Schedule Appointment</a></li><li><a href="#">Archive Patient</a></li></ul></div></div></div>';
-    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>Allen Rovenstine</p></div><div class="col-xs-2"><p>888-227-3365</p></div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">12:00 PM<br>December 08, 2015</div><div class="col-xs-2">Atlanta Eye Associates</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="width: 150%;border-radius: 3px;margin-left: -135%;text-align: right;"><li><a href="#">Schedule Appointment</a></li><li><a href="#">Archive Patient</a></li></ul></div></div></div>';
-    $('.drilldown_content').html(content);
+
+    $patients = getPatientData(stage_id);
 }
 
 function clearHTML() {
     $('.drilldown>.section-header').html('');
     $('.drilldown>.subsection-header>p').html('');
     $('.drilldown_content').html('');
+}
+
+function getPatientData(stageID, kpiName = '') {
+
+    var formData = {
+        'stage': stageID,
+        'kpi': kpiName
+    }
+
+    $.ajax({
+        url: '/careconsole/drilldown',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function success(e) {
+            var patients = $.parseJSON(e);
+            var content = '';
+            if (patients.length > 0) {
+                patients.forEach(function (patient) {
+                    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>' + patient.name + '</p></div><div class="col-xs-2"><p>' + patient.phone + '</p></div><div class="col-xs-2">' + patient.request_recieved + '</div><div class="col-xs-2">' + patient.appointment_date + '</div><div class="col-xs-2">' + patient.scheduled_to + '</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu' + patient.id + '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu" aria-labelledby="dropdownMenu' + patient.id + '" style="width: 150%;border-radius: 3px;margin-left: -135%;text-align: right;"><li><a href="#">Schedule Appointment</a></li><li><a href="#">Archive Patient</a></li></ul></div></div></div>';
+                });
+
+            }
+            $('.drilldown_content').html(content);
+        },
+        error: function error() {
+            alert('Error searching');
+        },
+        cache: false,
+        processData: false
+    });
 }

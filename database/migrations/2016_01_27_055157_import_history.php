@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class ImportHistory extends Migration
 {
@@ -15,19 +15,12 @@ class ImportHistory extends Migration
         Schema::create('import_history', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('network_id')->unsigned();
-            $table->integer('practice_id')->unsigned();
-            $table->integer('location_id')->unsigned();
-            $table->string('filename');
             $table->timestamps();
         });
 
         Schema::table('import_history', function (Blueprint $table) {
-            $table->foreign('practice_id')->references('id')->on('practices')
-                ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('location_id')->references('id')->on('practice_location')
-                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('network_id')->references('id')->on('networks')
-                ->onUpdate('cascade')->onDelete('cascade');
+            ->onUpdate('cascade')->onDelete('cascade');
         });
 
         Schema::table('careconsole', function (Blueprint $table) {
@@ -36,7 +29,7 @@ class ImportHistory extends Migration
 
         Schema::table('careconsole', function (Blueprint $table) {
             $table->foreign('import_id')->references('id')->on('import_history')
-                ->onUpdate('cascade')->onDelete('cascade');
+            ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

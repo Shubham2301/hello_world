@@ -2,185 +2,176 @@
 
 namespace myocuhub\Http\Controllers\Practice;
 
-use Illuminate\Http\Request;
-use myocuhub\Models\Practice;
-use myocuhub\User;
-use myocuhub\Events\MakeAuditEntry;
-use myocuhub\Services\FourPatientCare\FourPatientCare;
 use Event;
-use myocuhub\Http\Requests;
+use Illuminate\Http\Request;
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Models\Practice;
+use myocuhub\Services\FourPatientCare\FourPatientCare;
+use myocuhub\User;
 
-class ProviderController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    private $fourPatientCare;
+class ProviderController extends Controller {
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	private $fourPatientCare;
 
-    function __construct(FourPatientCare $fourPatientCare)
-    {
-        $this->fourPatientCare = $fourPatientCare;
-    }
+	function __construct(FourPatientCare $fourPatientCare) {
+		$this->fourPatientCare = $fourPatientCare;
+	}
 
-    public function index(Request $request)
-    {
-        $data = array();
+	public function index(Request $request) {
+		$data = array();
 
-        if ($request->has('referraltype_id')) {
-            $data['referraltype_id'] = $request->input('referraltype_id');
-        }
-        if ($request->has('action')) {
-            $data['action'] = $request->input('action');
-        }
-        if ($request->has('patient_id')) {
-            $data['patient_id'] = $request->input('patient_id');
-        }
+		if ($request->has('referraltype_id')) {
+			$data['referraltype_id'] = $request->input('referraltype_id');
+		}
+		if ($request->has('action')) {
+			$data['action'] = $request->input('action');
+		}
+		if ($request->has('patient_id')) {
+			$data['patient_id'] = $request->input('patient_id');
+		}
 
-        return view('provider.index')->with('data', $data);
-    }
+		return view('provider.index')->with('data', $data);
+	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create(Request $request) {
 
-        $action = 'New provider created';
-        $description = 'users.id = 5';
-        $filename = basename(__FILE__);
-        $ip = $request->getClientIp();
+		$action = 'New provider created';
+		$description = 'users.id = 5';
+		$filename = basename(__FILE__);
+		$ip = $request->getClientIp();
 
-        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-    }
+		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(Request $request) {
+		//
+	}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request)
-    {
-        $data = array();
-        $provider_id= $request->input('provider_id');
-        $practice_id =$request->input('practice_id');
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show(Request $request) {
+		$data = array();
+		$provider_id = $request->input('provider_id');
+		$practice_id = $request->input('practice_id');
 
-        $provider = User::find($provider_id);
-        $practice_name = Practice::find($practice_id)->name;
-        $practice_locations =Practice::find($practice_id)->locations;
+		$provider = User::find($provider_id);
+		$practice_name = Practice::find($practice_id)->name;
+		$practice_locations = Practice::find($practice_id)->locations;
 
-        $data['practice_name'] = $practice_name;
-        $data['practice_id'] = $practice_id;
-        $data['provider'] = $provider;
-        $data['locations'] = $practice_locations;
-        return json_encode($data);
-    }
+		$data['practice_name'] = $practice_name;
+		$data['practice_id'] = $practice_id;
+		$data['provider'] = $provider;
+		$data['locations'] = $practice_locations;
+		return json_encode($data);
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit($id) {
+		//
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, $id) {
+		//
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy($id) {
+		//
+	}
 
-    public function search(Request $request)
-    {
+	public function search(Request $request) {
 
-        $filters = json_decode($request->input('data'),true);
-        //search quar
-        $providers = User::practiceUser($filters);
-        $data = [];
-        $i = 0;
+		$filters = json_decode($request->input('data'), true);
+		//search quar
+		$providers = User::practiceUser($filters);
+		$data = [];
+		$i = 0;
 
-        foreach($providers as $provider){
-            if(!$provider->id || !$provider->user_id) //TODO : check for providers based on entity_type instead of manual check in controller
-                continue;
-            $data[$i]['provider_id'] = $provider->user_id;
-            $data[$i]['practice_id'] = $provider->id;
-            $data[$i]['provider_name'] =  $provider->firstname.' '.$provider->lastname;
-            $data[$i]['practice_name'] = $provider->name;
-            $i++;
-        }
+		foreach ($providers as $provider) {
+			if (!$provider->id || !$provider->user_id) //TODO : check for providers based on entity_type instead of manual check in controller
+			{
+				continue;
+			}
 
-        return json_encode($data);
-    }
+			$data[$i]['provider_id'] = $provider->user_id;
+			$data[$i]['practice_id'] = $provider->id;
+			$data[$i]['provider_name'] = $provider->firstname . ' ' . $provider->lastname;
+			$data[$i]['practice_name'] = $provider->name;
+			$i++;
+		}
 
-    public function getAppointmentTypes(Request $request){
-        $providerInfo = array();
+		return json_encode($data);
+	}
 
-        $providerID = $request->input('provider_id');
-        $locationID = $request->input('location_id');
+	public function getAppointmentTypes(Request $request) {
+		$providerInfo = array();
 
-        $providerInfo['AcctKey'] = 9290;
-        $providerInfo['LocKey'] = 4517;
+		$providerID = $request->input('provider_id');
+		$locationID = $request->input('location_id');
 
-        $apptTypes = $this->fourPatientCare->getApptTypes($providerInfo);
+		$providerInfo['AcctKey'] = 8042;
+		$providerInfo['LocKey'] = 3839;
 
-        return json_encode($apptTypes);
-    }
+		$apptTypes = $this->fourPatientCare->getApptTypes($providerInfo);
 
-    public function getOpenSlots(Request $request){
-        $providerInfo = array();
+		return json_encode($apptTypes);
+	}
 
-        $providerID = $request->input('provider_id');
-        $locationID = $request->input('location_id');
-        $AppointmentType = $request->input('appointment_type');
-        $AppointmentDate = $request->input('appointment_date');
+	public function getOpenSlots(Request $request) {
+		$providerInfo = array();
 
-        $providerInfo['AcctKey'] = 9290;
-        $providerInfo['LocKey'] = 4517;
-        $providerInfo['ApptTypeKey'] = $AppointmentType;
-        $providerInfo['ApptDate'] = $AppointmentDate;
+		$providerID = $request->input('provider_id');
+		$locationID = $request->input('location_id');
+		$AppointmentType = $request->input('appointment_type');
+		$AppointmentDate = $request->input('appointment_date');
 
-        $openSlots = $this->fourPatientCare->getOpenApptSlots($providerInfo);
+		$providerInfo['AcctKey'] = 8042;
+		$providerInfo['LocKey'] = 3839;
+		$providerInfo['ApptTypeKey'] = $AppointmentType;
+		$providerInfo['ApptDate'] = $AppointmentDate;
 
-        return json_encode($openSlots);
-    }
-    public function administration(Request $request)
-    {
-        return view('provider.admin');
-    }
+		$openSlots = $this->fourPatientCare->getOpenApptSlots($providerInfo);
+
+		return json_encode($openSlots);
+	}
+	public function administration(Request $request) {
+		return view('provider.admin');
+	}
 }
