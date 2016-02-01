@@ -619,13 +619,13 @@ Section : Sidebar
   padding: 0;
   box-shadow: 0 1px 1px #898989;
   overflow-x: hidden;
-  background-color: #e0e3e6;
-  background-image: linear-gradient(0, #e0e3e6 10%, #f0f2f5 90%);
+  background-color: #f0f2f5;
+  background-image: linear-gradient(#f0f2f5 10%, #e0e3e6 90%);
 }
 
 .sidebar_menu_item:active {
   background-color: #d2d3d5;
-  background-image: linear-gradient(0, #d2d3d5 10%, #d2d3d5 90%);
+  background-image: linear-gradient(#d2d3d5 10%, #d2d3d5 90%);
   box-shadow: 0 1px 1px #d2d3d5;
 }
 
