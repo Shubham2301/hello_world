@@ -10,8 +10,6 @@ $(document).ready(function () {
 
     $('.view_selected_patient').on('click', showPatientInfo);
 
-    $('.change_selected_patient').on('click', changePatientInfo);
-
     $('#change_patient_button').on('click', function () {
         $('#form_select_provider').attr('action', "/patients");
         $('#form_provider_id').prop('disabled', true);
@@ -137,17 +135,6 @@ $(document).ready(function () {
     });
 });
 
-function changePatientInfo() {
-    $('.change_selected_patient').text("");
-    $('.change_selected_patient').removeClass('view');
-    $('.change_selected_patient').addClass('remove');
-    $('.button_type_11').addClass('active');
-    if ($('.view_selected_patient').hasClass('remove')) {
-        $('.view_selected_patient').addClass('view');
-    }
-    showPatientInfo();
-}
-
 function showPatientInfo() {
     if ($('.view_selected_patient').hasClass('view')) {
         $('.patient_info').addClass('active');
@@ -159,10 +146,6 @@ function showPatientInfo() {
         $('.view_selected_patient').text("View");
         $('.view_selected_patient').removeClass('remove');
         $('.view_selected_patient').addClass('view');
-        $('.change_selected_patient').text("Change");
-        $('.change_selected_patient').removeClass('remove');
-        $('.change_selected_patient').addClass('view');
-        $('.button_type_11').removeClass('active');
     }
 }
 

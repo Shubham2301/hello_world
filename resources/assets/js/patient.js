@@ -56,6 +56,7 @@ $(document).ready(function () {
     $('#change_patient_button').on('click', function () {
         $('.patient_list').addClass('active');
         $('.patient_info').removeClass('active');
+        $('.action-btns').addClass('active');
         $('#select_provider_button').removeClass('active');
         $('#select_provider_button').attr('data-id', 0);
         $('#import_patients').show();
@@ -136,6 +137,7 @@ function showPatientInfo(data) {
     $('#patient_ssn').text(data.lastfourssn);
     $('#select_provider_button').attr('data-id', data.id);
     $('#select_provider_button').addClass('active');
+    $('.action-btns').removeClass('active');
     $('#import_patients').hide();
 
 
@@ -165,6 +167,7 @@ function getPatientInfo(formData) {
 function getPatients(formData) {
     $('.patient_list').addClass('active');
     $('.patient_info').removeClass('active');
+    $('.action-btns').addClass('active');
     $('#select_provider_button').removeClass('active');
     $('#select_provider_button').attr('data-id', 0);
     $('#import_patients').show();

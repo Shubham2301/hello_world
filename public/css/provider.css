@@ -24,6 +24,10 @@ Section : Media Queries
   .logo-img {
     padding: 0 0 1.5em 1.5em;
   }
+
+  .sidebar_item_list {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width: 469px) and (max-width: 767px) {
@@ -39,11 +43,23 @@ Section : Media Queries
   .bottom-margin {
     margin-bottom: 3em;
   }
+
+  .sidebar_item_list {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 992px) {
   body {
     font-size: 14px;
+  }
+
+  .C3_day_row {
+    width: 100%;
+  }
+
+  .sidebar_item_list {
+    width: 90%;
   }
 }
 
@@ -51,11 +67,27 @@ Section : Media Queries
   body {
     font-size: 14px;
   }
+
+  .C3_day_row {
+    width: 100%;
+  }
+
+  .sidebar_item_list {
+    width: 80%;
+  }
 }
 
 @media only screen and (min-width: 1201px) and (max-width: 1800px) {
   body {
     font-size: 15px;
+  }
+
+  .C3_day_row {
+    width: 80%;
+  }
+
+  .sidebar_item_list {
+    width: 70%;
   }
 }
 
@@ -67,6 +99,14 @@ Section : Media Queries
   body {
     font-size: 16px;
   }
+
+  .C3_day_row {
+    width: 60%;
+  }
+
+  .sidebar_item_list {
+    width: 60%;
+  }
 }
 
 @media only screen and (min-width: 2201px) {
@@ -76,6 +116,14 @@ Section : Media Queries
 
   .col-xl-2 {
     width: 20%;
+  }
+
+  .C3_day_row {
+    width: 50%;
+  }
+
+  .sidebar_item_list {
+    width: 50%;
   }
 }
 
@@ -349,28 +397,6 @@ a:focus.sidebar-item {
 .provider_near_patient_list.active,
 .previous_provider_patient_list.active {
   display: block;
-}
-
-.selected_patient {
-  background-color: #faf5b4;
-  color: black;
-  padding: 5px;
-}
-
-.selected_patient p {
-  color: black;
-  display: inline-block;
-  margin: 0 0 1px;
-}
-
-.selected_patient p.view_selected_patient,
-.selected_patient p.change_selected_patient {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.selected_patient.col-xs-2 {
-  text-align: right;
 }
 
 .patient_info {
