@@ -7,7 +7,7 @@
     <div><button type="button" id="back_to_select_patient_btn" class="btn back">Back</button></div>
     <div><p class="add_title">Add New Patient</p></div>
 </div>
-{!! Form::open(array('url' => '/administration/patients/add', 'method' => 'POST', 'id' => 'form_add_patients')) !!}
+{!! Form::open(array('url' => '/administration/patients/create', 'method' => 'POST', 'id' => 'form_add_patients')) !!}
 <div class="row content-row-margin">
     <div class="col-sm-6 col-xs-12">
         {!! Form::text('FirstName', old('patient_fname'), array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'patient_fname', 'placeholder' => 'First Name', 'id' => 'first_name')) !!}
@@ -37,7 +37,6 @@
     </div>
 </div>
      <div class="row content-row-margin">
-<!--         <center><button class="btn btn-default btn-primary" id="save_patient_info">Save</button></center>-->
      {!! Form::submit('Add Patient', array('class' => 'btn btn-default btn-primary')) !!}
 </div>
 

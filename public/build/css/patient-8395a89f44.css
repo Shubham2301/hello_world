@@ -24,6 +24,10 @@ Section : Media Queries
   .logo-img {
     padding: 0 0 1.5em 1.5em;
   }
+
+  .sidebar_item_list {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width: 469px) and (max-width: 767px) {
@@ -39,6 +43,10 @@ Section : Media Queries
   .bottom-margin {
     margin-bottom: 3em;
   }
+
+  .sidebar_item_list {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 992px) {
@@ -48,6 +56,10 @@ Section : Media Queries
 
   .C3_day_row {
     width: 100%;
+  }
+
+  .sidebar_item_list {
+    width: 90%;
   }
 }
 
@@ -59,6 +71,10 @@ Section : Media Queries
   .C3_day_row {
     width: 100%;
   }
+
+  .sidebar_item_list {
+    width: 80%;
+  }
 }
 
 @media only screen and (min-width: 1201px) and (max-width: 1800px) {
@@ -68,6 +84,10 @@ Section : Media Queries
 
   .C3_day_row {
     width: 80%;
+  }
+
+  .sidebar_item_list {
+    width: 70%;
   }
 }
 
@@ -83,6 +103,10 @@ Section : Media Queries
   .C3_day_row {
     width: 60%;
   }
+
+  .sidebar_item_list {
+    width: 60%;
+  }
 }
 
 @media only screen and (min-width: 2201px) {
@@ -95,6 +119,10 @@ Section : Media Queries
   }
 
   .C3_day_row {
+    width: 50%;
+  }
+
+  .sidebar_item_list {
     width: 50%;
   }
 }
@@ -209,32 +237,31 @@ a:focus.sidebar-item {
   border-color: #0086fb;
 }
 
-.practice_list {
+.patient_list {
   overflow-y: scroll;
   display: none;
 }
 
-.practice_list.active {
+.patient_list.active {
   display: block;
-  overflow-y: hidden;
 }
 
-.practice_list_item {
+.patient_list_item {
   border-top: 1px solid;
   opacity: 0.9;
   cursor: pointer;
 }
 
-.practice_list_item:hover {
+.patient_list_item:hover {
   opacity: 1;
 }
 
-.practice_info {
+.patient_info {
   display: none;
   margin-top: 2em;
 }
 
-.practice_info > .practice_table_header {
+.patient_info > .patient_table_header {
   border-bottom: 2px solid #fff;
   border-top: 1px solid #fff;
   color: #000;
@@ -242,17 +269,32 @@ a:focus.sidebar-item {
   margin: 1em 0;
 }
 
-.practice_info.active {
+.patient_info.active {
   display: block;
 }
 
-#search_practice_button {
+.import-btn {
+  background: transparent;
+  color: #cde8f4;
+  border: 1px solid;
+}
+
+.import-btn:hover {
+  color: black;
+  background-color: #cde8f4;
+  border-color: #cde8f4;
+}
+
+#search_patient_button {
   cursor: pointer;
 }
 
-#add_practice_search_option {
-  position: inherit;
-  cursor: pointer;
+.select_provider_button {
+  display: none;
+}
+
+.select_provider_button.active {
+  display: inline-block;
 }
 
 .search_filter {
@@ -282,167 +324,28 @@ a:focus.sidebar-item {
   padding-right: 25px;
 }
 
-.provider_list {
-  overflow-y: scroll;
-  display: none;
-}
-
-.provider_list.active {
-  display: block;
-}
-
-.provider_list_item {
-  border-top: 1px solid;
-  opacity: 0.9;
+#add_search_option {
+  position: inherit;
   cursor: pointer;
-}
-
-.provider_list_item:hover {
-  opacity: 1;
-}
-
-.provider_info {
-  display: block;
-  margin-top: 2em;
-}
-
-.provider_info > .provider_table_header {
-  border-bottom: 2px solid #fff;
-  border-top: 1px solid #fff;
-  color: #000;
-  padding: 0.5em 15px;
-  margin: 1em 0;
-}
-
-.provider_info.active {
-  display: block;
-}
-
-#search_provider_button {
-  cursor: pointer;
-}
-
-.section_seperator {
-  border-bottom: solid 2px white;
-  display: block;
-  position: relative;
-}
-
-.patient_previous_information {
-  display: none;
-  margin: 2em 4em;
-}
-
-.patient_previous_information p {
-  color: black;
-  font-size: 1.2em;
-  margin-top: 1em;
-  font-weight: 600;
-}
-
-.patient_previous_information.active {
-  display: block;
-}
-
-.list_seperator {
-  padding: 1em 2em;
-  border-bottom: solid 1px white;
-  color: #f2f2f2;
-}
-
-.list_seperator:hover {
-  cursor: pointer;
-  color: #fff;
-}
-
-.provider_near_patient,
-.previous_provider_patient {
-  cursor: pointer;
-}
-
-.provider_near_patient_list,
-.previous_provider_patient_list {
-  margin: 1em 2em;
-  display: none;
-}
-
-.provider_near_patient_list.active,
-.previous_provider_patient_list.active {
-  display: block;
-}
-
-.selected_patient {
-  background-color: #faf5b4;
-  color: black;
-  padding: 5px;
-}
-
-.selected_patient p {
-  color: black;
-  display: inline-block;
-  margin: 0 0 1px;
-}
-
-.selected_patient p.view_selected_patient,
-.selected_patient p.change_selected_patient {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.selected_patient.col-xs-2 {
-  text-align: right;
-}
-
-.patient_info {
-  display: none;
-  margin-top: 2em;
-}
-
-.patient_info > .patient_table_header {
-  border-bottom: 2px solid #fff;
-  border-top: 1px solid #fff;
-  color: #000;
-  padding: 0.5em 15px;
-  margin: 1em 0;
-}
-
-.patient_info.active {
-  display: block;
-}
-
-.schedule_button {
-  display: none;
-}
-
-.schedule_button.active {
-  display: inline-block;
-}
-
-.button_type_11 {
-  color: black;
-  padding: 0.5em 1em;
-  border-radius: 0.25em;
-  background-color: #ed1c24;
-  color: #fff;
-  display: none;
-  cursor: pointer;
-}
-
-.button_type_11.active {
-  display: inline-block;
-}
-
-.availability_display > .col-xs-1 {
-  background-color: #f2f2f2;
-  color: black;
 }
 
 .lastseen_content {
-  display: none;
+  visibility: hidden;
 }
 
 .lastseen_content.active {
-  display: inline-block;
+  visibility: visible;
+}
+
+.action-btns {
+  position: absolute;
+  display: none;
+  right: 0;
+  top: 0;
+}
+
+.action-btns.active {
+  display: block;
 }
 
 .lastseenby_show {
@@ -450,11 +353,11 @@ a:focus.sidebar-item {
 }
 
 .referredby_content {
-  display: none;
+  visibility: hidden;
 }
 
 .referredby_content.active {
-  display: inline-block;
+  visibility: visible;
 }
 
 .referredby_show {
@@ -466,54 +369,96 @@ a:focus.sidebar-item {
 }
 
 .insurance_provider_content {
-  display: none;
+  visibility: hidden;
 }
 
 .insurance_provider_content.active {
-  display: inline-block;
+  visibility: visible;
 }
 
-#practice_listing {
-  width: 90%;
-  margin-left: 40px;
+/*
+----------------------
+Patient admin section
+-----------------------
+*/
+
+.back {
+  color: #f2f2f2;
+  background-color: #808080;
+  padding: 6px 22px;
 }
 
-.practice_list {
-  overflow-y: scroll;
+.back:hover {
+  color: #f2f2f2;
+}
+
+.add_header {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+p.add_title {
+  font-size: 1.5em;
+  margin-bottom: 0;
+  margin-left: 1em;
+  margin-top: auto;
+}
+
+.add_patient_input {
+  display: block;
+  color: #fff;
+  background-color: #0193d7;
+  border: 2px solid #0193d7;
+  margin: 1em;
+  border-radius: .2em;
+  padding: .5em;
+  width: 60%;
+}
+
+.add_patient_input::-webkit-input-placeholder {
+  color: #cbcbcb;
+}
+
+.add_patient_input::-moz-placeholder {
+  color: #cbcbcb;
+}
+
+.add_patient_input:-ms-input-placeholder {
+  color: #cbcbcb;
+}
+
+.add_patient_input::placeholder {
+  color: #cbcbcb;
+}
+
+.add_patient_input:focus {
+  border: 2px solid #fff;
+}
+
+.section-break {
+  border-top: 1px solid #82888f;
+  margin: 0 2em 0 2em;
+}
+
+p.address {
+  margin: 0 1em;
+  font-size: 1.3em;
+  color: #fff;
+}
+
+.patient_action {
   display: none;
 }
 
-.practice_list.active {
+.patient_action.active {
   display: block;
-  overflow-y: hidden;
 }
 
-.practice_search_content {
-  margin-left: 112px;
+.add-btn {
+  float: left;
 }
 
-.practice_location {
-  border: 1px solid;
-  padding: 0.25em 0.5em;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.practice_location.active,
-.practice_location:hover {
-  font-weight: bold;
-}
-
-.modal-dialog {
-  background-color: #f2f2f2;
-  padding: 10px;
-  color: #000;
-  border-radius: .5em;
-}
-
-.modal-dialog > p {
-  font-size: 1.2em;
-  color: #0193d7;
-  text-align: center;
-  padding: .5em 0 0 0;
+.add-btn:hover {
+  float: left;
 }

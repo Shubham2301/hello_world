@@ -39,21 +39,15 @@ class PatientController extends Controller
      */
     public function create(Request $request)
     {
-        $patient = new Patient;
-        $patient->firstname = $request->input('patient_fname');
-        $patient->lastname = $request->input('patient_lname');
-        $patient->email = $request->input('email');
-        $patient->gender = $request->input('gender');
-        $patient->lastfourssn = $request->input('last_4_ssn');
-        $patient->addressline1 = $request->input('address_1');
-        $patient->addressline2 = $request->input('address_2');
-        $patient->city = $request->input('city');
-        $patient->zip = $request->input('zip');
-        $patient->preferredlanguage = $request->input('preferredlanguage');
-        $patient->cellphone = $request->input('phone');
-        $patient->save();
-        $path = 'patients?referraltype_id='.$request->input('referraltype_id').'&action='.$request->input('action');
-        return redirect($path);
+        $data = array();
+
+        if($request->has('referraltype_id')){
+            $data['referraltype_id'] = $request->input('referraltype_id');
+        }
+        if($request->has('action')){
+            $data['action'] = $request->input('action');
+        }
+        return view('patient.admin')->with('data', $data);
     }
 
     /**
@@ -64,7 +58,22 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $patient = new Patient;
+        $patient->firstname = $request->input('patient_fname');
+        $patient->lastname = $request->input('patient_lname');
+        $patient->email = $request->input('email');
+        $patient->gender = $request->input('gender');
+        $patient->lastfourssn = $request->input('last_4_ssn');
+        $patient->addressline1 = $request->input('address_1');
+        $patient->addressline2 = $request->input('address_2');
+        $patient->city = $request->input('city');
+        $patient->zip = $request->input('zip');
+        $patient->birthdate = $request->input('dob');
+        $patient->preferredlanguage = $request->input('preferredlanguage');
+        $patient->cellphone = $request->input('phone');
+        $patient->save();
+        $path = 'patients?referraltype_id='.$request->input('referraltype_id').'&action='.$request->input('action');
+        return redirect($path);
     }
 
     /**
@@ -81,6 +90,8 @@ class PatientController extends Controller
         
         $patient = Patient::find($id);
         
+        $patient->birthdate = date("d F Y", strtotime($patient->birthdate));
+
         return json_encode($patient);
     }
 
@@ -137,7 +148,7 @@ class PatientController extends Controller
             $data[$i]['addressline1'] = $patient->addressline1;
             $data[$i]['addressline2'] = $patient->addressline2;
             $data[$i]['city'] = $patient->city;
-            $data[$i]['birthdate'] = $patient->birthdate;
+            $data[$i]['birthdate'] = date("d F Y", strtotime($patient->birthdate));
             $i++;
         }
 
@@ -146,15 +157,7 @@ class PatientController extends Controller
 
     public function administration(Request $request)
     {
-        $data = array();
 
-        if($request->has('referraltype_id')){
-            $data['referraltype_id'] = $request->input('referraltype_id');
-        }
-        if($request->has('action')){
-            $data['action'] = $request->input('action');
-        }
-        return view('patient.admin')->with('data', $data);
     }
 
 }

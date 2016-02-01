@@ -11,18 +11,16 @@
             <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 		<![end if]-->
     <link rel="stylesheet" href="{{asset('lib/css/bootstrap.min.css')}}">
-<!--
-    <link rel="stylesheet" href="{{asset('lib/css/bootstrap-datetimepicker.css')}}">
-    <link rel="stylesheet" href="{{asset('lib/css/bootstrap-datetimepicker.min.css')}}">
-    <link rel="stylesheet" href="{{asset('lib/css/bootstrap-datetimepicker-standalone.css')}}">
-    <link rel="stylesheet" href="{{asset('lib/js/bootstrap-datetimepicker.min.js')}}">
--->
     <link rel="stylesheet" type="text/css" href="{{elixir('css/style.css')}}">
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    
     <script type="text/javascript" src="{{asset('lib/js/jquery-1.11.3.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('lib/js/bootstrap.min.js')}}"></script>
-    <script type="text/javascript" src="{{elixir('js/main.js')}}"></script>
+    <script type="text/javascript" src="{{asset('lib/js/moment.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('lib/js/bootstrap-datetimepicker.min.js')}}"></script>
+
+
+        <script type="text/javascript" src="{{elixir('js/main.js')}}"></script>
+
     
     @yield('imports')
 
