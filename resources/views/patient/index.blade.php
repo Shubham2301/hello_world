@@ -57,6 +57,7 @@
         </div>
         @include('patient.import')
         @include('patient.import_ccda')
+        @include('patient.compare_ccda')
     </div>
 
 

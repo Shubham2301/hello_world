@@ -7,10 +7,22 @@
             <br>
             <p class="button_type_1" id="change_patient_button">Change Patient</p>
             <br>
-            <p class="button_type_1" id="import_ccda_button" data-toggle="modal" data-target="#importCcda" data-id="">Import Ccda</p>
-            <br>
-            <a href="" class="btn btn-large" id="download_ccda"><i class="icon-download-alt"> </i> Download CCDA</a>
-            <br>
+
+            <div class="dropdown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">Patient File <b class="caret"></b></a>
+                <ul class="dropdown-menu " id="ccda_dropdown">
+                    <li>
+                        <a href=""> <img class="ccda_view_icon" src="{{URL::asset('images/view-icon.png')}}" alt=""> View</a>
+                    </li>
+                    <li>
+                        <p id="import_ccda_button" data-toggle="modal" data-target="#importCcda" data-id=""><img class="ccda_upload_icon" src="{{URL::asset('images/arrow-up-icon.png')}}" alt=""> Upload</p>
+                    </li>
+                    <li>
+                        <a href="" id="download_ccda"> <img class="ccda_download_icon" src="{{URL::asset('images/arrow-down-icon.png')}}" alt=""> Download </a>
+                    </li>
+                </ul>
+            </div>
+            <p class="button_type_1" style="display:none;" id="compare_ccda_button" data-toggle="modal" data-target="#compareCcda">update Ccda</p>
         </div>
         <div class="col-xs-8">
             <p class="bold" id="patient_name"></p>

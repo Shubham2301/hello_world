@@ -19,7 +19,6 @@ class CcdaController extends Controller
 
     public function saveCcda(Request $request)
     {
-
         if ($request->hasFile('patient_ccda')) {
             $file = $request->file('patient_ccda');
             $destinationPath = 'temp_ccda';
@@ -29,7 +28,7 @@ class CcdaController extends Controller
             $upload_success = $file->move(base_path().'/'.$destinationPath, $xmlfilename);
             $xmlfile = base_path().'/'.$destinationPath.'/'.$xmlfilename;
             $jsonfile = base_path().'/'.$destinationPath.'/temp_json/'.$jsonfilename;
-            $a = exec("node ".public_path()."/js/tojson.js ". $xmlfile." ".$jsonfile);
+            $xml_to_json = exec("node ".public_path()."/js/tojson.js ". $xmlfile." ".$jsonfile);
             $jsonstring = file_get_contents($jsonfile, true);
             $validator = \Validator::make(array('jsson' => $jsonstring), array('jsson'=>'Required|json'));
              unlink($xmlfile);
@@ -43,22 +42,23 @@ class CcdaController extends Controller
             $ccda->ccdablob = $jsonstring;
             $ccda->patient_id = $request->patient_id;
             if ($ccda->save()) {
-                return  $this->showDemographics(json_decode($ccda->ccdablob, true),$ccda->patient_id);
+                $data = [];
+                $data['patient'] = $this->getPatientData($ccda->patient_id);
+                $data['ccda']    = $this->getCCDAData(json_decode($ccda->ccdablob, true));
+                return json_encode($data);
+                //return  $this->updatePatientDemographics(json_decode($ccda->ccdablob, true), $ccda->patient_id);
                 //return redirect()->route('showvitals',$ccda->id );
             }
         }
-
         return 'unsuccessful';
     }
 
-    public function savePreviousVitals($data,$id)
+    public function savePreviousVitals($data, $id)
     {
-        foreach ($data as $vitals)
-        {
-            $date = date('Y-m-d',strtotime($vitals['date']));
+        foreach ($data as $vitals) {
+            $date = date('Y-m-d', strtotime($vitals['date']));
             $results = $vitals['results'];
-            foreach ($results as $result)
-            {
+            foreach ($results as $result) {
                 $vital = new Vital;
                 $vital->ccda_id             = $id;
                 $vital->v_date              = $date;
@@ -127,7 +127,7 @@ class CcdaController extends Controller
         $vital->unit                = $request->input('v_unit');
 
         if ($vital->save()) {
-            return redirect()->route('showvitals',$id );
+            return redirect()->route('showvitals', $id);
         }
         return 'fail';
     }
@@ -144,14 +144,11 @@ class CcdaController extends Controller
 
     public function showVitals($id)
     {
-        $vitals = Vital::where('ccda_id',$id)->get();
-
-        return view('ccda.showvitals')->with('vitals',$vitals)->with('id',$id);
-
-
+        $vitals = Vital::where('ccda_id', $id)->get();
+        return view('ccda.showvitals')->with('vitals', $vitals)->with('id', $id);
     }
 
-    public function showDemographics($data,$patient_id)
+    public function updatePatientDemographics($data, $patient_id)
     {
         $patient_data = [];
         $patient_data['title']              = $data['demographics']['name']['prefix'];
@@ -162,11 +159,11 @@ class CcdaController extends Controller
         $patient_data['cellphone']          = $data['demographics']['phone']['mobile'];
         $patient_data['email']              = $data['demographics']['email'];
         $patient_data['addressline1']       = $data['demographics']['address']['street'][0];
-        $patient_data['addressline2']       = $this->validateKey($data['demographics']['address']['street'],1);
+        $patient_data['addressline2']       = $this->validateKey($data['demographics']['address']['street'], 1);
         $patient_data['city']               = $data['demographics']['address']['city'];
         $patient_data['zip']                = $data['demographics']['address']['zip'];
         $patient_data['country']            = $data['demographics']['address']['country'];
-        $patient_data['birthdate']          = date('Y-m-d',strtotime($data['demographics']['dob']));
+        $patient_data['birthdate']          = date('Y-m-d', strtotime($data['demographics']['dob']));
         $patient_data['gender']             = $data['demographics']['gender'];
         $patient_data['preferredlanguage']  =$data['demographics']['language'];
         // $patient_data['status']         = $data['demographics']['name']['family'];
@@ -174,7 +171,7 @@ class CcdaController extends Controller
         // $patient_data['insurancecarrier']= $data['demographics']['name']['family'];
         // $patient_data['lastfourssn']    = $data['demographics']['name']['family'];
         $patient = Patient::find($patient_id);
-        if($patient){
+        if ($patient) {
             $patient->update($patient_data);
             return 'succesful';
         }
@@ -183,27 +180,27 @@ class CcdaController extends Controller
 
     public function updateDemographics($patient_id)
     {
-        $ccda = Ccda::where('patient_id',$patient_id)->orderBy('created_at','desc')->first();
+        $ccda = Ccda::where('patient_id', $patient_id)->orderBy('created_at', 'desc')->first();
         $data = json_decode($ccda->ccdablob, true);
         $patient_data = Patient::find($patient_id)->toArray();
-        if($patient_data){
-        $data['demographics']['name']['prefix']         = $patient_data['title'];
-        $data['demographics']['name']['given'][0]       = $patient_data['firstname'];
-        $data['demographics']['name']['family']         = $patient_data['lastname'];
-        $data['demographics']['phone']['work']          = $patient_data['workphone'] ;
-        $data['demographics']['phone']['home']          = $patient_data['homephone'];
-        $data['demographics']['phone']['mobile']        = $patient_data['cellphone'];
-        $data['demographics']['email']                  = $patient_data['email'] ;
-        $data['demographics']['address']['street'][0]   = $patient_data['addressline1'];
-        $data['demographics']['address']['street'][1]   = $patient_data['addressline2'];
-        $data['demographics']['address']['city']        = $patient_data['city'];
-        $data['demographics']['address']['zip']         = $patient_data['zip'];
-        $data['demographics']['address']['country']     = $patient_data['country'];
-        $data['demographics']['dob']                    = $patient_data['birthdate'];
-        $data['demographics']['gender']                 = $patient_data['gender'];
-        $data['demographics']['language']               = $patient_data['preferredlanguage'];
+        if ($patient_data) {
+            $data['demographics']['name']['prefix']         = $patient_data['title'];
+            $data['demographics']['name']['given'][0]       = $patient_data['firstname'];
+            $data['demographics']['name']['family']         = $patient_data['lastname'];
+            $data['demographics']['phone']['work']          = $patient_data['workphone'] ;
+            $data['demographics']['phone']['home']          = $patient_data['homephone'];
+            $data['demographics']['phone']['mobile']        = $patient_data['cellphone'];
+            $data['demographics']['email']                  = $patient_data['email'] ;
+            $data['demographics']['address']['street'][0]   = $patient_data['addressline1'];
+            $data['demographics']['address']['street'][1]   = $patient_data['addressline2'];
+            $data['demographics']['address']['city']        = $patient_data['city'];
+            $data['demographics']['address']['zip']         = $patient_data['zip'];
+            $data['demographics']['address']['country']     = $patient_data['country'];
+            $data['demographics']['dob']                    = $patient_data['birthdate'];
+            $data['demographics']['gender']                 = $patient_data['gender'];
+            $data['demographics']['language']               = $patient_data['preferredlanguage'];
 
-           return $this->genrateXml($data);
+            return $this->genrateXml($data);
 
         }
         return 'try again';
@@ -223,15 +220,76 @@ class CcdaController extends Controller
         fclose($myfile);
         unlink($jsonfile);
         return $xmlfile;
-
     }
 
-    public function validateKey($data,$key){
-        if (array_key_exists ( $key,$data))
-        {
+    public function validateKey($data, $key)
+    {
+        if (array_key_exists($key, $data)) {
             return $data[$key];
         }
             return null;
     }
 
+
+    public function getCCDAData($ccdaData)
+    {
+        $data = [];
+        $data['title']              = $ccdaData['demographics']['name']['prefix'];
+        $data['firstname']          = $ccdaData['demographics']['name']['given'][0];
+        $data['lastname']           = $ccdaData['demographics']['name']['family'];
+        $data['workphone']          = $ccdaData['demographics']['phone']['work'];
+        $data['homephone']          = $ccdaData['demographics']['phone']['home'];
+        $data['cellphone']          = $ccdaData['demographics']['phone']['mobile'];
+        $data['email']              = $ccdaData['demographics']['email'];
+        $data['addressline1']       = $ccdaData['demographics']['address']['street'][0];
+        $data['addressline2']       = $this->validateKey($ccdaData['demographics']['address']['street'], 1);
+        $data['city']               = $ccdaData['demographics']['address']['city'];
+        $data['zip']                = $ccdaData['demographics']['address']['zip'];
+        $data['country']            = $ccdaData['demographics']['address']['country'];
+        $data['birthdate']          = date('Y-m-d', strtotime($ccdaData['demographics']['dob']));
+        $data['gender']             = $ccdaData['demographics']['gender'];
+        $data['preferredlanguage']  = $ccdaData['demographics']['language'];
+        return $data;
+    }
+
+    public function getPatientData($patient_id)
+    {
+        $data = [];
+        $patient_data = Patient::find($patient_id)->toArray();
+        if ($patient_data) {
+            $data['id'] = $patient_id;
+            $data['title']        = $patient_data['title'];
+            $data['firstname']    = $patient_data['firstname'];
+            $data['lastname']     = $patient_data['lastname'];
+            $data['workphone']    = $patient_data['workphone'] ;
+            $data['homephone']    = $patient_data['homephone'];
+            $data['cellphone']    = $patient_data['cellphone'];
+            $data['email']        = $patient_data['email'] ;
+            $data['addressline1'] = $patient_data['addressline1'];
+            $data['addressline2'] = $patient_data['addressline2'];
+            $data['city']           = $patient_data['city'];
+            $data['zip']            = $patient_data['zip'];
+            $data['country']        = $patient_data['country'];
+            $data['birthdate']      = $patient_data['birthdate'];
+            $data['gender']         = $patient_data['gender'];
+            $data['preferredlanguage']= $patient_data['preferredlanguage'];
+            return $data;
+
+        }
+    }
+
+    public function updateCCDA(Request $request)
+    {
+        $data = $request->all();
+
+        $patient_id = $data['patient_id'];
+        unset($data['patient_id']);
+        unset($data['_token']);
+        $patient = Patient::find($patient_id);
+        if ($patient) {
+            $patient->update($data);
+            return 'true';
+        }
+        return 'false';
+    }
 }

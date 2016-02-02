@@ -347,7 +347,7 @@ a:focus.sidebar-item {
 }
 
 .form_model {
-  margin-top: 10em;
+  margin-top: 5em;
   margin-left: 34em;
 }
 
@@ -370,6 +370,120 @@ a:focus.sidebar-item {
   background-color: #0071bc;
   border-color: #0071bc;
   color: #fff;
+}
+
+.compare_ccda {
+  color: black;
+  padding-left: 29px;
+  display: none;
+}
+
+.compare_ccda.active {
+  display: block;
+}
+
+.update_header {
+  color: black;
+  margin-left: 30%;
+  display: none;
+}
+
+.update_header.active {
+  display: block;
+}
+
+.import_header {
+  color: black;
+  margin-left: 39%;
+  display: none;
+}
+
+.import_header.active {
+  display: block;
+}
+
+.compare_form {
+  color: black;
+  padding-left: 29px;
+  display: none;
+}
+
+.compare_form.active {
+  display: block;
+}
+
+.compare_model {
+  color: black;
+  width: 54em;
+}
+
+.row_content {
+  height: 20px;
+}
+
+.campare_items {
+  color: black;
+  height: 12em;
+  overflow-y: overlay;
+}
+
+.compare_ccda_button {
+  display: none;
+  color: black;
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.compare_ccda_button.active {
+  display: inline;
+}
+
+.compare_ccda_button:hover {
+  background-color: #0071bc;
+  border-color: #0071bc;
+  color: #fff;
+}
+
+#ccda_dropdown {
+  background: #ebeced;
+  background-color: #ebeced;
+  box-shadow: 0px 0px 3px #82888f;
+  border-radius: 5px;
+  text-align: center;
+  width: 10em;
+  margin-left: 3.5em;
+  color: black;
+}
+
+#ccda_dropdown > li > a {
+  margin: 0.85em 0.25em;
+  padding: 0 0.5em;
+}
+
+#ccda_dropdown > li > a:hover {
+  background-color: transparent;
+}
+
+#ccda_dropdown > li > a > img {
+  width: 24px;
+}
+
+.ccda_view_icon {
+  width: 24px;
+  height: 15px;
+  margin-left: -4em;
+}
+
+.ccda_upload_icon {
+  width: 24px;
+  height: 15px;
+  margin-left: -3em;
+}
+
+.ccda_download_icon {
+  width: 24px;
+  height: 15px;
+  margin-left: -2em;
 }
 
 .patient_list {
