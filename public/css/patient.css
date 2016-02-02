@@ -407,7 +407,7 @@ a:focus.sidebar-item {
 
 .campare_items {
   color: black;
-  height: 12em;
+  height: 22em;
   overflow-y: overlay;
 }
 
@@ -468,6 +468,15 @@ a:focus.sidebar-item {
   width: 24px;
   height: 15px;
   margin-left: -2em;
+}
+
+.ccda_text {
+  color: black;
+}
+
+.ccda_text:hover {
+  color: black;
+  text-decoration: none;
 }
 
 .patient_list {
