@@ -257,22 +257,6 @@ a:focus.sidebar-item {
   display: flex;
 }
 
-.import-btn {
-  background: transparent;
-  color: #cde8f4;
-  border: 1px solid;
-  float: right;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-.import-btn:hover {
-  color: black;
-  background-color: #cde8f4;
-  border-color: #cde8f4;
-}
-
 .inputfile {
   display: inline-block;
   width: 100%;
@@ -487,7 +471,6 @@ a:focus.sidebar-item {
 }
 
 .patient_list {
-  overflow-y: scroll;
   display: none;
 }
 
@@ -526,6 +509,7 @@ a:focus.sidebar-item {
   background: transparent;
   color: #cde8f4;
   border: 1px solid;
+  float: right;
 }
 
 .import-btn:hover {
@@ -589,12 +573,17 @@ a:focus.sidebar-item {
 .action-btns {
   position: absolute;
   display: none;
+  width: 100%;
   right: 0;
   top: 0;
 }
 
 .action-btns.active {
   display: block;
+}
+
+.add-btn {
+  float: left;
 }
 
 .lastseenby_show {

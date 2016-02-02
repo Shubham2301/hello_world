@@ -249,7 +249,7 @@ body {
 
 .container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -275,6 +275,8 @@ Section : Header
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
+  z-index: 1;
+  box-shadow: 0 2px 4px #aaaaaa;
 }
 
 .header > div {
@@ -306,10 +308,6 @@ Section : Header
   color: #fff;
   padding: 0.1em 0.4em;
   font-size: 0.9em;
-}
-
-.header-left {
-  border-right: 2px solid #e3e3e3;
 }
 
 .header-right {
@@ -399,12 +397,10 @@ p.error {
   border-right: 2px solid white;
   padding: 1em;
   background: #ebeced;
-  box-shadow: inset 0 30px 60px -10px #d1d1d1, inset 0 -12px 20px -8px #d1d1d1;
 }
 
 .content-right {
   padding: 1em;
-  box-shadow: inset 0 30px 60px -10px #0193d7, inset 0 -12px 20px -8px #0193d7;
   color: #ffffff;
   overflow: hidden;
   background: #00b6f1;
@@ -436,6 +432,15 @@ p.error {
   display: block;
 }
 
+.content-section-scheduling {
+  width: 90%;
+  margin: -15px auto;
+}
+
+.content-row-margin-scheduling {
+  margin: 0;
+}
+
 .search_input {
   background-color: #ffffff;
   font-size: 1.2em;
@@ -448,7 +453,7 @@ p.error {
 .search_input > input:focus {
   width: 100%;
   border: none;
-  padding: 1em;
+  padding: .6em .1em;
   color: #4d4d4d;
   outline: none;
 }
@@ -456,7 +461,7 @@ p.error {
 .search_input > span {
   color: #0071bc;
   position: absolute;
-  margin: 1.2em;
+  margin: .8em;
   right: 0;
 }
 
@@ -471,7 +476,7 @@ p.error {
   border: none;
   border-radius: 0;
   font-size: 1.2em;
-  height: 3.4em;
+  height: 2.6em;
   box-shadow: none;
   outline: none;
   cursor: pointer;
@@ -560,6 +565,46 @@ Section : Sidebar
   font-size: 1.2em;
 }
 
+.subsection-header-previous-stage {
+  text-align: center;
+  font-size: 1.5em;
+  background-color: #bfd8e3;
+  color: #338dc9;
+  padding: 0.5em 0em;
+  font-size: 1em;
+  box-shadow: inset 0px -10px 10px -10px #0071bc;
+}
+
+.subsection-header-previous-stage > .selected_patient {
+  position: absolute;
+  z-index: 0;
+  padding: 1em;
+  display: inherit;
+  color: #4d4d4d;
+  font-size: .8em;
+  font-weight: 600;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  top: 0;
+}
+
+.subsection-header-previous-stage > .selected_patient > p {
+  font-size: 1em;
+}
+
+.subsection-header-previous-stage > .selected_patient > p.view_selected_patient {
+  margin-left: auto;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.subsection-header-previous-stage > .selected_patient > p.change_selected_patient {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .sidebar_header {
   padding: .5em 0em 1em 0em;
 }
@@ -574,13 +619,13 @@ Section : Sidebar
   padding: 0;
   box-shadow: 0 1px 1px #898989;
   overflow-x: hidden;
-  background-color: #e0e3e6;
-  background-image: linear-gradient(0, #e0e3e6 10%, #f0f2f5 90%);
+  background-color: #f0f2f5;
+  background-image: linear-gradient(#f0f2f5 10%, #e0e3e6 90%);
 }
 
 .sidebar_menu_item:active {
   background-color: #d2d3d5;
-  background-image: linear-gradient(0, #d2d3d5 10%, #d2d3d5 90%);
+  background-image: linear-gradient(#d2d3d5 10%, #d2d3d5 90%);
   box-shadow: 0 1px 1px #d2d3d5;
 }
 

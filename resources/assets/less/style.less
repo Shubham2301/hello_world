@@ -21,7 +21,7 @@ body {
 
 .container {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-flow: column;
 }
@@ -40,6 +40,8 @@ Section : Header
 .header {
     padding: 0em;
     flex: 0 0 auto;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(170,170,170,1);
     &>div {
         padding: 1em 0em;
     }
@@ -68,10 +70,6 @@ Section : Header
     color: #fff;
     padding: 0.1em 0.4em;
     font-size: 0.9em;
-}
-
-.header-left {
-    .right-border-grey;
 }
 
 .header-right {
@@ -154,12 +152,12 @@ p.error {
     .right-border;
     .content-padding;
     background: @light-gray;
-    box-shadow: inset 0 30px 60px -10px #d1d1d1, inset 0 -12px 20px -8px #d1d1d1;
+//    box-shadow: inset 0 30px 60px -10px #d1d1d1, inset 0 -12px 20px -8px #d1d1d1;
 }
 
 .content-right {
     .content-padding;
-    box-shadow: inset 0 30px 60px -10px #0193d7, inset 0 -12px 20px -8px #0193d7;
+//    box-shadow: inset 0 30px 60px -10px #0193d7, inset 0 -12px 20px -8px #0193d7;
     color: @font-color-1;
     overflow: hidden;
     background: @primary-blue;
@@ -188,7 +186,13 @@ p.error {
         display: block;
     }
 }
-
+.content-section-scheduling{
+    width: 90%;
+    margin: -15px auto;
+}
+.content-row-margin-scheduling {
+    margin: 0;
+}
 .search_input {
     background-color: #ffffff;
     font-size: 1.2em;
@@ -197,14 +201,14 @@ p.error {
     &>input:focus {
         width: 100%;
         border: none;
-        padding: 1em;
+        padding: .6em .1em;
         color: #4d4d4d;
         outline: none;
     }
     &>span {
         color: #0071bc;
         position: absolute;
-        margin: 1.2em;
+        margin: .8em;
         right: 0;
     }
 }
@@ -218,7 +222,7 @@ p.error {
         border: none;
         border-radius: 0;
         font-size: 1.2em;
-        height: 3.4em;
+        height: 2.6em;
         box-shadow: none;
         outline: none;
         cursor: pointer
@@ -312,6 +316,38 @@ Section : Sidebar
     font-size: 1.2em;
 }
 
+.subsection-header-previous-stage{
+    .section-header;
+    background-color: #bfd8e3;
+    color: #338dc9;
+    padding: 0.5em 0em;
+    font-size: 1em;
+    box-shadow:  inset 0px -10px 10px -10px #0071bc;
+    &>.selected_patient{
+            position: absolute;
+            z-index: 0;
+            padding: 1em;
+            display: inherit;
+            color: #4d4d4d;
+            font-size: .8em;
+            font-weight: 600;
+            display: flex;
+            width: 100%;
+            top: 0;
+            &>p{
+                font-size: 1em;
+            }
+            &>p.view_selected_patient{
+                margin-left: auto;
+                cursor: pointer;
+                text-decoration: underline;
+            }
+            &>p.change_selected_patient{
+                cursor: pointer;
+                text-decoration: underline;
+            }
+    }
+}
 .sidebar_header {
     padding: .5em 0em 1em 0em;
 }
@@ -326,10 +362,10 @@ Section : Sidebar
     padding: 0;
     box-shadow: 0 1px 1px #898989;
     overflow-x: hidden;
-    .gradient(0, #e0e3e6, #f0f2f5);
+    .gradient(#f0f2f5, #e0e3e6);
     &:active{
         background-color: #d2d3d5;
-        .gradient(0, #d2d3d5, #d2d3d5);
+        .gradient(#d2d3d5, #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
     }
     &>a {

@@ -11,7 +11,6 @@ Section : Imports
 @import 'import.less';
 
 .patient_list {
-    overflow-y: scroll;
     display: none;
     &.active {
         display: block;
@@ -43,15 +42,15 @@ Section : Imports
 }
 
 .import-btn {
-  background: transparent;
-  color: #cde8f4;
-  border: 1px solid;
-}
-
-.import-btn:hover {
-  color: black;
-  background-color: #cde8f4;
-  border-color: #cde8f4;
+    background: transparent;
+    color: #cde8f4;
+    border: 1px solid;
+    float: right;
+    &:hover{
+          color: black;
+          background-color: #cde8f4;
+          border-color: #cde8f4;
+    }
 }
 
 #search_patient_button {
@@ -102,11 +101,15 @@ Section : Imports
 .action-btns{
     position: absolute;
     display: none;
+    width: 100%;
     right: 0;
     top: 0;
     &.active{
         display: block;
     }
+}
+.add-btn{
+    float: left;
 }
 .lastseenby_show {
     cursor: pointer;

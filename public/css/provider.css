@@ -399,28 +399,6 @@ a:focus.sidebar-item {
   display: block;
 }
 
-.selected_patient {
-  background-color: #faf5b4;
-  color: black;
-  padding: 5px;
-}
-
-.selected_patient p {
-  color: black;
-  display: inline-block;
-  margin: 0 0 1px;
-}
-
-.selected_patient p.view_selected_patient,
-.selected_patient p.change_selected_patient {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.selected_patient.col-xs-2 {
-  text-align: right;
-}
-
 .patient_info {
   display: none;
   margin-top: 2em;
