@@ -68,8 +68,18 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('appointments', 'Appointment\AppointmentController');
     Route::resource('home', 'HomeController');
     Route::resource('careconsole', 'CareConsoleController');
+
+    //Ccda routes
+    Route::post('/import/ccda', 'CcdaController@saveCcda');
+    Route::get('ccdaform', 'CcdaController@index');
+    Route::get('/addvital/{id}', 'CcdaController@addVital');
+    Route::post('/savevitals', 'CcdaController@saveVitals');
+    Route::get('/download/{id}', 'CcdaController@getxml');
+    Route::get('/showvitals/{id}', array('uses'=>'CcdaController@showVitals','as'=>'showvitals'));
     Route::get('import/location', 'BulkImportController@getLocations');
     Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
+    Route::post('update/ccda', 'CcdaController@updatePatientDemographics');
+    Route::get('show/ccda/{id}', 'CcdaController@showCCDA');
 
     //support routes
     Route::get('terms', 'SupportController@termsIndex');
@@ -91,13 +101,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('administration/patients/add', 'Patient\PatientController@store');
     Route::post('administration/network/add', 'Admin\NetworkController@add');
     Route::get('administration/providers', 'Practice\ProviderController@administration');
-
 });
-
-    Route::get('/foo', function(){
-        $u = myocuhub\Models\Practice::paginate(10);
-        return view('paginationtest')->with('u',$u);
-    });
-
-Route::get('/fooo', 'Practice\PracticeController@getpages');
-
