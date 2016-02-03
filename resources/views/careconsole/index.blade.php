@@ -1,18 +1,13 @@
 @extends('layouts.master')
-
 @section('title', 'Care Console')
-
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/careconsole.css')}}">
 <script type="text/javascript" src="{{elixir('js/careconsole.js')}}"></script>
 @endsection
-
 @section('sidebar')
-    @include('careconsole.sidebar')
+@include('careconsole.sidebar')
 @endsection
-
 @section('content')
-
 <div class="content-row-margin">
     <div class="row before_drilldown">
         <div class="col-xs-12">
@@ -44,17 +39,15 @@
                         <div class="search_result_row row">
                             <div class="col-xs-10 col-xs-offset-2 search_result_row_text">
                                 <p class="result_title">Take action
-                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></p>
+                                    <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        @include('careconsole.overview')
+        @include('careconsole.drilldown')
     </div>
-
-@include('careconsole.overview')
-
-@include('careconsole.drilldown')
-</div>
-@endsection
+    @endsection

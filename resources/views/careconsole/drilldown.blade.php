@@ -3,7 +3,7 @@
     </div>
     <div class="subsection-header">
         <p></p>
-        <div class="circle red"></div>
+        <div class="circle drilldown_kpi_indicator"></div>
     </div>
     <div class="row search_header">
         <div class="col-xs-2 drilldown_header_item">
