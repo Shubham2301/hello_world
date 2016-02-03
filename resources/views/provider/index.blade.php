@@ -23,7 +23,7 @@
     </div>
     @endif
 
-    <div class="content-section active" id="practice_section">
+    <div class="content-section content-section-scheduling active" id="practice_section">
        {!! Form::open(array('url' => '/appointments', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
 
             @if(array_key_exists('referraltype_id', $data))
@@ -47,7 +47,14 @@
             <p class="button_type_3 schedule_button" data-id="" data-practice-id="" align="right">Schedule<span class="glyphicon glyphicon-chevron-right"></span></p>
                 </div>
             </div>
-            <div class="row content-row-margin">
+            <div class="row content-row-margin-scheduling">
+                <div class="col-xs-12 subsection-header-previous-stage">
+                    <span>1. Search for Patient&nbsp;<span class="glyphicon glyphicon-ok-circle" style="color:green;"></span></span>
+                    <span class="selected_patient"><p>Patient Selected:</p>&nbsp;&nbsp;<p class="selected_patient_name"></p>
+                    <p class="view_selected_patient view">View</p>&nbsp;&nbsp;
+                    <p class="change_selected_patient view" id="change_patient_button">Change</p>
+                    </span>
+                </div>
                 <div class="col-xs-12 subsection-header">
                     <span>2. Search for Provider</span>
                 </div>
