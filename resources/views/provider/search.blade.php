@@ -1,4 +1,4 @@
-<div class="row content-row-margin">
+<div class="row content-row-margin-scheduling">
     <div class="col-xs-10 search_input">
         <input type="text" class="" id="search_practice_input" >
         <span class="glyphicon glyphicon-search" id="search_practice_button" aria-hidden="true"></span>
@@ -14,13 +14,6 @@
             <option value="zip">zip code</option>
         </select>
     </div>
-    <div class="col-xs-10 selected_patient">
-        <p>Selected Patient:</p>&nbsp;&nbsp;<p class="selected_patient_name"></p>
-    </div>
-    <div class="col-xs-2 selected_patient">
-        <p class="view_selected_patient view">View</p>&nbsp;&nbsp;
-        <p class="change_selected_patient view">Change</p>
-    </div>
 
   <div class="col-xs-12 search_filter">
         <!--
@@ -34,11 +27,11 @@
 
     </div>
     </div>
-    <div class="row content-row-margin patient_info" data-id="">
+    <div class="row content-row-margin-scheduling patient_info" data-id="">
     <div class="col-xs-12">
         <div class="col-xs-4 center-align">
             <img src="{{asset('images/patient.png')}}" alt=""><br>
-            <p class="button_type_11" id="change_patient_button"  >Change Patient</p><br>
+<!--            <p class="button_type_11" id="change_patient_button"  >Change Patient</p><br>-->
         </div>
         <div class="col-xs-8">
             <p class="bold" id="patient_name"></p>

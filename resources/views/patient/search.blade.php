@@ -1,4 +1,4 @@
-<div class="row content-row-margin">
+<div class="row content-row-margin-scheduling">
     <div class="col-xs-10 search_input">
         <input type="text" class="" id="search_patient_input">
         <span class="glyphicon glyphicon-search" id="search_patient_button" aria-hidden="true"></span>

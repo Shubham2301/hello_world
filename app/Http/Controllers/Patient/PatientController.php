@@ -39,6 +39,7 @@ class PatientController extends Controller
      */
     public function create(Request $request)
     {
+
         $data = array();
 
         if($request->has('referraltype_id')){
@@ -72,7 +73,7 @@ class PatientController extends Controller
         $patient->preferredlanguage = $request->input('preferredlanguage');
         $patient->cellphone = $request->input('phone');
         $patient->save();
-        $path = 'patients?referraltype_id='.$request->input('referraltype_id').'&action='.$request->input('action');
+        $path = 'providers?referraltype_id='.$request->input('referraltype_id').'&action='.$request->input('action').'&patient_id='.$patient->id;
         return redirect($path);
     }
 
