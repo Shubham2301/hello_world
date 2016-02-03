@@ -105,14 +105,14 @@ class AppointmentController extends Controller {
 		$patientID = $request->input('patient_id');
 		$providerID = $request->input('provider_id');
 		$locationID = $request->input('location_id');
-		$AppointmentType = $request->input('appointment_type');
-		$AppointmentTime = $request->input('appointment_time');
+		$appointmentType = $request->input('appointment_type');
+		$appointmentTime = $request->input('appointment_time');
 		$patient = Patient::find($patientID);
 
-		$apptInfo['LocKey'] = $locationID;
-		$apptInfo['AcctKey'] = $providerID;
-		$apptInfo['ApptTypeKey'] = $AppointmentType;
-		$apptInfo['ApptStartDateTime'] = '01/22/2016 12:00';
+		$apptInfo['LocKey'] = 3839;
+		$apptInfo['AcctKey'] = 8042;
+		$apptInfo['ApptTypeKey'] = $appointmentType;
+		$apptInfo['ApptStartDateTime'] = $appointmentTime;
 //        $apptInfo['PatientData']['Title'] = $patient->title;
 		$apptInfo['PatientData']['FirstName'] = $patient->firstname;
 		$apptInfo['PatientData']['LastName'] = $patient->lastname;
