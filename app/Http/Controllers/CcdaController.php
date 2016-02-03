@@ -8,6 +8,8 @@ use myocuhub\Models\Ccda;
 use myocuhub\Models\Vital;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use myocuhub\Patient;
+use \DOMDocument;
+use \XSLTProcessor;
 
 class CcdaController extends Controller
 {
@@ -136,6 +138,8 @@ class CcdaController extends Controller
     {
        // $this->updateVitals($id);
         $ccdafile =  $this->updateDemographics($patient_id);
+        if($ccdafile == false)
+            return 'nofile';
         $headers = array(
               'Content-Type: application/xml',
             );
@@ -148,39 +152,13 @@ class CcdaController extends Controller
         return view('ccda.showvitals')->with('vitals', $vitals)->with('id', $id);
     }
 
-    public function updatePatientDemographics($data, $patient_id)
-    {
-        $patient_data = [];
-        $patient_data['title']              = $data['demographics']['name']['prefix'];
-        $patient_data['firstname']          = $data['demographics']['name']['given'][0];
-        $patient_data['lastname']           = $data['demographics']['name']['family'];
-        $patient_data['workphone']          = $data['demographics']['phone']['work'];
-        $patient_data['homephone']          = $data['demographics']['phone']['home'];
-        $patient_data['cellphone']          = $data['demographics']['phone']['mobile'];
-        $patient_data['email']              = $data['demographics']['email'];
-        $patient_data['addressline1']       = $data['demographics']['address']['street'][0];
-        $patient_data['addressline2']       = $this->validateKey($data['demographics']['address']['street'], 1);
-        $patient_data['city']               = $data['demographics']['address']['city'];
-        $patient_data['zip']                = $data['demographics']['address']['zip'];
-        $patient_data['country']            = $data['demographics']['address']['country'];
-        $patient_data['birthdate']          = date('Y-m-d', strtotime($data['demographics']['dob']));
-        $patient_data['gender']             = $data['demographics']['gender'];
-        $patient_data['preferredlanguage']  =$data['demographics']['language'];
-        // $patient_data['status']         = $data['demographics']['name']['family'];
-        // $patient_data['statusdate']     = $data['demographics']['name']['family'];
-        // $patient_data['insurancecarrier']= $data['demographics']['name']['family'];
-        // $patient_data['lastfourssn']    = $data['demographics']['name']['family'];
-        $patient = Patient::find($patient_id);
-        if ($patient) {
-            $patient->update($patient_data);
-            return 'succesful';
-        }
-        return 'unsuccessful';
-    }
 
     public function updateDemographics($patient_id)
     {
         $ccda = Ccda::where('patient_id', $patient_id)->orderBy('created_at', 'desc')->first();
+        if(!($ccda))
+           return false;
+
         $data = json_decode($ccda->ccdablob, true);
         $patient_data = Patient::find($patient_id)->toArray();
         if ($patient_data) {
@@ -270,7 +248,7 @@ class CcdaController extends Controller
             $data['city']           = $patient_data['city'];
             $data['zip']            = $patient_data['zip'];
             $data['country']        = $patient_data['country'];
-            $data['birthdate']      = $patient_data['birthdate'];
+            $data['birthdate']      = date('Y-m-d', strtotime($patient_data['birthdate']));
             $data['gender']         = $patient_data['gender'];
             $data['preferredlanguage']= $patient_data['preferredlanguage'];
             return $data;
@@ -278,18 +256,43 @@ class CcdaController extends Controller
         }
     }
 
-    public function updateCCDA(Request $request)
+    public function updatePatientDemographics(Request $request)
     {
         $data = $request->all();
-
         $patient_id = $data['patient_id'];
         unset($data['patient_id']);
         unset($data['_token']);
         $patient = Patient::find($patient_id);
         if ($patient) {
             $patient->update($data);
-            return 'true';
+            return $patient_id;
         }
         return 'false';
     }
+
+    public function showCCDA($patient_id){
+        $ccda = Ccda::where('patient_id', $patient_id)->orderBy('created_at', 'desc')->first();
+        if(!($ccda))
+            return 'nofile';
+        $data = json_decode($ccda->ccdablob, true);
+        $xmlfile= $this->genrateXml($data);
+
+        $xml = new DOMDocument;
+        $xml->load($xmlfile);
+
+
+        $xsl = new DOMDocument;
+        $xsl->load(public_path().'/lib/xslt/CDA.xsl');
+
+        $proc = new XSLTProcessor;
+        $proc->importStyleSheet($xsl);
+        unlink($xmlfile);
+
+        return $proc->transformToXML($xml);
+
+    }
+
+
+
 }
+?>

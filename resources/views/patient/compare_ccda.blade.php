@@ -79,7 +79,7 @@
                                         <input type="checkbox" name="workphone" value="">
                                     </div>
                                     <div class="col-md-3 col-xs-3 col-xm-3">
-                                        <p><strong>workphone</strong></p>
+                                        <p><strong>Workphone</strong></p>
                                     </div>
                                     <div class="col-md-4 col-xs-4 col-xm-4">
                                         <p class="ocuhub_data">Ocuhub@gmail.com</p>
@@ -93,7 +93,7 @@
                                         <input type="checkbox" name="homephone" value="">
                                     </div>
                                     <div class="col-md-3 col-xs-3 col-xm-3">
-                                        <p><strong>homephone</strong></p>
+                                        <p><strong>Homephone</strong></p>
                                     </div>
                                     <div class="col-md-4 col-xs-4 col-xm-4">
                                         <p class="ocuhub_data">Ocuhub@gmail.com</p>
@@ -107,7 +107,7 @@
                                         <input type="checkbox" name="cellphone" value="">
                                     </div>
                                     <div class="col-md-3 col-xs-3 col-xm-3">
-                                        <p><strong>cellphone</strong></p>
+                                        <p><strong>Cellphone</strong></p>
                                     </div>
                                     <div class="col-md-4 col-xs-4 col-xm-4">
                                         <p class="ocuhub_data">Ocuhub@gmail.com</p>
@@ -121,7 +121,7 @@
                                         <input type="checkbox" name="email" value="">
                                     </div>
                                     <div class="col-md-3 col-xs-3 col-xm-3">
-                                        <p><strong>email</strong></p>
+                                        <p><strong>Email</strong></p>
                                     </div>
                                     <div class="col-md-4 col-xs-4 col-xm-4">
                                         <p class="ocuhub_data">Ocuhub@gmail.com</p>
@@ -135,7 +135,7 @@
                                         <input type="checkbox" name="addressline1" value="">
                                     </div>
                                     <div class="col-md-3 col-xs-3 col-xm-3">
-                                        <p><strong>addressline1</strong></p>
+                                        <p><strong>Addressline1</strong></p>
                                     </div>
                                     <div class="col-md-4 col-xs-4 col-xm-4">
                                         <p class="ocuhub_data">Ocuhub@gmail.com</p>
@@ -149,7 +149,7 @@
                                         <input type="checkbox" name="addressline2" value="">
                                     </div>
                                     <div class="col-md-3 col-xs-3 col-xm-3">
-                                        <p><strong>addressline2</strong></p>
+                                        <p><strong>Addressline2</strong></p>
                                     </div>
                                     <div class="col-md-4 col-xs-4 col-xm-4">
                                         <p class="ocuhub_data">Ocuhub@gmail.com</p>
@@ -163,7 +163,7 @@
                                         <input type="checkbox" name="city" value="">
                                     </div>
                                     <div class="col-md-3 col-xs-3 col-xm-3">
-                                        <p><strong>city</strong></p>
+                                        <p><strong>City</strong></p>
                                     </div>
                                     <div class="col-md-4 col-xs-4 col-xm-4">
                                         <p class="ocuhub_data">Ocuhub@gmail.com</p>
@@ -205,7 +205,7 @@
                                         <input type="checkbox" name="birthdate" value="">
                                     </div>
                                     <div class="col-md-3 col-xs-3 col-xm-3">
-                                        <p><strong>birthdate</strong></p>
+                                        <p><strong>Birthdate</strong></p>
                                     </div>
                                     <div class="col-md-4 col-xs-4 col-xm-4">
                                         <p class="ocuhub_data">Ocuhub@gmail.com</p>
@@ -219,7 +219,7 @@
                                         <input type="checkbox" name="gender" value="">
                                     </div>
                                     <div class="col-md-3 col-xs-3 col-xm-3">
-                                        <p><strong>gender</strong></p>
+                                        <p><strong>Gender</strong></p>
                                     </div>
                                     <div class="col-md-4 col-xs-4 col-xm-4">
                                         <p class="ocuhub_data">Ocuhub@gmail.com</p>
@@ -233,7 +233,7 @@
                                         <input type="checkbox" name="preferredlanguage" value="">
                                     </div>
                                     <div class="col-md-3 col-xs-3 col-xm-3">
-                                        <p><strong>preferredlanguage</strong></p>
+                                        <p><strong>Language</strong></p>
                                     </div>
                                     <div class="col-md-4 col-xs-4 col-xm-4">
                                         <p class="ocuhub_data">Ocuhub@gmail.com</p>
@@ -250,6 +250,9 @@
 
                     </div>
                     <p class="success_message"></p>
+                    <div class="view_patient_ccda">
+
+                    </div>
 
                 </div>
             </div>

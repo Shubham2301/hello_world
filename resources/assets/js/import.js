@@ -25,7 +25,7 @@ $(document).ready(function() {
     $('#import_ccda_button').on('click', function() {
         var id = $(this).attr('data-id');
         $('#ccda_patient_id').val(id);
-       // $('.import_form').addClass('active');
+        // $('.import_form').addClass('active');
         $('.success_message').text('');
         $('.success_message').removeClass('active');
         $('.save_ccda_button').addClass('active');
@@ -35,29 +35,74 @@ $(document).ready(function() {
         saveCcdafile();
     });
     $('.compare_ccda_button').on('click', function() {
-
         updatePatientData();
     });
-    $('#compare_ccda_button').on('click',function(){
+    $('#compare_ccda_button').on('click', function() {
         $('.compare_form').addClass('active');
         $('.success_message').text(" ");
         $('.success_message').removeClass('active');
         $('.compare_ccda_button').addClass('active');
         $('.dismiss_button').text('Cancel');
+        $('.compare_row_item').each(function() {
+            $(this).find('input').prop('checked', false);
+        });
     });
-    $('#checked_all').change(function(){
-        if($(this).is(":checked")) {
-            $('.compare_row_item').each(function () {
+    $('#checked_all').change(function() {
+        if ($(this).is(":checked")) {
+            $('.compare_row_item').each(function() {
                 $(this).find('input').prop('checked', true);
             });
-        }
-        else
-            $('.compare_row_item').each(function () {
+        } else
+            $('.compare_row_item').each(function() {
                 $(this).find('input').prop('checked', false);
             });
     });
+    $('#download_ccda').on('click', function() {
+        var url = $('#download_ccda').attr('data-href');
+        getCcdaFile(url);
+    })
+    $('#view_ccda').on('click', function() {
+        var url = $(this).attr('data-href');
+        showCCDA(url);
+    });
+    $('.dismiss_button').on('click', function() {
+        $('.view_patient_ccda').removeClass('active');
+        $('.view_patient_ccda').html(' ');
+    });
 
 });
+
+
+function getCcdaFile(url) {
+
+    $.ajax({
+        url: url,
+        type: 'GET',
+        contentType: 'text/html',
+        async: false,
+        success: function(e) {
+            if (e != 'nofile') {
+                window.location = url;
+            } else {
+                $('#compare_ccda_button').trigger('click');
+                $('.update_header').removeClass('active');
+                $('.compare_form').removeClass('active');
+                $('.success_message').text("No File Found!");
+                $('.success_message').addClass('active');
+                $('.compare_ccda_button').removeClass('active');
+                $('.dismiss_button').text('Ok');
+
+
+            }
+        },
+        error: function() {
+
+        },
+        cache: false,
+        processData: false
+    });
+}
+
 
 function getLocation(id) {
     var formData = {
@@ -134,29 +179,7 @@ function saveCcdafile() {
     });
 }
 
-function updatePatientData() {
-    var myform = document.getElementById("compare_ccda_form");
-    var fd = new FormData(myform);
-    $.ajax({
-        url: "update/ccda",
-        data: fd,
-        cache: false,
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function(dataofconfirm) {
-            if(dataofconfirm != 'false'){
-            $('.compare_form').removeClass('active');
-            $('.success_message').text("you have successfully updated the data");
-            $('.success_message').addClass('active');
-            $('.compare_ccda_button').removeClass('active');
-            $('.dismiss_button').text('Ok');
-            }
-        }
-    });
-}
-
-function showComparisionData(data){
+function showComparisionData(data) {
 
     $('.ccda_email').find('input').val(data.ccda.email);
     $('.ccda_email').find('.ocuhub_data').text(data.patient.email);
@@ -225,3 +248,39 @@ function showComparisionData(data){
 
 }
 
+function showCCDA(url) {
+    $.ajax({
+        url: url,
+        type: 'GET',
+        contentType: 'text/html',
+        async: false,
+        success: function(e) {
+            if (e != 'nofile') {
+                $('#compare_ccda_button').trigger('click');
+                $('.update_header').removeClass('active');
+                $('.compare_form').removeClass('active');
+                $('.success_message').text("No File Found!");
+                $('.success_message').removeClass('active');
+                $('.compare_ccda_button').removeClass('active');
+                $('.view_patient_ccda').addClass('active');
+                $('.view_patient_ccda').html(e);
+                $('.dismiss_button').text('Ok');
+            } else {
+
+                $('#compare_ccda_button').trigger('click');
+                $('.update_header').removeClass('active');
+                $('.compare_form').removeClass('active');
+                $('.success_message').text("No File Found!");
+                $('.success_message').removeClass('active');
+                $('.compare_ccda_button').removeClass('active');
+                $('.dismiss_button').text('Ok');
+
+            }
+        },
+        error: function() {
+
+        },
+        cache: false,
+        processData: false
+    });
+}

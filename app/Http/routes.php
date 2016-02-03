@@ -78,8 +78,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/showvitals/{id}', array('uses'=>'CcdaController@showVitals','as'=>'showvitals'));
     Route::get('import/location', 'BulkImportController@getLocations');
     Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
-    Route::post('update/ccda', 'CcdaController@updateCCDA');
-
+    Route::post('update/ccda', 'CcdaController@updatePatientDemographics');
+    Route::get('show/ccda/{id}', 'CcdaController@showCCDA');
 
     //support routes
     Route::get('terms', 'SupportController@termsIndex');

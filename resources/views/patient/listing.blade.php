@@ -9,16 +9,16 @@
             <br>
 
             <div class="dropdown">
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle ccda_text" >Patient File <b class="caret"></b></a>
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle ccda_text">Patient File <b class="caret"></b></a>
                 <ul class="dropdown-menu " id="ccda_dropdown">
                     <li style="cursor:pointer;">
-                        <a href=""> <img class="ccda_view_icon" src="{{URL::asset('images/view-icon.png')}}" alt=""> View</a>
+                        <p data-href="" id="view_ccda"> <img class="ccda_view_icon" src="{{URL::asset('images/view-icon.png')}}" alt=""> View</a>
                     </li>
                     <li style="cursor:pointer;">
-                        <p id="import_ccda_button" data-toggle="modal" data-target="#importCcda" data-id=""><img class="ccda_upload_icon" src="{{URL::asset('images/arrow-up-icon.png')}}" alt=""> Upload</p>
+                        <p id="import_ccda_button" data-toggle="modal" data-target="#importCcda" data-id=""><img class="ccda_upload_icon" src="{{URL::asset('images/arrow-up-icon.png')}}" alt=""> Upload </p>
                     </li>
                     <li style="cursor:pointer;">
-                        <a href="" id="download_ccda"> <img class="ccda_download_icon" src="{{URL::asset('images/arrow-down-icon.png')}}" alt=""> Download </a>
+                        <p data-href="" id="download_ccda"> <img class="ccda_download_icon" src="{{URL::asset('images/arrow-down-icon.png')}}" alt=""> Download </p>
                     </li>
                 </ul>
             </div>

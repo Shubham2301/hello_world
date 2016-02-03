@@ -67,6 +67,8 @@
 .success_message {
     color: black;
     display: none;
+    text-align: center;
+    color: darkgreen;
     &.active {
         display: block;
     }
@@ -96,23 +98,20 @@
     color: black;
 }
 
-
-
 .save_ccda_button {
-        display: none;
-        color: black;
-        background-color: #fff;
-        border-color: #ccc;
-        &.active {
-            display: inline;
-        }
-        &:hover {
-            background-color: #0071bc;
-            border-color: #0071bc;
-            color: #fff;
-        }
+    display: none;
+    color: black;
+    background-color: #fff;
+    border-color: #ccc;
+    &.active {
+        display: inline;
     }
-
+    &:hover {
+        background-color: #0071bc;
+        border-color: #0071bc;
+        color: #fff;
+    }
+}
 
 .compare_ccda {
     color: black;
@@ -125,19 +124,18 @@
 
 .update_header {
     color: black;
-    margin-left:30%;
+    margin-left: 30%;
     display: none;
-    &.active{
+    &.active {
         display: block;
     }
-
 }
 
 .import_header {
     color: black;
-    margin-left:39%;
+    margin-left: 39%;
     display: none;
-    &.active{
+    &.active {
         display: block;
     }
 }
@@ -158,7 +156,6 @@
 
 .row_content {
     height: 20px;
-
 }
 
 .campare_items {
@@ -182,8 +179,6 @@
     }
 }
 
-
-
 #ccda_dropdown {
     background: @light-gray;
     background-color: #ebeced;
@@ -191,10 +186,15 @@
     border-radius: 5px;
     text-align: center;
     width: 10em;
-    margin-left:3.5em;
+    margin-left: 3.5em;
     color: black;
 }
 
+#ccda_dropdown>li {
+    &:hover {
+        opacity: 0.7;
+    }
+}
 
 #ccda_dropdown>li>a {
     margin: 0.85em 0.25em;
@@ -206,6 +206,7 @@
         width: 24px;
     }
 }
+
 .ccda_view_icon {
     width: 24px;
     height: 15px;
@@ -225,9 +226,16 @@
 }
 
 .ccda_text {
-    color:black;
-    &:hover{
-    color:black;
-    text-decoration: none;
+    color: black;
+    &:hover {
+        color: black;
+        text-decoration: none;
+    }
+}
+
+.view_patient_ccda {
+    display: none;
+    &.active {
+        display: block;
     }
 }

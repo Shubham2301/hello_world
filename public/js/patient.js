@@ -135,7 +135,8 @@ function showPatientInfo(data) {
     $('.action-btns').removeClass('active');
     $('#import_patients').hide();
     $('#import_ccda_button').attr('data-id', data.id);
-    $('#download_ccda').attr('href', '/download/' + data.id);
+    $('#download_ccda').attr('data-href', '/download/' + data.id);
+    $('#view_ccda').attr('data-href', '/show/ccda/' + data.id);
 }
 
 function getPatientInfo(formData) {
@@ -219,5 +220,33 @@ function selectProvider(id) {
 
     $('#form_patient_id').val(id);
     $('#form_select_provider').submit();
+}
+
+function updatePatientData() {
+    var myform = document.getElementById("compare_ccda_form");
+    var fd = new FormData(myform);
+    $.ajax({
+        url: "update/ccda",
+        data: fd,
+        cache: false,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function success(dataofconfirm) {
+            if (dataofconfirm != 'false') {
+                $('.update_header').removeClass('active');
+                $('.compare_form').removeClass('active');
+                $('.success_message').text("You have successfully updated the data.");
+                $('.success_message').addClass('active');
+                $('.compare_ccda_button').removeClass('active');
+                $('.dismiss_button').text('OK');
+            }
+
+            var formData = {
+                'id': dataofconfirm
+            };
+            getPatientInfo(formData);
+        }
+    });
 }
 //# sourceMappingURL=patient.js.map

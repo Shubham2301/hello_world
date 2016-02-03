@@ -8,7 +8,7 @@ class Patient extends Model
 {
 
     protected $fillable = ['title','firstname','lastname','workphone','homephone','cellphone','email','addressline1','addressline2','city',
-                           'zip','lastfourssn','birthdate','gender','insurancecarrier','country'];
+                           'zip','lastfourssn','birthdate','gender','insurancecarrier','country','preferredlanguage'];
     public static function getPatients($filters)
     {
        return self::where(function ($query) use ($filters) {
