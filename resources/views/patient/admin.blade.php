@@ -24,7 +24,7 @@
 
 @if(! empty($data['referraltype_id']))
 
-@include('patient.addnew')
+@include('patient.create')
 
 @endif
 

@@ -119,7 +119,7 @@ class BulkImportController extends Controller
 
                             }
                         }
-                        
+
                         break;
                 }
 

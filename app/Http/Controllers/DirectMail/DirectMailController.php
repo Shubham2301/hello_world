@@ -3,19 +3,17 @@
 namespace myocuhub\Http\Controllers\DirectMail;
 
 use Illuminate\Http\Request;
-use myocuhub\Services\SES\SESConnect;
-use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Services\SES\SESConnect;
 
 class DirectMailController extends Controller
 {
     private $sesConnect;
 
-    function __construct(SESConnect $sesConnect)
+    public function __construct(SESConnect $sesConnect)
     {
         $this->sesConnect = $sesConnect;
     }
-
 
     /**
      * Display a listing of the resource.
@@ -26,7 +24,7 @@ class DirectMailController extends Controller
     {
         $ses = $this->sesConnect->getDirectMail();
 
-        if(!$ses['direct_mail_str']){
+        if (!$ses['direct_mail_str']) {
             $request->session()->flash('no_direct_mail', 'You do not have a direct mail access. If you feel this is in error, please contact the OcuHub administrator for assistance.');
         }
 

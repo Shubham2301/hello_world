@@ -1,138 +1,27 @@
 <div class="overview row before_drilldown">
+    @foreach($overview['stages'] as $stage)
     <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
-        <div class="info_box" id="0" data-name="Contact Status">
-           <div class="top">
-                <div class="info_section" id="0" data-name="Contact Attempted">
-                       <div class="info_section_title">Contact Attempted</div>
-                            <div class="right">
-                                <div class="circle green"></div>
-                                <div class="info_section_number">7</div>
-                            </div>
+        <div class="info_box" id="{{ $stage['name'] }}" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}">
+            <div class="top">
+                @if(isset($stage['kpis']))
+                @for($i = 0; $i < $stage['kpi_count']; $i++)
+                <div class="info_section" id="{{ $stage['kpis'][$i]['name'] }}" data-indicator="{{ $stage['kpis'][$i]['color_indicator'] }}" data-name="{{ $stage['kpis'][$i]['display_name'] }}">
+                    <div class="info_section_title">{{ $stage['kpis'][$i]['display_name'] }}</div>
+                    <div class="right">
+                        <div class="circle" style="background-color:{{ $stage['kpis'][$i]['color_indicator'] }}"></div>
+                        <div class="info_section_number">{{ $stage['kpis'][$i]['count'] }}</div>
+                    </div>
                 </div>
+                @if($i < $stage['kpi_count'] - 1)
                 <div class="section_break"></div>
-                <div class="info_section" id="1" data-name="Contact Pending">
-                    <div class="info_section_title">Contact Pending</div>
-                    <div class="right">
-                    <div class="circle red"></div>
-                    <div class="info_section_number">9</div>
-                    </div>
-                </div>
-                </div>
-            <div class="bottom stage">
-                <p>Contact Status</p>
-            </div>
-        </div>
-    </div>
-    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
-        <div class="info_box" id="11" data-name="Schedule for appointment">
-           <div class="top">
-                <div class="info_section" id="2" data-name="Future Appointment">
-                    <div class="info_section_title">Future Appointment</div>
-                    <div class="right">
-                    <div class="circle green"></div>
-                    <div class="info_section_number">15</div>
-                    </div>
-                </div>
-                <div class="section_break"></div>
-                <div class="info_section" id="3" data-name="Appointment Tommorow">
-                    <div class="info_section_title">Appointment Tommorow</div>
-                    <div class="right">
-                    <div class="circle yellow"></div>
-                    <div class="info_section_number">8</div>
-                    </div>
-                </div>
-                <div class="section_break"></div>
-                <div class="info_section" id="4" data-name="Past Appointment">
-                    <div class="info_section_title">Past Appointment</div>
-                    <div class="right">
-                    <div class="circle red"></div>
-                    <div class="info_section_number">5</div>
-                    </div>
-                </div>
-            </div>
-            <div class="bottom stage">
-                <p>Scheduled for appointment</p>
-            </div>
-        </div>
-    </div>
-    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
-        <div class="info_box">
-           <div class="top">
-                <div class="info_section">
-                    <div class="info_section_title">Pending Information</div>
-                    <div class="right">
-                    <div class="circle green"></div>
-                    <div class="info_section_number">3</div>
-                    </div>
-                </div>
-                <div class="section_break"></div>
-                <div class="info_section">
-                    <div class="info_section_title">Cancelled</div>
-                    <div class="right">
-                    <div class="circle yellow"></div>
-                    <div class="info_section_number">0</div>
-                    </div>
-                </div>
-                <div class="section_break"></div>
-                <div class="info_section">
-                    <div class="info_section_title">No Show</div>
-                    <div class="right">
-                    <div class="circle red"></div>
-                    <div class="info_section_number">13</div>
-                    </div>
-                </div>
+                @endif
+                @endfor
+                @endif
             </div>
             <div class="bottom">
-                <p>Post Appointment</p>
+                <p>{{ $stage['display_name'] }}</p>
             </div>
         </div>
     </div>
-    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
-        <div class="info_box">
-           <div class="top">
-                <div class="info_section">
-                    <div class="info_section_title">Waiting for report</div>
-                    <div class="right">
-                    <div class="circle green"></div>
-                    <div class="info_section_number">7</div>
-                    </div>
-                </div>
-                <div class="section_break"></div>
-                <div class="info_section">
-                    <div class="info_section_title">Report Overdue</div>
-                    <div class="right">
-                    <div class="circle red"></div>
-                    <div class="info_section_number">3</div>
-                    </div>
-                </div>
-            </div>
-            <div class="bottom">
-                <p>Exam Report Status</p>
-            </div>
-        </div>
-    </div>
-    <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-xs-6">
-    <div class="info_box">
-       <div class="top">
-            <div class="info_section">
-                <div class="info_section_title">Ready to be completed</div>
-                <div class="right">
-                <div class="circle green"></div>
-                <div class="info_section_number">4</div>
-                </div>
-            </div>
-            <div class="section_break"></div>
-            <div class="info_section">
-                <div class="info_section_title">Overdue</div>
-                <div class="right">
-                <div class="circle red"></div>
-                <div class="info_section_number">11</div>
-                </div>
-            </div>
-        </div>
-        <div class="bottom">
-            <p>Finalization</p>
-        </div>
-    </div>
-</div>
+    @endforeach
 </div>

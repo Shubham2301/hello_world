@@ -33,6 +33,8 @@ elixir(function (mix) {
     mix.babel(['import.js'],'public/js/import.js');
     mix.babel(['careconsole.js'],'public/js/careconsole.js');
     mix.babel(['networks.js'],'public/js/networks.js');
+    mix.babel(['tojson.js'],'public/js/tojson.js');
+    mix.babel(['toxml.js'],'public/js/toxml.js');
 
     mix.version(['css/style.css',
                 'css/directmail.css',
@@ -52,6 +54,8 @@ elixir(function (mix) {
                 'js/appointment.js',
                 'js/import.js',
                 'js/careconsole.js',
-                'js/networks.js']);
+                'js/networks.js'
+
+                ]);
 
 });

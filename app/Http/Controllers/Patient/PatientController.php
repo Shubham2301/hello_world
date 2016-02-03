@@ -39,7 +39,8 @@ class PatientController extends Controller
      */
     public function create(Request $request)
     {
-         $data = array();
+
+        $data = array();
 
         if($request->has('referraltype_id')){
             $data['referraltype_id'] = $request->input('referraltype_id');
@@ -68,6 +69,7 @@ class PatientController extends Controller
         $patient->addressline2 = $request->input('address_2');
         $patient->city = $request->input('city');
         $patient->zip = $request->input('zip');
+        $patient->birthdate = $request->input('dob');
         $patient->preferredlanguage = $request->input('preferredlanguage');
         $patient->cellphone = $request->input('phone');
         $patient->save();
@@ -89,6 +91,8 @@ class PatientController extends Controller
         
         $patient = Patient::find($id);
         
+        $patient->birthdate = date("d F Y", strtotime($patient->birthdate));
+
         return json_encode($patient);
     }
 
@@ -145,7 +149,7 @@ class PatientController extends Controller
             $data[$i]['addressline1'] = $patient->addressline1;
             $data[$i]['addressline2'] = $patient->addressline2;
             $data[$i]['city'] = $patient->city;
-            $data[$i]['birthdate'] = $patient->birthdate;
+            $data[$i]['birthdate'] = date("d F Y", strtotime($patient->birthdate));
             $i++;
         }
 
