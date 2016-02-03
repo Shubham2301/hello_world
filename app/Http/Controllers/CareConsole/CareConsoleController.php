@@ -30,6 +30,7 @@ class CareConsoleController extends Controller {
 			$overview['stages'][$i]['id'] = $stage->stage_id;
 			$overview['stages'][$i]['name'] = $stage->name;
 			$overview['stages'][$i]['display_name'] = $stage->display_name;
+			$overview['stages'][$i]['color_indicator'] = $stage->color_indicator;
 			$overview['stages'][$i]['description'] = $stage->description;
 
 			$kpis = CareconsoleStage::find($stage->stage_id)->kpi;
