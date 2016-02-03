@@ -1,6 +1,12 @@
 $(document).ready(function() {
 
-    $('#search_patient_button').on('click', function() {
+
+    $('#dob').datetimepicker({
+        format: 'YYYY/MM/DD'
+    });
+
+
+    $('#search_patient_button').on('click', function () {
         $("#add_search_option").trigger("click");
         $('#search_patient_input').val('');
         var searchdata = getsearchtype();
@@ -19,26 +25,9 @@ $(document).ready(function() {
         $('#back_to_select_patient').submit();
     });
 
-    //    $('#form_add_patients').on('submit', function () {
-    //
-    //        $.ajax({
-    //            type: "GET",
-    //            url: '/administration/patients/add',
-    ////            data: ,
-    //            dataType: 'json',
-    //            success: function (data) {
-    //                alert('sucess');
-    //            },
-    //            error: function (data) {
-    //                alert('error');
-    //            }
-    //        });
-    //
-    //    });
-
-    $('#add_patient_btn').on('click', function() {
+    $('#add_patient_btn').on('click', function () {
         $('#form_patient_id').prop('disabled', true);
-        $('#form_select_provider').attr('action', "/administration/patients");
+        $('#form_select_provider').attr('action', "/administration/patients/add");
         $('#form_select_provider').submit();
     });
     $('.patient_list').on('click', '.patient_list_item', function() {
@@ -127,9 +116,7 @@ function showPatientInfo(data) {
     $('.patient_info').addClass('active');
     $('#patient_name').text(data.firstname);
     $('#patient_email').text(data.email);
-    var d = new Date(data.birthdate);
-    var date = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
-    $('#patient_dob').text(date);
+    $('#patient_dob').text(data.birthdate);
     $('#patient_add1').text(data.addressline1 + ',');
     $('#patient_add2').text(data.addressline2 + ',');
     $('#patient_add3').text(data.city);
