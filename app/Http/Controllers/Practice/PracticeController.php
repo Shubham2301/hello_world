@@ -147,7 +147,7 @@ class PracticeController extends Controller
         $practicelocation = PracticeLocation::where('practice_id',$practice_id)->delete();
         $practices = Practice::where('id',$practice_id)->delete();
     }
-    
+
     public function search(Request $request){
         $tosearchdata = json_decode($request->input('data'),true);
         $practices =Practice::where('name','like','%'.$tosearchdata['value'].'%')->paginate(5);

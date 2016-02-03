@@ -44,9 +44,11 @@
                             <div class="col-md-2"></div>
                         </div>
                     </div>
+                    {!! Form::close()!!}
                     <p class="success_message"></p>
                 </div>
             </div>
+
             <div class="modal-footer">
                 <div style="margin-right:40%">
                     <button type="button" class="btn import_button active" >Import</button>
