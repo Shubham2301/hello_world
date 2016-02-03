@@ -53,7 +53,29 @@
         </div>
     </div>
 </div>
-
+<div class="availability active">
+    <div class="weekday">
+    <p>BUABJd</p>
+    </div>
+    <div class="weekday">
+    <p>BUABJd</p>
+    </div>
+    <div class="weekday">
+    <p>BUABJd</p>
+    </div>
+    <div class="weekday">
+    <p>BUABJd</p>
+    </div>
+    <div class="weekday">
+    <p>BUABJd</p>
+    </div>
+    <div class="weekday">
+    <p>BUABJd</p>
+    </div>
+    <div class="weekday">
+    <p>BUABJd</p>
+    </div>
+</div>
            <!--Redesign this section in a more scalable way-->
            <!--
             <div class="row">
