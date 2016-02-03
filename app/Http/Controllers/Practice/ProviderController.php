@@ -46,7 +46,7 @@ class ProviderController extends Controller {
 	public function create(Request $request) {
 
 		$action = 'New provider created';
-		$description = 'users.id = 5';
+		$description = '';
 		$filename = basename(__FILE__);
 		$ip = $request->getClientIp();
 
@@ -146,8 +146,8 @@ class ProviderController extends Controller {
 		$providerID = $request->input('provider_id');
 		$locationID = $request->input('location_id');
 
-		$providerInfo['AcctKey'] = 8042;
 		$providerInfo['LocKey'] = 3839;
+		$providerInfo['AcctKey'] = 8042;
 
 		$apptTypes = $this->fourPatientCare->getApptTypes($providerInfo);
 
@@ -160,18 +160,45 @@ class ProviderController extends Controller {
 		$providerID = $request->input('provider_id');
 		$locationID = $request->input('location_id');
 		$AppointmentType = $request->input('appointment_type');
-		$AppointmentDate = $request->input('appointment_date');
 
-		$providerInfo['AcctKey'] = 8042;
 		$providerInfo['LocKey'] = 3839;
+		$providerInfo['AcctKey'] = 8042;
 		$providerInfo['ApptTypeKey'] = $AppointmentType;
-		$providerInfo['ApptDate'] = $AppointmentDate;
 
-		$openSlots = $this->fourPatientCare->getOpenApptSlots($providerInfo);
+        $dates = $this->getDatesOfWeek('02/07/2016');
 
-		return json_encode($openSlots);
+        $slots = [];
+        $i = 0;
+        foreach($dates as $date)
+        {
+            $providerInfo['GetSlotsOnDate'] = $date;
+            $slots[$i]['date'] = $date;
+            $slots[$i]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
+            $i++;
+        }
+		return json_encode($slots);
 	}
 	public function administration(Request $request) {
 		return view('provider.admin');
 	}
+
+    protected function getDatesOfWeek($weekStart = "last monday"){
+
+        $timestampFirstDay = strtotime($weekStart);
+
+        if (date('n/j/y', $timestampFirstDay) == date('n/j/y', time() - 7*24*3600)) {
+            $timestampFirstDay += 7 * 24 * 3600;
+        }
+
+        $currentDay = $timestampFirstDay;
+        $dates = [];
+
+        for ($i = 0 ; $i < 7 ; $i++) {
+            $dates[] = date('n/j/y', $currentDay);
+            $currentDay += 24 * 3600;
+
+        }
+
+        return $dates;
+    }
 }
