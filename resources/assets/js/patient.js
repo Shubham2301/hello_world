@@ -6,14 +6,16 @@ $(document).ready(function() {
     });
 
 
-    $('#search_patient_button').on('click', function () {
+    $('#search_patient_button').on('click', function() {
         $("#add_search_option").trigger("click");
         $('#search_patient_input').val('');
         var searchdata = getsearchtype();
         if (searchdata.length != 0)
             getPatients(searchdata);
-        else
+        else {
             $('#search_patient_input').focus();
+            $('.patient_list').removeClass('active');
+        }
     });
 
     $('#add_patient_form').on('click', function() {
@@ -25,7 +27,7 @@ $(document).ready(function() {
         $('#back_to_select_patient').submit();
     });
 
-    $('#add_patient_btn').on('click', function () {
+    $('#add_patient_btn').on('click', function() {
         $('#form_patient_id').prop('disabled', true);
         $('#form_select_provider').attr('action', "/administration/patients/add");
         $('#form_select_provider').submit();
@@ -63,10 +65,14 @@ $(document).ready(function() {
             var searchoption = getOptionContent(type, value);
             $('.search_filter').append(searchoption);
             $('#search_patient_input').val('');
+            $('#search_patient_input').focus();
+
         }
     });
     $('.search_filter').on('click', '.remove_option', function() {
         $(this).parent().remove();
+        $("#search_patient_button").trigger("click");
+
     });
 
 
