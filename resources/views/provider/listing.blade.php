@@ -29,7 +29,7 @@
                     <p>
                         <span class="bold">Appointment Type</span>
                         <br>
-                        <select name="appointment-type" class="hidden" id="appointment-type">
+                        <select name="appointment-type" class="hidden appointment_type" id="appointment-type">
                         </select>
                     </p>
                 </div>
@@ -53,28 +53,15 @@
         </div>
     </div>
 </div>
-<div class="availability active">
+<div class="availability">
+<!--
     <div class="weekday">
-    <p>BUABJd</p>
+        <p class="date">02/02/2016</p>
     </div>
     <div class="weekday">
-    <p>BUABJd</p>
+        <p class="date">02/02/2016</p>
     </div>
-    <div class="weekday">
-    <p>BUABJd</p>
-    </div>
-    <div class="weekday">
-    <p>BUABJd</p>
-    </div>
-    <div class="weekday">
-    <p>BUABJd</p>
-    </div>
-    <div class="weekday">
-    <p>BUABJd</p>
-    </div>
-    <div class="weekday">
-    <p>BUABJd</p>
-    </div>
+-->
 </div>
            <!--Redesign this section in a more scalable way-->
            <!--
