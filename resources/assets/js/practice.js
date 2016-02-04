@@ -12,6 +12,7 @@ $(document).ready(function() {
     $('#back').on('click', function() {
         $('.practice_info').removeClass('active');
         $('.practice_action').addClass('active');
+        loadAllPractices();
     });
     $('#savepractice').on('click', function() {
         showinfo = true;
@@ -145,7 +146,7 @@ $(document).ready(function() {
 
     });
     $('#remove_practice').on('click', function() {
-        var val = $('#editPractice').attr('data-id');
+        var val = $('#edit_practice').attr('data-id');
         if (confirm("Are you sure?")) {
             var formData = {
                 'practice_id': val
@@ -334,7 +335,7 @@ function getPracticeInfo(formdata) {
 
 function showPracticeInfo(info) {
 
-    $('#editPractice').attr('data-id', info.practice_id);
+    $('#edit_practice').attr('data-id', info.practice_id);
     $('#the_practice_name').text(info.practice_name);
     var content = '';
     if (true) {
@@ -404,7 +405,8 @@ function removePractice(formdata) {
         data: $.param(formdata),
         contentType: 'text/html',
         async: false,
-        success: function success(e) {},
+        success: function success(e) {
+    },
         error: function error() {
             alert('Error searching');
         },
