@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
 
+
     Route::resource('careconsole', 'CareConsole\CareConsoleController');
 	Route::resource('directmail', 'DirectMail\DirectMailController');
 	Route::resource('patients', 'Patient\PatientController');
@@ -71,6 +72,17 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('home', 'HomeController');
 	Route::get('import/location', 'BulkImportController@getLocations');
 	Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
+
+
+    //Ccda routes
+    Route::post('/import/ccda', 'CcdaController@saveCcda');
+    Route::get('ccdaform', 'CcdaController@index');
+    Route::get('/addvital/{id}', 'CcdaController@addVital');
+    Route::post('/savevitals', 'CcdaController@saveVitals');
+    Route::get('/download/{id}', 'CcdaController@getxml');
+    Route::get('/showvitals/{id}', array('uses'=>'CcdaController@showVitals','as'=>'showvitals'));
+    Route::post('update/ccda', 'CcdaController@updatePatientDemographics');
+    Route::get('show/ccda/{id}', 'CcdaController@showCCDA');
 
     Route::get('terms', 'SupportController@termsIndex');
     Route::get('privacy', 'SupportController@privacyIndex');
@@ -84,16 +96,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('administration/networks', 'Admin\NetworkController');
     Route::resource('administration/permissions', 'Admin\PermissionController');
     Route::get('administration/practices', 'Practice\PracticeController@administration');
+
+
+    Route::post('administration/patients/create', 'Patient\PatientController@store');
     Route::get('administration/patients', 'Patient\PatientController@create');
     Route::post('administration/patients/add', 'Patient\PatientController@store');
     Route::post('administration/network/add', 'Admin\NetworkController@add');
     Route::get('administration/providers', 'Practice\ProviderController@administration');
-
 });
-
-Route::get('/foo', function () {
-	$u = myocuhub\Models\Practice::paginate(10);
-	return view('paginationtest')->with('u', $u);
-});
-
-Route::get('/fooo', 'Practice\PracticeController@getpages');

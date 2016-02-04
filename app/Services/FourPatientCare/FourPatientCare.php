@@ -25,7 +25,6 @@ class FourPatientCare
 
         $input['AccessID']= $this->accessID;
         $input['SecurityCode']= $this->securityCode;
-
         $client = new \SoapClient($this->wsdl , array('trace' => 1,  'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
         $response = $client->__soapCall("GetApptTypes", array($input), array('soapaction' => $this->getApptTypesAction, 'uri' => $this->host));
 
