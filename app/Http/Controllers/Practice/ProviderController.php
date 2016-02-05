@@ -165,40 +165,39 @@ class ProviderController extends Controller {
 		$providerInfo['AcctKey'] = 8042;
 		$providerInfo['ApptTypeKey'] = $AppointmentType;
 
-        $dates = $this->getDatesOfWeek('02/07/2016');
+		$dates = $this->getDatesOfWeek('02/07/2016');
 
-        $slots = [];
-        $i = 0;
-        foreach($dates as $date)
-        {
-            $providerInfo['GetSlotsOnDate'] = $date;
-            $slots[$i]['date'] = $date;
-            $slots[$i]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
-            $i++;
-        }
+		$slots = [];
+		$i = 0;
+		foreach ($dates as $date) {
+			$providerInfo['GetSlotsOnDate'] = $date;
+			$slots[$i]['date'] = $date;
+			$slots[$i]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
+			$i++;
+		}
 		return json_encode($slots);
 	}
 	public function administration(Request $request) {
 		return view('provider.admin');
 	}
 
-    protected function getDatesOfWeek($weekStart = "last monday"){
+	protected function getDatesOfWeek($weekStart = "last monday") {
 
-        $timestampFirstDay = strtotime($weekStart);
+		$timestampFirstDay = strtotime($weekStart);
 
-        if (date('n/j/y', $timestampFirstDay) == date('n/j/y', time() - 7*24*3600)) {
-            $timestampFirstDay += 7 * 24 * 3600;
-        }
+		if (date('n/j/y', $timestampFirstDay) == date('n/j/y', time() - 7 * 24 * 3600)) {
+			$timestampFirstDay += 7 * 24 * 3600;
+		}
 
-        $currentDay = $timestampFirstDay;
-        $dates = [];
+		$currentDay = $timestampFirstDay;
+		$dates = [];
 
-        for ($i = 0 ; $i < 7 ; $i++) {
-            $dates[] = date('n/j/y', $currentDay);
-            $currentDay += 24 * 3600;
+		for ($i = 0; $i < 7; $i++) {
+			$dates[] = date('n/j/y', $currentDay);
+			$currentDay += 24 * 3600;
 
-        }
+		}
 
-        return $dates;
-    }
+		return $dates;
+	}
 }
