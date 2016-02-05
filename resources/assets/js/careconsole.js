@@ -92,7 +92,7 @@ function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator) {
     $('.drilldown>.subsection-header>p').html(kpi_name);
     $('.drilldown_kpi_indicator').css('background-color', kpi_indicator);
 
-    $patients = getPatientData(stage_id, kpi_id);
+    patients = getPatientData(stage_id, kpi_id);
 }
 
 function showStageData(stage_id, stage_name) {
@@ -122,11 +122,19 @@ function getPatientData(stageID, kpiName = '') {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-            var patients = $.parseJSON(e);
+            var data = $.parseJSON(e);
             var content = '';
+            var actionList = '';
+            var patients = data.patients;
+            var actions = data.actions;
+            if (actions.length > 0) {
+                actions.forEach(function (action) {
+                    actionList += '<li><a href="#" data-id="' + action.id + '" data-name="' + action.name + '">' + action.display_name + '</a></li>';
+                });
+            }
             if (patients.length > 0) {
                 patients.forEach(function (patient) {
-                    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>' + patient.name + '</p></div><div class="col-xs-2"><p>' + patient.phone + '</p></div><div class="col-xs-2">' + patient.request_recieved + '</div><div class="col-xs-2">' + patient.appointment_date + '</div><div class="col-xs-2">' + patient.scheduled_to + '</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu' + patient.id + '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu" aria-labelledby="dropdownMenu' + patient.id + '" style="width: 150%;border-radius: 3px;margin-left: -135%;text-align: right;"><li><a href="#">Schedule Appointment</a></li><li><a href="#">Archive Patient</a></li></ul></div></div></div>';
+                    content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>' + patient.name + '</p></div><div class="col-xs-2"><p>' + patient.phone + '</p></div><div class="col-xs-2">' + patient.request_recieved + '</div><div class="col-xs-2">' + patient.appointment_date + '</div><div class="col-xs-2">' + patient.scheduled_to + '</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu' + patient.id + '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="float: right;background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu" aria-labelledby="dropdownMenu' + patient.id + '" style="width: 200%;border-radius: 3px;margin-left: -100%;text-align: right;max-height: 15em;top:2em;overflow-y:scroll">' + actionList + '</ul></div></div></div>';
                 });
 
             }

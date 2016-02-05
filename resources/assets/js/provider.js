@@ -18,6 +18,7 @@ $(document).ready(function () {
         $('.schedule_button').removeClass('active');
         $('.schedule_button').attr('data-id', 0);
         $('.schedule_button').attr('data-practice-id', 0);
+        $('.availability').removeClass('active');
         $("#add_practice_search_option").trigger("click");
         $('#search_practice_input').val('');
         var searchdata = getSearchType();
@@ -79,6 +80,7 @@ $(document).ready(function () {
         $('.schedule_button').removeClass('active');
         $('.schedule_button').attr('data-id', 0);
         $('.schedule_button').attr('data-practice-id', 0);
+        $('.availability').removeClass('active');
         $('.patient_previous_information').addClass('active');
 
     });
@@ -332,7 +334,7 @@ function getOpenSlots() {
         'appointment_type': appointment_type,
         'appointment_date': appointment_date,
     };
-
+    var content = '';
     $.ajax({
         url: '/providers/openslots',
         type: 'GET',
@@ -342,18 +344,24 @@ function getOpenSlots() {
         success: function (e) {
             e = $.parseJSON(e);
             var apptSlots = e.GetOpenApptSlotsResult;
-            if (apptSlots.length) {
-                $('#appointment-datetime').html('<option value="0">Select Appointment Schedule</option>');
-                $('#appointment-datetime').removeClass('hidden');
-            } else if (apptSlots.length === 0) {
-                $('#appointment-datetime').html('<option value="-1">No Open Slots</option>');
-                $('#appointment-datetime').removeClass('hidden');
-            }
+            e.forEach(function (elem) {
+                content += '<div class="weekday"><p class="date">' + elem.date + '</p>';
+                var slot = elem.slots['ApptSlots'];
+                if (slot) {
+                    slot.forEach(function (time) {
+                        //                    content += '<div class="weekday"><p class="date">' + elem.date + '</p>';
+                        content += '<p class="appointment_start_time">' + time.ApptStartTime + '</p>';
+                    });
+                }
+                content += '</div>'
+            });
         },
         error: function () {},
         cache: false,
         processData: false
     });
+    $('.availability').html(content);
+    $('.availability').addClass('active');
 
 }
 
