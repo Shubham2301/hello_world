@@ -134,6 +134,7 @@ class ProviderController extends Controller {
 			$data[$i]['practice_id'] = $provider->id;
 			$data[$i]['provider_name'] = $provider->firstname . ' ' . $provider->lastname;
 			$data[$i]['practice_name'] = $provider->name;
+			$data[$i]['practice_speciality'] = $provider->speciality;
 			$i++;
 		}
 
@@ -160,22 +161,29 @@ class ProviderController extends Controller {
 		$providerID = $request->input('provider_id');
 		$locationID = $request->input('location_id');
 		$AppointmentType = $request->input('appointment_type');
+		$AppointmentDate = $request->input('appointment_date');
 
 		$providerInfo['LocKey'] = 3839;
 		$providerInfo['AcctKey'] = 8042;
 		$providerInfo['ApptTypeKey'] = $AppointmentType;
 
-        $dates = $this->getDatesOfWeek('02/07/2016');
+        $dates = $this->getDatesOfWeek($AppointmentDate);
+
 
         $slots = [];
-        $i = 0;
-        foreach($dates as $date)
-        {
-            $providerInfo['GetSlotsOnDate'] = $date;
-            $slots[$i]['date'] = $date;
-            $slots[$i]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
-            $i++;
-        }
+        $providerInfo['GetSlotsOnDate'] = $AppointmentDate;
+        $slots[0]['date'] = $AppointmentDate;
+        $slots[0]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
+
+
+//        $i = 0;
+//        foreach($dates as $date)
+//        {
+//            $providerInfo['GetSlotsOnDate'] = $date;
+//            $slots[$i]['date'] = $date;
+//            $slots[$i]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
+//            $i++;
+//        }
 		return json_encode($slots);
 	}
 	public function administration(Request $request) {
