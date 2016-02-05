@@ -149,7 +149,7 @@ class PatientController extends Controller
             $data[$i]['addressline1'] = $patient->addressline1;
             $data[$i]['addressline2'] = $patient->addressline2;
             $data[$i]['city'] = $patient->city;
-            $data[$i]['birthdate'] = date("d F Y", strtotime($patient->birthdate));
+            $data[$i]['birthdate'] = date('Y-m-d', strtotime($patient->birthdate));
             $i++;
         }
 

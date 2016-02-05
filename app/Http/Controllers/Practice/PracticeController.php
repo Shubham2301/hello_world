@@ -45,6 +45,7 @@ class PracticeController extends Controller
              $practicelocation->city =$location['city'];
              $practicelocation->state =$location['state'];
              $practicelocation->zip =$location['zip'];
+             $practicelocation->location_code =$location['location_code'];
              $practicelocation->save();
         }
 
@@ -113,6 +114,7 @@ class PracticeController extends Controller
              $practicelocation->city =$location['city'];
              $practicelocation->state =$location['state'];
              $practicelocation->zip =$location['zip'];
+             $practicelocation->location_code =$location['location_code'];
              $practicelocation->save();
 
         }
