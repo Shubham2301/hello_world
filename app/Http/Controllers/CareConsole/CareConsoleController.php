@@ -115,6 +115,7 @@ class CareConsoleController extends Controller {
 		$kpiName = $request->kpi;
 		$patients = [];
 		$patientsData = [];
+        $actions = [];
 
 		if ($kpiName !== '' && isset($stageID)) {
 			$patients = $this->KPIService->getPatients($kpiName, $networkID, $stageID);
@@ -135,7 +136,11 @@ class CareConsoleController extends Controller {
 			$patientsData[$i]['request_received'] = '-';
 			$i++;
 		}
-		return json_encode($patientsData);
+
+        $drilldown['patients'] = $patientsData;
+        $drilldown['actions'] = CareconsoleStage::find($stageID)->actions;
+
+		return json_encode($drilldown);
 	}
 
 }
