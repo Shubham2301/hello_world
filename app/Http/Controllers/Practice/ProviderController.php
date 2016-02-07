@@ -45,12 +45,6 @@ class ProviderController extends Controller {
 	 */
 	public function create(Request $request) {
 
-		$action = 'New provider created';
-		$description = '';
-		$filename = basename(__FILE__);
-		$ip = $request->getClientIp();
-
-		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 	}
 
 	/**
@@ -60,7 +54,7 @@ class ProviderController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request) {
-		//
+		
 	}
 
 	/**

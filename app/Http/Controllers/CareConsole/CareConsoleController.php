@@ -7,6 +7,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Network;
+use myocuhub\Services\ActionService;
 use myocuhub\Services\KPI\KPIService;
 
 class CareConsoleController extends Controller {
@@ -16,9 +17,11 @@ class CareConsoleController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	private $KPIService;
+	private $ActionService;
 
-	public function __construct(KPIService $KPIService) {
+	public function __construct(KPIService $KPIService, ActionService $ActionService) {
 		$this->KPIService = $KPIService;
+		$this->ActionService = $ActionService;
 	}
 
 	public function index() {
@@ -115,7 +118,7 @@ class CareConsoleController extends Controller {
 		$kpiName = $request->kpi;
 		$patients = [];
 		$patientsData = [];
-        $actions = [];
+		$actions = [];
 
 		if ($kpiName !== '' && isset($stageID)) {
 			$patients = $this->KPIService->getPatients($kpiName, $networkID, $stageID);
@@ -137,10 +140,18 @@ class CareConsoleController extends Controller {
 			$i++;
 		}
 
-        $drilldown['patients'] = $patientsData;
-        $drilldown['actions'] = CareconsoleStage::find($stageID)->actions;
+		$drilldown['patients'] = $patientsData;
+		$drilldown['actions'] = CareconsoleStage::find($stageID)->actions;
 
 		return json_encode($drilldown);
+	}
+
+	public function action(Request $request) {
+		$actionID = $request->action_id;
+		$postActionID = $request->post_action_id;
+		$date = $request->date;
+		$notes = $request->notes;
+		$this->ActionService->userAction($actionID, $postActionID, $date, $notes);
 	}
 
 }
