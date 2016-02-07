@@ -131,7 +131,8 @@ class CareConsoleController extends Controller {
 		}
 
 		foreach ($patients as $patient) {
-			$patientsData[$i]['id'] = $patient['id'];
+			$patientsData[$i]['console_id'] = $patient['id'];
+			$patientsData[$i]['patient_id'] = $patient['patient_id'];
 			$patientsData[$i]['name'] = $patient['firstname'] . ' ' . $patient['lastname'];
 			$patientsData[$i]['phone'] = $patient['cellphone'];
 			$patientsData[$i]['appointment_date'] = '-';
@@ -151,7 +152,8 @@ class CareConsoleController extends Controller {
 		$postActionID = $request->post_action_id;
 		$date = $request->date;
 		$notes = $request->notes;
-		$this->ActionService->userAction($actionID, $postActionID, $date, $notes);
+		$consoleID = $request->console_id;
+		$this->ActionService->userAction($actionID, $postActionID, $date, $notes, $consoleID);
 	}
 
 }

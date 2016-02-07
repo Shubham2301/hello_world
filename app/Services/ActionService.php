@@ -2,8 +2,11 @@
 
 namespace myocuhub\Services;
 
-use myocuhub\Models\Actions;
+use myocuhub\Models\Action;
+use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
+use myocuhub\Models\ContactHistory;
+use myocuhub\Models\KPI;
 
 class ActionService {
 
@@ -18,14 +21,15 @@ class ActionService {
 	 * @return mixed
 	 */
 	public function userAction($actionID, $postActionID, $date, $notes, $consoleID) {
-		$actionName = Actions::find($actionID)->name;
+		$actionName = Action::find($actionID)->name;
 
 		$contact = new ContactHistory;
 		$contact->action_id = $actionID;
 		$contact->post_action_id = $postActionID;
-		$contact->notes = $actionID;
+		$contact->notes = $notes;
+		$contact->console_id = $consoleID;
+		$contact->contact_activity_date = $date;
 		$contact->save();
-		$contact->id;
 		switch ($actionName) {
 			case 'contact-attempted-by-phone':
 			case 'contact-attempted-by-email':
@@ -40,22 +44,62 @@ class ActionService {
 			case 'other-reasons-for-declining':
 			case 'no-need-to-schedule':
 			case 'no-insurance':
+				$console = CareConsole::find($consoleID);
+				$console->archived = 1;
+				$console->save();
 				break;
 			case 'kept-appointment':
-			case 'no-show':
-			case 'cancelled':
-				$contact = new ContactHistory;
-				$contact->action_id = $actionID;
-				$contact->post_action_id = $postActionID;
-				$contact->notes = $actionID;
-				$contact->save();
-				$contact->id;
 				$console = CareConsole::find($consoleID);
 				if ($console->stage_id == 2) {
+					$appointment = Appointment::find($console->appointment_id);
+					$kpi = KPI::where('name', 'pending-information')->first();
+					$appointment->appointment_status = $kpi['id'];
+					$appointment->save();
 					$console->stage_id = 3;
 					$console->save();
 				} else if ($console->stage_id == 3) {
+					$appointment = Appointment::find($console->appointment_id);
+					$kpi = KPI::where('name', 'waiting-for-report')->first();
+					$appointment->appointment_status = $kpi['id'];
+					$appointment->save();
 					$console->stage_id = 4;
+					$console->save();
+				}
+				break;
+			case 'no-show':
+				$console = CareConsole::find($consoleID);
+
+				if ($console->stage_id == 2) {
+					$appointment = Appointment::find($console->appointment_id);
+					$kpi = KPI::where('name', 'no-show')->first();
+					$appointment->appointment_status = $kpi['id'];
+					$appointment->save();
+					$console->stage_id = 4;
+					$console->save();
+				} else if ($console->stage_id == 3) {
+					$appointment = Appointment::find($console->appointment_id);
+					$kpi = KPI::where('name', 'no-show')->first();
+					$appointment->appointment_status = $kpi['id'];
+					$appointment->save();
+					$console->archived = 1;
+					$console->save();
+				}
+				break;
+			case 'cancelled':
+				$console = CareConsole::find($consoleID);
+				if ($console->stage_id == 2) {
+					$appointment = Appointment::find($console->appointment_id);
+					$kpi = KPI::where('name', 'cancelled')->first();
+					$appointment->appointment_status = $kpi['id'];
+					$appointment->save();
+					$console->stage_id = 4;
+					$console->save();
+				} else if ($console->stage_id == 3) {
+					$appointment = Appointment::find($console->appointment_id);
+					$kpi = KPI::where('name', 'cancelled')->first();
+					$appointment->appointment_status = $kpi['id'];
+					$appointment->save();
+					$console->archived = 1;
 					$console->save();
 				}
 				break;
@@ -69,53 +113,13 @@ class ActionService {
 					$console->save();
 				}
 				break;
-			case 'requested-data':
+			case 'annual-exam':
 				break;
-			case 'requested-data':
+			case 'refer-to-specialist':
 				break;
-			case 'requested-data':
-				break;
-
-		}
-		return $count;
-	}
-	/**
-	 * @param $kpiName
-	 * @param $networkID
-	 * @param $stageID
-	 * @return mixed
-	 */
-	public function getPatients($kpiName, $networkID, $stageID) {
-		switch ($kpiName) {
-			case 'contact-attempted':
-				$patients = Careconsole::getContactAttemptedPatients($networkID, $stageID);
-				break;
-			case 'contact-pending':
-				$patients = Careconsole::getContactPendingPatients($networkID, $stageID);
-				break;
-			case 'appointment-scheduled':
-				$patients = Careconsole::getAppointmentScheduledPatients($networkID, $stageID);
-				break;
-			case 'appointment-tomorrow':
-				$patients = Careconsole::getAppointmentTomorrowPatients($networkID, $stageID);
-				break;
-			case 'past-appointment':
-				$patients = Careconsole::getPastAppointmentPatients($networkID, $stageID);
-				break;
-			case 'pending-information':
-			case 'cancelled':
-			case 'no-show':
-			case 'waiting-for-report':
-			case 'reports-overdue':
-			case 'ready-to-be-completed':
-			case 'overdue':
-				$patients = Careconsole::getAppointmentStatusPatients($networkID, $stageID, $kpiName);
-				break;
-			default:
-				$patients = [];
+			case 'highrisk-contact-pcp':
 				break;
 		}
-		return $patients;
 	}
 
 }
