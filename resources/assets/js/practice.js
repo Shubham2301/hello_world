@@ -46,7 +46,8 @@ $(document).ready(function() {
             }
 
         } else {
-            alert('practice name is missing');
+            $('p.alert_message').text('practice name is missing');
+            $('#alert').modal('show');
         }
     });
     $('#add_location').on('click', function() {
@@ -192,7 +193,8 @@ function getLocationData() {
             "phone": $('#phone').val()
         });
     } else {
-        alert('all fields are required');
+        $('p.alert_message').text('all fields are required');
+        $('#alert').modal('show');
     }
 }
 
@@ -257,7 +259,8 @@ function getPractices(formData) {
 
         },
         error: function error() {
-            alert('Error searching');
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -284,7 +287,8 @@ function createPractice(formData) {
 
         },
         error: function error() {
-            alert('Error searching');
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -325,7 +329,8 @@ function getPracticeInfo(formdata) {
                 showPracticeInfo(info);
         },
         error: function() {
-            alert('Error getting practice information');
+            $('p.alert_message').text('Error getting practice information');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -390,7 +395,8 @@ function updatePracticedata(formdata) {
 
         },
         error: function error() {
-            alert('Error searching');
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -408,7 +414,8 @@ function removePractice(formdata) {
         success: function success(e) {
     },
         error: function error() {
-            alert('Error searching');
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -444,7 +451,8 @@ function getpracticepage(page) {
 
         },
         error: function error() {
-            alert('Error searching');
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false

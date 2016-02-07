@@ -125,7 +125,8 @@ function getLocation(id) {
             $('#practice_locations').html(content);
         },
         error: function() {
-            alert('Error removing');
+            $('p.alert_message').text('Error removing');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false

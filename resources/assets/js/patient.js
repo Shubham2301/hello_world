@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
 
     $('#dob').datetimepicker({
@@ -6,7 +6,7 @@ $(document).ready(function() {
     });
 
 
-    $('#search_patient_button').on('click', function() {
+    $('#search_patient_button').on('click', function () {
         $("#add_search_option").trigger("click");
         $('#search_patient_input').val('');
         var searchdata = getsearchtype();
@@ -15,24 +15,25 @@ $(document).ready(function() {
         else {
             $('#search_patient_input').focus();
             $('.patient_list').removeClass('active');
+            $('.search_filter').removeClass('active');
         }
     });
 
-    $('#add_patient_form').on('click', function() {
+    $('#add_patient_form').on('click', function () {
         $('.add_patient_form').addClass('active');
         $('.patient_admin_header').removeClass('active');
     });
 
-    $('#back_to_select_patient_btn').on('click', function() {
+    $('#back_to_select_patient_btn').on('click', function () {
         $('#back_to_select_patient').submit();
     });
 
-    $('#add_patient_btn').on('click', function() {
+    $('#add_patient_btn').on('click', function () {
         $('#form_patient_id').prop('disabled', true);
         $('#form_select_provider').attr('action', "/administration/patients/create");
         $('#form_select_provider').submit();
     });
-    $('.patient_list').on('click', '.patient_list_item', function() {
+    $('.patient_list').on('click', '.patient_list_item', function () {
         var id = $(this).attr('data-id');
         var formData = {
             'id': id
@@ -40,11 +41,12 @@ $(document).ready(function() {
         getPatientInfo(formData);
     });
 
-    $('#save_patient_info').on('click', function() {
+    $('#save_patient_info').on('click', function () {
 
     });
 
-    $('#change_patient_button').on('click', function() {
+    $('#change_patient_button').on('click', function () {
+        $('.search_filter').addClass('active');
         $('.patient_list').addClass('active');
         $('.patient_info').removeClass('active');
         $('.action-btns').addClass('active');
@@ -53,12 +55,12 @@ $(document).ready(function() {
         $('#import_patients').show();
     });
 
-    $('#select_provider_button').on('click', function() {
+    $('#select_provider_button').on('click', function () {
         var id = $(this).attr('data-id');
         selectProvider(id);
     });
 
-    $('#add_search_option').on('click', function() {
+    $('#add_search_option').on('click', function () {
         var type = $('#search_patient_input_type').val();
         var value = $('#search_patient_input').val();
         if (value != '') {
@@ -69,14 +71,14 @@ $(document).ready(function() {
 
         }
     });
-    $('.search_filter').on('click', '.remove_option', function() {
+    $('.search_filter').on('click', '.remove_option', function () {
         $(this).parent().remove();
         $("#search_patient_button").trigger("click");
 
     });
 
 
-    $('.lastseenby_show').on('click', function() {
+    $('.lastseenby_show').on('click', function () {
         $('.lastseen_content').toggleClass('active');
         if ($('.lastseen_content').hasClass('active')) {
             $('.lastseenby_icon').removeClass('glyphicon-chevron-right');
@@ -87,7 +89,7 @@ $(document).ready(function() {
         }
     });
 
-    $('.referredby_show').on('click', function() {
+    $('.referredby_show').on('click', function () {
         $('.referredby_content').toggleClass('active');
         if ($('.referredby_content').hasClass('active')) {
             $('.referredby_icon').removeClass('glyphicon-chevron-right');
@@ -98,7 +100,7 @@ $(document).ready(function() {
         }
     });
 
-    $('.insurance_provider_show').on('click', function() {
+    $('.insurance_provider_show').on('click', function () {
         $('.insurance_provider_content').toggleClass('active');
         if ($('.insurance_provider_content').hasClass('active')) {
             $('.insurance_provider_icon').removeClass('glyphicon-chevron-right');
@@ -109,7 +111,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).keypress(function(e) {
+    $(document).keypress(function (e) {
         if (e.which == 13) {
             $("#search_patient_button").trigger("click");
         }
@@ -118,6 +120,8 @@ $(document).ready(function() {
 });
 
 function showPatientInfo(data) {
+
+    $('.search_filter').removeClass('active');
     $('.patient_list').removeClass('active');
     $('.patient_info').addClass('active');
     $('#patient_name').text(data.firstname);
@@ -146,12 +150,13 @@ function getPatientInfo(formData) {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var info = $.parseJSON(e);
             showPatientInfo(info);
         },
-        error: function() {
-            alert('Error getting patient information');
+        error: function () {
+            $('p.alert_message').text('Error getting patient information');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -160,7 +165,7 @@ function getPatientInfo(formData) {
 }
 
 function getPatients(formData) {
-    $('.patient_list').addClass('active');
+    $('.search_filter').addClass('active');
     $('.patient_info').removeClass('active');
     $('.action-btns').addClass('active');
     $('#select_provider_button').removeClass('active');
@@ -176,20 +181,21 @@ function getPatients(formData) {
         }),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var patients = $.parseJSON(e);
             var content = '<p><bold>' + patients.length + '<bold> results found</p><br>';
 
             if (patients.length > 0) {
-                patients.forEach(function(patient) {
+                patients.forEach(function (patient) {
                     content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin"><div class="col-xs-6">' + patient.fname + ' ' + patient.lname + '<br> ' + patient.birthdate + ' </div><div class="col-xs-6">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
                 });
             }
             $('.patient_list').html(content);
             $('.patient_list').addClass('active');
         },
-        error: function() {
-            alert('Error searching');
+        error: function () {
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -199,7 +205,7 @@ function getPatients(formData) {
 
 function getsearchtype() {
     var searchdata = [];
-    $('.search_filter_item').each(function() {
+    $('.search_filter_item').each(function () {
         var stype = $(this).children('.item_type').text();
         var name = $(this).children('.item_value').text();
         searchdata.push({
@@ -231,7 +237,7 @@ function updatePatientData() {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: function(dataofconfirm) {
+        success: function (dataofconfirm) {
             if (dataofconfirm != 'false') {
                 $('.update_header').removeClass('active');
                 $('.compare_form').removeClass('active');

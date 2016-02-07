@@ -68,9 +68,12 @@ Section : Imports
     }
 .search_filter {
     color:black;
-    display: inline-flex;
+    display: none;
     padding-left: 1px;
     padding-top: 4px;
+    &.active{
+        display: inline-flex;
+    }
 }
 
 .search_filter_item {
@@ -93,9 +96,9 @@ Section : Imports
     cursor: pointer;
 }
 .lastseen_content {
-    visibility: hidden;
-     &.active {
-         visibility: visible;
+    display: none;
+    &.active {
+        display: inline-block;
     }
 }
 .action-btns{
@@ -116,9 +119,9 @@ Section : Imports
 }
 
 .referredby_content {
-     visibility: hidden;
-     &.active {
-        visibility: visible;
+    display: none;
+    &.active {
+        display: inline-block;
     }
 }
 
@@ -131,9 +134,9 @@ Section : Imports
 }
 
 .insurance_provider_content {
-     visibility: hidden;
-     &.active {
-        visibility: visible;
+    display: none;
+    &.active {
+        display: inline-block;
     }
 }
  /*

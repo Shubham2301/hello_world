@@ -31,6 +31,7 @@
                 <div class="col-xs-12 col-sm-9 content-right @if(!Auth::check()) {{'ocuhub_logo_blue'}} @endif">
                     @yield('content')
                 </div>
+                    @include('layouts.alert')
             </div>
             <div class="row height footer">
                 @section('footer')

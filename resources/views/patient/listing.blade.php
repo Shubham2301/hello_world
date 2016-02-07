@@ -57,60 +57,51 @@
     <div class="col-xs-12 patient_table_header">
         <div class="col-xs-4 lastseenby">
             <div class="lastseenby_show">
-                <p><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></p>
-            </div>
+            <p><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></p></div>
 
         </div>
 
         <div class="col-xs-4 referredby">
             <div class="referredby_show">
-                <p> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></p>
-            </div>
+            <p> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></p></div>
         </div>
 
         <div class="col-xs-4 insurance_provider">
             <div class="insurance_provider_show">
-                <p><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></p>
-            </div>
+            <p><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></p></div>
         </div>
     </div>
 
-    <div class="col-xs-12">
-        <div class="col-xs-4 lastseen_content">
+     <div class="col-xs-12">
+        <div class="col-xs-4">
+           <div class="lastseen_content">
             <ul>
-                <li>
-                    <p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p>
-                </li>
-                <li>
-                    <p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p>
-                </li>
+            <li><p><span class="bold">Provider</span>
+                        <br>Opthalmic Consultants</p></li>
+            <li><p><span class="bold">Doctor</span>
+                        <br>Danial Garibaldi</p></li>
             </ul>
+            </div>
         </div>
-        <div class="col-xs-4 referredby_content">
+        <div class="col-xs-4">
+           <div class="referredby_content">
             <ul>
-                <li>
-                    <p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p>
-                </li>
-                <li>
-                    <p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p>
-                </li>
+            <li><p><span class="bold">Provider</span>
+                        <br>Opthalmic Consultants</p></li>
+            <li><p><span class="bold">Doctor</span>
+                        <br>Danial Garibaldi</p></li>
             </ul>
+            </div>
         </div>
-        <div class="col-xs-4 insurance_provider_content">
+        <div class="col-xs-4">
+           <div class="insurance_provider_content">
             <ul>
-                <li>
-                    <p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p>
-                </li>
-                <li>
-                    <p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p>
-                </li>
+           <li> <p><span class="bold">Provider</span>
+                        <br>Opthalmic Consultants</p></li>
+            <li><p><span class="bold">Doctor</span>
+                        <br>Danial Garibaldi</p></li>
             </ul>
+            </div>
         </div>
     </div>
 
