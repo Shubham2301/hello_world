@@ -74,6 +74,12 @@ class PatientController extends Controller
         $patient->cellphone = $request->input('phone');
         $patient->save();
         $path = 'providers?referraltype_id='.$request->input('referraltype_id').'&action='.$request->input('action').'&patient_id='.$patient->id;
+
+        $action = 'new patient created';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
         return redirect($path);
     }
 

@@ -57,6 +57,11 @@ class RoleController extends Controller
 
         if($role) {
             $request->session()->flash('success', 'Role created Successfully!');
+            $action = 'New role created';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
             return redirect('roles');
         } else {
             return redirect()->back();

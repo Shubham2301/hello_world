@@ -44,6 +44,11 @@ class NetworkController extends Controller
         $network->zip = $request->input('zip');
         $network->save();
 
+        $action = 'New network created';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
         return redirect('/administration/networks');
     }
     /**
@@ -54,7 +59,12 @@ class NetworkController extends Controller
      */
     public function store(Request $request)
     {
+        $action = 'Store a network';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
 
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
     }
 
@@ -89,7 +99,12 @@ class NetworkController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $action = 'update network of id ='.$id;
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
     }
 
     /**
@@ -100,7 +115,12 @@ class NetworkController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $action = 'delete network of id ='.$id;
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
     }
 
     public function search(Request $request){

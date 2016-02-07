@@ -49,6 +49,12 @@ class PracticeController extends Controller
              $practicelocation->save();
         }
 
+        $action = 'new practice created';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
         return json_encode($practiceid);
     }
 
@@ -119,6 +125,12 @@ class PracticeController extends Controller
 
         }
 
+        $action = 'Edit practice';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
         return json_encode($practiceid);
 
 
@@ -148,6 +160,13 @@ class PracticeController extends Controller
         $practice_id = $request->input('practice_id');
         $practicelocation = PracticeLocation::where('practice_id',$practice_id)->delete();
         $practices = Practice::where('id',$practice_id)->delete();
+
+        $action = 'deleted practice';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
     }
 
     public function search(Request $request){

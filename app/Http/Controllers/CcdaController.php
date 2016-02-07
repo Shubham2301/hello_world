@@ -47,6 +47,13 @@ class CcdaController extends Controller
                 $data = [];
                 $data['patient'] = $this->getPatientData($ccda->patient_id);
                 $data['ccda']    = $this->getCCDAData(json_decode($ccda->ccdablob, true));
+
+                $action = 'saved new CCDA';
+                $description = '';
+                $filename = basename(__FILE__);
+                $ip = $request->getClientIp();
+                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
                 return json_encode($data);
                 //return  $this->updatePatientDemographics(json_decode($ccda->ccdablob, true), $ccda->patient_id);
                 //return redirect()->route('showvitals',$ccda->id );
@@ -265,6 +272,13 @@ class CcdaController extends Controller
         $patient = Patient::find($patient_id);
         if ($patient) {
             $patient->update($data);
+
+            $action = 'updated patient demographics';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
             return $patient_id;
         }
         return 'false';
