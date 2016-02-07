@@ -125,3 +125,53 @@ a:focus {
  ::-webkit-scrollbar-corner {
       background-color: black;
 }
+
+.modal-dialog.alert {
+  background-color: transparent;
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.modal.fade .modal-dialog {
+  -webkit-transform: translate(0, -100%);
+          transform: translate(0, -100%);
+}
+.modal.in .modal-dialog {
+  -webkit-transform: translate(0, 0);
+          transform: translate(0, 0);
+}
+.modal-body.alert{
+    display: flex;
+    flex-direction: column;
+        padding-bottom: 0em;
+    &>p.alert_message, &>p.alert_buttons{
+        padding: 1em 0 0 0;
+        font-size: 1.2em;
+        font-weight: 600;
+        align-self: center;
+        &>.btn{
+            margin: .5em .5em 0 .5em;
+            color: red;
+            background-color: #fff;
+            border-color: red;
+            &:hover{
+                color: #fff;
+                background-color: red;
+            }
+        }
+    }
+}

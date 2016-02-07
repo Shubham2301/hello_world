@@ -76,7 +76,8 @@ function removeReferralType(id) {
             $('.referral_tile[data-id="' + id + '"]').parent().remove();
         },
         error: function () {
-            alert('Error removing');
+            $('p.alert_message').text('Error removing');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -103,7 +104,8 @@ function addReferralType(id, display_name, name) {
 
         },
         error: function () {
-            alert('Error removing');
+            $('p.alert_message').text('Error removing');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false

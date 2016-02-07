@@ -174,7 +174,8 @@ function getPatientInfo(formData) {
             fillPatientInfo(info);
         },
         error: function () {
-            alert('Error getting patient information');
+            $('p.alert_message').text('Error getting patient information');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -254,7 +255,8 @@ function getProviderInfo(formData) {
             showProviderInfo(info);
         },
         error: function () {
-            alert('Error getting practice information');
+            $('p.alert_message').text('Error getting practice information');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -286,7 +288,8 @@ function getProviders(formData) {
             $('.practice_list').addClass('active');
         },
         error: function () {
-            alert('Error searching');
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false

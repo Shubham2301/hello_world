@@ -155,7 +155,8 @@ function getPatientInfo(formData) {
             showPatientInfo(info);
         },
         error: function () {
-            alert('Error getting patient information');
+            $('p.alert_message').text('Error getting patient information');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -193,7 +194,8 @@ function getPatients(formData) {
             $('.patient_list').addClass('active');
         },
         error: function () {
-            alert('Error searching');
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false

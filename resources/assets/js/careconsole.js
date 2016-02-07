@@ -141,7 +141,8 @@ function getPatientData(stageID, kpiName = '') {
             $('.drilldown_content').html(content);
         },
         error: function error() {
-            alert('Error searching');
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
