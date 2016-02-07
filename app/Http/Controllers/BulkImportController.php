@@ -124,7 +124,14 @@ class BulkImportController extends Controller
                 }
 
             }
+
+            $action = 'Bulk import';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
             return "You have imported ".$i." patients";
+
         }
         return "try again";
 

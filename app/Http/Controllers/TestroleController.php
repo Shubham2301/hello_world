@@ -63,6 +63,11 @@ class TestroleController extends Controller
     	$admin->assign('admin');
     	$sadmin->assign('super-admin');
 
+        $action = 'Save roles';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
     	return "Initialized!!!";
     }

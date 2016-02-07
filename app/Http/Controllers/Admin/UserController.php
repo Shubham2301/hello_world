@@ -71,6 +71,12 @@ class UserController extends Controller
 
         if($user) {
             $request->session()->flash('success', 'User Created Successfully!');
+
+            $action = 'new user created';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
             return redirect('users');
         } else {
             return redirect()->back();

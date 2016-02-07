@@ -53,6 +53,12 @@ class PermissionController extends Controller
 
         if($permission) {
             $request->session()->flash('success', 'Permission created Successfully!');
+            $action = 'new permission created';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
             return redirect('permissions');
         } else {
             return redirect()->back();
@@ -90,7 +96,11 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $action = 'permission updated';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
     }
 
     /**
