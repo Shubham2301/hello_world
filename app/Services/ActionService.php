@@ -74,7 +74,7 @@ class ActionService {
 					$kpi = KPI::where('name', 'no-show')->first();
 					$appointment->appointment_status = $kpi['id'];
 					$appointment->save();
-					$console->stage_id = 4;
+					$console->stage_id = 3;
 					$console->save();
 				} else if ($console->stage_id == 3) {
 					$appointment = Appointment::find($console->appointment_id);
@@ -92,7 +92,7 @@ class ActionService {
 					$kpi = KPI::where('name', 'cancelled')->first();
 					$appointment->appointment_status = $kpi['id'];
 					$appointment->save();
-					$console->stage_id = 4;
+					$console->stage_id = 3;
 					$console->save();
 				} else if ($console->stage_id == 3) {
 					$appointment = Appointment::find($console->appointment_id);
@@ -105,13 +105,12 @@ class ActionService {
 				break;
 			case 'data-received':
 				$console = CareConsole::find($consoleID);
-				if ($console->stage_id == 2) {
-					$console->stage_id = 3;
-					$console->save();
-				} else if ($console->stage_id == 3) {
-					$console->stage_id = 4;
-					$console->save();
-				}
+				$console->stage_id = 5;
+				$console->save();
+				$appointment = Appointment::find($console->appointment_id);
+				$kpi = KPI::where('name', 'ready-to-be-completed')->first();
+				$appointment->appointment_status = $kpi['id'];
+				$appointment->save();
 				break;
 			case 'annual-exam':
 				break;
