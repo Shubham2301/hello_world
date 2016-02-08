@@ -102,14 +102,20 @@ Section : Imports
     }
 }
 .action-btns{
-    position: absolute;
+    float: right;
+    padding-right: 12px;
+    font-size: 15px;
+    text-decoration: underline;
     display: none;
-    width: 100%;
-    right: 0;
-    top: 0;
     &.active{
         display: block;
     }
+    &>a{
+        color:black;
+        cursor: pointer;
+
+    }
+
 }
 .add-btn{
     float: left;

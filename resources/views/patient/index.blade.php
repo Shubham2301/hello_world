@@ -38,15 +38,15 @@
             <div class="row content-row-margin">
                 <div class="col-xs-12 section-header">
                     <span class="">Schedule an appointment</span>
-                    <span class="action-btns active">
-                    <button type="button" class="btn add-btn add_patient" id="add_patient_btn">Add New</button>
-                    <button type="button" class="btn import-btn open_import" data-toggle="modal" data-target="#importModal" id="import_patients">Import</button></span>
                     <p class="button_type_3 select_provider_button" id="select_provider_button" data-id="0" align="right">Select Provider<span class="glyphicon glyphicon-chevron-right"></span></p>
                 </div>
             </div>
             <div class="row content-row-margin-scheduling">
                 <div class="col-xs-12 subsection-header">
                     <span>1. Search for a patient</span>
+                    <sapn class="action-btns active">
+                    <a id="add_patient_btn">Add New</a>
+                    <a data-toggle="modal" data-target="#importModal" id="import_patients">Import</a></sapn>
                 </div>
             </div>
             @endif
