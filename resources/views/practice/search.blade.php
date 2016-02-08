@@ -8,7 +8,7 @@
 
     </div>
     <div class="col-xs-8">
-        <button type="button" class="btn import-btn">Import</button>
+        {{-- <button type="button" class="btn import-btn">Import</button> --}}
 
     </div>
 
