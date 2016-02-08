@@ -95,7 +95,30 @@ $(document).ready(function () {
 
 function searchc3() {
     if (!($('#search_bar_open').hasClass('active'))) {
-        $('.search_result').addClass('active');
+        var formData = {
+            'name' : $('#search_data').val()
+        };
+        $.ajax({
+            url: '/careconsole/searchpatient',
+            type: 'GET',
+            data: $.param(formData),
+            contentType: 'text/html',
+            async: false,
+            success: function success(e) {
+                e = $.parseJSON(e);
+                if(e.length != 0){  //replace with loop for multiple patients in search result.
+                    $('.result_title.stage_name').html(e[0].stage_name);
+                    $('.search_result').addClass('active');
+                }
+            },
+            error: function error() {
+                $('p.alert_message').text('Error searching');
+                $('#alert').modal('show');
+            },
+            cache: false,
+            processData: false
+        });
+        
     }
 }
 
@@ -154,7 +177,7 @@ function getPatientData(stageID, kpiName = '') {
             $('.drilldown_content').html(content);
         },
         error: function error() {
-            $('p.alert_message').text('Error searching');
+            $('p.alert_message').text('Error:');
             $('#alert').modal('show');
         },
         cache: false,
@@ -182,7 +205,8 @@ function action(stageID, actionID, postActionID, notes, date, consoleID) {
             getPatientData(stageID);
         },
         error: function error() {
-            alert('Error searching');
+            $('p.alert_message').text('Error:');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false

@@ -7,6 +7,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Network;
+use myocuhub\Patient;
 use myocuhub\Services\ActionService;
 use myocuhub\Services\KPI\KPIService;
 
@@ -154,6 +155,19 @@ class CareConsoleController extends Controller {
 		$notes = $request->notes;
 		$consoleID = $request->console_id;
 		$this->ActionService->userAction($actionID, $postActionID, $date, $notes, $consoleID);
+	}
+
+	public function searchPatients(Request $request) {
+		$patients = Patient::getPatientsByName($request->name);
+		$i = 0;
+		$results = [];
+		foreach ($patients as $patient) {
+			$console = CareConsole::where('patient_id', $patient->id)->first();
+			$results[$i]['id'] = $patient->id;
+			$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
+			$i++;
+		}
+		return json_encode($results);
 	}
 
 }

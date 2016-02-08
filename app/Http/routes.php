@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('networks/search', 'Admin\NetworkController@search');
 	Route::get('careconsole/drilldown', 'CareConsole\CareConsoleController@getDrilldownData');
 	Route::get('careconsole/action', 'CareConsole\CareConsoleController@action');
+	Route::get('careconsole/searchpatient', 'CareConsole\CareConsoleController@searchPatients');
 
 	Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
 	Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
