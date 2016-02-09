@@ -2,21 +2,28 @@
 
 namespace myocuhub\Http\Controllers;
 
+use Auth;
 use Event;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Models\CareConsole;
+use myocuhub\Models\ImportHistory;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
-use myocuhub\Models\PracticePatient;
+use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\User;
 
 class BulkImportController extends Controller {
 
 	public function index() {
-		$practicedata = Practice::all()->lists('name', 'id');
-		return view('patient.import')->with('data', $practicedata);
+		$networks = Network::all()->lists('name', 'id');
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$data['id'] = $network->network_id;
+		$data['name'] = $network->name;
+		return view('layouts.import')->with('network', $data);
 	}
 
 	public function getLocations(Request $request) {
@@ -32,16 +39,19 @@ class BulkImportController extends Controller {
 		}
 
 		return json_encode($data);
-
-		//dd($practice_id);
-
 	}
 
 	public function importPatientsXlsx(Request $request) {
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
+
 		if ($request->hasFile('patient_xlsx')) {
 			$i = 0;
 			$excels = Excel::load($request->file('patient_xlsx'))->get();
-
+			$importHistory = new ImportHistory;
+			$importHistory->network_id = $networkID;
+			$importHistory->save();
 			foreach ($excels as $sheet) {
 				$title = $sheet->getTitle();
 				switch ($title) {
@@ -82,7 +92,6 @@ class BulkImportController extends Controller {
 								$locations['state'] = $data['state'];
 								$locations['zip'] = $data['zip'];
 								$location = PracticeLocation::firstOrCreate($locations);
-
 							}
 
 						}
@@ -105,32 +114,27 @@ class BulkImportController extends Controller {
 								$patients['lastfourssn'] = $data['ssn_last_digits'];
 								$patients['birthdate'] = $data['birthdate'];
 								$patients['gender'] = $data['gender'];
-								$patients['insurancecarrier'] = $data['insurance_type'];
+								//$patients['insurancecarrier'] = $data['insurance_type'];
 								$patient = Patient::firstOrCreate($patients);
-								$PracticePatient = [];
-								$PracticePatient['patient_id'] = $patient->id;
-								$PracticePatient['practice_id'] = $request->practice_id;
-								$PracticePatient['location_id'] = $request->location_id;
-								$pp = PracticePatient::firstOrCreate($PracticePatient);
+								$careconsole = new CareConsole;
+								$careconsole->import_id = $importHistory->id;
+								$careconsole->patient_id = $patient->id;
+								$careconsole->stage_id = 1;
+								$careconsole->save();
 								$i++;
-
 							}
 						}
-
 						break;
 				}
-
 			}
 
-			$action = 'Bulk import';
+			$action = 'Bulk import Patients';
 			$description = '';
 			$filename = basename(__FILE__);
 			$ip = $request->getClientIp();
 			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 			return "You have imported " . $i . " patients";
-
 		}
 		return "try again";
-
 	}
 }

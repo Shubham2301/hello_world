@@ -4,6 +4,14 @@ $.ajaxSetup({
     }
 });
 
+$(document).ajaxStart(function(){
+    $("#loader-container").css("display", "block");
+});
+
+$(document).ajaxComplete(function(){
+    $("#loader-container").css("display", "none");
+});
+
 $(document).ready(function () {
 
     //    $('.menu-item').on('click', function () {
