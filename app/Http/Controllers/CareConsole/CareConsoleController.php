@@ -2,6 +2,7 @@
 
 namespace myocuhub\Http\Controllers\CareConsole;
 
+use Auth;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Careconsole;
@@ -10,6 +11,7 @@ use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
 use myocuhub\Services\KPI\KPIService;
+use myocuhub\User;
 
 class CareConsoleController extends Controller {
 	/**
@@ -26,7 +28,9 @@ class CareConsoleController extends Controller {
 	}
 
 	public function index() {
-		$networkID = 1;
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
 		$careconsoleStages = Network::find($networkID)->careconsoleStages;
 		$overview = array();
 		$i = 0;
@@ -114,7 +118,9 @@ class CareConsoleController extends Controller {
 		//
 	}
 	public function getDrilldownData(Request $request) {
-		$networkID = 1;
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
 		$stageID = $request->stage;
 		$kpiName = $request->kpi;
 		$patients = [];

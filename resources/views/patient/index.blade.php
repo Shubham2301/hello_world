@@ -55,7 +55,6 @@
         <div class="patients_section active" id="patient_listing">
             @include('patient.listing')
         </div>
-        @include('patient.import')
         @include('patient.import_ccda')
         @include('patient.compare_ccda')
     </div>

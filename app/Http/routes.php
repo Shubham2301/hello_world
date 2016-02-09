@@ -70,6 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('practices', 'Practice\PracticeController');
 	Route::resource('appointments', 'Appointment\AppointmentController');
 	Route::resource('home', 'HomeController');
+	Route::resource('bulkimport', 'BulkImportController');
 	Route::get('import/location', 'BulkImportController@getLocations');
 	Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
 
