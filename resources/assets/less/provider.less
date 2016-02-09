@@ -267,7 +267,7 @@ Section : Imports
         padding: .5em 0 0 0;
     }
 }
-.appointment_type{
+.dropdown{
     color: #000;
 }
 .availability{
@@ -281,7 +281,6 @@ Section : Imports
     max-height: 10em;
     font-size:0.8em;
     border-radius: .3em;
-    position: absolute;
     &.active{
         display: flex;
     }
@@ -300,4 +299,16 @@ Section : Imports
             }
         }
     }
+}
+.ajax{
+    display: none;
+    &.active{
+        display: inline-block;
+    }
+}
+input{
+    color: #000;
+}
+.availability-btn{
+    color: #000;
 }

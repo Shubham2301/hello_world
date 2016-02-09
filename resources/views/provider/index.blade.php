@@ -37,8 +37,12 @@
             @endif
                 {!! Form::hidden('provider_id', '', array('id' => 'form_provider_id')) !!}
                 {!! Form::hidden('practice_id', '', array('id' => 'form_practice_id')) !!}
+                {!! Form::hidden('appointment_date', '', array('id' => 'form_appointment_date')) !!}
+                {!! Form::hidden('appointment_time', '', array('id' => 'form_appointment_time')) !!}
+                {!! Form::hidden('appointment_type_name', '', array('id' => 'form_appointment_type_name')) !!}
+                {!! Form::hidden('appointment_type_id', '', array('id' => 'form_appointment_type_id')) !!}
+                {!! Form::hidden('location', '', array('id' => 'form_location')) !!}
         {!! Form::close() !!}
-
         <div class="practice_section active" id="select_practice">
             @if(array_key_exists('referraltype_id', $data) and array_key_exists('patient_id', $data))
             <div class="row content-row-margin">

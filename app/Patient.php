@@ -56,4 +56,11 @@ class Patient extends Model {
 
 	}
 
+	public static function getPatientsByName($name) {
+		return self::where('firstname', $name)
+			->orWhere('middlename', $name)
+			->orWhere('lastname', $name)
+			->get();
+	}
+
 }

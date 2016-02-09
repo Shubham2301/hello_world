@@ -7,6 +7,8 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Network;
+use myocuhub\Patient;
+use myocuhub\Services\ActionService;
 use myocuhub\Services\KPI\KPIService;
 
 class CareConsoleController extends Controller {
@@ -16,9 +18,11 @@ class CareConsoleController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	private $KPIService;
+	private $ActionService;
 
-	public function __construct(KPIService $KPIService) {
+	public function __construct(KPIService $KPIService, ActionService $ActionService) {
 		$this->KPIService = $KPIService;
+		$this->ActionService = $ActionService;
 	}
 
 	public function index() {
@@ -115,7 +119,7 @@ class CareConsoleController extends Controller {
 		$kpiName = $request->kpi;
 		$patients = [];
 		$patientsData = [];
-        $actions = [];
+		$actions = [];
 
 		if ($kpiName !== '' && isset($stageID)) {
 			$patients = $this->KPIService->getPatients($kpiName, $networkID, $stageID);
@@ -128,7 +132,8 @@ class CareConsoleController extends Controller {
 		}
 
 		foreach ($patients as $patient) {
-			$patientsData[$i]['id'] = $patient['id'];
+			$patientsData[$i]['console_id'] = $patient['id'];
+			$patientsData[$i]['patient_id'] = $patient['patient_id'];
 			$patientsData[$i]['name'] = $patient['firstname'] . ' ' . $patient['lastname'];
 			$patientsData[$i]['phone'] = $patient['cellphone'];
 			$patientsData[$i]['appointment_date'] = '-';
@@ -137,10 +142,32 @@ class CareConsoleController extends Controller {
 			$i++;
 		}
 
-        $drilldown['patients'] = $patientsData;
-        $drilldown['actions'] = CareconsoleStage::find($stageID)->actions;
+		$drilldown['patients'] = $patientsData;
+		$drilldown['actions'] = CareconsoleStage::find($stageID)->actions;
 
 		return json_encode($drilldown);
+	}
+
+	public function action(Request $request) {
+		$actionID = $request->action_id;
+		$postActionID = $request->post_action_id;
+		$date = $request->date;
+		$notes = $request->notes;
+		$consoleID = $request->console_id;
+		$this->ActionService->userAction($actionID, $postActionID, $date, $notes, $consoleID);
+	}
+
+	public function searchPatients(Request $request) {
+		$patients = Patient::getPatientsByName($request->name);
+		$i = 0;
+		$results = [];
+		foreach ($patients as $patient) {
+			$console = CareConsole::where('patient_id', $patient->id)->first();
+			$results[$i]['id'] = $patient->id;
+			$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
+			$i++;
+		}
+		return json_encode($results);
 	}
 
 }

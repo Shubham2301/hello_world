@@ -25,6 +25,11 @@ class AppointmentController extends Controller {
 		$provider_id = $request->input('provider_id');
 		$practice_id = $request->input('practice_id');
 		$patient_id = $request->input('patient_id');
+		$appointment_date = $request->input('appointment_date');
+		$appointment_time = $request->input('appointment_time');
+		$appointment_type_name = $request->input('appointment_type_name');
+		$appointment_type_id = $request->input('appointment_type_id');
+		$location = $request->input('location');
 		$referraltype_id = $request->input('referraltype_id');
 		$action = $request->input('action');
 
@@ -32,6 +37,11 @@ class AppointmentController extends Controller {
 		$data['provider_name'] = User::find($provider_id)->name;
 		$data['practice_name'] = Practice::find($practice_id)->name;
 		$data['referraltype_id'] = $referraltype_id;
+		$data['appointment_date'] = $appointment_date;
+		$data['appointment_time'] = $appointment_time;
+		$data['appointment_type_name'] = $appointment_type_name;
+		$data['appointment_type_id'] = $appointment_type_id;
+		$data['location'] = $location;
 		$data['action'] = $action;
 		$patient = Patient::find($patient_id);
 		$data['patient_name'] = $patient->firstname . ' ' . $patient->lastname;

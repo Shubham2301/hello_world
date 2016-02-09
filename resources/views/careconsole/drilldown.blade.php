@@ -1,4 +1,5 @@
 <div class="drilldown">
+    <input type="hidden" id="current_stage">
     <div class="section-header">
     </div>
     <div class="subsection-header">
@@ -26,6 +27,5 @@
         </div>
     </div>
     <div class="drilldown_content">
-
     </div>
 </div>
