@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('home/removereferral', 'HomeController@removeReferral');
 	Route::get('home/addreferral', 'HomeController@addReferral');
+	Route::get('home/getreferrallist', 'HomeController@show');
 	Route::get('patients/search', 'Patient\PatientController@search');
 	Route::get('providers/search', 'Practice\ProviderController@search');
 	Route::get('practices/search', 'Practice\PracticeController@search');
