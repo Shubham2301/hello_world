@@ -22,8 +22,7 @@ class HomeController extends Controller
         // TODO: change network_id : 1 to network id  of logged in user
          $referralType = Network::find(1)->referralTypes;
          $referralTypeList=ReferralType::all();
-        return view('home',compact('referralTypeList'))->with('referralTypes', $referralType);
-
+        return view('home');
     }
 
     /**
@@ -53,9 +52,14 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $referralType = Network::find(1)->referralTypes;
+        $referralTypeList = ReferralType::all();
+        $data = [];
+        $data[0] = $referralType;
+        $data[1] = $referralTypeList;
+        return json_encode($data);
     }
 
     /**
