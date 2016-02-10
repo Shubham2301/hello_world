@@ -180,11 +180,14 @@ function showPatientInfo() {
         $('.view_selected_patient').text("Hide");
         $('.view_selected_patient').removeClass('view');
         $('.view_selected_patient').addClass('remove');
+        $('.patient_previous_information').removeClass('active');
     } else if ($('.view_selected_patient').hasClass('remove')) {
         $('.patient_info').removeClass('active')
         $('.view_selected_patient').text("View");
         $('.view_selected_patient').removeClass('remove');
         $('.view_selected_patient').addClass('view');
+        if(!$('.practice_info').hasClass('active'))
+        $('.patient_previous_information').addClass('active');
     }
 }
 
