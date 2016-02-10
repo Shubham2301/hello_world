@@ -54,5 +54,6 @@
     </div>
     @include('careconsole.overview')
     @include('careconsole.drilldown')
+    @include('careconsole.actions')
 </div>
 @endsection
