@@ -29,7 +29,5 @@
 <div class="practice_section active" id="practice_listing">
     @include('practice.listing')
 </div>
-<div class="practice_section active">
-    @include('practice.edit')
-</div>
+
 @endsection
