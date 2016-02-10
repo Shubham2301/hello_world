@@ -46,8 +46,8 @@
                 <div class="col-xs-4">
                     <div class="appointment_info_box schedule">
                         <h4><strong>Details</strong></h4>
-                        <h4>5PM,<br>Tuesday,<br>5-Jan-2015</h4><br>
-                        <h4 class="schedule_place" style="padding-top:6px;"><strong>Rockville Center</strong></h4>
+                        <h4>{{ $data['appointment_time'] }}<br>{{ $data['appointment_date'] }}<br>{{ $data['appointment_type_name'] }}</h4><br>
+                        <h4 class="schedule_place" style="padding-top:6px;"><strong>{{ $data['location'] }}</strong></h4>
                     </div>
                 </div>
                 <div class="col-xs-4">

@@ -1,19 +1,19 @@
 $(document).ready(function() {
-    $('#practice_list').on('change', function(e) {
+    $(document).on('change', '#practice_list',function(e) {
         var practice_id = $(this).find(":selected").val();
         getLocation(practice_id);
 
     });
-    $('.file-input input[type="file"]').change(function() {
+    $(document).on('change','.file-input input[type="file"]',function() {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         $('.filename').html(filename);
     });
 
-    $('.import_button').on('click', function() {
+    $(document).on('click', '.import_button',function() {
         importPatients();
     });
 
-    $('.open_import').on('click', function() {
+    $(document).on('click', '.open_import', function() {
         $('.import_form').addClass('active');
         $('.success_message').text('');
         $('.success_message').removeClass('active');
@@ -22,7 +22,7 @@ $(document).ready(function() {
 
     });
 
-    $('#import_ccda_button').on('click', function() {
+    $(document).on('click', '#import_ccda_button',function() {
         var id = $(this).attr('data-id');
         $('#ccda_patient_id').val(id);
         // $('.import_form').addClass('active');
@@ -31,13 +31,13 @@ $(document).ready(function() {
         $('.save_ccda_button').addClass('active');
         $('.dismiss_button').text('Cancel');
     });
-    $('.save_ccda_button').on('click', function() {
+    $(document).on('click', '.save_ccda_button',function() {
         saveCcdafile();
     });
-    $('.compare_ccda_button').on('click', function() {
+    $(document).on('click', '.compare_ccda_button', function() {
         updatePatientData();
     });
-    $('#compare_ccda_button').on('click', function() {
+    $(document).on('click', '#compare_ccda_button', function() {
         $('.compare_form').addClass('active');
         $('.success_message').text(" ");
         $('.success_message').removeClass('active');
@@ -47,7 +47,7 @@ $(document).ready(function() {
             $(this).find('input').prop('checked', false);
         });
     });
-    $('#checked_all').change(function() {
+    $(document).on('change', '#checked_all',function() {
         if ($(this).is(":checked")) {
             $('.compare_row_item').each(function() {
                 $(this).find('input').prop('checked', true);
@@ -57,15 +57,15 @@ $(document).ready(function() {
                 $(this).find('input').prop('checked', false);
             });
     });
-    $('#download_ccda').on('click', function() {
+    $(document).on('click', '#download_ccda', function() {
         var url = $('#download_ccda').attr('data-href');
         getCcdaFile(url);
     })
-    $('#view_ccda').on('click', function() {
+    $(document).on('click', '#view_ccda', function() {
         var url = $(this).attr('data-href');
         showCCDA(url);
     });
-    $('.dismiss_button').on('click', function() {
+    $(document).on('click', '.dismiss_button', function() {
         $('.view_patient_ccda').removeClass('active');
         $('.view_patient_ccda').html(' ');
     });
@@ -125,7 +125,8 @@ function getLocation(id) {
             $('#practice_locations').html(content);
         },
         error: function() {
-            alert('Error removing');
+            $('p.alert_message').text('Error removing');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -144,14 +145,11 @@ function importPatients() {
         contentType: false,
         type: 'POST',
         success: function(dataofconfirm) {
-
             $('.import_form').removeClass('active');
             $('.success_message').text(dataofconfirm);
             $('.success_message').addClass('active');
             $('.import_button').removeClass('active');
             $('.dismiss_button').text('Ok');
-
-
         }
     });
 }
@@ -279,6 +277,25 @@ function showCCDA(url) {
         },
         error: function() {
 
+        },
+        cache: false,
+        processData: false
+    });
+}
+function loadImportForm () {
+    var formData = {};
+    $.ajax({
+        url: '/bulkimport',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function success(e) {
+            $('body').append(e);
+        },
+        error: function error() {
+            $('p.alert_message').text('Error: Could not load import form.');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false

@@ -33,16 +33,21 @@
         <a class="sidebar-item" href="/administration/users">
             <div class="col-lg-6 col-md-6 practice font_change">Users</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/practice.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/practice_add.png')}}" class="image"></span></div></a>
     </div>
+    <!--
     <div class="row admin @yield('roles-active')">
         <a class="sidebar-item" href="/administration/roles">
             <div class="col-lg-6 col-md-6 files font_change">Roles</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/files.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/files_add.png')}}" class="image"></span></div></a>
     </div>
+    -->
     <div class="row admin @yield('roles-active')">
         <a class="sidebar-item" href="/administration/networks">
             <div class="col-lg-6 col-md-6 files font_change">Networks</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/files.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/files_add.png')}}" class="image"></span></div></a>
     </div>
+    <!--
     <div class="row admin @yield('permissions-active')">
         <a class="sidebar-item" href="/administration/permissions">
             <div class="col-lg-6 col-md-6 files font_change">Permissions</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/files.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/files_add.png')}}" class="image"></span></div></a>
     </div>
+    -->
+
 </div>

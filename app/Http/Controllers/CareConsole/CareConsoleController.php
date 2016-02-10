@@ -2,12 +2,16 @@
 
 namespace myocuhub\Http\Controllers\CareConsole;
 
+use Auth;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Network;
+use myocuhub\Patient;
+use myocuhub\Services\ActionService;
 use myocuhub\Services\KPI\KPIService;
+use myocuhub\User;
 
 class CareConsoleController extends Controller {
 	/**
@@ -16,13 +20,17 @@ class CareConsoleController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	private $KPIService;
+	private $ActionService;
 
-	public function __construct(KPIService $KPIService) {
+	public function __construct(KPIService $KPIService, ActionService $ActionService) {
 		$this->KPIService = $KPIService;
+		$this->ActionService = $ActionService;
 	}
 
 	public function index() {
-		$networkID = 1;
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
 		$careconsoleStages = Network::find($networkID)->careconsoleStages;
 		$overview = array();
 		$i = 0;
@@ -110,11 +118,14 @@ class CareConsoleController extends Controller {
 		//
 	}
 	public function getDrilldownData(Request $request) {
-		$networkID = 1;
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
 		$stageID = $request->stage;
 		$kpiName = $request->kpi;
 		$patients = [];
 		$patientsData = [];
+		$actions = [];
 
 		if ($kpiName !== '' && isset($stageID)) {
 			$patients = $this->KPIService->getPatients($kpiName, $networkID, $stageID);
@@ -127,7 +138,8 @@ class CareConsoleController extends Controller {
 		}
 
 		foreach ($patients as $patient) {
-			$patientsData[$i]['id'] = $patient['id'];
+			$patientsData[$i]['console_id'] = $patient['id'];
+			$patientsData[$i]['patient_id'] = $patient['patient_id'];
 			$patientsData[$i]['name'] = $patient['firstname'] . ' ' . $patient['lastname'];
 			$patientsData[$i]['phone'] = $patient['cellphone'];
 			$patientsData[$i]['appointment_date'] = '-';
@@ -135,7 +147,33 @@ class CareConsoleController extends Controller {
 			$patientsData[$i]['request_received'] = '-';
 			$i++;
 		}
-		return json_encode($patientsData);
+
+		$drilldown['patients'] = $patientsData;
+		$drilldown['actions'] = CareconsoleStage::find($stageID)->actions;
+
+		return json_encode($drilldown);
+	}
+
+	public function action(Request $request) {
+		$actionID = $request->action_id;
+		$postActionID = $request->post_action_id;
+		$date = $request->date;
+		$notes = $request->notes;
+		$consoleID = $request->console_id;
+		$this->ActionService->userAction($actionID, $postActionID, $date, $notes, $consoleID);
+	}
+
+	public function searchPatients(Request $request) {
+		$patients = Patient::getPatientsByName($request->name);
+		$i = 0;
+		$results = [];
+		foreach ($patients as $patient) {
+			$console = CareConsole::where('patient_id', $patient->id)->first();
+			$results[$i]['id'] = $patient->id;
+			$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
+			$i++;
+		}
+		return json_encode($results);
 	}
 
 }

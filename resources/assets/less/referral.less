@@ -2,14 +2,11 @@
     text-align: center;
     font-weight: bold;
 }
-
-.referral_type_list{
-
+.referral_type_list {
     background-color: transparent;
     box-shadow: none;
     border: none;
-
-    &>option{
+    &>option {
         background: #19AFEA;
         border: none;
         padding: 0;
@@ -35,42 +32,82 @@
         margin-top: 0.5em;
         border-radius: 0.3em 0.3em 0 0;
     }
-    &:hover {
-        margin-top: 0.5em;
-        .remove_referral_type{
-            margin-top: -0.5em;
-        }
-    }
-    .remove_referral_type{
-        background-color: #0193d7;
-        color: #ffffff;
-        border-radius:100%;
-        padding: 5px;
-        display:none;
-        position:absolute;
-        right:0;
-        opacity:0.9;
-        &:hover{
-            opacity:1;
-            box-shadow: -1px 1px 3px rgba(0,0,0,0.5);
-        }
-        &.active{
-            display:inline-block;
-        }
-    }
-    &.configuration_tile{
-        opacity: 0.6;
-        &>p{
-            margin: 0.5em 0;
-        }
-        &:hover, &.active{
-            opacity: 1;
-        }
-    }
 }
-.modal-style{
+.modal-style {
     color: #000;
     padding: 50px;
     margin-top: 35vh;
     background-color: #f2f2f2;
+}
+.referral_tiles {
+    padding: 0 1em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.tile {
+    padding: .4em .5em .5em .5em;
+    margin: -1em 1em .3em 1em;
+    border: 1px solid #fff;
+    background: #ffffff;
+    box-shadow: inset 0 3px 10px #e3e3e3, inset 0 -3px 10px #e3e3e3, -5px 5px 5px #0070a3;
+    color: #0193d7;
+    border-radius: 0.7em;
+    cursor: pointer;
+    width: 5.4em;
+    height: 0;
+    padding-bottom: 5.1em;
+    overflow: hidden;
+    &:hover {
+        background: #f2f2f2;
+    }
+    &:active {
+        background: #f2f2f2;
+        box-shadow: none;
+    }
+}
+p.tile_name {
+    font-size: 2em;
+    font-weight: 700;
+}
+.tile_bar {
+    height: 2em;
+    border-top-right-radius: 0.5em;
+    border-top-left-radius: 0.5em;
+    width: 100%;
+    display: inline-flex;
+    background-color: #0193d7;
+}
+.referral_type {
+    text-align: center;
+}
+.remove_referral_type {
+    color: #ed1c24;
+    cursor: pointer;
+    font-size: 2em;
+    visibility: hidden;
+    margin-left: 2.3em;
+    &.edit{
+        visibility: visible;
+    }
+}
+.add_referral_type {
+    color: green;
+    font-size: 2em;
+    cursor: pointer;
+
+}
+.remove_add_referral_type {
+    color: #ed1c24;
+    font-size: 2em;
+    cursor: pointer;
+}
+p.referral_edit {
+    padding: 0;
+    margin: 0;
+    margin: .6em 0;
+    font-size: 2em;
+}
+p.message{
+    margin: 1em 0;
 }

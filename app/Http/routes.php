@@ -12,7 +12,6 @@
  */
 
 Route::get('/', function () {
-
 	if (!Auth::check()) {
 		return view('welcome');
 	} else {
@@ -45,62 +44,61 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 Route::group(['middleware' => 'auth'], function () {
 
+	Route::get('home/removereferral', 'HomeController@removeReferral');
+	Route::get('home/addreferral', 'HomeController@addReferral');
+	Route::get('home/getreferrallist', 'HomeController@show');
+	Route::get('patients/search', 'Patient\PatientController@search');
+	Route::get('providers/search', 'Practice\ProviderController@search');
+	Route::get('practices/search', 'Practice\PracticeController@search');
+	Route::get('practices/create', 'Practice\PracticeController@create');
+	Route::get('practices/edit', 'Practice\PracticeController@edit');
+	Route::get('practices/remove', 'Practice\PracticeController@destroy');
+	Route::get('networks/search', 'Admin\NetworkController@search');
+	Route::get('careconsole/drilldown', 'CareConsole\CareConsoleController@getDrilldownData');
+	Route::get('careconsole/action', 'CareConsole\CareConsoleController@action');
+	Route::get('careconsole/searchpatient', 'CareConsole\CareConsoleController@searchPatients');
 
+	Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
+	Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
+	Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
 
-    Route::get('home/removereferral', 'HomeController@removeReferral');
-    Route::get('home/addreferral', 'HomeController@addReferral');
-    Route::get('patients/search', 'Patient\PatientController@search');
-    Route::get('providers/search', 'Practice\ProviderController@search');
-    Route::get('practices/search', 'Practice\PracticeController@search');
-    Route::get('practices/create', 'Practice\PracticeController@create');
-    Route::get('practices/edit', 'Practice\PracticeController@edit');
-    Route::get('practices/remove', 'Practice\PracticeController@destroy');
-    Route::get('networks/search', 'Admin\NetworkController@search');
-    Route::get('careconsole/drilldown', 'CareConsole\CareConsoleController@getDrilldownData');
-
-    Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
-    Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
-    Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
-
-
-    Route::resource('careconsole', 'CareConsole\CareConsoleController');
+	Route::resource('careconsole', 'CareConsole\CareConsoleController');
 	Route::resource('directmail', 'DirectMail\DirectMailController');
 	Route::resource('patients', 'Patient\PatientController');
 	Route::resource('providers', 'Practice\ProviderController');
 	Route::resource('practices', 'Practice\PracticeController');
 	Route::resource('appointments', 'Appointment\AppointmentController');
 	Route::resource('home', 'HomeController');
+	Route::resource('bulkimport', 'BulkImportController');
 	Route::get('import/location', 'BulkImportController@getLocations');
 	Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
 
+	//Ccda routes
+	Route::post('/import/ccda', 'CcdaController@saveCcda');
+	Route::get('ccdaform', 'CcdaController@index');
+	Route::get('/addvital/{id}', 'CcdaController@addVital');
+	Route::post('/savevitals', 'CcdaController@saveVitals');
+	Route::get('/download/{id}', 'CcdaController@getxml');
+	Route::get('/showvitals/{id}', array('uses' => 'CcdaController@showVitals', 'as' => 'showvitals'));
+	Route::post('update/ccda', 'CcdaController@updatePatientDemographics');
+	Route::get('show/ccda/{id}', 'CcdaController@showCCDA');
 
-    //Ccda routes
-    Route::post('/import/ccda', 'CcdaController@saveCcda');
-    Route::get('ccdaform', 'CcdaController@index');
-    Route::get('/addvital/{id}', 'CcdaController@addVital');
-    Route::post('/savevitals', 'CcdaController@saveVitals');
-    Route::get('/download/{id}', 'CcdaController@getxml');
-    Route::get('/showvitals/{id}', array('uses'=>'CcdaController@showVitals','as'=>'showvitals'));
-    Route::post('update/ccda', 'CcdaController@updatePatientDemographics');
-    Route::get('show/ccda/{id}', 'CcdaController@showCCDA');
+	Route::get('terms', 'SupportController@termsIndex');
+	Route::get('privacy', 'SupportController@privacyIndex');
+	Route::get('sitemap', 'SupportController@sitemapIndex');
+	Route::get('contactus', 'SupportController@contactusIndex');
+	Route::get('investors', 'SupportController@investorsIndex');
+	Route::get('techsupport', 'SupportController@techSupportIndex');
 
-    Route::get('terms', 'SupportController@termsIndex');
-    Route::get('privacy', 'SupportController@privacyIndex');
-    Route::get('sitemap', 'SupportController@sitemapIndex');
-    Route::get('contactus', 'SupportController@contactusIndex');
-    Route::get('investors', 'SupportController@investorsIndex');
-    Route::get('techsupport', 'SupportController@techSupportIndex');
+	Route::resource('administration/users', 'Admin\UserController');
+	Route::resource('administration/roles', 'Admin\RoleController');
+	Route::resource('administration/networks', 'Admin\NetworkController');
+	Route::resource('administration/permissions', 'Admin\PermissionController');
+	Route::get('administration/practices', 'Practice\PracticeController@administration');
 
-    Route::resource('administration/users', 'Admin\UserController');
-    Route::resource('administration/roles', 'Admin\RoleController');
-    Route::resource('administration/networks', 'Admin\NetworkController');
-    Route::resource('administration/permissions', 'Admin\PermissionController');
-    Route::get('administration/practices', 'Practice\PracticeController@administration');
-
-
-    Route::post('administration/patients/create', 'Patient\PatientController@store');
-    Route::get('administration/patients', 'Patient\PatientController@create');
-    Route::post('administration/patients/add', 'Patient\PatientController@store');
-    Route::post('administration/network/add', 'Admin\NetworkController@add');
-    Route::get('administration/providers', 'Practice\ProviderController@administration');
+	Route::get('administration/patients/create', 'Patient\PatientController@create');
+	Route::get('administration/patients', 'Patient\PatientController@create');
+	Route::post('administration/patients/add', 'Patient\PatientController@store');
+	Route::post('administration/network/add', 'Admin\NetworkController@add');
+	Route::get('administration/providers', 'Practice\ProviderController@administration');
 });

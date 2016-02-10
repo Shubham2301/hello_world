@@ -2,15 +2,18 @@
 
     <p id="search_results" class="search_result"><strong></strong></p>
     <div class="row search_header">
-        <div class="col-xs-3 search_name">
-            <input type="checkbox">&nbsp;&nbsp;
-            <p style="color:black"><strong>Name</strong></p>
+        <div class="col-xs-3 search_name_header">
+            <div>
+                <input type="checkbox">&nbsp;&nbsp;</div>
+            <div class="">
+                <p style="color:black"><strong>Name</strong></p>
+            </div>
         </div>
         <div class="col-xs-4">
-            <p style="color:black"><strong>Address</strong></p>
+            <p style="color:black"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Address</strong></p>
         </div>
         <div class="col-xs-3">
-            <p style="color:black"><strong>Ocuapps</strong></p>
+            <p style="color:black"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Ocuapps</strong></p>
         </div>
         <div class="col-xs-2">
             <input type="hidden" id="schedule_practice_img" value="{{asset('images/schedule.png')}}">
@@ -19,11 +22,20 @@
         </div>
     </div>
     <div class="practice_search_content">
+<form action="">
+    <input type="hidden" id="assign_role_image_path" value="{{URL::asset('images/assign-role-icon-01.png')}}">
+    <input type="hidden" id="assign_user_image_path" value="{{URL::asset('images/assign-user-icon-01.png')}}">
+</form>
+
 <!--
         <div class="row search_item" data-id="11">
-            <div class="col-xs-3 search_name">
-                <input type="checkbox">&nbsp;&nbsp;
-                <p> practice.name </p>
+            <div class="col-xs-3" style="display:inline-flex">
+                <div>
+                    <input type="checkbox">&nbsp;&nbsp;
+                </div>
+                <div class="search_name">
+                    <p> practice.name </p>
+                </div>
             </div>
             <div class="col-xs-3">practice.address </div>
             <div class="col-xs-1"></div>
@@ -32,11 +44,17 @@
             </div>
             <div class="col-xs-2 search_edit">
                 <p>
-                <span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;">
-                </span>
-                </p>&nbsp;&nbsp;
-                <p class="editPractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;
-                <span class="glyphicon glyphicon-remove removepractice_from_row" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span>
+                    <div class="dropdown">
+                        <span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;">
+                    </span>
+                        <ul class="dropdown-menu" id="row_action_dropdown">
+                            <li><a href=""><img src="{{URL::asset('images/assign-role-icon-01.png')}}" class="assign_role_image" style="width:20px">Assign Roles</a></li>
+                            <li><a href=""><img src="{{URL::asset('images/assign-user-icon-01.png')}}" class="assign_user_image" style="width:20px">Assign Users</a></li>
+                        </ul>
+                    </div>
+            </p>&nbsp;&nbsp;
+                    <p class="editPractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-remove removepractice_from_row" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;height:20px;"></span>
             </div>
         </div>
 -->
@@ -58,9 +76,9 @@
                 &nbsp;&nbsp;&nbsp;
                 <p>Assign User</p>
                 &nbsp;&nbsp;&nbsp;
-                <button id="edit_practice" type="button" class="btn" data-toggle="modal" data-target="#create_practice" data-id="">Edit</button>
+                <p id="edit_practice" class="btn" data-toggle="modal" data-target="#create_practice" data-id="">Edit</p>
                 &nbsp;&nbsp;&nbsp;
-                <span class="glyphicon glyphicon-remove" id="remove_practice" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span>
+                <span class="glyphicon glyphicon-remove" id="remove_practice" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;height: 20px; margin-top: 14px"></span>
             </div>
         </div>
         <div class="row location_info_header">

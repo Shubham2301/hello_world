@@ -2,65 +2,60 @@
 
 namespace myocuhub\Services\SES;
 
-
-class SESConnect extends SES
-{
+class SESConnect extends SES {
 //    protected $tokenURL;
-//    protected $authorizationURL;
-//    protected $redirectURI;
-//    protected $btoaCode;
-//    protected $ssoLogOnURL;
-//    protected $displayCountTimer;
-//    protected $iframeWidth;
-//    protected $iframeHeight;
-//    protected $clientId;
+	//    protected $authorizationURL;
+	//    protected $redirectURI;
+	//    protected $btoaCode;
+	//    protected $ssoLogOnURL;
+	//    protected $displayCountTimer;
+	//    protected $iframeWidth;
+	//    protected $iframeHeight;
+	//    protected $clientId;
 
-
-    public function __construct()
-    {
+	public function __construct() {
 
 //        $this->$tokenURL = 'https://test.directaddress.net/SESIDPServer/connect/token';
-//        $this->$authorizationURL = 'https://test.directaddress.net/SESIDPServer/connect/authorize';
-//        $this->$redirectURI = 'group/guest/direct-mail';
-//        $this->$btoaCode = 'occuhub:f70846fec33e4debbe442f470c0bf2d4';
-//        $this->$ssoLogOnURL = 'http://test.directaddress.net/portal/Home/SSOLogOn';
-//        $this->$displayCountTimer = 10;
-//        $this->$iframeWidth = 1000;
-//        $this->$iframeHeight = 800;
-//        $this->$clientId = 'occuhub';
+		//        $this->$authorizationURL = 'https://test.directaddress.net/SESIDPServer/connect/authorize';
+		//        $this->$redirectURI = 'group/guest/direct-mail';
+		//        $this->$btoaCode = 'occuhub:f70846fec33e4debbe442f470c0bf2d4';
+		//        $this->$ssoLogOnURL = 'http://test.directaddress.net/portal/Home/SSOLogOn';
+		//        $this->$displayCountTimer = 10;
+		//        $this->$iframeWidth = 1000;
+		//        $this->$iframeHeight = 800;
+		//        $this->$clientId = 'occuhub';
 
-    }
+	}
 
-    public function hasDirectMail(){
+	public function hasDirectMail() {
 
-        $connection = array();
+		$connection = array();
 
-        $user = \Auth::user();
-        $sesEmail = $user->sesemail;
+		$user = \Auth::user();
+		$sesEmail = $user->sesemail;
 
-        if(!$sesEmail){
-            return false;
-        }
+		if (!$sesEmail) {
+			return false;
+		}
 
-        return $sesEmail;
-    }
+		return $sesEmail;
+	}
 
-    public function getDirectMail(){
+	public function getDirectMail() {
 
-        $config = array();
+		$config = array();
 
-        $config['sso_logon_url'] = 'https://direct.ocuhub.com/portalsso/Home/SSOLogOn';
-        $config['authorization_url'] = 'https://direct.ocuhub.com/sesidpserver/connect/authorize';
+		$config['sso_logon_url'] = 'https://direct.ocuhub.com/portalsso/Home/SSOLogOn';
+		$config['authorization_url'] = 'https://direct.ocuhub.com/sesidpserver/connect/authorize';
+		$config['client_id'] = 'ocuhub_test';
+		$config['direct_mail_str'] = $this->hasDirectMail();
+		$config['display_count_timer'] = '10';
+		$config['redirect_uri'] = 'http://ec2-52-27-106-80.us-west-2.compute.amazonaws.com/directmail';
+		$config['btoa_code'] = 'ocuhub_test:f70846fec33e4debbe442f470c0bf2d4';
+		$config['token_url'] = 'https://direct.ocuhub.com/sesidpserver/connect/token';
+		$config['iframe_height'] = 800;
+		$config['iframe_width'] = 1000;
 
-        $config['client_id'] = 'ocuhub_prod';
-        $config['direct_mail_str'] = $this->hasDirectMail();
-        $config['display_count_timer'] = '10';
-        $config['redirect_uri'] = 'http://ec2-52-27-106-80.us-west-2.compute.amazonaws.com/directmail';
-        $config['btoa_code'] = 'ocuhub_prod:c777d84e67ca4903820750dd5fa54521';
-        $config['token_url'] = 'https://direct.ocuhub.com/sesidpserver/connect/token';
-        $config['iframe_height'] = 800;
-        $config['iframe_width'] = 1000;
-
-        return $config;
-    }
+		return $config;
+	}
 }

@@ -41,18 +41,6 @@ Section : Imports
     }
 }
 
-.import-btn {
-    background: transparent;
-    color: #cde8f4;
-    border: 1px solid;
-    float: right;
-    &:hover{
-          color: black;
-          background-color: #cde8f4;
-          border-color: #cde8f4;
-    }
-}
-
 #search_patient_button {
     cursor: pointer;
 }
@@ -68,9 +56,12 @@ Section : Imports
     }
 .search_filter {
     color:black;
-    display: inline-flex;
+    display: none;
     padding-left: 1px;
     padding-top: 4px;
+    &.active{
+        display: inline-flex;
+    }
 }
 
 .search_filter_item {
@@ -93,20 +84,26 @@ Section : Imports
     cursor: pointer;
 }
 .lastseen_content {
-    visibility: hidden;
-     &.active {
-         visibility: visible;
+    display: none;
+    &.active {
+        display: inline-block;
     }
 }
 .action-btns{
-    position: absolute;
+    float: right;
+    padding-right: 12px;
+    font-size: 15px;
+    text-decoration: underline;
     display: none;
-    width: 100%;
-    right: 0;
-    top: 0;
     &.active{
         display: block;
     }
+    &>a{
+        color:black;
+        cursor: pointer;
+
+    }
+
 }
 .add-btn{
     float: left;
@@ -116,9 +113,9 @@ Section : Imports
 }
 
 .referredby_content {
-     visibility: hidden;
-     &.active {
-        visibility: visible;
+    display: none;
+    &.active {
+        display: inline-block;
     }
 }
 
@@ -131,9 +128,9 @@ Section : Imports
 }
 
 .insurance_provider_content {
-     visibility: hidden;
-     &.active {
-        visibility: visible;
+    display: none;
+    &.active {
+        display: inline-block;
     }
 }
  /*
@@ -194,4 +191,8 @@ p.address{
     &:hover{
         float: left;
     }
+}
+
+.search_text {
+    padding-left: 142px;
 }

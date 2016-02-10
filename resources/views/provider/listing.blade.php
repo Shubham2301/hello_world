@@ -15,9 +15,13 @@
                     <p><span class="bold">Doctor Name</span>
                         <br><span id="provider_name"></span></p>
                 </div>
-                <div class="col-xs-6">
-                    <p><span class="bold">Speciality</span>
-                        <br><span id="speciality"></span></p>
+                <div class = "col-xs-6 ">
+                    <p>
+                        <span class="bold">Locations</span>
+                        <br>
+                        <select name="location" class="dropdown" id="location">
+                        </select>
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -25,35 +29,66 @@
                     <p><span class="bold">Phone</span>
                         <br><span id="phone"></span></p>
                 </div>
+                <div class = "col-xs-6 ">
+                    <p><span class="bold">Address</span><br>
+                        <span id="location_address"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <p><span class="bold">Speciality</span>
+                        <br><span id="speciality"></span></p>
+                </div>
                 <div class="col-xs-6">
                     <p>
-                        <span class="bold">Appointment Type</span>
+                        <span class="bold">Appointment Type &nbsp;</span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax appointment_type">
                         <br>
-                        <select name="appointment-type" class="hidden" id="appointment-type">
+                        <select name="appointment-type" class="hidden dropdown" id="appointment-type">
                         </select>
                     </p>
                 </div>
             </div>
-
             <div class="row">
                 <div class = "col-xs-6 ">
-                    <p><span class="bold">Locations</span><br>
-                    <div class="locations">
-                    </div>
+                    <p><span class="bold">Insurance</span><br>
+                        <span class="glyphicon glyphicon-ok-circle"></span>
+                    </p>
                 </div>
                 <div class="col-xs-6">
                     <p>
-                        <span class="bold">Appointment Availability</span>
-                        <br>
-                        <select name="appointment-datetime" class="hidden" id="appointment-datetime">
-                        </select>
+                        <span class="bold">Appointment Date&nbsp;</span>
+                        <input type='text' class="" id="appointment_date"/>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class = "col-xs-6 ">
+                    <p>
+                        <span class="bold">Appointment&nbsp;</span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax appointment_schedule"><br>
+                        <button class="availability-btn" id="get_availability" disabled>Availability<span class="glyphicon glyphicon-chevron-down"></span></button>
+                    </p>
+                </div>
+                <div class="col-xs-6">
+                    <p>
+                        <span class="bold">Appointment Time</span>
+                        <br><span id="appointment_time"></span></p>
                     </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<div class="availability">
+<!--
+    <div class="weekday">
+        <p class="date">02/02/2016</p>
+    </div>
+    <div class="weekday">
+        <p class="date">02/02/2016</p>
+    </div>
+-->
+</div>
            <!--Redesign this section in a more scalable way-->
            <!--
             <div class="row">

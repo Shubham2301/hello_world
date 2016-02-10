@@ -1,57 +1,119 @@
 $(document).ready(function () {
 
-    $('.configuration_tile').on('click', function () {
-        if ($(this).hasClass('active')) {
-            $(this).removeClass('active');
-            $(this).children('p').children('span').removeClass('glyphicon-ok');
-            $(this).children('p').children('span').addClass('glyphicon-pencil');
-            $('.remove_referral_type').removeClass('active');
-            $('.referral_tile_add').css('display', 'none');
+    printList();
+
+    $('#referraltypes_list').on('change', '#referr_list', function () {
+        $('#add_referral_name').text($('#referr_list :selected').text());
+    });
+
+    $('#referraltypes_list').on('click', '#edit_tiles', function () {
+        if ($('#referraltypes_list').hasClass('edit')) {
+            $('#referraltypes_list').removeClass('edit');
+            $('#referraltypes_list').removeClass('add');
+            $('p.message').text('Select type of patient you are referring');
+            printList();
+        } else {
+            $('#referraltypes_list').addClass('edit');
+            $('p.message').text('Edit referral tiles');
+            printList();
+        }
+    });
+    $('#referraltypes_list').on('click', '#add_tiles', function () {
+        if ($('#referraltypes_list').hasClass('add')) {
 
         } else {
-            $(this).addClass('active');
-            $(this).children('p').children('span').removeClass('glyphicon-pencil');
-            $(this).children('p').children('span').addClass('glyphicon-ok');
-            $('.remove_referral_type').addClass('active');
-            $('.referral_tile_add').css('display', 'inline');
-            $('#referrname').text($('#referr_list').find(":selected").text());
-            $('.add_referral_type').attr('data-id', $('#referr_list').find(":selected").val());
+            $('#referraltypes_list').addClass('add');
+            printList();
+            $('#add_referral_name').text($('#referr_list :selected').text());
         }
     });
 
-
-    $('#existing_referraltypes').on('click', '.remove_referral_type', function () {
+    $('#referraltypes_list').on('click', '.add_referral_type', function () {
+        var id = $('#referr_list').find(":selected").val();
+        var display_name = $('#referr_list').find(":selected").attr('data-name');
+        var name = $('#referr_list').find(":selected").text();
+        addReferralType(id, display_name, name);
+    });
+    $('#referraltypes_list').on('click', '.remove_add_referral_type', function () {
+        $('#referraltypes_list').removeClass('add');
+        printList();
+    });
+    $('#referraltypes_list').on('click', '.remove_referral_type', function () {
         var id = $(this).attr('data-id');
         removeReferralType(id);
     });
-    $('.add_referral_type').on('click', function () {
-        var id = $(this).attr('data-id');
-        var display_name = $('#referr_list').find(":selected").attr('data-name');
-        var name = $('#referr_list').find(":selected").text();
-
-        addReferralType(id, display_name, name);
-    });
-
-
-    $('#existing_referraltypes').on('click', '.referr_patient', function () {
+    $('#referraltypes_list').on('click', '.referr_patient', function () {
         var id = $(this).attr('data-id');
         selectPatient(id);
     });
-
-    $('#referr_list').on('change', function (e) {
-
-        $('#referrname').text($(this).find(":selected").text());
-        $('.add_referral_type').attr('data-id', $(this).find(":selected").val());
-
-        $('.referr_patient').on('click', function () {
-            var id = $(this).attr('data-id');
-            selectPatient(id);
-        });
-    });
-
-
 });
 
+function printList() {
+
+    $('#referraltypes_list').html('');
+
+    var content = "";
+
+    var info = getReferralTypeList();
+
+    info[0].forEach(function (referraltype) {
+        content += '<div class="referral_type"><span class="glyphicon glyphicon-remove-circle remove_referral_type" data-id="' + referraltype.id + '"></span><div class="tile" id="openModel" data-toggle="modal" data-target="#' + referraltype.id + '" style="color:' + referraltype.description + '"><center><span class="tile_bar" style="background-color:' + referraltype.description + '"></span><br><p class="tile_name">' + referraltype.name + '</p></center></div>' + referraltype.display_name + '</div><div id="' + referraltype.id + '" class="modal fade" role="dialog" data-id="' + referraltype.id + '"><div class="modal-dialog modal-style" style="color:#000;padding:50px;margin-top:35vh;background-color:#f2f2f2;"><p>The following screens will walk you through the referral process for referrals. When scheduling this patient, the following should be included in the direct message you send with this patient. <br><br></p><ol><li>Patient C-CDDA</li><li>Pre- surgery referral sheet</li><li>Signed patient consent form for co-management</li><li>Pre-surgery patient questionnaire</li></ol><div class="modal-footer" style="text-align:center;"><button type="button" class="btn btn-primary referr_patient" data-id="' + referraltype.id + '">Confirm</button><button type="button" class="btn dismiss_button" data-dismiss="modal">Cancel</button></div></div></div>';
+    });
+
+    if ($('#referraltypes_list').hasClass('edit')) {
+
+        if ($('#referraltypes_list').hasClass('add')) {
+            content += '<div class="referral_type"><span class="glyphicon glyphicon-ok-circle add_referral_type"></span><span class="glyphicon glyphicon-remove-circle remove_add_referral_type" style="margin-left:1.4em;"></span><div class="tile"><center><span class="tile_bar"></span><br><p class="tile_name" id="add_referral_name"></p></center></div><select id="referr_list" class="referral_type_list" name="referr_list">';
+            info[1].forEach(function (referraltype) {
+                content += '<option value="' + referraltype.id + '" data-name="' + referraltype.display_name + '">' + referraltype.name + '</option>';
+            });
+            content += '</select></div>';
+
+        } else {
+            content += '<div class="referral_type"><span class="glyphicon glyphicon-remove-circle remove_referral_type" style="visibility:hidden;"></span><div class="tile add_tile" id="add_tiles"><center><p class="referral_edit"><span class=" glyphicon glyphicon-plus-sign" aria-hidden="true"></span></p></center></div></div>';
+            content += '<div class="referral_type"><span class="glyphicon glyphicon-remove-circle remove_referral_type" style="visibility:hidden;"></span><div class="tile configuration_tile" id="edit_tiles"><center><p class="referral_edit"><span class=" glyphicon glyphicon-ok" aria-hidden="true"></span></p></center></div></div>';
+
+        }
+
+        $('#referraltypes_list').html(content);
+
+        if ($('#referraltypes_list').hasClass('add')) {
+            $('.remove_referral_type').removeClass('edit');
+        } else {
+            $('.remove_referral_type').addClass('edit');
+        }
+    } else {
+
+        content += '<div class="referral_type"><span class="glyphicon glyphicon-remove-circle remove_referral_type" style="visibility:hidden;"></span><div class="tile configuration_tile" id="edit_tiles"><center><p class="referral_edit"><span class=" glyphicon glyphicon-pencil" aria-hidden="true"></span></p></center></div></div>';
+
+        $('#referraltypes_list').html(content);
+
+        $('.remove_referral_type').removeClass('edit');
+    }
+}
+
+function getReferralTypeList() {
+
+    var info = "";
+
+    $.ajax({
+        url: '/home/getreferrallist',
+        type: 'GET',
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            info = $.parseJSON(e);
+        },
+        error: function () {
+            $('p.alert_message').text('Error getting patient information');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+    return (info);
+
+}
 
 function selectPatient(id) {
 
@@ -73,10 +135,11 @@ function removeReferralType(id) {
         contentType: 'text/html',
         async: false,
         success: function (e) {
-            $('.referral_tile[data-id="' + id + '"]').parent().remove();
+            printList();
         },
         error: function () {
-            alert('Error removing');
+            $('p.alert_message').text('Error removing');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false
@@ -98,12 +161,12 @@ function addReferralType(id, display_name, name) {
         contentType: 'text/html',
         async: false,
         success: function (e) {
-            // success :
-            $('#existing_referraltypes').append("<div class=\"col-xs-2 referral_tile_outer\"><div class=\"referral_tile referr_patient\" data-id=\"" + id + "\"><span class=\"remove_referral_type glyphicon glyphicon-remove active \" data-id=\"" + id + "\" aria-hidden=\"true\"></span><div class=\"referral_tile_inner\"></div><p>" + name + "</p></div><p>" + display_name + "</p></div> ");
-
+            $('#referraltypes_list').removeClass('add');
+            printList();
         },
         error: function () {
-            alert('Error removing');
+            $('p.alert_message').text('Error removing');
+            $('#alert').modal('show');
         },
         cache: false,
         processData: false

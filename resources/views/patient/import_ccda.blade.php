@@ -19,7 +19,7 @@
                                 <label for="exampleInputFile"><strong style="padding-left:3em;">File</strong></label>
                             </div>
                             <div class="col-md-7 ">
-                                <span class="file-input">Choose{!!Form::file('patient_ccda')!!}
+                                <span class="file-input">Select{!!Form::file('patient_ccda')!!}
                                 </span>
                                 <span class="filename"></span>
 
@@ -34,7 +34,7 @@
             </div>
             <div class="modal-footer">
                 <div style="margin-right:40%">
-                    <button type="button" class="btn save_ccda_button active">Import</button>
+                    <button type="button" class="btn save_ccda_button active">Upload</button>
                     <button type="button" class="btn btn-default dismiss_button" data-dismiss="modal">cancel</button>
                 </div>
             </div>
