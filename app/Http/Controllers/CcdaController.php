@@ -28,7 +28,7 @@ class CcdaController extends Controller {
 			$upload_success = $file->move(base_path() . '/' . $destinationPath, $xmlfilename);
 			$xmlfile = base_path() . '/' . $destinationPath . '/' . $xmlfilename;
 			$jsonfile = base_path() . '/' . $destinationPath . '/temp_json/' . $jsonfilename;
-			$xml_to_json = exec("node " . public_path() . "/js/tojson.js " . $xmlfile . " " . $jsonfile);
+			$xml_to_json = exec("/usr/local/bin/node " . public_path() . "/js/tojson.js " . $xmlfile . " " . $jsonfile);
 			$jsonstring = file_get_contents($jsonfile, true);
 			$validator = \Validator::make(array('jsson' => $jsonstring), array('jsson' => 'Required|json'));
 			unlink($xmlfile);
@@ -193,7 +193,7 @@ class CcdaController extends Controller {
 		$ss = fwrite($myfile, $jsonobject);
 		$xmlfilename = str_random(9) . ".xml";
 		$xmlfile = base_path() . '/temp_ccda/' . $xmlfilename;
-		$a = exec("node " . public_path() . "/js/toxml.js " . $jsonfile . " " . $xmlfile);
+		$a = exec("/usr/local/bin/node " . public_path() . "/js/toxml.js " . $jsonfile . " " . $xmlfile);
 		fclose($myfile);
 		unlink($jsonfile);
 		return $xmlfile;
@@ -288,7 +288,7 @@ class CcdaController extends Controller {
 
 		$proc = new XSLTProcessor;
 		$proc->importStyleSheet($xsl);
-		unlink($xmlfile);
+		//unlink($xmlfile);
 
 		return $proc->transformToXML($xml);
 

@@ -43,6 +43,7 @@ class AppointmentController extends Controller {
 		$data['appointment_type_id'] = $appointment_type_id;
 		$data['location'] = $location;
 		$data['action'] = $action;
+        $data['patient_id'] = $patient_id;
 		$patient = Patient::find($patient_id);
 		$data['patient_name'] = $patient->firstname . ' ' . $patient->lastname;
 

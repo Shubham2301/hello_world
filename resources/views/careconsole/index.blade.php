@@ -38,13 +38,15 @@
                                 <p class="result_text appointment_date">-</p>
                             </div>
                         </div>
-                        {{-- <div class="search_result_row row">
+<!--
+                         <div class="search_result_row row">
                             <div class="col-xs-10 col-xs-offset-2 search_result_row_text">
                                 <p class="result_title">Take action
                                     <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                                 </p>
                             </div>
-                        </div> --}}
+                        </div>
+-->
                     </div>
                 </div>
             </div>
@@ -52,5 +54,6 @@
     </div>
     @include('careconsole.overview')
     @include('careconsole.drilldown')
+    @include('careconsole.actions')
 </div>
 @endsection

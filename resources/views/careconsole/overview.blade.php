@@ -18,7 +18,7 @@
                 @endfor
                 @endif
             </div>
-            <div class="bottom">
+            <div class="bottom stage" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}">
                 <p>{{ $stage['display_name'] }}</p>
             </div>
         </div>
