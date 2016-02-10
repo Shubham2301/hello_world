@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    loadImportForm();
     $('#search_bar_open').on('click', function () {
         if (($('#search_bar_open').hasClass('active'))) {
             $('#search_bar_open').removeClass('active');
@@ -212,3 +213,4 @@ function action(stageID, actionID, postActionID, notes, date, consoleID) {
         processData: false
     });
 }
+

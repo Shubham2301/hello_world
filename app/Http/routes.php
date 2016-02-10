@@ -12,7 +12,6 @@
  */
 
 Route::get('/', function () {
-
 	if (!Auth::check()) {
 		return view('welcome');
 	} else {
@@ -47,6 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('home/removereferral', 'HomeController@removeReferral');
 	Route::get('home/addreferral', 'HomeController@addReferral');
+	Route::get('home/getreferrallist', 'HomeController@show');
 	Route::get('patients/search', 'Patient\PatientController@search');
 	Route::get('providers/search', 'Practice\ProviderController@search');
 	Route::get('practices/search', 'Practice\PracticeController@search');
@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('practices', 'Practice\PracticeController');
 	Route::resource('appointments', 'Appointment\AppointmentController');
 	Route::resource('home', 'HomeController');
+	Route::resource('bulkimport', 'BulkImportController');
 	Route::get('import/location', 'BulkImportController@getLocations');
 	Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
 

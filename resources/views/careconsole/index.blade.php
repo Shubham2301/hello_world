@@ -3,6 +3,7 @@
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/careconsole.css')}}">
 <script type="text/javascript" src="{{elixir('js/careconsole.js')}}"></script>
+<script type="text/javascript" src="{{elixir('js/import.js')}}"></script>
 @endsection
 @section('sidebar')
 @include('careconsole.sidebar')
@@ -12,7 +13,8 @@
     <div class="row before_drilldown">
         <div class="col-xs-12">
             <div class="section-header">
-                Overview
+                <button type="button" class="btn import-btn open_import" data-toggle="modal" data-target="#importModal" id="import_patients">Import</button>
+                <span class="overview_header">Overview</span>
                 <div class="search" id="care_console_search">
                     <input type="text" id="search_data">
                     <span class="glyphicon glyphicon-chevron-left active" aria-hidden="true" id="search_bar_open"></span>
