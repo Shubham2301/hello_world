@@ -32,14 +32,15 @@
             @if(array_key_exists('action', $data))
                 {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
             @endif
+                {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patient_id')) !!}
             {!! Form::close() !!}
         <div class="appointment_section active" id="confirm-appointment">
-            <h3 class="center-align">Schedule an appointment</h3>
+            <button type="button" class="btn back-btn" id="back">Back</button><h3 class="center-align">Schedule an appointment</h3>
             <div class="row appointment_info center-align">
                 <div class="col-xs-4">
                     <div class="appointment_info_box patient">
                         <h4><strong>Patient</strong></h4>
-                        <img src="{{URL::asset('images/provider.png')}}"><br><br><br>
+                        <div><img src="{{URL::asset('images/patient-img.png')}}" style="width:40%;"></div>
                         <h4><strong>{{ $data['patient_name'] }}</strong></h4>
                     </div>
                 </div>
@@ -53,7 +54,7 @@
                 <div class="col-xs-4">
                     <div class="appointment_info_box provider">
                         <h4><strong>Provider</strong></h4>
-                        <img src="{{URL::asset('images/provider.png')}}"><br><br><br>
+                        <div><img src="{{URL::asset('images/provider-img.png')}}" style="width:40%;"></div>
                         <h4><strong>{{ $data['provider_name'] }}</strong><br>{{ $data['practice_name'] }}</h4>
                     </div>
                 </div>
@@ -62,7 +63,7 @@
                 <p><span><input type="checkbox"></span> Send patient C-CDA file to provider</p>
             </div>
             <div class="appointment_confirm center-align">
-                <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment">Cancel</button></p>
+                <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment" data-toggle="tooltip" title="You will loose all progress" data-placement="bottom">Abort</button></p>
             </div>
          <div class="appointment_confirmed center-align">
                 <button class="confirmed" disabled>Confirmed</button>

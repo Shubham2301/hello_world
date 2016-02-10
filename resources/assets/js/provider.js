@@ -6,12 +6,11 @@ $(document).ready(function () {
     };
     getPatientInfo(formData);
 
-    $('#appointment_date').datetimepicker(
-        {format: 'MM/DD/YYYY',
-         minDate: new Date(),
-         daysOfWeekDisabled: ['0']
-        }
-    );
+    $('#appointment_date').datetimepicker({
+        format: 'MM/DD/YYYY',
+        minDate: new Date(),
+        daysOfWeekDisabled: ['0']
+    });
 
     $('.availability').on('click', 'p.appointment_start_time', function () {
         $('#form_appointment_time').val($(this).text());
@@ -129,7 +128,7 @@ $(document).ready(function () {
     });
 
     $('#location').on('change', function () {
-        $('#get_availability').attr('disabled','disabled');
+        $('#get_availability').attr('disabled', 'disabled');
         $('#form_location').val($('#location').val());
         $('#location_address').text($('#location').val());
         $('.schedule_button').removeClass('active');
@@ -141,7 +140,7 @@ $(document).ready(function () {
         $('.schedule_button').removeClass('active');
     });
 
-    $('#get_availability').on('click', function(){
+    $('#get_availability').on('click', function () {
         getOpenSlots();
     });
 
@@ -180,14 +179,19 @@ function showPatientInfo() {
         $('.view_selected_patient').text("Hide");
         $('.view_selected_patient').removeClass('view');
         $('.view_selected_patient').addClass('remove');
-        $('.patient_previous_information').removeClass('active');
+        $('.practice_info').addClass('hide');
+        $('.practice_list').addClass('hide');
+        $('.search_filter').addClass('hide');
+        $('.patient_previous_information').addClass('hide');
     } else if ($('.view_selected_patient').hasClass('remove')) {
         $('.patient_info').removeClass('active')
         $('.view_selected_patient').text("View");
         $('.view_selected_patient').removeClass('remove');
         $('.view_selected_patient').addClass('view');
-        if(!$('.practice_info').hasClass('active'))
-        $('.patient_previous_information').addClass('active');
+        $('.practice_info').removeClass('hide');
+        $('.practice_list').removeClass('hide');
+        $('.search_filter').removeClass('hide');
+        $('.patient_previous_information').removeClass('hide');
     }
 }
 
@@ -264,8 +268,8 @@ function showProviderInfo(data) {
     if (locations.length > 0) {
         $('#location').html('<option value="0">Select Location</option>');
         locations.forEach(function (location) {
-            $('#location').append('<option value="' + location.addressline1 + ' ' + location.addressline2    + '">' +  location.locationname + '</option>');
-//            content += '<div class="practice_location"><span>' + location.addressline1 + ',' + location.addressline1 + ' ' + location.city + ' ' + location.phone + '</span></div>';
+            $('#location').append('<option value="' + location.addressline1 + ' ' + location.addressline2 + '">' + location.locationname + '</option>');
+            //            content += '<div class="practice_location"><span>' + location.addressline1 + ',' + location.addressline1 + ' ' + location.city + ' ' + location.phone + '</span></div>';
         });
     }
 
@@ -379,7 +383,7 @@ function getOpenSlots() {
         async: true,
         data: $.param(formData),
         contentType: 'text/html',
-//        async: false,
+        //        async: false,
         success: function (e) {
             e = $.parseJSON(e);
             var apptSlots = e.GetOpenApptSlotsResult;
@@ -428,7 +432,7 @@ function getAppointmentTypes() {
             var apptTypes = e.GetApptTypesResult.ApptType;
             $('#appointment-type').html('<option value="0">Select Appointment Type</option>');
             apptTypes.forEach(function (elem) {
-                $('#appointment-type').append('<option value="' + elem.ApptTypeKey + '">' +  elem.ApptTypeName + '</option>');
+                $('#appointment-type').append('<option value="' + elem.ApptTypeKey + '">' + elem.ApptTypeName + '</option>');
             });
             $('#appointment-type').removeClass('hidden');
             $('.ajax.appointment_type').removeClass('active');

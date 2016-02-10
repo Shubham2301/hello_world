@@ -2,71 +2,79 @@
 @import 'fonts.less';
 @import 'media.less';
 @import 'helper.less';
-
-
-.appointment_info
-{
+.appointment_info {
     display: flex;
     margin: 6em 10em 2em 10em;
-    &>.col-xs-4
-    {
-    padding: 0px;
+    &>.col-xs-4 {
+        padding: 0px;
         order: 1;
         display: flex;
         flex: 0 1 auto;
         flex-grow: 1;
     }
-
 }
-.appointment_info_box
-{
+.appointment_info_box {
     margin: 1em 2px;
     border: solid 1px #fff;
-            order: 1;
-        flex: 0 1 auto;
-        flex-grow: 1;
-}
-.appointment_message
-{
-    border-bottom: solid 2px #fff;
-    margin: 3em 10em 1em 10em;
-    &>p
-    {
-    text-align: left;
+    order: 1;
+    flex: 0 1 auto;
+    flex-grow: 1;
+    &.patient,
+    &.provider {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
     }
 }
-.appointment_confirm
-{
-    &>p>button
-    {
+.appointment_message {
+    border-bottom: solid 2px #fff;
+    margin: 3em 10em 1em 10em;
+    &>p {
+        text-align: left;
+    }
+}
+.appointment_confirm {
+    &>p>button {
         background: transparent;
         color: #fff;
         border-radius: 4px;
         border: solid 2px #fff;
         padding: 5px 20px;
-        &:hover
-        {
+        &:hover {
             background: #fff;
-            color: black;
+        }
+        &#cancel_appointment:hover {
+            color: red;
+        }
+        &#confirm_appointment:hover {
+            color: green;
         }
     }
 }
-h4.schedule_place
-{
-padding-top: 10px;
+h4.schedule_place {
+    padding-top: 10px;
 }
-.appointment_confirmed{
-    &>button
-    {
-    background: #fff;
-    color: green;
-    border-radius: 4px;
-    border: solid 2px #fff;
-    padding: 5px 20px;
+.appointment_confirmed {
+    &>button {
+        background: #fff;
+        color: green;
+        border-radius: 4px;
+        border: solid 2px #fff;
+        padding: 5px 20px;
     }
-    &>p{
+    &>p {
         cursor: pointer;
         text-decoration: underline;
         font-size: 1.2em;
+    }
+}
+.back-btn {
+    color: #f2f2f2;
+    background-color: #808080;
+    padding: 6px 22px;
+    position: absolute;
+    &:hover,
+    &:active {
+        color: #f2f2f2;
     }
 }
