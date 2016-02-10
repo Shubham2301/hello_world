@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    loadImportForm(); 
+    loadImportForm();
     $('#search_bar_open').on('click', function () {
         if (($('#search_bar_open').hasClass('active'))) {
             $('#search_bar_open').removeClass('active');
@@ -70,20 +70,15 @@ $(document).ready(function () {
         $('.subsection-header').removeClass('active');
         var stage_id = '';
         var stage_name = '';
-        if ($(this).hasClass('bottom')) {
-            stage_id = $($(this).closest('.info_box')).attr('data-id');
-            stage_name = $($(this).closest('.info_box')).attr('data-name');
-        } else {
-            stage_id = $(this).attr('data-id');
-            stage_name = $(this).attr('data-name');
-        }
+        stage_id = $(this).attr('data-id');
+        stage_name = $(this).attr('data-name');
         clearHTML();
         $('#current_stage').val(stage_id);
         showStageData(stage_id, stage_name);
     });
-    $('.drilldown_content').on('click', '.careconsole_action', function(){
+    $('.drilldown_content').on('click', '.careconsole_action', function () {
         var stageID;
-        if(stageID = $('#current_stage').val() === '-1')
+        if (stageID = $('#current_stage').val() === '-1')
             return;
         var actionID = $(this).attr('data-id');
         var postActionId = $(this).attr('data-id');
@@ -97,7 +92,7 @@ $(document).ready(function () {
 function searchc3() {
     if (!($('#search_bar_open').hasClass('active'))) {
         var formData = {
-            'name' : $('#search_data').val()
+            'name': $('#search_data').val()
         };
         $.ajax({
             url: '/careconsole/searchpatient',
@@ -107,7 +102,7 @@ function searchc3() {
             async: false,
             success: function success(e) {
                 e = $.parseJSON(e);
-                if(e.length != 0){  //replace with loop for multiple patients in search result.
+                if (e.length != 0) { //replace with loop for multiple patients in search result.
                     $('.result_title.stage_name').html(e[0].stage_name);
                     $('.search_result').addClass('active');
                 }
@@ -119,7 +114,7 @@ function searchc3() {
             cache: false,
             processData: false
         });
-        
+
     }
 }
 
@@ -190,7 +185,7 @@ function action(stageID, actionID, postActionID, notes, date, consoleID) {
 
     var formData = {
         'console_id': consoleID,
-        'stage_id' : stageID,
+        'stage_id': stageID,
         'action_id': actionID,
         'post_action_id': postActionID,
         'notes': notes,
@@ -213,4 +208,3 @@ function action(stageID, actionID, postActionID, notes, date, consoleID) {
         processData: false
     });
 }
-
