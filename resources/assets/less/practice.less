@@ -1,3 +1,8 @@
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
+
 #search_practice_input {
     //background: transparent;
 }
@@ -112,11 +117,13 @@ p.pagination {
 }
 
 .ocuapps_options {
-    margin-left: 4em;
-    margin-top: 3em;
+    margin-top: -1px;
 }
 
-.change_location {}
+.change_location {
+    margin-left: 30px;
+    margin-top: 3px;
+}
 
 .delete_practice_img {
     content: url('images/delete.png');
@@ -249,7 +256,7 @@ p.table_header {
     padding: 0px;
     padding-left: 3px;
     margin-top: -16px;
-    margin-bottom: 3px;
+    font-size: 13px;
 }
 
 .modal-header {
@@ -353,4 +360,104 @@ p.table_header {
     width: 24px;
     height: 15px;
     margin-right: 9px;
+}
+
+.add_practice_input{
+    display: block;
+    color: #fff;
+    background-color: @font-color-4;
+    border: 2px solid @font-color-4;
+    margin: 1em;
+    border-radius: .2em;
+    padding: .5em;
+    width: 60%;
+    &::placeholder{
+        color: @background-color-5;
+    }
+    &:focus{
+        border: 2px solid #fff;
+    }
+}
+.add_header {
+    display: flex;
+    margin-left: 29px;
+}
+
+.section-break {
+    border-top: 1px solid @background-color-6;
+    margin: 0 2em 0 2em;
+}
+
+
+.add_location_header {
+    display: flex;
+  margin-left: 40px;
+}
+
+.save_practice_button {
+    color: #000;
+    background-color: #00B6F1;
+    border-color: #fff;
+    float: left;
+    margin-left: 34%;
+    &:hover{
+        color: #fff;
+        background-color: #0086fb;
+        border-color: #0086fb;
+    }
+}
+
+.add_practice_footer {
+    margin-left: 23%;
+}
+
+#dontsave_new_practice {
+    margin-right: 11em;
+}
+
+.back_practice {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.add_location_button {
+    background: transparent;
+    padding-left: 11px;
+    padding-right: 10px;
+    margin-left: 1em;
+    &:hover{
+        color: #fff;
+        background-color: #0086fb;
+        border-color: #0086fb;
+
+    }
+}
+
+.remove_location_button {
+    background: transparent;
+    padding-left: 11px;
+    padding-right: 10px;
+    margin-left: 11px;
+    &:hover{
+        color: #fff;
+        background-color: #0086fb;
+        border-color: #0086fb;
+
+    }
+}
+
+#location_next {
+    margin-top: 1px;
+}
+
+#location_previous {
+    margin-top: 1px;
+}
+
+
+p.add_title {
+    font-size: 1.5em;
+    margin-bottom: 0;
+    margin-left: 1em;
+    margin-top: auto;
 }

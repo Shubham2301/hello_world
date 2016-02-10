@@ -30,6 +30,6 @@
     @include('practice.listing')
 </div>
 <div class="practice_section active">
-    @include('practice.create')
+    @include('practice.edit')
 </div>
 @endsection
