@@ -11,6 +11,12 @@ $(document).ready(function () {
         };
         getNetworks(formData);
     });
+
+    $('#dontsave_network').on('click',function(){
+        $('.back-btn').trigger('click');
+    });
+
+
 });
 
 function getNetworks(formData) {

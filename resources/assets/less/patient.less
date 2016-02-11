@@ -90,14 +90,21 @@ Section : Imports
     }
 }
 .action-btns{
+    float: right;
+    padding-right: 12px;
+    font-size: 15px;
+    text-decoration: underline;
+    right: 0;
     position: absolute;
     display: none;
-    width: 100%;
-    right: 0;
-    top: 0;
     &.active{
-        display: block;
+        display:inline-block;
     }
+    &>a{
+        color:black;
+        cursor: pointer;
+    }
+
 }
 .add-btn{
     float: left;
@@ -186,3 +193,24 @@ p.address{
         float: left;
     }
 }
+
+
+.search_text {
+    padding-left: 142px;
+}
+
+.add_patient_footer {
+    margin-left: 25.5%;
+    display: inline-flex;
+}
+
+#dontsave_new_patient {
+    margin-left: 4em;
+}
+
+.save_patient_button {
+    color: #000;
+    background-color: #00B6F1;
+    border-color: #fff;
+}
+

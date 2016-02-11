@@ -3,6 +3,7 @@
 namespace myocuhub\Services\KPI;
 
 use myocuhub\Models\Careconsole;
+use myocuhub\Models\KPI;
 
 class KPIService {
 

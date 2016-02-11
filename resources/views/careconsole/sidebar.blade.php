@@ -10,21 +10,21 @@
                     <li><a href="#"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a></li>
                     <li><a href="/home"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a></li>
                     <li><a href="#"><img src="{{URL::asset('images/sidebar/records.png')}}" class="drop_image"></a></li>
-                    <li><a href="/careconsole"><img src="{{URL::asset('images/sidebar/care_coordination.png')}}" class="drop_image"></a></li>
-                    <li><a href="/administration/practices"><img src="{{URL::asset('images/sidebar/care_coordination.png')}}" class="drop_image"></a></li>
+                    <li><a href="/careconsole"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="drop_image"></a></li>
+                    <li><a href="/administration/practices"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a></li>
                 </ul>
             </div>
         </div>
         <div class="col-lg-9 col-md-10">
-            <h3 class="title"> Care Console</h3>
-            <div class="c3_overview_link"><img src="{{URL::asset('images/overview_icon.png')}}"><p>Overview</p></div>
+            <h3 class="title">Care Console</h3>
+            <a href="/careconsole" id="refresh_console"><div class="c3_overview_link"><img src="{{URL::asset('images/overview_icon.png')}}"><p>Overview</p></div></a>
         </div>
     </div>
     <ul class="c3_sidebar_list sidebar_item_list">
         @foreach($overview['stages'] as $stage)
         <li class="sidebar_menu_item">
-            <div class="stage box" id="sidebar_{{ $stage['name'] }}" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}"><span style="background-color:{{ $stage['color_indicator'] }}"><p class="stage-notation">LD</p></span><p>{{ $stage['display_name'] }}</p></div>
-<!--
+            <div class="stage box" id="sidebar_{{ $stage['name'] }}" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}"><span style="background-color:{{ $stage['color_indicator'] }}"><p class="stage-notation">{{ $stage['abbr'] }}</p></span><p>{{ $stage['display_name'] }}</p></div>
+            <!--
             <ul>
                 <div class="info_box">
                     <div class="top">
@@ -45,15 +45,15 @@
                     </div>
                 </div>
             </ul>
--->
+            -->
         </li>
         @endforeach
-<!--
-       <li class="sidebar_menu_item">
-           <div class="stage box" id="" data-id="" data-name=""><span></span><p>Status</p></div>
+        <!--
+        <li class="sidebar_menu_item">
+            <div class="stage box" id="" data-id="" data-name=""><span></span><p>Status</p></div>
         </li>
--->
-        </ul>
+        -->
+    </ul>
     <div class="control_section">
         <div class="C3_day_row control_header"><p>Controls</p></div>
         <div class="C3_day_row control_label">

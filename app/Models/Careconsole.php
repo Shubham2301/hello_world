@@ -53,7 +53,7 @@ class Careconsole extends Model {
 			->where('import_history.network_id', $networkID)
 			->whereNull('archived')
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
-			->get();
+			->get(['*', 'careconsole.id']);
 	}
 
 	/**
@@ -188,7 +188,7 @@ class Careconsole extends Model {
 			})
 			->whereNull('archived')
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
-			->get();
+			->get(['*', 'careconsole.id']);
 	}
 
 	/**
@@ -203,7 +203,7 @@ class Careconsole extends Model {
 			->whereNull('console_id')
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
 			->whereNull('archived')
-			->get();
+			->get(['*', 'careconsole.id']);
 	}
 
 	/**
