@@ -91,15 +91,30 @@ $(document).ready(function () {
         default:
             $('#action_patient_id').val($(this).parent().attr('data-patientid'));
             $('#action_id').val($(this).attr('data-id'));
-            $('#action_post_action_id').val($(this).attr('data-id'));
             $('#action_console_id').val($(this).parent().attr('data-consoleid'));
             $('#action_stage_id').val($('#current_stage').val());
             $('#action_header').html($(this).attr('data-displayname'));
             $('#actionModal').modal('show');
+            var results = actionResults[$(this).attr('data-id')];
+            if(results.length > 0)
+            {
+                var content = '<option value="0">Select Action Result</option>';
+                results.forEach(function (result) {
+                    console.log(result);
+                    content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
+                });
+                $('#action_result_id').html(content);
+                $('#action_results').show();
+            }
+            else if(results.length === 0 ){
+                $('#action_results').hide();
+            }
         }
     });
 
 });
+
+var actionResults = {};
 
 function searchc3() {
     if (!($('#search_bar_open').hasClass('active'))) {
@@ -174,6 +189,7 @@ function getPatientData(stageID, kpiName = '') {
             var actions = data.actions;
             if (actions.length > 0) {
                 actions.forEach(function (action) {
+                    actionResults[action.id] = action.action_results;
                     actionList += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '"><a href="#">' + action.display_name + '</a></li>';
                 });
             }
@@ -199,14 +215,11 @@ function action() {
         'console_id': $('#action_console_id').val(),
         'stage_id': $('#action_stage_id').val(),
         'action_id': $('#action_id').val(),
-        'post_action_id': $('#action_post_action_id').val(),
+        'action_result_id': $('#action_result_id').val(),
         'notes': $('#action_notes').val(),
         'date': $('#action_date').val(),
     };
-    $('#action_patient_id').val($(this).attr('data-patientid'));
-            $('#action_id').val($(this).attr('data-id'));
-            $('#action_post_action_id').val($(this).attr('data-id'));
-            $('#action_console_id').val($(this).attr('data-consoleid'));
+
     $.ajax({
         url: '/careconsole/action',
         type: 'GET',
@@ -223,4 +236,5 @@ function action() {
         cache: false,
         processData: false
     });
+
 }
