@@ -1,17 +1,25 @@
 $(document).ready(function () {
+
+    $('[data-toggle="tooltip"]').tooltip();
     $('.appointment_confirmed').hide();
     $('#confirm_appointment').on('click', function () {
         scheduleAppointment();
     });
-    $('#schedule_new_patient').on('click', function(){
+    $('#schedule_new_patient').on('click', function () {
+        $('#form_patient_id').prop('disabled', true);
         $('#form_schedule_another_appointment').submit();
     });
-    $('#cancel_appointment').on('click', function(){
+    $('#cancel_appointment').on('click', function () {
+        $('#form_patient_id').prop('disabled', true);
+        $('#form_schedule_another_appointment').submit();
+    });
+    $('#back').on('click', function(){
+        $('#form_schedule_another_appointment').attr('action', "/providers");
         $('#form_schedule_another_appointment').submit();
     });
 });
 
-function scheduleAppointment(){
+function scheduleAppointment() {
 
     var patient_id = 1;
     var provider_id = 1;
@@ -37,8 +45,7 @@ function scheduleAppointment(){
             $('.appointment_confirm').hide();
             $('.appointment_confirmed').show();
         },
-        error: function () {
-        },
+        error: function () {},
         cache: false,
         processData: false
     });
