@@ -5,6 +5,7 @@ namespace myocuhub\Http\Controllers\CareConsole;
 use Auth;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Models\Action;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Network;
@@ -40,6 +41,7 @@ class CareConsoleController extends Controller {
 			$overview['stages'][$i]['display_name'] = $stage->display_name;
 			$overview['stages'][$i]['color_indicator'] = $stage->color_indicator;
 			$overview['stages'][$i]['description'] = $stage->description;
+			$overview['stages'][$i]['abbr'] = $stage->abbr;
 
 			$kpis = CareconsoleStage::find($stage->stage_id)->kpi;
 			$j = 0;
@@ -148,19 +150,31 @@ class CareConsoleController extends Controller {
 			$i++;
 		}
 
+		$actions = CareconsoleStage::find($stageID)->actions;
+		$i = 0;
+		foreach ($actions as $action) {
+			$actionsData[$i]['id'] = $action->id;
+			$actionsData[$i]['stage_id'] = $action->stage_id;
+			$actionsData[$i]['name'] = $action->name;
+			$actionsData[$i]['display_name'] = $action->display_name;
+			$actionsData[$i]['action_results'] = Action::find($action->id)->actionResults;
+			$i++;
+		}
+
+		$drilldown['actions'] = $actionsData;
 		$drilldown['patients'] = $patientsData;
-		$drilldown['actions'] = CareconsoleStage::find($stageID)->actions;
 
 		return json_encode($drilldown);
 	}
 
 	public function action(Request $request) {
 		$actionID = $request->action_id;
-		$postActionID = $request->post_action_id;
-		$date = $request->date;
+		$actionResultID = $request->action_result_id;
+		$date = 'CURRENT_TIMESTAMP';
 		$notes = $request->notes;
 		$consoleID = $request->console_id;
-		$this->ActionService->userAction($actionID, $postActionID, $date, $notes, $consoleID);
+		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $date, $notes, $consoleID);
+		return json_encode($contactHistoryID);
 	}
 
 	public function searchPatients(Request $request) {
