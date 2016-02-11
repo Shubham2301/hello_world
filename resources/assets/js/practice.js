@@ -148,14 +148,6 @@ $(document).ready(function() {
     });
     $('.practice_list').on('click', '.editpractice_from_row', function() {
         var val = $(this).parents('.search_item').attr('data-id');
-        /* showinfo = false;
-         var formData = {
-             'practice_id': val
-         };
-         getPracticeInfo(formData)
-         $('.editmode').val(val);
-         setNewLocationField();
-         setEditMode();*/
         window.location = '/administration/practices/edit/' + val + '';
     });
     $('.practice_list').on('click', '.removepractice_from_row', function() {
@@ -185,17 +177,10 @@ $(document).ready(function() {
         });
     });
     $('.p_left').on('click', function() {
-        // var pages = $('.page_info').text();
-        //  var currentpage = parseInt(pages.slice(0, 1));
-        //  var lastpage = parseInt(pages.slice(pages.length - 1, pages.length));
         if (currentpage > 1)
             getpracticepage(currentpage - 1);
-
     });
     $('.p_right').on('click', function() {
-        // var pages = $('.page_info').text();
-        //var currentpage = parseInt(pages.slice(0, 1));
-        // var lastpage = parseInt(pages.slice(pages.length - 1, pages.length));
         if (currentpage < lastpage)
             getpracticepage(currentpage + 1);
     });
@@ -312,7 +297,7 @@ function getPractices(formData) {
             $('#search_results').text('');
             if (practices.length > 0 && practices[0]['total'] > 0) {
                 practices.forEach(function(practice) {
-                    content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3" style="display:inline-flex;"><div><input type="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + practice.name + '</p></div></div><div class="col-xs-3">' + practice.address + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + practice.ocuapps + '</p></div> <div class="col-xs-2 search_edit"><p><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editpractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;<div class="dropdown"><span class="glyphicon glyphicon-remove removepractice_from_row " area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;height:20px;" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+                    content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3" style="display:inline-flex;"><div><input type="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + practice.name + '</p></div></div><div class="col-xs-3">' + practice.address + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + practice.ocuapps + '</p></div> <div class="col-xs-2 search_edit"><p><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editpractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepractice_from_row"><img src="' + deleteimage + '" alt="" class="removepractice_img"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     //<img class="delete_practice_im" src="' + deleteimage + '">
                     //<img class="schedule_practice_img" src="' + scheduleimg + '">
                 });
@@ -458,14 +443,7 @@ function updatePracticedata(formdata) {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-            /* var practiceid = $.parseJSON(e);
-             var formData = {
-                 'practice_id': practiceid
-             };
-             getPracticeInfo(formData);*/
             window.location = "/administration/practices";
-
-
         },
         error: function error() {
             $('p.alert_message').text('Error searching');
@@ -514,7 +492,7 @@ function getpracticepage(page) {
             $('#search_results').text('');
             if (practices.length > 0 && practices[0]['total'] > 0) {
                 practices.forEach(function(practice) {
-                    content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3" style="display:inline-flex;"><div><input type="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + practice.name + '</p></div></div><div class="col-xs-3">' + practice.address + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + practice.ocuapps + '</p></div> <div class="col-xs-2 search_edit"><p><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editpractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;<div class="dropdown"><span class="glyphicon glyphicon-remove removepractice_from_row " area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;height:20px;" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+                    content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3" style="display:inline-flex;"><div><input type="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + practice.name + '</p></div></div><div class="col-xs-3">' + practice.address + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + practice.ocuapps + '</p></div> <div class="col-xs-2 search_edit"><p><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editpractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepractice_from_row"><img src="' + deleteimage + '" alt="" class="removepractice_img"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     //<img class="delete_practice_im" src="' + deleteimage + '">
                     //<img class="schedule_practice_img" src="' + scheduleimg + '">
                 });

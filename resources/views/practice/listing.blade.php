@@ -1,4 +1,4 @@
-<div class="row content-row-margin practice_list">
+<div class="row content-row-margin practice_list ">
 
     <p id="search_results" class="search_result"><strong></strong></p>
     <div class="row search_header">
@@ -17,7 +17,7 @@
         </div>
         <div class="col-xs-2">
             <input type="hidden" id="schedule_practice_img" value="{{asset('images/schedule.png')}}">
-            <input type="hidden" id="delete_practice_img" value="{{asset('images/delete.png')}}">
+            <input type="hidden" id="delete_practice_img" value="{{asset('images/delete-active-01.png')}}">
             <p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong>2 of 2</strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
         </div>
     </div>
@@ -57,18 +57,18 @@
                     </ul>
                 </div>
             </p>&nbsp;&nbsp;
-            <p class="editPractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;
+            <p class="editPractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>
             <div class="dropdown">
-                <span class="glyphicon glyphicon-remove removepractice_from_row" area-hidden="true" style="background: maroon;color: white;padding: 3px;
-                border-radius: 3px;font-size: 0.9em;height:20px;" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle">
+                <span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepractice_from_row">
+                    <img src="{{asset('images/delete-active-01.png')}}" alt="" class="removepractice_img">
                 </span>
                 <ul class="dropdown-menu" id="row_remove_dropdown">
                     <li class="confirm_text">
                         <p><strong>Do you really want to delete this?</strong></p>
                     </li>
                     <li class="confirm_buttons">
-                        <button type="button" id="confirm_yes" class="btn btn-info btn-lg"> Yes</button>
-                        <button type="button" id="confirm_no" class="btn btn-info btn-lg">NO</button>
+                        <button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button>
+                        <button type="button"  class="btn btn-info btn-lg confirm_no">NO</button>
                     </li>
                 </ul>
 
@@ -77,7 +77,7 @@
     </div>
     -->
 
-</div>
+    </div>
 
 </div>
 <div class="row content-row-margin practice_info" data-id="">
@@ -95,17 +95,18 @@
                 <p>Assign User</p>
                 &nbsp;&nbsp;&nbsp;
                 <p id="edit_practice" class="btn" data-toggle="modal" data-target="#create_practice" data-id="">Edit</p>
-                &nbsp;&nbsp;&nbsp;
+                &nbsp;
                 <div class="dropdown">
-                    <span class="glyphicon glyphicon-remove" id="remove_practice" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;height: 20px; margin-top: 14px" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle">
+                    <span id="remove_practice" area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle">
+                        <img src="{{asset('images/delete-active-01.png')}}" alt="" class="removepractice_img" style="    width:34%; margin-top:5px;">
                    </span>
                     <ul class="dropdown-menu" id="remove_action_dropdown">
                         <li class="confirm_text">
                             <p><strong>Do you really want to delete this?</strong></p>
                         </li>
                         <li class="confirm_buttons">
-                            <button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button>
-                            <button type="button"  class="btn btn-info btn-lg confirm_no">NO</button>
+                            <button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button>
+                            <button type="button" class="btn btn-info btn-lg confirm_no">NO</button>
                         </li>
                     </ul>
 
