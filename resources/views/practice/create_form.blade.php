@@ -31,7 +31,7 @@
 <div class="row content-row-margin">
     <div class="col-xs-12 col-sm-12 add_location_header">
         <br>
-        <p><strong>Location Details</strong></p>
+        <p style="color:#fff"><strong>Location Details</strong></p>
         <div class="change_location">
             <span class="glyphicon glyphicon-chevron-up glyph_design" id="location_next"></span>
             <span><p class="location_counter">0</p></span>
