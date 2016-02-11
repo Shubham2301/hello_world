@@ -20,20 +20,27 @@
         <div>
             <p class="add_title">Add New Network</p>
         </div>
+        <input type="hidden" id="editmode" value="{{$data['id']}}">
     </div>
-    {!! Form::open(array('url' => '/administration/network/add', 'method' => 'POST', 'id' => 'form_add_networks')) !!}
+    {!! Form::open(array('url' => $data['url'], 'method' => 'POST', 'id' => 'form_add_networks')) !!}
     <div class="row content-row-margin">
         <div class="col-sm-6 col-xs-12">
-            {!! Form::text('Name', old('name'), array('class' => 'add_network_input', 'required' => 'required', 'name' => 'name', 'placeholder' => 'Network Name', 'id' => 'name')) !!} {!! Form::email('email', old('email'), array('class' => 'add_network_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email')) !!} {!! Form::text('Phone', old('phone'), array('class' => 'add_network_input', 'name' => 'phone', 'placeholder' => 'Phone', 'id' => 'phone')) !!}
+            {!! Form::text('Name', $data['name'] , array('class' => 'add_network_input', 'required' => 'required', 'name' => 'name', 'placeholder' => 'Network Name', 'id' => 'name')) !!}
+            {!! Form::email('email', $data['email'], array('class' => 'add_network_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email')) !!}
+            {!! Form::text('Phone', $data['phone'], array('class' => 'add_network_input', 'name' => 'phone', 'placeholder' => 'Phone', 'id' => 'phone')) !!}
         </div>
     </div>
     <div class="section-break"></div>
     <div class="row content-row-margin">
         <div class="col-sm-6 col-xs-12">
-            {!! Form::text('address_1', old('Address1'), array('class' => 'add_network_input', 'name' => 'address_1', 'placeholder' => 'Address Line 1', 'id' => 'Address_1')) !!} {!! Form::text('address_2', old('Address2'), array('class' => 'add_network_input', 'name' => 'address_2', 'placeholder' => 'Address Line 2', 'id' => 'Address_2')) !!} {!! Form::text('City', old('city'), array('class' => 'add_network_input', 'name' => 'city', 'placeholder' => 'City', 'id' => 'city')) !!}
+            {!! Form::text('address_1', $data['addressline1'], array('class' => 'add_network_input', 'name' => 'addressline1', 'placeholder' => 'Address Line 1', 'id' => 'Address_1')) !!}
+            {!! Form::text('address_2', $data['addressline2'], array('class' => 'add_network_input', 'name' => 'addressline2', 'placeholder' => 'Address Line 2', 'id' => 'Address_2')) !!}
+            {!! Form::text('City', $data['city'], array('class' => 'add_network_input', 'name' => 'city', 'placeholder' => 'City', 'id' => 'city')) !!}
         </div>
         <div class="col-sm-6 col-xs-12">
-            {!! Form::text('Zip', old('zip'), array('class' => 'add_network_input', 'name' => 'zip', 'placeholder' => 'ZIP', 'id' => 'zip')) !!} {!! Form::text('state', old('state'), array('class' => 'add_network_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state')) !!} {!! Form::text('country', old('country'), array('class' => 'add_network_input', 'name' => 'country', 'placeholder' => 'Country', 'id' => 'country')) !!}
+            {!! Form::text('Zip', $data['zip'], array('class' => 'add_network_input', 'name' => 'zip', 'placeholder' => 'ZIP', 'id' => 'zip')) !!}
+            {!! Form::text('state', $data['state'], array('class' => 'add_network_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state')) !!}
+            {!! Form::text('country', $data['country'], array('class' => 'add_network_input', 'name' => 'country', 'placeholder' => 'Country', 'id' => 'country')) !!}
 
         </div>
     </div>

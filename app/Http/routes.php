@@ -54,6 +54,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('practices/update', 'Practice\PracticeController@update');
 	Route::get('practices/remove', 'Practice\PracticeController@destroy');
 	Route::get('networks/search', 'Admin\NetworkController@search');
+    Route::get('networks/edit/{id}', 'Admin\NetworkController@edit');
+    Route::post('networks/update/{id}', 'Admin\NetworkController@update');
+    Route::get('networks/destroy/{id}', 'Admin\NetworkController@destroy');
 	Route::get('careconsole/drilldown', 'CareConsole\CareConsoleController@getDrilldownData');
 	Route::get('careconsole/action', 'CareConsole\CareConsoleController@action');
 	Route::get('careconsole/searchpatient', 'CareConsole\CareConsoleController@searchPatients');
