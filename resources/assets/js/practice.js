@@ -18,6 +18,7 @@ $(document).ready(function() {
             'value': searchvalue
         };
         getPractices(formData);
+        $('#refresh_practices').addClass('active');
     });
     $('#back').on('click', function() {
         $('.practice_info').removeClass('active');
@@ -198,7 +199,7 @@ $(document).ready(function() {
     });
     $('#refresh_practices').on('click', function() {
         $('#search_practice_input').val('');
-        $('#search_practice_button').trigger('click');
+        loadAllPractices();
     });
     $('#back_to_select_practice_btn').on('click', function() {
         window.location = "/administration/practices";
@@ -267,6 +268,7 @@ function loadAllPractices() {
         'value': ''
     };
     getPractices(formData);
+    $('#refresh_practices').removeClass('active');
 }
 
 function getPractices(formData) {
