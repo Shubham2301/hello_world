@@ -36,8 +36,9 @@
     {!! Form::hidden('action', $data['action'], array('name' => 'action' , 'id' => 'form_action')) !!}
     </div>
 </div>
-     <div class="row content-row-margin">
-     {!! Form::submit('Add Patient', array('class' => 'btn btn-default btn-primary')) !!}
+     <div class="row content-row-margin add_patient_footer">
+         {!! Form::submit('Save', array('class' => 'btn btn-default btn-primary save_patient_button')) !!}
+         <button type="button" class="btn add-btn" id="dontsave_new_patient" >Don't Save</button>
 </div>
 
 

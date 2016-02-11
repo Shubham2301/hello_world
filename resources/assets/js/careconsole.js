@@ -1,6 +1,6 @@
 $(document).ready(function () {
     loadImportForm();
-    $('#datetimepicker_action_date').datetimepicker({ 
+    $('#datetimepicker_action_date').datetimepicker({
         format: 'YYYY-MM-DD',
     });
 
@@ -236,5 +236,4 @@ function action() {
         cache: false,
         processData: false
     });
-
 }

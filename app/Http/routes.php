@@ -50,8 +50,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('patients/search', 'Patient\PatientController@search');
 	Route::get('providers/search', 'Practice\ProviderController@search');
 	Route::get('practices/search', 'Practice\PracticeController@search');
-	Route::get('practices/create', 'Practice\PracticeController@create');
-	Route::get('practices/edit', 'Practice\PracticeController@edit');
+	Route::get('practices/store', 'Practice\PracticeController@store');
+	Route::get('practices/update', 'Practice\PracticeController@update');
 	Route::get('practices/remove', 'Practice\PracticeController@destroy');
 	Route::get('networks/search', 'Admin\NetworkController@search');
 	Route::get('careconsole/drilldown', 'CareConsole\CareConsoleController@getDrilldownData');
@@ -95,6 +95,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('administration/networks', 'Admin\NetworkController');
 	Route::resource('administration/permissions', 'Admin\PermissionController');
 	Route::get('administration/practices', 'Practice\PracticeController@administration');
+    Route::get('administration/practices/create', 'Practice\PracticeController@create');
+    Route::get('administration/practices/edit/{id}', 'Practice\PracticeController@edit');
 
 	Route::get('administration/patients/create', 'Patient\PatientController@create');
 	Route::get('administration/patients', 'Patient\PatientController@create');
