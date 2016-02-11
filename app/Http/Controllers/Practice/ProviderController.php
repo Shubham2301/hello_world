@@ -155,53 +155,43 @@ class ProviderController extends Controller {
 		$providerID = $request->input('provider_id');
 		$locationID = $request->input('location_id');
 		$AppointmentType = $request->input('appointment_type');
-		$AppointmentDate = $request->input('appointment_date');
+		$week_advance = $request->input('week');
 
 		$providerInfo['LocKey'] = 3839;
 		$providerInfo['AcctKey'] = 8042;
 		$providerInfo['ApptTypeKey'] = $AppointmentType;
 
 
-        $dates = $this->getDatesOfWeek($AppointmentDate);
-
+        $dates = $this->getDatesOfWeek($week_advance);
 
         $slots = [];
-        $providerInfo['GetSlotsOnDate'] = $AppointmentDate;
-        $slots[0]['date'] = $AppointmentDate;
-        $slots[0]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
-
-
-//        $i = 0;
-//        foreach($dates as $date)
-//        {
-//            $providerInfo['GetSlotsOnDate'] = $date;
-//            $slots[$i]['date'] = $date;
-//            $slots[$i]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
-//            $i++;
-//        }
+        $i = 0;
+        foreach($dates as $date)
+        {
+            $slots[$i]['date'] = $date;
+            $providerInfo['GetSlotsOnDate'] = $date;
+            $slots[$i]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
+            $i++;
+        }
 		return json_encode($slots);
 	}
 	public function administration(Request $request) {
 		return view('provider.admin');
 	}
 
-	protected function getDatesOfWeek($weekStart = "last monday") {
+	protected function getDatesOfWeek($week_advance) {
 
-		$timestampFirstDay = strtotime($weekStart);
-
-		if (date('n/j/y', $timestampFirstDay) == date('n/j/y', time() - 7 * 24 * 3600)) {
-			$timestampFirstDay += 7 * 24 * 3600;
-		}
-
-		$currentDay = $timestampFirstDay;
-		$dates = [];
-
-		for ($i = 0; $i < 7; $i++) {
-			$dates[] = date('n/j/y', $currentDay);
-			$currentDay += 24 * 3600;
-
-		}
-
-		return $dates;
+        $date = date("m/d/Y");
+        $date = date("d-m-Y", strtotime($date) + (86400*$week_advance*7));
+        $ts = strtotime($date);
+        $year = date('o', $ts);
+        $week = date('W', $ts);
+//        $var = 7*$week_advance;
+        $dates = [];
+        for($i = 0; $i < 7; $i++) {
+            $ts = strtotime($year.'W'.$week.$i);
+            $dates[] = date("m/d/Y", $ts);
+        }
+        return $dates;
 	}
 }

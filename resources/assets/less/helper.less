@@ -7,19 +7,15 @@ Section : Helper Classes
 .no-padding {
     padding: 0;
 }
-
 .no-margin {
     margin: 0;
 }
-
 .right-border {
     border-right: 2px solid white;
 }
-
 .right-border-grey {
     border-right: 2px solid @background-color-2;
 }
-
 .input {
     padding: .6em 4em .6em 1em;
     border-radius: .5em;
@@ -27,7 +23,6 @@ Section : Helper Classes
     box-shadow: inset -5px 5px 10px 0px #b7b9bb;
     color: #bcbec0;
 }
-
 a,
 a:hover,
 a:active,
@@ -39,7 +34,6 @@ a:focus {
         color: @font-color-2;
     }
 }
-
 .button {
     text-align: center;
     background: #a9abae;
@@ -48,27 +42,23 @@ a:focus {
     box-shadow: inset -5px 5px 10px 0px #77787b;
     border: 1px solid white;
 }
-
 .button_type {
     display: inline-block;
     color: black;
     padding: 0.5em 1em;
     border-radius: 0.25em;
 }
-
 .button_type_1 {
     .button_type;
     background-color: #cde8f4;
-      cursor: pointer;
+    cursor: pointer;
 }
-
 .button_type_2 {
     .button_type;
     background-color: transparent;
     border: solid 1px;
     cursor: pointer;
 }
-
 .button_type_3 {
     display: inline-block;
     color: white;
@@ -80,11 +70,9 @@ a:focus {
     position: absolute;
     right: 0px;
 }
-
 .bold {
     font-weight: bold;
 }
-
 .gradient (@start, @stop) {
     background-color: @start;
     background-image: -webkit-linear-gradient(@start 10%, @stop 90%);
@@ -93,13 +81,11 @@ a:focus {
     background-image: -ms-linear-gradient(@start 10%, @stop 90%);
     background-image: linear-gradient(@start 10%, @stop 90%);
 }
-
 .reflect (@length: 50%, @opacity: 0.2) {
     -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(@length, transparent), to(rgba(255, 255, 255, @opacity)));
 }
-
-.center-align{
-    text-align:center;
+.center-align {
+    text-align: center;
 }
 .add-btn,
 .add-btn:hover {
@@ -108,67 +94,66 @@ a:focus {
     background-color: #0086fb;
     border-color: #0086fb;
 }
-
 ::-webkit-scrollbar {
-      width: .5em;
+    width: .5em;
+    height: .5em;
 }
 ::-webkit-scrollbar-track {
-      background-color: transparent;
+    background-color: transparent;
 }
 ::-webkit-scrollbar-thumb {
     background-color: @font-color-4;
     border-radius: .25em;
 }
 ::-webkit-scrollbar-button {
-      background-color: transparent;
+    background-color: transparent;
 }
- ::-webkit-scrollbar-corner {
-      background-color: black;
+::-webkit-scrollbar-corner {
+    background-color: black;
 }
-
 .modal-dialog.alert {
-  background-color: transparent;
-  margin-top: 0;
-  margin-bottom: 0;
-  height: 100vh;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+    background-color: transparent;
+    margin-top: 0;
+    margin-bottom: 0;
+    height: 100vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
 }
-
 .modal.fade .modal-dialog {
-  -webkit-transform: translate(0, -100%);
-          transform: translate(0, -100%);
+    -webkit-transform: translate(0, -100%);
+    transform: translate(0, -100%);
 }
 .modal.in .modal-dialog {
-  -webkit-transform: translate(0, 0);
-          transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
 }
-.modal-body.alert{
+.modal-body.alert {
     display: flex;
     flex-direction: column;
-        padding-bottom: 0em;
-    &>p.alert_message, &>p.alert_buttons{
+    padding-bottom: 0em;
+    &>p.alert_message,
+    &>p.alert_buttons {
         padding: 1em 0 0 0;
         font-size: 1.2em;
         font-weight: 600;
         align-self: center;
-        &>.btn{
+        &>.btn {
             margin: .5em .5em 0 .5em;
             color: #ed1c24;
             background-color: #fff;
             border-color: #ed1c24;
-            &:hover{
+            &:hover {
                 color: #fff;
                 background-color: #ed1c24;
             }
