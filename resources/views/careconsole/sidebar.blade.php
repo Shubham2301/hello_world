@@ -23,8 +23,8 @@
     <ul class="c3_sidebar_list sidebar_item_list">
         @foreach($overview['stages'] as $stage)
         <li class="sidebar_menu_item">
-            <div class="stage box" id="sidebar_{{ $stage['name'] }}" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}"><span style="background-color:{{ $stage['color_indicator'] }}"><p class="stage-notation">LD</p></span><p>{{ $stage['display_name'] }}</p></div>
-<!--
+            <div class="stage box" id="sidebar_{{ $stage['name'] }}" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}"><span style="background-color:{{ $stage['color_indicator'] }}"><p class="stage-notation">{{ $stage['abbr'] }}</p></span><p>{{ $stage['display_name'] }}</p></div>
+            <!--
             <ul>
                 <div class="info_box">
                     <div class="top">
@@ -45,16 +45,16 @@
                     </div>
                 </div>
             </ul>
--->
+            -->
         </li>
         @endforeach
-<!--
-       <li class="sidebar_menu_item">
-           <div class="stage box" id="" data-id="" data-name=""><span></span><p>Status</p></div>
+        <!--
+        <li class="sidebar_menu_item">
+            <div class="stage box" id="" data-id="" data-name=""><span></span><p>Status</p></div>
         </li>
--->
-        </ul>
-{{--     <div class="control_section">
+        -->
+    </ul>
+    <div class="control_section">
         <div class="C3_day_row control_header"><p>Controls</p></div>
         <div class="C3_day_row control_label">
             <p>Days Pending</p>
@@ -91,5 +91,5 @@
             <div class="empty">
             </div>
         </div>
-    </div> --}}
+    </div>
 </div>
