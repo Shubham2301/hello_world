@@ -169,11 +169,12 @@ class CareConsoleController extends Controller {
 
 	public function action(Request $request) {
 		$actionID = $request->action_id;
-		$postActionID = $request->post_action_id;
-		$date = $request->date;
+		$actionResultID = $request->action_result_id;
+		$date = 'CURRENT_TIMESTAMP';
 		$notes = $request->notes;
 		$consoleID = $request->console_id;
-		$this->ActionService->userAction($actionID, $postActionID, $date, $notes, $consoleID);
+		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $date, $notes, $consoleID);
+		return json_encode($contactHistoryID);
 	}
 
 	public function searchPatients(Request $request) {
