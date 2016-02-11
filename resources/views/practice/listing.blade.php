@@ -4,7 +4,7 @@
     <div class="row search_header">
         <div class="col-xs-3 search_name_header">
             <div>
-                <input type="checkbox">&nbsp;&nbsp;</div>
+                <input id="checked_all_practice" type="checkbox">&nbsp;&nbsp;</div>
             <div class="">
                 <p style="color:black"><strong>Name</strong></p>
             </div>
@@ -22,44 +22,62 @@
         </div>
     </div>
     <div class="practice_search_content">
-<form action="">
-    <input type="hidden" id="assign_role_image_path" value="{{URL::asset('images/assign-role-icon-01.png')}}">
-    <input type="hidden" id="assign_user_image_path" value="{{URL::asset('images/assign-user-icon-01.png')}}">
-</form>
+        <form action="">
+            <input type="hidden" id="assign_role_image_path" value="{{URL::asset('images/assign-role-icon-01.png')}}">
+            <input type="hidden" id="assign_user_image_path" value="{{URL::asset('images/assign-user-icon-01.png')}}">
+        </form>
 
-<!--
+        <!--
         <div class="row search_item" data-id="11">
-            <div class="col-xs-3" style="display:inline-flex">
-                <div>
-                    <input type="checkbox">&nbsp;&nbsp;
-                </div>
-                <div class="search_name">
-                    <p> practice.name </p>
-                </div>
+        <div class="col-xs-3" style="display:inline-flex">
+            <div>
+                <input type="checkbox">&nbsp;&nbsp;
             </div>
-            <div class="col-xs-3">practice.address </div>
-            <div class="col-xs-1"></div>
-            <div class="col-xs-3">
-                <p>practice.ocuapps </p>
-            </div>
-            <div class="col-xs-2 search_edit">
-                <p>
-                    <div class="dropdown">
-                        <span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;">
-                    </span>
-                        <ul class="dropdown-menu" id="row_action_dropdown">
-                            <li><a href=""><img src="{{URL::asset('images/assign-role-icon-01.png')}}" class="assign_role_image" style="width:20px">Assign Roles</a></li>
-                            <li><a href=""><img src="{{URL::asset('images/assign-user-icon-01.png')}}" class="assign_user_image" style="width:20px">Assign Users</a></li>
-                        </ul>
-                    </div>
-            </p>&nbsp;&nbsp;
-                    <p class="editPractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-remove removepractice_from_row" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;height:20px;"></span>
+            <div class="search_name">
+                <p> practice.name </p>
             </div>
         </div>
--->
+        <div class="col-xs-3">practice.address </div>
+        <div class="col-xs-1"></div>
+        <div class="col-xs-3">
+            <p>practice.ocuapps </p>
+        </div>
+        <div class="col-xs-2 search_edit">
+            <p>
+                <div class="dropdown">
+                    <span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;">
+                    </span>
+                    <ul class="dropdown-menu" id="row_action_dropdown">
+                        <li>
+                            <a href=""><img src="{{URL::asset('images/assign-role-icon-01.png')}}" class="assign_role_image" style="width:20px">Assign Roles</a>
+                        </li>
+                        <li>
+                            <a href=""><img src="{{URL::asset('images/assign-user-icon-01.png')}}" class="assign_user_image" style="width:20px">Assign Users</a>
+                        </li>
+                    </ul>
+                </div>
+            </p>&nbsp;&nbsp;
+            <p class="editPractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p>&nbsp;&nbsp;
+            <div class="dropdown">
+                <span class="glyphicon glyphicon-remove removepractice_from_row" area-hidden="true" style="background: maroon;color: white;padding: 3px;
+                border-radius: 3px;font-size: 0.9em;height:20px;" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle">
+                </span>
+                <ul class="dropdown-menu" id="row_remove_dropdown">
+                    <li class="confirm_text">
+                        <p><strong>Do you really want to delete this?</strong></p>
+                    </li>
+                    <li class="confirm_buttons">
+                        <button type="button" id="confirm_yes" class="btn btn-info btn-lg"> Yes</button>
+                        <button type="button" id="confirm_no" class="btn btn-info btn-lg">NO</button>
+                    </li>
+                </ul>
 
+            </div>
+        </div>
     </div>
+    -->
+
+</div>
 
 </div>
 <div class="row content-row-margin practice_info" data-id="">
@@ -78,7 +96,23 @@
                 &nbsp;&nbsp;&nbsp;
                 <p id="edit_practice" class="btn" data-toggle="modal" data-target="#create_practice" data-id="">Edit</p>
                 &nbsp;&nbsp;&nbsp;
-                <span class="glyphicon glyphicon-remove" id="remove_practice" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;height: 20px; margin-top: 14px"></span>
+                <div class="dropdown">
+                    <span class="glyphicon glyphicon-remove" id="remove_practice" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;height: 20px; margin-top: 14px" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle">
+                   </span>
+                    <ul class="dropdown-menu" id="remove_action_dropdown">
+                        <li class="confirm_text">
+                            <p><strong>Do you really want to delete this?</strong></p>
+                        </li>
+                        <li class="confirm_buttons">
+                            <button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button>
+                            <button type="button"  class="btn btn-info btn-lg confirm_no">NO</button>
+                        </li>
+                    </ul>
+
+
+                </div>
+
+
             </div>
         </div>
         <div class="row location_info_header">
