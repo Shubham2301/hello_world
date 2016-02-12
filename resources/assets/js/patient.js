@@ -6,8 +6,6 @@ $(document).ready(function() {
     $('#dob').datetimepicker({
         format: 'YYYY/MM/DD'
     });
-
-
     $('#search_patient_button').on('click', function() {
 
         if ($('#from_admin').val()) {
@@ -17,14 +15,14 @@ $(document).ready(function() {
                 "type": 'name',
                 "value": val,
             });
-            getPatients(searchdata);
+            getPatients(searchdata, 0);
             $('#refresh_patients').addClass('active');
         } else {
             $("#add_search_option").trigger("click");
             $('#search_patient_input').val('');
             var searchdata = getsearchtype();
             if (searchdata.length != 0)
-                getPatients(searchdata);
+                getPatients(searchdata, 0);
             else {
                 $('#search_patient_input').focus();
                 $('.patient_list').removeClass('active');
@@ -32,16 +30,13 @@ $(document).ready(function() {
             }
         }
     });
-
     $('#add_patient_form').on('click', function() {
         $('.add_patient_form').addClass('active');
         $('.patient_admin_header').removeClass('active');
     });
-
     $('#back_to_select_patient_btn').on('click', function() {
         $('#back_to_select_patient').submit();
     });
-
     $('#add_patient_btn').on('click', function() {
         $('#form_patient_id').prop('disabled', true);
         $('#form_select_provider').attr('action', "/administration/patients/create");
@@ -54,11 +49,9 @@ $(document).ready(function() {
         };
         getPatientInfo(formData);
     });
-
     $('#save_patient_info').on('click', function() {
 
     });
-
     $('#change_patient_button').on('click', function() {
         $('.search_filter').addClass('active');
         $('.patient_list').addClass('active');
@@ -68,12 +61,10 @@ $(document).ready(function() {
         $('#select_provider_button').attr('data-id', 0);
         $('#import_patients').show();
     });
-
     $('#select_provider_button').on('click', function() {
         var id = $(this).attr('data-id');
         selectProvider(id);
     });
-
     $('#add_search_option').on('click', function() {
         var type = $('#search_patient_input_type').val();
         var value = $('#search_patient_input').val();
@@ -90,8 +81,6 @@ $(document).ready(function() {
         $("#search_patient_button").trigger("click");
 
     });
-
-
     $('.lastseenby_show').on('click', function() {
         $('.lastseen_content').toggleClass('active');
         if ($('.lastseen_content').hasClass('active')) {
@@ -102,7 +91,6 @@ $(document).ready(function() {
             $('.lastseenby_icon').addClass('glyphicon-chevron-right');
         }
     });
-
     $('.referredby_show').on('click', function() {
         $('.referredby_content').toggleClass('active');
         if ($('.referredby_content').hasClass('active')) {
@@ -113,7 +101,6 @@ $(document).ready(function() {
             $('.referredby_icon').addClass('glyphicon-chevron-right');
         }
     });
-
     $('.insurance_provider_show').on('click', function() {
         $('.insurance_provider_content').toggleClass('active');
         if ($('.insurance_provider_content').hasClass('active')) {
@@ -128,6 +115,33 @@ $(document).ready(function() {
         $('#search_patient_input').val('');
         loadAllPatients();
     });
+    $('.p_left').on('click', function() {
+        var searchdata = [];
+        if (currentpage > 1)
+            getPatients(searchdata, currentpage - 1);
+    });
+    $('.p_right').on('click', function() {
+        var searchdata = [];
+        if (currentpage < lastpage)
+            getPatients(searchdata, currentpage + 1);
+    });
+    $('.patient_list').on('change', '#checked_all_patients', function() {
+        if ($(this).is(":checked")) {
+            $('.patient_search_content').each(function() {
+                $(this).find('input').prop('checked', true);
+            });
+        } else
+            $('.patient_search_content').each(function() {
+                $(this).find('input').prop('checked', false);
+            });
+    });
+    $('.patient_list').on('click', '.search_name', function() {
+        var patient_id = $(this).parents('.search_item').attr('data-id');
+        var formData = {
+            'id': patient_id
+        };
+         getPatientInfo(formData);
+    });
     $(document).keypress(function(e) {
         if (e.which == 13) {
             $("#search_patient_button").trigger("click");
@@ -135,19 +149,20 @@ $(document).ready(function() {
     });
 
 });
+var currentpage = 0;
+var lastpage = 0;
 
-function loadAllPatients(){
+function loadAllPatients() {
     var searchdata = [];
     searchdata.push({
         "type": 'all',
-        "value":'',
+        "value": '',
     });
-    getPatients(searchdata);
+    getPatients(searchdata, 0);
     $('#refresh_patients').removeClass('active');
 }
 
 function showPatientInfo(data) {
-
     $('.search_filter').removeClass('active');
     $('.patient_list').removeClass('active');
     $('.patient_info').addClass('active');
@@ -209,19 +224,19 @@ function getPatientInfo(formData) {
 
 }
 
-function getPatients(formData) {
+function getPatients(formData, page) {
     $('.search_filter').addClass('active');
     $('.patient_info').removeClass('active');
     $('.action-btns').addClass('active');
     $('#select_provider_button').removeClass('active');
     $('#select_provider_button').attr('data-id', 0);
     $('#import_patients').show();
-    var active_img = $('#schedule_practice_img').val();
+    var active_img = $('#schedule_patient_img').val();
     var delete_img = $('#delete_practice_img').val();
 
     var tojson = JSON.stringify(formData);
     $.ajax({
-        url: '/patients/search',
+        url: '/patients/search?page=' + page,
         type: 'GET',
         data: $.param({
             data: tojson
@@ -238,7 +253,21 @@ function getPatients(formData) {
                         content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3" style="display:inline-flex"><div><input type="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + patient.fname + ' ' + patient.lname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p><div><span area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown_img" src="' + active_img + '" alt=""></span></div></p>&nbsp;&nbsp;<p class="editPatient_from_row" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepatient_from_row"><img src="' + delete_img + '" alt="" class="removepatient_img"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"<button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     });
                 }
+                currentpage = patients[0]['currentPage'];
+                lastpage = patients[0]['lastpage'];
+                var result = currentpage * 5;
+                if (result > patients[0]['total'])
+                    result = patients[0]['total'];
+                $('.page_info').text(result + ' of ' + patients[0]['total']);
                 $('.patient_search_content').html(content);
+                if ($('#checked_all_patients').is(":checked")) {
+                    $('.patient_search_content').each(function() {
+                        $(this).find('input').prop('checked', true);
+                    });
+                } else
+                    $('.patient_search_content').each(function() {
+                        $(this).find('input').prop('checked', false);
+                    });
 
             } else {
                 var content = '<p><bold>' + patients.length + '<bold> results found</p><br>';

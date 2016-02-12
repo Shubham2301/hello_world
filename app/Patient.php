@@ -51,8 +51,7 @@ class Patient extends Model {
 					}
 				});
 			}
-		})
-			->get();
+		});
 
 	}
 

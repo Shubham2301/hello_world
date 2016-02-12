@@ -44,9 +44,10 @@ class PatientController extends Controller {
 	public function create(Request $request) {
 
 		$data = array();
-
+        $data['admin'] = true;
 		if ($request->has('referraltype_id')) {
 			$data['referraltype_id'] = $request->input('referraltype_id');
+            $data['admin'] = false;
 		}
 		if ($request->has('action')) {
 			$data['action'] = $request->input('action');
@@ -178,8 +179,12 @@ class PatientController extends Controller {
 
 		$filters = json_decode($request->input('data'), true);
 
-		$patients = Patient::getPatients($filters);
+        $patients = Patient::getPatients($filters)->paginate(5);
 		$data = [];
+
+        $data[0]['total'] = $patients->total();
+        $data[0]['lastpage'] = $patients->lastPage();
+        $data[0]['currentPage'] = $patients->currentPage();
 		$i = 0;
 		foreach ($patients as $patient) {
 			$data[$i]['id'] = $patient->id;
@@ -201,6 +206,7 @@ class PatientController extends Controller {
 	public function administration(Request $request) {
         $data = array();
         $data['admin'] = true;
+
         return view('patient.admin')->with('data', $data);
 	}
 

@@ -17,8 +17,8 @@
             <p style="color:black"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Email</strong></p>
         </div>
         <div class="col-xs-2">
-            <input type="hidden" id="schedule_practice_img" value="{{asset('images/dropdown-natural-01.png')}}">
             <input type="hidden" id="delete_practice_img" value="{{asset('images/delete-active-01.png')}}">
+            <input type="hidden" id="schedule_patient_img" value="{{asset('images/schedule-icon-01.png')}}">
             <p class=""><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong>2 of 2</strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
         </div>
     </div>

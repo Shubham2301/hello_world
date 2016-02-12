@@ -15,7 +15,6 @@
             <option value="email">Email</option>
             <option value="phone">Phone</option>
             <option value="address">Address</option>
-
         </select>
     </div>
     <div class="col-xs-12 search_filter">
@@ -42,7 +41,7 @@
         <span class="glyphicon glyphicon-remove" id="refresh_patients" area-hidden="true"></span>
     </div>
     <div class="col-xs-7">
-        <button type="button" class="btn import-btn">Import</button>
+        <button type="button"  class="btn import-btn">Import</button>
     </div>
 </div>
 @endif
