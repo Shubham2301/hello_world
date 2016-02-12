@@ -1,13 +1,16 @@
 
-  {!! Form::open(array('url' => '/patients', 'method' => 'GET', 'id' => 'back_to_select_patient')) !!}
+    @if(!$data['admin'])
+     {!! Form::open(array('url' => '/patients', 'method' => 'GET', 'id' => 'back_to_select_patient')) !!}
       {!! Form::hidden('referraltype_id', $data['referraltype_id'], array('id' => 'form_referraltype_id')) !!}
       {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
-  {!! Form::close() !!}
+      {!! Form::close() !!}
+    @endif
    <div class="row content-row-margin add_header">
-    <div><button type="button" id="back_to_select_patient_btn" class="btn back">Back</button></div>
+       <div><button type="button" id="{{$data['back_btn']}}" class="btn back">Back</button></div>
+
     <div><p class="add_title">Add New Patient</p></div>
 </div>
-{!! Form::open(array('url' => '/administration/patients/add', 'method' => 'POST', 'id' => 'form_add_patients')) !!}
+{!! Form::open(array('url' => $data['url'], 'method' => 'POST', 'id' => 'form_add_patients')) !!}
 <div class="row content-row-margin">
     <div class="col-sm-6 col-xs-12">
         {!! Form::text('FirstName', old('patient_fname'), array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'patient_fname', 'placeholder' => 'First Name', 'id' => 'first_name')) !!}
@@ -32,8 +35,10 @@
         {!! Form::text('State', old('state'), array('class' => 'add_patient_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state')) !!}
         {!! Form::text('Zip', old('zip'), array('class' => 'add_patient_input', 'name' => 'zip', 'placeholder' => 'ZIP', 'id' => 'zip')) !!}
 
+        @if(!$data['admin'])
           {!! Form::hidden('referraltype_id', $data['referraltype_id'], array('name' => 'referraltype_id' , 'id' => 'form_referraltype_id')) !!}
-    {!! Form::hidden('action', $data['action'], array('name' => 'action' , 'id' => 'form_action')) !!}
+        {!! Form::hidden('action', $data['action'], array('name' => 'action' , 'id' => 'form_action')) !!}
+        @endif
     </div>
 </div>
      <div class="row content-row-margin add_patient_footer">

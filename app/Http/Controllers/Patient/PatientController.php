@@ -45,6 +45,8 @@ class PatientController extends Controller {
 
 		$data = array();
         $data['admin'] = true;
+        $data['back_btn'] = 'back_to_select_patient_btn';
+        $data['url'] = '/administration/patients/add';
 		if ($request->has('referraltype_id')) {
 			$data['referraltype_id'] = $request->input('referraltype_id');
             $data['admin'] = false;
@@ -54,6 +56,15 @@ class PatientController extends Controller {
 		}
 		return view('patient.admin')->with('data', $data);
 	}
+
+    public function createByAdmin(){
+        $data = array();
+        $data['admin'] = true;
+        $data['back_btn'] = 'back_to_admin_patient_btn';
+        $data['url'] = '/administration/patients/add';
+        $data['referraltype_id']=-1;
+        return view('patient.admin')->with('data', $data);
+    }
 
 	/**
 	 * Store a newly created resource in storage.
@@ -76,14 +87,19 @@ class PatientController extends Controller {
 		$patient->preferredlanguage = $request->input('preferredlanguage');
 		$patient->cellphone = $request->input('phone');
 		$patient->save();
-		$path = 'providers?referraltype_id=' . $request->input('referraltype_id') . '&action=' . $request->input('action') . '&patient_id=' . $patient->id;
 
 		$action = 'new patient created';
 		$description = '';
 		$filename = basename(__FILE__);
 		$ip = $request->getClientIp();
 		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-		return redirect($path);
+
+        if(!$request->has('action')){
+            return redirect('/administration/patients');
+        }
+
+        $path = 'providers?referraltype_id=' . $request->input('referraltype_id') . '&action=' . $request->input('action') . '&patient_id=' . $patient->id;
+        return redirect($path);
 	}
 
 	/**

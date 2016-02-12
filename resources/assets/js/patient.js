@@ -34,12 +34,13 @@ $(document).ready(function() {
         $('.add_patient_form').addClass('active');
         $('.patient_admin_header').removeClass('active');
     });
+
     $('#back_to_select_patient_btn').on('click', function() {
         $('#back_to_select_patient').submit();
     });
     $('#add_patient_btn').on('click', function() {
         $('#form_patient_id').prop('disabled', true);
-        $('#form_select_provider').attr('action', "/administration/patients/create");
+        $('#form_select_provider').attr('action', "/patients/create");
         $('#form_select_provider').submit();
     });
     $('.patient_list').on('click', '.patient_list_item', function() {
@@ -142,6 +143,15 @@ $(document).ready(function() {
         };
          getPatientInfo(formData);
     });
+    $('#open_patient_form').on('click',function(){
+        window.location = '/administration/patients/create';
+    });
+
+    $('#back_to_admin_patient_btn').on('click',function(){
+        window.location = '/administration/patients';
+    });
+
+
     $(document).keypress(function(e) {
         if (e.which == 13) {
             $("#search_patient_button").trigger("click");
