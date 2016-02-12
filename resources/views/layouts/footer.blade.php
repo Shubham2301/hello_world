@@ -16,10 +16,10 @@
         <a href="/terms">Terms of Use</a>
     </div>
     <div class="col-sm-2 footer-item border">
-        <a href="/sitemap">Site Map</a>
+        <a href="http://ocuhub.com/">Site Map</a>
     </div>
     <div class="col-sm-2 footer-item">
-        <a href="/investors">Investors</a>
+        <a href="http://ocuhub.com/">Investors</a>
     </div>
     <div class="row top-padding visible-xs">
         <div class="col-xs-12 text-center">
