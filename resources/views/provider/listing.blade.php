@@ -37,11 +37,14 @@
                     <p class="get_availability hide">
                         <span class="bold">Appointment&nbsp;</span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax appointment_schedule">
                         <br>
-                        <button class="availability-btn" id="get_availability">Availability</button>
-                        <span id="appointment_date"></span>
-                        <br>
-                        <span id="appointment_time"></span>
                     </p>
+                    <span style="display:flex;">
+                        <p class="get_availability hide availability-btn" id="get_availability" style="padding:.3em;">
+                            <span id="appointment_date"></span>
+                            <span class="availability-text">Availability</span>
+                            <br><span id="appointment_time"></span>
+                        </p>
+                    </span>
                 </div>
             </div>
         </div>
