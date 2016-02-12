@@ -13,7 +13,9 @@
             <p style="color:black"><strong>Address</strong></p>
         </div>
         <div class="col-xs-2">
-            <input type="hidden" id="schedule_network_img" value="{{asset('images/schedule.png')}}">
+            <input type="hidden" id="dropdown_natural_img" value="{{asset('images/dropdown-natural-01.png')}}">
+            <input type="hidden" id="dropdown_onhover_img" value="{{asset('images/dropdown-hover-01.png')}}">
+            <input type="hidden" id="dropdown_active_img" value="{{asset('images/dropdown-active-01.png')}}">
             <input type="hidden" id="delete_network_img" value="{{asset('images/delete-active-01.png')}}">
             <p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong>2 of 2</strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
         </div>
@@ -38,8 +40,9 @@
         </div>
         <div class="col-xs-2 search_edit">
             <p>
-                <div class="dropdown">
-                    <span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;">
+                <div class="dropdown dropdown_action">
+                    <span  area-hidden="true" data-toggle="dropdown" class="dropdown-toggle">
+                        <img class="action_dropdown" src="{{asset('images/dropdown-natural-01.png')}}" alt="">
                     </span>
                     <ul class="dropdown-menu" id="row_action_dropdown">
                         <li>
@@ -50,7 +53,7 @@
                         </li>
                     </ul>
                 </div>
-            </p>&nbsp;&nbsp;
+            </p>
             <p class="editnetwork_from_row">Edit</p>
             <div class="dropdown">
                 <span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removenetwork_from_row">
