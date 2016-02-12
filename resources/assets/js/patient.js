@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    ///loadImportForm();
+
     if ($('#from_admin').val())
         loadAllPatients();
 
@@ -147,7 +147,7 @@ $(document).ready(function() {
             $("#search_patient_button").trigger("click");
         }
     });
-
+    loadImportForm();
 });
 var currentpage = 0;
 var lastpage = 0;
