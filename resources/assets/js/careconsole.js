@@ -39,10 +39,7 @@ $(document).ready(function () {
     $('#search_do').on('click', searchc3);
 
     $('.c3_overview_link').on('click', function () {
-        /*
-        
-        TODO: Replace page reload with AJAX refresh of data.
-
+        refreshOverview();
         $('.c3_overview_link').removeClass('active');
         $('.control_section').removeClass('active');
         $('ul.c3_sidebar_list').removeClass('active');
@@ -50,8 +47,6 @@ $(document).ready(function () {
         $('.drilldown').removeClass('active');
         $('.stage').removeClass('sidebar_items_active');
         $('#current_stage').val('-1');
-
-        */
     });
 
     $('.info_section').on('click', function () {
@@ -240,6 +235,37 @@ function action() {
         success: function success(e) {
             $('#actionModal').modal('hide');
             getPatientData();
+        },
+        error: function error() {
+            $('p.alert_message').text('Error:');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+}
+
+function refreshOverview() {
+
+    $.ajax({
+        url: '/careconsole/overview',
+        type: 'GET',
+        contentType: 'text/html',
+        cache: false,
+        async: false,
+        success: function success(e) {
+            console.log(e);
+            if (e.length === 0)
+                return;
+            var stages = e.stages;
+
+            stages.forEach(function (stage) {
+                var kpis = stage.kpis;
+                console.log(kpis);
+                kpis.forEach(function (kpi) {
+                    $('.info_section_number.' + kpi.name).html(kpi.count);
+                });
+            });
         },
         error: function error() {
             $('p.alert_message').text('Error:');

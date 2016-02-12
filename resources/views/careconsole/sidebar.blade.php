@@ -17,7 +17,7 @@
         </div>
         <div class="col-lg-9 col-md-10">
             <h3 class="title">Care Console</h3>
-            <a href="/careconsole" id="refresh_console"><div class="c3_overview_link"><img src="{{URL::asset('images/overview_icon.png')}}"><p>Overview</p></div></a>
+            <div class="c3_overview_link"><img src="{{URL::asset('images/overview_icon.png')}}"><p>Overview</p></div>
         </div>
     </div>
     <ul class="c3_sidebar_list sidebar_item_list">

@@ -26,7 +26,7 @@
     @include('admin.networks.search')
 </div>
 
-<div class="network_section active">
+<div class="network_section active" id="network_listing">
     @include('admin.networks.listing')
 </div>
 

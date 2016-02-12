@@ -110,6 +110,7 @@ p.pagination {
 .ocuapps_input {
     display: inline-flex;
     margin-left: 1em;
+    font-size: 1.1em;
     color:#b2e3f5;
     &>input {
         margin-right: 1em;
@@ -123,7 +124,6 @@ p.pagination {
 
 .change_location {
     margin-left: 30px;
-    margin-top: 3px;
 }
 
 .delete_practice_img {
@@ -257,7 +257,7 @@ p.table_header {
     padding: 0px;
     padding-left: 3px;
     margin-top: -16px;
-    font-size: 13px;
+    font-size: 1.1em;
 }
 
 .modal-header {
@@ -361,24 +361,7 @@ p.table_header {
     margin-right: 5px;
 }
 
-.add_practice_input{
-    display: block;
-    color: #b2e3f5;
-    background-color: @font-color-4;
-    border: 2px solid @font-color-4;
-    margin: 1em;
-    border-radius: .2em;
-    padding: .5em;
-    width: 60%;
-    &::placeholder{
-        color: @background-color-5;
-    }
-    &:focus{
-        border: 2px solid #fff;
-        color:#66c7eb;
-        box-shadow: 2px 2px 2px 2px blur #fff;
-    }
-}
+
 .add_header {
     display: flex;
     margin-left: 29px;
@@ -397,15 +380,15 @@ p.table_header {
 }
 
 .save_practice_button {
-    color: #000;
+    color: #4d4d4d;
     background-color: #00B6F1;
-    border-color: #fff;
+    border-color: #2e6da4;
     float: left;
+    font-size: 1.1em;
     margin-left: 34%;
     &:hover{
+        background-color: #0071bc;
         color: #fff;
-        background-color: #0086fb;
-        border-color: #0086fb;
     }
 }
 
@@ -414,7 +397,15 @@ p.table_header {
 }
 
 #dontsave_new_practice {
-    margin-right: 11em;
+    color: #4d4d4d;
+    float: none;
+    font-size: 1.1em;
+    background-color: #00B6F1;
+    border-color: #fff;
+    margin-left: 14%;
+    &:hover{
+        background-color: #cde8f4;
+    }
 }
 
 .back_practice {
@@ -427,6 +418,7 @@ p.table_header {
     padding-left: 11px;
     padding-right: 10px;
     margin-left: 1em;
+    font-size: 0.8em;
     color:#fff;
     &:hover{
         color: #fff;
@@ -441,6 +433,7 @@ p.table_header {
     padding-left: 11px;
     padding-right: 10px;
     margin-left: 11px;
+    font-size: 0.8em;
     color:#fff;
     &:hover{
         color: #fff;
@@ -452,15 +445,19 @@ p.table_header {
 
 #location_next {
     margin-top: 1px;
+    color: #715B2F;
+    cursor: pointer;
 }
 
 #location_previous {
     margin-top: 1px;
+    color: #715B2F;
+    cursor: pointer;
 }
 
 
 p.add_title {
-    font-size: 1.5em;
+    font-size: 1.4em;
     margin-bottom: 0;
     margin-left: 1em;
     margin-top: auto;
@@ -552,4 +549,23 @@ p.add_title {
     margin-top: -0.5em;
     padding:3px;
     cursor: pointer;
+}
+.add_practice_input {
+    display: block;
+    color: #b2e3f5;
+    background-color: @font-color-4;
+    border: 2px solid @font-color-4;
+    margin: 1em;
+    border-radius: .2em;
+    padding: .5em;
+    width: 60%;
+    font-size: 1.1em;
+    &::placeholder{
+        color: @background-color-5;
+    }
+    &:focus{
+        border: 2px solid #fff;
+        color:#66c7eb;
+        box-shadow: 0px 0px 2px #fff;
+    }
 }

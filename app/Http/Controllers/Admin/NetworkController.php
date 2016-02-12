@@ -17,6 +17,7 @@ class NetworkController extends Controller {
 	public function index() {
 //        $roles = Role::all();
 		//        return view('admin.networks.index')->with('roles', $roles);
+
 		return view('admin.networks.index');
 	}
 
@@ -26,15 +27,20 @@ class NetworkController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create() {
-		return view('admin.networks.create');
+        $data = [];
+        $data = Network::find(1)->toArray();
+        $data = array_fill_keys(array_keys($data),null);
+        $data['id']= -1;
+        $data['url']='/administration/network/add';
+        return view('admin.networks.create')->with('data', $data);
 	}
 	public function add(Request $request) {
 		$network = new Network;
 		$network->name = $request->input('name');
 		$network->email = $request->input('email');
 		$network->phone = $request->input('phone');
-		$network->addressline1 = $request->input('address_1');
-		$network->addressline2 = $request->input('address_2');
+        $network->addressline1 = $request->input('addressline1');
+        $network->addressline2 = $request->input('addressline2');
 		$network->city = $request->input('city');
 		$network->state = $request->input('state');
 		$network->country = $request->input('country');
@@ -81,7 +87,11 @@ class NetworkController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit($id) {
-		//
+        $data = [];
+        $data = Network::find($id);
+        $data['id']=$id;
+        $data['url']='/networks/update/'.$id;
+        return view('admin.networks.create')->with('data', $data);
 	}
 
 	/**
@@ -92,12 +102,16 @@ class NetworkController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(Request $request, $id) {
+
+        $network = Network::find($id);
+        $network->update($request->input());
 		$action = 'update network of id =' . $id;
 		$description = '';
 		$filename = basename(__FILE__);
 		$ip = $request->getClientIp();
 
 		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        return redirect('/administration/networks');
 	}
 
 	/**
@@ -106,7 +120,8 @@ class NetworkController extends Controller {
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($id) {
+    public function destroy(Request $request, $id) {
+        $network = Network::where('id', $id)->delete();
 		$action = 'delete network of id =' . $id;
 		$description = '';
 		$filename = basename(__FILE__);

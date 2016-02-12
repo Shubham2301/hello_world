@@ -9,11 +9,12 @@
 <div class="row content-row-margin">
     <div class="col-sm-6 col-xs-12">
         <input id="editmode" type="hidden" value="{{$id}}">
-         {!! Form::text('practice_name', old('practice_name'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Name', 'id' => 'practice_name')) !!} {!! Form::text('practice_email', old('practice_email'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Email', 'id' => 'practice_email')) !!}
+         {!! Form::text('practice_name', old('practice_name'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Name', 'id' => 'practice_name')) !!}
+         {!! Form::text('practice_email', old('practice_email'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Email', 'id' => 'practice_email')) !!}
 
     </div>
     <div class="col-sm-6 col-xs-12 ocuapps_options">
-        <p><strong>OcuApps</strong></p>
+        <p style="font-size:1.2em;margin-left: 1em;">OcuApps</p>
         <span class="ocuapps_input"><input type="checkbox"> <p>Calendar Intregation</p></span>
         <br>
         <span class="ocuapps_input"><input type="checkbox"> <p>Data Interpretation</p></span>
@@ -31,7 +32,7 @@
 <div class="row content-row-margin">
     <div class="col-xs-12 col-sm-12 add_location_header">
         <br>
-        <p style="color:#fff"><strong>Location Details</strong></p>
+        <p style="color:#fff;font-size:1.2em;margin-top: 4px">Location Details</p>
         <div class="change_location">
             <span class="glyphicon glyphicon-chevron-up glyph_design" id="location_next"></span>
             <span><p class="location_counter">0</p></span>
@@ -56,19 +57,13 @@
             <input class="add_practice_input" id="phone" type="text" placeholder="Phone">
             <input class="add_practice_input" id="addressline2" type="text" placeholder="AddressLine2">
         </div>
-
     </div>
-
 </div>
 
-
-
 <div class="row content-row-margin ">
-    <div class="col-xs-12 col-sm-8">
+    <div class="col-xs-8 col-sm-8 col-md-8">
         <button type="button" class="btn save_practice_button" id="savepractice">Save</button>
         <button type="button" class="btn add-btn " id="dontsave_new_practice">Don't Save</button>
     </div>
-    <div class="col-xs-12 col-sm-4">
-
-    </div>
+    <div class="col-xs-4 col-sm-4"></div>
 </div>
