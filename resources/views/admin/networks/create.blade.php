@@ -45,11 +45,16 @@
         </div>
     </div>
     <div class="row content-row-margin">
-        <div class="col-xs-8">
+        <div class=" col-md-2 ">
+        </div>
+        <div class=" col-md-2 ">
             {!! Form::submit('save', array('class' => 'btn btn-default btn-primary save_network_button')) !!}
+
+        </div>
+        <div class=" col-md-6 ">
             <button type="button" class="btn add-btn btn-primary" id="dontsave_network">Don't Save</button>
         </div>
-        <div class="class-xs-4"></div>
+        <div class="class-md-2"></div>
 
     </div>
 
