@@ -25,28 +25,16 @@ $(document).ready(function () {
             getOpenSlots(week);
         }
     });
-    //    $('#appointment_date').datetimepicker({
-    //        format: 'MM/DD/YYYY',
-    //        minDate: new Date(),
-    //        daysOfWeekDisabled: ['0']
-    //    });
 
     $('.availability').on('click', 'li', function () {
         $('#appointment_date').text($(this).attr('data-date'));
         $('#appointment_time').text($(this).attr('data-time'));
         $('#form_appointment_time').val($(this).attr('data-time'));
         $('#form_appointment_date').val($(this).attr('data-date'));
-        $('.availability-btn').addClass('hide');
+        $('.availability').removeClass('active');
+        $('.availability-text').addClass('hide');
         $('.schedule_button').addClass('active');
     });
-    //    $('.availability').on('click', 'p.appointment_start_time', function () {
-    //        $('#form_appointment_time').val($(this).text());
-    //        //        $('#form_appointment_date').val($(this).closest('.weekday').find('p.date').text());
-    //        $('#appointment_time').text($(this).text());
-    //        $('.availability').removeClass('active');
-    //        $('.schedule_button').addClass('active');
-    //    });
-
 
     $('.view_selected_patient').on('click', showPatientInfo);
 
@@ -122,7 +110,6 @@ $(document).ready(function () {
         getProviderInfo(formData);
     });
     $('#change_practice_button').on('click', function () {
-
         $('.practice_list').addClass('active');
         $('.practice_info').removeClass('active');
         $('.schedule_button').removeClass('active');
@@ -170,6 +157,7 @@ $(document).ready(function () {
         $('.availability').html('');
         $('.availability').removeClass('active');
         $('.schedule_button').removeClass('active');
+        $('.availability-text').removeClass('hide');
         $('#location_address').html(location_address);
         $('#location_contact').html(location_contact);
         getAppointmentTypes();
@@ -183,6 +171,7 @@ $(document).ready(function () {
         $('.availability-btn').removeClass('hide');
         $('.availability').html('');
         $('.availability').removeClass('active');
+        $('.availability-text').removeClass('hide');
         $('.schedule_button').removeClass('active');
         $('#appointment_type').html(appointment_type);
         $('#appointment_type').attr('value', $(this).val());
@@ -191,6 +180,10 @@ $(document).ready(function () {
     });
     $('#get_availability').on('click', function () {
         $('.availability').attr('data-value', 0);
+        $('#appointment_date').html('');
+        $('#appointment_time').html('');
+        $('.availability-text').removeClass('hide');
+        $('.schedule_button').removeClass('active');
         getOpenSlots(0);
     });
 
@@ -234,6 +227,7 @@ function clearHTML() {
     $('#appointment_date').html('');
     $('#appointment_time').html('');
     $('.availability').html('');
+    $('.availability-text').removeClass('hide');
     $('.availability-btn').removeClass('hide');
     $('.availability').removeClass('active');
     $('p.get_availability').addClass('hide');
