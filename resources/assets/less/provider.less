@@ -8,7 +8,6 @@ Section : Imports
 @import 'fonts.less';
 @import 'media.less';
 @import 'helper.less';
-
 .practice_list {
     overflow-y: scroll;
     display: none;
@@ -17,7 +16,6 @@ Section : Imports
         overflow-y: hidden;
     }
 }
-
 .practice_list_item {
     border-top: 1px solid;
     opacity: 0.9;
@@ -26,7 +24,6 @@ Section : Imports
         opacity: 1;
     }
 }
-
 .practice_info {
     display: none;
     margin-top: 2em;
@@ -41,23 +38,19 @@ Section : Imports
         display: block;
     }
 }
-
 #search_practice_button {
     cursor: pointer
 }
-
 #add_practice_search_option {
     position: inherit;
     cursor: pointer;
 }
-
 .search_filter {
     color: black;
     display: inline-flex;
     padding-left: 1px;
     padding-top: 4px;
 }
-
 .search_filter_item {
     background: #f5f5f5;
     padding: 2px 5px 2px 5px;
@@ -70,11 +63,9 @@ Section : Imports
         margin: 1px;
     }
 }
-
 .add_search_option {
     padding-right: 25px;
 }
-
 .provider_list {
     overflow-y: scroll;
     display: none;
@@ -82,7 +73,6 @@ Section : Imports
         display: block;
     }
 }
-
 .provider_list_item {
     border-top: 1px solid;
     opacity: 0.9;
@@ -91,7 +81,6 @@ Section : Imports
         opacity: 1;
     }
 }
-
 .provider_info {
     display: block;
     margin-top: 2em;
@@ -106,17 +95,14 @@ Section : Imports
         display: block;
     }
 }
-
 #search_provider_button {
     cursor: pointer
 }
-
 .section_seperator {
     border-bottom: solid 2px white;
     display: block;
     position: relative
 }
-
 .patient_previous_information {
     display: none;
     margin: 2em 4em;
@@ -130,7 +116,6 @@ Section : Imports
         display: block;
     }
 }
-
 .list_seperator {
     padding: 1em 2em;
     border-bottom: solid 1px white;
@@ -140,12 +125,10 @@ Section : Imports
         color: #fff;
     }
 }
-
 .provider_near_patient,
 .previous_provider_patient {
     cursor: pointer;
 }
-
 .provider_near_patient_list,
 .previous_provider_patient_list {
     margin: 1em 2em;
@@ -154,7 +137,6 @@ Section : Imports
         display: block;
     }
 }
-
 .patient_info {
     display: none;
     margin-top: 2em;
@@ -169,14 +151,12 @@ Section : Imports
         display: block;
     }
 }
-
 .schedule_button {
     display: none;
     &.active {
         display: inline-block;
     }
 }
-
 .button_type_11 {
     color: black;
     padding: 0.5em 1em;
@@ -189,50 +169,41 @@ Section : Imports
         display: inline-block;
     }
 }
-
 .availability_display>.col-xs-1 {
     background-color: #f2f2f2;
     color: black;
 }
-
 .lastseen_content {
     display: none;
     &.active {
         display: inline-block;
     }
 }
-
 .lastseenby_show {
     cursor: pointer;
 }
-
 .referredby_content {
     display: none;
     &.active {
         display: inline-block;
     }
 }
-
 .referredby_show {
     cursor: pointer;
 }
-
 .insurance_provider_show {
     cursor: pointer;
 }
-
 .insurance_provider_content {
     display: none;
     &.active {
         display: inline-block;
     }
 }
-
 #practice_listing {
     width: 90%;
     margin-left: 40px;
 }
-
 .practice_list {
     overflow-y: scroll;
     display: none;
@@ -241,77 +212,121 @@ Section : Imports
         overflow-y: hidden;
     }
 }
-
 .practice_search_content {
     margin-left: 112px;
 }
-
 .practice_location {
     border: 1px solid;
     padding: 0.25em 0.5em;
     border-radius: 5px;
     cursor: pointer;
-    &.active,&:hover{
+    &.active,
+    &:hover {
         font-weight: bold;
     }
 }
-.modal-dialog{
+.modal-dialog {
     background-color: #f2f2f2;
     padding: 10px;
     color: #000;
     border-radius: .5em;
-    &>p{
+    &>p {
         font-size: 1.2em;
         color: @font-color-4;
         text-align: center;
         padding: .5em 0 0 0;
     }
 }
-.dropdown{
+.dropdown {
     color: #000;
 }
-.availability{
+.availability {
     display: none;
-    justify-content: space-around;
+    justify-content: space-between;
     background-color: @light-gray;
     color: #000;
-    margin-bottom: 2em;
-    padding: 1em;
+    margin-bottom: 5em;
+    padding: 1em 0;
     overflow: auto;
-    max-height: 10em;
-    font-size:0.8em;
+    font-size: 0.8em;
     border-radius: .3em;
-    &.active{
+    &.active {
         display: flex;
     }
-    &>.weekday{
+    &>.weekday {
         text-align: center;
-        &>p.date{
+        &>p.date {
             font-size: 1.2em;
             font-weight: 600;
             text-decoration: underline;
+            padding: 0 .2em;
         }
-        &>p.appointment_start_time{
+        &>p.appointment_start_time {
             font-size: 1em;
             cursor: pointer;
-            &:hover{
+            &:hover {
                 color: @font-color-4;
             }
         }
     }
 }
-.ajax{
+.ajax {
     display: none;
-    &.active{
+    &.active {
         display: inline-block;
     }
 }
-input{
+input {
     color: #000;
 }
-.availability-btn{
+.availability-btn {
     color: #000;
+    background-color: #ebebeb;
+    border: none;
 }
-.hide{
+.hide {
     display: none;
+}
+.availability_glyph {
+    color: #82888f;
+    background-color: #9d9fa2;
+    align-self: flex-start;
+    padding: 1em;
+    &.available {
+        color: #000;
+        background-color: #82888f;
+        cursor: pointer;
+    }
+}
+.mycarousel {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    text-align: center;
+    &>ul {
+        margin: 0;
+        padding: 0;
+    }
+}
+#custom_dropdown {
+    background-color: #ebeced;
+    box-shadow: 0px 0px 3px #82888f;
+    border-radius: 1em;
+    padding: .5em 1em;
+    text-align: left;
+    widows: auto;
+    color: black;
+}
+ul.time_selector>li {
+    cursor: pointer;
+    &:hover,
+    &:active {
+        color: #0071bc;
+    }
+}
+.time_glyph {
+    color: #000;
+}
+li {
+    cursor: pointer;
 }

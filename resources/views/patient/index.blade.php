@@ -43,7 +43,7 @@
             </div>
             <div class="row content-row-margin-scheduling">
                 <div class="col-xs-12 subsection-header">
-                    <span class="search_text">1. Search for a patient</span>
+                    <span>1. Search for a patient</span>
                     <sapn class="action-btns active">
                     <a id="add_patient_btn">Add New</a>
                     <a data-toggle="modal" data-target="#importModal" id="import_patients">Import</a></sapn>
