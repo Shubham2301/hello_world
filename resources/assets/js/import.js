@@ -150,6 +150,9 @@ function importPatients() {
             $('.success_message').addClass('active');
             $('.import_button').removeClass('active');
             $('.dismiss_button').text('Ok');
+            if (typeof refreshOverview == 'function') {
+                refreshOverview();
+            };
         }
     });
 }
@@ -171,7 +174,6 @@ function saveCcdafile() {
                 showComparisionData(data);
                 $('#compare_ccda_button').trigger('click');
                 $('#compared_patient_id').val(data.patient.id);
-
             }
         }
     });

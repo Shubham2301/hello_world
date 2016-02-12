@@ -7,7 +7,12 @@ use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Practice;
+use myocuhub\User;
+use myocuhub\Models\Careconsole;
+use myocuhub\Models\PatientInsurance;
+use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
+use myocuhub\Models\Ccda;
 
 class PatientController extends Controller {
 	/**
@@ -93,9 +98,49 @@ class PatientController extends Controller {
 
 		$patient = Patient::find($id);
 
-		$patient->birthdate = date("d F Y", strtotime($patient->birthdate));
+//		$patient->birthdate = date("d F Y", strtotime($patient->birthdate));
+        $careconsole = Careconsole::where('patient_id' , '=', $id)->first();
+        $insurance = PatientInsurance::where('patient_id' , '=', $id)->first(['insurance_carrier']);
+        if(isset($careconsole->referral_id))
+            $referral_history = ReferralHistory::find($careconsole->referral_id);
+        if(isset($referral_history)){
+            $referred_to_practice = Practice::find($referral_history->referred_to_practice_id);
+            $patientData['referred_to_practice'] = $referred_to_practice->name;
+            $referred_to_practice_user = User::find($referral_history->referred_to_practice_user_id);
+            $patientData['referred_to_practice_user'] = $referred_to_practice_user->name;
+            $patientData['referred_by_practice'] = $referral_history->referred_by_practice;
+            $patientData['referred_by_provider'] = $referral_history->referred_by_provider;
+        }
+        else{
+            $patientData['referred_to_practice'] = '';
+            $patientData['referred_to_practice_user'] = '';
+            $patientData['referred_by_practice'] = '';
+            $patientData['referred_by_provider'] = '';
+        }
+        if(isset($insurance))
+            $patientData['insurance'] = $insurance->insurance_carrier;
+        else
+            $patientData['insurance'] = '';
+        $patientData['firstname'] = $patient->firstname;
+		$patientData['lastname'] = $patient->lastname;
+		$patientData['email'] = $patient->email;
+		$patientData['lastfourssn'] = $patient->lastfourssn;
+		$patientData['addressline1'] = $patient->addressline1;
+		$patientData['addressline2'] = $patient->addressline2;
+		$patientData['city'] = $patient->city;
+		$patientData['id'] = $patient->id;
+		$patientData['cellphone'] = $patient->cellphone;
+		$patientData['birthdate'] = date("d F Y", strtotime($patient->birthdate));
 
-		return json_encode($patient);
+        $ccda = Ccda::where('patient_id', $id)->first();
+		if (!($ccda)) {
+			$patientData['ccda'] = '0';
+		}
+
+
+
+
+		return json_encode($patientData);
 	}
 
 	/**

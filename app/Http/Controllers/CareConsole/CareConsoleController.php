@@ -29,34 +29,7 @@ class CareConsoleController extends Controller {
 	}
 
 	public function index() {
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$networkID = $network->network_id;
-		$careconsoleStages = Network::find($networkID)->careconsoleStages;
-		$overview = array();
-		$i = 0;
-		foreach ($careconsoleStages as $stage) {
-			$overview['stages'][$i]['id'] = $stage->stage_id;
-			$overview['stages'][$i]['name'] = $stage->name;
-			$overview['stages'][$i]['display_name'] = $stage->display_name;
-			$overview['stages'][$i]['color_indicator'] = $stage->color_indicator;
-			$overview['stages'][$i]['description'] = $stage->description;
-			$overview['stages'][$i]['abbr'] = $stage->abbr;
-
-			$kpis = CareconsoleStage::find($stage->stage_id)->kpi;
-			$j = 0;
-			foreach ($kpis as $kpi) {
-				$overview['stages'][$i]['kpis'][$j]['id'] = $kpi->id;
-				$overview['stages'][$i]['kpis'][$j]['name'] = $kpi->name;
-				$overview['stages'][$i]['kpis'][$j]['display_name'] = $kpi->display_name;
-				$overview['stages'][$i]['kpis'][$j]['color_indicator'] = $kpi->color_indicator;
-				$overview['stages'][$i]['kpis'][$j]['description'] = $kpi->description;
-				$overview['stages'][$i]['kpis'][$j]['count'] = $this->KPIService->getCount($kpi->name, $networkID, $stage->stage_id);
-				$j++;
-			}
-			$overview['stages'][$i]['kpi_count'] = $j;
-			$i++;
-		}
+		$overview = $this->getOverviewData();
 		return view('careconsole.index')->with('overview', $overview);
 	}
 
@@ -119,6 +92,39 @@ class CareConsoleController extends Controller {
 	public function destroy($id) {
 		//
 	}
+
+	public function getOverviewData() {
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
+		$careconsoleStages = Network::find($networkID)->careconsoleStages;
+		$overview = array();
+		$i = 0;
+		foreach ($careconsoleStages as $stage) {
+			$overview['stages'][$i]['id'] = $stage->stage_id;
+			$overview['stages'][$i]['name'] = $stage->name;
+			$overview['stages'][$i]['display_name'] = $stage->display_name;
+			$overview['stages'][$i]['color_indicator'] = $stage->color_indicator;
+			$overview['stages'][$i]['description'] = $stage->description;
+			$overview['stages'][$i]['abbr'] = $stage->abbr;
+
+			$kpis = CareconsoleStage::find($stage->stage_id)->kpi;
+			$j = 0;
+			foreach ($kpis as $kpi) {
+				$overview['stages'][$i]['kpis'][$j]['id'] = $kpi->id;
+				$overview['stages'][$i]['kpis'][$j]['name'] = $kpi->name;
+				$overview['stages'][$i]['kpis'][$j]['display_name'] = $kpi->display_name;
+				$overview['stages'][$i]['kpis'][$j]['color_indicator'] = $kpi->color_indicator;
+				$overview['stages'][$i]['kpis'][$j]['description'] = $kpi->description;
+				$overview['stages'][$i]['kpis'][$j]['count'] = $this->KPIService->getCount($kpi->name, $networkID, $stage->stage_id);
+				$j++;
+			}
+			$overview['stages'][$i]['kpi_count'] = $j;
+			$i++;
+		}
+		return $overview;
+	}
+
 	public function getDrilldownData(Request $request) {
 		$userID = Auth::user()->id;
 		$network = User::getNetwork($userID);

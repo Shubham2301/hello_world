@@ -9,7 +9,6 @@
             <div class="modal-body">
                 <div class="content-section active" id="patients_section">
                     <div class="import_form active">
-                        {!! Form::open(array('url' => 'import/xlsx', 'method' => 'POST', 'files'=>true,'id'=>'import_form')) !!}
                         <div class="row input_row" id="action_results">
                             <input type="hidden" value="" name="patient_id" id="action_patient_id">
                             <input type="hidden" value="" name="action_id" id="action_id">
@@ -33,7 +32,6 @@
                             <div class="col-md-2"></div>
                         </div>
                     </div>
-                    {!! Form::close()!!}
                     <p class="success_message"></p>
                 </div>
             </div>
