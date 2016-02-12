@@ -49,26 +49,20 @@ $(document).ready(function() {
             getNetworks(null, currentpage + 1);
     });
 
-    $('.action_dropdown').hover(function(){
+    $('.network_search_content').on('mouseenter', '.action_dropdown', function() {
         $(this).attr('src', $('#dropdown_onhover_img').val());
-    }, function(){
+    });
+
+    $('.network_search_content').on('mouseleave', '.action_dropdown', function() {
         $(this).attr('src', $('#dropdown_natural_img').val());
     });
 
-
-
-
-    $('.network_search_content').on('click','.dropdown_action',function(){
-        if(!$(this).hasClass('open'))
-            $('.action_dropdown').attr('src', $('#dropdown_active_img').val());
-    });
 
     $(document).keypress(function(e) {
         if (e.which == 13) {
             $("#search_network_button").trigger("click");
         }
     });
-
 });
 var currentpage = 0;
 var lastpage = 0;
@@ -93,7 +87,7 @@ function getNetworks(formData, page) {
             $('#search_results').text('');
             if (networks.length > 0) {
                 networks.forEach(function(network) {
-        content += '<div class="row search_item" data-id="' + network.id + '"><div class="col-xs-3 search_name"><input type="checkbox">&nbsp;&nbsp;<p>' + network.name + '</p></div><div class="col-xs-3">' + network.email + '<br>' + network.phone + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + network.addressline1 + '<br>' + network.addressline2 + '</p></div><div class="col-xs-2 search_edit"><p><div class="dropdown dropdown_action"><span  area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown" src="'+ scheduleimg+'" alt=""></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editnetwork_from_row">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removenetwork_from_row"><img src="' + deleteimg + '" alt="" class="removenetwork_img"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+                    content += '<div class="row search_item" data-id="' + network.id + '"><div class="col-xs-3 search_name"><input type="checkbox">&nbsp;&nbsp;<p>' + network.name + '</p></div><div class="col-xs-3">' + network.email + '<br>' + network.phone + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + network.addressline1 + '<br>' + network.addressline2 + '</p></div><div class="col-xs-2 search_edit"><p><div class="dropdown dropdown_action"><span  area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown" src="' + scheduleimg + '" alt=""></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editnetwork_from_row">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removenetwork_from_row"><img src="' + deleteimg + '" alt="" class="removenetwork_img"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                 });
                 currentpage = networks[0]['currentPage'];
                 lastpage = networks[0]['lastpage'];
