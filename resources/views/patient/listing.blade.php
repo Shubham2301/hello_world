@@ -11,13 +11,13 @@
             <div class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle ccda_text">Patient File <b class="caret"></b></a>
                 <ul class="dropdown-menu " id="ccda_dropdown">
-                    <li style="cursor:pointer;">
+                    <li style="cursor:pointer;" class="ccda_present">
                         <p data-href="" id="view_ccda"> <img class="ccda_view_icon" src="{{URL::asset('images/view-icon.png')}}" alt=""> <span>View</span></a>
                     </li>
                     <li style="cursor:pointer;">
                         <p id="import_ccda_button" data-toggle="modal" data-target="#importCcda" data-id=""><img class="ccda_upload_icon" src="{{URL::asset('images/arrow-up-icon.png')}}" alt=""> <span>Upload</span> </p>
                     </li>
-                    <li style="cursor:pointer;">
+                    <li style="cursor:pointer;" class="ccda_present">
                         <p data-href="" id="download_ccda"> <img class="ccda_download_icon" src="{{URL::asset('images/arrow-down-icon.png')}}" alt=""> <span>Download</span> </p>
                     </li>
                 </ul>
@@ -57,50 +57,35 @@
     <div class="col-xs-12 patient_table_header">
         <div class="col-xs-4 lastseenby">
             <div class="lastseenby_show">
-            <p><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></p></div>
+                <p><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></p>
+            </div>
 
         </div>
 
         <div class="col-xs-4 referredby">
             <div class="referredby_show">
-            <p> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></p></div>
+                <p> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></p>
+            </div>
         </div>
 
         <div class="col-xs-4 insurance_provider">
             <div class="insurance_provider_show">
-            <p><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></p></div>
+                <p><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></p>
+            </div>
         </div>
     </div>
 
-     <div class="col-xs-12">
+    <div class="col-xs-12">
         <div class="col-xs-4">
-           <div class="lastseen_content">
-            <ul>
-            <li><p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p></li>
-            <li><p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p></li>
-            </ul>
+            <div class="lastseen_content">
             </div>
         </div>
         <div class="col-xs-4">
-           <div class="referredby_content">
-            <ul>
-            <li><p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p></li>
-            <li><p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p></li>
-            </ul>
+            <div class="referredby_content">
             </div>
         </div>
         <div class="col-xs-4">
-           <div class="insurance_provider_content">
-            <ul>
-           <li> <p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p></li>
-            <li><p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p></li>
-            </ul>
+            <div class="insurance_provider_content">
             </div>
         </div>
     </div>

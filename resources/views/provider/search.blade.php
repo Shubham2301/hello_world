@@ -84,32 +84,14 @@
      <div class="col-xs-12">
         <div class="col-xs-4">
            <div class="lastseen_content">
-            <ul>
-            <li><p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p></li>
-            <li><p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p></li>
-            </ul>
             </div>
         </div>
         <div class="col-xs-4">
            <div class="referredby_content">
-            <ul>
-            <li><p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p></li>
-            <li><p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p></li>
-            </ul>
             </div>
         </div>
         <div class="col-xs-4">
            <div class="insurance_provider_content">
-            <ul>
-           <li> <p><span class="bold">Provider</span>
-                        <br>Opthalmic Consultants</p></li>
-            <li><p><span class="bold">Doctor</span>
-                        <br>Danial Garibaldi</p></li>
-            </ul>
             </div>
         </div>
     </div>
