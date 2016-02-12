@@ -103,7 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('administration/practices/edit/{id}', 'Practice\PracticeController@edit');
 
 	Route::get('administration/patients/create', 'Patient\PatientController@create');
-	Route::get('administration/patients', 'Patient\PatientController@create');
+    Route::get('administration/patients', 'Patient\PatientController@administration');
 	Route::post('administration/patients/add', 'Patient\PatientController@store');
 	Route::post('administration/network/add', 'Admin\NetworkController@add');
 	Route::get('administration/providers', 'Practice\ProviderController@administration');

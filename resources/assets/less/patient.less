@@ -9,7 +9,6 @@ Section : Imports
 @import 'media.less';
 @import 'helper.less';
 @import 'import.less';
-
 .patient_list {
     display: none;
     &.active {
@@ -45,21 +44,19 @@ Section : Imports
     cursor: pointer;
 }
 
-.select_provider_button
-    {
-        display: none;
-        &.active
-        {
-            display: inline-block;
-        }
-
+.select_provider_button {
+    display: none;
+    &.active {
+        display: inline-block;
     }
+}
+
 .search_filter {
-    color:black;
+    color: black;
     display: none;
     padding-left: 1px;
     padding-top: 4px;
-    &.active{
+    &.active {
         display: inline-flex;
     }
 }
@@ -70,26 +67,30 @@ Section : Imports
     border: dashed 2px;
     border-radius: 5px;
     margin: 2px;
-      &>.remove_option {
-      color: red;
-      cursor:pointer;
-      margin: 1px;
+    &>.remove_option {
+        color: red;
+        cursor: pointer;
+        margin: 1px;
     }
 }
+
 .add_search_option {
     padding-right: 25px;
 }
+
 #add_search_option {
     position: inherit;
     cursor: pointer;
 }
+
 .lastseen_content {
     display: none;
     &.active {
         display: inline-block;
     }
 }
-.action-btns{
+
+.action-btns {
     float: right;
     padding-right: 12px;
     font-size: 15px;
@@ -97,18 +98,19 @@ Section : Imports
     right: 0;
     position: absolute;
     display: none;
-    &.active{
-        display:inline-block;
+    &.active {
+        display: inline-block;
     }
-    &>a{
-        color:black;
+    &>a {
+        color: black;
         cursor: pointer;
     }
-
 }
-.add-btn{
+
+.add-btn {
     float: left;
 }
+
 .lastseenby_show {
     cursor: pointer;
 }
@@ -134,29 +136,35 @@ Section : Imports
         display: inline-block;
     }
 }
- /*
+
+
+/*
 ----------------------
 Patient admin section
 -----------------------
 */
-.back{
+
+.back {
     color: #f2f2f2;
     background-color: #808080;
     padding: 6px 22px;
-    &:hover{
+    &:hover {
         color: #f2f2f2;
     }
 }
-.add_header{
+
+.add_header {
     display: flex;
 }
-p.add_title{
+
+p.add_title {
     font-size: 1.5em;
     margin-bottom: 0;
     margin-left: 1em;
     margin-top: auto;
 }
-.add_patient_input{
+
+.add_patient_input {
     display: block;
     color: #fff;
     background-color: @font-color-4;
@@ -165,35 +173,38 @@ p.add_title{
     border-radius: .2em;
     padding: .5em;
     width: 60%;
-    &::placeholder{
+    &::placeholder {
         color: @background-color-5;
     }
-    &:focus{
+    &:focus {
         border: 2px solid #fff;
     }
 }
-.section-break{
+
+.section-break {
     border-top: 1px solid @background-color-6;
     margin: 0 2em 0 2em;
 }
-p.address{
+
+p.address {
     margin: 0 1em;
     font-size: 1.3em;
     color: #fff;
 }
+
 .patient_action {
     display: none;
     &.active {
         display: block;
     }
 }
-.add-btn{
+
+.add-btn {
     float: left;
-    &:hover{
+    &:hover {
         float: left;
     }
 }
-
 
 .search_text {
     padding-left: 142px;
@@ -213,9 +224,147 @@ p.address{
     background-color: #00B6F1;
     border-color: #fff;
 }
-.hide{
+
+.hide {
     display: none;
 }
-p.patient_dropdown_data{
+
+p.patient_dropdown_data {
     margin: 0;
 }
+
+.search_input_box {
+    background-color: #ffffff;
+    font-size: 1em;
+    &>input, &>input:focus {
+        width: 100%;
+        border: none;
+        padding: 6px 12px;
+        color: #4d4d4d;
+        outline: none;
+    }
+    &>span {
+        color: #0071bc;
+        position: absolute;
+        right: 0;
+        margin-top: 9px;
+        padding-right: 11px;
+    }
+}
+
+.btn {
+    padding: 6px 22px;
+}
+
+#refresh_patients {
+    background: maroon;
+    color: white;
+    display: none;
+    padding: 3px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    height: 20px;
+    margin-top: 6px;
+    width: 37%;
+    cursor: pointer;
+    &.active {
+        display: block;
+    }
+}
+
+.glyp {
+    pding-top: 8px;
+    padding-right: 5px;
+    cursor: pointer;
+}
+
+.search_header {
+    margin: 1em;
+    border-bottom: 1px solid #fff;
+}
+
+.search_name_header {
+    display: inline-flex;
+}
+
+
+
+.search_item {
+    margin: 1em;
+    border-bottom: 1px solid #fff;
+    color: #f2f2f2;
+    &:hover {
+        color: #fff;
+    }
+}
+
+.search_name,
+.search_edit {
+    display: inline-flex;
+    cursor: pointer;
+}
+.action_dropdown_img {
+    width: 38px;
+    margin-top: -0.6em;
+}
+
+.removepatient_img {
+    width: 38px;
+    margin-top: -0.5em;
+    padding:3px;
+    cursor: pointer;
+}
+
+.confirm_text {
+    mrgin-top: 8px;
+    font-size: 15px;
+}
+
+.confirm_buttons {
+    mrgin-top: 11px;
+    padding: 11px;
+}
+
+.confirm_yes {
+    bkground: #fff;
+    color: #F22F2F;
+    margin-right: 19px;
+    border-color: red;
+    border-radius: 3px;
+    padding-left: 11px;
+    padding-right: 11px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    &:hover{
+        background: red;
+        color:#fff;
+    }
+}
+
+.confirm_no {
+    bckground: #fff;
+    color: #F22F2F;
+    margin-right: 19px;
+    border-color: red;
+    border-radius: 3px;
+    padding-left: 11px;
+    padding-right: 11px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    &:hover{
+        background: red;
+        color:#fff;
+    }
+}
+#row_remove_dropdown {
+    bckground-color: #fff;
+    margin-top: -3px;
+    box-shadow: 0px 0px 3px #82888f;
+    border-radius: 5px;
+    text-align: center;
+    width: 20em;
+    margin-left: -19em;
+    color: black;
+    height: 9em;
+}
+

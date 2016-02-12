@@ -1,3 +1,4 @@
+@if(!$data['admin'])
 <div class="row content-row-margin-scheduling">
     <div class="col-xs-10 search_input">
         <input type="text" class="" id="search_patient_input">
@@ -5,8 +6,6 @@
         <span class="glyphicon glyphicon-plus-sign add_search_option" id="add_search_option" aria-hidden="true"></span>
 
     </div>
-
-
     <div class="col-xs-2 search_dropdown">
         <!-- TODO: Create custom dropdown and write css in style.less and write js in main.js -->
         <select type="text" class="" id="search_patient_input_type">
@@ -19,8 +18,6 @@
 
         </select>
     </div>
-
-
     <div class="col-xs-12 search_filter">
         <!--
         <div class="search_filter_item">
@@ -31,6 +28,21 @@
     -->
 
     </div>
-
-
 </div>
+@else
+<div class="row content-row-margin ">
+    <div class="col-xs-2">
+        <button id="open_patient_form" type="button" class="btn add-btn" style="float:right;">Add New</button>
+    </div>
+    <div class="col-xs-2 search_input_box">
+        <input type="text" class="" id="search_patient_input" placeholder="search">
+        <span class="glyphicon glyphicon-search glyp" id="search_patient_button" aria-hidden="true"></span>
+    </div>
+    <div class="col-xs-1">
+        <span class="glyphicon glyphicon-remove" id="refresh_patients" area-hidden="true"></span>
+    </div>
+    <div class="col-xs-7">
+        <button type="button" class="btn import-btn">Import</button>
+    </div>
+</div>
+@endif

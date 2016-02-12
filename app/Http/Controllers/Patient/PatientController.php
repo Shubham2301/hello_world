@@ -23,7 +23,7 @@ class PatientController extends Controller {
 	public function index(Request $request) {
 
 		$data = array();
-
+        $data['admin'] = false;
 		if ($request->has('referraltype_id')) {
 			$data['referraltype_id'] = $request->input('referraltype_id');
 		}
@@ -179,7 +179,6 @@ class PatientController extends Controller {
 		$filters = json_decode($request->input('data'), true);
 
 		$patients = Patient::getPatients($filters);
-
 		$data = [];
 		$i = 0;
 		foreach ($patients as $patient) {
@@ -200,7 +199,9 @@ class PatientController extends Controller {
 	}
 
 	public function administration(Request $request) {
-
+        $data = array();
+        $data['admin'] = true;
+        return view('patient.admin')->with('data', $data);
 	}
 
 }

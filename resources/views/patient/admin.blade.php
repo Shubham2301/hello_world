@@ -21,11 +21,12 @@
         </strong> {{ Session::get('success') }}
 </div>
 @endif
-
+<input type="hidden" id="from_admin" value="{{$data['admin']}}" >
 @if(! empty($data['referraltype_id']))
-
 @include('patient.create')
-
 @endif
+@include('patient.search')
+@include('patient.listing')
+
 
 @endsection
