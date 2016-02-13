@@ -9,6 +9,7 @@
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
         <![end if]-->
+        <link rel="shortcut icon" type="image/jpg" href="{{URL::asset('images/favicon.jpg')}}"/>
         <link rel="stylesheet" href="{{asset('lib/css/bootstrap.min.css')}}">
         <link rel="stylesheet" type="text/css" href="{{elixir('css/style.css')}}">
         <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
