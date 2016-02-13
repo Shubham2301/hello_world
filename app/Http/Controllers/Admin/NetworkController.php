@@ -15,9 +15,8 @@ class NetworkController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-//        $roles = Role::all();
-		//        return view('admin.networks.index')->with('roles', $roles);
-
+        //$roles = Role::all();
+		//return view('admin.networks.index')->with('roles', $roles);
 		return view('admin.networks.index');
 	}
 
@@ -35,7 +34,7 @@ class NetworkController extends Controller {
         return view('admin.networks.create')->with('data', $data);
 	}
 	public function add(Request $request) {
-		$network = new Network;
+        $network = new Network;
 		$network->name = $request->input('name');
 		$network->email = $request->input('email');
 		$network->phone = $request->input('phone');
@@ -65,7 +64,6 @@ class NetworkController extends Controller {
 		$description = '';
 		$filename = basename(__FILE__);
 		$ip = $request->getClientIp();
-
 		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
 	}
@@ -102,14 +100,12 @@ class NetworkController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(Request $request, $id) {
-
         $network = Network::find($id);
         $network->update($request->input());
 		$action = 'update network of id =' . $id;
 		$description = '';
 		$filename = basename(__FILE__);
 		$ip = $request->getClientIp();
-
 		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
         return redirect('/administration/networks');
 	}
@@ -126,12 +122,11 @@ class NetworkController extends Controller {
 		$description = '';
 		$filename = basename(__FILE__);
 		$ip = $request->getClientIp();
-
 		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 	}
 
 	public function search(Request $request) {
-		$tosearchdata = json_decode($request->input('data'), true);
+        $tosearchdata = json_decode($request->input('data'), true);
 		$networks = Network::where('name', 'like', '%' . $tosearchdata['value'] . '%')->paginate(5);
 		$data = [];
 		$data[0]['total'] = $networks->total();

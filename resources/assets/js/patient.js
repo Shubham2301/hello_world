@@ -34,7 +34,6 @@ $(document).ready(function() {
         $('.add_patient_form').addClass('active');
         $('.patient_admin_header').removeClass('active');
     });
-
     $('#back_to_select_patient_btn').on('click', function() {
         $('#back_to_select_patient').submit();
     });
@@ -146,11 +145,9 @@ $(document).ready(function() {
     $('#open_patient_form').on('click', function() {
         window.location = '/administration/patients/create';
     });
-
     $('#back_to_admin_patient_btn').on('click', function() {
         window.location = '/administration/patients';
     });
-
     $('.patient_list').on('click', '.editPatient_from_row', function() {
         var val = $(this).parents('.search_item').attr('data-id');
 
@@ -164,6 +161,15 @@ $(document).ready(function() {
         }
 
     });
+    $('.patient_list').on('click', '.removepatient_from_row', function() {
+        var val = $(this).parents('.search_item').attr('data-id');
+        showModalConfirmDialog('Are you sure?', function(outcome) {
+            if (outcome) {
+                removePatient(val);
+                $(this).parents('.search_item').remove();
+            }
+        });
+    });
 
 
     $(document).keypress(function(e) {
@@ -173,7 +179,7 @@ $(document).ready(function() {
     });
     loadImportForm();
 });
-var currentpage = 0;
+var currentpage = 1;
 var lastpage = 0;
 
 function loadAllPatients() {
@@ -274,7 +280,7 @@ function getPatients(formData, page) {
                 var content = '';
                 if (patients.length > 0) {
                     patients.forEach(function(patient) {
-                        content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3" style="display:inline-flex"><div><input type="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + patient.fname + ' ' + patient.lname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p><div><span area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown_img" src="' + active_img + '" alt=""></span></div></p>&nbsp;&nbsp;<p class="editPatient_from_row" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepatient_from_row"><img src="' + delete_img + '" alt="" class="removepatient_img"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"<button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+                        content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3" style="display:inline-flex"><div><input type="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + patient.fname + ' ' + patient.lname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p><div><span area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown_img" src="' + active_img + '" alt=""></span></div></p>&nbsp;&nbsp;<p class="editPatient_from_row" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepatient_from_row"><img src="' + delete_img + '" alt="" class="removepatient_img"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     });
                 }
                 currentpage = patients[0]['currentPage'];
@@ -366,4 +372,34 @@ function updatePatientData() {
             getPatientInfo(formData);
         }
     });
+}
+
+function removePatient(id) {
+    $.ajax({
+        url: '/patient/destroy/' + id,
+        type: 'GET',
+        data: '',
+        contentType: 'text/html',
+        async: false,
+        success: function success(e) {
+        var searchdata = [];
+        getPatients(searchdata, currentpage);
+
+    },
+           error: function error() {
+        $('p.alert_message').text('Error searching');
+        $('#alert').modal('show');
+    },
+        cache: false,
+            processData: false
+});
+}
+function showModalConfirmDialog(msg, handler) {
+    $('.patient_list').on('click', '.confirm_yes', function(evt) {
+        handler(true);
+    });
+    $('.patient_list').on('click', '.confirm_no', function(evt) {
+        handler(false);
+    });
+
 }

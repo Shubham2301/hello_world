@@ -19,7 +19,7 @@ $(document).ready(function() {
         showModalConfirmDialog('Are you sure?', function(outcome) {
             if (outcome) {
                 removeNetwork(val);
-                $(this).parents('.search_item').remove();
+              $(this).parents('.search_item').remove();
             }
         });
     });
@@ -64,7 +64,7 @@ $(document).ready(function() {
         }
     });
 });
-var currentpage = 0;
+var currentpage = 1;
 var lastpage = 0;
 
 function getNetworks(formData, page) {
@@ -139,7 +139,7 @@ function removeNetwork(id) {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-
+        getNetworks(null, currentpage);
 
         },
         error: function error() {

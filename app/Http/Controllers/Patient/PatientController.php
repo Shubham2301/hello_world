@@ -211,8 +211,13 @@ class PatientController extends Controller {
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($id) {
-		//
+    public function destroy(Request $request, $id) {
+        $patient = Patient::where('id', $id)->delete();
+        $action = 'delete patient of id =' . $id;
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 	}
 
 	public function search(Request $request) {
@@ -243,11 +248,9 @@ class PatientController extends Controller {
 		return json_encode($data);
 	}
 
-	public function administration(Request $request) {
+    public function administration(Request $request) {
         $data = array();
         $data['admin'] = true;
-
         return view('patient.admin')->with('data', $data);
-	}
-
+    }
 }
