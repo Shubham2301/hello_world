@@ -22,7 +22,6 @@ body {
     height: 100%;
     width: 100%;
 }
-
 .container {
     width: 100%;
     height: 100vh;
@@ -30,11 +29,9 @@ body {
     flex-flow: column;
     overflow: hidden;
 }
-
 .height {
     display: flex;
 }
-
 
 /*
 ---------------------------
@@ -46,25 +43,21 @@ Section : Header
     padding: 0em;
     flex: 0 0 auto;
     z-index: 1;
-    box-shadow: 0 2px 4px rgba(170,170,170,1);
+    box-shadow: 0 2px 4px rgba(170, 170, 170, 1);
     &>div {
         padding: 1em 0em;
     }
 }
-
 .header-user {
     flex: 0 0 auto;
 }
-
 .header-user-left {
     background-color: @light-gray;
     .right-border;
 }
-
 .header-user-right {
     background-color: @medium-gray;
 }
-
 .header-user-item {
     background-color: #82888f;
     border-right: .2em solid white;
@@ -76,43 +69,36 @@ Section : Header
     padding: 0.1em 0.4em;
     font-size: 0.9em;
 }
-
 .header-right {
     display: flex;
     align-items: flex-end;
 }
-
 .header-logo {
     > img {
         width: 100%;
         padding: 0em 1em;
     }
 }
-
 .header-menu {
     display: flex;
     text-align: right;
     justify-content: flex-end;
 }
-
 .header-menu > nav {
     background-color: #fff;
     border-color: #fff;
     margin: 0;
     min-height: 0;
 }
-
 .navbar-toggle {
     border: none;
     margin: 0;
 }
-
 .dropdown-menu {
     border-radius: 0;
     border: none;
     box-shadow: none;
 }
-
 .menu-item {
     color: @font-color-2;
     font-size: 1em;
@@ -124,11 +110,9 @@ Section : Header
         cursor: pointer;
     }
 }
-
 .navbar-nav>li>a {
     padding: 0;
 }
-
 
 /*
 ---------------------------
@@ -139,52 +123,44 @@ Section : Body
 .content {
     flex: 1 1 auto;
 }
-
 //.logo_opacity {
 //    opacity: 0.8;
 //}
 .content-padding {
     padding: 1em;
 }
-
 p.error {
     padding: 0px;
     margin: 0px;
     line-height: 0;
 }
-
 .content-left {
     .right-border;
     .content-padding;
     background: @light-gray;
     overflow-y: auto;
-//    box-shadow: inset 0 30px 60px -10px #d1d1d1, inset 0 -12px 20px -8px #d1d1d1;
+    //    box-shadow: inset 0 30px 60px -10px #d1d1d1, inset 0 -12px 20px -8px #d1d1d1;
 }
-
 .content-right {
     .content-padding;
     overflow-y: scroll;
-//    box-shadow: inset 0 30px 60px -10px #0193d7, inset 0 -12px 20px -8px #0193d7;
+    //    box-shadow: inset 0 30px 60px -10px #0193d7, inset 0 -12px 20px -8px #0193d7;
     color: @font-color-1;
     background: @primary-blue;
 }
-
 .ocuhub_logo_blue {
     background: @primary-blue url(../../images/signin_logo_bg_blue.png) no-repeat left bottom;
     background-size: 57%;
     background-position: bottom left;
 }
-
 .ocuhub_logo_grey {
     background: @light-gray url(../../images/signin_logo_bg_grey.png) no-repeat left bottom;
     background-size: 100%;
     background-position: bottom right;
 }
-
 .content-row-margin {
     margin: 1em 0;
 }
-
 .content-section,
 .admin-console-section {
     margin-bottom: 2em;
@@ -193,7 +169,7 @@ p.error {
         display: block;
     }
 }
-.content-section-scheduling{
+.content-section-scheduling {
     width: 90%;
     margin: -15px auto;
 }
@@ -219,7 +195,6 @@ p.error {
         right: 0;
     }
 }
-
 .search_dropdown {
     background-color: rgb(236, 236, 236);
     &>select {
@@ -235,21 +210,17 @@ p.error {
         cursor: pointer
     }
 }
-
 .select_provider_button {
     display: none;
     &.active {
         display: inline-block;
     }
 }
-
 .table {}
-
 .table-header {
     color: @font-color-4;
     background-color: @background-color-1;
 }
-
 .table-check {
     text-align: center;
     &:hover {
@@ -257,38 +228,30 @@ p.error {
         cursor: pointer;
     }
 }
-
 .content-watermark {
     width: 60%;
     right: -20%;
     top: 5em;
     position: absolute;
 }
-
 .subheading {
     font-size: 1.5em;
 }
-
 .panel {
     background-color: transparent;
     box-shadow: none;
     color: @font-color-2;
     border: none;
 }
-
 .panel-default {
     &>.panel-heading {
         color: inherit;
         background-color: transparent;
     }
 }
-
 .panel-default>.panel-heading+.panel-collapse>.panel-body {
     border: none;
 }
-
-
-
 
 /*
 ---------------------------
@@ -304,7 +267,6 @@ Section : Sidebar
         margin: 0.5em 0;
     }
 }
-
 .sidebar_item {
     .sidebar-item-left {
         text-align: right;
@@ -314,7 +276,6 @@ Section : Sidebar
     text-align: center;
     font-size: 1.5em;
 }
-
 .subsection-header {
     .section-header;
     background-color: #cde8f4;
@@ -322,47 +283,44 @@ Section : Sidebar
     padding: 0.5em 0em;
     font-size: 1.2em;
 }
-
-.subsection-header-previous-stage{
+.subsection-header-previous-stage {
     .section-header;
     background-color: #bfd8e3;
     color: #338dc9;
     padding: 0.5em 0em;
     font-size: 1em;
-    box-shadow:  inset 0px -10px 10px -10px #0071bc;
-    &>.selected_patient{
-            position: absolute;
-            z-index: 0;
-            padding: 1em;
-            display: inherit;
-            color: #4d4d4d;
-            font-size: .8em;
-            font-weight: 600;
-            display: flex;
-            width: 100%;
-            top: 0;
-            &>p{
-                font-size: 1em;
-            }
-            &>p.view_selected_patient{
-                margin-left: auto;
-                cursor: pointer;
-                text-decoration: underline;
-            }
-            &>p.change_selected_patient{
-                cursor: pointer;
-                text-decoration: underline;
-            }
+    box-shadow: inset 0px -10px 10px -10px #0071bc;
+    &>.selected_patient {
+        position: absolute;
+        z-index: 0;
+        padding: 1em;
+        display: inherit;
+        color: #4d4d4d;
+        font-size: .8em;
+        font-weight: 600;
+        display: flex;
+        width: 100%;
+        top: 0;
+        &>p {
+            font-size: 1em;
+        }
+        &>p.view_selected_patient {
+            margin-left: auto;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        &>p.change_selected_patient {
+            cursor: pointer;
+            text-decoration: underline;
+        }
     }
 }
 .sidebar_header {
     padding: .5em 0em 1em 0em;
 }
-
 .sidebar_user_info {
     color: @background-color-3;
 }
-
 .sidebar_menu_item {
     display: block;
     border-radius: 5px;
@@ -370,12 +328,12 @@ Section : Sidebar
     box-shadow: 0 1px 1px #898989;
     overflow-x: hidden;
     .gradient(#f0f2f5, #e0e3e6);
-    &:hover{
+    &:hover {
         background-color: #f0f2f5;
         .gradient(#f0f2f5, #f0f2f5);
         box-shadow: 0 1px 1px #898989;
     }
-    &:active{
+    &:active {
         background-color: #d2d3d5;
         .gradient(#d2d3d5, #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
@@ -401,27 +359,23 @@ Section : Sidebar
         }
     }
 }
-
 .profile_img_sidebar {
     width: 6em;
     border-radius: 4em;
     margin: 1em 0;
     box-shadow: 0px 0px 5px #82888f;
 }
-.profile_img_sidebar_mini{
+.profile_img_sidebar_mini {
     width: 3em;
     border-radius: 4em;
     box-shadow: 0px 0px 3px #82888f;
 }
-
 .center {
     text-align: center;
 }
-
 .dropdown-menu {
     min-width: 0px;
 }
-
 ul.dropdown-menu.sidebar {
     background: @light-gray;
     background-color: #ebeced;
@@ -431,7 +385,6 @@ ul.dropdown-menu.sidebar {
     width: 3em;
     margin: 0 0.5em;
 }
-
 .dropdown-menu>li>a {
     margin: 0;
     padding: 0;
@@ -443,20 +396,16 @@ ul.dropdown-menu.sidebar {
         margin: 0.2em 0;
     }
 }
-
 h3.title {
     margin-top: 12px;
     font-weight: bold;
 }
-
 .drop_image {}
-
 .admin_button {
     background: transparent;
     border: none;
     width: 4em;
 }
-
 .admin {
     padding: 1em;
     border-left: solid .7em transparent;
@@ -482,6 +431,77 @@ h3.title {
     }
 }
 
+/*
+---------------------------
+Section : Admin Sidebar
+---------------------------
+*/
+
+.admin_sidebar_menu_item {
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    padding: 0;
+    box-shadow: 0 1px 1px #898989;
+    overflow-x: hidden;
+    .gradient(#f0f2f5, #e0e3e6);
+    &>.sidebar_button_subsection {
+        color: #000;
+        text-decoration: none;
+        display: inherit;
+        flex-grow: 1;
+        flex-basis: 0;
+        cursor: pointer;
+        &:hover {
+            background-color: #f0f2f5;
+            .gradient(#f0f2f5, #f0f2f5);
+            box-shadow: 0 1px 1px #898989;
+            .img_on_hover {
+                display: block;
+            }
+            .img_not_hover {
+                display: none;
+            }
+        }
+        &:active {
+            background-color: #d2d3d5;
+            .gradient(#d2d3d5, #d2d3d5);
+            box-shadow: 0 1px 1px #d2d3d5;
+        }
+        &>span {
+            flex-grow: 1;
+            flex-basis: 0;
+            flex-direction: column;
+            justify-content: center;
+            &.add_text {
+                display: flex;
+            }
+            &.img_on_hover {
+                display: none;
+            }
+            &.img_not_hover {
+                display: block;
+            }
+        }
+    }
+}
+.subsection_admin_title {
+    padding: 0 .5em 0 0;
+    &>span {
+        border-left: 1px solid #b3b3b3;
+        margin: .2em 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 0 0 .4em;
+        &:hover {
+            border-left: 1px solid transparent;
+        }
+    }
+}
+.subsection_admin_add {
+    padding: 0 .5em;
+}
 
 /*
 ---------------------------
@@ -497,18 +517,16 @@ Section : Footer
     opacity: 0;
     min-height: 2.1em;
     margin-bottom: -2em;
-    &:hover{
+    &:hover {
         opacity: .9;
         margin-bottom: 0;
         transition: opacity .5s;
         transition: margin-bottom .5s;
     }
 }
-
 .footer-padding {
     padding: 1em 0;
 }
-
 .footer-left {
     .footer-padding;
     .right-border;
@@ -516,7 +534,6 @@ Section : Footer
     color: @font-color-2;
     border-top: 1px solid #9ea0a3;
 }
-
 .footer-right {
     .footer-padding;
     padding-left: 2em;
@@ -525,7 +542,6 @@ Section : Footer
     color: @font-color-3;
     border-top: 1px solid #20c3f3;
 }
-
 .footer-item {
     text-align: center;
     &.border {
@@ -535,9 +551,7 @@ Section : Footer
         margin: 0;
     }
 }
-
 #footer_content strong {
     color: #333333;
 }
-
 @import 'calender.less';
