@@ -141,14 +141,28 @@ $(document).ready(function() {
         var formData = {
             'id': patient_id
         };
-         getPatientInfo(formData);
+        getPatientInfo(formData);
     });
-    $('#open_patient_form').on('click',function(){
+    $('#open_patient_form').on('click', function() {
         window.location = '/administration/patients/create';
     });
 
-    $('#back_to_admin_patient_btn').on('click',function(){
+    $('#back_to_admin_patient_btn').on('click', function() {
         window.location = '/administration/patients';
+    });
+
+    $('.patient_list').on('click', '.editPatient_from_row', function() {
+        var val = $(this).parents('.search_item').attr('data-id');
+
+        window.location = '/administration/patients/edit/' + val + '';
+    });
+    $('#dontsave_new_patient').on('click', function() {
+        if ($('#from_admin').val())
+            $('#back_to_admin_patient_btn').trigger('click');
+        else{
+            $('#back_to_select_patient_btn').trigger('click');
+        }
+
     });
 
 
