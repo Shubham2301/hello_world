@@ -41,7 +41,7 @@
         <span class="glyphicon glyphicon-remove" id="refresh_patients" area-hidden="true"></span>
     </div>
     <div class="col-xs-7">
-        <button type="button"  class="btn import-btn">Import</button>
+        <button type="button" data-toggle="modal" data-target="#importModal_admin"  class="btn import-btn">Import</button>
     </div>
 </div>
 @endif

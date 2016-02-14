@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="importModal" role="dialog">
+<div class="modal fade" id="importModal_admin" role="dialog">
     <div class="modal-dialog form_model">
 
         <!-- Modal content-->
@@ -11,7 +11,7 @@
             <div class="modal-body">
                 <div class="content-section active" id="patients_section">
                     <div class="import_form active">
-                        {!! Form::open(array('url' => 'import/xlsx', 'method' => 'POST', 'files'=>true,'id'=>'import_form')) !!}
+                        {!! Form::open(array('url' => 'import/xlsx', 'method' => 'POST', 'files'=>true,'id'=>'import_form_admin')) !!}
                         <div class="row input_row">
                             <div class="col-md-3 form-group">
                                 <lable for="exampleInputName1"><strong style="padding-left:3em;">Practice</strong></lable>

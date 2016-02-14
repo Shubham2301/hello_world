@@ -5,6 +5,7 @@
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/patient.css')}}">
 <script type="text/javascript" src="{{elixir('js/patient.js')}}"></script>
+<script type="text/javascript" src="{{elixir('js/import.js')}}"></script>
 @endsection
 
 @section('sidebar')
@@ -27,6 +28,7 @@
 @else
 @include('patient.search')
 @include('patient.listing')
+@include('patient.import')
 @endif
 
 

@@ -2,6 +2,9 @@ $(document).ready(function() {
 
     if ($('#from_admin').val())
         loadAllPatients();
+    else{
+        loadImportForm();
+    }
 
     $('#dob').datetimepicker({
         format: 'YYYY/MM/DD'
@@ -177,7 +180,7 @@ $(document).ready(function() {
             $("#search_patient_button").trigger("click");
         }
     });
-    loadImportForm();
+
 });
 var currentpage = 1;
 var lastpage = 0;

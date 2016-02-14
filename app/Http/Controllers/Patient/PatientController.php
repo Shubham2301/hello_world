@@ -31,8 +31,6 @@ class PatientController extends Controller {
 			$data['action'] = $request->input('action');
 		}
 		$practicedata = Practice::all()->lists('name', 'id')->toArray();
-		array_unshift($practicedata, "0");
-		$practicedata['0'] = "Select Practice";
 		return view('patient.index')->with('data', $data)->with('practice_data', $practicedata);
 	}
 
@@ -250,7 +248,9 @@ class PatientController extends Controller {
 
     public function administration(Request $request) {
         $data = array();
+        $practicedata = array();
         $data['admin'] = true;
-        return view('patient.admin')->with('data', $data);
+        $practicedata = Practice::all()->lists('name', 'id')->toArray();
+        return view('patient.admin')->with('data', $data)->with('practice_data', $practicedata);
     }
 }
