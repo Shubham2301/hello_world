@@ -7,19 +7,19 @@
 </div>
 <div class="col-xs-12 col-sm-9 footer-right">
     <div class="col-sm-2 footer-item border">
-        <a href="/contactus">Contact Us</a>
+        <a href="http://ocuhub.com/contact-2/" target="_blank">Contact Us</a>
     </div>
     <div class="col-sm-2 footer-item border">
-        <a href="/privacy">Privacy Policy</a>
+        <a href="http://ocuhub.com/privacypolicy/" target="_blank">Privacy Policy</a>
     </div>
     <div class="col-sm-2 footer-item border">
-        <a href="/terms">Terms of Use</a>
+        <a href="http://ocuhub.com/termsofuse/" target="_blank">Terms of Use</a>
     </div>
     <div class="col-sm-2 footer-item border">
-        <a href="http://ocuhub.com/">Site Map</a>
+        <a href="http://ocuhub.com/"  target="_blank">Site Map</a>
     </div>
     <div class="col-sm-2 footer-item">
-        <a href="http://ocuhub.com/">Investors</a>
+        <a href="http://ocuhub.com/" target="_blank">Investors</a>
     </div>
     <div class="row top-padding visible-xs">
         <div class="col-xs-12 text-center">

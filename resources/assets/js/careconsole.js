@@ -87,7 +87,7 @@ $(document).ready(function () {
 
         switch ($(this).attr('data-name')) {
         case 'schedule':
-            window.location = "/providers?referraltype_id=6&action=schedule_appointment&patient_id=" + $(this).parent().attr('data-patientid');
+            window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).parent().attr('data-patientid');
             break;
         default:
             $('#action_patient_id').val($(this).parent().attr('data-patientid'));

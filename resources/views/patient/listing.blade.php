@@ -11,19 +11,19 @@
             </div>
         </div>
         <div class="col-xs-4">
-            <p style="color:black"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Address</strong></p>
+            <p style="color:black"><strong>Address</strong></p>
         </div>
         <div class="col-xs-3">
-            <p style="color:black"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Email</strong></p>
+            <p style="color:black"><strong>Email</strong></p>
         </div>
         <div class="col-xs-2">
             <input type="hidden" id="delete_practice_img" value="{{asset('images/delete-active-01.png')}}">
             <input type="hidden" id="schedule_patient_img" value="{{asset('images/schedule-icon-01.png')}}">
-            <p class=""><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong>2 of 2</strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
+            <p class="" style="color:black"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong></strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
         </div>
     </div>
 
-       <div class="patient_search_content">
+    <div class="patient_search_content">
         <form action="">
             <input type="hidden" id="assign_role_image_path" value="{{URL::asset('images/assign-role-icon-01.png')}}">
             <input type="hidden" id="assign_user_image_path" value="{{URL::asset('images/assign-user-icon-01.png')}}">
@@ -73,9 +73,9 @@
 
 
 
-        </div>
+    </div>
 </div>
-<div class="row content-row-margin patient_info" data-id="">
+<div class="row content-row-margin patient_info arial" data-id="">
     <div class="col-xs-12">
         <div class="col-xs-4 center-align">
             <img src="{{asset('images/patient.png')}}" alt="">
@@ -100,30 +100,29 @@
             <p class="button_type_1" style="display:none;" id="compare_ccda_button" data-toggle="modal" data-target="#compareCcda">update CCDA</p>
         </div>
         <div class="col-xs-8">
-            <p class="bold" id="patient_name"></p>
-            <hr>
+            <p class="bold arial_bold" id="patient_name"></p>
             <div class="row">
                 <div class="col-xs-6">
-                    <p><span class="bold">Email</span>
-                        <br><span id="patient_email"> </span></p>
-                    <p><span class="bold">Date of Birth</span>
-                        <br><span id="patient_dob"> </span></p>
+                    <p><span class="bold arial_bold">Email</span>
+                        <br><span class="patient_detail_info" id="patient_email"> </span></p>
+                    <p><span class="bold arial_bold">Date of Birth</span>
+                        <br><span class="patient_detail_info" id="patient_dob"> </span></p>
                 </div>
                 <div class="col-xs-6">
-                    <p><span class="bold">Address</span>
-                        <br><span id="patient_add1"></span>
-                        <br><span id="patient_add2"></span>
-                        <br><span id="patient_add3"></span></p>
+                    <p><span class="bold arial_bold">Address</span>
+                        <br><span class="patient_detail_info" id="patient_add1"></span>
+                        <br><span class="patient_detail_info" id="patient_add2"></span>
+                        <br><span class="patient_detail_info" id="patient_add3"></span></p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-6">
-                    <p><span class="bold">Phone</span>
-                        <br><span id="patient_phone">  </span></p>
+                    <p><span class="bold arial_bold">Phone</span>
+                        <br><span class="patient_detail_info" id="patient_phone">  </span></p>
                 </div>
                 <div class="col-xs-6">
-                    <p><span class="bold">SSN</span>
-                        <br><span id="patient_ssn"></span> </p>
+                    <p><span class="bold arial_bold">SSN</span>
+                        <br><span class="patient_detail_info" id="patient_ssn"></span> </p>
                 </div>
             </div>
 
@@ -131,20 +130,20 @@
     </div>
     <div class="col-xs-12 patient_table_header">
         <div class="col-xs-4 lastseenby">
-            <div class="lastseenby_show">
+            <div class="lastseenby_show arial_bold">
                 <p><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></p>
             </div>
 
         </div>
 
         <div class="col-xs-4 referredby">
-            <div class="referredby_show">
+            <div class="referredby_show arial_bold">
                 <p> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></p>
             </div>
         </div>
 
         <div class="col-xs-4 insurance_provider">
-            <div class="insurance_provider_show">
+            <div class="insurance_provider_show arial_bold">
                 <p><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></p>
             </div>
         </div>

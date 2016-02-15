@@ -512,7 +512,10 @@ Section : Header
 .navbar-nav > li > a {
   padding: 0;
 }
-
+.header_navbar_items {
+    font-size: 1em;
+    color: #4d4d4d;
+}
 /*
 ---------------------------
 Section : Body
@@ -610,20 +613,19 @@ p.error {
 }
 
 .search_dropdown {
-  background-color: #ececec;
-}
-
-.search_dropdown > select {
-  width: 100%;
-  background: none;
-  color: #4d4d4d;
-  border: none;
-  border-radius: 0;
-  font-size: 1.2em;
-  height: 2.6em;
-  box-shadow: none;
-  outline: none;
-  cursor: pointer;
+    background-color: rgb(236, 236, 236);
+    &>select {
+        width: 100%;
+        background: none;
+        color: #4d4d4d;
+        border: none;
+        border-radius: 0;
+        font-size: 1.1em;
+        height: 2.8em;
+        box-shadow: none;
+        outline: none;
+        cursor: pointer
+    }
 }
 
 .select_provider_button {
@@ -696,8 +698,13 @@ Section : Sidebar
 }
 
 .section-header {
+<<<<<<< HEAD
   text-align: center;
   font-size: 1.5em;
+=======
+    text-align: center;
+    font-size: 1.4em;
+>>>>>>> 2029181d51f591a2e31eedbed56d8cb55e289f73
 }
 
 .subsection-header {
@@ -710,6 +717,7 @@ Section : Sidebar
 }
 
 .subsection-header-previous-stage {
+<<<<<<< HEAD
   text-align: center;
   font-size: 1.5em;
   background-color: #bfd8e3;
@@ -747,6 +755,37 @@ Section : Sidebar
 .subsection-header-previous-stage > .selected_patient > p.change_selected_patient {
   cursor: pointer;
   text-decoration: underline;
+=======
+    .section-header;
+    background-color: #bfd8e3;
+    color: #338dc9;
+    padding: 0.5em 0em;
+    font-size: 1em;
+    box-shadow: inset 0px -10px 10px -10px #0071bc;
+    &>.selected_patient {
+        position: absolute;
+        z-index: 0;
+        padding: 1em;
+        display: inherit;
+        color: #4d4d4d;
+        font-size: .8em;
+        display: flex;
+        width: 100%;
+        top: 0;
+        &>p {
+            font-size: 1em;
+        }
+        &>p.view_selected_patient {
+            margin-left: auto;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        &>p.change_selected_patient {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+>>>>>>> 2029181d51f591a2e31eedbed56d8cb55e289f73
 }
 
 .sidebar_header {
@@ -754,10 +793,16 @@ Section : Sidebar
 }
 
 .sidebar_user_info {
+<<<<<<< HEAD
   color: #00a1e4;
+=======
+    color: @background-color-3;
+    font-size: 1.4em;
+>>>>>>> 2029181d51f591a2e31eedbed56d8cb55e289f73
 }
 
 .sidebar_menu_item {
+<<<<<<< HEAD
   display: block;
   border-radius: 5px;
   padding: 0;
@@ -771,6 +816,43 @@ Section : Sidebar
   background-color: #f0f2f5;
   background-image: linear-gradient(#f0f2f5 10%, #f0f2f5 90%);
   box-shadow: 0 1px 1px #898989;
+=======
+    display: block;
+    border-radius: 5px;
+    padding: 0;
+    box-shadow: 0 1px 1px #898989;
+    overflow-x: hidden;
+    .gradient(#f0f2f5, #e0e3e6);
+    &:hover {
+        background-color: #f0f2f5;
+        .gradient(#f0f2f5, #f0f2f5);
+        box-shadow: 0 1px 1px #898989;
+    }
+    &:active {
+        background-color: #d2d3d5;
+        .gradient(#d2d3d5, #d2d3d5);
+        box-shadow: 0 1px 1px #d2d3d5;
+    }
+    &>a {
+        &>.menu_item_icon {
+            display: inline-block;
+            display: inline-block;
+            width: 2.7em;
+            margin: 0 .2em;
+            &>img {
+                width: 100%;
+            }
+        }
+        &>.menu_item_label {
+            display: inline-block;
+            padding: 0.3em 0.5em;
+            border-left: solid 1px #b3b3b3;
+            margin: 5px 0 3px 0;
+            color: #4d4d4d;
+            font-size: 1em;
+        }
+    }
+>>>>>>> 2029181d51f591a2e31eedbed56d8cb55e289f73
 }
 
 .sidebar_menu_item:active {

@@ -10,10 +10,10 @@
             </div>
         </div>
         <div class="col-xs-4">
-            <p style="color:black"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Address</strong></p>
+            <p style="color:black"><strong>Address</strong></p>
         </div>
         <div class="col-xs-3">
-            <p style="color:black"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Ocuapps</strong></p>
+            <p style="color:black"><strong>Ocuapps</strong></p>
         </div>
         <div class="col-xs-2">
             <input type="hidden" id="schedule_practice_img" value="{{asset('images/schedule.png')}}">
