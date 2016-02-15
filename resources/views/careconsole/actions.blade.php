@@ -24,7 +24,7 @@
                         </div>
                         <div class="row input_row">
                             <div class="col-md-3 form-group">
-                                <lable for="action_notes"><strong style="padding-left:3em;">Notes</strong></lable>
+                                <label for="action_notes"><strong style="padding-left:3em;">Notes</strong></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <textarea class="form-control" name="action_notes" id="action_notes" rows="5"></textarea>
@@ -32,7 +32,6 @@
                             <div class="col-md-2"></div>
                         </div>
                     </div>
-                    <p class="success_message"></p>
                 </div>
             </div>
             <div class="modal-footer">

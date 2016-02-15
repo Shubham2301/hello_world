@@ -235,6 +235,9 @@ function action() {
         success: function success(e) {
             $('#actionModal').modal('hide');
             getPatientData();
+            $('#action_notes').html('');
+            $('#action_notes').val('');
+            $('#action_result_id').val(0);
         },
         error: function error() {
             $('p.alert_message').text('Error:');
