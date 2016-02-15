@@ -28,7 +28,7 @@
 @else
 @include('patient.search')
 @include('patient.listing')
-@include('patient.import')
+
 @endif
 
 
