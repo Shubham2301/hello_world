@@ -28,7 +28,6 @@ class PracticeController extends Controller {
 	public function create() {
         $id = -1;
         return view('practice.create')->with('id',$id);
-
 	}
 
 	/**
@@ -57,13 +56,11 @@ class PracticeController extends Controller {
             $practicelocation->location_code = $location['location_code'];
             $practicelocation->save();
         }
-
         $action = 'new practice created';
         $description = '';
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
         return json_encode($practiceid);
 	}
 
@@ -76,7 +73,6 @@ class PracticeController extends Controller {
 	public function show(Request $request) {
 		$data = array();
 		$practice_id = $request->input('practice_id');
-		// $practice_id            =1;
 		$practice_name = Practice::find($practice_id)->name;
 		$practice_email = Practice::find($practice_id)->email;
 		$practice_locations = Practice::find($practice_id)->locations;
@@ -182,7 +178,7 @@ class PracticeController extends Controller {
 	}
 
 	public function administration(Request $request) {
-		return view('practice.admin');
+        return view('practice.admin');
 	}
 
 

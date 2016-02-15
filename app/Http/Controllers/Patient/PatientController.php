@@ -23,7 +23,7 @@ class PatientController extends Controller {
 	public function index(Request $request) {
 
 		$data = array();
-
+        $data['admin'] = false;
 		if ($request->has('referraltype_id')) {
 			$data['referraltype_id'] = $request->input('referraltype_id');
 		}
@@ -31,8 +31,6 @@ class PatientController extends Controller {
 			$data['action'] = $request->input('action');
 		}
 		$practicedata = Practice::all()->lists('name', 'id')->toArray();
-		array_unshift($practicedata, "0");
-		$practicedata['0'] = "Select Practice";
 		return view('patient.index')->with('data', $data)->with('practice_data', $practicedata);
 	}
 
@@ -44,15 +42,31 @@ class PatientController extends Controller {
 	public function create(Request $request) {
 
 		$data = array();
-
+        $data = Patient::find(1)->toArray();
+        $data = array_fill_keys(array_keys($data),null);
+        $data['admin'] = true;
+        $data['back_btn'] = 'back_to_select_patient_btn';
+        $data['url'] = '/administration/patients/add';
 		if ($request->has('referraltype_id')) {
 			$data['referraltype_id'] = $request->input('referraltype_id');
+            $data['admin'] = false;
 		}
 		if ($request->has('action')) {
 			$data['action'] = $request->input('action');
 		}
 		return view('patient.admin')->with('data', $data);
 	}
+
+    public function createByAdmin(){
+        $data = array();
+        $data = Patient::find(1)->toArray();
+        $data = array_fill_keys(array_keys($data),null);
+        $data['admin'] = true;
+        $data['back_btn'] = 'back_to_admin_patient_btn';
+        $data['url'] = '/administration/patients/add';
+        $data['referraltype_id']=-1;
+        return view('patient.admin')->with('data', $data);
+    }
 
 	/**
 	 * Store a newly created resource in storage.
@@ -62,27 +76,33 @@ class PatientController extends Controller {
 	 */
 	public function store(Request $request) {
 		$patient = new Patient;
-		$patient->firstname = $request->input('patient_fname');
-		$patient->lastname = $request->input('patient_lname');
+        $patient->firstname = $request->input('firstname');
+        $patient->lastname = $request->input('lastname');
 		$patient->email = $request->input('email');
 		$patient->gender = $request->input('gender');
-		$patient->lastfourssn = $request->input('last_4_ssn');
-		$patient->addressline1 = $request->input('address_1');
-		$patient->addressline2 = $request->input('address_2');
+        $patient->lastfourssn = $request->input('lastfourssn');
+        $patient->addressline1 = $request->input('addressline1');
+        $patient->addressline2 = $request->input('addressline2');
 		$patient->city = $request->input('city');
 		$patient->zip = $request->input('zip');
-		$patient->birthdate = $request->input('dob');
-		$patient->preferredlanguage = $request->input('preferredlanguage');
-		$patient->cellphone = $request->input('phone');
+        $patient->birthdate = $request->input('birthdate');
+        $patient->preferredlanguage = $request->input('preferredlanguage');
+        $patient->cellphone = $request->input('cellphone');
+        $patient->state = $request->input('state');
 		$patient->save();
-		$path = 'providers?referraltype_id=' . $request->input('referraltype_id') . '&action=' . $request->input('action') . '&patient_id=' . $patient->id;
 
 		$action = 'new patient created';
 		$description = '';
 		$filename = basename(__FILE__);
 		$ip = $request->getClientIp();
 		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-		return redirect($path);
+
+        if(!$request->has('action')){
+            return redirect('/administration/patients');
+        }
+
+        $path = 'providers?referraltype_id=' . $request->input('referraltype_id') . '&action=' . $request->input('action') . '&patient_id=' . $patient->id;
+        return redirect($path);
 	}
 
 	/**
@@ -150,7 +170,19 @@ class PatientController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit($id) {
-		//
+
+        $data = array();
+        $data = Patient::find($id);
+        if(!$data){
+            $data['url'] = '/administration/patients/add';
+            $data = array_fill_keys(array_keys($data),null);
+        }
+        $data['admin'] = true;
+        $data['back_btn'] = 'back_to_admin_patient_btn';
+        $data['url'] = '/administration/patients/update/'.$id;
+        $data['referraltype_id']=-1;
+
+        return view('patient.admin')->with('data', $data);
 	}
 
 	/**
@@ -161,7 +193,14 @@ class PatientController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(Request $request, $id) {
-		//
+        $patient = Patient::find($id);
+        $patient->update($request->input());
+        $action = 'update patient of id =' . $id;
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        return redirect('/administration/patients');
 	}
 
 	/**
@@ -170,17 +209,25 @@ class PatientController extends Controller {
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($id) {
-		//
+    public function destroy(Request $request, $id) {
+        $patient = Patient::where('id', $id)->delete();
+        $action = 'delete patient of id =' . $id;
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 	}
 
 	public function search(Request $request) {
 
 		$filters = json_decode($request->input('data'), true);
 
-		$patients = Patient::getPatients($filters);
-
+        $patients = Patient::getPatients($filters)->paginate(5);
 		$data = [];
+
+        $data[0]['total'] = $patients->total();
+        $data[0]['lastpage'] = $patients->lastPage();
+        $data[0]['currentPage'] = $patients->currentPage();
 		$i = 0;
 		foreach ($patients as $patient) {
 			$data[$i]['id'] = $patient->id;
@@ -199,8 +246,11 @@ class PatientController extends Controller {
 		return json_encode($data);
 	}
 
-	public function administration(Request $request) {
-
-	}
-
+    public function administration(Request $request) {
+        $data = array();
+        $practicedata = array();
+        $data['admin'] = true;
+        $practicedata = Practice::all()->lists('name', 'id')->toArray();
+        return view('patient.admin')->with('data', $data)->with('practice_data', $practicedata);
+    }
 }
