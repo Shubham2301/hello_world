@@ -15,7 +15,7 @@
                             <input type="hidden" value="" name="console_id" id="action_console_id">
                             <input type="hidden" value="" name="stage_id" id="action_stage_id">
                             <div class="col-md-3 form-group">
-                                <lable for="action_result_id"><strong style="padding-left:3em;">Result</strong></lable>
+                                <lable for="action_result_id"><strong style="color:black;padding-left:3em;">Result</strong></lable>
                             </div>
                             <div class="col-md-7 form-group">
                                 <select class="form-control" name="action_result_id" id="action_result_id"></select>
@@ -24,7 +24,7 @@
                         </div>
                         <div class="row input_row">
                             <div class="col-md-3 form-group">
-                                <label for="action_notes"><strong style="padding-left:3em;">Notes</strong></label>
+                                <label for="action_notes"><strong style="color:black;padding-left:3em;">Notes</strong></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <textarea class="form-control" name="action_notes" id="action_notes" rows="5"></textarea>
