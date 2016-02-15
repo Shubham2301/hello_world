@@ -101,8 +101,8 @@
         </li>
         <li class="admin_sidebar_menu_item">
             <a class="sidebar_button_subsection subsection_admin_add" href="/administration/networks/create">
-                <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-file-icon.png')}}" style="width:100%"></span>
-                <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-file-icon-hover.png')}}" style="width:100%"></span>
+                <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-network-icon.png')}}" style="width:100%"></span>
+                <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-network-icon-hover.png')}}" style="width:100%"></span>
                 <span class="add_text">add+</span>
             </a>
             <a class="sidebar_button_subsection subsection_admin_title" href="/administration/networks">
