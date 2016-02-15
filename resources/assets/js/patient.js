@@ -63,6 +63,8 @@ $(document).ready(function() {
         $('#select_provider_button').removeClass('active');
         $('#select_provider_button').attr('data-id', 0);
         $('#import_patients').show();
+        $('.patient_admin_search').addClass('active');
+        $('.patient_admin_back').removeClass('active');
     });
     $('#select_provider_button').on('click', function() {
         var id = $(this).attr('data-id');
@@ -173,6 +175,9 @@ $(document).ready(function() {
             }
         });
     });
+    $('.patient_admin_back').on('click', 'button' , function(){
+        $('#change_patient_button').trigger('click');
+    });
 
 
     $(document).keypress(function(e) {
@@ -233,6 +238,12 @@ function showPatientInfo(data) {
         $('.ccda_present').addClass('hide');
     else
         $('.ccda_present').removeClass('hide');
+
+    $('.patient_admin_search').removeClass('active');
+    $('.patient_admin_back').addClass('active');
+    if ($('#from_admin').val())
+        $('#change_patient_button').hide();
+
 }
 
 function getPatientInfo(formData) {

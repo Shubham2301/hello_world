@@ -178,7 +178,9 @@ class PracticeController extends Controller {
 	}
 
 	public function administration(Request $request) {
-        return view('practice.admin');
+        $data = array();
+        $data['practice_active'] = true;
+        return view('practice.admin')->with('data', $data);
 	}
 
 

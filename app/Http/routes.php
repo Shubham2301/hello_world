@@ -112,12 +112,3 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('administration/network/add', 'Admin\NetworkController@add');
 	Route::get('administration/providers', 'Practice\ProviderController@administration');
 });
-
-Route::get('foo',function(){
-    $user = myocuhub\User::find(3);
-    dd($user->getPractice()->name);
-
-
-   /* $user = myocuhub\Models\PracticeUser::find(1);
-    dd($user->practice);*/
-});
