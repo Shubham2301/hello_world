@@ -278,10 +278,6 @@ function getPatients(formData, page) {
         async: false,
         success: function(e) {
             var patients = $.parseJSON(e);
-            if(patients.total === 0){
-                $('.patient_search_content').html('');
-                return;
-            }
             if ($('#from_admin').val()) {
                 var content = '';
                 if (patients.length > 0) {

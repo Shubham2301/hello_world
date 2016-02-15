@@ -42,6 +42,7 @@
                 {!! Form::hidden('appointment_type_name', '', array('id' => 'form_appointment_type_name')) !!}
                 {!! Form::hidden('appointment_type_id', '', array('id' => 'form_appointment_type_id')) !!}
                 {!! Form::hidden('location', '', array('id' => 'form_location')) !!}
+                {!! Form::hidden('location_id', '', array('id' => 'form_location_id')) !!}
         {!! Form::close() !!}
         <div class="practice_section active" id="select_practice">
             @if(array_key_exists('referraltype_id', $data) and array_key_exists('patient_id', $data))

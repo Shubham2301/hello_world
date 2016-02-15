@@ -1,6 +1,5 @@
 $(document).ready(function() {
     if (!$('#from_admin').val()) {
-        alert('hello');
         var id = $('#form_patient_id').attr('value');
         var formData = {
             'id': id
@@ -162,6 +161,7 @@ $(document).ready(function() {
         $('.availability-text').removeClass('hide');
         $('#location_address').html(location_address);
         $('#location_contact').html(location_contact);
+        $('#form_location_id').val($(this).attr('data-id'));
         getAppointmentTypes();
     });
 
@@ -343,7 +343,7 @@ function showProviderInfo(data) {
     content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold">Select Location <b class="caret"></b></span></a><ul class="dropdown-menu location_dropdown" id="custom_dropdown">';
     if (locations.length > 0) {
         locations.forEach(function(location) {
-            content += '<li data-address_1="' + location.addressline1 + '" data-address_2="' + location.addressline2 + '" data-contact="' + location.phone + '">' + location.locationname + '</li>';
+            content += '<li data-id="' + location.id + '" data-address_1="' + location.addressline1 + '" data-address_2="' + location.addressline2 + '" data-contact="' + location.phone + '">' + location.locationname + '</li>';
         });
     }
     content += '</ul></div>';

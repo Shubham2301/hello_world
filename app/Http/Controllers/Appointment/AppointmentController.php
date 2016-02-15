@@ -2,8 +2,12 @@
 
 namespace myocuhub\Http\Controllers\Appointment;
 
+use Auth;
+use DateTime;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Models\Appointment;
+use myocuhub\Models\CareConsole;
 use myocuhub\Models\Practice;
 use myocuhub\Patient;
 use myocuhub\Services\FourPatientCare\FourPatientCare;
@@ -30,6 +34,7 @@ class AppointmentController extends Controller {
 		$appointment_type_name = $request->input('appointment_type_name');
 		$appointment_type_id = $request->input('appointment_type_id');
 		$location = $request->input('location');
+		$locationID = $request->input('location_id');
 		$referraltype_id = $request->input('referraltype_id');
 		$action = $request->input('action');
 
@@ -39,11 +44,14 @@ class AppointmentController extends Controller {
 		$data['referraltype_id'] = $referraltype_id;
 		$data['appointment_date'] = $appointment_date;
 		$data['appointment_time'] = $appointment_time;
+		$data['practice_id'] = $practice_id;
+		$data['provider_id'] = $provider_id;
 		$data['appointment_type_name'] = $appointment_type_name;
 		$data['appointment_type_id'] = $appointment_type_id;
 		$data['location'] = $location;
+		$data['location_id'] = $locationID;
 		$data['action'] = $action;
-        $data['patient_id'] = $patient_id;
+		$data['patient_id'] = $patient_id;
 		$patient = Patient::find($patient_id);
 		$data['patient_name'] = $patient->firstname . ' ' . $patient->lastname;
 
@@ -113,9 +121,13 @@ class AppointmentController extends Controller {
 	public function schedule(Request $request) {
 		$apptInfo = array();
 
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->id;
 		$patientID = $request->input('patient_id');
 		$providerID = $request->input('provider_id');
 		$locationID = $request->input('location_id');
+		$practiceID = $request->input('practice_id');
 		$appointmentType = $request->input('appointment_type');
 		$appointmentTime = $request->input('appointment_time');
 		$patient = Patient::find($patientID);
@@ -124,22 +136,21 @@ class AppointmentController extends Controller {
 		$apptInfo['AcctKey'] = 8042;
 		$apptInfo['ApptTypeKey'] = $appointmentType;
 		$apptInfo['ApptStartDateTime'] = $appointmentTime;
-//        $apptInfo['PatientData']['Title'] = $patient->title;
+		$apptInfo['PatientData']['Title'] = $patient->title;
 		$apptInfo['PatientData']['FirstName'] = $patient->firstname;
 		$apptInfo['PatientData']['LastName'] = $patient->lastname;
-//        $apptInfo['PatientData']['Address1'] = $patient->addressline1;
-		//        $apptInfo['PatientData']['Address2'] = $patient->addressline2;
-		//        $apptInfo['PatientData']['City'] = $patient->city;
-		//        $apptInfo['PatientData']['State'] = $patient->state;
-		//        $apptInfo['PatientData']['Zip'] = $patient->zip;
-		//        $apptInfo['PatientData']['Country'] = $patient->country;
+		$apptInfo['PatientData']['Address1'] = $patient->addressline1;
+		$apptInfo['PatientData']['Address2'] = $patient->addressline2;
+		$apptInfo['PatientData']['City'] = $patient->city;
+		$apptInfo['PatientData']['State'] = $patient->state;
+		$apptInfo['PatientData']['Zip'] = $patient->zip;
+		$apptInfo['PatientData']['Country'] = $patient->country;
 		//        $apptInfo['PatientData']['HomePhone'] = $patient->homephone;
-		$apptInfo['PatientData']['HomePhone'] = '9876543219';
-//        $apptInfo['PatientData']['WorkPhone'] = $patient->workphone;
-		//        $apptInfo['PatientData']['CellPhone'] = $patient->cellphone;
-		//        $apptInfo['PatientData']['Email'] = $patient->email;
-		//$apptInfo['PatientData']['DOB'] = $patient->birthdate; // convert to MM/DD/YYYY HH:MM 24
-		$apptInfo['PatientData']['DOB'] = '2010-10-10'; // convert to MM/DD/YYYY HH:MM 24
+		//        $apptInfo['PatientData']['WorkPhone'] = $patient->workphone;
+		$apptInfo['PatientData']['CellPhone'] = $patient->cellphone;
+		$apptInfo['PatientData']['Email'] = $patient->email;
+		$birthdate = new DateTime($patient->birthdate);
+		$apptInfo['PatientData']['DOB'] = $birthdate->format('Y-m-d');
 
 		$apptInfo['PatientData']['PreferredLanguage'] = $patient->preferredlanguage;
 		$apptInfo['PatientData']['Gender'] = $patient->gender;
@@ -149,13 +160,36 @@ class AppointmentController extends Controller {
 
 //        $apptInfo['PatientData']['OtherInsurance'] = '';
 		//        $apptInfo['PatientData']['SubscriberName'] = '';
-		$apptInfo['PatientData']['SubscriberDOB'] = '2010-10-10';
+		$birthdate = new DateTime($patient->birthdate);
+		$apptInfo['PatientData']['SubscriberDOB'] = $birthdate->format('Y-m-d');
 //        $apptInfo['PatientData']['SubscriberID'] = '';
 		//        $apptInfo['PatientData']['GroupNum'] = '';
 		//        $apptInfo['PatientData']['RelationshipToPatient'] = '';
 		//        $apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
 		$apptInfo['PatientData']['ReferredBy'] = '';
 		$apptInfo['PatientData']['IsPatKnown'] = '1';
+
+		$appointment = new Appointment;
+		$appointment->provider_id = $providerID;
+		$appointment->practice_id = $practiceID;
+		$appointment->location_id = $locationID;
+		$appointment->patient_id = $patientID;
+		$appointment->network_id = $networkID;
+		$appointment->appointmenttype_key = $appointmentType;
+		$date = new DateTime($appointmentTime);
+		$appointment->start_datetime = $date->format('Y-m-d H:m:s');
+		$appointment->save();
+
+		$careconsole = CareConsole::where('patient_id', $patientID)
+			->orderBy('created_at', 'desc')
+			->first();
+
+		if ($careconsole != NULL) {
+			$careconsole->appointment_id = $appointment->id;
+			$careconsole->stage_id = 2;
+			$careconsole->update();
+			echo $careconsole;
+		}
 
 		$apptResult = $this->fourPatientCare->requestApptInsert($apptInfo);
 
