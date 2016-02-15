@@ -138,7 +138,7 @@ function importPatients() {
     var myform = document.getElementById("import_form");
     var fd = new FormData(myform);
     $.ajax({
-        url: "import/xlsx",
+        url: "/import/xlsx",
         data: fd,
         cache: false,
         processData: false,
