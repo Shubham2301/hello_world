@@ -1,15 +1,14 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     if ($('#from_admin').val())
         loadAllPatients();
-
+    else 
         loadImportForm();
-
 
     $('#dob').datetimepicker({
         format: 'YYYY/MM/DD'
     });
-    $('#search_patient_button').on('click', function() {
+    $('#search_patient_button').on('click', function () {
 
         if ($('#from_admin').val()) {
             var val = $('#search_patient_input').val();
@@ -33,29 +32,29 @@ $(document).ready(function() {
             }
         }
     });
-    $('#add_patient_form').on('click', function() {
+    $('#add_patient_form').on('click', function () {
         $('.add_patient_form').addClass('active');
         $('.patient_admin_header').removeClass('active');
     });
-    $('#back_to_select_patient_btn').on('click', function() {
+    $('#back_to_select_patient_btn').on('click', function () {
         $('#back_to_select_patient').submit();
     });
-    $('#add_patient_btn').on('click', function() {
+    $('#add_patient_btn').on('click', function () {
         $('#form_patient_id').prop('disabled', true);
         $('#form_select_provider').attr('action', "/patients/create");
         $('#form_select_provider').submit();
     });
-    $('.patient_list').on('click', '.patient_list_item', function() {
+    $('.patient_list').on('click', '.patient_list_item', function () {
         var id = $(this).attr('data-id');
         var formData = {
             'id': id
         };
         getPatientInfo(formData);
     });
-    $('#save_patient_info').on('click', function() {
+    $('#save_patient_info').on('click', function () {
 
     });
-    $('#change_patient_button').on('click', function() {
+    $('#change_patient_button').on('click', function () {
         $('.search_filter').addClass('active');
         $('.patient_list').addClass('active');
         $('.patient_info').removeClass('active');
@@ -64,11 +63,11 @@ $(document).ready(function() {
         $('#select_provider_button').attr('data-id', 0);
         $('#import_patients').show();
     });
-    $('#select_provider_button').on('click', function() {
+    $('#select_provider_button').on('click', function () {
         var id = $(this).attr('data-id');
         selectProvider(id);
     });
-    $('#add_search_option').on('click', function() {
+    $('#add_search_option').on('click', function () {
         var type = $('#search_patient_input_type').val();
         var value = $('#search_patient_input').val();
         if (value != '') {
@@ -79,12 +78,12 @@ $(document).ready(function() {
 
         }
     });
-    $('.search_filter').on('click', '.remove_option', function() {
+    $('.search_filter').on('click', '.remove_option', function () {
         $(this).parent().remove();
         $("#search_patient_button").trigger("click");
 
     });
-    $('.lastseenby_show').on('click', function() {
+    $('.lastseenby_show').on('click', function () {
         $('.lastseen_content').toggleClass('active');
         if ($('.lastseen_content').hasClass('active')) {
             $('.lastseenby_icon').removeClass('glyphicon-chevron-right');
@@ -94,7 +93,7 @@ $(document).ready(function() {
             $('.lastseenby_icon').addClass('glyphicon-chevron-right');
         }
     });
-    $('.referredby_show').on('click', function() {
+    $('.referredby_show').on('click', function () {
         $('.referredby_content').toggleClass('active');
         if ($('.referredby_content').hasClass('active')) {
             $('.referredby_icon').removeClass('glyphicon-chevron-right');
@@ -104,7 +103,7 @@ $(document).ready(function() {
             $('.referredby_icon').addClass('glyphicon-chevron-right');
         }
     });
-    $('.insurance_provider_show').on('click', function() {
+    $('.insurance_provider_show').on('click', function () {
         $('.insurance_provider_content').toggleClass('active');
         if ($('.insurance_provider_content').hasClass('active')) {
             $('.insurance_provider_icon').removeClass('glyphicon-chevron-right');
@@ -114,59 +113,59 @@ $(document).ready(function() {
             $('.insurance_provider_icon').addClass('glyphicon-chevron-right');
         }
     });
-    $('#refresh_patients').on('click', function() {
+    $('#refresh_patients').on('click', function () {
         $('#search_patient_input').val('');
         loadAllPatients();
     });
-    $('.p_left').on('click', function() {
+    $('.p_left').on('click', function () {
         var searchdata = [];
         if (currentpage > 1)
             getPatients(searchdata, currentpage - 1);
     });
-    $('.p_right').on('click', function() {
+    $('.p_right').on('click', function () {
         var searchdata = [];
         if (currentpage < lastpage)
             getPatients(searchdata, currentpage + 1);
     });
-    $('.patient_list').on('change', '#checked_all_patients', function() {
+    $('.patient_list').on('change', '#checked_all_patients', function () {
         if ($(this).is(":checked")) {
-            $('.patient_search_content').each(function() {
+            $('.patient_search_content').each(function () {
                 $(this).find('input').prop('checked', true);
             });
         } else
-            $('.patient_search_content').each(function() {
+            $('.patient_search_content').each(function () {
                 $(this).find('input').prop('checked', false);
             });
     });
-    $('.patient_list').on('click', '.search_name', function() {
+    $('.patient_list').on('click', '.search_name', function () {
         var patient_id = $(this).parents('.search_item').attr('data-id');
         var formData = {
             'id': patient_id
         };
         getPatientInfo(formData);
     });
-    $('#open_patient_form').on('click', function() {
+    $('#open_patient_form').on('click', function () {
         window.location = '/administration/patients/create';
     });
-    $('#back_to_admin_patient_btn').on('click', function() {
+    $('#back_to_admin_patient_btn').on('click', function () {
         window.location = '/administration/patients';
     });
-    $('.patient_list').on('click', '.editPatient_from_row', function() {
+    $('.patient_list').on('click', '.editPatient_from_row', function () {
         var val = $(this).parents('.search_item').attr('data-id');
 
         window.location = '/administration/patients/edit/' + val + '';
     });
-    $('#dontsave_new_patient').on('click', function() {
+    $('#dontsave_new_patient').on('click', function () {
         if ($('#from_admin').val())
             $('#back_to_admin_patient_btn').trigger('click');
-        else{
+        else {
             $('#back_to_select_patient_btn').trigger('click');
         }
 
     });
-    $('.patient_list').on('click', '.removepatient_from_row', function() {
+    $('.patient_list').on('click', '.removepatient_from_row', function () {
         var val = $(this).parents('.search_item').attr('data-id');
-        showModalConfirmDialog('Are you sure?', function(outcome) {
+        showModalConfirmDialog('Are you sure?', function (outcome) {
             if (outcome) {
                 removePatient(val);
                 $(this).parents('.search_item').remove();
@@ -175,7 +174,7 @@ $(document).ready(function() {
     });
 
 
-    $(document).keypress(function(e) {
+    $(document).keypress(function (e) {
         if (e.which == 13) {
             $("#search_patient_button").trigger("click");
         }
@@ -243,11 +242,11 @@ function getPatientInfo(formData) {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var info = $.parseJSON(e);
             showPatientInfo(info);
         },
-        error: function() {
+        error: function () {
             $('p.alert_message').text('Error getting patient information');
             $('#alert').modal('show');
         },
@@ -276,7 +275,7 @@ function getPatients(formData, page) {
         }),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var patients = $.parseJSON(e);
             if ($('#from_admin').val()) {
                 var content = '';
@@ -293,28 +292,29 @@ function getPatients(formData, page) {
                 $('.page_info').text(result + ' of ' + patients[0]['total']);
                 $('.patient_search_content').html(content);
                 if ($('#checked_all_patients').is(":checked")) {
-                    $('.patient_search_content').each(function() {
+                    $('.patient_search_content').each(function () {
                         $(this).find('input').prop('checked', true);
                     });
                 } else
-                    $('.patient_search_content').each(function() {
+                    $('.patient_search_content').each(function () {
                         $(this).find('input').prop('checked', false);
                     });
 
             } else {
                 var content = '<p><bold>' + patients.length + '<bold> results found</p><br>';
                 if (patients.length > 0) {
-                    patients.forEach(function(patient) {
-                        content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin"><div class="col-xs-6">' + patient.fname + ' ' + patient.lname + '<br> ' + patient.birthdate + ' </div><div class="col-xs-6">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
+                    patients.forEach(function (patient) {
+                        content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin arial"><div class="col-xs-12 arial_bold patient_list_name">' + patient.fname + ' ' + patient.lname + '</div><div class="col-xs-6 patient_list_data"> ' + patient.birthdate + '<br>' + patient.phone + '</div><div class="col-xs-6 patient_list_data">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
                     });
                 }
                 $('.patient_list').html(content);
+
             }
 
             $('.patient_list').addClass('active');
 
         },
-        error: function() {
+        error: function () {
             $('p.alert_message').text('Error searching');
             $('#alert').modal('show');
         },
@@ -326,7 +326,7 @@ function getPatients(formData, page) {
 
 function getsearchtype() {
     var searchdata = [];
-    $('.search_filter_item').each(function() {
+    $('.search_filter_item').each(function () {
         var stype = $(this).children('.item_type').text();
         var name = $(this).children('.item_value').text();
         searchdata.push({
@@ -358,7 +358,7 @@ function updatePatientData() {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: function(dataofconfirm) {
+        success: function (dataofconfirm) {
             if (dataofconfirm != 'false') {
                 $('.update_header').removeClass('active');
                 $('.compare_form').removeClass('active');
@@ -384,23 +384,24 @@ function removePatient(id) {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-        var searchdata = [];
-        getPatients(searchdata, currentpage);
+            var searchdata = [];
+            getPatients(searchdata, currentpage);
 
-    },
-           error: function error() {
-        $('p.alert_message').text('Error searching');
-        $('#alert').modal('show');
-    },
+        },
+        error: function error() {
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
+        },
         cache: false,
-            processData: false
-});
+        processData: false
+    });
 }
+
 function showModalConfirmDialog(msg, handler) {
-    $('.patient_list').on('click', '.confirm_yes', function(evt) {
+    $('.patient_list').on('click', '.confirm_yes', function (evt) {
         handler(true);
     });
-    $('.patient_list').on('click', '.confirm_no', function(evt) {
+    $('.patient_list').on('click', '.confirm_no', function (evt) {
         handler(false);
     });
 

@@ -31,34 +31,34 @@
     {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patient_id')) !!}
     {!! Form::close() !!}
     <div class="appointment_section active" id="confirm-appointment">
-        <button type="button" class="btn back-btn" id="back">Back</button><h3 class="center-align">Schedule an appointment</h3>
+        <button type="button" class="btn back-btn" id="back">Back</button><h3 class="center-align arial_bold">Schedule an appointment</h3>
         <div class="row appointment_info center-align">
             <div class="col-xs-4">
                 <div class="appointment_info_box patient">
-                    <h4><strong>Patient</strong></h4>
+                    <span class="arial_bold">Patient</span>
                     <div><img src="{{URL::asset('images/patient-img.png')}}" style="width:40%;"></div>
                     <h4><strong>{{ $data['patient_name'] }}</strong></h4>
                 </div>
             </div>
             <div class="col-xs-4">
                 <div class="appointment_info_box schedule">
-                    <h4><strong>Details</strong></h4>
+                    <span class="arial_bold">Details</span>
                     <h4>{{ $data['appointment_time'] }}<br>{{ $data['appointment_date'] }}<br>{{ $data['appointment_type_name'] }}</h4><br>
                     <h4 class="schedule_place" style="padding-top:6px;"><strong>{{ $data['location'] }}</strong></h4>
                 </div>
             </div>
             <div class="col-xs-4">
                 <div class="appointment_info_box provider">
-                    <h4><strong>Provider</strong></h4>
+                    <span class="arial_bold">Provider</span>
                     <div><img src="{{URL::asset('images/provider-img.png')}}" style="width:40%;"></div>
                     <h4><strong>{{ $data['provider_name'] }}</strong><br>{{ $data['practice_name'] }}</h4>
                 </div>
             </div>
         </div>
-        <div class="appointment_message">
+        <div class="appointment_message arial">
             <p><span><input type="checkbox"></span> Send patient C-CDA file to provider</p>
         </div>
-        <div class="appointment_confirm center-align">
+        <div class="appointment_confirm center-align arial">
             <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment" data-toggle="tooltip" title="You will loose all progress" data-placement="bottom">Abort</button></p>
         </div>
         <div class="appointment_confirmed center-align">
