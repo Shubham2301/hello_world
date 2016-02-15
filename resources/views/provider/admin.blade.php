@@ -21,7 +21,7 @@
         </strong> {{ Session::get('success') }}
 </div>
 @endif
-
+<input type="hidden" id="from_admin" value="{{$data['admin']}}" >
 <div class="content-section active">
 
 </div>
