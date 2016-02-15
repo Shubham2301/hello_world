@@ -94,7 +94,9 @@ class PracticeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit($id) {
-        return view('practice.create')->with('id', $id);
+        $data = array();
+        $data['practice_active'] = true;
+        return view('practice.create')->with('id', $id)->with('data', $data);
 	}
 
 	/**
