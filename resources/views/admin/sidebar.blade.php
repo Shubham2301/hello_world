@@ -70,7 +70,7 @@
     -->
     <ul class="sidebar_item_list">
         <li class="admin_sidebar_menu_item">
-            <a class="sidebar_button_subsection subsection_admin_add" href="/administration/patients">
+            <a class="sidebar_button_subsection subsection_admin_add" href="/administration/patients/create">
                 <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-patient-icon.png')}}" style="width:100%"></span>
                 <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-patient-icon-hover.png')}}" style="width:100%"></span>
                 <span class="add_text">add+</span>
@@ -90,7 +90,7 @@
             </a>
         </li>
         <li class="admin_sidebar_menu_item">
-            <a class="sidebar_button_subsection subsection_admin_add" href="/practices/create">
+            <a class="sidebar_button_subsection subsection_admin_add" href="/administration/practices/create">
                 <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-practice-icon.png')}}" style="width:100%"></span>
                 <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-practice-icon-hover.png')}}" style="width:100%"></span>
                 <span class="add_text">add+</span>
@@ -110,12 +110,12 @@
             </a>
         </li>
         <li class="admin_sidebar_menu_item">
-            <a class="sidebar_button_subsection subsection_admin_add" href="#">
+            <a class="sidebar_button_subsection subsection_admin_add" href="/administration/users/create">
                 <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-user-icon.png')}}" style="width:100%"></span>
                 <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-user-icon-hover.png')}}" style="width:100%"></span>
                 <span class="add_text">add+</span>
             </a>
-            <a class="sidebar_button_subsection subsection_admin_title" href="#">
+            <a class="sidebar_button_subsection subsection_admin_title" href="/administration/users">
                 <span>Users</span>
             </a>
         </li>
