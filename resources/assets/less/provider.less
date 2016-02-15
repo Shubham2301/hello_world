@@ -127,7 +127,11 @@ Section : Imports
 }
 .provider_near_patient,
 .previous_provider_patient {
-    cursor: pointer;
+    font-size: 1.1em;
+    color: #333;
+    &>p {
+        cursor: pointer;
+    }
 }
 .provider_near_patient_list,
 .previous_provider_patient_list {
@@ -330,12 +334,33 @@ ul.time_selector>li {
 li {
     cursor: pointer;
 }
-#appointment_date{
+#appointment_date {
     color: #4d4d4d;
 }
-#appointment_time{
+#appointment_time {
     color: #808080;
 }
-p.patient_dropdown_data{
+p.patient_dropdown_data {
     margin: 0;
+}
+.patient_detail_info {
+    font-size: .9em;
+}
+#patient_name {
+    text-decoration: underline;
+}
+.provider_list_title {
+    font-size: 1.1em;
+}
+.provider_list_detail {
+    font-size: .9em;
+}
+.provider_detail_text {
+    font-size: .9em;
+}
+
+
+
+#practice_name {
+    text-decoration: underline;
 }

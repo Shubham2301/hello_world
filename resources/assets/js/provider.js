@@ -313,7 +313,7 @@ function fillPatientInfo(data) {
 //function that displays the providers near patients
 function showPreviousProvider() {
     var provider_list = new Array("1", "John Doe", "Becker Eye", "Gurgaon", "Eyes");
-    var content = '<div class="col-xs-12 list_seperator" data-id="' + provider_list[0] + '"><div class="row"><div class="col-xs-12">' + provider_list[1] + '<br> ' + provider_list[2] + ' </div><div class="col-xs-6"> </div><div class="col-xs-6"> </div></div></div>';
+    var content = '<div class="col-xs-12 list_seperator" data-id="' + provider_list[0] + '"><div class="row"><div class="col-xs-12 arial_bold">' + provider_list[2] + '</div><div class="col-xs-6 arial">' + provider_list[1] + '<br>' + provider_list[4] + '</div><div class="col-xs-6 arial">' + provider_list[3] + '</div></div></div>';
     $('.provider_near_patient_list').html(content);
     $('.provider_near').removeClass('glyphicon-chevron-right');
     $('.provider_near').addClass('glyphicon-chevron-down');
@@ -322,7 +322,7 @@ function showPreviousProvider() {
 //function that displays the previous providers of the patients
 function showProviderNear() {
     var provider_list = new Array("1", "John Doe", "Becker Eye", "Gurgaon", "Eyes");
-    var content = '<div class="col-xs-12 list_seperator" data-id="' + provider_list[0] + '"><div class="row"><div class="col-xs-12">' + provider_list[1] + '<br> ' + provider_list[2] + ' </div><div class="col-xs-6"></div><div class="col-xs-6"> </div></div></div>';
+     var content = '<div class="col-xs-12 list_seperator" data-id="' + provider_list[0] + '"><div class="row"><div class="col-xs-12 arial_bold">' + provider_list[2] + '</div><div class="col-xs-6 arial">' + provider_list[1] + '<br>' + provider_list[4] + '</div><div class="col-xs-6 arial">' + provider_list[3] + '</div></div></div>';
     $('.previous_provider_patient_list').html(content);
     $('.provider_previous').removeClass('glyphicon-chevron-right');
     $('.provider_previous').addClass('glyphicon-chevron-down');
@@ -338,7 +338,7 @@ function showProviderInfo(data) {
     $('.schedule_button').attr('data-practice-id', data.practice_id);
     var locations = data.locations;
     var content = '';
-    content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold">Select Location <b class="caret"></b></span></a><ul class="dropdown-menu location_dropdown" id="custom_dropdown">';
+    content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Location <b class="caret"></b></span></a><ul class="dropdown-menu location_dropdown" id="custom_dropdown">';
     if (locations.length > 0) {
         locations.forEach(function (location) {
             content += '<li data-address_1="' + location.addressline1 + '" data-address_2="' + location.addressline2 + '" data-contact="' + location.phone + '">' + location.locationname + '</li>';
@@ -391,7 +391,7 @@ function getProviders(formData) {
             var content = '<p><bold>' + practices.length + '<bold> results found</p><br>';
             if (practices.length > 0) {
                 practices.forEach(function (practice) {
-                    content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.provider_id + '"  practice-id="' + practice.practice_id + '" ><div class="row content-row-margin"><div class="col-xs-6">' + practice.provider_name + ' <br> ' + practice.practice_name + ' </div><div class="col-xs-6">' + practice.practice_speciality + '' + '<br> ' + '' + ' </div></div></div>';
+                    content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.provider_id + '"  practice-id="' + practice.practice_id + '" ><div class="row content-row-margin"><div class="col-xs-12 arial_bold provider_list_title">' + practice.provider_name + ' </div><div class="col-xs-6 provider_list_detail"> ' + practice.practice_name + ' </div><div class="col-xs-6 provider_list_detail">' + practice.practice_speciality + '' + '<br> ' + '' + ' </div></div></div>';
                 });
             }
             $('.practice_list').html(content);
@@ -522,7 +522,7 @@ function getAppointmentTypes() {
         success: function (e) {
             e = $.parseJSON(e);
             var apptTypes = e.GetApptTypesResult.ApptType;
-            content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold">Select Appointment Type <b class="caret"></b></span></a><ul class="dropdown-menu appointment_dropdown" id="custom_dropdown">';
+            content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Appointment Type <b class="caret"></b></span></a><ul class="dropdown-menu appointment_dropdown" id="custom_dropdown">';
             apptTypes.forEach(function (elem) {
                 content += '<li  value="' + elem.ApptTypeKey + '" data-name=" ' + elem.ApptTypeName + ' ">' + elem.ApptTypeName + '</li>';
                 //                $('#appointment-type').append('<option value="' + elem.ApptTypeKey + '">' + elem.ApptTypeName + '</option>');

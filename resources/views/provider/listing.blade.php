@@ -10,15 +10,14 @@
             <p id="openModel" type="button" class="button_type_1" data-toggle="modal" data-target="#provider_preferences">Provider Preferences</p>
         </div>
         <div class="col-xs-8">
-            <p class="bold" id="practice_name">Opthalmic Consultants of Long Island</p>
-            <hr>
+            <p class="bold arial_bold" id="practice_name">Opthalmic Consultants of Long Island</p>
             <div class="row">
                 <div class="col-xs-6">
-                    <p><span class="bold">Doctor Name</span>
-                        <br><span id="provider_name"></span></p>
-                    <p><span class="bold">Speciality</span>
-                        <br><span id="speciality"></span></p>
-                    <p><span class="bold">Insurance</span>
+                    <p><span class="bold arial_bold">Doctor Name</span>
+                        <br><span  class="provider_detail_text arial" id="provider_name"></span></p>
+                    <p><span class="bold arial_bold">Speciality</span>
+                        <br><span class="provider_detail_text arial" id="speciality"></span></p>
+                    <p><span class="bold arial_bold">Insurance</span>
                         <br>
                         <span class="glyphicon glyphicon-ok-circle"></span>
                     </p>
@@ -26,16 +25,16 @@
                 <div class="col-xs-6 ">
                     <p>
                         <span id="location" class="locations"></span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax appointment_type">
-                        <span id="location_address"></span>
+                        <span class="provider_detail_text arial" id="location_address"></span>
                         <br>
-                        <span id="location_contact"></span>
+                        <span class="provider_detail_text arial" id="location_contact"></span>
                     </p>
                     <p>
                         <span id="appointment_type_list" class="appointment_type_list"></span>
-                        <span id="appointment_type"></span>
+                        <span class="provider_detail_text arial" id="appointment_type"></span>
                     </p>
                     <p class="get_availability hide">
-                        <span class="bold">Appointment&nbsp;</span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax appointment_schedule">
+                        <span class="bold arial_bold">Appointment&nbsp;</span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax appointment_schedule">
                         <br>
                     </p>
                     <span style="display:flex;">
