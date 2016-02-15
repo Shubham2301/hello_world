@@ -7,8 +7,12 @@
         <span class="glyphicon glyphicon-search glyp" id="search_network_button" aria-hidden="true"></span>
 
     </div>
-    <div class="col-xs-8">
-        <button type="button" class="btn import-btn">Import</button>
+    <div class="col-xs-1">
+        <span class="glyphicon glyphicon-remove" id="refresh_networks" area-hidden="true"></span>
+
+    </div>
+    <div class="col-xs-7">
+        {{--  <button type="button" class="btn import-btn">Import</button> --}}
 
     </div>
 
