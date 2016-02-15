@@ -188,7 +188,7 @@ class CareConsoleController extends Controller {
 		$i = 0;
 		$results = [];
 		foreach ($patients as $patient) {
-			$console = CareConsole::where('patient_id', $patient->id)->first();
+			$console = Careconsole::where('patient_id', $patient->id)->first();
 			$results[$i]['id'] = $patient->id;
 			$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
 			$i++;

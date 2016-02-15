@@ -7,7 +7,7 @@ use Event;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
-use myocuhub\Models\CareConsole;
+use myocuhub\Models\Careconsole;
 use myocuhub\Models\ImportHistory;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
@@ -116,7 +116,7 @@ class BulkImportController extends Controller {
 								$patients['gender'] = $data['gender'];
 								//$patients['insurancecarrier'] = $data['insurance_type'];
 								$patient = Patient::firstOrCreate($patients);
-								$careconsole = new CareConsole;
+								$careconsole = new Careconsole;
 								$careconsole->import_id = $importHistory->id;
 								$careconsole->patient_id = $patient->id;
 								$careconsole->stage_id = 1;
