@@ -5,6 +5,7 @@
 .appointment_info {
     display: flex;
     margin: 6em 10em 2em 10em;
+    font-size: 1.2em;
     &>.col-xs-4 {
         padding: 0px;
         order: 1;
@@ -20,7 +21,8 @@
     flex: 0 1 auto;
     flex-grow: 1;
     &.patient,
-    &.provider {
+    &.provider,
+    &.schedule {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
@@ -31,6 +33,7 @@
     margin: 3em 10em 1em 10em;
     &>p {
         text-align: left;
+        font-size: 1.1em;
     }
 }
 .appointment_confirm {
@@ -77,4 +80,12 @@ h4.schedule_place {
     &:active {
         color: #f2f2f2;
     }
+}
+
+#confirm_appointment {
+    font-size: 1.1em;
+}
+
+#cancel_appointment {
+    font-size: 1.1em;
 }
