@@ -7,7 +7,7 @@ use myocuhub\Models\ActionResult;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
-use myocuhub\Models\KPI;
+use myocuhub\Models\Kpi;
 
 class ActionService {
 
@@ -52,7 +52,7 @@ class ActionService {
 			case 'kept-appointment':
 				$console = CareConsole::find($consoleID);
 				$appointment = Appointment::find($console->appointment_id);
-				$kpi = KPI::where('name', 'pending-information')->first();
+				$kpi = Kpi::where('name', 'pending-information')->first();
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
 				$console->stage_id = 4;
@@ -61,7 +61,7 @@ class ActionService {
 			case 'no-show':
 				$console = CareConsole::find($consoleID);
 				$appointment = Appointment::find($console->appointment_id);
-				$kpi = KPI::where('name', 'no-show')->first();
+				$kpi = Kpi::where('name', 'no-show')->first();
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
 				$console->stage_id = 3;
@@ -70,7 +70,7 @@ class ActionService {
 			case 'cancelled':
 				$console = CareConsole::find($consoleID);
 				$appointment = Appointment::find($console->appointment_id);
-				$kpi = KPI::where('name', 'cancelled')->first();
+				$kpi = Kpi::where('name', 'cancelled')->first();
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
 				$console->stage_id = 3;
@@ -81,7 +81,7 @@ class ActionService {
 				$console->stage_id = 5;
 				$console->save();
 				$appointment = Appointment::find($console->appointment_id);
-				$kpi = KPI::where('name', 'ready-to-be-completed')->first();
+				$kpi = Kpi::where('name', 'ready-to-be-completed')->first();
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
 				break;
