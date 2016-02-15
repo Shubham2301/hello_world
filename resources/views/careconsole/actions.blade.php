@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <div class="content-section active" id="patients_section">
-                    <div class="import_form active">
+                    <div class="active">
                         <div class="row input_row" id="action_results">
                             <input type="hidden" value="" name="patient_id" id="action_patient_id">
                             <input type="hidden" value="" name="action_id" id="action_id">
