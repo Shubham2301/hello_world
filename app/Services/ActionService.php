@@ -52,7 +52,7 @@ class ActionService {
 			case 'kept-appointment':
 				$console = CareConsole::find($consoleID);
 				$appointment = Appointment::find($console->appointment_id);
-				$kpi = Kpi::where('name', 'pending-information')->first();
+				$kpi = Kpi::where('name', 'waiting-for-report')->first();
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
 				$console->stage_id = 4;
