@@ -7,7 +7,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Appointment;
-use myocuhub\Models\CareConsole;
+use myocuhub\Models\Careconsole;
 use myocuhub\Models\Practice;
 use myocuhub\Patient;
 use myocuhub\Services\FourPatientCare\FourPatientCare;
