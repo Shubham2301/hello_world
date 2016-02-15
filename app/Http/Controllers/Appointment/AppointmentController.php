@@ -180,7 +180,7 @@ class AppointmentController extends Controller {
 		$appointment->start_datetime = $date->format('Y-m-d H:m:s');
 		$appointment->save();
 
-		$careconsole = CareConsole::where('patient_id', $patientID)
+		$careconsole = Careconsole::where('patient_id', $patientID)
 			->orderBy('created_at', 'desc')
 			->first();
 
