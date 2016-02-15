@@ -24,7 +24,7 @@ class ProviderController extends Controller {
 
 	public function index(Request $request) {
 		$data = array();
-
+        $data['admin'] = false;
 		if ($request->has('referraltype_id')) {
 			$data['referraltype_id'] = $request->input('referraltype_id');
 		}
@@ -176,7 +176,9 @@ class ProviderController extends Controller {
 		return json_encode($slots);
 	}
 	public function administration(Request $request) {
-		return view('provider.admin');
+        $data = array();
+        $data['admin'] = true;
+		return view('provider.admin')->with('data', $data);
 	}
 
 	protected function getDatesOfWeek($week_advance) {

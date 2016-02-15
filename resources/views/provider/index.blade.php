@@ -22,7 +22,7 @@
         {{ Session::get('success') }}
     </div>
     @endif
-
+<input type="hidden" id="from_admin" value="{{$data['admin']}}" >
     <div class="content-section content-section-scheduling active" id="practice_section">
        {!! Form::open(array('url' => '/appointments', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
 
