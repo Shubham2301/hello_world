@@ -23,11 +23,11 @@ class ActionService {
 	 */
 	public function userAction($actionID, $actionResultID, $date, $notes, $consoleID) {
 		$actionName = Action::find($actionID)->name;
-		if ($actionResultID != '-1') {
-			$actionResultName = ActionResult::find($actionResultID)->name;
-		} else {
-			$actionResultName = '';
+		if ($actionResultID == '-1') {
+			$actionResultID = 14;
+			$actionResultName = 'patient-notes';
 		}
+		$actionResultName = ActionResult::find($actionResultID)->name;
 
 		$contact = new ContactHistory;
 		$contact->action_id = $actionID;
