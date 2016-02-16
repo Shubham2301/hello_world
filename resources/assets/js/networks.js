@@ -19,7 +19,7 @@ $(document).ready(function() {
         showModalConfirmDialog('Are you sure?', function(outcome) {
             if (outcome) {
                 removeNetwork(val);
-              $(this).parents('.search_item').remove();
+                $(this).parents('.search_item').remove();
             }
         });
     });
@@ -85,10 +85,11 @@ function getNetworks(formData, page) {
             var networks = $.parseJSON(e);
             var content = '';
             $('#search_results').text('');
-            if (networks.length > 0) {
+            if (networks.length > 0 && networks[0]['total'] > 0) {
                 networks.forEach(function(network) {
                     content += '<div class="row search_item" data-id="' + network.id + '"><div class="col-xs-3 search_name"><input type="checkbox">&nbsp;&nbsp;<p>' + network.name + '</p></div><div class="col-xs-3">' + network.email + '<br>' + network.phone + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + network.addressline1 + '<br>' + network.addressline2 + '</p></div><div class="col-xs-2 search_edit"><p><div class="dropdown dropdown_action"><span  area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown" src="' + scheduleimg + '" alt=""></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editnetwork_from_row">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removenetwork_from_row"><img src="' + deleteimg + '" alt="" class="removenetwork_img"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                 });
+
                 currentpage = networks[0]['currentPage'];
                 lastpage = networks[0]['lastpage'];
                 var result = currentpage * 5;
@@ -96,11 +97,14 @@ function getNetworks(formData, page) {
                     result = networks[0]['total'];
                 $('.page_info').text(result + ' of ' + networks[0]['total']);
                 $('.network_search_content').html(content);
+                $('.network_listing').addClass('active');
                 if ($('#checked_all_networks').is(":checked")) {
                     $('.network_search_content').each(function() {
                         $(this).find('input').prop('checked', true);
                     });
                 }
+            }else{
+                $('.network_listing').removeClass('active');
             }
 
         },
@@ -139,7 +143,7 @@ function removeNetwork(id) {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-        getNetworks(null, currentpage);
+            getNetworks(null, currentpage);
 
         },
         error: function error() {
