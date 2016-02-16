@@ -250,6 +250,7 @@ class PatientController extends Controller {
         $data = array();
         $practicedata = array();
         $data['admin'] = true;
+        $data['patient_active'] = true;
         $practicedata = Practice::all()->lists('name', 'id')->toArray();
         return view('patient.admin')->with('data', $data)->with('practice_data', $practicedata);
     }

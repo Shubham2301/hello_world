@@ -29,7 +29,7 @@
     </div>
 </div>
 @else
-<div class="row content-row-margin ">
+<div class="row content-row-margin patient_admin_search active">
     <div class="col-xs-2">
         <button id="open_patient_form" type="button" class="btn add-btn" style="float:right;">Add New</button>
     </div>
@@ -44,4 +44,16 @@
         <button type="button" data-toggle="modal" data-target="#importModal"  class="btn import-btn">Import</button>
     </div>
 </div>
+
+<div class="row content-row-margin patient_admin_back">
+    <div class="col-xs-2">
+        <button type="button" class="btn add-btn back patient_back" >Back</button>
+    </div>
+    <div class="col-xs-10">
+
+    </div>
+</div>
+
+
+
 @endif

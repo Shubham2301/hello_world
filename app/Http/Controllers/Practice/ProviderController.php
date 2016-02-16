@@ -178,6 +178,7 @@ class ProviderController extends Controller {
 	public function administration(Request $request) {
         $data = array();
         $data['admin'] = true;
+        $data['provider_active'] = true;
 		return view('provider.admin')->with('data', $data);
 	}
 

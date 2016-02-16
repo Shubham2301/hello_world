@@ -17,7 +17,9 @@ class NetworkController extends Controller {
 	public function index() {
         //$roles = Role::all();
 		//return view('admin.networks.index')->with('roles', $roles);
-		return view('admin.networks.index');
+        $data = array();
+        $data['network_active'] = true;
+		return view('admin.networks.index')->with('data', $data);
 	}
 
 	/**
