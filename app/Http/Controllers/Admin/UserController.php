@@ -19,7 +19,9 @@ class UserController extends Controller {
 	 */
 	public function index() {
 		$users = User::all();
-		return view('admin.users.index')->with('users', $users);
+        $data = array();
+        $data['user_active'] = true;
+		return view('admin.users.index')->with('users', $users)->with('data', $data);
 	}
 
 	/**
