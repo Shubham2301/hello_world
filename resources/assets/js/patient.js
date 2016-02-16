@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     if ($('#from_admin').val())
         loadAllPatients();
-    else
+
         loadImportForm();
 
     $('#dob').datetimepicker({
