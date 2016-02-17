@@ -133,6 +133,7 @@ class CareConsoleController extends Controller {
 		$kpiName = $request->kpi;
 		$patients = [];
 		$patientsData = [];
+		$controls = [];
 		$actions = [];
 
 		if ($kpiName !== '' && isset($stageID)) {
@@ -141,9 +142,6 @@ class CareConsoleController extends Controller {
 			$patients = CareConsole::getStagePatients($networkID, $stageID);
 		}
 		$i = 0;
-		if (sizeof($patients) === 0) {
-			return json_encode([]);
-		}
 
 		foreach ($patients as $patient) {
 			$patientsData[$i]['console_id'] = $patient['id'];
@@ -166,9 +164,29 @@ class CareConsoleController extends Controller {
 			$actionsData[$i]['action_results'] = Action::find($action->id)->actionResults;
 			$i++;
 		}
+		$llKpiGroup = CareconsoleStage::find($stageID)->llKpiGroup;
+		$controls = [];
+		$i = 0;
+		foreach ($llKpiGroup as $group) {
+			$controls[$i]['group_name'] = $group->group_name;
+			$controls[$i]['group_display_name'] = $group->group_display_name;
+			$controls[$i]['type'] = $group->type;
+			$options = CareconsoleStage::llKpiByGroup($group->group_name, $stageID);
+			$j = 0;
+			foreach ($options as $option) {
+				$controls[$i]['options'][$j]['name'] = $option->name;
+				$controls[$i]['options'][$j]['display_name'] = $option->display_name;
+				$controls[$i]['options'][$j]['color_indicator'] = $option->color_indicator;
+				$controls[$i]['options'][$j]['description'] = $option->description;
+				$controls[$i]['options'][$j]['count'] = 0;
+				$j++;
+			}
+			$i++;
+		}
 
-		$drilldown['actions'] = $actionsData;
-		$drilldown['patients'] = $patientsData;
+		$drilldown['controls'] = (sizeof($controls) === 0) ? '' : view('careconsole.controls')->with('controls', $controls)->render();
+		$drilldown['actions'] = (sizeof($actionsData) === 0) ? [] : $actionsData;
+		$drilldown['patients'] = (sizeof($patientsData) === 0) ? [] : $patientsData;
 
 		return json_encode($drilldown);
 	}

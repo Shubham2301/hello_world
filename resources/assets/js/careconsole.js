@@ -23,7 +23,7 @@ $(document).ready(function () {
         }
     });
 
-    $('.C3_day_box').on('click', function () {
+    $(document).on('click','.C3_day_box', function () {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
         } else {
@@ -193,6 +193,7 @@ function getPatientData() {
             var actionList = '';
             var patients = data.patients;
             var actions = data.actions;
+            var controls = data.controls;
             if (actions.length > 0) {
                 actions.forEach(function (action) {
                     actionResults[action.id] = action.action_results;
@@ -204,6 +205,7 @@ function getPatientData() {
                     content += '<div class="row drilldown_item" data-id="0"><div class="col-xs-2"><p>' + patient.name + '</p></div><div class="col-xs-2"><p>' + patient.phone + '</p></div><div class="col-xs-2">' + patient.request_recieved + '</div><div class="col-xs-2">' + patient.appointment_date + '</div><div class="col-xs-2">' + patient.scheduled_to + '</div><div class="col-xs-2"><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu' + patient.patient_id + '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="float: right;background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span><ul class="dropdown-menu action_dropdownmenu" aria-labelledby="dropdownMenu' + patient.patient_id + '" data-patientid="' + patient.patient_id + '"" data-consoleid="' + patient.console_id + '" style="width: 200%;border-radius: 3px;margin-left: -100%;text-align: right;max-height: 15em;top:2em;overflow-y:scroll">' + actionList + '</ul></div></div></div>';
                 });
             }
+            $('.control_section').html(controls);
             $('.drilldown_content').html(content);
         },
         error: function error() {
