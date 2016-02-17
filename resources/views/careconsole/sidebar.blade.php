@@ -54,42 +54,5 @@
         </li>
         -->
     </ul>
-    <div class="control_section">
-        <div class="C3_day_row control_header"><p>Controls</p></div>
-        <div class="C3_day_row control_label">
-            <p>Days Pending</p>
-            <p class="no_of_patients">6 patients</p>
-        </div>
-        <div class="C3_day_row">
-            <div class="C3_day_box low">
-                <h4><4</h4>
-                <p>Low</p>
-            </div>
-            <div class="C3_day_box normal">
-                <h4>4-8</h4>
-                <p>Normal</p>
-            </div>
-            <div class="C3_day_box urgent">
-                <h4><4</h4>
-                <p>Urgent</p>
-            </div>
-        </div>
-        <div class="C3_day_row control_label">
-            <p>Show vs No Show</p>
-        </div>
-        <div class="C3_day_row">
-            <div class="C3_day_box show">
-                <div class="show_bar"></div>
-                <p>4</p>
-                <p>Show</p>
-            </div>
-            <div class="C3_day_box no_show">
-                <div class="no_show_bar"></div>
-                <p>6</p>
-                <p>No Show</p>
-            </div>
-            <div class="empty">
-            </div>
-        </div>
-    </div>
+    <div class="control_section"></div>
 </div>
