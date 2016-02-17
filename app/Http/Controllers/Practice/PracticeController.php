@@ -27,7 +27,9 @@ class PracticeController extends Controller {
 	 */
 	public function create() {
         $id = -1;
-        return view('practice.create')->with('id',$id);
+        $data = array();
+        $data['practice_active'] = true;
+        return view('practice.create')->with('id',$id)->with('data', $data);
 	}
 
 	/**
