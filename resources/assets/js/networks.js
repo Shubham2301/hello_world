@@ -6,6 +6,7 @@ $(document).ready(function() {
         var searchvalue = $('#search_network_input').val();
         $('.no_item_found > p:eq(1)').text(searchvalue);
         $('.no_item_found > p:eq(1)').css('padding-left', '4em');
+        $('.no_item_found').removeClass('active');
         var formData = {
             'value': searchvalue
         };
