@@ -75,7 +75,7 @@
                 <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-patient-icon-hover.png')}}" style="width:100%"></span>
                 <span class="add_text">add+</span>
             </a>
-            <a class="sidebar_button_subsection subsection_admin_title {{ array_key_exists('patient_active', $data) ? 'button_active' : '' }}" href="/administration/patients">
+            <a class="sidebar_button_subsection subsection_admin_title" href="/administration/patients" id="{{ array_key_exists('patient_active', $data) ? 'button_active' : '' }}">
                 <span>Patients</span>
             </a>
         </li>
@@ -85,7 +85,7 @@
                 <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-provider-icon-hover.png')}}" style="width:100%"></span>
                 <span class="add_text">add+</span>
             </a>
-            <a class="sidebar_button_subsection subsection_admin_title {{ array_key_exists('provider_active', $data) ? 'button_active' : '' }}" href="/administration/providers">
+            <a class="sidebar_button_subsection subsection_admin_title" href="/administration/providers" id="{{ array_key_exists('provider_active', $data) ? 'button_active' : '' }}">
                 <span>Providers</span>
             </a>
         </li>
@@ -95,7 +95,7 @@
                 <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-practice-icon-hover.png')}}" style="width:100%"></span>
                 <span class="add_text">add+</span>
             </a>
-            <a class="sidebar_button_subsection subsection_admin_title {{ array_key_exists('practice_active', $data) ? 'button_active' : '' }}" href="/administration/practices">
+            <a class="sidebar_button_subsection subsection_admin_title" href="/administration/practices" id="{{ array_key_exists('practice_active', $data) ? 'button_active' : '' }}">
                 <span>Practices</span>
             </a>
         </li>
@@ -105,7 +105,7 @@
                 <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-network-icon-hover.png')}}" style="width:100%"></span>
                 <span class="add_text">add+</span>
             </a>
-            <a class="sidebar_button_subsection subsection_admin_title {{ array_key_exists('network_active', $data) ? 'button_active' : '' }}" href="/administration/networks">
+            <a class="sidebar_button_subsection subsection_admin_title" href="/administration/networks" id="{{ array_key_exists('network_active', $data) ? 'button_active' : '' }}">
                 <span>Networks</span>
             </a>
         </li>

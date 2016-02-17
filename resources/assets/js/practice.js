@@ -14,6 +14,9 @@ $(document).ready(function() {
     }
     $('#search_practice_button').on('click', function() {
         var searchvalue = $('#search_practice_input').val();
+        $('.no_item_found > p:eq(1)').text(searchvalue);
+        $('.no_item_found > p:eq(1)').css('padding-left', '4em');
+        $('.no_item_found').removeClass('active');
         var formData = {
             'value': searchvalue
         };
@@ -265,6 +268,7 @@ function loadAllPractices() {
     };
     getPractices(formData);
     $('#refresh_practices').removeClass('active');
+    $('.no_item_found').removeClass('active');
     if ($('#checked_all_practice').is(":checked")) {
         $('.practice_search_content').each(function() {
             $(this).find('input').prop('checked', true);
@@ -316,6 +320,7 @@ function getPractices(formData) {
                 $('.practice_search_content').html(content);
             } else {
                 $('.practice_list').removeClass('active');
+                $('.no_item_found').addClass('active');
             }
 
         },

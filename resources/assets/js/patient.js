@@ -12,6 +12,9 @@ $(document).ready(function() {
 
         if ($('#from_admin').val()) {
             var val = $('#search_patient_input').val();
+            $('.no_item_found > p:eq(1)').text(val);
+            $('.no_item_found > p:eq(1)').css('padding-left', '4em');
+            $('.no_item_found').removeClass('active');
             var searchdata = [];
             searchdata.push({
                 "type": 'name',
@@ -197,6 +200,7 @@ function loadAllPatients() {
     });
     getPatients(searchdata, 0);
     $('#refresh_patients').removeClass('active');
+    $('.no_item_found').removeClass('active');
 }
 
 function showPatientInfo(data) {
@@ -313,6 +317,7 @@ function getPatients(formData, page) {
                         });
                 } else {
                     $('.patient_list').removeClass('active');
+                    $('.no_item_found').addClass('active');
                 }
 
             } else {

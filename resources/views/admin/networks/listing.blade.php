@@ -74,3 +74,7 @@
     -->
 </div>
 </div>
+<div class="row content-row-margin no_item_found">
+    <p>No results found matching :</p>
+    <p>asdfggg</p>
+</div>

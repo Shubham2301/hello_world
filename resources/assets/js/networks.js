@@ -4,6 +4,9 @@ $(document).ready(function() {
     loadAllNetworks();
     $('#search_network_button').on('click', function() {
         var searchvalue = $('#search_network_input').val();
+        $('.no_item_found > p:eq(1)').text(searchvalue);
+        $('.no_item_found > p:eq(1)').css('padding-left', '4em');
+        $('.no_item_found').removeClass('active');
         var formData = {
             'value': searchvalue
         };
@@ -105,6 +108,7 @@ function getNetworks(formData, page) {
                 }
             }else{
                 $('.network_listing').removeClass('active');
+                $('.no_item_found').addClass('active');
             }
 
         },
@@ -123,6 +127,7 @@ function loadAllNetworks() {
     };
     getNetworks(formData, 0);
     $('#refresh_networks').removeClass('active');
+    $('.no_item_found').removeClass('active');
 }
 
 function showModalConfirmDialog(msg, handler) {
