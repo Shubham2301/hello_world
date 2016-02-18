@@ -9,7 +9,7 @@
                         <a href="/directmail"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="drop_image"></a>
                     </li>
                     <li>
-                        <a href="#"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="drop_image"></a>
+                        <a href="/file_exchange"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="drop_image"></a>
                     </li>
                     <li>
                         <a href="#"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a>
