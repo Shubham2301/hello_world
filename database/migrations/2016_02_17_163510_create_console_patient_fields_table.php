@@ -15,8 +15,6 @@ class CreateConsolePatientFieldsTable extends Migration {
 			$table->string('name')->unique();
 			$table->string('display_name');
 			$table->string('description')->nullable();
-			$table->integer('order')->nullable();
-			$table->integer('width')->nullable();
 			$table->timestamps();
 		});
 	}
