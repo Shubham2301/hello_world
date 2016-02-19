@@ -512,6 +512,61 @@ Section : Admin Sidebar
 }
 
 /*
+----------------------------
+File Exchange Sidebar
+----------------------------
+*/
+
+.files_sidebar_menu_item {
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    padding: 0;
+    box-shadow: 0 1px 1px #898989;
+    overflow-x: hidden;
+    color: #4d4d4d;
+    .gradient(#f0f2f5, #e0e3e6);
+    &>.sidebar_img {
+        display: flex;
+        flex-grow: 1;
+        flex-basis: 0;
+        flex-direction: row;
+        justify-content: center;
+    }
+    &>.sidebar_title {
+        display: flex;
+        flex-grow: 3;
+        flex-basis: 0;
+        flex-direction: column;
+        justify-content: center;
+        border-left: 1px solid #b3b3b3;
+        margin: .2em 0;
+        padding: 0 0 0 .4em;
+    }
+    &:hover {
+        background-color: #f0f2f5;
+        .gradient(#f0f2f5, #f0f2f5);
+        box-shadow: 0 1px 1px #898989;
+        color: #4d4d4d;
+        text-decoration: none;
+    }
+    &:active {
+        background-color: #d2d3d5;
+        .gradient(#d2d3d5, #d2d3d5);
+        box-shadow: 0 1px 1px #d2d3d5;
+        color: #4d4d4d;
+        text-decoration: none;
+    }
+    &:visited,
+    &:active,
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        color: #4d4d4d;
+    }
+}
+
+/*
 ---------------------------
 Section : Footer
 ---------------------------
