@@ -7,6 +7,10 @@ use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\KPI;
+use myocuhub\Models\Menu;
+use myocuhub\User;
+use myocuhub\Permission;
+use myocuhub\Role;
 
 class ActionService {
 
@@ -119,6 +123,26 @@ class ActionService {
 			case 'highrisk-contact-pcp':
 				break;
 		}
+	}
+
+	public function renderForUser($userId, $menuId=0, $level=0){
+		$menus = Menu::all();
+		$user = User::find($userId);
+		return "hello";
+
+		// $returnMenus[] = array();
+
+		foreach ($menus as $menu) {		
+			$func = function($menu) use ($user) {
+						return $user->hasRole($menu->permission->roles);
+				};
+
+			// If there is no roles associated or the roles on menu and user matches
+			if(!$menu->permission) || $func($menu)){
+				$returnMenus[] = $menu;
+			}
+		}
+		return $returnMenus;
 	}
 
 }

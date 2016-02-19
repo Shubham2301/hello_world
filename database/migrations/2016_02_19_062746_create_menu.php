@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMenuRoleTable extends Migration
+class CreateMenu extends Migration
 {
     /**
      * Run the migrations.
@@ -19,20 +19,20 @@ class CreateMenuRoleTable extends Migration
             $table->string('display_name')->nullable();
             $table->string('description')->nullable();
             $table->string('url')->nullable();
+            $table->string('icon_path')->nullable();
+            $table->string('color_indicator')->nullable();
+            $table->integer('level')->unsigned();
+            $table->integer('parent_id')->unsigned()->nullable();
+            $table->integer('permission_id')->unsigned()->nullable();
             $table->timestamps();
+
+            $table->foreign('parent_id')->references('id')->on('menus')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('permission_id')->references('id')->on('permissions')
+                ->onUpdate('cascade');
         });
 
 
-        // Create table for associating roles to users (Many-to-Many)
-        Schema::create('menu_role', function (Blueprint $table) {
-            $table->integer('menu_id')->unsigned();
-            $table->integer('role_id')->unsigned();
-            $table->foreign('menu_id')->references('id')->on('menus')
-                ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('role_id')->references('id')->on('roles')
-                ->onUpdate('cascade')->onDelete('cascade');
-            $table->primary(['menu_id', 'role_id']);
-        });
     }
 
     /**
@@ -42,7 +42,6 @@ class CreateMenuRoleTable extends Migration
      */
     public function down()
     {
-        Schema::drop('menu_role');
-        Schema::drop('menus');
+        //
     }
 }

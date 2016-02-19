@@ -9,6 +9,8 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Permission;
 use myocuhub\Role;
+use myocuhub\Models\Menu;
+use myocuhub\User;
 
 class TestroleController extends Controller {
 	public function show() {
@@ -65,5 +67,15 @@ class TestroleController extends Controller {
 		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
 		return "Initialized!!!";
+	}
+
+	public function menuTest(){
+		Auth::loginUsingId(5);
+		// $user = \myocuhub\User::find(5);
+
+		$menus = Menu::find(3)->renderForUser(5);
+		foreach ($menus as $menu) {
+			echo "<br> Menu name: " . $menu->name;
+		}
 	}
 }
