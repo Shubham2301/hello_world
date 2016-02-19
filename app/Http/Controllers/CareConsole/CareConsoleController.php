@@ -11,6 +11,7 @@ use myocuhub\Models\CareconsoleStage;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
+use myocuhub\Services\CareConsoleService;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
 
@@ -22,10 +23,12 @@ class CareConsoleController extends Controller {
 	 */
 	private $KPIService;
 	private $ActionService;
+	private $CareConsoleService;
 
-	public function __construct(KPIService $KPIService, ActionService $ActionService) {
+	public function __construct(KPIService $KPIService, ActionService $ActionService, CareConsoleService $CareConsoleService) {
 		$this->KPIService = $KPIService;
 		$this->ActionService = $ActionService;
+		$this->CareConsoleService = $CareConsoleService;
 	}
 
 	public function index() {
@@ -126,67 +129,16 @@ class CareConsoleController extends Controller {
 	}
 
 	public function getDrilldownData(Request $request) {
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$networkID = $network->network_id;
 		$stageID = $request->stage;
 		$kpiName = $request->kpi;
-		$patients = [];
-		$patientsData = [];
-		$controls = [];
-		$actions = [];
 
-		if ($kpiName !== '' && isset($stageID)) {
-			$patients = $this->KPIService->getPatients($kpiName, $networkID, $stageID);
-		} else if (isset($stageID)) {
-			$patients = CareConsole::getStagePatients($networkID, $stageID);
-		}
-		$i = 0;
-
-		foreach ($patients as $patient) {
-			$patientsData[$i]['console_id'] = $patient['id'];
-			$patientsData[$i]['patient_id'] = $patient['patient_id'];
-			$patientsData[$i]['name'] = $patient['firstname'] . ' ' . $patient['lastname'];
-			$patientsData[$i]['phone'] = $patient['cellphone'];
-			$patientsData[$i]['appointment_date'] = '-';
-			$patientsData[$i]['scheduled_to'] = '-';
-			$patientsData[$i]['request_received'] = '-';
-			$i++;
-		}
-
-		$actions = CareconsoleStage::find($stageID)->actions;
-		$i = 0;
-		foreach ($actions as $action) {
-			$actionsData[$i]['id'] = $action->id;
-			$actionsData[$i]['stage_id'] = $action->stage_id;
-			$actionsData[$i]['name'] = $action->name;
-			$actionsData[$i]['display_name'] = $action->display_name;
-			$actionsData[$i]['action_results'] = Action::find($action->id)->actionResults;
-			$i++;
-		}
-		$llKpiGroup = CareconsoleStage::find($stageID)->llKpiGroup;
-		$controls = [];
-		$i = 0;
-		foreach ($llKpiGroup as $group) {
-			$controls[$i]['group_name'] = $group->group_name;
-			$controls[$i]['group_display_name'] = $group->group_display_name;
-			$controls[$i]['type'] = $group->type;
-			$options = CareconsoleStage::llKpiByGroup($group->group_name, $stageID);
-			$j = 0;
-			foreach ($options as $option) {
-				$controls[$i]['options'][$j]['name'] = $option->name;
-				$controls[$i]['options'][$j]['display_name'] = $option->display_name;
-				$controls[$i]['options'][$j]['color_indicator'] = $option->color_indicator;
-				$controls[$i]['options'][$j]['description'] = $option->description;
-				$controls[$i]['options'][$j]['count'] = 0;
-				$j++;
-			}
-			$i++;
-		}
+		$listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName);
+		$actions = $this->CareConsoleService->getActions($stageID);
+		$controls = $this->CareConsoleService->getControls($stageID);
 
 		$drilldown['controls'] = (sizeof($controls) === 0) ? '' : view('careconsole.controls')->with('controls', $controls)->render();
-		$drilldown['actions'] = (sizeof($actionsData) === 0) ? [] : $actionsData;
-		$drilldown['patients'] = (sizeof($patientsData) === 0) ? [] : $patientsData;
+		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
+		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->render();
 
 		return json_encode($drilldown);
 	}
