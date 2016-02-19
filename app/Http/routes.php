@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('appointments', 'Appointment\AppointmentController');
 	Route::resource('home', 'HomeController');
 	Route::resource('bulkimport', 'BulkImportController');
+	Route::resource('file_exchange', 'FileExchange\FileExchangeController');
 	Route::get('import/location', 'BulkImportController@getLocations');
 	Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
 

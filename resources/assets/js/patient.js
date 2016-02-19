@@ -12,6 +12,9 @@ $(document).ready(function() {
 
         if ($('#from_admin').val()) {
             var val = $('#search_patient_input').val();
+            $('.no_item_found > p:eq(1)').text(val);
+            $('.no_item_found > p:eq(1)').css('padding-left', '4em');
+            $('.no_item_found').removeClass('active');
             var searchdata = [];
             searchdata.push({
                 "type": 'name',
@@ -197,6 +200,7 @@ function loadAllPatients() {
     });
     getPatients(searchdata, 0);
     $('#refresh_patients').removeClass('active');
+    $('.no_item_found').removeClass('active');
 }
 
 function showPatientInfo(data) {
@@ -313,11 +317,13 @@ function getPatients(formData, page) {
                         });
                 } else {
                     $('.patient_list').removeClass('active');
+                    $('.no_item_found').addClass('active');
                 }
 
             } else {
-                var content = '<p><bold>' + patients.length + '<bold> results found</p><br>';
-                if (patients.length > 0) {
+                var content = '<p><bold>' + 0 + '<bold> results found</p><br>';
+				if (patients.length > 0 && patients[0]['total'] > 0 ) {
+					content = '<p><bold>' + patients.length + '<bold> results found</p><br>';
                     patients.forEach(function(patient) {
                         content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin arial"><div class="col-xs-12 arial_bold patient_list_name">' + patient.fname + ' ' + patient.lname + '</div><div class="col-xs-6 patient_list_data"> ' + patient.birthdate + '<br>' + patient.phone + '</div><div class="col-xs-6 patient_list_data">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
                     });

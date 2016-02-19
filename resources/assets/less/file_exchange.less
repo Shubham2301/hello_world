@@ -1,0 +1,121 @@
+.file_exchange_navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+}
+.file_exchange_navbar_content_left {
+    flex-grow: 1;
+    flex-basis: 0;
+    display: flex;
+    justify-content: flex-start;
+}
+.file_exchange_navbar_content_right {
+    flex-grow: 1;
+    flex-basis: 0;
+    display: flex;
+    justify-content: flex-end;
+    visibility: hidden;
+    &.active {
+        visibility: visible;
+    }
+}
+.file_exchange_button {
+    margin: 0 .4em;
+    padding: .2em;
+    background-color: #f2f2f2;
+    cursor: pointer;
+    box-shadow: 1px 1px 2px #4d4d4d;
+    &:active {
+        box-shadow: inset 1px 1px 3px #4d4d4d;
+    }
+}
+.folder_path {
+    margin: 1em 0;
+    visibility: hidden;
+    &.active {
+        visibility: visible;
+    }
+}
+.files>.col_title {
+    color: #4d4d4d;
+}
+.files>.col_content {
+    margin-top: .5em;
+    margin-bottom: .5em;
+}
+hr {
+    margin: 0;
+    &.main {
+        border-top: 2px solid #eee;
+    }
+}
+input[type=checkbox] {
+    margin-left: 50%;
+}
+.item_info {
+    background-color: #fff;
+    position: absolute;
+    color: #4d4d4d;
+    bottom: 5em;
+    right: 0;
+    opacity: 0.8;
+    z-index: 1;
+    border-top-left-radius: .5em;
+    border-bottom-left-radius: .5em;
+    box-shadow: -2px 0 2px #0071bc;
+    padding: 1em;
+    width: 30vw;
+    display: none;
+    flex-direction: column;
+    &.active {
+        display: flex;
+    }
+    &>.title {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        color: #00a1e4;
+        font-size: 1.5em;
+        &>.glyphicon {
+            color: #4d4d4d;
+            cursor: pointer;
+        }
+    }
+    &>.modifications {
+        font-size: 1.2em;
+        color: #4d4d4d;
+    }
+    &>.modification_history {
+        font-size: 1em;
+        color: #4d4d4d;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    &>.description {
+        font-size: 1em;
+        display: flex;
+        border-radius: .5em;
+        border: 2px solid #00a1e4;
+        padding: .5em;
+    }
+}
+.description_text {
+    line-height: 1.2em;
+    height: 1.2em;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.modal_row {
+   display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.content_rows {
+    color: #00a1e4;
+    font-size: 1em;
+    margin: 1em 0;
+}

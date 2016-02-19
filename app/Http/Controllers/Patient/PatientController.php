@@ -2,12 +2,14 @@
 
 namespace myocuhub\Http\Controllers\Patient;
 
+use Auth;
 use Event;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\Ccda;
+use myocuhub\Models\ImportHistory;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\ReferralHistory;
@@ -75,6 +77,10 @@ class PatientController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request) {
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
+
 		$patient = new Patient;
 		$patient->firstname = $request->input('firstname');
 		$patient->lastname = $request->input('lastname');
@@ -90,6 +96,10 @@ class PatientController extends Controller {
 		$patient->cellphone = $request->input('cellphone');
 		$patient->state = $request->input('state');
 		$patient->save();
+
+		$importHistory = new ImportHistory;
+		$importHistory->network_id = $networkID;
+		$importHistory->save();
 
 		$careconsole = new Careconsole;
 		$careconsole->import_id = $importHistory->id;

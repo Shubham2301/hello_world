@@ -17,11 +17,9 @@ class HomeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$referralType = Network::find($network->network_id)->referralTypes;
-		$referralTypeList = ReferralType::all();
-		return view('home');
+        $data = array();
+        $data['home_active'] = true;
+		return view('home')->with('data', $data);
 	}
 
 	/**

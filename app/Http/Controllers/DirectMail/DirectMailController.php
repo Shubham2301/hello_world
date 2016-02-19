@@ -27,8 +27,10 @@ class DirectMailController extends Controller
         if (!$ses['direct_mail_str']) {
             $request->session()->flash('no_direct_mail', 'You do not have a direct mail access. If you feel this is in error, please contact the OcuHub administrator for assistance.');
         }
+        $data = array();
+        $data['directmail_active'] = true;
 
-        return view('directmail.index')->with('ses', $ses);
+        return view('directmail.index')->with('ses', $ses)->with('data', $data);
 
     }
 
