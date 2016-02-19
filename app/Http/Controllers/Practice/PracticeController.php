@@ -110,9 +110,16 @@ class PracticeController extends Controller {
 	 */
 	public function update(Request $request) {
         $practicedata = json_decode($request->input('data'), true);
+
         $practicename = $practicedata[0]['practice_name'];
+		$practiceemail = $practicedata[0]['practice_email'];
         $practiceid = $practicedata[0]['practice_id'];
         $locations = $practicedata[0]['locations'];
+		$practice = Practice::find($practiceid);
+		$practice->name = $practicename;
+		$practice->email = $practiceemail;
+		$practice->save();
+
         foreach ($locations as $location) {
             $practicelocation = '';
             if (array_key_exists('id', $location)) {
