@@ -21,6 +21,11 @@ class CareconsoleStage extends Model {
 			->where('ll_kpis.group_name', $groupName)
 			->get();
 	}
+	public function patientFields() {
+		return $this->hasMany('myocuhub\Models\StagePatientField', 'stage_id')
+		            ->leftJoin('console_patient_fields', 'stage_patient_fields.field_id', '=', 'console_patient_fields.id')
+		            ->orderBy('order');
+	}
 	public function actions() {
 		return $this->hasMany('myocuhub\Models\StageAction', 'stage_id')
 		            ->leftJoin('actions', 'stage_action.action_id', '=', 'actions.id');

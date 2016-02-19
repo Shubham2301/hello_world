@@ -11,6 +11,7 @@ use myocuhub\Models\CareconsoleStage;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
+use myocuhub\Services\CareConsoleService;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
 
@@ -22,10 +23,12 @@ class CareConsoleController extends Controller {
 	 */
 	private $KPIService;
 	private $ActionService;
+	private $CareConsoleService;
 
-	public function __construct(KPIService $KPIService, ActionService $ActionService) {
+	public function __construct(KPIService $KPIService, ActionService $ActionService, CareConsoleService $CareConsoleService) {
 		$this->KPIService = $KPIService;
 		$this->ActionService = $ActionService;
+		$this->CareConsoleService = $CareConsoleService;
 	}
 
 	public function index() {
@@ -141,29 +144,12 @@ class CareConsoleController extends Controller {
 		} else if (isset($stageID)) {
 			$patients = CareConsole::getStagePatients($networkID, $stageID);
 		}
-		$i = 0;
-
-		foreach ($patients as $patient) {
-			$patientsData[$i]['console_id'] = $patient['id'];
-			$patientsData[$i]['patient_id'] = $patient['patient_id'];
-			$patientsData[$i]['name'] = $patient['firstname'] . ' ' . $patient['lastname'];
-			$patientsData[$i]['phone'] = $patient['cellphone'];
-			$patientsData[$i]['appointment_date'] = '-';
-			$patientsData[$i]['scheduled_to'] = '-';
-			$patientsData[$i]['request_received'] = '-';
-			$i++;
-		}
+		$headers = CareconsoleStage::find($stageID)->patientFields;
+		$listing = $this->CareConsoleService->PatientListingData($headers, $patients);
 
 		$actions = CareconsoleStage::find($stageID)->actions;
-		$i = 0;
-		foreach ($actions as $action) {
-			$actionsData[$i]['id'] = $action->id;
-			$actionsData[$i]['stage_id'] = $action->stage_id;
-			$actionsData[$i]['name'] = $action->name;
-			$actionsData[$i]['display_name'] = $action->display_name;
-			$actionsData[$i]['action_results'] = Action::find($action->id)->actionResults;
-			$i++;
-		}
+		$actions = $this->CareConsoleService->formatActions($actions);
+
 		$llKpiGroup = CareconsoleStage::find($stageID)->llKpiGroup;
 		$controls = [];
 		$i = 0;
@@ -185,8 +171,8 @@ class CareConsoleController extends Controller {
 		}
 
 		$drilldown['controls'] = (sizeof($controls) === 0) ? '' : view('careconsole.controls')->with('controls', $controls)->render();
-		$drilldown['actions'] = (sizeof($actionsData) === 0) ? [] : $actionsData;
-		$drilldown['patients'] = (sizeof($patientsData) === 0) ? [] : $patientsData;
+		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
+		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->render();
 
 		return json_encode($drilldown);
 	}
