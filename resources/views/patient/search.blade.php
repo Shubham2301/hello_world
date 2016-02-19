@@ -30,8 +30,11 @@
 </div>
 @else
 <div class="row content-row-margin patient_admin_search active">
+	<div class="col-xs-1">
+		<p style="font-size:1.3em;padding-top: 2px;color: #fff;margin-left: 1em;">Patient</p>
+	</div>
     <div class="col-xs-2">
-        <button id="open_patient_form" type="button" class="btn add-btn" style="float:right;">Add New</button>
+        <button id="open_patient_form" type="button" class="btn add-btn" >Add New</button>
     </div>
     <div class="col-xs-2 search_input_box">
         <input type="text" class="" id="search_patient_input" placeholder="search">
@@ -40,7 +43,7 @@
     <div class="col-xs-1">
         <span class="glyphicon glyphicon-remove" id="refresh_patients" area-hidden="true"></span>
     </div>
-    <div class="col-xs-7">
+    <div class="col-xs-6">
         <button type="button" data-toggle="modal" data-target="#importModal"  class="btn import-btn">Import</button>
     </div>
 </div>
