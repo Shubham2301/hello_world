@@ -54,17 +54,22 @@ Section : Header
 .header-user-left {
     background-color: @light-gray;
     .right-border;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 .header-user-right {
     background-color: @medium-gray;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 .header-user-item {
     background-color: #82888f;
     border-right: .2em solid white;
     border-left: .2em solid white;
     margin-right: 1em;
-    display: inline-block;
-    float: right;
+    margin-left: auto;
     color: #fff;
     padding: 0.1em 0.4em;
     font-size: 0.9em;
@@ -117,7 +122,16 @@ Section : Header
     font-size: 1em;
     color: #4d4d4d;
 }
-
+.light_header_text{
+    font-size: .8em;
+    color: #9d9fa2;
+    margin-top: auto;
+}
+.dark_header_text{
+    font-size: .8em;
+    color: #4d4d4d;
+    margin-top: auto;
+}
 /*
 ---------------------------
 Section : Body
