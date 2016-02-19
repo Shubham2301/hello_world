@@ -31,7 +31,7 @@
 @else
 <div class="row content-row-margin patient_admin_search active">
 	<div class="col-xs-1">
-		<p style="font-size:1.3em;padding-top: 2px;color: #fff;margin-left: 1em;">Patient</p>
+		<p style="font-size:1.3em;padding-top: 2px;color: #fff;margin-left: 1.6em;">Patient</p>
 	</div>
     <div class="col-xs-2">
         <button id="open_patient_form" type="button" class="btn add-btn" >Add New</button>
