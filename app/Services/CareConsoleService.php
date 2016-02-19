@@ -47,6 +47,7 @@ class CareConsoleService {
 			}
 			$i++;
 		}
+		return $controls;
 	}
 
 	public function getActions($stageID) {
