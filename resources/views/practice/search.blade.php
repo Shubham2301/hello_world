@@ -1,6 +1,6 @@
 <div class="row content-row-margin practice_action active">
 	<div class="col-xs-1">
-		<p style="font-size:1.3em;padding-top: 2px;color: #fff;margin-left: 1em;">Practice</p>
+		<p style="font-size:1.3em;padding-top: 2px;color: #fff;padding-left: 15px;">Practice</p>
 	</div>
     <div class="col-xs-2">
         <button id ="open_practice_form" type="button" class="btn add-btn">Add New</button>

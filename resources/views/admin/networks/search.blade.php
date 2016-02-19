@@ -1,6 +1,6 @@
 <div class="row content-row-margin">
 	<div class="col-xs-1">
-		<p style="font-size:1.3em;padding-top: 2px;color: #fff;margin-left: 1em;">Network</p>
+		<p style="font-size:1.3em;padding-top: 2px;color: #fff;padding-left: 15px;">Network</p>
 	</div>
     <div class="col-xs-2">
         <a href="/administration/networks/create"><button type="button" class="btn add-btn" style="float:right;">Add New</button></a>
