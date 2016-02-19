@@ -9,34 +9,35 @@ use myocuhub\Http\Controllers\Controller;
 
 class SupportController extends Controller
 {
+    $data = array();
     public function techSupportIndex()
     {
-        return view('support.support');
+        return view('support.support')->with('data', $data);
     }
 
     public function contactusIndex()
     {
-        return view('support.contactus');
+        return view('support.contactus')->with('data', $data);
     }
 
     public function investorsIndex()
     {
-        return view('support.investors');
+        return view('support.investors')->with('data', $data);
     }
 
     public function privacyIndex()
     {
-        return view('support.privacy');
+        return view('support.privacy')->with('data', $data);
     }
 
     public function sitemapIndex()
     {
-        return view('support.sitemap');
+        return view('support.sitemap')->with('data', $data);
     }
 
     public function termsIndex()
     {
-        return view('support.terms');
+        return view('support.terms')->with('data', $data);
     }
 
 }
