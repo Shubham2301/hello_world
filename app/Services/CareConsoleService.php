@@ -5,7 +5,7 @@ namespace myocuhub\Services;
 use Auth;
 use myocuhub\Models\Action;
 use myocuhub\Models\Appointment;
-use myocuhub\Models\CareConsole;
+use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
@@ -78,7 +78,7 @@ class CareConsoleService {
 		if ($kpiName !== '' && isset($stageID)) {
 			$patients = $this->KPIService->getPatients($kpiName, $networkID, $stageID);
 		} else if (isset($stageID)) {
-			$patients = CareConsole::getStagePatients($networkID, $stageID);
+			$patients = Careconsole::getStagePatients($networkID, $stageID);
 		}
 
 		$headers = CareconsoleStage::find($stageID)->patientFields;

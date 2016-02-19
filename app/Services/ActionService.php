@@ -45,12 +45,12 @@ class ActionService {
 			case 'requested-data':
 				break;
 			case 'archive':
-				$console = CareConsole::find($consoleID);
+				$console = Careconsole::find($consoleID);
 				$console->archived = 1;
 				$console->save();
 				break;
 			case 'kept-appointment':
-				$console = CareConsole::find($consoleID);
+				$console = Careconsole::find($consoleID);
 				$appointment = Appointment::find($console->appointment_id);
 				$kpi = Kpi::where('name', 'waiting-for-report')->first();
 				$appointment->appointment_status = $kpi['id'];
@@ -59,7 +59,7 @@ class ActionService {
 				$console->save();
 				break;
 			case 'no-show':
-				$console = CareConsole::find($consoleID);
+				$console = Careconsole::find($consoleID);
 				$appointment = Appointment::find($console->appointment_id);
 				$kpi = Kpi::where('name', 'no-show')->first();
 				$appointment->appointment_status = $kpi['id'];
@@ -68,7 +68,7 @@ class ActionService {
 				$console->save();
 				break;
 			case 'cancelled':
-				$console = CareConsole::find($consoleID);
+				$console = Careconsole::find($consoleID);
 				$appointment = Appointment::find($console->appointment_id);
 				$kpi = Kpi::where('name', 'cancelled')->first();
 				$appointment->appointment_status = $kpi['id'];
@@ -77,7 +77,7 @@ class ActionService {
 				$console->save();
 				break;
 			case 'data-received':
-				$console = CareConsole::find($consoleID);
+				$console = Careconsole::find($consoleID);
 				$console->stage_id = 5;
 				$console->save();
 				$appointment = Appointment::find($console->appointment_id);
@@ -97,7 +97,7 @@ class ActionService {
 			case 'other-reasons-for-declining':
 			case 'no-need-to-schedule':
 			case 'no-insurance':
-				$console = CareConsole::find($consoleID);
+				$console = Careconsole::find($consoleID);
 				$console->archived = 1;
 				$console->save();
 				break;
