@@ -128,8 +128,8 @@ class AppointmentController extends Controller {
 		$providerID = $request->input('provider_id');
 		$locationID = $request->input('location_id');
 		$practiceID = $request->input('practice_id');
-		$appointmentType = $request->input('appointment_type_name');
-		$appointmentTypeKey = $request->input('appointment_type');
+		$appointmentType = $request->input('appointment_type');
+		$appointmentTypeKey = $request->input('appointment_type_key');
 		$appointmentTime = $request->input('appointment_time');
 		$patient = Patient::find($patientID);
 
@@ -181,7 +181,7 @@ class AppointmentController extends Controller {
 		$date = new DateTime($appointmentTime);
 		$appointment->start_datetime = $date->format('Y-m-d H:m:s');
 		$appointment->save();
-
+		dd($appointment);
 		$careconsole = Careconsole::where('patient_id', $patientID)
 			->orderBy('created_at', 'desc')
 			->first();

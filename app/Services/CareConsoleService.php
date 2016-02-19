@@ -9,11 +9,15 @@ use myocuhub\Models\CareConsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
+use myocuhub\Models\Practice;
+use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
 
 class CareConsoleService {
 
-	public function __construct() {
+	private $KPIService;
+	public function __construct(KPIService $KPIService) {
+		$this->KPIService = $KPIService;
 	}
 
 	/**
@@ -22,6 +26,7 @@ class CareConsoleService {
 	 * @param $stageID
 	 * @return mixed
 	 */
+
 	public function getControls($stageID) {
 		$llKpiGroup = CareconsoleStage::find($stageID)->llKpiGroup;
 		$controls = [];
@@ -43,6 +48,7 @@ class CareConsoleService {
 			$i++;
 		}
 	}
+
 	public function getActions($stageID) {
 		$actions = CareconsoleStage::find($stageID)->actions;
 		$actionsData = [];

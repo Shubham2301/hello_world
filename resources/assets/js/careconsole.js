@@ -81,10 +81,11 @@ $(document).ready(function () {
         $('#current_stage').val(stage_id);
         showStageData(stage_id, stage_name);
     });
-    $('.drilldown_content').on('click', '.careconsole_action', function () {
+    $('#drilldown_patients_listing').on('click', '.careconsole_action', function () {
+        console.log('yo1');
         if ($('#current_stage').val() === '-1')
             return;
-
+        console.log('yo1');
         switch ($(this).attr('data-name')) {
         case 'schedule':
             window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).parent().attr('data-patientid');
@@ -194,7 +195,6 @@ function getPatientData() {
             var actions = data.actions;
             var controls = data.controls;
             var listing = data.listing;
-
             if (actions.length > 0) {
                 actions.forEach(function (action) {
                     actionResults[action.id] = action.action_results;
@@ -256,14 +256,12 @@ function refreshOverview() {
         cache: false,
         async: false,
         success: function success(e) {
-            console.log(e);
             if (e.length === 0)
                 return;
             var stages = e.stages;
 
             stages.forEach(function (stage) {
                 var kpis = stage.kpis;
-                console.log(kpis);
                 kpis.forEach(function (kpi) {
                     $('.info_section_number.' + kpi.name).html(kpi.count);
                 });
