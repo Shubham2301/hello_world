@@ -2,10 +2,14 @@
 
 namespace myocuhub\Services;
 
+use Auth;
 use myocuhub\Models\Action;
 use myocuhub\Models\Appointment;
+use myocuhub\Models\CareConsole;
+use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
+use myocuhub\User;
 
 class CareConsoleService {
 
@@ -18,8 +22,29 @@ class CareConsoleService {
 	 * @param $stageID
 	 * @return mixed
 	 */
-
-	public function formatActions($actions) {
+	public function getControls($stageID) {
+		$llKpiGroup = CareconsoleStage::find($stageID)->llKpiGroup;
+		$controls = [];
+		$i = 0;
+		foreach ($llKpiGroup as $group) {
+			$controls[$i]['group_name'] = $group->group_name;
+			$controls[$i]['group_display_name'] = $group->group_display_name;
+			$controls[$i]['type'] = $group->type;
+			$options = CareconsoleStage::llKpiByGroup($group->group_name, $stageID);
+			$j = 0;
+			foreach ($options as $option) {
+				$controls[$i]['options'][$j]['name'] = $option->name;
+				$controls[$i]['options'][$j]['display_name'] = $option->display_name;
+				$controls[$i]['options'][$j]['color_indicator'] = $option->color_indicator;
+				$controls[$i]['options'][$j]['description'] = $option->description;
+				$controls[$i]['options'][$j]['count'] = 0;
+				$j++;
+			}
+			$i++;
+		}
+	}
+	public function getActions($stageID) {
+		$actions = CareconsoleStage::find($stageID)->actions;
 		$actionsData = [];
 		$i = 0;
 		foreach ($actions as $action) {
@@ -33,12 +58,25 @@ class CareConsoleService {
 		return $actionsData;
 	}
 
-	public function PatientListingData($headers, $patients) {
+	public function getPatientListing($stageID, $kpiName) {
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
+
 		$headerData = [];
 		$patientsData = [];
 		$listing = [];
 		$i = 0;
 		$fields = [];
+
+		if ($kpiName !== '' && isset($stageID)) {
+			$patients = $this->KPIService->getPatients($kpiName, $networkID, $stageID);
+		} else if (isset($stageID)) {
+			$patients = CareConsole::getStagePatients($networkID, $stageID);
+		}
+
+		$headers = CareconsoleStage::find($stageID)->patientFields;
+
 		foreach ($headers as $header) {
 			$headerData[$i]['display_name'] = $header['display_name'];
 			$headerData[$i]['name'] = $header['name'];

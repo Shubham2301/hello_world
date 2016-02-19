@@ -129,46 +129,12 @@ class CareConsoleController extends Controller {
 	}
 
 	public function getDrilldownData(Request $request) {
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$networkID = $network->network_id;
 		$stageID = $request->stage;
 		$kpiName = $request->kpi;
-		$patients = [];
-		$patientsData = [];
-		$controls = [];
-		$actions = [];
 
-		if ($kpiName !== '' && isset($stageID)) {
-			$patients = $this->KPIService->getPatients($kpiName, $networkID, $stageID);
-		} else if (isset($stageID)) {
-			$patients = CareConsole::getStagePatients($networkID, $stageID);
-		}
-		$headers = CareconsoleStage::find($stageID)->patientFields;
-		$listing = $this->CareConsoleService->PatientListingData($headers, $patients);
-
-		$actions = CareconsoleStage::find($stageID)->actions;
-		$actions = $this->CareConsoleService->formatActions($actions);
-
-		$llKpiGroup = CareconsoleStage::find($stageID)->llKpiGroup;
-		$controls = [];
-		$i = 0;
-		foreach ($llKpiGroup as $group) {
-			$controls[$i]['group_name'] = $group->group_name;
-			$controls[$i]['group_display_name'] = $group->group_display_name;
-			$controls[$i]['type'] = $group->type;
-			$options = CareconsoleStage::llKpiByGroup($group->group_name, $stageID);
-			$j = 0;
-			foreach ($options as $option) {
-				$controls[$i]['options'][$j]['name'] = $option->name;
-				$controls[$i]['options'][$j]['display_name'] = $option->display_name;
-				$controls[$i]['options'][$j]['color_indicator'] = $option->color_indicator;
-				$controls[$i]['options'][$j]['description'] = $option->description;
-				$controls[$i]['options'][$j]['count'] = 0;
-				$j++;
-			}
-			$i++;
-		}
+		$listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName);
+		$actions = $this->CareConsoleService->getActions($stageID);
+		$controls = $this->CareConsoleService->getControls($stageID);
 
 		$drilldown['controls'] = (sizeof($controls) === 0) ? '' : view('careconsole.controls')->with('controls', $controls)->render();
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
