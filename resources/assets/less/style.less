@@ -117,6 +117,7 @@ Section : Header
     font-size: 1em;
     color: #4d4d4d;
 }
+
 /*
 ---------------------------
 Section : Body
@@ -331,6 +332,11 @@ Section : Sidebar
     box-shadow: 0 1px 1px #898989;
     overflow-x: hidden;
     .gradient(#f0f2f5, #e0e3e6);
+    &.active {
+        background-color: #d2d3d5;
+        .gradient(#d2d3d5, #d2d3d5);
+        box-shadow: 0 1px 1px #d2d3d5;
+    }
     &:hover {
         background-color: #f0f2f5;
         .gradient(#f0f2f5, #f0f2f5);
@@ -557,20 +563,18 @@ Section : Footer
     color: #333333;
 }
 @import 'calender.less';
-
 .button_active {
     background-color: #d2d3d5;
     background-image: linear-gradient(#d2d3d5 10%, #d2d3d5 90%);
     box-shadow: 0 1px 1px #d2d3d5;
 }
-
 .no_item_found {
     font-size: 1.1em;
     align-items: center;
     color: #fff;
     margin: 10em 20em 10em 20em;
     display: none;
-    &.active{
+    &.active {
         display: block;
     }
 }
