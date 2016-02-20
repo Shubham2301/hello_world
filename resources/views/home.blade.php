@@ -7,7 +7,7 @@
 @endsection
 @section('content')
 <div class="content-section active" id="referral_types">
-	<p class="message arial">Select type of patient you are referring</p>
+	<p class="message arial_bold">Select type of patient you are referring</p>
 	<div class="row arial">
 		{!! Form::open(array('url' => '/patients', 'method' => 'GET', 'id' => 'form_select_patient')) !!}
 		{!! Form::hidden('referraltype_id', '0', array('id' => 'form_referraltype_id')) !!}

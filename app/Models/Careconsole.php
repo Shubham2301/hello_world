@@ -53,7 +53,7 @@ class Careconsole extends Model {
 			->where('import_history.network_id', $networkID)
 			->whereNull('archived')
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
-			->get(['*', 'careconsole.id']);
+			->get(['*', 'careconsole.id', 'careconsole.created_at']);
 	}
 
 	/**
@@ -188,7 +188,7 @@ class Careconsole extends Model {
 			})
 			->whereNull('archived')
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
-			->get(['*', 'careconsole.id']);
+			->get(['*', 'careconsole.id', 'careconsole.created_at']);
 	}
 
 	/**
@@ -203,7 +203,7 @@ class Careconsole extends Model {
 			->whereNull('console_id')
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
 			->whereNull('archived')
-			->get(['*', 'careconsole.id']);
+			->get(['*', 'careconsole.id', 'careconsole.created_at']);
 	}
 
 	/**
@@ -212,7 +212,7 @@ class Careconsole extends Model {
 	 * @return mixed
 	 */
 	public static function getAppointmentScheduledPatients($networkID, $stageID) {
-		$sqlResult = DB::select("select *,`careconsole`.id from `careconsole`
+		$sqlResult = DB::select("select *, `careconsole`.id, `careconsole`.created_at from `careconsole`
             	left join `appointments`
             	on `careconsole`.`appointment_id` = `appointments`.`id`
             	left join `patients`
@@ -224,11 +224,7 @@ class Careconsole extends Model {
 		$results = array();
 		$i = 0;
 		foreach ($sqlResult as $result) {
-			$results[$i]['id'] = $result->id;
-			$results[$i]['patient_id'] = $result->patient_id;
-			$results[$i]['firstname'] = $result->firstname;
-			$results[$i]['lastname'] = $result->lastname;
-			$results[$i]['cellphone'] = $result->cellphone;
+			$results[$i] = get_object_vars($result);
 			$i++;
 		}
 		return $results;
@@ -240,7 +236,7 @@ class Careconsole extends Model {
 	 * @return mixed
 	 */
 	public static function getAppointmentTomorrowPatients($networkID, $stageID) {
-		$sqlResult = DB::select("select *,`careconsole`.id from `careconsole`
+		$sqlResult = DB::select("select *, `careconsole`.id, `careconsole`.created_at from `careconsole`
             	left join `appointments`
             	on `careconsole`.`appointment_id` = `appointments`.`id`
             	left join `patients`
@@ -252,11 +248,7 @@ class Careconsole extends Model {
 		$results = array();
 		$i = 0;
 		foreach ($sqlResult as $result) {
-			$results[$i]['id'] = $result->id;
-			$results[$i]['patient_id'] = $result->patient_id;
-			$results[$i]['firstname'] = $result->firstname;
-			$results[$i]['lastname'] = $result->lastname;
-			$results[$i]['cellphone'] = $result->cellphone;
+			$results[$i] = get_object_vars($result);
 			$i++;
 		}
 		return $results;
@@ -267,7 +259,7 @@ class Careconsole extends Model {
 	 * @param $stageID
 	 */
 	public static function getPastAppointmentPatients($networkID, $stageID) {
-		$sqlResult = DB::select("select *,`careconsole`.id from `careconsole`
+		$sqlResult = DB::select("select *, `careconsole`.id, `careconsole`.created_at from `careconsole`
             	left join `appointments`
             	on `careconsole`.`appointment_id` = `appointments`.`id`
             	left join `patients`
@@ -279,11 +271,7 @@ class Careconsole extends Model {
 		$results = array();
 		$i = 0;
 		foreach ($sqlResult as $result) {
-			$results[$i]['id'] = $result->id;
-			$results[$i]['patient_id'] = $result->patient_id;
-			$results[$i]['firstname'] = $result->firstname;
-			$results[$i]['lastname'] = $result->lastname;
-			$results[$i]['cellphone'] = $result->cellphone;
+			$results[$i] = get_object_vars($result);
 			$i++;
 		}
 		return $results;
@@ -304,7 +292,7 @@ class Careconsole extends Model {
 			->where('kpis.name', '=', $statusName)
 			->whereNull('archived')
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
-			->get(['*', 'careconsole.id']);
+			->get(['*', 'careconsole.id', 'careconsole.created_at']);
 	}
 
 }

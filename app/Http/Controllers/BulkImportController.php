@@ -105,7 +105,7 @@ class BulkImportController extends Controller {
 								$patients['title'] = 'Mr';
 								$patients['firstname'] = $name[0];
 								$patients['lastname'] = $name[1];
-								$patients['workphone'] = $data['phone_number'];
+								$patients['cellphone'] = $data['phone_number'];
 								$patients['email'] = $data['email'];
 								$patients['addressline1'] = $data['address_1'];
 								$patients['addressline2'] = $data['address_2'];
