@@ -142,7 +142,7 @@ Content
         }
     }
     display: none;
-    &.active{
+    &.active {
         display: block;
     }
 }
@@ -157,7 +157,7 @@ Content
     &:focus {
         border: none;
     }
-    &.active{
+    &.active {
         display: block;
     }
 }
@@ -172,7 +172,7 @@ Content
     &:focus {
         border: none;
     }
-    &.active{
+    &.active {
         display: block;
     }
 }
@@ -187,5 +187,58 @@ Content
     cursor: pointer;
     &:hover {
         color: #00a1e4;
+    }
+}
+
+/*
+--------------------------
+Make annoucement section
+--------------------------
+*/
+
+.make_announcement {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    color: #4d4d4d;
+    &>.make_row {
+        display: inherit;
+        flex-direction: row;
+        margin: 0 0 1em 0;
+        justify-content: space-around;
+        &>.left {
+            flex-basis: 0;
+            flex-grow: 2;
+        }
+        &>.right {
+            flex-basis: 0;
+            flex-grow: 5;
+            display: inherit;
+            justify-content: space-between;
+            &>input {
+                width: 100%;
+            }
+            &>span {
+                flex-basis: 0;
+                flex-grow: 1;
+                flex-direction: row;
+                justify-content: flex-start;
+            }
+            &>textarea {
+                height: 7em;
+                width: 100%;
+            }
+        }
+        &>button {
+            color: #4d4d4d;
+            border: solid 1px #9d9fa2;
+            border-radius: .2em;
+            background-color: transparent;
+            &:hover {
+                color: #00a1e4;
+                border: solid 1px #00a1e4;
+            }
+        }
     }
 }
