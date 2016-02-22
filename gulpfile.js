@@ -13,7 +13,7 @@ var elixir = require('laravel-elixir');
 
 elixir(function (mix) {
 
-    mix.less(['style.less'],'public/css/style.css');
+    mix.less(['style.less', 'announcements.less'],'public/css/style.css');
     mix.less(['directmail.less'],'public/css/directmail.css');
     mix.less(['referral.less'],'public/css/referral.css');
     mix.less(['patient.less'],'public/css/patient.css');
@@ -23,7 +23,6 @@ elixir(function (mix) {
     mix.less(['careconsole.less'],'public/css/careconsole.css');
     mix.less(['networks.less'],'public/css/networks.css');
     mix.less(['file_exchange.less'],'public/css/file_exchange.css');
-    mix.less(['announcements.less'],'public/css/announcements.css');
 
     mix.babel(['main.js','announcements.js'],'public/js/main.js');
     mix.babel(['sesconnect.js'],'public/js/sesconnect.js');
