@@ -297,15 +297,22 @@ function fillPatientInfo(data) {
     $('#patient_add3').text(data.city);
     $('#patient_phone').text(data.cellphone);
     $('#patient_ssn').text(data.lastfourssn);
+    $('.patient_table_header').addClass('hide');
     $('.lastseen_content').html('<p class="patient_dropdown_data">' + data.referred_to_practice_user + '</p><p class="patient_dropdown_data">' + data.referred_to_practice + '</p>');
     $('.referredby_content').html('<p class="patient_dropdown_data">' + data.referred_by_provider + '</p><p class="patient_dropdown_data">' + data.referred_by_practice + '</p>');
     $('.insurance_provider_content').html('<p class="patient_dropdown_data">' + data.insurance + '</p>');
     if (data.referred_to_practice_user == '' && data.referred_to_practice == '')
         $('.lastseenby_icon').addClass('hide');
+    else
+        $('.patient_table_header').removeClass('hide');
     if (data.referred_by_provider == '' && data.referred_by_practice == '')
         $('.referredby_icon').addClass('hide');
+    else
+        $('.patient_table_header').removeClass('hide');
     if (data.insurance == '')
         $('.insurance_provider_icon').addClass('hide');
+    else
+        $('.patient_table_header').removeClass('hide');
     $('.selected_patient_name').text(data.firstname);
 
 }
