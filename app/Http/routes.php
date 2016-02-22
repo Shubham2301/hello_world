@@ -25,6 +25,8 @@ Route::get('/start', 'TestroleController@start');
 
 Route::get('/show', 'TestroleController@show');
 
+Route::get('/menuTest', 'TestroleController@menuTest');
+
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
