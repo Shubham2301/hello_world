@@ -9,6 +9,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Role;
 use myocuhub\User;
 use myocuhub\Usertype;
+use myocuhub\Models\UserLevel;
 
 class UserController extends Controller {
 
@@ -30,7 +31,8 @@ class UserController extends Controller {
 	public function create() {
 		$userTypes = $this->getUserTypes();
 		$roles = $this->getRoles();
-		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles]);
+		$userLevels = $this->getUserLevels();
+		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels]);
 	}
 
 	/**
@@ -47,7 +49,11 @@ class UserController extends Controller {
 		$user->firstname = $request->input('firstname');
 		$user->middlename = $request->input('middlename');
 		$user->lastname = $request->input('lastname');
+
+		// TODO 
+		// Auto generate password 
 		$user->password = bcrypt($request->input('password'));
+
 		$user->email = $request->input('email');
 		$user->npi = $request->input('npi');
 		$user->cellphone = $request->input('cellphone');
@@ -60,6 +66,7 @@ class UserController extends Controller {
 		$user->zip = $request->input('zip');
 		$user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
 		$user->usertype_id = $request->input('usertype');
+		$user->level = $request->input('userlevel');
 
 		$user->save();
 
@@ -73,7 +80,7 @@ class UserController extends Controller {
 			$filename = basename(__FILE__);
 			$ip = $request->getClientIp();
 			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-			return redirect('users');
+			return redirect('administration/users');
 		} else {
 			return redirect()->back();
 		}
@@ -138,6 +145,15 @@ class UserController extends Controller {
 			$roleArray[$role->name] = $role->display_name;
 		}
 		return $roleArray;
+	}
+
+	public function getUserLevels() {
+		$userLevels = UserLevel::all();
+		$userLevelArray = array();
+		foreach ($userLevels as $userLevel) {
+			$userLevelArray[$userLevel->id] = $userLevel->name;
+		}
+		return $userLevelArray;
 	}
 
 }

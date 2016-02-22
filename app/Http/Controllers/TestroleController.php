@@ -71,9 +71,9 @@ class TestroleController extends Controller {
 
 	public function menuTest(){
 		Auth::loginUsingId(5);
-		// $user = \myocuhub\User::find(5);
+		$user = \myocuhub\User::find(3);
 
-		$menus = Menu::find(3)->renderForUser(5);
+		$menus = Menu::renderForUser($user);
 		foreach ($menus as $menu) {
 			echo "<br> Menu name: " . $menu->name;
 		}

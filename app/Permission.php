@@ -11,8 +11,8 @@ class Permission extends Model
     	return $this->belongsToMany(Role::class);
     }
 
-    public function menus()
+   /* public function menus()
     {
     	return $this->hasMany(\myocuhub\Model\Menu::class);
-    }
+    }*/
 }

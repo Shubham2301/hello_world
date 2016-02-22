@@ -35,7 +35,7 @@
                             <th>{{ $user->title }} {{ $user->firstname }} {{ $user->lastname }}</th>
                             <th>{{ $user->email }}</th>
                             <th>{{ $user->npi }}</small></th>
-                            <th>{{ $user->usertype->name }}</span></th>
+                            <th>{{ $user->usertype['name'] }}</span></th>
                             <th>
                             </th>
                         </tr>

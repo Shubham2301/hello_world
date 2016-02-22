@@ -56,6 +56,17 @@
                 <div class="row content-row-margin">
                     <div class="form-group">
                         <div class="col-sm-2">
+                            {!! Form::label('userlevel', 'User Level') !!}
+                        </div>
+                        <div class="col-sm-10">
+                            {!! Form::select('userlevel', $userLevels, null, array('class' => 'input')) !!}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row content-row-margin">
+                    <div class="form-group">
+                        <div class="col-sm-2">
                             {!! Form::label('title', 'Title*') !!}
                         </div>
                         <div class="col-sm-10">

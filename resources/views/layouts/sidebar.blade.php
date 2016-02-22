@@ -1,4 +1,3 @@
-@inject('menus', 'myocuhub\Services\ActionService')
 @if(Auth::check())
 <div class="sidebar_user_info center">
 <h4>{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</h4>
@@ -14,17 +13,18 @@
 	<li class="sidebar_menu_item"><a class="sidebar_item" href="#"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/records.png')}}" class="image"></span><span class="menu_item_label">Patient Records</span></a></li>
 	<li class="sidebar_menu_item"><a class="sidebar_item" href="/careconsole"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="image"></span><span class="menu_item_label">Care Console</span></a></li>
 	<li class="sidebar_menu_item"><a class="sidebar_item" href="/administration/practices"><span class="menu_item_icon"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="image"></span><span class="menu_item_label">Administration</span></a></li> -->
-	
 
- 
+	<?php $menus = \myocuhub\Models\Menu::renderForUser(Auth::user()) ?>
+
+ 	@foreach($menus as $menu)
 	
 	<li class="sidebar_menu_item">
-		<a class="sidebar_item" href="/directmail">
+		<a class="sidebar_item" href="{{ $menu->url }}">
 			<span class="menu_item_icon">
-			<img src="{{URL::asset('images/sidebar/messages.png')}}" class="image"></span>
-			<span class="menu_item_label">{{ $menus->renderForUser() }}</span>
+			<img src="{{URL::asset($menu->icon_path.'.png')}}" class="image"></span>
+			<span class="menu_item_label">{{ $menu->display_name }}</span>
 		</a>
 	</li>
+	@endforeach
 </ul>
-RUdresh
 @endif

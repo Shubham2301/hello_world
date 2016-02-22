@@ -82,7 +82,10 @@ class RoleController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit($id) {
-		//
+		$role = Role::find($id);
+
+		$permissions = $role->permissions();
+		return view('admin.roles.edit')->with(['role' => $role, 'permissions' => $permissions]);
 	}
 
 	/**
