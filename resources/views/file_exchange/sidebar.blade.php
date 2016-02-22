@@ -4,7 +4,7 @@
             <div class="dropdown">
                 <button class="dropdown-toggle admin_button" type="button" data-toggle="dropdown">
                 <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'">
-                    <span class="caret"></span></button>
+                <span class="caret"></span></button>
                 <ul class="dropdown-menu sidebar">
                     <li class="hello">
                         <a href="/directmail"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="drop_image"></a>
