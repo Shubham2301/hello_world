@@ -2,7 +2,8 @@
     <div class="row sidebar_header center">
         <div class="col-lg-2 col-md-2">
             <div class="dropdown">
-                <button class="dropdown-toggle admin_button" type="button" data-toggle="dropdown"><img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini">
+                <button class="dropdown-toggle admin_button" type="button" data-toggle="dropdown">
+                <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'">
                     <span class="caret"></span></button>
                 <ul class="dropdown-menu sidebar">
                     <li class="hello">
