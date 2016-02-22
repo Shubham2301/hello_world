@@ -1,26 +1,19 @@
 <div class="modal fade" id="newfolderModal" role="dialog">
-    <div class="modal-dialog form_model">
+    <div class="modal-dialog form_model center">
         <div class="modal-content">
-            <div class="modal-body arial_bold">
-               <h4 class="modal-title" style="color:black;">New Folder</h4>
-                <div class="import_form active">
-                    <div class="row content_rows arial">
-                        <div class="col-xs-4">Name</div>
-                        <div class="col-xs-8"><input type="text"></div>
-                    </div>
-                    <div class="row  content_rows arial">
-                        <div class="col-xs-4">Description</div>
-                        <div class="col-xs-8"><textarea rows="4" cols="25"></textarea></div>
-                    </div>
-                </div>
-                <p class="success_message"></p>
-            </div>
-            <div class="modal-footer">
-                <div style="margin-right:40%">
-                    <button type="button" class="btn import_button active">Add</button>
-                    <button type="button" class="btn btn-default dismiss_button" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
+            <span class="modal_title arial_bold">New Folder</span>
+            <span class="modal_content_row">
+                <span class="left">Name</span>
+                <span class="right"><input type="text"></span>
+            </span>
+            <span class="modal_content_row">
+                <span class="left">Description</span>
+                <span class="right"><textarea></textarea></span>
+            </span>
+            <span class="modal_footer">
+                <button type="button" class="btn add-btn">Add</button>&nbsp;&nbsp;
+                <button type="button" class="btn dismiss-button" data-dismiss="modal">Cancel</button>
+            </span>
         </div>
     </div>
 </div>
