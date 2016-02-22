@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     $('[data-toggle="tooltip"]').tooltip();
 
-    $('#open_announcement').on('click', function () {
+    $('#menu-announcements').on('click', function () {
         $('.announcement_box').addClass('visible');
         $('#show_announcements').addClass('active');
         resetDefaults();

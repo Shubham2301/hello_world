@@ -25,7 +25,7 @@ elixir(function (mix) {
     mix.less(['file_exchange.less'],'public/css/file_exchange.css');
     mix.less(['announcements.less'],'public/css/announcements.css');
 
-    mix.babel(['main.js'],'public/js/main.js');
+    mix.babel(['main.js','announcements.js'],'public/js/main.js');
     mix.babel(['sesconnect.js'],'public/js/sesconnect.js');
     mix.babel(['referraltype.js'],'public/js/referraltype.js');
     mix.babel(['patient.js'],'public/js/patient.js');
@@ -38,7 +38,6 @@ elixir(function (mix) {
     mix.babel(['tojson.js'],'public/js/tojson.js');
     mix.babel(['toxml.js'],'public/js/toxml.js');
     mix.babel(['file_exchange.js'],'public/js/file_exchange.js');
-    mix.babel(['announcements.js'],'public/js/announcements.js');
 
     mix.version(['css/style.css',
                 'css/directmail.css',
@@ -61,8 +60,7 @@ elixir(function (mix) {
                 'js/import.js',
                 'js/careconsole.js',
                 'js/networks.js',
-                'js/file_exchange.js',
-                'js/announcements.js'
+                'js/file_exchange.js'
                 ]);
 
 });
