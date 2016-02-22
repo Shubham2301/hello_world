@@ -13,7 +13,9 @@
     <div class="row before_drilldown">
         <div class="col-xs-12">
             <div class="section-header">
+                @can('bulk-import')
                 <button type="button" class="btn import-btn open_import" data-toggle="modal" data-target="#importModal" id="import_patients">Import</button>
+                @endcan
                 <span class="overview_header">Overview</span>
                 <div class="search" id="care_console_search">
                     <input type="text" id="search_data">
@@ -38,15 +40,15 @@
                                 <p class="result_text appointment_date">-</p>
                             </div>
                         </div>
-<!--
-                         <div class="search_result_row row">
+                        <!--
+                        <div class="search_result_row row">
                             <div class="col-xs-10 col-xs-offset-2 search_result_row_text">
                                 <p class="result_title">Take action
                                     <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                                 </p>
                             </div>
                         </div>
--->
+                        -->
                     </div>
                 </div>
             </div>

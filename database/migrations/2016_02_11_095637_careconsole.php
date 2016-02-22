@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class Careconsole extends Migration {
+class CareconsoleTable extends Migration {
 	/**
 	 * Run the migrations.
 	 *

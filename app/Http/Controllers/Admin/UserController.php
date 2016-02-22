@@ -3,13 +3,14 @@
 namespace myocuhub\Http\Controllers\Admin;
 
 use Event;
+use Auth;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Models\UserLevel;
 use myocuhub\Role;
 use myocuhub\User;
 use myocuhub\Usertype;
-use myocuhub\Models\UserLevel;
 
 class UserController extends Controller {
 
@@ -20,8 +21,8 @@ class UserController extends Controller {
 	 */
 	public function index() {
 		$users = User::all();
-        $data = array();
-        $data['user_active'] = true;
+		$data = array();
+		$data['user_active'] = true;
 		return view('admin.users.index')->with('users', $users)->with('data', $data);
 	}
 
@@ -52,8 +53,8 @@ class UserController extends Controller {
 		$user->middlename = $request->input('middlename');
 		$user->lastname = $request->input('lastname');
 
-		// TODO 
-		// Auto generate password 
+		// TODO
+		// Auto generate password
 		$user->password = bcrypt($request->input('password'));
 
 		$user->email = $request->input('email');
@@ -150,7 +151,8 @@ class UserController extends Controller {
 	}
 
 	public function getUserLevels() {
-		$userLevels = UserLevel::all();
+		$level = Auth::user()->level;
+		$userLevels = UserLevel::where('id', '>=', $level)->get();
 		$userLevelArray = array();
 		foreach ($userLevels as $userLevel) {
 			$userLevelArray[$userLevel->id] = $userLevel->name;

@@ -55,30 +55,31 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('practices/store', 'Practice\PracticeController@store');
 	Route::get('practices/update', 'Practice\PracticeController@update');
 	Route::get('practices/remove', 'Practice\PracticeController@destroy');
-	Route::get('networks/search', 'Admin\NetworkController@search');
-	Route::get('networks/edit/{id}', 'Admin\NetworkController@edit');
-	Route::post('networks/update/{id}', 'Admin\NetworkController@update');
-	Route::get('networks/destroy/{id}', 'Admin\NetworkController@destroy');
-	Route::get('careconsole/overview', 'CareConsole\CareConsoleController@getOverviewData');
-	Route::get('careconsole/drilldown', 'CareConsole\CareConsoleController@getDrilldownData');
-	Route::get('careconsole/action', 'CareConsole\CareConsoleController@action');
-	Route::get('careconsole/searchpatient', 'CareConsole\CareConsoleController@searchPatients');
+
+	Route::group(['middleware' => 'role:care-console'], function () {
+		Route::get('careconsole/overview', 'CareConsole\CareConsoleController@getOverviewData');
+		Route::get('careconsole/drilldown', 'CareConsole\CareConsoleController@getDrilldownData');
+		Route::get('careconsole/action', 'CareConsole\CareConsoleController@action');
+		Route::get('careconsole/searchpatient', 'CareConsole\CareConsoleController@searchPatients');
+		Route::resource('careconsole', 'CareConsole\CareConsoleController');
+	});
 
 	Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
 	Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
 	Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
 
-	Route::resource('careconsole', 'CareConsole\CareConsoleController');
 	Route::resource('directmail', 'DirectMail\DirectMailController');
 	Route::resource('patients', 'Patient\PatientController');
 	Route::resource('providers', 'Practice\ProviderController');
 	Route::resource('practices', 'Practice\PracticeController');
 	Route::resource('appointments', 'Appointment\AppointmentController');
 	Route::resource('home', 'HomeController');
-	Route::resource('bulkimport', 'BulkImportController');
+	Route::group(['middleware' => 'role:bulk-import'], function () {
+		Route::get('import/location', 'BulkImportController@getLocations');
+		Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
+		Route::resource('bulkimport', 'BulkImportController');
+	});
 	Route::resource('file_exchange', 'FileExchange\FileExchangeController');
-	Route::get('import/location', 'BulkImportController@getLocations');
-	Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
 
 	//Ccda routes
 	Route::post('/import/ccda', 'CcdaController@saveCcda');
@@ -104,14 +105,19 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('administration/practices', 'Practice\PracticeController@administration');
 	Route::get('administration/practices/create', 'Practice\PracticeController@create');
 	Route::get('administration/practices/edit/{id}', 'Practice\PracticeController@edit');
-
-	Route::get('/patients/create', 'Patient\PatientController@create');
-    Route::get('/administration/patients/create', 'Patient\PatientController@createByAdmin');
-    Route::get('administration/patients', 'Patient\PatientController@administration');
-	Route::post('administration/patients/add', 'Patient\PatientController@store');
-	Route::get('administration/patients/edit/{id}', 'Patient\PatientController@edit');
-    Route::post('/administration/patients/update/{id}', 'Patient\PatientController@update');
-    Route::get('/patient/destroy/{id}', 'Patient\PatientController@destroy');
 	Route::post('administration/network/add', 'Admin\NetworkController@add');
 	Route::get('administration/providers', 'Practice\ProviderController@administration');
+	Route::get('/administration/patients/create', 'Patient\PatientController@createByAdmin');
+	Route::get('administration/patients', 'Patient\PatientController@administration');
+	Route::post('administration/patients/add', 'Patient\PatientController@store');
+	Route::get('administration/patients/edit/{id}', 'Patient\PatientController@edit');
+	Route::post('/administration/patients/update/{id}', 'Patient\PatientController@update');
+	Route::get('networks/search', 'Admin\NetworkController@search');
+	Route::get('networks/edit/{id}', 'Admin\NetworkController@edit');
+	Route::post('networks/update/{id}', 'Admin\NetworkController@update');
+	Route::get('networks/destroy/{id}', 'Admin\NetworkController@destroy');
+
+	Route::get('/patients/create', 'Patient\PatientController@create');
+	Route::get('/patient/destroy/{id}', 'Patient\PatientController@destroy');
+
 });
