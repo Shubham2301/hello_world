@@ -209,6 +209,11 @@ input#search_data{
     &>.drilldown_header_item{
         margin-top: auto;
     }
+    .sort_order{
+        position: absolute;
+        right: 0;
+        display:none;
+    }
 }
 .drilldown_item {
     padding: 1em 0;
@@ -443,7 +448,16 @@ p.no_of_patients{
     margin: auto;
 }
 .action_dropdownmenu{
+    background-color: #ebeced;
+    border-radius: 3px;
+    margin-left: -400%;
+    text-align: right;
+    top: 1.5em;
+    right: 0;
     &>li{
-        margin: 0.5em 0;
+        padding: 0.25em 0.5em;
+        &:hover{
+            background-color: #fff;
+        }
     }
 }

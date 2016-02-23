@@ -111,7 +111,25 @@ $(document).ready(function () {
             $('#actionModal').modal('show');
         }
     });
-
+    $(document).on('click', '.drilldown_header_item', function () {
+        var field = $(this).find('.sort_order');
+        if (field.css('display') !== 'none') {
+            if (field.attr('data-order') === 'SORT_DESC') {
+                field.attr('data-order', 'SORT_ASC');
+                field.removeClass('glyphicon-chevron-down');
+                field.addClass('glyphicon-chevron-up');
+            } else if (field.attr('data-order') === 'SORT_ASC'){
+                field.attr('data-order', 'SORT_DESC');
+                field.removeClass('glyphicon-chevron-up');
+                field.addClass('glyphicon-chevron-down');
+            }
+        }
+        $('.sort_order').css('display', 'none');
+        field.css('display', 'inline-block');
+        $('#current_sort_field').val(field.attr('data-name')); 
+        $('#current_sort_order').val(field.attr('data-order')); 
+        getPatientData();
+    })
 });
 
 var actionResults = {};
@@ -154,7 +172,7 @@ function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator) {
     $('#current_stage').val(stage_id);
     $('#current_kpi').val(kpi_id);
 
-    var patients = getPatientData();
+    getPatientData();
 }
 
 function showStageData(stage_id, stage_name) {
@@ -163,7 +181,7 @@ function showStageData(stage_id, stage_name) {
     $('#current_stage').val(stage_id);
     $('#current_kpi').val('0');
 
-    var patients = getPatientData();
+    getPatientData();
 }
 
 function clearHTML() {
@@ -175,10 +193,14 @@ function clearHTML() {
 function getPatientData() {
     var stageID = $('#current_stage').val();
     var kpiName = ($('#current_kpi').val() === '0' ? '' : $('#current_kpi').val());
+    var sortField = $('#current_sort_field').val(); 
+    var sortOrder = $('#current_sort_order').val(); 
     var formData = {
         'stage': stageID,
-        'kpi': kpiName
-    }
+        'kpi': kpiName,
+        'sort_field': sortField,
+        'sort_order': sortOrder
+    };
     $('.drilldown_content').html('');
     $.ajax({
         url: '/careconsole/drilldown',
@@ -204,6 +226,8 @@ function getPatientData() {
             $('#drilldown_patients_listing').html(listing);
             $('.control_section').html(controls);
             $('.dropdown-menu.action_dropdownmenu').html(actionList);
+            // $('#current_sort_field').val(''); 
+            // $('#current_sort_order').val(''); 
         },
         error: function error() {
             $('p.alert_message').text('Error:');
