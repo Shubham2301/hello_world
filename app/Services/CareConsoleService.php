@@ -65,11 +65,17 @@ class CareConsoleService {
 		return $actionsData;
 	}
 
-	public function getPatientListing($stageID, $kpiName, $sortField, $sortOrder = SORT_ASC) {
+	public function getPatientListing($stageID, $kpiName, $sortField, $sortOrder) {
 		$userID = Auth::user()->id;
 		$network = User::getNetwork($userID);
 		$networkID = $network->network_id;
-
+		if ($sortField == '') {
+			$sortField = 'days-pending';
+		}
+		if ($sortOrder == '') {
+			$sortOrder = 'SORT_ASC';
+		}
+		//echo $sortField . ', ' . $sortOrder;
 		$headerData = [];
 		$patientsData = [];
 		$listing = [];
