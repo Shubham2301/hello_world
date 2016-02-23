@@ -11,7 +11,7 @@ class UpdateCareconsoleStageUpdatedField extends Migration {
 	 */
 	public function up() {
 		Schema::table('careconsole', function (Blueprint $table) {
-			$table->datetime('stage_updated_at');
+			$table->timestamp('stage_updated_at');
 		});
 	}
 
