@@ -113,6 +113,9 @@ $(document).ready(function () {
     });
     $(document).on('click', '.drilldown_header_item', function () {
         var field = $(this).find('.sort_order');
+        if (field.length == 0) {
+            return;
+        }
         if (field.css('display') !== 'none') {
             if (field.attr('data-order') === 'SORT_DESC') {
                 field.attr('data-order', 'SORT_ASC');
