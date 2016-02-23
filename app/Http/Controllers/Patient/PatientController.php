@@ -240,10 +240,6 @@ class PatientController extends Controller {
 
 		$patients = Patient::getPatients($filters)->paginate(5);
 		$data = [];
-
-		$data[0]['total'] = $patients->total();
-		$data[0]['lastpage'] = $patients->lastPage();
-		$data[0]['currentPage'] = $patients->currentPage();
 		$i = 0;
 		foreach ($patients as $patient) {
 			$data[$i]['id'] = $patient->id;
@@ -258,6 +254,15 @@ class PatientController extends Controller {
 			$data[$i]['birthdate'] = date('Y-m-d', strtotime($patient->birthdate));
 			$i++;
 		}
+		$tosort = array();
+		foreach ($data as $key => $row)
+		{
+			$tosort[$key] = $row['lname'];
+		}
+		array_multisort($tosort, SORT_ASC, $data);
+		$data[0]['total'] = $patients->total();
+		$data[0]['lastpage'] = $patients->lastPage();
+		$data[0]['currentPage'] = $patients->currentPage();
 
 		return json_encode($data);
 	}
