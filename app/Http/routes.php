@@ -99,6 +99,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('techsupport', 'SupportController@techSupportIndex');
 
 	Route::resource('administration/users', 'Admin\UserController');
+	Route::get('users/search', 'Admin\UserController@search');
+
 	Route::resource('administration/roles', 'Admin\RoleController');
 	Route::resource('administration/networks', 'Admin\NetworkController');
 	Route::resource('administration/permissions', 'Admin\PermissionController');
