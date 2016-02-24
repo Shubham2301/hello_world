@@ -112,4 +112,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/patient/destroy/{id}', 'Patient\PatientController@destroy');
 	Route::post('administration/network/add', 'Admin\NetworkController@add');
 	Route::get('administration/providers', 'Practice\ProviderController@administration');
+
+    Route::get('/announcements/list', 'AnnouncementController@index');
+    Route::get('/announcements/create', 'AnnouncementController@create');
+    Route::get('/announcements/show', 'AnnouncementController@show');
+    Route::get('/announcements/archive', 'AnnouncementController@destroy');
+    Route::get('/announcements/update', 'AnnouncementController@update');
+
 });
