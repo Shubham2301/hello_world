@@ -132,7 +132,18 @@ $(document).ready(function () {
         $('#current_sort_field').val(field.attr('data-name')); 
         $('#current_sort_order').val(field.attr('data-order')); 
         getPatientData();
-    })
+    });
+    $(document).on('click', '.drilldown_item>div', function (){
+        if($(this).attr('data-name') === 'actions')
+            return;
+        var consoleID = $(this).attr('data-consoleid');
+        
+        $('.patient_records_info').addClass('active');
+    });
+    $(document).on('click', '.close_patient_records_info', function (){
+        $('.patient_records_info').removeClass('active');
+    });
+
 });
 
 var actionResults = {};

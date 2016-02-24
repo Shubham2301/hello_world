@@ -33,7 +33,7 @@
             </div>
         </div>
         @else
-        <div class="col-xs-{{ $header['width'] }}" data-name="{{ $header['name'] }}">
+        <div class="col-xs-{{ $header['width'] }}" data-consoleid="$patient['console_id']" data-name="{{ $header['name'] }}">
             <p>{{ $patient[$header['name']] }}</p>
         </div>
         @endif

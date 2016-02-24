@@ -463,3 +463,61 @@ p.no_of_patients{
         }
     }
 }
+.patient_records_info{
+    width: 40%;
+    height: 90%;
+    background-color: #fff;
+    display:none;
+    opacity:0;
+    right:0;
+    top:10%;
+    color: #4d4d4d;
+    padding: 1em 2em;
+    border-top-left-radius: .5em;
+    border-bottom-left-radius: .5em;
+    position: absolute;
+    box-shadow: 2px 0 2px #0071bc;
+    z-index: 1;
+    font-size:0.9em;
+    .history_item_name{
+        display: inline-block;
+        left: 0;
+        width: 68%;
+    }
+    .history_item_date{
+        display: inline-block;
+        right: 0;
+        width: 30%;
+    }
+    .patient_name{
+        font-size:1.5em;
+        color: #0071bc;
+    }
+    &.active{
+        display:block;
+        opacity: 0.95;
+        transition: opacity .5s;
+    }    
+    .history_item{
+        font-size:0.9em;
+        width:100%;
+        cursor:pointer;
+        &.active{
+            color: #00a1e4;
+        }
+    }
+    .contact_notes{
+        border: 1px solid #00a1e4;
+        font-style: italic;
+        font-size:0.9em;
+        height: 8em;
+        padding: 0.25em 0.5em;
+    }
+    .patient_contact_info, .patient_appt_info{
+        margin-top: 2em;
+    }
+    .close_patient_records_info{
+        position: absolute;
+        right: 1em;
+    }
+}
