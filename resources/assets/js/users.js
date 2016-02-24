@@ -60,7 +60,6 @@ function loadAllUsers() {
 }
 
 function getUsers(formData, page) {
-	alert(page);
     var tojson = JSON.stringify(formData);
     var activate_img = $('#active_user_img').val();
     var scheduleimg = $('#dropdown_natural_img').val();
