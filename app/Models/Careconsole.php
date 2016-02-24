@@ -108,7 +108,10 @@ class Careconsole extends Model {
 		$sqlResult = DB::select("select count(*) as count from `careconsole`
             	left join `appointments`
             	on `careconsole`.`appointment_id` = `appointments`.`id`
-            	where `stage_id` = $stageID and
+            	left join `import_history`
+            	on `import_history`.`id` = `careconsole`.`import_id`
+            	where `import_history`.`network_id` = $networkID and
+            	`stage_id` = $stageID and
             	`careconsole`.`archived` is null and
             	datediff(`start_datetime`, CURRENT_TIMESTAMP) > 1");
 
@@ -124,7 +127,10 @@ class Careconsole extends Model {
 		$sqlResult = DB::select("select count(*) as count from `careconsole`
             	left join `appointments`
             	on `careconsole`.`appointment_id` = `appointments`.`id`
-            	where `stage_id` = $stageID and
+            	left join `import_history`
+            	on `import_history`.`id` = `careconsole`.`import_id`
+            	where `import_history`.`network_id` = $networkID and
+            	`stage_id` = $stageID and
             	`careconsole`.`archived` is null and
             	datediff(`start_datetime`, CURRENT_TIMESTAMP) = 1");
 
@@ -139,7 +145,10 @@ class Careconsole extends Model {
 		$sqlResult = DB::select("select count(*) as count from `careconsole`
             	left join `appointments`
             	on `careconsole`.`appointment_id` = `appointments`.`id`
-            	where `stage_id` = $stageID and
+            	left join `import_history`
+            	on `import_history`.`id` = `careconsole`.`import_id`
+            	where `import_history`.`network_id` = $networkID and
+            	`stage_id` = $stageID and
             	`careconsole`.`archived` is null and
             	datediff(`start_datetime`, CURRENT_TIMESTAMP) < 0");
 
@@ -171,6 +180,32 @@ class Careconsole extends Model {
 			->where('kpis.name', '=', $statusName)
 			->count();
 		return;
+	}
+
+	public static function getStageWaitingCount($networkID, $stageID) {
+
+		$sqlResult = DB::select("select count(*) as count from `careconsole`
+            	left join `import_history`
+            	on `import_history`.`id` = `careconsole`.`import_id`
+            	where `import_history`.`network_id` = $networkID and
+            	`stage_id` = $stageID and
+            	`careconsole`.`archived` is null and
+            	datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) < 5");
+
+		return $sqlResult[0]->count;
+	}
+
+	public static function getStageOverdueCount($networkID, $stageID) {
+
+		$sqlResult = DB::select("select count(*) as count from `careconsole`
+            	left join `import_history`
+            	on `import_history`.`id` = `careconsole`.`import_id`
+            	where `stage_id` = $stageID and
+            	`import_history`.`network_id` = $networkID and
+            	`careconsole`.`archived` is null and
+            	datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) > 4");
+
+		return $sqlResult[0]->count;
 	}
 
 	/**

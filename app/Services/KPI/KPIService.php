@@ -34,14 +34,22 @@ class KPIService {
 			case 'past-appointment':
 				$count = Careconsole::getPastAppointmentCount($networkID, $stageID);
 				break;
+			case 'waiting-for-report':
+				$count = Careconsole::getStageWaitingCount($networkID, $stageID, $kpiName);
+				break;
+			case 'reports-overdue':
+				$count = Careconsole::getStageOverdueCount($networkID, $stageID, $kpiName);
+				break;
 			case 'pending-information':
 			case 'cancelled':
 			case 'no-show':
-			case 'waiting-for-report':
-			case 'reports-overdue':
-			case 'ready-to-be-completed':
-			case 'overdue':
 				$count = Careconsole::getAppointmentStatusCount($networkID, $stageID, $kpiName);
+				break;
+			case 'ready-to-be-completed':
+				$count = Careconsole::getStageWaitingCount($networkID, $stageID, $kpiName);
+				break;
+			case 'overdue':
+				$count = Careconsole::getStageOverdueCount($networkID, $stageID, $kpiName);
 				break;
 			default:
 				$count = -1;

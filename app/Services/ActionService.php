@@ -2,6 +2,7 @@
 
 namespace myocuhub\Services;
 
+use DateTime;
 use myocuhub\Models\Action;
 use myocuhub\Models\ActionResult;
 use myocuhub\Models\Appointment;
@@ -47,6 +48,8 @@ class ActionService {
 			case 'archive':
 				$console = Careconsole::find($consoleID);
 				$console->archived = 1;
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			case 'kept-appointment':
@@ -56,6 +59,8 @@ class ActionService {
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
 				$console->stage_id = 4;
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			case 'no-show':
@@ -65,6 +70,8 @@ class ActionService {
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
 				$console->stage_id = 3;
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			case 'cancelled':
@@ -74,11 +81,15 @@ class ActionService {
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
 				$console->stage_id = 3;
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			case 'data-received':
 				$console = Careconsole::find($consoleID);
 				$console->stage_id = 5;
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				$appointment = Appointment::find($console->appointment_id);
 				$kpi = Kpi::where('name', 'ready-to-be-completed')->first();
@@ -99,6 +110,8 @@ class ActionService {
 			case 'no-insurance':
 				$console = Careconsole::find($consoleID);
 				$console->archived = 1;
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			default:

@@ -100,7 +100,7 @@ class CareConsoleService {
 			array_push($fields, $header['name']);
 			$i++;
 		}
-		//dd($headerData);
+
 		foreach ($patients as $patient) {
 			$patientsData[$i]['console_id'] = $patient['id'];
 			$patientsData[$i]['patient_id'] = $patient['patient_id'];
@@ -147,7 +147,7 @@ class CareConsoleService {
 				return $appointment->appointmenttype;
 				break;
 			case 'days-pending':
-				return date_diff(new \DateTime($patient['created_at']), new \DateTime(), true)->d;
+				return date_diff(new \DateTime($patient['stage_updated_at']), new \DateTime(), true)->d;
 				break;
 			case 'scheduled-to':
 				$appointment = Appointment::find($patient['appointment_id']);
