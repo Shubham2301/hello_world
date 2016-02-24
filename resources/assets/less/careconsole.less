@@ -465,12 +465,11 @@ p.no_of_patients{
 }
 .patient_records_info{
     width: 40%;
-    height: 90%;
     background-color: #fff;
     display:none;
     opacity:0;
     right:0;
-    top:10%;
+    top:5%;
     color: #4d4d4d;
     padding: 1em 2em;
     border-top-left-radius: .5em;
@@ -519,5 +518,18 @@ p.no_of_patients{
     .close_patient_records_info{
         position: absolute;
         right: 1em;
+    }
+    .action_dropdown_patient_info{
+        text-align: center;
+        display: inline-block;
+        padding: 0.25em 0.5em;
+        margin: 0 auto;
+        width: 100%;
+        &>div{
+            display: inline-block;
+            background: #e0e0e0;
+            padding: 0.25em 0.5em;
+            border-radius: 0.3em;
+        }
     }
 }
