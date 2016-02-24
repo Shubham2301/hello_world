@@ -13,7 +13,11 @@
 </div>
 @endif
 <div class="row height header">
-    <div class="col-xs-3 hidden-xs header-left"></div>
+    <div class="col-xs-3 hidden-xs header-left">
+		<div class="col-xs-5 network_logo" >
+		<img src="{{URL::asset('images/networks/default_network_logo.jpg')}}" class="img-responsive">
+		</div>
+    </div>
     <div class="col-xs-12 col-sm-9 header-right">
         <div class="col-xs-3 header-logo">
             <img src="{{URL::asset('images/ocuhub-logo.png')}}" class="img-responsive">
