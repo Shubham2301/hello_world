@@ -129,8 +129,8 @@ $(document).ready(function () {
         }
         $('.sort_order').css('display', 'none');
         field.css('display', 'inline-block');
-        $('#current_sort_field').val(field.attr('data-name')); 
-        $('#current_sort_order').val(field.attr('data-order')); 
+        $('#current_sort_field').val(field.attr('data-name'));
+        $('#current_sort_order').val(field.attr('data-order'));
         getPatientData();
     });
     $(document).on('click', '.drilldown_item>div', function (){
@@ -207,8 +207,8 @@ function clearHTML() {
 function getPatientData() {
     var stageID = $('#current_stage').val();
     var kpiName = ($('#current_kpi').val() === '0' ? '' : $('#current_kpi').val());
-    var sortField = $('#current_sort_field').val(); 
-    var sortOrder = $('#current_sort_order').val(); 
+    var sortField = $('#current_sort_field').val();
+    var sortOrder = $('#current_sort_order').val();
     var formData = {
         'stage': stageID,
         'kpi': kpiName,
@@ -240,8 +240,8 @@ function getPatientData() {
             $('#drilldown_patients_listing').html(listing);
             $('.control_section').html(controls);
             $('.dropdown-menu.action_dropdownmenu').html(actionList);
-            // $('#current_sort_field').val(''); 
-            // $('#current_sort_order').val(''); 
+            // $('#current_sort_field').val('');
+            // $('#current_sort_order').val('');
         },
         error: function error() {
             $('p.alert_message').text('Error:');

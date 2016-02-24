@@ -18,6 +18,5 @@
         </span>
     </span>
     <span class="announcement_content">
-<!--<span class="make_announcement"><span class="make_row"><span class="left arial_bold">Send To</span><span class="right"><input type="text" id="send_to"></span></span><span class="make_row"><span class="left arial_bold">Title</span><span class="right"><input type="text" id="title"></span></span><span class="make_row"><span class="left arial_bold">Message</span><span class="right"><textarea name="textarea" id="message"></textarea></span></span><span class="make_row"><span class="left arial_bold">Type</span><span class="right"><span><input type="checkbox">&nbsp;General</span><span><input type="checkbox">&nbsp;News</span><span><input type="checkbox">&nbsp;Test</span></span></span><span class="make_row"><span class="left arial_bold">Priority</span><span class="right"><span><input type="checkbox">&nbsp;Normal</span><span><input type="checkbox">&nbsp;Important</span><span></span></span></span><span class="make_row"><span class="left arial_bold">Schedule</span><span class="right"><input type="text" id="schedule"></span></span><span class="make_row arial_bold"><button id="publish">Publish</button><button id="preview">Preview</button><button id="cancel">Cancel</button></span></span>-->
     </span>
 </div>

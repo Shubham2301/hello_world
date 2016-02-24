@@ -11,7 +11,7 @@ class UserTypeSeeder extends Seeder
      */
     public function run()
     {
-        
+
         DB::table('usertypes')->delete();
 
         DB::table('usertypes')->insert([
