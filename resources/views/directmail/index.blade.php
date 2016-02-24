@@ -174,13 +174,13 @@
         if (!window.location.search) {
             document.getElementById("getCodeBtn").click();
         }
-        if (window.location.search){
+        /*if (window.location.search){
             $(window).on("beforeunload", function() {
-            //document.getElementById('ocuhubSESiframeId').location = '{{ $ses['sso_logoff_url'] }}';
-            document.getElementById('ocuhubSESiframeId').location = '/careconsole';
-            return "Signing Off from DirecMail";
+                document.getElementById('ocuhubSESiframeId').src = '{{ $ses['sso_logoff_url'] }}';
+                document.getElementById('ocuhubSESiframeId').src = 'http://local.myocuhub.com/file_exchange';
+                return "Signing Off From Direct Mail";
             });
-        }
+        }*/
     </script>
 
     @endif
