@@ -174,6 +174,13 @@
         if (!window.location.search) {
             document.getElementById("getCodeBtn").click();
         }
+        if (window.location.search){
+            $(window).on("beforeunload", function() {
+            //document.getElementById('ocuhubSESiframeId').location = '{{ $ses['sso_logoff_url'] }}';
+            document.getElementById('ocuhubSESiframeId').location = '/careconsole';
+            return "Signing Off from DirecMail";
+            });
+        }
     </script>
 
     @endif
