@@ -35,7 +35,8 @@ class UserController extends Controller {
 		$userTypes = $this->getUserTypes();
 		$roles = $this->getRoles();
 		$userLevels = $this->getUserLevels();
-		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels]);
+		$data['user_active'] = true;
+		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data);
 	}
 
 	/**
@@ -158,6 +159,28 @@ class UserController extends Controller {
 			$userLevelArray[$userLevel->id] = $userLevel->name;
 		}
 		return $userLevelArray;
+	}
+
+	public function search(Request $request){
+		$tosearchdata = json_decode($request->input('data'), true);
+		$users = User::getUsersByName($tosearchdata['value'])->paginate(5);
+		//$users = User::where('name', 'like', '%' . $tosearchdata['value'] . '%')->paginate(6);
+		$data = [];
+		$data[0]['total'] = $users->total();
+		$data[0]['lastpage'] = $users->lastPage();
+		$data[0]['currentPage'] = $users->currentPage();
+		$i = 0;
+		foreach ($users as $user) {
+			$data[$i]['id'] = $user->id;
+			$data[$i]['name'] = $user->name;
+			//$data[$i]['name'] = $user->lastname.', '.$user->firstname;
+			$data[$i]['email'] = $user->email;
+			$data[$i]['practice'] = 'No Practice found ';
+			if($user->getPractice())
+			$data[$i]['practice'] = $user->getPractice()->name;
+			$i++;
+		}
+		return json_encode($data);
 	}
 
 }

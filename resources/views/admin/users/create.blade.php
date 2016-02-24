@@ -1,6 +1,14 @@
 @extends('layouts.master')
 
 @section('title', 'My Ocuhub - Administration')
+@section('imports')
+<link rel="stylesheet" type="text/css" href="{{elixir('css/users.css')}}">
+<script type="text/javascript" src="{{elixir('js/users.js')}}"></script>
+@endsection
+
+@section('sidebar')
+@include('admin.sidebar')
+@endsection
 
 @section('content')
     @if (Session::has('success'))
@@ -70,7 +78,7 @@
                             {!! Form::label('title', 'Title*') !!}
                         </div>
                         <div class="col-sm-10">
-                            {!! Form::text('title', old('title'), array('class' => 'input')) !!}
+							{!! Form::text('title', old('title'), array('class' => 'input','required' => 'required')) !!}
                         </div>
                     </div>
                 </div>
@@ -81,7 +89,7 @@
                             {!! Form::label('firstname', 'First Name*') !!}
                         </div>
                         <div class="col-sm-10">
-                            {!! Form::text('firstname', old('firstname'), array('class' => 'input')) !!}
+							{!! Form::text('firstname', old('firstname'), array('class' => 'input','required' => 'required')) !!}
                         </div>
                     </div>
                 </div>
@@ -103,7 +111,7 @@
                             {!! Form::label('lastname', 'Last Name*') !!}
                         </div>
                         <div class="col-sm-10">
-                            {!! Form::text('lastname', old('lastname'), array('class' => 'input')) !!}
+							{!! Form::text('lastname', old('lastname'), array('class' => 'input','required' => 'required')) !!}
                         </div>
                     </div>
                 </div>
@@ -114,7 +122,7 @@
                             {!! Form::label('email', 'Email*') !!}
                         </div>
                         <div class="col-sm-10">
-                            {!! Form::email('email', old('email'), array('class' => 'input')) !!}
+							{!! Form::email('email', old('email'), array('class' => 'input','required' => 'required')) !!}
                         </div>
                     </div>
                 </div>
@@ -125,7 +133,7 @@
                             {!! Form::label('npi', 'NPI*') !!}
                         </div>
                         <div class="col-sm-10">
-                            {!! Form::text('npi', old('npi'), array('class' => 'input')) !!}
+							{!! Form::text('npi', old('npi'), array('class' => 'input','required' => 'required')) !!}
                         </div>
                     </div>
                 </div>
@@ -166,10 +174,10 @@
                 <div class="row content-row-margin">
                     <div class="form-group">
                         <div class="col-sm-2">
-                            {!! Form::label('address1', 'Address 1') !!}
+                            {!! Form::label('address1', 'Address 1*') !!}
                         </div>
                         <div class="col-sm-10">
-                            {!! Form::text('address1', old('address1'), array('class' => 'input')) !!}
+							{!! Form::text('address1', old('address1'), array('class' => 'input','required' => 'required')) !!}
                         </div>
                     </div>
                 </div>

@@ -19,7 +19,20 @@
         {!! Form::text('FirstName', $data['firstname'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'firstname', 'placeholder' => 'First Name', 'id' => 'first_name')) !!} {!! Form::text('LastName', $data['lastname'], array('class' => 'add_patient_input', 'name' => 'lastname', 'placeholder' => 'Last Name', 'id' => 'last_name')) !!} {!! Form::email('email', $data['email'], array('class' => 'add_patient_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email')) !!} {!! Form::text('phone', $data['cellphone'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'cellphone', 'placeholder' => 'Phone', 'id' => 'phone')) !!}
     </div>
     <div class="col-sm-6 col-xs-12">
-        {!! Form::text('Gender', $data['gender'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'gender', 'placeholder' => 'Gender', 'id' => 'gender')) !!} {!! Form::text('DateOfBirth', $data['birthdate'], array('class' => 'add_patient_input', 'name' => 'birthdate', 'placeholder' => 'Date of Birth', 'id' => 'dob')) !!} {!! Form::text('last_4_ssn', $data['lastfourssn'], array('class' => 'add_patient_input', 'name' => 'lastfourssn', 'placeholder' => 'Last 4 SSN', 'id' => 'last_4_ssn')) !!} {!! Form::text('Preferred Language', $data['preferredlanguage'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'preferredlanguage', 'placeholder' => 'Preferred Language', 'id' => 'preferredlanguage')) !!}
+		<select required name="gender" id="gender" class="add_patient_input">
+			<option value="" >Select Gender</option>
+			<option value="M">Male</option>
+			<option value="F">Female</option>
+		</select>
+
+        {!! Form::text('DateOfBirth', $data['birthdate'], array('class' => 'add_patient_input', 'name' => 'birthdate', 'placeholder' => 'Date of Birth', 'id' => 'dob')) !!}
+        {!! Form::text('last_4_ssn', $data['lastfourssn'], array('class' => 'add_patient_input', 'name' => 'lastfourssn', 'placeholder' => 'Last 4 SSN', 'id' => 'last_4_ssn')) !!}
+		<select name="preferredlanguage" id="preferredlanguage" required class="add_patient_input">
+			<option value="">Select Language</option>
+			<option value="english">English</option>
+			<option value="french">French</option>
+			<option value="hindi">Hindi</option>
+		</select>
     </div>
 </div>
 <div class="section-break"></div>

@@ -148,6 +148,15 @@ CanResetPasswordContract {
 
     public function getPractice()
     {
-        return Models\Practice::find($this->practice->practice_id);
+		if($this->practice){
+			$practice_id = $this->practice->practice_id;
+			return Models\Practice::find($practice_id);
+		}
     }
+
+	public static function getUsersByName($name) {
+		return self::where('firstname','LIKE', '%'.$name.'%')
+			->orWhere('middlename', 'LIKE', '%'.$name.'%')
+			->orWhere('lastname', 'LIKE', '%'.$name.'%');
+	}
 }
