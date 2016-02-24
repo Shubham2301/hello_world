@@ -65,11 +65,17 @@ class CareConsoleService {
 		return $actionsData;
 	}
 
-	public function getPatientListing($stageID, $kpiName) {
+	public function getPatientListing($stageID, $kpiName, $sortField, $sortOrder) {
 		$userID = Auth::user()->id;
 		$network = User::getNetwork($userID);
 		$networkID = $network->network_id;
-
+		if ($sortField == '') {
+			$sortField = 'days-pending';
+		}
+		if ($sortOrder == '') {
+			$sortOrder = 'SORT_ASC';
+		}
+		//echo $sortField . ', ' . $sortOrder;
 		$headerData = [];
 		$patientsData = [];
 		$listing = [];
@@ -88,9 +94,13 @@ class CareConsoleService {
 			$headerData[$i]['display_name'] = $header['display_name'];
 			$headerData[$i]['name'] = $header['name'];
 			$headerData[$i]['width'] = $header['width'];
+			if ($header['name'] == $sortField) {
+				$headerData[$i]['sort_order'] = $sortOrder;
+			}
 			array_push($fields, $header['name']);
 			$i++;
 		}
+		//dd($headerData);
 		foreach ($patients as $patient) {
 			$patientsData[$i]['console_id'] = $patient['id'];
 			$patientsData[$i]['patient_id'] = $patient['patient_id'];
@@ -99,6 +109,12 @@ class CareConsoleService {
 			}
 			$i++;
 		}
+
+		if ($sortField != '' && in_array($sortField, $fields)) {
+			$sortParams = [$sortField => $sortOrder];
+			$patientsData = $this->array_msort($patientsData, $sortParams);
+		}
+
 		$listing['patients'] = $patientsData;
 		$listing['headers'] = $headerData;
 
@@ -148,6 +164,33 @@ class CareConsoleService {
 				return '-';
 				break;
 		}
+	}
+
+	public function array_msort($array, $cols) {
+		$colarr = array();
+		foreach ($cols as $col => $order) {
+			$colarr[$col] = array();
+			foreach ($array as $k => $row) {$colarr[$col]['_' . $k] = strtolower($row[$col]);}
+		}
+		$eval = 'array_multisort(';
+		foreach ($cols as $col => $order) {
+			$eval .= '$colarr[\'' . $col . '\'],' . $order . ',';
+		}
+		$eval = substr($eval, 0, -1) . ');';
+		eval($eval);
+		$ret = array();
+		foreach ($colarr as $col => $arr) {
+			foreach ($arr as $k => $v) {
+				$k = substr($k, 1);
+				if (!isset($ret[$k])) {
+					$ret[$k] = $array[$k];
+				}
+
+				$ret[$k][$col] = $array[$k][$col];
+			}
+		}
+		return $ret;
+
 	}
 
 }

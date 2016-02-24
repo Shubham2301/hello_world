@@ -208,6 +208,12 @@ input#search_data{
     display: flex;
     &>.drilldown_header_item{
         margin-top: auto;
+        cursor: pointer;
+    }
+    .sort_order{
+        position: absolute;
+        display:none;
+        margin-left: 4px;
     }
 }
 .drilldown_item {
@@ -443,7 +449,16 @@ p.no_of_patients{
     margin: auto;
 }
 .action_dropdownmenu{
+    background-color: #ebeced;
+    border-radius: 3px;
+    margin-left: -400%;
+    text-align: right;
+    top: 1.5em;
+    right: 0;
     &>li{
-        margin: 0.5em 0;
+        padding: 0.25em 0.5em;
+        &:hover{
+            background-color: #fff;
+        }
     }
 }

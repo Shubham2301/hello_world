@@ -1,7 +1,22 @@
 <div class="row search_header">
     @foreach($listing['headers'] as $header)
     <div data-name="{{ $header['name'] }}" class="col-xs-{{ $header['width'] }} drilldown_header_item">
-        {{ $header['display_name'] }}
+        <span class="header_item_name">{{ $header['display_name'] }} </span>
+        <span data-name="{{ $header['name'] }}"
+            @if($header['name'] === 'actions')
+            >
+            @elseif(isset($header['sort_order']))
+            data-order="{{ $header['sort_order'] }}" style="display:inline-block"
+                @if($header['sort_order'] === "SORT_ASC")
+                class="sort_order glyphicon glyphicon-chevron-up">
+                @endif
+                @if($header['sort_order'] === "SORT_DESC")
+                class="sort_order glyphicon glyphicon-chevron-down">
+                @endif
+            @else
+            data-order="SORT_ASC" class="sort_order glyphicon glyphicon-chevron-up">
+            @endif
+        </span>
     </div>
     @endforeach
 </div>
@@ -12,8 +27,8 @@
         @if($header['name'] === 'actions')
         <div class="col-xs-{{ $header['width'] }}" data-name="{{ $header['name'] }}">
             <div class="dropdown">
-                <span class="glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu{{ $patient['patient_id'] }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="float: right;background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span>
-                <ul class="dropdown-menu action_dropdownmenu" aria-labelledby="dropdownMenu{{ $patient['patient_id'] }}" data-patientid="{{ $patient['patient_id'] }}" data-consoleid="{{ $patient['console_id'] }}" style="border-radius: 3px;margin-left: -400%;text-align: right;max-height: 15em;top: 2em;overflow-y: scroll;overflow-x: visible;right: 0;"
+                <span class="glyphicon glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu{{ $patient['patient_id'] }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="float: right;background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span>
+                <ul class="dropdown-menu action_dropdownmenu" aria-labelledby="dropdownMenu{{ $patient['patient_id'] }}" data-patientid="{{ $patient['patient_id'] }}" data-consoleid="{{ $patient['console_id'] }}">
                 </ul>
             </div>
         </div>

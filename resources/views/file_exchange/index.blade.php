@@ -54,7 +54,7 @@
             <div class="col-xs-7 no-padding" id="item_name">Folder 1</div>
             <div class="col-xs-2 no-padding" id="item_last_change_author">Eric Hoell</div>
             <div class="col-xs-2 no-padding" id="item_last_change_date">02/20/2016</div>
-            <div class="col-xs-11 col-xs-offset-1 no-padding description_text">Description is a really important part of this segment, more important than the file name maybe. One line of the description will be shown on opening the portalbut by clicking on that, the complete description will be available.</div>
+            <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic">Description is a really important part of this segment, more important than the file name maybe. One line of the description will be shown on opening the portalbut by clicking on that, the complete description will be available.</div>
         </div>
         <hr>
         <div class="row arial col_content">
@@ -64,7 +64,7 @@
             <div class="col-xs-7 no-padding">Folder 2</div>
             <div class="col-xs-2 no-padding">John Doe</div>
             <div class="col-xs-2 no-padding">02/17/2016</div>
-            <div class="col-xs-11 col-xs-offset-1 no-padding description_text" >Description is a really important part of this segment, more important than the file name maybe. One line of the description will be shown on opening the portalbut by clicking on that, the complete description will be available.</div>
+            <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" >Description is a really important part of this segment, more important than the file name maybe. One line of the description will be shown on opening the portalbut by clicking on that, the complete description will be available.</div>
         </div>
         <hr>
     </div>
@@ -95,7 +95,7 @@
             Edit Description
         </span>
         <br>
-        <span class="description">
+        <span class="description arial_italic">
         Description is a really important part of this segment, more important than the file name maybe. One line of the description will be shown on opening the portalbut by clicking on that, the complete description will be available.
         </span>
     </div>

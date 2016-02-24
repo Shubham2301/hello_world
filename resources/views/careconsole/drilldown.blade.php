@@ -1,6 +1,8 @@
 <div class="drilldown">
     <input type="hidden" id="current_stage">
     <input type="hidden" id="current_kpi">
+    <input type="hidden" id="current_sort_field">
+    <input type="hidden" id="current_sort_order">
     <div class="section-header">
     </div>
     <div class="subsection-header">

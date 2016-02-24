@@ -131,8 +131,11 @@ class CareConsoleController extends Controller {
 	public function getDrilldownData(Request $request) {
 		$stageID = $request->stage;
 		$kpiName = $request->kpi;
+		$sortParams = [];
+		$sortField = $request->sort_field;
+		$sortOrder = $request->sort_order;
 
-		$listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName);
+		$listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder);
 		$actions = $this->CareConsoleService->getActions($stageID);
 		$controls = $this->CareConsoleService->getControls($stageID);
 

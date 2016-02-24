@@ -7,6 +7,15 @@
 @endsection
 @section('content')
 <div class="content-section active" id="referral_types">
+	@if (Session::has('failure'))
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>
+            <i class="fa fa-check-circle fa-lg fa-fw"></i> Failure. &nbsp;
+        </strong>
+        {{ Session::get('failure') }}
+    </div>
+    @endif
 	<p class="message arial_bold">Select type of patient you are referring</p>
 	<div class="row arial">
 		{!! Form::open(array('url' => '/patients', 'method' => 'GET', 'id' => 'form_select_patient')) !!}
