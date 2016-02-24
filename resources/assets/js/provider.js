@@ -289,7 +289,7 @@ function getPatientInfo(formData) {
 //function that is used to fill the information about the patient
 function fillPatientInfo(data) {
 
-    $('#patient_name').text(data.firstname);
+    $('#patient_name').text(data.lastname + ', ' + data.firstname);
     $('#patient_email').text(data.email);
     $('#patient_dob').text(data.birthdate);
     $('#patient_add1').text(data.addressline1 + ',');
@@ -313,7 +313,7 @@ function fillPatientInfo(data) {
         $('.insurance_provider_icon').addClass('hide');
     else
         $('.patient_table_header').removeClass('hide');
-    $('.selected_patient_name').text(data.firstname);
+    $('.selected_patient_name').text(data.lastname + ', ' + data.firstname);
 
 }
 

@@ -208,7 +208,7 @@ function showPatientInfo(data) {
     $('.patient_list').removeClass('active');
     $('.patient_table_header').addClass('hide');
     $('.patient_info').addClass('active');
-    $('#patient_name').text(data.firstname);
+	$('#patient_name').text(data.lastname + ', '+ data.firstname);
     $('#patient_email').text(data.email);
     $('#patient_dob').text(data.birthdate);
     $('#patient_add1').text(data.addressline1 + ',');
