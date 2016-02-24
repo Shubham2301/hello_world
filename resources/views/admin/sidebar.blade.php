@@ -116,7 +116,7 @@
                                             <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-user-icon-hover.png')}}" style="width:100%"></span>
                                             <span class="add_text">add+</span>
                                         </a>
-                                        <a class="sidebar_button_subsection subsection_admin_title" href="/administration/users">
+										<a class="sidebar_button_subsection subsection_admin_title" href="/administration/users" id="{{ array_key_exists('user_active', $data) ? 'button_active' : '' }}">
                                             <span>Users</span>
                                         </a>
                                     </li>

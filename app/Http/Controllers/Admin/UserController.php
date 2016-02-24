@@ -35,7 +35,8 @@ class UserController extends Controller {
 		$userTypes = $this->getUserTypes();
 		$roles = $this->getRoles();
 		$userLevels = $this->getUserLevels();
-		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels]);
+		$data['user_active'] = true;
+		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data);
 	}
 
 	/**
