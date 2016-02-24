@@ -10,7 +10,8 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Announcement;
 use myocuhub\Models\AnnouncementUser;
 use myocuhub\User;
-
+use myocuhub\Role;
+use myocuhub\Role_user;
 class AnnouncementController extends Controller
 {
     /**
@@ -52,24 +53,15 @@ class AnnouncementController extends Controller
      */
     public function create(Request $request)
     {
-        $announcement = new Announcement;
-        $announcement->title = $request->input('title');
-        $announcement->message = $request->input('message');
-        $announcement->priority = $request->input('priority');
-        $announcement->type = $request->input('type');
-        $announcement->scheduled_date = $request->input('schedule');
-        $announcement->created_by_user = Auth::user()->id;
-        $announcement->save();
-        $users = User::all();
-        foreach($users as $user){
-            $announcementuser = new AnnouncementUser;
-            $announcementuser->user_id = $user->id;
-            $announcementuser->announcement_id = $announcement->id;
-            $announcementuser->read = 0;
-            $announcementuser->archive = 0;
-            $announcementuser->save();
-        }
-        return json_encode($announcement->id);
+        $roles = Role::all();
+		$roleArray = array();
+        $i = 0;
+		foreach ($roles as $role) {
+			$roleArray[$i][0] = $role->display_name;
+			$roleArray[$i][1] = $role->id;
+            $i++;
+		}
+        return json_encode($roleArray);
     }
 
     /**
@@ -80,7 +72,25 @@ class AnnouncementController extends Controller
      */
     public function store(Request $request)
     {
-       //
+        $announcement = new Announcement;
+        $announcement->title = $request->input('title');
+        $announcement->message = $request->input('message');
+        $announcement->priority = $request->input('priority');
+        $announcement->type = $request->input('type');
+        $announcement->scheduled_date = $request->input('schedule');
+        $announcement->role_id = $request->input('send_to');
+        $announcement->created_by_user = Auth::user()->id;
+        $announcement->save();
+        $users = Role_user::where('role_id', '=', $request->input('send_to'))->get();
+        foreach($users as $user){
+            $announcementuser = new AnnouncementUser;
+            $announcementuser->user_id = $user->user_id;
+            $announcementuser->announcement_id = $announcement->id;
+            $announcementuser->read = 0;
+            $announcementuser->archive = 0;
+            $announcementuser->save();
+        }
+        return json_encode($announcement->id);
     }
 
     /**
@@ -101,10 +111,11 @@ class AnnouncementController extends Controller
         $user = User::find($announcementData->created_by_user);
         $data['from'] = $user->name;
         $announcement = AnnouncementUser::where('user_id', '=', $userID)->where('announcement_id', '=', $announcementData->id)->first();
+        if(isset($announcement)){
         $announcementRead = AnnouncementUser::find($announcement->id);
         $announcementRead->read = 1;
         $announcementRead->save();
-
+        }
         return json_encode($data);
     }
 

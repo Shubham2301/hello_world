@@ -88,14 +88,36 @@ function resetDefaults() {
 function makeAnnouncementForm() {
     $('.announcement_content').html('');
     var content = '';
-    content += '<span class="make_announcement"><span class="make_row"><span class="left arial_bold">Send To</span><span class="right"><input type="text" id="send_to"></span></span><span class="make_row"><span class="left arial_bold">Title</span><span class="right"><input type="text" id="title"></span></span><span class="make_row"><span class="left arial_bold">Message</span><span class="right"><textarea name="textarea" id="message"></textarea></span></span><span class="make_row"><span class="left arial_bold">Type</span><span class="right"><span><input type="checkbox" class="type" value="General">&nbsp;General</span><span><input type="checkbox" class="type" value="News">&nbsp;News</span><span><input type="checkbox" class="type" value="Test">&nbsp;Test</span></span></span><span class="make_row"><span class="left arial_bold">Priority</span><span class="right"><span><input type="checkbox" class="priority" value="Normal">&nbsp;Normal</span><span><input type="checkbox" class="priority" value="Important">&nbsp;Important</span><span></span></span></span><span class="make_row"><span class="left arial_bold">Schedule</span><span class="right"><input type="text" id="schedule"></span></span><span class="make_row arial_bold"><button id="publish">Publish</button><button id="preview">Preview</button><button id="cancel">Cancel</button></span></span>';
-    $('.announcement_content').html(content);
-    var date = new Date();
-    $('#schedule').datetimepicker({
-        format: 'YYYY/MM/DD',
-        minDate: date,
-        defaultDate: date
+    $.ajax({
+        url: '/announcements/create',
+        type: 'GET',
+        data: '',
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            var roles = $.parseJSON(e);
+            content += '<span class="make_announcement"><span class="make_row"><span class="left arial_bold">Send To</span><span class="right"><select id="send_to">';
+            for (var i = 0; i < roles.length; i++) {
+                content += '<option value="' + roles[i][1] + '">' + roles[i][0] + '</option>';
+            }
+            content += '</select></span></span><span class="make_row"><span class="left arial_bold">Title</span><span class="right"><input type="text" id="title"></span></span><span class="make_row"><span class="left arial_bold">Message</span><span class="right"><textarea name="textarea" id="message"></textarea></span></span><span class="make_row"><span class="left arial_bold">Type</span><span class="right"><span><input type="checkbox" class="type" value="General">&nbsp;General</span><span><input type="checkbox" class="type" value="News">&nbsp;News</span><span><input type="checkbox" class="type" value="Test">&nbsp;Test</span></span></span><span class="make_row"><span class="left arial_bold">Priority</span><span class="right"><span><input type="checkbox" class="priority" value="Normal">&nbsp;Normal</span><span><input type="checkbox" class="priority" value="Important">&nbsp;Important</span><span></span></span></span><span class="make_row"><span class="left arial_bold">Schedule</span><span class="right"><input type="text" id="schedule"></span></span><span class="make_row arial_bold"><button id="publish">Publish</button><button id="preview">Preview</button><button id="cancel">Cancel</button></span></span>';
+            $('.announcement_content').html(content);
+            var date = new Date();
+            $('#schedule').datetimepicker({
+                format: 'YYYY/MM/DD',
+                minDate: date,
+                defaultDate: date
+            });
+        },
+        error: function () {
+            $('p.alert_message').text('Error');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
     });
+
+
 }
 
 function showAnnouncements() {
@@ -122,7 +144,7 @@ function showAnnouncements() {
             $('.announcement_content').html(content);
         },
         error: function () {
-            $('p.alert_message').text('');
+            $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },
         cache: false,
@@ -150,7 +172,7 @@ function getAnnouncementDetail(id) {
 
         },
         error: function () {
-            $('p.alert_message').text('');
+            $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },
         cache: false,
@@ -164,15 +186,17 @@ function makeAnnouncement() {
     var type = $('.type:checked').val();
     var priority = $('.priority:checked').val();
     var schedule = $('#schedule').val();
+    var send_to = $('#send_to').val();
     var formData = {
         'title': title,
         'message': message,
         'type': type,
         'priority': priority,
-        'schedule': schedule
+        'schedule': schedule,
+        'send_to': send_to
     };
     $.ajax({
-        url: '/announcements/create',
+        url: '/announcements/store',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',
@@ -185,7 +209,7 @@ function makeAnnouncement() {
             getAnnouncementDetail(id);
         },
         error: function () {
-            $('p.alert_message').text('');
+            $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },
         cache: false,
@@ -210,7 +234,7 @@ function archiveAnnouncement(id) {
             showAnnouncements();
         },
         error: function () {
-            $('p.alert_message').text('');
+            $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },
         cache: false,
@@ -236,7 +260,7 @@ function markAnnouncement(id) {
             showAnnouncements();
         },
         error: function () {
-            $('p.alert_message').text('');
+            $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },
         cache: false,

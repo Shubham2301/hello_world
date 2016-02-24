@@ -109,6 +109,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('administration/providers', 'Practice\ProviderController@administration');
 
     Route::get('/announcements/list', 'AnnouncementController@index');
+    Route::get('/announcements/store', 'AnnouncementController@store');
     Route::get('/announcements/create', 'AnnouncementController@create');
     Route::get('/announcements/show', 'AnnouncementController@show');
     Route::get('/announcements/archive', 'AnnouncementController@destroy');
