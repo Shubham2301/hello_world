@@ -61,7 +61,10 @@ class AnnouncementController extends Controller
 			$roleArray[$i][1] = $role->id;
             $i++;
 		}
-        return json_encode($roleArray);
+        $data = [];
+        $data['role_data'] = $roleArray;
+        $data['user'] = Auth::user()->name;
+        return json_encode($data);
     }
 
     /**
