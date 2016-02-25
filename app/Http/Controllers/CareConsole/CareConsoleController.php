@@ -8,6 +8,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Action;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
+use myocuhub\Models\Appointment;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
@@ -160,10 +161,22 @@ class CareConsoleController extends Controller {
 		$patients = Patient::getPatientsByName($request->name);
 		$i = 0;
 		$results = [];
+
 		foreach ($patients as $patient) {
 			$console = Careconsole::where('patient_id', $patient->id)->first();
+			$patient['appointment_id'] = $console->appointment_id;
 			$results[$i]['id'] = $patient->id;
+			$results[$i]['name'] = $patient->lastname.', '.$patient->firstname;
 			$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
+			$results[$i]['scheduled-to'] = 'info not found';
+			$results[$i]['appointment-date'] = 'info not found';
+			if($patient['appointment_id']){
+				$appointment = Appointment::find($patient['appointment_id']);
+				$provider = User::find($appointment->provider_id);
+				$results[$i]['scheduled_to'] = $provider->lastname . ', ' . $provider->firstname;
+				$results[$i]['appointment_date'] = $this->CareConsoleService->getPatientFieldValue($patient,'appointment-date');
+			}
+
 			$i++;
 		}
 		return json_encode($results);

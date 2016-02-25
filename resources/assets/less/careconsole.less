@@ -55,7 +55,8 @@ input#search_data{
         display: inline-block;
     }
 }
-.search_result{
+.search_result_info
+{
     display: none;
     &.active{
         display: block;
@@ -461,4 +462,45 @@ p.no_of_patients{
             background-color: #fff;
         }
     }
+}
+
+.search_result{
+	display: none;
+	&.active{
+		display: block;
+	}
+	&>.search_result_row{
+		color: black;
+		display: flex;
+		padding: 5px 5px;
+		font-size: .6em;
+		cursor: pointer;
+		margin: 0 5px 0 10px;
+		text-align: left;
+		border-top: solid 1px #ddd;
+		&>.circle{
+			padding: 0;
+			margin: 5px;
+		}
+		&>.col-xs-offset-2{
+			margin-left: 11.666667%;
+		}
+		&>.search_result_row_text>p{
+			padding: 0;
+			margin: 0;
+		}
+	}
+}
+.stage_name {
+	font-weight: bold;
+}
+
+.result_title {
+	font-weight: bold;
+}
+
+#back_to_search {
+	text-decoration: underline;
+	color:#00B6F1;
+	cursor: pointer;
 }
