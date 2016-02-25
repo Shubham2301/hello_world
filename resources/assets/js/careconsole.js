@@ -367,6 +367,7 @@ function setSearchFields(index){
 	$('.result_text.appointment_date').text(patient.appointment_date);
 	$('.search_result_info').addClass('active');
 	$('.search_result').removeClass('active');
+	$('#status_color').css('background-color',patient.stage_color);
 }
 function bucketData(bucketName) {
 

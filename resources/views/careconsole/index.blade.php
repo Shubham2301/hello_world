@@ -34,7 +34,7 @@
                     <div class="search_result_info">
                         <div class="search_result_row row">
                             <div class="col-xs-1">
-                                <div class="circle" style="background-color:red;margin-top:4px;"></div>
+                                <div class="circle" id="status_color"></div>
                             </div>
                             <div class="col-xs-11 search_result_row_text">
                                 <p class="result_title stage_name">Past Appointments</p>
