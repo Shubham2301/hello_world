@@ -16,6 +16,9 @@ use myocuhub\User;
 class CareConsoleService {
 
 	private $KPIService;
+	/**
+	 * @param KPIService $KPIService
+	 */
 	public function __construct(KPIService $KPIService) {
 		$this->KPIService = $KPIService;
 	}
@@ -50,6 +53,10 @@ class CareConsoleService {
 		return $controls;
 	}
 
+	/**
+	 * @param $stageID
+	 * @return mixed
+	 */
 	public function getActions($stageID) {
 		$actions = CareconsoleStage::find($stageID)->actions;
 		$actionsData = [];
@@ -65,7 +72,14 @@ class CareConsoleService {
 		return $actionsData;
 	}
 
-	public function getPatientListing($stageID, $kpiName, $sortField, $sortOrder) {
+	/**
+	 * @param $stageID
+	 * @param $kpiName
+	 * @param $sortField
+	 * @param $sortOrder
+	 * @return mixed
+	 */
+	public function getPatientListing($stageID, $kpiName = '', $sortField = '', $sortOrder = '') {
 		$userID = Auth::user()->id;
 		$network = User::getNetwork($userID);
 		$networkID = $network->network_id;
@@ -75,7 +89,7 @@ class CareConsoleService {
 		if ($sortOrder == '') {
 			$sortOrder = 'SORT_ASC';
 		}
-		//echo $sortField . ', ' . $sortOrder;
+
 		$headerData = [];
 		$patientsData = [];
 		$listing = [];
@@ -100,7 +114,7 @@ class CareConsoleService {
 			array_push($fields, $header['name']);
 			$i++;
 		}
-
+		$i = 0;
 		foreach ($patients as $patient) {
 			$patientsData[$i]['console_id'] = $patient['id'];
 			$patientsData[$i]['patient_id'] = $patient['patient_id'];
@@ -121,18 +135,69 @@ class CareConsoleService {
 
 		return $listing;
 	}
-    
-    public function getArchivedPatientsListing() {
-        return;
-    }
-    
-    public function getPriorityPatientsListing() {
-        return;
-    }
 
+	/**
+	 * @param $stageID
+	 * @return mixed
+	 */
+	public function getBucketPatientsListing($stageID) {
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
+
+		$headers = CareconsoleStage::find($stageID)->patientFields;
+		$patients = $this->KPIService->getBucketPatients($networkID, $stageID);
+
+		$headerData = [];
+		$patientsData = [];
+		$listing = [];
+		$i = 0;
+		$fields = [];
+
+		foreach ($headers as $header) {
+			$headerData[$i]['display_name'] = $header['display_name'];
+			$headerData[$i]['name'] = $header['name'];
+			$headerData[$i]['width'] = $header['width'];
+			array_push($fields, $header['name']);
+			$i++;
+		}
+
+		$i = 0;
+		foreach ($patients as $patient) {
+			$patientsData[$i]['console_id'] = $patient['id'];
+			$patientsData[$i]['patient_id'] = $patient['patient_id'];
+			$patientsData[$i]['priority'] = $patient['priority'];
+			foreach ($fields as $field) {
+				$patientsData[$i][$field] = $this->getPatientFieldValue($patient, $field);
+			}
+			$i++;
+		}
+
+		$listing['patients'] = $patientsData;
+		$listing['headers'] = $headerData;
+
+		return $listing;
+	}
+
+	/**
+	 * @param $patient
+	 * @param $field
+	 * @return mixed
+	 */
 	public function getPatientFieldValue($patient, $field) {
 		$dateFormat = 'F j Y, g:i a';
 		switch ($field) {
+			case 'archived-at':
+				$date = new \DateTime($patient['archived_at']);
+				return $date->format($dateFormat);
+				break;
+			case 'current-stage':
+				return CareconsoleStage::find($patient['stage_id'])->display_name;
+				break;
+			case 'recall-date':
+				$date = new \DateTime($patient['recall_date']);
+				return $date->format($dateFormat);
+				break;
 			case 'full-name':
 				return $patient['lastname'] . ', ' . $patient['firstname'];
 				break;
@@ -175,6 +240,11 @@ class CareConsoleService {
 		}
 	}
 
+	/**
+	 * @param $array
+	 * @param $cols
+	 * @return mixed
+	 */
 	public function array_msort($array, $cols) {
 		$colarr = array();
 		foreach ($cols as $col => $order) {

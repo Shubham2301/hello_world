@@ -31,13 +31,28 @@ $(document).ready(function () {
             $(this).addClass('active');
         }
     });
-    
+
     $(document).on('click', '.console_buckets', function () {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
+            $('.c3_overview_link').removeClass('active');
+            $('.control_section').removeClass('active');
+            $('ul.c3_sidebar_list').removeClass('active');
+            $('.before_drilldown').show();
+            $('.drilldown').removeClass('active');
+
+
         } else {
             $('.console_buckets').removeClass('active');
             $(this).addClass('active');
+
+            $('.c3_overview_link').addClass('active');
+            $('.control_section').addClass('active');
+            $('ul.c3_sidebar_list').addClass('active');
+            $('.before_drilldown').hide();
+            $('.drilldown').addClass('active');
+            $('.section-header').html($(this).find('p').html());
+            bucketData($(this).attr('data-name'));
         }
     });
 
@@ -82,6 +97,8 @@ $(document).ready(function () {
         $('.drilldown').addClass('active');
         $('.stage').removeClass('sidebar_items_active');
         $('.subsection-header').removeClass('active');
+        $('.console_buckets').removeClass('active');
+
         var stage_id = '';
         var stage_name = '';
         stage_id = $(this).attr('data-id');
@@ -250,8 +267,6 @@ function getPatientData() {
             $('#drilldown_patients_listing').html(listing);
             $('.control_section').html(controls);
             $('.dropdown-menu.action_dropdownmenu').html(actionList);
-            // $('#current_sort_field').val('');
-            // $('#current_sort_order').val('');
         },
         error: function error() {
             $('p.alert_message').text('Error:');
@@ -314,6 +329,50 @@ function refreshOverview() {
                     $('.info_section_number.' + kpi.name).html(kpi.count);
                 });
             });
+        },
+        error: function error() {
+            $('p.alert_message').text('Error:');
+            $('#alert').modal('show');
+        },
+        processData: false
+    });
+}
+
+function bucketData(bucketName) {
+
+    if (bucketName === 'recall') {
+        $('#drilldown_patients_listing').html('');
+        return;
+    }
+
+    var formData = {
+        'bucket': bucketName
+    };
+
+    $.ajax({
+        url: '/careconsole/bucketpatients',
+        type: 'GET',
+        contentType: 'text/html',
+        data: $.param(formData),
+        cache: false,
+        async: false,
+        success: function success(e) {
+            var data = $.parseJSON(e);
+            if (data.length === 0) {
+                return;
+            }
+            var listing = '';
+            var actionList = '';
+            var actions = data.actions;
+            listing = data.listing;
+            if (actions.length > 0) {
+                actions.forEach(function (action) {
+                    actionResults[action.id] = action.action_results;
+                    actionList += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '"><a href="#">' + action.display_name + '</a></li>';
+                });
+            }
+            $('#drilldown_patients_listing').html(listing);
+            $('.dropdown-menu.action_dropdownmenu').html(actionList);
         },
         error: function error() {
             $('p.alert_message').text('Error:');

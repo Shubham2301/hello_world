@@ -45,6 +45,29 @@ class Careconsole extends Model {
 
 	/**
 	 * @param $networkID
+	 */
+	public static function getArchivedPatients($networkID) {
+		return self::whereNotNull('archived_date')
+			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
+			->where('import_history.network_id', $networkID)
+			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+			->get(['*', 'careconsole.id', 'careconsole.created_at']);
+	}
+	/**
+	 * @param $networkID
+	 */
+	public static function getPriorityPatients($networkID) {
+		return self::where('priority', 1)
+			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
+			->where('import_history.network_id', $networkID)
+			->whereNull('archived_date')
+			->whereNull('recall_date')
+			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+			->get(['*', 'careconsole.id', 'careconsole.created_at']);
+	}
+
+	/**
+	 * @param $networkID
 	 * @param $stageID
 	 */
 	public static function getStagePatients($networkID, $stageID) {
@@ -190,6 +213,11 @@ class Careconsole extends Model {
 		return;
 	}
 
+	/**
+	 * @param $networkID
+	 * @param $stageID
+	 * @return mixed
+	 */
 	public static function getStageWaitingCount($networkID, $stageID) {
 
 		$sqlResult = DB::select("select count(*) as count from `careconsole`
@@ -204,6 +232,11 @@ class Careconsole extends Model {
 		return $sqlResult[0]->count;
 	}
 
+	/**
+	 * @param $networkID
+	 * @param $stageID
+	 * @return mixed
+	 */
 	public static function getStageOverdueCount($networkID, $stageID) {
 
 		$sqlResult = DB::select("select count(*) as count from `careconsole`
