@@ -96,6 +96,9 @@ class CareConsoleController extends Controller {
 		//
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getOverviewData() {
 		$userID = Auth::user()->id;
 		$network = User::getNetwork($userID);
@@ -128,6 +131,9 @@ class CareConsoleController extends Controller {
 		return $overview;
 	}
 
+	/**
+	 * @param Request $request
+	 */
 	public function getDrilldownData(Request $request) {
 		$stageID = $request->stage;
 		$kpiName = $request->kpi;
@@ -146,6 +152,9 @@ class CareConsoleController extends Controller {
 		return json_encode($drilldown);
 	}
 
+	/**
+	 * @param Request $request
+	 */
 	public function action(Request $request) {
 		$actionID = $request->action_id;
 		$actionResultID = $request->action_result_id;
@@ -156,6 +165,9 @@ class CareConsoleController extends Controller {
 		return json_encode($contactHistoryID);
 	}
 
+	/**
+	 * @param Request $request
+	 */
 	public function searchPatients(Request $request) {
 		$patients = Patient::getPatientsByName($request->name);
 		$i = 0;
@@ -169,4 +181,18 @@ class CareConsoleController extends Controller {
 		return json_encode($results);
 	}
 
+	/**
+	 * @param Request $request
+	 */
+	public function getBucketPatients(Request $request) {
+		$bucketName = $request->bucket;
+		$bucket = CareconsoleStage::where('name', $bucketName)->first();
+		$bucketID = $bucket->id;
+		$listing = $this->CareConsoleService->getBucketPatientsListing($bucketID);
+		$actions = $this->CareConsoleService->getActions($bucketID);
+
+		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
+		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->render();
+		return json_encode($drilldown);
+	}
 }

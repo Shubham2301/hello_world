@@ -3,6 +3,7 @@
 namespace myocuhub\Services\KPI;
 
 use myocuhub\Models\Careconsole;
+use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\KPI;
 
 class KPIService {
@@ -93,6 +94,28 @@ class KPIService {
 				$patients = [];
 				break;
 		}
+		return $patients;
+	}
+
+	/**
+	 * @param $networkID
+	 * @param $bucketID
+	 * @return mixed
+	 */
+	public function getBucketPatients($networkID, $bucketID) {
+
+		$bucketName = CareconsoleStage::find($bucketID)->name;
+		$patients = [];
+
+		switch ($bucketName) {
+			case 'archived':
+				$patients = Careconsole::getArchivedPatients($networkID);
+				break;
+			case 'priority':
+				$patients = Careconsole::getPriorityPatients($networkID);
+				break;
+		}
+
 		return $patients;
 	}
 

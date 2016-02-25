@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('careconsole/drilldown', 'CareConsole\CareConsoleController@getDrilldownData');
 		Route::get('careconsole/action', 'CareConsole\CareConsoleController@action');
 		Route::get('careconsole/searchpatient', 'CareConsole\CareConsoleController@searchPatients');
+		Route::get('careconsole/bucketpatients', 'CareConsole\CareConsoleController@getBucketPatients');
 		Route::resource('careconsole', 'CareConsole\CareConsoleController');
 	});
 
@@ -110,12 +111,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('administration/network/add', 'Admin\NetworkController@add');
 	Route::get('administration/providers', 'Practice\ProviderController@administration');
 
-    Route::get('/announcements/list', 'AnnouncementController@index');
-    Route::get('/announcements/store', 'AnnouncementController@store');
-    Route::get('/announcements/create', 'AnnouncementController@create');
-    Route::get('/announcements/show', 'AnnouncementController@show');
-    Route::get('/announcements/archive', 'AnnouncementController@destroy');
-    Route::get('/announcements/update', 'AnnouncementController@update');
+	Route::get('/announcements/list', 'AnnouncementController@index');
+	Route::get('/announcements/store', 'AnnouncementController@store');
+	Route::get('/announcements/create', 'AnnouncementController@create');
+	Route::get('/announcements/show', 'AnnouncementController@show');
+	Route::get('/announcements/archive', 'AnnouncementController@destroy');
+	Route::get('/announcements/update', 'AnnouncementController@update');
 
 	Route::get('/administration/patients/create', 'Patient\PatientController@createByAdmin');
 	Route::get('administration/patients', 'Patient\PatientController@administration');
