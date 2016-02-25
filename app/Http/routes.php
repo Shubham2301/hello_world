@@ -61,6 +61,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('careconsole/drilldown', 'CareConsole\CareConsoleController@getDrilldownData');
 		Route::get('careconsole/action', 'CareConsole\CareConsoleController@action');
 		Route::get('careconsole/searchpatient', 'CareConsole\CareConsoleController@searchPatients');
+		Route::get('careconsole/archivedpatients', 'CareConsole\CareConsoleController@getArchivedPatients');
+		Route::get('careconsole/prioritypatients', 'CareConsole\CareConsoleController@getPriorityPatients');
 		Route::resource('careconsole', 'CareConsole\CareConsoleController');
 	});
 

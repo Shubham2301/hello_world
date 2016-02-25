@@ -104,6 +104,7 @@ class CareConsoleService {
 		foreach ($patients as $patient) {
 			$patientsData[$i]['console_id'] = $patient['id'];
 			$patientsData[$i]['patient_id'] = $patient['patient_id'];
+			$patientsData[$i]['priority'] = $patient['priority'];
 			foreach ($fields as $field) {
 				$patientsData[$i][$field] = $this->getPatientFieldValue($patient, $field);
 			}
@@ -120,6 +121,14 @@ class CareConsoleService {
 
 		return $listing;
 	}
+    
+    public function getArchivedPatientsListing() {
+        return;
+    }
+    
+    public function getPriorityPatientsListing() {
+        return;
+    }
 
 	public function getPatientFieldValue($patient, $field) {
 		$dateFormat = 'F j Y, g:i a';

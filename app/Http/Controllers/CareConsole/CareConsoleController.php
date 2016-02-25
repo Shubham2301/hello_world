@@ -169,4 +169,10 @@ class CareConsoleController extends Controller {
 		return json_encode($results);
 	}
 
+    public function getArchivedPatients() {
+		return $this->CareConsoleService->getArchivedPatientsListing();
+	}
+    public function getPriorityPatients() {
+		return $this->CareConsoleService->getPriorityPatientsListing();
+	}
 }
