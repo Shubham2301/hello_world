@@ -13,6 +13,11 @@ $(document).ready(function () {
         $('.announcement_tabs').removeClass('active');
         resetDefaults();
     });
+    $('.announcement_content').on('click', '#close_announcement', function () {
+        $('.announcement_box').removeClass('visible');
+        $('.announcement_tabs').removeClass('active');
+        resetDefaults();
+    });
     $('.announcement_tabs').on('click', function () {
         $($(this).parent('.announcement_navbar_left').find('.active')).removeClass('active');
         $(this).addClass('active');
@@ -68,13 +73,18 @@ $(document).ready(function () {
     $('.announcement_content').on('click', '#publish', function () {
         makeAnnouncement();
     });
+    $('.announcement_content').on('click', '#preview', function () {
+        previewAnnouncement();
+    });
     $('.announcement_content').on('change', '.type', function () {
         $('.type').prop('checked', false);
         $(this).prop('checked', true);
+        $('#type').val($(this).val());
     });
     $('.announcement_content').on('change', '.priority', function () {
         $('.priority').prop('checked', false);
         $(this).prop('checked', true);
+        $('#priority').val($(this).val());
     });
 });
 
@@ -97,10 +107,10 @@ function makeAnnouncementForm() {
         success: function (e) {
             var roles = $.parseJSON(e);
             content += '<span class="make_announcement"><span class="make_row"><span class="left arial_bold">Send To</span><span class="right"><select id="send_to">';
-            for (var i = 0; i < roles.length; i++) {
-                content += '<option value="' + roles[i][1] + '">' + roles[i][0] + '</option>';
+            for (var i = 0; i < roles.role_data.length; i++) {
+                content += '<option value="' + roles.role_data[i][1] + '">' + roles.role_data[i][0] + '</option>';
             }
-            content += '</select></span></span><span class="make_row"><span class="left arial_bold">Title</span><span class="right"><input type="text" id="title"></span></span><span class="make_row"><span class="left arial_bold">Message</span><span class="right"><textarea name="textarea" id="message"></textarea></span></span><span class="make_row"><span class="left arial_bold">Type</span><span class="right"><span><input type="checkbox" class="type" value="General">&nbsp;General</span><span><input type="checkbox" class="type" value="News">&nbsp;News</span><span><input type="checkbox" class="type" value="Test">&nbsp;Test</span></span></span><span class="make_row"><span class="left arial_bold">Priority</span><span class="right"><span><input type="checkbox" class="priority" value="Normal">&nbsp;Normal</span><span><input type="checkbox" class="priority" value="Important">&nbsp;Important</span><span></span></span></span><span class="make_row"><span class="left arial_bold">Schedule</span><span class="right"><input type="text" id="schedule"></span></span><span class="make_row arial_bold"><button id="publish">Publish</button><button id="preview">Preview</button><button id="cancel">Cancel</button></span></span>';
+            content += '</select></span></span><span class="make_row"><span class="left arial_bold">Title</span><span class="right"><input type="text" id="title"></span></span><span class="make_row"><span class="left arial_bold">Message</span><span class="right"><textarea name="textarea" id="message"></textarea></span></span><span class="make_row"><span class="left arial_bold">Type</span><span class="right"><span><input type="checkbox" class="type" value="General">&nbsp;General</span><span><input type="checkbox" class="type" value="News">&nbsp;News</span><span><input type="checkbox" class="type" value="Test">&nbsp;Test</span></span></span><span class="make_row"><span class="left arial_bold">Priority</span><span class="right"><span><input type="checkbox" class="priority" value="Normal">&nbsp;Normal</span><span><input type="checkbox" class="priority" value="Important">&nbsp;Important</span><span></span></span></span><span class="make_row"><span class="left arial_bold">Schedule</span><span class="right"><input type="text" id="schedule"></span></span><span class="make_row arial_bold"><button id="publish">Publish</button><button id="preview">Preview</button><button id="close_announcement">Cancel</button></span></span><input type="hidden" value="' + roles.user + '" id="user_name"><input type="hidden" value="" id="priority"><input type="hidden" value="" id="type">';
             $('.announcement_content').html(content);
             var date = new Date();
             $('#schedule').datetimepicker({
@@ -135,7 +145,7 @@ function showAnnouncements() {
             announcements.forEach(function (announcement) {
                 content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"><input type="checkbox" class="select_item" name="checkbox" value="' + announcement.id + '"></span><span class="item_right list_item_section"><span class="title">From: ' + announcement.from + '</span><span class="date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section">';
                 if (announcement.read == 0) {
-                    content += '<span class="glyphicon glyphicon-exclamation-sign item_left"></span>';
+                    content += '<span class="glyphicon glyphicon-exclamation-sign item_left ' + announcement.priority + '"></span>';
                 } else {
                     content += '<span class="item_left"></span>';
                 }
@@ -183,8 +193,13 @@ function getAnnouncementDetail(id) {
 function makeAnnouncement() {
     var title = $('#title').val();
     var message = $('#message').val();
-    var type = $('.type:checked').val();
-    var priority = $('.priority:checked').val();
+    if (title == '' || message == '') {
+        $('p.alert_message').text('Please fill all fields');
+        $('#alert').modal('show');
+        return;
+    }
+    var type = $('#type').val();
+    var priority = $('#priority').val();
     var schedule = $('#schedule').val();
     var send_to = $('#send_to').val();
     var formData = {
@@ -204,8 +219,8 @@ function makeAnnouncement() {
         success: function (e) {
             var id = $.parseJSON(e);
             resetDefaults();
-            $('.delete').addClass('active');
-            $('.back-button').addClass('active');
+            $('.delete').removeClass('active');
+            $('.back-button').removeClass('active');
             getAnnouncementDetail(id);
         },
         error: function () {
@@ -266,5 +281,23 @@ function markAnnouncement(id) {
         cache: false,
         processData: false
     });
+}
 
+function previewAnnouncement() {
+    var title = $('#title').val();
+    var message = $('#message').val();
+    var type = $('#type').val();
+    if (title == '' || message == '') {
+        $('p.alert_message').text('Please fill all fields');
+        $('#alert').modal('show');
+        return;
+    }
+    var priority = $('#priority').val();
+    var schedule = $('#schedule').val();
+    var send_to = $('#send_to').val();
+    var user_name = $('#user_name').val();
+    $('.announcement_content').html('');
+    var content = '';
+    content = '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_right list_item_section"><span class="title">From: ' + user_name + '</span><span class="date">' + schedule + '</span></span></span><span class="item_subject list_item_section"><span class="title arial_bold item_right"><span class="" data-id="">' + title + '</span></span></span><span class="item_text list_item_section"><span class="item_right">' + message + '</span></span><span class="make_row arial_bold"><button id="publish">Publish</button><button id="close_announcement">Cancel</button></span></span><input type="hidden" value="' + title + '" id="title"><input type="hidden" value="' + message + '" id="message"><input type="hidden" value="' + schedule + '" id="schedule"><input type="hidden" value="' + priority + '" id="priority"><input type="hidden" value="' + type + '" id="type"><input type="hidden" value="' + send_to + '" id="send_to">';
+    $('.announcement_content').html(content);
 }
