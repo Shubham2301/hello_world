@@ -120,6 +120,8 @@ class BulkImportController extends Controller {
 								$careconsole->import_id = $importHistory->id;
 								$careconsole->patient_id = $patient->id;
 								$careconsole->stage_id = 1;
+								$date = new DateTime();
+								$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 								$careconsole->save();
 								$i++;
 							}

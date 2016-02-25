@@ -16,6 +16,10 @@ Content
 -----------------------------
 */
 
+.bootstrap-datetimepicker-widget {
+    position: absolute;
+    bottom: 0;
+}
 .announcement_box {
     width: 50%;
     height: 100%;
@@ -99,6 +103,12 @@ Content
             justify-content: center;
             text-align: center;
             color: #00a1e4;
+            &.Normal {
+                color: #00a1e4;
+            }
+            &.Important {
+                color: #ea4335;
+            }
         }
     }
     &>.item_right {
@@ -229,6 +239,9 @@ Make annoucement section
                 height: 7em;
                 width: 100%;
             }
+            &>select {
+                width: 100%;
+            }
         }
         &>button {
             color: #4d4d4d;
@@ -239,6 +252,22 @@ Make annoucement section
                 color: #00a1e4;
                 border: solid 1px #00a1e4;
             }
+        }
+    }
+}
+.make_row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 1em 0;
+    &>button {
+        color: #4d4d4d;
+        border: solid 1px #9d9fa2;
+        border-radius: .2em;
+        background-color: transparent;
+        &:hover {
+            color: #00a1e4;
+            border: solid 1px #00a1e4;
         }
     }
 }

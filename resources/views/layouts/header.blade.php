@@ -15,7 +15,9 @@
 <div class="row height header">
     <div class="col-xs-3 hidden-xs header-left">
 		<div class="col-xs-5 network_logo" >
+        @if(Auth::check())
 		<img src="{{URL::asset('images/networks/default_network_logo.jpg')}}" class="img-responsive">
+        @endif
 		</div>
     </div>
     <div class="col-xs-12 col-sm-9 header-right">

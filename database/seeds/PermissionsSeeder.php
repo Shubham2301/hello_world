@@ -48,7 +48,7 @@ class PermissionsSeeder extends Seeder
 	            'name' => 'edit-practices',
 	            'display_name' => 'Edit Practices ',
 	            'description' => 'Can edit practices',
-	        ], 
+	        ],
 	        [
 	            'name' => 'delete-practices',
 	            'display_name' => 'Delete Practices ',
@@ -63,12 +63,12 @@ class PermissionsSeeder extends Seeder
 	            'name' => 'edit-documents',
 	            'display_name' => 'Edit Documents ',
 	            'description' => 'Can edit documents',
-	        ], 
+	        ],
 	        [
 	            'name' => 'delete-documents',
 	            'display_name' => 'Delete Documents ',
 	            'description' => 'Can delete documents',
-	        ], 
+	        ],
 	        [
 	            'name' => 'add-folders',
 	            'display_name' => 'Add Folders',
@@ -78,12 +78,12 @@ class PermissionsSeeder extends Seeder
 	            'name' => 'edit-folders',
 	            'display_name' => 'Edit Folders ',
 	            'description' => 'Can edit folders',
-	        ], 
+	        ],
 	        [
 	            'name' => 'delete-folders',
 	            'display_name' => 'Delete Folders ',
 	            'description' => 'Can delete folders',
-	        ], 
+	        ],
 	        [
 	            'name' => 'add-announcement',
 	            'display_name' => 'Add Announcement',
@@ -93,17 +93,17 @@ class PermissionsSeeder extends Seeder
 	            'name' => 'edit-announcement',
 	            'display_name' => 'Edit Announcement ',
 	            'description' => 'Can edit announcement',
-	        ], 
+	        ],
 	        [
 	            'name' => 'delete-announcement',
 	            'display_name' => 'Delete Announcement ',
 	            'description' => 'Can delete announcement',
-	        ], 
+	        ],
 	        [
 	            'name' => 'bulk-import',
 	            'display_name' => 'Bulk Import',
 	            'description' => 'Can bulk import patients/practices',
-	        ], 
+	        ],
         ]);
     }
 }

@@ -174,6 +174,13 @@
         if (!window.location.search) {
             document.getElementById("getCodeBtn").click();
         }
+        /*if (window.location.search){
+            $(window).on("beforeunload", function() {
+                document.getElementById('ocuhubSESiframeId').src = '{{ $ses['sso_logoff_url'] }}';
+                document.getElementById('ocuhubSESiframeId').src = 'http://local.myocuhub.com/file_exchange';
+                return "Signing Off From Direct Mail";
+            });
+        }*/
     </script>
 
     @endif

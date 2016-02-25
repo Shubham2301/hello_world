@@ -76,6 +76,8 @@
             </div>
         </div>
     </div>
+
+    @include('careconsole.patientinfo')
     @include('careconsole.overview')
     @include('careconsole.drilldown')
     @include('careconsole.actions')

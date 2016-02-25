@@ -55,6 +55,7 @@ class SESConnect extends SES {
 		$config['token_url'] = 'https://direct.ocuhub.com/sesidpserver/connect/token';
 		$config['iframe_height'] = 800;
 		$config['iframe_width'] = 1000;
+		$config['sso_logoff_url'] = 'https://direct.ocuhub.com/sesidpserver/connect/endsession';
 
 		return $config;
 	}

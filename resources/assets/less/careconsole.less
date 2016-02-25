@@ -214,7 +214,8 @@ input#search_data{
     .sort_order{
         position: absolute;
         display:none;
-        margin-left: 4px;
+        right:0;
+
     }
 }
 .drilldown_item {
@@ -394,6 +395,27 @@ ul.c3_sidebar_list{
         box-shadow: none;
     }
 }
+.console_buckets{
+    background-color: #e3e3e3;
+    border-radius: .4em;
+    height: 4em;
+    width: 5em;
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 0 5px #898989;
+    &>p{
+        margin: 0;
+    }
+    &>h4{
+        margin: 11px 0 0 0;
+        font-size: 1.5em;
+    }
+    &.active{
+        background-color: #d2d3d5;
+        box-shadow: none;
+    }
+}
 .empty{
         height: 4em;
         width: 4em;
@@ -463,7 +485,6 @@ p.no_of_patients{
         }
     }
 }
-
 .search_result{
 	display: none;
 	&.active{
@@ -503,4 +524,83 @@ p.no_of_patients{
 	text-decoration: underline;
 	color:#00B6F1;
 	cursor: pointer;
+}
+.patient_records_info{
+    width: 40%;
+    background-color: #fff;
+    display:none;
+    opacity:0;
+    right:0;
+    top:5%;
+    color: #4d4d4d;
+    padding: 1em 2em;
+    border-top-left-radius: .5em;
+    border-bottom-left-radius: .5em;
+    position: absolute;
+    box-shadow: 2px 0 2px #0071bc;
+    z-index: 1;
+    font-size:0.9em;
+    .history_item_name{
+        display: inline-block;
+        left: 0;
+        width: 68%;
+    }
+    .history_item_date{
+        display: inline-block;
+        right: 0;
+        width: 30%;
+    }
+    .patient_name{
+        font-size:1.5em;
+        color: #0071bc;
+    }
+    &.active{
+        display:block;
+        opacity: 0.95;
+        transition: opacity .5s;
+    }
+    .history_item{
+        font-size:0.9em;
+        width:100%;
+        cursor:pointer;
+        &.active{
+            color: #00a1e4;
+        }
+    }
+    .contact_notes{
+        border: 1px solid #00a1e4;
+        font-style: italic;
+        font-size:0.9em;
+        height: 8em;
+        padding: 0.25em 0.5em;
+    }
+    .patient_contact_info, .patient_appt_info{
+        margin-top: 2em;
+    }
+    .close_patient_records_info{
+        position: absolute;
+        right: 1em;
+    }
+    .action_dropdown_patient_info{
+        text-align: center;
+        display: inline-block;
+        padding: 0.25em 0.5em;
+        margin: 0 auto;
+        width: 100%;
+        &>div{
+            display: inline-block;
+            background: #e0e0e0;
+            padding: 0.25em 0.5em;
+            border-radius: 0.3em;
+        }
+    }
+}
+.console_buckets{
+    font-size: 0.8em;
+    &>img{
+        width: 50%;
+    }
+}
+.console_bucket_row{
+    margin:2em auto;
 }

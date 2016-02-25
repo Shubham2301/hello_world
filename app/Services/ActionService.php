@@ -2,6 +2,7 @@
 
 namespace myocuhub\Services;
 
+use DateTime;
 use myocuhub\Models\Action;
 use myocuhub\Models\ActionResult;
 use myocuhub\Models\Appointment;
@@ -46,7 +47,9 @@ class ActionService {
 				break;
 			case 'archive':
 				$console = Careconsole::find($consoleID);
-				$console->archived = 1;
+				$date = new DateTime();
+				$console->archived_date = $date->format('Y-m-d H:m:s');
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			case 'kept-appointment':
@@ -56,6 +59,8 @@ class ActionService {
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
 				$console->stage_id = 4;
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			case 'no-show':
@@ -65,6 +70,8 @@ class ActionService {
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
 				$console->stage_id = 3;
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			case 'cancelled':
@@ -74,16 +81,25 @@ class ActionService {
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
 				$console->stage_id = 3;
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			case 'data-received':
 				$console = Careconsole::find($consoleID);
 				$console->stage_id = 5;
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				$appointment = Appointment::find($console->appointment_id);
 				$kpi = Kpi::where('name', 'ready-to-be-completed')->first();
 				$appointment->appointment_status = $kpi['id'];
 				$appointment->save();
+				break;
+			case 'mark-as-priority':
+				$console = Careconsole::find($consoleID);
+				$console->priority = 1;
+				$console->save();
 				break;
 			case 'annual-exam':
 			case 'refer-to-specialist':
@@ -92,13 +108,20 @@ class ActionService {
 				break;
 		}
 		switch ($actionResultName) {
+			case 'mark-as-priority':
+				$console = Careconsole::find($consoleID);
+				$console->priority = 1;
+				$console->save();
+				break;
 			case 'already-seen-by-outside-dr':
 			case 'patient-declined-services':
 			case 'other-reasons-for-declining':
 			case 'no-need-to-schedule':
 			case 'no-insurance':
 				$console = Careconsole::find($consoleID);
-				$console->archived = 1;
+				$date = new DateTime();
+				$console->archived_date = $date->format('Y-m-d H:m:s');
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			default:

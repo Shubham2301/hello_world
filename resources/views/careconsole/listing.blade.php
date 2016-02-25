@@ -33,8 +33,14 @@
             </div>
         </div>
         @else
-        <div class="col-xs-{{ $header['width'] }}" data-name="{{ $header['name'] }}">
-            <p>{{ $patient[$header['name']] }}</p>
+        <div class="col-xs-{{ $header['width'] }}" data-consoleid="{{ $patient['console_id'] }}" data-name="{{ $header['name'] }}">
+            <p>
+                {{ $patient[$header['name']] }}
+                @if($header['name'] === 'full-name' && $patient['priority'] === '1')
+                    <img src="{{URL::asset('images/priority-icon.png')}}" style="width:1em" alt="">
+                @endif
+            </p>
+
         </div>
         @endif
         @endforeach
