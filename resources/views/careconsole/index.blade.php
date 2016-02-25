@@ -62,15 +62,18 @@
                         <div class="search_result_row row">
                            <div class="col-xs-3"></div>
                             <div class="col-xs-9  search_result_row_text">
-                                <p class="result_title">Take action
+								<div class="dropdown" style="cursor: pointer;">
+								   <p class="result_title" data-toggle="dropdown">Take action
                                     <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                                 </p>
+								   <ul class="dropdown-menu" id="search_action_dropdown">
+								   	<li>ASDF</li>
+								   	<li>EFGH</li>
+								   </ul>
+								</div>
                                 <p id='back_to_search'>back to search</p>
                             </div>
-
                         </div>
-
-
                     </div>
                 </div>
             </div>
