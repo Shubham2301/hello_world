@@ -368,6 +368,12 @@ function setSearchFields(index){
 	$('.search_result_info').addClass('active');
 	$('.search_result').removeClass('active');
 	$('#status_color').css('background-color',patient.stage_color);
+	var content = '';
+	patient.actions.forEach(function(action){
+		content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '"><a href="#">' + action.display_name + '</a></li>';
+	});
+	$('#search_action_dropdown').html(content);
+
 }
 function bucketData(bucketName) {
 
