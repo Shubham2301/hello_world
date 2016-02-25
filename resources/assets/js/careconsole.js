@@ -23,11 +23,20 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on('click','.C3_day_box', function () {
+    $(document).on('click', '.C3_day_box', function () {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
         } else {
             $('.C3_day_box').removeClass('active');
+            $(this).addClass('active');
+        }
+    });
+    
+    $(document).on('click', '.console_buckets', function () {
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        } else {
+            $('.console_buckets').removeClass('active');
             $(this).addClass('active');
         }
     });
@@ -82,10 +91,9 @@ $(document).ready(function () {
         showStageData(stage_id, stage_name);
     });
     $('#drilldown_patients_listing').on('click', '.careconsole_action', function () {
-        console.log('yo1');
-        if ($('#current_stage').val() === '-1')
+        if ($('#current_stage').val() === '-1') {
             return;
-        console.log('yo1');
+        }
         switch ($(this).attr('data-name')) {
         case 'schedule':
             window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).parent().attr('data-patientid');
@@ -113,7 +121,7 @@ $(document).ready(function () {
     });
     $(document).on('click', '.drilldown_header_item', function () {
         var field = $(this).find('.sort_order');
-        if (field.length == 0) {
+        if (field.length === 0) {
             return;
         }
         if (field.css('display') !== 'none') {
@@ -121,7 +129,7 @@ $(document).ready(function () {
                 field.attr('data-order', 'SORT_ASC');
                 field.removeClass('glyphicon-chevron-down');
                 field.addClass('glyphicon-chevron-up');
-            } else if (field.attr('data-order') === 'SORT_ASC'){
+            } else if (field.attr('data-order') === 'SORT_ASC') {
                 field.attr('data-order', 'SORT_DESC');
                 field.removeClass('glyphicon-chevron-up');
                 field.addClass('glyphicon-chevron-down');
@@ -133,14 +141,15 @@ $(document).ready(function () {
         $('#current_sort_order').val(field.attr('data-order'));
         getPatientData();
     });
-    $(document).on('click', '.drilldown_item>div', function (){
-        if($(this).attr('data-name') === 'actions')
+    $(document).on('click', '.drilldown_item>div', function () {
+        if ($(this).attr('data-name') === 'actions') {
             return;
+        }
         var consoleID = $(this).attr('data-consoleid');
-        
+
         $('.patient_records_info').addClass('active');
     });
-    $(document).on('click', '.close_patient_records_info', function (){
+    $(document).on('click', '.close_patient_records_info', function () {
         $('.patient_records_info').removeClass('active');
     });
 
@@ -161,7 +170,7 @@ function searchc3() {
             async: false,
             success: function success(e) {
                 e = $.parseJSON(e);
-                if (e.length != 0) { //replace with loop for multiple patients in search result.
+                if (e.length !== 0) { //replace with loop for multiple patients in search result.
                     $('.result_title.stage_name').html(e[0].stage_name);
                     $('.search_result').addClass('active');
                 }
@@ -224,13 +233,14 @@ function getPatientData() {
         async: false,
         success: function success(e) {
             var data = $.parseJSON(e);
-            if (data.length == 0)
+            if (data.length === 0) {
                 return;
+            }
             var listing = '';
             var actionList = '';
             var actions = data.actions;
             var controls = data.controls;
-            var listing = data.listing;
+            listing = data.listing;
             if (actions.length > 0) {
                 actions.forEach(function (action) {
                     actionResults[action.id] = action.action_results;
@@ -280,7 +290,6 @@ function action() {
             $('p.alert_message').text('Error:');
             $('#alert').modal('show');
         },
-        cache: false,
         processData: false
     });
 }
@@ -294,8 +303,9 @@ function refreshOverview() {
         cache: false,
         async: false,
         success: function success(e) {
-            if (e.length === 0)
+            if (e.length === 0) {
                 return;
+            }
             var stages = e.stages;
 
             stages.forEach(function (stage) {
@@ -309,7 +319,6 @@ function refreshOverview() {
             $('p.alert_message').text('Error:');
             $('#alert').modal('show');
         },
-        cache: false,
         processData: false
     });
 }

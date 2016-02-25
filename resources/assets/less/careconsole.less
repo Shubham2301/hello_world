@@ -394,6 +394,27 @@ ul.c3_sidebar_list{
         box-shadow: none;
     }
 }
+.console_buckets{
+    background-color: #e3e3e3;
+    border-radius: .4em;
+    height: 4em;
+    width: 5em;
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 0 5px #898989;
+    &>p{
+        margin: 0;
+    }
+    &>h4{
+        margin: 11px 0 0 0;
+        font-size: 1.5em;
+    }
+    &.active{
+        background-color: #d2d3d5;
+        box-shadow: none;
+    }
+}
 .empty{
         height: 4em;
         width: 4em;
@@ -532,4 +553,13 @@ p.no_of_patients{
             border-radius: 0.3em;
         }
     }
+}
+.console_buckets{
+    font-size: 0.8em;
+    &>img{
+        width: 50%;
+    }
+}
+.console_bucket_row{
+    margin:2em auto;
 }

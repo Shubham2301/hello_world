@@ -25,8 +25,8 @@
         @foreach($overview['stages'] as $stage)
         <li class="sidebar_menu_item">
             <div class="stage box" id="sidebar_{{ $stage['name'] }}" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}"><span style="background-color:{{ $stage['color_indicator'] }}"><p class="stage-notation">{{ $stage['abbr'] }}</p></span><p>{{ $stage['display_name'] }}</p></div>
-            <!--
-            <ul>
+
+            <!-- <ul>
                 <div class="info_box">
                     <div class="top">
                         @if(isset($stage['kpis']))
@@ -45,8 +45,8 @@
                         @endif
                     </div>
                 </div>
-            </ul>
-            -->
+            </ul> -->
+
         </li>
         @endforeach
         <!--
@@ -55,5 +55,19 @@
         </li>
         -->
     </ul>
+<div class="C3_day_row console_bucket_row">
+    <div class="console_buckets" style="color:black">
+        <img src="{{URL::asset('images/recall-icon.png')}}" alt="">
+        <p>Recalll</p>
+    </div>
+    <div class=" console_buckets" style="color:black">
+        <img src="{{URL::asset('images/archive-icon.png')}}" alt="">
+        <p>Archive</p>
+    </div>
+    <div class=" console_buckets" style="color:black">
+        <img src="{{URL::asset('images/priority-icon.png')}}" alt="">
+        <p>Priority</p>
+    </div>
+</div>
     <div class="control_section"></div>
 </div>
