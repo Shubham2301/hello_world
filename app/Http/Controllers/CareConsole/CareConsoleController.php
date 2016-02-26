@@ -212,4 +212,24 @@ class CareConsoleController extends Controller {
 		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->render();
 		return json_encode($drilldown);
 	}
+	public function getPatientRecords(Request $request){
+		$consoleID = $request->consoleID;
+		$console = Careconsole::find($consoleID);
+		$patient = Patient::find($console->patient_id);
+		$data = [];
+		$data['name'] =$patient->lastname.', '.$patient->firstname;
+		$data['phone'] =$patient->cellphone;
+		$appointment = Appointment::find($console->appointment_id);
+		$provider = null;
+		$data['appointment_type']='not found';
+		if($appointment){
+		$provider = User::find($appointment->provider_id);
+		$data['appointment_type'] = $appointment->appointmenttype;
+		}
+		$data['scheduled_to']= ($provider) ? $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname : 'no info found';
+
+		$data['appointment_date'] = ($console->appointment_id) ? $this->CareConsoleService->getPatientFieldValue($console,'appointment-date') : 'no info found';
+
+		return json_encode($data);
+	}
 }
