@@ -8,6 +8,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Action;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
+use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Appointment;
 use myocuhub\Network;
 use myocuhub\Patient;
@@ -179,6 +180,8 @@ class CareConsoleController extends Controller {
 			if($console){
 				$patient['appointment_id'] = $console->appointment_id;
 				$results[$i]['id'] = $patient->id;
+				$results[$i]['console_id'] = $console->id;
+				$results[$i]['stage_id'] = $console->stage_id;
 				$results[$i]['name'] = $patient->lastname.', '.$patient->firstname;
 				$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
 				$results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
@@ -217,19 +220,46 @@ class CareConsoleController extends Controller {
 		$console = Careconsole::find($consoleID);
 		$patient = Patient::find($console->patient_id);
 		$data = [];
+		$data['patient_id'] =$console->patient_id;
 		$data['name'] =$patient->lastname.', '.$patient->firstname;
 		$data['phone'] =$patient->cellphone;
 		$appointment = Appointment::find($console->appointment_id);
 		$provider = null;
 		$data['appointment_type']='not found';
+		$data['actions']= CareconsoleStage::find($console->stage_id)->actions;
+		$data['stageid']= $console->stage_id;
 		if($appointment){
-		$provider = User::find($appointment->provider_id);
-		$data['appointment_type'] = $appointment->appointmenttype;
+			$provider = User::find($appointment->provider_id);
+			$data['appointment_type'] = $appointment->appointmenttype;
 		}
 		$data['scheduled_to']= ($provider) ? $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname : 'no info found';
 
 		$data['appointment_date'] = ($console->appointment_id) ? $this->CareConsoleService->getPatientFieldValue($console,'appointment-date') : 'no info found';
+		$data['attempt_phon']='no info found';
+		$data['archive'] = 'no info found';
+		$data['other'] = 'no info found';
+		$attempt_phone_date = ContactHistory::where('console_id', $consoleID)->where('action_id', 1)->first();
+		if($attempt_phone_date){
+			$date = new \DateTime($attempt_phone_date->contact_activity_date);
+			$data['attempt_phon'] = $date->format('j F Y');
+		}
 
+		$attempt_archive_date = ContactHistory::where('console_id',$consoleID)->where('action_id', 3)->orderBy('contact_activity_date','DESC')->first();
+		if($attempt_archive_date){
+			$date = new \DateTime($attempt_archive_date->contact_activity_date);
+			$data['archive'] = $date->format('j F Y');
+		}
+
+		$attempt_other_date = ContactHistory::where('console_id',$consoleID)->where('action_id', 13)->orderBy('contact_activity_date','DESC')->first();
+		if($attempt_other_date){
+			$date = new \DateTime($attempt_other_date->contact_activity_date);
+			$data['other'] = $date->format('j F Y');
+		}
+		$data['notes'] = 'no notes';
+		$notes = ContactHistory::where('console_id',$consoleID)->orderBy('contact_activity_date','DESC')->first();
+		if($notes){
+			$data['notes'] = $notes->notes;
+		}
 		return json_encode($data);
 	}
 }
