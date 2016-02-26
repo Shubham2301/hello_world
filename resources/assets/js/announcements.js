@@ -34,6 +34,7 @@ $(document).ready(function () {
         if ($("input[name='checkbox']:checked").length > 0) {
             $('.delete').addClass('active');
             $('.mark_as_read').addClass('active');
+            $('.sent_by_me').removeClass('active');
 
         } else {
             resetDefaults();
@@ -41,14 +42,26 @@ $(document).ready(function () {
     });
     $('.announcement_content').on('click', '.item_link', function () {
         var id = $(this).attr('data-id');
-        resetDefaults();
-        $('.delete').addClass('active');
-        $('.back-button').addClass('active');
-        getAnnouncementDetail(id);
+        if ($('#sent_by_me').hasClass('sent_to_me')) {
+            $('.back-button').addClass('active');
+            $('.sent_by_me').removeClass('active');
+            getAnnouncementDetail(id);
+        } else {
+            resetDefaults();
+            $('.delete').addClass('active');
+            $('.back-button').addClass('active');
+            $('.sent_by_me').removeClass('active');
+            getAnnouncementDetail(id);
+        }
+
     });
     $('.back-button').on('click', function () {
-        resetDefaults();
-        showAnnouncements();
+        if ($('#sent_by_me').hasClass('sent_to_me')) {
+            announcementByUserList()
+        } else {
+            resetDefaults();
+            showAnnouncements();
+        }
     });
     $('.mark_as_read').on('click', function () {
         var id = [];
@@ -86,16 +99,30 @@ $(document).ready(function () {
         $(this).prop('checked', true);
         $('#priority').val($(this).val());
     });
+    $('#sent_by_me').on('click', function () {
+        if ($('#sent_by_me').hasClass('sent_to_me')) {
+            resetDefaults();
+            showAnnouncements();
+        } else {
+            $('#sent_by_me').html('Sent to me');
+            $('#sent_by_me').addClass('sent_to_me');
+            announcementByUserList();
+        }
+    });
 });
 
 function resetDefaults() {
     $('.delete').removeClass('active');
     $('.mark_as_read').removeClass('active');
     $('.back-button').removeClass('active');
+    $('.sent_by_me').addClass('active');
     $('.delete').removeAttr('id');
+    $('#sent_by_me').html('Sent by me');
+    $('#sent_by_me').removeClass('sent_to_me')
 }
 
 function makeAnnouncementForm() {
+    $('.sent_by_me').removeClass('active');
     $('.announcement_content').html('');
     var content = '';
     $.ajax({
@@ -126,8 +153,6 @@ function makeAnnouncementForm() {
         cache: false,
         processData: false
     });
-
-
 }
 
 function showAnnouncements() {
@@ -165,6 +190,10 @@ function showAnnouncements() {
 function getAnnouncementDetail(id) {
     $('.announcement_content').html('');
     $('.delete').attr('id', id);
+    if ($('#sent_by_me').hasClass('sent_to_me')) {
+        $('.delete').removeClass('active');
+        $('.sent_by_me').removeClass('active');
+    }
     var content = '';
     var formData = {
         'id': id
@@ -221,6 +250,7 @@ function makeAnnouncement() {
             resetDefaults();
             $('.delete').removeClass('active');
             $('.back-button').removeClass('active');
+            $('.sent_by_me').removeClass('active');
             getAnnouncementDetail(id);
         },
         error: function () {
@@ -300,4 +330,34 @@ function previewAnnouncement() {
     var content = '';
     content = '<span class="preview_announcement_list_item arial"><span class="item_left"></span><span class="item_right"><span class="item_header list_item_section"><span class="item_right list_item_section"><span class="title">From: ' + user_name + '</span><span class="date">' + schedule + '</span></span></span><span class="item_subject list_item_section"><span class="title arial_bold item_right"><span class="" data-id="">' + title + '</span></span></span><span class="item_text list_item_section"><span class="item_right">' + message + '</span></span><span class="make_row arial_bold"><button id="publish">Publish</button><button id="close_announcement">Cancel</button></span></span><input type="hidden" value="' + title + '" id="title"><input type="hidden" value="' + message + '" id="message"><input type="hidden" value="' + schedule + '" id="schedule"><input type="hidden" value="' + priority + '" id="priority"><input type="hidden" value="' + type + '" id="type"><input type="hidden" value="' + send_to + '" id="send_to">';
     $('.announcement_content').html(content);
+}
+
+function announcementByUserList() {
+
+    $('.announcement_content').html('');
+    $('.back-button').removeClass('active');
+    $('#sent_by_me').addClass('active');
+    var content = '';
+    $.ajax({
+        url: '/announcements/announcementbyuserlist',
+        type: 'GET',
+        data: '',
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            var announcements = $.parseJSON(e);
+            announcements.forEach(function (announcement) {
+                content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section"><span class="from">From: ' + announcement.from + '</span><span class=" from date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section">';
+                content += '<span class="item_left"></span>';
+                content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right excerpt">' + announcement.excerpt + '</span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
+            });
+            $('.announcement_content').html(content);
+        },
+        error: function () {
+            $('p.alert_message').text('Error');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
 }

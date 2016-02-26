@@ -181,4 +181,29 @@ class AnnouncementController extends Controller
         }
         return(json_encode('1'));
     }
+    /**
+     * Return announcements made by the user
+     *
+     */
+
+    public function get_announcement_by_user(Request $request)
+    {
+        $id = Auth::user()->id;
+        $user = User::find($id);
+        $announcements = Announcement::where('created_by_user', '=', $id)->orderBy('id', 'desc')->get();
+        $data = [];
+        $i = 0;
+        foreach($announcements as $announcement) {
+                $data[$i]['id'] = $announcement->id;
+                $data[$i]['title'] = $announcement->title;
+                $data[$i]['type'] = $announcement->type;
+                $data[$i]['schedule'] = date('m-d-Y', strtotime($announcement->scheduled_date));
+                $data[$i]['priority'] = $announcement->priority;
+                $data[$i]['message'] = $announcement->message;
+                $data[$i]['excerpt'] = substr($announcement->message, 0, 30);
+                $data[$i]['from'] = $user->name;
+                $i++;
+        }
+        return json_encode($data);
+    }
 }
