@@ -45,49 +45,81 @@ Content
     &>.announcement_row {
         display: flex;
         flex-direction: row;
-    }
-    &>.title {
-        color: #4d4d4d;
-        margin: .5em;
-        justify-content: space-between;
-        font-size: 1.5em;
-        &>#close_announcement {
-            cursor: pointer;
-            &:hover {
-                color: #ed1c24;
-                opacity: 1;
-            }
-        }
-    }
-    &>.announcement_navbar {
-        color: #4d4d4d;
-        margin: .5em .5em 1em .5em;
-        justify-content: space-between;
-        &>.announcement_navbar_right {
-            display: flex;
-        }
-        &>.announcement_navbar_left {
-            display: inherit;
-            justify-content: flex-start;
+        &>.left {
+            flex-basis: 0;
+            flex-grow: 1;
             display: flex;
             flex-direction: row;
-            font-size: 1.2em;
-            &>span {
-                margin-right: 1em;
-                cursor: pointer;
+        }
+        &>.right {
+            flex-basis: 0;
+            flex-grow: 10;
+            display: flex;
+            flex-direction: row;
+            &.title {
+                color: #4d4d4d;
+                margin: .3em;
+                justify-content: space-between;
+                font-size: 1.1em;
+                &.announcement_title {
+                    font-size: 1.5em;
+                }
+                &>#close_announcement {
+                    cursor: pointer;
+                    &:hover {
+                        color: #ed1c24;
+                        opacity: 1;
+                    }
+                }
             }
-            &>.active {
-                color: #00a1e4;
-                border-bottom: 3px solid #00a1e4;
-                cursor: default;
+            &.announcement_navbar {
+                color: #4d4d4d;
+                margin: .5em .5em 1em .5em;
+                justify-content: space-between;
+                &>.announcement_navbar_right {
+                    display: flex;
+                }
+                &>.announcement_navbar_left {
+                    display: inherit;
+                    justify-content: flex-start;
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 1.1em;
+                    &>span {
+                        margin-right: 1em;
+                        cursor: pointer;
+                    }
+                    &>.active {
+                        color: #00a1e4;
+                        border-bottom: 3px solid #00a1e4;
+                        cursor: default;
+                    }
+                }
             }
         }
     }
 }
 .announcement_list_item {
+    padding-top: .3em;
     display: flex;
     flex-direction: column;
     color: #4d4d4d;
+}
+.preview_announcement_list_item {
+    display: flex;
+    flex-direction: row;
+    color: #4d4d4d;
+    &>.item_left {
+        flex-basis: 0;
+        flex-grow: 1;
+        display: flex;
+    }
+    &>.item_right {
+        flex-basis: 0;
+        flex-grow: 10;
+        display: flex;
+        flex-direction: column;
+    }
 }
 .list_item_section {
     padding-right: .5em;
@@ -121,18 +153,27 @@ Content
         &.text {
             color: #82888f;
         }
+        &.excerpt {
+            color: #808080;
+            font-size: .9em;
+        }
+        &>.from {
+            font-size: .9em;
+            color: #4d4d4d;
+        }
     }
 }
 .section_separator {
-    border-bottom: 1px solid #00a1e4;
+    border-bottom: 1px solid #cccccc;
     width: 100%;
-    margin: .5em 0;
+    margin: .3em 0;
 }
 .announcement_content {
     overflow-y: auto;
     padding: .5em;
 }
 .delete {
+    padding-right: .5em;
     .cancel_image,
     .cancel_image-hover {
         width: 1.5em;
@@ -159,8 +200,8 @@ Content
 .mark_as_read {
     border: none;
     background-color: #cde8f4;
-    box-shadow: 2px 0 2px #4d4d4d;
-    opacity: 1;
+    box-shadow: 1px 1px 1px #000;
+    opacity: .5;
     margin-bottom: auto;
     display: none;
     &:active,
@@ -186,6 +227,16 @@ Content
         display: block;
     }
 }
+.sent_by_me {
+    display: none;
+    cursor: pointer;
+    &.active {
+        display: block;
+    }
+    &:hover{
+        color: #00a1e4;
+    }
+}
 .announcement_tabs {
     display: flex;
     flex-direction: column;
@@ -194,6 +245,7 @@ Content
     margin-bottom: auto;
 }
 .item_link {
+    padding: .3em 0;
     cursor: pointer;
     &:hover {
         color: #00a1e4;
@@ -209,48 +261,80 @@ Make annoucement section
 .make_announcement {
     width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-around;
     color: #4d4d4d;
-    &>.make_row {
-        display: inherit;
-        flex-direction: row;
-        margin: 0 0 1em 0;
+    &>.item_left {
+        flex-basis: 0;
+        flex-grow: 1;
+        display: flex;
+    }
+    &>.item_right {
+        flex-basis: 0;
+        flex-grow: 10;
+        display: flex;
+        flex-direction: column;
         justify-content: space-around;
-        &>.left {
-            flex-basis: 0;
-            flex-grow: 2;
-        }
-        &>.right {
-            flex-basis: 0;
-            flex-grow: 5;
+        &>.make_row {
             display: inherit;
-            justify-content: space-between;
-            &>input {
-                width: 100%;
-            }
-            &>span {
+            flex-direction: row;
+            margin: 0 0 1em 0;
+            justify-content: space-around;
+            &>.left {
                 flex-basis: 0;
-                flex-grow: 1;
-                flex-direction: row;
-                justify-content: flex-start;
+                flex-grow: 2;
             }
-            &>textarea {
-                height: 7em;
-                width: 100%;
+            &>.right {
+                flex-basis: 0;
+                flex-grow: 5;
+                display: inherit;
+                justify-content: space-between;
+                &>input {
+                    width: 100%;
+                }
+                &>span {
+                    flex-basis: 0;
+                    flex-grow: 1;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                }
+                &>textarea {
+                    height: 7em;
+                    width: 100%;
+                }
+                &>select {
+                    width: 100%;
+                }
             }
-            &>select {
-                width: 100%;
+            &>#publish {
+                border-radius: .2em;
+                background-color: transparent;
+                border: solid 1px #0071bc;
+                color: #0071bc;
+                &:hover {
+                    color: #f2f2f2;
+                    background-color: #0071bc;
+                }
             }
-        }
-        &>button {
-            color: #4d4d4d;
-            border: solid 1px #9d9fa2;
-            border-radius: .2em;
-            background-color: transparent;
-            &:hover {
-                color: #00a1e4;
-                border: solid 1px #00a1e4;
+            &>#preview {
+                border-radius: .2em;
+                background-color: transparent;
+                border: solid 1px #a0a0a0;
+                color: #a0a0a0;
+                &:hover {
+                    color: #f2f2f2;
+                    background-color: #a0a0a0;
+                }
+            }
+            &>#close_announcement {
+                border-radius: .2em;
+                background-color: transparent;
+                border: solid 1px #cde8f4;
+                color: #4d4d4d;
+                &:hover {
+                    color: #4d4d4d;
+                    background-color: #cde8f4;
+                }
             }
         }
     }
@@ -260,14 +344,24 @@ Make annoucement section
     flex-direction: row;
     justify-content: space-around;
     margin: 1em 0;
-    &>button {
-        color: #4d4d4d;
-        border: solid 1px #9d9fa2;
+    &>#publish {
         border-radius: .2em;
         background-color: transparent;
+        border: solid 1px #0071bc;
+        color: #0071bc;
         &:hover {
-            color: #00a1e4;
-            border: solid 1px #00a1e4;
+            color: #f2f2f2;
+            background-color: #0071bc;
+        }
+    }
+    &>#close_announcement {
+        border-radius: .2em;
+        background-color: transparent;
+        border: solid 1px #cde8f4;
+        color: #4d4d4d;
+        &:hover {
+            color: #4d4d4d;
+            background-color: #cde8f4;
         }
     }
 }
