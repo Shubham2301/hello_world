@@ -55,7 +55,8 @@ input#search_data{
         display: inline-block;
     }
 }
-.search_result{
+.search_result_info
+{
     display: none;
     &.active{
         display: block;
@@ -484,6 +485,48 @@ p.no_of_patients{
         }
     }
 }
+.search_result{
+	display: none;
+	&.active{
+		display: block;
+		height: 11em;
+		overflow-y: scroll;
+	}
+	&>.search_result_row{
+		color: black;
+		display: flex;
+		padding: 5px 5px;
+		font-size: .6em;
+		cursor: pointer;
+		margin: 0 5px 0 10px;
+		text-align: left;
+		border-top: solid 1px #ddd;
+		&>.circle{
+			padding: 0;
+			margin: 5px;
+		}
+		&>.col-xs-offset-2{
+			margin-left: 11.666667%;
+		}
+		&>.search_result_row_text>p{
+			padding: 0;
+			margin: 0;
+		}
+	}
+}
+.stage_name {
+	font-weight: bold;
+}
+
+.result_title {
+	font-weight: bold;
+}
+
+#back_to_search {
+	text-decoration: underline;
+	color:#00B6F1;
+	cursor: pointer;
+}
 .patient_records_info{
     width: 40%;
     background-color: #fff;
@@ -517,7 +560,7 @@ p.no_of_patients{
         display:block;
         opacity: 0.95;
         transition: opacity .5s;
-    }    
+    }
     .history_item{
         font-size:0.9em;
         width:100%;
@@ -562,4 +605,13 @@ p.no_of_patients{
 }
 .console_bucket_row{
     margin:2em auto;
+}
+
+#status_color {
+	background-color:green;
+	margin-top:4px;
+}
+
+#search_action_dropdown {
+	padding: 18px;
 }

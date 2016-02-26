@@ -40,7 +40,7 @@
                     <img src="{{URL::asset('images/priority-icon.png')}}" style="width:1em" alt="">
                 @endif
             </p>
-            
+
         </div>
         @endif
         @endforeach

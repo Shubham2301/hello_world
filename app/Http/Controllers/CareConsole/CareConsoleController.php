@@ -8,6 +8,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Action;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
+use myocuhub\Models\Appointment;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
@@ -172,11 +173,27 @@ class CareConsoleController extends Controller {
 		$patients = Patient::getPatientsByName($request->name);
 		$i = 0;
 		$results = [];
+
 		foreach ($patients as $patient) {
 			$console = Careconsole::where('patient_id', $patient->id)->first();
-			$results[$i]['id'] = $patient->id;
-			$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
-			$i++;
+			if($console){
+				$patient['appointment_id'] = $console->appointment_id;
+				$results[$i]['id'] = $patient->id;
+				$results[$i]['name'] = $patient->lastname.', '.$patient->firstname;
+				$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
+				$results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
+				$results[$i]['actions'] = CareconsoleStage::find($console->stage_id)->actions;
+
+				$results[$i]['scheduled-to'] = 'info not found';
+				$results[$i]['appointment-date'] = 'info not found';
+				if($patient['appointment_id']){
+					$appointment = Appointment::find($patient['appointment_id']);
+					$provider = User::find($appointment->provider_id);
+					$results[$i]['scheduled_to'] = $provider->lastname . ', ' . $provider->firstname;
+					$results[$i]['appointment_date'] = $this->CareConsoleService->getPatientFieldValue($patient,'appointment-date');
+				}
+				$i++;
+			}
 		}
 		return json_encode($results);
 	}
@@ -194,5 +211,25 @@ class CareConsoleController extends Controller {
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
 		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->render();
 		return json_encode($drilldown);
+	}
+	public function getPatientRecords(Request $request){
+		$consoleID = $request->consoleID;
+		$console = Careconsole::find($consoleID);
+		$patient = Patient::find($console->patient_id);
+		$data = [];
+		$data['name'] =$patient->lastname.', '.$patient->firstname;
+		$data['phone'] =$patient->cellphone;
+		$appointment = Appointment::find($console->appointment_id);
+		$provider = null;
+		$data['appointment_type']='not found';
+		if($appointment){
+		$provider = User::find($appointment->provider_id);
+		$data['appointment_type'] = $appointment->appointmenttype;
+		}
+		$data['scheduled_to']= ($provider) ? $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname : 'no info found';
+
+		$data['appointment_date'] = ($console->appointment_id) ? $this->CareConsoleService->getPatientFieldValue($console,'appointment-date') : 'no info found';
+
+		return json_encode($data);
 	}
 }

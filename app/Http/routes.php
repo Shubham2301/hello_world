@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('careconsole/action', 'CareConsole\CareConsoleController@action');
 		Route::get('careconsole/searchpatient', 'CareConsole\CareConsoleController@searchPatients');
 		Route::get('careconsole/bucketpatients', 'CareConsole\CareConsoleController@getBucketPatients');
+		Route::get('/careconsole/patient/records', 'CareConsole\CareConsoleController@getPatientRecords');
 		Route::resource('careconsole', 'CareConsole\CareConsoleController');
 	});
 
