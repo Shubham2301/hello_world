@@ -75,6 +75,7 @@ class AnnouncementController extends Controller
      */
     public function store(Request $request)
     {
+        $userId = Auth::user()->id;
         $announcement = new Announcement;
         $announcement->title = $request->input('title');
         $announcement->message = $request->input('message');
@@ -86,12 +87,15 @@ class AnnouncementController extends Controller
         $announcement->save();
         $users = Role_user::where('role_id', '=', $request->input('send_to'))->get();
         foreach($users as $user){
-            $announcementuser = new AnnouncementUser;
-            $announcementuser->user_id = $user->user_id;
-            $announcementuser->announcement_id = $announcement->id;
-            $announcementuser->read = 0;
-            $announcementuser->archive = 0;
-            $announcementuser->save();
+            if($userId != $user->user_id)
+            {
+                $announcementuser = new AnnouncementUser;
+                $announcementuser->user_id = $user->user_id;
+                $announcementuser->announcement_id = $announcement->id;
+                $announcementuser->read = 0;
+                $announcementuser->archive = 0;
+                $announcementuser->save();
+            }
         }
         return json_encode($announcement->id);
     }
@@ -113,6 +117,8 @@ class AnnouncementController extends Controller
         $data['schedule'] = date('m-d-Y', strtotime($announcementData->scheduled_date));
         $user = User::find($announcementData->created_by_user);
         $data['from'] = $user->name;
+        $role = Role::find($announcementData->role_id);
+        $data['to'] = $role->display_name;
         $announcement = AnnouncementUser::where('user_id', '=', $userID)->where('announcement_id', '=', $announcementData->id)->first();
         if(isset($announcement)){
         $announcementRead = AnnouncementUser::find($announcement->id);
@@ -201,7 +207,8 @@ class AnnouncementController extends Controller
                 $data[$i]['priority'] = $announcement->priority;
                 $data[$i]['message'] = $announcement->message;
                 $data[$i]['excerpt'] = substr($announcement->message, 0, 30);
-                $data[$i]['from'] = $user->name;
+                $role = Role::find($announcement->role_id);
+                $data[$i]['from'] = $role->display_name;
                 $i++;
         }
         return json_encode($data);
