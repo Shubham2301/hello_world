@@ -20,6 +20,9 @@ Content
     position: absolute;
     bottom: 0;
 }
+.sidebar_border_color {
+    border-right: solid 2px rgba(235, 236, 237, .95);
+}
 .announcement_box {
     width: 50%;
     height: 100%;
@@ -53,22 +56,36 @@ Content
         }
         &>.right {
             flex-basis: 0;
-            flex-grow: 10;
+            flex-grow: 30;
             display: flex;
             flex-direction: row;
             &.title {
                 color: #4d4d4d;
-                margin: .3em;
+                padding: .3em;
                 justify-content: space-between;
                 font-size: 1.1em;
                 &.announcement_title {
                     font-size: 1.5em;
                 }
-                &>#close_announcement {
+                &>span {
                     cursor: pointer;
+                    &>img {
+                        height: 1em;
+                        width: 1em;
+                    }
+                    .natural {
+                        display: block;
+                    }
+                    .active {
+                        display: none;
+                    }
                     &:hover {
-                        color: #ed1c24;
-                        opacity: 1;
+                        .natural {
+                            display: none;
+                        }
+                        .active {
+                            display: block;
+                        }
                     }
                 }
             }
@@ -88,6 +105,9 @@ Content
                     &>span {
                         margin-right: 1em;
                         cursor: pointer;
+                        &:hover {
+                            color: #00a1e4;
+                        }
                     }
                     &>.active {
                         color: #00a1e4;
@@ -116,7 +136,7 @@ Content
     }
     &>.item_right {
         flex-basis: 0;
-        flex-grow: 10;
+        flex-grow: 30;
         display: flex;
         flex-direction: column;
     }
@@ -145,7 +165,7 @@ Content
     }
     &>.item_right {
         flex-basis: 0;
-        flex-grow: 10;
+        flex-grow: 30;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -173,7 +193,7 @@ Content
     padding: .5em;
 }
 .delete {
-    padding-right: .5em;
+    padding-right: 1em;
     .cancel_image,
     .cancel_image-hover {
         width: 1.5em;
@@ -200,10 +220,11 @@ Content
 .mark_as_read {
     border: none;
     background-color: #cde8f4;
-    box-shadow: 1px 1px 1px #000;
-    opacity: .5;
     margin-bottom: auto;
     display: none;
+    &:hover {
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
+    }
     &:active,
     &:focus {
         border: none;
@@ -230,10 +251,16 @@ Content
 .sent_by_me {
     display: none;
     cursor: pointer;
+    border: solid 1px transparent;
+    &>img {
+        height: 1em;
+        width: 1em;
+        margin-left: .5em;
+    }
     &.active {
         display: block;
     }
-    &:hover{
+    &:hover {
         color: #00a1e4;
     }
 }
@@ -271,7 +298,7 @@ Make annoucement section
     }
     &>.item_right {
         flex-basis: 0;
-        flex-grow: 10;
+        flex-grow: 30;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
@@ -280,6 +307,13 @@ Make annoucement section
             flex-direction: row;
             margin: 0 0 1em 0;
             justify-content: space-around;
+            &.button_row {
+                justify-content: center;
+                &>button {
+                    margin: 1em;
+                    padding: .5em;
+                }
+            }
             &>.left {
                 flex-basis: 0;
                 flex-grow: 2;
@@ -344,6 +378,13 @@ Make annoucement section
     flex-direction: row;
     justify-content: space-around;
     margin: 1em 0;
+    &.button_row {
+        justify-content: center;
+        &>button {
+            margin: 1em;
+            padding: .5em;
+        }
+    }
     &>#publish {
         border-radius: .2em;
         background-color: transparent;
@@ -354,7 +395,7 @@ Make annoucement section
             background-color: #0071bc;
         }
     }
-    &>#close_announcement {
+    &>#edit_preview {
         border-radius: .2em;
         background-color: transparent;
         border: solid 1px #cde8f4;
@@ -364,4 +405,7 @@ Make annoucement section
             background-color: #cde8f4;
         }
     }
+}
+input[type=checkbox] {
+    margin: 3px 0 0;
 }

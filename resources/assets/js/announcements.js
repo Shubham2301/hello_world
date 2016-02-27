@@ -5,18 +5,40 @@ $(document).ready(function () {
     $('#menu-announcements').on('click', function () {
         $('.announcement_box').addClass('visible');
         $('#show_announcements').addClass('active');
+        $('.content-left').addClass('sidebar_border_color');
         resetDefaults();
         showAnnouncements();
     });
     $('#close_announcement').on('click', function () {
         $('.announcement_box').removeClass('visible');
         $('.announcement_tabs').removeClass('active');
+        $('.content-left').removeClass('sidebar_border_color');
         resetDefaults();
     });
     $('.announcement_content').on('click', '#close_announcement', function () {
         $('.announcement_box').removeClass('visible');
         $('.announcement_tabs').removeClass('active');
+        $('.content-left').removeClass('sidebar_border_color');
         resetDefaults();
+    });
+    $('.announcement_content').on('click', '#edit_preview', function () {
+        var title = $('#title').val();
+        var message = $('#message').val();
+        var type = $('#type').val();
+        var priority = $('#priority').val();
+        var schedule = $('#schedule').val();
+        var send_to = $('#send_to').val();
+        var user_name = $('#user_name').val();
+        makeAnnouncementForm();
+        $('#title').val(title);
+        $('#message').val(message);
+        $('#schedule').val(schedule);
+        $('#send_to').val(send_to);
+        $('#user_name').val(user_name);
+        $('#type').val(type);
+        $('#priority').val(priority);
+        $("input:checkbox[value=" + type + "]").attr("checked", true);
+        $("input:checkbox[value=" + priority + "]").attr("checked", true);
     });
     $('.announcement_tabs').on('click', function () {
         $($(this).parent('.announcement_navbar_left').find('.active')).removeClass('active');
@@ -104,7 +126,7 @@ $(document).ready(function () {
             resetDefaults();
             showAnnouncements();
         } else {
-            $('#sent_by_me').html('Sent to me');
+            $('#sent_by_me>span').html('Sent by me');
             $('#sent_by_me').addClass('sent_to_me');
             announcementByUserList();
         }
@@ -117,7 +139,7 @@ function resetDefaults() {
     $('.back-button').removeClass('active');
     $('.sent_by_me').addClass('active');
     $('.delete').removeAttr('id');
-    $('#sent_by_me').html('Sent by me');
+    $('#sent_by_me>span').html('Sent to me');
     $('#sent_by_me').removeClass('sent_to_me')
 }
 
@@ -137,7 +159,7 @@ function makeAnnouncementForm() {
             for (var i = 0; i < roles.role_data.length; i++) {
                 content += '<option value="' + roles.role_data[i][1] + '">' + roles.role_data[i][0] + '</option>';
             }
-            content += '</select></span></span><span class="make_row"><span class="left arial_bold">Title</span><span class="right"><input type="text" id="title"></span></span><span class="make_row"><span class="left arial_bold">Message</span><span class="right"><textarea name="textarea" id="message"></textarea></span></span><span class="make_row"><span class="left arial_bold">Type</span><span class="right"><span><input type="checkbox" class="type" value="General">&nbsp;General</span><span><input type="checkbox" class="type" value="News">&nbsp;News</span><span><input type="checkbox" class="type" value="Test">&nbsp;Test</span></span></span><span class="make_row"><span class="left arial_bold">Priority</span><span class="right"><span><input type="checkbox" class="priority" value="Normal">&nbsp;Normal</span><span><input type="checkbox" class="priority" value="Important">&nbsp;Important</span><span></span></span></span><span class="make_row"><span class="left arial_bold">Schedule</span><span class="right"><input type="text" id="schedule"></span></span><span class="make_row arial_bold"><button id="publish">Publish</button><button id="preview">Preview</button><button id="close_announcement">Cancel</button></span></span></span><input type="hidden" value="' + roles.user + '" id="user_name"><input type="hidden" value="" id="priority"><input type="hidden" value="" id="type">';
+            content += '</select></span></span><span class="make_row"><span class="left arial_bold">Title</span><span class="right"><input type="text" id="title"></span></span><span class="make_row"><span class="left arial_bold">Message</span><span class="right"><textarea name="textarea" id="message"></textarea></span></span><span class="make_row"><span class="left arial_bold">Type</span><span class="right"><span><input type="checkbox" class="type" value="General">&nbsp;General</span><span><input type="checkbox" class="type" value="News">&nbsp;News</span><span><input type="checkbox" class="type" value="Test">&nbsp;Test</span></span></span><span class="make_row"><span class="left arial_bold">Priority</span><span class="right"><span><input type="checkbox" class="priority" value="Normal">&nbsp;Normal</span><span><input type="checkbox" class="priority" value="Important">&nbsp;Important</span><span></span></span></span><span class="make_row"><span class="left arial_bold">Schedule</span><span class="right"><input type="text" id="schedule"></span></span><span class="make_row arial_bold button_row"><button id="publish">Publish</button><button id="preview">Preview</button><button id="close_announcement">Cancel</button></span></span></span><input type="hidden" value="' + roles.user + '" id="user_name"><input type="hidden" value="" id="priority"><input type="hidden" value="" id="type">';
             $('.announcement_content').html(content);
             var date = new Date();
             $('#schedule').datetimepicker({
@@ -167,15 +189,19 @@ function showAnnouncements() {
         async: false,
         success: function (e) {
             var announcements = $.parseJSON(e);
-            announcements.forEach(function (announcement) {
-                content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"><input type="checkbox" class="select_item" name="checkbox" value="' + announcement.id + '"></span><span class="item_right list_item_section"><span class="from">From: ' + announcement.from + '</span><span class=" from date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section">';
-                if (announcement.read == 0) {
-                    content += '<span class="glyphicon glyphicon-exclamation-sign item_left ' + announcement.priority + '"></span>';
-                } else {
-                    content += '<span class="item_left"></span>';
-                }
-                content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right excerpt">' + announcement.excerpt + '</span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
-            });
+            if (announcements.length == 0) {
+                content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section"><span class="from">No Announcements</span><span class=" from date"></span></span></span><span class="item_subject list_item_section"><span class="item_left"></span><span class="title arial_bold item_right"><span class="item_link" data-id=""></span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right excerpt"></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
+            } else {
+                announcements.forEach(function (announcement) {
+                    content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"><input type="checkbox" class="select_item" name="checkbox" value="' + announcement.id + '"></span><span class="item_right list_item_section"><span class="from">From: ' + announcement.from + '</span><span class=" from date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section">';
+                    if (announcement.read == 0) {
+                        content += '<span class="glyphicon glyphicon-exclamation-sign item_left ' + announcement.priority + '"></span>';
+                    } else {
+                        content += '<span class="item_left"></span>';
+                    }
+                    content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right excerpt">' + announcement.excerpt + '.....</span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
+                });
+            }
             $('.announcement_content').html(content);
         },
         error: function () {
@@ -206,7 +232,12 @@ function getAnnouncementDetail(id) {
         async: false,
         success: function (e) {
             var announcement = $.parseJSON(e);
-            content = '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section"><span class="title">From: ' + announcement.from + '</span><span class="date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section"><span class="item_left"></span><span class="title arial_bold item_right"><span class="" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right">' + announcement.message + '</span></span></span>';
+            content = '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section">';
+            if ($('#sent_by_me').hasClass('sent_to_me'))
+                content += '<span class="title">To: ' + announcement.to + '</span>';
+            else
+                content += '<span class="title">From: ' + announcement.from + '</span>';
+            content += '<span class="date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section"><span class="item_left"></span><span class="title arial_bold item_right"><span class="" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right">' + announcement.message + '</span></span></span>';
             $('.announcement_content').html(content);
 
         },
@@ -328,7 +359,7 @@ function previewAnnouncement() {
     var user_name = $('#user_name').val();
     $('.announcement_content').html('');
     var content = '';
-    content = '<span class="preview_announcement_list_item arial"><span class="item_left"></span><span class="item_right"><span class="item_header list_item_section"><span class="item_right list_item_section"><span class="title">From: ' + user_name + '</span><span class="date">' + schedule + '</span></span></span><span class="item_subject list_item_section"><span class="title arial_bold item_right"><span class="" data-id="">' + title + '</span></span></span><span class="item_text list_item_section"><span class="item_right">' + message + '</span></span><span class="make_row arial_bold"><button id="publish">Publish</button><button id="close_announcement">Cancel</button></span></span><input type="hidden" value="' + title + '" id="title"><input type="hidden" value="' + message + '" id="message"><input type="hidden" value="' + schedule + '" id="schedule"><input type="hidden" value="' + priority + '" id="priority"><input type="hidden" value="' + type + '" id="type"><input type="hidden" value="' + send_to + '" id="send_to">';
+    content = '<span class="preview_announcement_list_item arial"><span class="item_left"></span><span class="item_right"><span class="item_header list_item_section"><span class="item_right list_item_section"><span class="title">From: ' + user_name + '</span><span class="date">' + schedule + '</span></span></span><span class="item_subject list_item_section"><span class="title arial_bold item_right"><span class="" data-id="">' + title + '</span></span></span><span class="item_text list_item_section"><span class="item_right">' + message + '</span></span><span class="make_row arial_bold button_row"><button id="publish">Publish</button><button id="edit_preview">Cancel</button></span></span><input type="hidden" value="' + title + '" id="title"><input type="hidden" value="' + message + '" id="message"><input type="hidden" value="' + schedule + '" id="schedule"><input type="hidden" value="' + priority + '" id="priority"><input type="hidden" value="' + type + '" id="type"><input type="hidden" value="' + send_to + '" id="send_to"><input type="hidden" value="' + user_name + '" id="user_name">';
     $('.announcement_content').html(content);
 }
 
@@ -346,11 +377,15 @@ function announcementByUserList() {
         async: false,
         success: function (e) {
             var announcements = $.parseJSON(e);
-            announcements.forEach(function (announcement) {
-                content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section"><span class="from">From: ' + announcement.from + '</span><span class=" from date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section">';
-                content += '<span class="item_left"></span>';
-                content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right excerpt">' + announcement.excerpt + '</span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
-            });
+            if (announcements.length == 0) {
+                content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section"><span class="from">No Announcements</span><span class=" from date"></span></span></span><span class="item_subject list_item_section"><span class="item_left"></span><span class="title arial_bold item_right"><span class="item_link" data-id=""></span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right excerpt"></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
+            } else {
+                announcements.forEach(function (announcement) {
+                    content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section"><span class="from">To: ' + announcement.from + '</span><span class=" from date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section">';
+                    content += '<span class="item_left"></span>';
+                    content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right excerpt">' + announcement.excerpt + '.....</span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
+                });
+            }
             $('.announcement_content').html(content);
         },
         error: function () {
