@@ -144,7 +144,7 @@ class CareConsoleService {
 		$listing['patients'] = $patientsData;
 
 		if($ulimit != -1)
-			$listing['patients'] = Careconsole::filterPatientByDaysPandings($llimit, $ulimit, $patientsData);
+			$listing['patients'] = Careconsole::filterPatientByDaysPendings($llimit, $ulimit, $patientsData);
 
 		$listing['headers'] = $headerData;
 

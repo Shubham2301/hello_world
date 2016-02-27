@@ -391,7 +391,7 @@ class Careconsole extends Model {
 			->get(['*', 'careconsole.id', 'careconsole.created_at']);
 	}
 
-	public static function filterPatientByDaysPandings($lowerlimit, $upperlimit, $patientdata) {
+	public static function filterPatientByDaysPendings($lowerlimit, $upperlimit, $patientdata) {
 		$data = [];
 		$i=0;
 		foreach($patientdata as $patient)
