@@ -83,10 +83,15 @@ class KPIService {
 				break;
 			case 'pending-information':
 			case 'cancelled':
+				$patients = Careconsole::getAppointmentStatusPatients($networkID, $stageID,$kpiName);
 			case 'no-show':
+				$patients = Careconsole::getAppointmentStatusPatients($networkID, $stageID,$kpiName);
 			case 'waiting-for-report':
+				$patients = Careconsole::getAppointmentStatusPatients($networkID, $stageID,$kpiName);
 			case 'reports-overdue':
+				$patients = Careconsole::getAppointmentStatusPatients($networkID, $stageID,$kpiName);
 			case 'ready-to-be-completed':
+				$patients = Careconsole::getAppointmentStatusPatients($networkID, $stageID,$kpiName);
 			case 'overdue':
 				$patients = Careconsole::getAppointmentStatusPatients($networkID, $stageID, $kpiName);
 				break;
@@ -114,6 +119,9 @@ class KPIService {
 			case 'priority':
 				$patients = Careconsole::getPriorityPatients($networkID);
 				break;
+            case 'recall':
+				$patients = Careconsole::getRecallPatients($networkID);
+				break;    
 		}
 
 		return $patients;
