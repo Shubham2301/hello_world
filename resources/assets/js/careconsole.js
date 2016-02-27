@@ -64,7 +64,7 @@ $(document).ready(function() {
             $('.drilldown').removeClass('active');
             $('.drilldown>.section-header').html('');
             $('.drilldown>.subsection-header>p').html('');
-            $('.circle drilldown_kpi_indicator').css('background-color','transparent');
+            $('.circle drilldown_kpi_indicator').css('background-color', 'transparent');
         } else {
             $('.console_buckets').removeClass('active');
             $(this).addClass('active');
@@ -75,12 +75,12 @@ $(document).ready(function() {
             $('.drilldown').addClass('active');
             $('.drilldown>.section-header').html($(this).find('p').html());
             $('.drilldown>.subsection-header>p').html('');
-            $('.circle drilldown_kpi_indicator').css('background-color','transparent');
+            $('.circle drilldown_kpi_indicator').css('background-color', 'transparent');
             bucketData($(this).attr('data-name'));
         }
     });
     $('#recall_date').datetimepicker({
-                format: 'YYYY/MM/DD',
+        format: 'YYYY/MM/DD',
     });
 
     $('.day_box.active').on('click', function() {
@@ -151,7 +151,7 @@ $(document).ready(function() {
                 $('#action_console_id').val($(this).parent().attr('data-consoleid'));
                 $('#action_stage_id').val($('#current_stage').val());
                 $('#action_header').html($(this).attr('data-displayname'));
-                if ( $(this).attr('data-name') === 'move-to-console') {
+                if ($(this).attr('data-name') === 'move-to-console') {
 
                 }
                 var results = actionResults[$(this).attr('data-id')];
@@ -297,7 +297,8 @@ function searchc3() {
                     $('.search_result').html(content);
                     $('.search_result').addClass('active');
                 } else if (patientdata.length != 0) {
-					setSearchFields(0);
+                    setSearchFields(0);
+                    $('#back_to_search').removeClass('active');
                 }
             },
             error: function error() {
@@ -464,7 +465,7 @@ function setSearchFields(index) {
         content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid = "' + patient.id + '" data-consoleid="' + patient.console_id + '" data-stageid="' + patient.stage_id + '" ><a href="#">' + action.display_name + '</a></li>';
     });
     $('#search_action_dropdown').html(content);
-
+    $('#back_to_search').removeClass('active');
 }
 
 function bucketData(bucketName) {
@@ -553,8 +554,7 @@ function setPandingDayslimit(kpi_name, stageID) {
             if (stageID == '1') {
                 llimit = 0;
                 ulimit = 4;
-            }
-            else {
+            } else {
                 llimit = 0;
                 ulimit = 3;
             }
@@ -564,8 +564,7 @@ function setPandingDayslimit(kpi_name, stageID) {
             if (stageID == '1') {
                 llimit = 4;
                 ulimit = 8;
-            }
-            else {
+            } else {
                 llimit = 3;
                 ulimit = 5;
             }
@@ -574,20 +573,10 @@ function setPandingDayslimit(kpi_name, stageID) {
             if (stageID == '1') {
                 llimit = 8;
                 ulimit = Infinity;
-            }
-            else {
+            } else {
                 llimit = 0;
                 ulimit = 4;
             }
             break;
     }
-
-
-
-
-
-
-
-
-
 }

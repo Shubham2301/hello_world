@@ -192,8 +192,8 @@ class CareConsoleController extends Controller {
 				$results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
 				$results[$i]['actions'] = CareconsoleStage::find($console->stage_id)->actions;
 
-				$results[$i]['scheduled-to'] = 'info not found';
-				$results[$i]['appointment-date'] = 'info not found';
+				$results[$i]['scheduled_to'] = 'info not found';
+				$results[$i]['appointment_date'] = 'info not found';
 				if ($patient['appointment_id']) {
 					$appointment = Appointment::find($patient['appointment_id']);
 					$provider = User::find($appointment->provider_id);
