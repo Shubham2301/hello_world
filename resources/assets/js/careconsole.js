@@ -297,9 +297,7 @@ function searchc3() {
                     $('.search_result').html(content);
                     $('.search_result').addClass('active');
                 } else if (patientdata.length != 0) {
-                    $('.result_title.stage_name').html(patientdata[0].stage_name);
-                    $('.search_result_info').addClass('active');
-                    $('.search_result').removeClass('active');
+					setSearchFields(0);
                 }
             },
             error: function error() {
@@ -547,7 +545,6 @@ function setPatientRecords(consoleID) {
 
     });
 }
-
 
 function setPandingDayslimit(kpi_name, stageID) {
 
