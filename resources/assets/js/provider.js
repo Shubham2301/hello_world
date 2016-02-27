@@ -474,7 +474,7 @@ function getOpenSlots(week) {
         success: function (e) {
             e = $.parseJSON(e);
             var apptSlots = e.GetOpenApptSlotsResult;
-            if(e.length === 0)
+            if (e.length === 0)
                 return;
             e.forEach(function (elem) {
                 var k = 0;
@@ -535,15 +535,20 @@ function getAppointmentTypes() {
         success: function (e) {
             e = $.parseJSON(e);
             var apptTypes = e.GetApptTypesResult.ApptType;
-            content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Appointment Type <b class="caret"></b></span></a><ul class="dropdown-menu appointment_dropdown" id="custom_dropdown">';
-            apptTypes.forEach(function (elem) {
-                content += '<li  value="' + elem.ApptTypeKey + '" data-name=" ' + elem.ApptTypeName + ' ">' + elem.ApptTypeName + '</li>';
-                //                $('#appointment-type').append('<option value="' + elem.ApptTypeKey + '">' + elem.ApptTypeName + '</option>');
-            });
-            $('#appointment-type').removeClass('hidden');
+            if (apptTypes) {
+                content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Appointment Type <b class="caret"></b></span></a><ul class="dropdown-menu appointment_dropdown" id="custom_dropdown">';
+                apptTypes.forEach(function (elem) {
+                    content += '<li  value="' + elem.ApptTypeKey + '" data-name=" ' + elem.ApptTypeName + ' ">' + elem.ApptTypeName + '</li>';
+                    //                $('#appointment-type').append('<option value="' + elem.ApptTypeKey + '">' + elem.ApptTypeName + '</option>');
+                });
+                $('#appointment-type').removeClass('hidden');
+                content += '</ul></div>';
+                $('.appointment_type_list').html(content);
+            } else {
+                $('p.alert_message').text('No data received');
+                $('#alert').modal('show');
+            }
             $('.ajax.appointment_type').removeClass('active');
-            content += '</ul></div>';
-            $('.appointment_type_list').html(content);
         },
         error: function () {
             $('.ajax.appointment_type').removeClass('active');
