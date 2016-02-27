@@ -32,10 +32,11 @@ $(document).ready(function () {
 });
 
 function singleSignOff() {
-    $("#ses_logoout_form").attr("target", "ocuhubSESiframe");
+    $("#ses_logoout_form").attr("target", "ses_logout_iframe");
     $("#ses_logoout_form").submit(function () {
-        $('#ocuhub_logout').click();
+        window.location.href = '/auth/logout';
     });
+    
 }
 
 //TODO: Based on the size and orientation of devide hide or show sidebar 
