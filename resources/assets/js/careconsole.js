@@ -572,10 +572,10 @@ function setPandingDayslimit(kpi_name, stageID) {
         case 'Urgent':
             if (stageID == '1') {
                 llimit = 8;
-                ulimit = Infinity;
+                ulimit = 10000;
             } else {
                 llimit = 0;
-                ulimit = 4;
+                ulimit = 10000;
             }
             break;
     }
