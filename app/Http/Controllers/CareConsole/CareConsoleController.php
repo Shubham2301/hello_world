@@ -150,7 +150,6 @@ class CareConsoleController extends Controller {
 			$listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder,$lower_limit,$upper_limit);
 		$actions = $this->CareConsoleService->getActions($stageID);
 		$controls = $this->CareConsoleService->getControls($stageID);
-
 		$drilldown['controls'] = (sizeof($controls) === 0) ? '' : view('careconsole.controls')->with('controls', $controls)->render();
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
 		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->render();
@@ -190,7 +189,7 @@ class CareConsoleController extends Controller {
 				$results[$i]['name'] = $patient->lastname . ', ' . $patient->firstname;
 				$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
 				$results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
-				$results[$i]['actions'] = CareconsoleStage::find($console->stage_id)->actions;
+				$results[$i]['actions'] = $this->CareConsoleService->getActions($console->stage_id);
 
 				$results[$i]['scheduled_to'] = 'info not found';
 				$results[$i]['appointment_date'] = 'info not found';
@@ -231,7 +230,7 @@ class CareConsoleController extends Controller {
 		$appointment = Appointment::find($console->appointment_id);
 		$provider = null;
 		$data['appointment_type'] = 'not found';
-		$data['actions'] = CareconsoleStage::find($console->stage_id)->actions;
+		$data['actions'] = $this->CareConsoleService->getActions($console->stage_id);
 		$data['stageid'] = $console->stage_id;
 		if ($appointment) {
 			$provider = User::find($appointment->provider_id);
