@@ -142,8 +142,12 @@ class CareConsoleController extends Controller {
 		$sortParams = [];
 		$sortField = $request->sort_field;
 		$sortOrder = $request->sort_order;
+		$lower_limit = $request->lower_limit;
+		$upper_limit = $request->upper_limit;
 
 		$listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder);
+		if($upper_limit != -1)
+			$listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder,$lower_limit,$upper_limit);
 		$actions = $this->CareConsoleService->getActions($stageID);
 		$controls = $this->CareConsoleService->getControls($stageID);
 

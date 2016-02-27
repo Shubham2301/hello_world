@@ -35,16 +35,19 @@ $(document).ready(function() {
         var kpi_name = $(this).attr('data-name');
         var stageID = $(this).parent().attr('data-stageid');
         if (kpi_name) {
+
             $('#current_stage').val(stageID);
-            $('#current_kpi').val(kpi_name);
             $('#current_sort_field').val();
             $('#current_sort_order').val();
-            getPatientData();
-        } else {
-            $('#current_stage').val(stageID);
-            $('#current_kpi').val('0');
-            $('#current_sort_field').val();
-            $('#current_sort_order').val();
+
+            if ($(this).hasClass('low')) {
+                $('#current_kpi').val('0');
+                setPandingDayslimit(kpi_name, stageID);
+
+
+            } else {
+                $('#current_kpi').val(kpi_name);
+            }
             getPatientData();
         }
 
@@ -255,6 +258,9 @@ $(document).ready(function() {
 
 var actionResults = {};
 var patientdata = [];
+var llimit = -1;
+var ulimit = -1;
+
 
 function searchc3() {
     $('.search_result_info').removeClass('active');
@@ -332,7 +338,9 @@ function getPatientData() {
         'stage': stageID,
         'kpi': kpiName,
         'sort_field': sortField,
-        'sort_order': sortOrder
+        'sort_order': sortOrder,
+        'lower_limit': llimit,
+        'upper_limit': ulimit,
     };
     $('.drilldown_content').html('');
     $.ajax({
@@ -343,6 +351,8 @@ function getPatientData() {
         async: false,
         success: function success(e) {
             var data = $.parseJSON(e);
+            llimit = -1;
+            ulimit = -1;
             if (data.length === 0) {
                 return;
             }
@@ -529,4 +539,51 @@ function setPatientRecords(consoleID) {
         processData: false
 
     });
+}
+
+
+function setPandingDayslimit(kpi_name, stageID) {
+
+    switch (kpi_name) {
+        case 'Low':
+            if (stageID == '1') {
+                llimit = 0;
+                ulimit = 4;
+            }
+            else {
+                llimit = 0;
+                ulimit = 3;
+            }
+
+            break;
+        case 'Normal':
+            if (stageID == '1') {
+                llimit = 4;
+                ulimit = 8;
+            }
+            else {
+                llimit = 3;
+                ulimit = 5;
+            }
+            break;
+        case 'Urgent':
+            if (stageID == '1') {
+                llimit = 8;
+                ulimit = Infinity;
+            }
+            else {
+                llimit = 0;
+                ulimit = 4;
+            }
+            break;
+    }
+
+
+
+
+
+
+
+
+
 }

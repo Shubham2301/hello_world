@@ -41,7 +41,6 @@ class CareConsoleService {
 			$controls[$i]['group_display_name'] = $group->group_display_name;
 			$controls[$i]['type'] = $group->type;
 			$controls[$i]['stage_id'] = $stageID;
-			//$controls[$i]['kpi_name'] = $kpis[$i]->name;
 			$options = CareconsoleStage::llKpiByGroup($group->group_name, $stageID);
 			$j = 0;
 			foreach ($options as $option) {
@@ -61,7 +60,6 @@ class CareConsoleService {
 			}
 			$i++;
 		}
-		//dd($controls);
 		return $controls;
 	}
 
@@ -91,7 +89,7 @@ class CareConsoleService {
 	 * @param $sortOrder
 	 * @return mixed
 	 */
-	public function getPatientListing($stageID, $kpiName = '', $sortField = '', $sortOrder = '') {
+	public function getPatientListing($stageID, $kpiName = '', $sortField = '', $sortOrder = '', $llimit = -1, $ulimit = -1) {
 		$userID = Auth::user()->id;
 		$network = User::getNetwork($userID);
 		$networkID = $network->network_id;
@@ -142,7 +140,12 @@ class CareConsoleService {
 			$patientsData = $this->array_msort($patientsData, $sortParams);
 		}
 
+
 		$listing['patients'] = $patientsData;
+
+		if($ulimit != -1)
+			$listing['patients'] = Careconsole::filterPatientByDaysPandings($llimit, $ulimit, $patientsData);
+
 		$listing['headers'] = $headerData;
 
 		return $listing;
