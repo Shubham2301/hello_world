@@ -41,18 +41,18 @@ $(document).ready(function() {
             $('ul.c3_sidebar_list').removeClass('active');
             $('.before_drilldown').show();
             $('.drilldown').removeClass('active');
-
-
+            $('.drilldown>.section-header').html('');
+            $('.drilldown>.subsection-header>p').html('');
         } else {
             $('.console_buckets').removeClass('active');
             $(this).addClass('active');
-
             $('.c3_overview_link').addClass('active');
             $('.control_section').addClass('active');
             $('ul.c3_sidebar_list').addClass('active');
             $('.before_drilldown').hide();
             $('.drilldown').addClass('active');
-            $('.section-header').html($(this).find('p').html());
+            $('.drilldown>.section-header').html($(this).find('p').html());
+            $('.drilldown>.subsection-header>p').html('');
             bucketData($(this).attr('data-name'));
         }
     });
