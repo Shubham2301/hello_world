@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-xs-6">
                     <p><span class="bold arial_bold">Doctor Name</span>
-                        <br><span  class="provider_detail_text arial" id="provider_name"></span></p>
+                        <br><span class="provider_detail_text arial" id="provider_name"></span></p>
                     <p><span class="bold arial_bold">Speciality</span>
                         <br><span class="provider_detail_text arial" id="speciality"></span></p>
                     <p><span class="bold arial_bold">Insurance</span>
@@ -42,17 +42,20 @@
                         <br>
                     </p>
                     <span style="display:flex;">
-                        <p class="get_availability hide availability-btn" id="get_availability" style="padding:.3em;">
+                        <p class="get_availability hide availability-btn" id="get_availability" style="padding:.3em;" data-toggle="modal" data-target="#availabilityModal">
                             <span id="appointment_date"></span>
                             <span class="availability-text">Availability</span>
                             <br><span id="appointment_time"></span>
-                        </p>
+                    </p>
                     </span>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="availability" data-value="0">
-
+<div class="modal fade" id="availabilityModal" role="dialog">
+    <div class="modal-dialog form_model center" data-value="0">
+        <div class="modal-content availability">
+        </div>
+    </div>
 </div>
