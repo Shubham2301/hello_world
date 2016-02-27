@@ -31,13 +31,17 @@ class CareConsoleService {
 	 */
 
 	public function getControls($stageID) {
+		$networkID = User::getNetwork(Auth::user()->id)->network_id;
 		$llKpiGroup = CareconsoleStage::find($stageID)->llKpiGroup;
+		$kpis = CareconsoleStage::find($stageID)->kpi;
 		$controls = [];
 		$i = 0;
 		foreach ($llKpiGroup as $group) {
 			$controls[$i]['group_name'] = $group->group_name;
 			$controls[$i]['group_display_name'] = $group->group_display_name;
 			$controls[$i]['type'] = $group->type;
+			$controls[$i]['stage_id'] = $stageID;
+			//$controls[$i]['kpi_name'] = $kpis[$i]->name;
 			$options = CareconsoleStage::llKpiByGroup($group->group_name, $stageID);
 			$j = 0;
 			foreach ($options as $option) {
@@ -46,10 +50,18 @@ class CareConsoleService {
 				$controls[$i]['options'][$j]['color_indicator'] = $option->color_indicator;
 				$controls[$i]['options'][$j]['description'] = $option->description;
 				$controls[$i]['options'][$j]['count'] = 0;
+				if($controls[$i]['type']== 2 ){
+					$controls[$i]['options'][$j]['kpi_name'] = '';
+					if(isset($kpis[$j])){
+						$controls[$i]['options'][$j]['kpi_name'] = $kpis[$j]->name;
+						$controls[$i]['options'][$j]['count']=$this->KPIService->getCount($kpis[$j]->name, $networkID, $stageID);
+					}
+				}
 				$j++;
 			}
 			$i++;
 		}
+		//dd($controls);
 		return $controls;
 	}
 

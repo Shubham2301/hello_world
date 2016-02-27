@@ -25,12 +25,30 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.C3_day_box', function() {
+
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
         } else {
             $('.C3_day_box').removeClass('active');
             $(this).addClass('active');
         }
+        var kpi_name = $(this).attr('data-name');
+        var stageID = $(this).parent().attr('data-stageid');
+        if (kpi_name) {
+            $('#current_stage').val(stageID);
+            $('#current_kpi').val(kpi_name);
+            $('#current_sort_field').val();
+            $('#current_sort_order').val();
+            getPatientData();
+        } else {
+            $('#current_stage').val(stageID);
+            $('#current_kpi').val('0');
+            $('#current_sort_field').val();
+            $('#current_sort_order').val();
+            getPatientData();
+        }
+
+
     });
 
     $(document).on('click', '.console_buckets', function() {
@@ -143,10 +161,10 @@ $(document).ready(function() {
                 window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
                 break;
             default:
-				$('#action_patient_id').val($(this).attr('data-patientid'));
+                $('#action_patient_id').val($(this).attr('data-patientid'));
                 $('#action_id').val($(this).attr('data-id'));
                 $('#action_console_id').val($(this).parent().attr('data-consoleid'));
-				$('#action_stage_id').val($(this).attr('data-stageid'));
+                $('#action_stage_id').val($(this).attr('data-stageid'));
                 $('#action_header').html($(this).attr('data-displayname'));
                 var results = actionResults[$(this).attr('data-id')];
                 if (results.length > 0) {
@@ -163,32 +181,32 @@ $(document).ready(function() {
                 $('#actionModal').modal('show');
         }
     });
-	$('#search_action_dropdown').on('click', '.careconsole_action' ,function(){
-		switch ($(this).attr('data-name')) {
-			case 'schedule':
-				window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
-				break;
-			default:
-				$('#action_patient_id').val($(this).attr('data-patientid'));
-				$('#action_id').val($(this).attr('data-id'));
-				$('#action_console_id').val($(this).parent().attr('data-consoleid'));
-				$('#action_stage_id').val($(this).attr('data-stageid'));
-				$('#action_header').html($(this).attr('data-displayname'));
-				var results = actionResults[$(this).attr('data-id')];
-				if (results.length > 0) {
-					var content = '<option value="0">Select Action Result</option>';
-					results.forEach(function(result) {
-						content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
-					});
-					$('#action_result_id').html(content);
-					$('#action_results').show();
-				} else if (results.length === 0) {
-					$('#action_result_id').html('<option value="-1">No Action Results</option>');
-					$('#action_results').hide();
-				}
-				$('#actionModal').modal('show');
-		}
-	});
+    $('#search_action_dropdown').on('click', '.careconsole_action', function() {
+        switch ($(this).attr('data-name')) {
+            case 'schedule':
+                window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
+                break;
+            default:
+                $('#action_patient_id').val($(this).attr('data-patientid'));
+                $('#action_id').val($(this).attr('data-id'));
+                $('#action_console_id').val($(this).parent().attr('data-consoleid'));
+                $('#action_stage_id').val($(this).attr('data-stageid'));
+                $('#action_header').html($(this).attr('data-displayname'));
+                var results = actionResults[$(this).attr('data-id')];
+                if (results.length > 0) {
+                    var content = '<option value="0">Select Action Result</option>';
+                    results.forEach(function(result) {
+                        content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
+                    });
+                    $('#action_result_id').html(content);
+                    $('#action_results').show();
+                } else if (results.length === 0) {
+                    $('#action_result_id').html('<option value="-1">No Action Results</option>');
+                    $('#action_results').hide();
+                }
+                $('#actionModal').modal('show');
+        }
+    });
 
     $('.search_result').on('click', '.search_result_row', function() {
         var index = $(this).attr('data-index');
@@ -423,7 +441,7 @@ function setSearchFields(index) {
     $('#status_color').css('background-color', patient.stage_color);
     var content = '';
     patient.actions.forEach(function(action) {
-		content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid = "'+patient.id+'" data-consoleid="'+patient.console_id+'" data-stageid="'+patient.stage_id+'" ><a href="#">' + action.display_name + '</a></li>';
+        content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid = "' + patient.id + '" data-consoleid="' + patient.console_id + '" data-stageid="' + patient.stage_id + '" ><a href="#">' + action.display_name + '</a></li>';
     });
     $('#search_action_dropdown').html(content);
 
@@ -498,7 +516,7 @@ function setPatientRecords(consoleID) {
             $('.patient_records_info').find('.attempt_other').text(data.other);
             var content = '';
             data.actions.forEach(function(action) {
-				content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid= "' + data.patient_id + '" data-consoleid="'+consoleID+'" data-stageid = "'+data.stageid+'"><a href="#">' + action.display_name + '</a></li>';
+                content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid= "' + data.patient_id + '" data-consoleid="' + consoleID + '" data-stageid = "' + data.stageid + '"><a href="#">' + action.display_name + '</a></li>';
             });
             $('#records_action_dropdown').html(content);
 
