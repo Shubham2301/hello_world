@@ -29,8 +29,16 @@ $(document).ready(function () {
         $('.admin-console-section').removeClass('active');
         $('#' + id).addClass('active');
     });
+    
+    $("#ses_logout_form").submit(function () {
+        window.location.href = '/auth/logout';
+    });
+    
 });
 
+function singleSignOff() {
+    $("#ses_logout_form").submit();
+}
 
 //TODO: Based on the size and orientation of devide hide or show sidebar 
 /*

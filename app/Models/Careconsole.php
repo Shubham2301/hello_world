@@ -53,6 +53,18 @@ class Careconsole extends Model {
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
 			->get(['*', 'careconsole.id', 'careconsole.created_at']);
 	}
+    
+    /**
+	 * @param $networkID
+	 */
+	public static function getRecallPatients($networkID) {
+		return self::whereNotNull('recall_date')
+			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
+			->where('import_history.network_id', $networkID)
+			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+			->get(['*', 'careconsole.id', 'careconsole.created_at']);
+	}
+    
 	/**
 	 * @param $networkID
 	 */
