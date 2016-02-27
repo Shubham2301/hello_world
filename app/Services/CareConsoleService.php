@@ -190,11 +190,11 @@ class CareConsoleService {
 			case 'archived-at':
 				$date = new \DateTime($patient['archived_at']);
 				return $date->format($dateFormat);
-				break;
+				break;    
 			case 'current-stage':
 				return CareconsoleStage::find($patient['stage_id'])->display_name;
 				break;
-			case 'recall-date':
+			case 'recall-at':
 				$date = new \DateTime($patient['recall_date']);
 				return $date->format($dateFormat);
 				break;

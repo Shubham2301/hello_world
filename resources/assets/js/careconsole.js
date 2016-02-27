@@ -58,6 +58,9 @@ $(document).ready(function() {
             bucketData($(this).attr('data-name'));
         }
     });
+    $('#recall_date').datetimepicker({
+                format: 'YYYY/MM/DD',
+    });
 
     $('.day_box.active').on('click', function() {
         $(this).removeClass('active');
@@ -114,16 +117,22 @@ $(document).ready(function() {
         if ($('#current_stage').val() === '-1') {
             return;
         }
+        $('#form_recall_date').hide();
         switch ($(this).attr('data-name')) {
             case 'schedule':
                 window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).parent().attr('data-patientid');
                 break;
+            case 'recall-later':
+                $('#form_recall_date').show();
             default:
                 $('#action_patient_id').val($(this).parent().attr('data-patientid'));
                 $('#action_id').val($(this).attr('data-id'));
                 $('#action_console_id').val($(this).parent().attr('data-consoleid'));
                 $('#action_stage_id').val($('#current_stage').val());
                 $('#action_header').html($(this).attr('data-displayname'));
+                if ( $(this).attr('data-name') === 'move-to-console') {
+
+                }
                 var results = actionResults[$(this).attr('data-id')];
                 if (results.length > 0) {
                     var content = '<option value="0">Select Action Result</option>';
@@ -360,6 +369,7 @@ function action() {
         'console_id': $('#action_console_id').val(),
         'stage_id': $('#action_stage_id').val(),
         'action_id': $('#action_id').val(),
+        'recall_date': $('#recall_date').val(),
         'action_result_id': $('#action_result_id').val(),
         'notes': $('#action_notes').val()
     };
@@ -432,11 +442,6 @@ function setSearchFields(index) {
 }
 
 function bucketData(bucketName) {
-
-    if (bucketName === 'recall') {
-        $('#drilldown_patients_listing').html('');
-        return;
-    }
 
     var formData = {
         'bucket': bucketName

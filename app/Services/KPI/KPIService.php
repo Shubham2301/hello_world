@@ -114,6 +114,9 @@ class KPIService {
 			case 'priority':
 				$patients = Careconsole::getPriorityPatients($networkID);
 				break;
+            case 'recall':
+				$patients = Careconsole::getRecallPatients($networkID);
+				break;    
 		}
 
 		return $patients;
