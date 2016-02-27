@@ -43,6 +43,7 @@ $(document).ready(function() {
             $('.drilldown').removeClass('active');
             $('.drilldown>.section-header').html('');
             $('.drilldown>.subsection-header>p').html('');
+            $('.circle drilldown_kpi_indicator').css('background-color','transparent');
         } else {
             $('.console_buckets').removeClass('active');
             $(this).addClass('active');
@@ -53,6 +54,7 @@ $(document).ready(function() {
             $('.drilldown').addClass('active');
             $('.drilldown>.section-header').html($(this).find('p').html());
             $('.drilldown>.subsection-header>p').html('');
+            $('.circle drilldown_kpi_indicator').css('background-color','transparent');
             bucketData($(this).attr('data-name'));
         }
     });

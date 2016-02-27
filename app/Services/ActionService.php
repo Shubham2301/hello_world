@@ -45,13 +45,23 @@ class ActionService {
 			case 'patient-notes':
 			case 'requested-data':
 				break;
-			case 'archive':
+			case 'unarchive':
+				$console = Careconsole::find($consoleID);
+				$date = new DateTime();
+				$console->archived_date = null;
+                $console->stage_id = 1;
+                $console->appointment_id = null;
+                $console->referral_id = null;
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
+				$console->save();
+				break;
+            case 'archive':
 				$console = Careconsole::find($consoleID);
 				$date = new DateTime();
 				$console->archived_date = $date->format('Y-m-d H:m:s');
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				break;
+				break;    
 			case 'kept-appointment':
 				$console = Careconsole::find($consoleID);
 				$appointment = Appointment::find($console->appointment_id);
@@ -101,6 +111,11 @@ class ActionService {
 				$console->priority = 1;
 				$console->save();
 				break;
+            case 'remove-priority':
+				$console = Careconsole::find($consoleID);
+				$console->priority = null;
+				$console->save();
+				break;    
 			case 'annual-exam':
 			case 'refer-to-specialist':
 			case 'highrisk-contact-pcp':
