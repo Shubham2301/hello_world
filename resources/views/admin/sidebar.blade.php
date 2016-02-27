@@ -13,7 +13,7 @@
                         <a href="/file_exchange"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="drop_image"></a>
                     </li>
                     <li>
-                        <a href="#" id="open_announcement"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a>
+                        <a href="#" id="menu-announcements"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a>
                     </li>
                     <li>
                         <a href="/home"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a>
