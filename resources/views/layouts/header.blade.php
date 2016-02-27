@@ -8,7 +8,11 @@
         <span class="arial_bold dark_header_text">&nbsp;support@ocuhub.com&nbsp;</span>
         <span class="arial_bold light_header_text">&nbsp;Call:</span>
         <span class="arial_bold dark_header_text">&nbsp;(888)277-3365</span>
-        <div class="header-user-item"><a href="/auth/logout">LOGOUT</a></div>
+        <div class="header-user-item">
+        <span onclick="singleSignOff()">LOGOUT</span>
+        <a href="/auth/logout" id="ocuhub_logout"></a>
+        <form id="ses_logoout_form" action="https://direct.ocuhub.com/sesidpserver/connect/endsession" method="get"></form>
+        </div>
     </div>
 </div>
 @endif
