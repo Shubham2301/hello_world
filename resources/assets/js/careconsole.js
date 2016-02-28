@@ -305,6 +305,7 @@ function searchc3() {
             contentType: 'text/html',
             async: false,
             success: function success(e) {
+			$('#back_to_search').addClass('active');
                 patientdata = $.parseJSON(e);
                 if (patientdata.length > 1) {
                     var content = '';
@@ -316,8 +317,9 @@ function searchc3() {
                     $('.search_result').html(content);
                     $('.search_result').addClass('active');
                 } else if (patientdata.length != 0) {
+					$('#back_to_search').removeClass('active');
                     setSearchFields(0);
-                    $('#back_to_search').removeClass('active');
+
                 }
             },
             error: function error() {
@@ -486,7 +488,7 @@ function setSearchFields(index) {
         content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid = "' + patient.id + '" data-consoleid="' + patient.console_id + '" data-stageid="' + patient.stage_id + '" ><a href="#">' + action.display_name + '</a></li>';
     });
     $('#search_action_dropdown').html(content);
-    $('#back_to_search').removeClass('active');
+
 }
 
 function bucketData(bucketName) {
