@@ -62,4 +62,10 @@ class Patient extends Model {
 			->get();
 	}
 
+	public static function getColumnNames(){
+		$patients  = \Schema::getColumnListing('patients');
+		$dummy_array =  array_fill_keys(array_keys($patients), null);
+		return array_combine($patients, $dummy_array);
+	}
+
 }

@@ -1,7 +1,6 @@
 <?php
 
 namespace myocuhub\Http\Controllers\Practice;
-
 use Event;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
@@ -17,7 +16,7 @@ class PracticeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request) {
-		 //return view('practice.index');
+		//return view('practice.index');
 	}
 
 	/**
@@ -26,10 +25,12 @@ class PracticeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create() {
-        $id = -1;
-        $data = array();
-        $data['practice_active'] = true;
-        return view('practice.create')->with('id',$id)->with('data', $data);
+		$id = -1;
+		$data = array();
+		$data['practice_active'] = true;
+		$data['id']= $id;
+		$data['location_index'] = -1;
+		return view('practice.create')->with('data', $data);
 	}
 
 	/**
@@ -39,31 +40,31 @@ class PracticeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request) {
-        $practicedata = json_decode($request->input('data'), true);
-        $practice = new Practice;
-        $practice->name = $practicedata[0]['practice_name'];
-        $practice->email = $practicedata[0]['practice_email'];
-        $practice->save();
-        $practiceid = $practice->id;
-        foreach ($practicedata[0]['locations'] as $location) {
-            $practicelocation = new PracticeLocation;
-            $practicelocation->locationname = $location['locationname'];
-            $practicelocation->practice_id = $practiceid;
-            $practicelocation->phone = $location['phone'];
-            $practicelocation->addressline1 = $location['addressline1'];
-            $practicelocation->addressline2 = $location['addressline2'];
-            $practicelocation->city = $location['city'];
-            $practicelocation->state = $location['state'];
-            $practicelocation->zip = $location['zip'];
-            $practicelocation->location_code = $location['location_code'];
-            $practicelocation->save();
-        }
-        $action = 'new practice created';
-        $description = '';
-        $filename = basename(__FILE__);
-        $ip = $request->getClientIp();
-        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-        return json_encode($practiceid);
+		$practicedata = json_decode($request->input('data'), true);
+		$practice = new Practice;
+		$practice->name = $practicedata[0]['practice_name'];
+		$practice->email = $practicedata[0]['practice_email'];
+		$practice->save();
+		$practiceid = $practice->id;
+		foreach ($practicedata[0]['locations'] as $location) {
+			$practicelocation = new PracticeLocation;
+			$practicelocation->locationname = $location['locationname'];
+			$practicelocation->practice_id = $practiceid;
+			$practicelocation->phone = $location['phone'];
+			$practicelocation->addressline1 = $location['addressline1'];
+			$practicelocation->addressline2 = $location['addressline2'];
+			$practicelocation->city = $location['city'];
+			$practicelocation->state = $location['state'];
+			$practicelocation->zip = $location['zip'];
+			$practicelocation->location_code = $location['location_code'];
+			$practicelocation->save();
+		}
+		$action = 'new practice created';
+		$description = '';
+		$filename = basename(__FILE__);
+		$ip = $request->getClientIp();
+		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+		return json_encode($practiceid);
 	}
 
 	/**
@@ -95,10 +96,12 @@ class PracticeController extends Controller {
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($id) {
-        $data = array();
-        $data['practice_active'] = true;
-        return view('practice.create')->with('id', $id)->with('data', $data);
+	public function edit($id, $location) {
+		$data = array();
+		$data['practice_active'] = true;
+		$data['id'] = $id;
+		$data['location_index'] = $location;
+		return view('practice.create')->with('data', $data);
 	}
 
 	/**
@@ -109,45 +112,38 @@ class PracticeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(Request $request) {
-        $practicedata = json_decode($request->input('data'), true);
-
-        $practicename = $practicedata[0]['practice_name'];
+		$practicedata = json_decode($request->input('data'), true);
+		$practicename = $practicedata[0]['practice_name'];
 		$practiceemail = $practicedata[0]['practice_email'];
-        $practiceid = $practicedata[0]['practice_id'];
-        $locations = $practicedata[0]['locations'];
+		$practiceid = $practicedata[0]['practice_id'];
+		$locations = $practicedata[0]['locations'];
 		$practice = Practice::find($practiceid);
 		$practice->name = $practicename;
 		$practice->email = $practiceemail;
 		$practice->save();
+		$practicelocation = PracticeLocation::where('practice_id',$practiceid)->delete();
+		foreach ($locations as $location) {
+			$practicelocation = new PracticeLocation;
+			$practicelocation->locationname = $location['locationname'];
+			$practicelocation->practice_id = $practiceid;
+			$practicelocation->phone = $location['phone'];
+			$practicelocation->addressline1 = $location['addressline1'];
+			$practicelocation->addressline2 = $location['addressline2'];
+			$practicelocation->city = $location['city'];
+			$practicelocation->state = $location['state'];
+			$practicelocation->zip = $location['zip'];
+			$practicelocation->location_code = $location['location_code'];
+			$practicelocation->save();
 
-        foreach ($locations as $location) {
-            $practicelocation = '';
-            if (array_key_exists('id', $location)) {
-                $practicelocation = PracticeLocation::find($location['id']);
-            } else {
-                $practicelocation = new PracticeLocation;
-            }
+		}
 
-            $practicelocation->locationname = $location['locationname'];
-            $practicelocation->practice_id = $practiceid;
-            $practicelocation->phone = $location['phone'];
-            $practicelocation->addressline1 = $location['addressline1'];
-            $practicelocation->addressline2 = $location['addressline2'];
-            $practicelocation->city = $location['city'];
-            $practicelocation->state = $location['state'];
-            $practicelocation->zip = $location['zip'];
-            $practicelocation->location_code = $location['location_code'];
-            $practicelocation->save();
+		$action = 'Edit practice';
+		$description = '';
+		$filename = basename(__FILE__);
+		$ip = $request->getClientIp();
+		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
-        }
-
-        $action = 'Edit practice';
-        $description = '';
-        $filename = basename(__FILE__);
-        $ip = $request->getClientIp();
-        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
-        return json_encode($practiceid);
+		return json_encode($practiceid);
 	}
 
 	/**
@@ -189,10 +185,14 @@ class PracticeController extends Controller {
 	}
 
 	public function administration(Request $request) {
-        $data = array();
-        $data['practice_active'] = true;
-        return view('practice.admin')->with('data', $data);
+		$data = array();
+		$data['practice_active'] = true;
+		return view('practice.admin')->with('data', $data);
 	}
 
+	public function removelocation(Request $request){
+		$data= PracticeLocation::find($request->location_id)->delete();
 
+		return json_encode($data);
+	}
 }
