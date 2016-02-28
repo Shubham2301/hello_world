@@ -166,7 +166,7 @@ class CareConsoleController extends Controller {
 		$recallDate = $request->recall_date;
 		$notes = $request->notes;
 		$consoleID = $request->console_id;
-        
+
 		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID);
 		return json_encode($contactHistoryID);
 	}
@@ -227,43 +227,24 @@ class CareConsoleController extends Controller {
 		$data['patient_id'] = $console->patient_id;
 		$data['name'] = $patient->lastname . ', ' . $patient->firstname;
 		$data['phone'] = $patient->cellphone;
+		$data['actions'] = $this->CareConsoleService->getActions($console->stage_id);
+		$data['stageid'] = $console->stage_id;
+
+
 		$appointment = Appointment::find($console->appointment_id);
 		$provider = null;
 		$data['appointment_type'] = 'not found';
-		$data['actions'] = $this->CareConsoleService->getActions($console->stage_id);
-		$data['stageid'] = $console->stage_id;
 		if ($appointment) {
 			$provider = User::find($appointment->provider_id);
 			$data['appointment_type'] = $appointment->appointmenttype;
 		}
+
 		$data['scheduled_to'] = ($provider) ? $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname : 'no info found';
 
 		$data['appointment_date'] = ($console->appointment_id) ? $this->CareConsoleService->getPatientFieldValue($console, 'appointment-date') : 'no info found';
-		$data['attempt_phon'] = 'no info found';
-		$data['archive'] = 'no info found';
-		$data['other'] = 'no info found';
-		$attempt_phone_date = ContactHistory::where('console_id', $consoleID)->where('action_id', 1)->first();
-		if ($attempt_phone_date) {
-			$date = new \DateTime($attempt_phone_date->contact_activity_date);
-			$data['attempt_phon'] = $date->format('j F Y');
-		}
 
-		$attempt_archive_date = ContactHistory::where('console_id', $consoleID)->where('action_id', 3)->orderBy('contact_activity_date', 'DESC')->first();
-		if ($attempt_archive_date) {
-			$date = new \DateTime($attempt_archive_date->contact_activity_date);
-			$data['archive'] = $date->format('j F Y');
-		}
+		$data['contacts_attempt'] =$this->ActionService->getContactActions($consoleID);
 
-		$attempt_other_date = ContactHistory::where('console_id', $consoleID)->where('action_id', 13)->orderBy('contact_activity_date', 'DESC')->first();
-		if ($attempt_other_date) {
-			$date = new \DateTime($attempt_other_date->contact_activity_date);
-			$data['other'] = $date->format('j F Y');
-		}
-		$data['notes'] = 'no notes';
-		$notes = ContactHistory::where('console_id', $consoleID)->orderBy('contact_activity_date', 'DESC')->first();
-		if ($notes) {
-			$data['notes'] = $notes->notes;
-		}
 		return json_encode($data);
 	}
 }

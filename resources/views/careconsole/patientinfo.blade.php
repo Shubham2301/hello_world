@@ -22,15 +22,8 @@
     </div>
     <div class="patient_contact_info">
         <p class="info_header arial_bold">Patient Progression</p>
-        <p class="history_item active">
-            <span class="history_item_name ">Contact Attempted by Phone</span> <span class="history_item_date attempt_phone">22 Jan, 2015</span>
-        </p>
-        <p class="history_item">
-            <span class="history_item_name ">Patient Archived</span> <span class="history_item_date attempt_archive">22 Jan, 2015</span>
-        </p>
-        <p class="history_item">
-            <span class="history_item_name ">Contact Attempted by Other</span> <span class="history_item_date attempt_other">22 Jan, 2015</span>
-        </p>
+        <div class="contact_attempts"> </div>
+
         <p class="info_header arial_bold">
             Notes
         </p>
@@ -39,7 +32,7 @@
         </p>
         <div class="dropdown">
             <div id="dropdownMenuPatientInfo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" class="action_dropdown_patient_info dropdown-toggle">
-                <div>Take Action <span class="glyphicon glyphicon glyphicon-triangle-bottom"></span></div>
+                <div style="cursor: pointer;">Take Action <span class="glyphicon glyphicon glyphicon-triangle-bottom"></span></div>
             </div>
             <ul class="dropdown-menu" id="records_action_dropdown">
 

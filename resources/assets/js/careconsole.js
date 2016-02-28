@@ -125,6 +125,7 @@ $(document).ready(function() {
         $('.stage').removeClass('sidebar_items_active');
         $('.subsection-header').removeClass('active');
         $('.console_buckets').removeClass('active');
+        $('.patient_records_info').removeClass('active');
 
         var stage_id = '';
         var stage_name = '';
@@ -138,7 +139,7 @@ $(document).ready(function() {
         if ($('#current_stage').val() === '-1') {
             return;
         }
-		show_patient = true;
+        show_patient = true;
         $('#form_recall_date').hide();
         switch ($(this).attr('data-name')) {
             case 'schedule':
@@ -171,8 +172,8 @@ $(document).ready(function() {
         }
     });
     $('#records_action_dropdown').on('click', '.careconsole_action', function() {
-		show_patient = true;
-		$('#form_recall_date').hide();
+        show_patient = true;
+        $('#form_recall_date').hide();
         switch ($(this).attr('data-name')) {
             case 'schedule':
                 window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
@@ -180,7 +181,7 @@ $(document).ready(function() {
             default:
                 $('#action_patient_id').val($(this).attr('data-patientid'));
                 $('#action_id').val($(this).attr('data-id'));
-				$('#action_console_id').val($(this).attr('data-consoleid'));
+                $('#action_console_id').val($(this).attr('data-consoleid'));
                 $('#action_stage_id').val($(this).attr('data-stageid'));
                 $('#action_header').html($(this).attr('data-displayname'));
                 var results = actionResults[$(this).attr('data-id')];
@@ -199,8 +200,8 @@ $(document).ready(function() {
         }
     });
     $('#search_action_dropdown').on('click', '.careconsole_action', function() {
-		$('#form_recall_date').hide();
-		show_patient = false;
+        $('#form_recall_date').hide();
+        show_patient = false;
         switch ($(this).attr('data-name')) {
             case 'schedule':
                 window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
@@ -236,6 +237,15 @@ $(document).ready(function() {
         $('.search_result').addClass('active');
         $('.search_result_info').removeClass('active');
 
+    });
+
+    $('.contact_attempts').on('click', '.history_item', function() {
+        $('.history_item').each(function() {
+            $(this).removeClass('active');
+        });
+        $(this).addClass('active');
+        var index = $(this).attr('data-index');
+        $('.patient_contact_info').find('.contact_notes').text(contact_notes[index]);
     });
     $(document).on('click', '.drilldown_header_item', function() {
         var field = $(this).find('.sort_order');
@@ -279,6 +289,7 @@ var patientdata = [];
 var llimit = -1;
 var ulimit = -1;
 var show_patient = true;
+var contact_notes = [];
 
 
 function searchc3() {
@@ -537,10 +548,24 @@ function setPatientRecords(consoleID) {
             $('.patient_records_info').find('.patient_phone').text(data.phone);
             $('.patient_records_info').find('.scheduled_to').text(data.scheduled_to);
             $('.patient_records_info').find('.appointment_date').text(data.appointment_date);
-            $('.patient_records_info').find('.attempt_phone').text(data.attempt_phon);
-            $('.patient_records_info').find('.attempt_archive').text(data.archive);
-            $('.patient_records_info').find('.attempt_other').text(data.other);
             var content = '';
+            contact_notes = [];
+            var i = 0;
+            var show_active = 'active';
+            if (data.contacts_attempt.length > 0) {
+                data.contacts_attempt.forEach(function(contact) {
+                    content += '<p class="history_item ' + show_active + '" data-index = "' + i + '"><span class="history_item_name ">' + contact.name + '</span> <span class="history_item_date attempt_phone">' + contact.date + '</span></p>';
+                    contact_notes[i] = 'no notes found';
+                    if (contact.notes)
+                        contact_notes[i] = contact.notes;
+                    show_active = '';
+                    i++;
+                });
+                $('.contact_attempts').html(content);
+            } else {
+                $('.contact_attempts').text('NO Info Found');
+            }
+            content = '';
             data.actions.forEach(function(action) {
                 actionResults[action.id] = action.action_results;
                 content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid= "' + data.patient_id + '" data-consoleid="' + consoleID + '" data-stageid = "' + data.stageid + '"><a href="#">' + action.display_name + '</a></li>';
