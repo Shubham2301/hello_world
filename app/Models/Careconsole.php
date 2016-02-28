@@ -115,8 +115,8 @@ class Careconsole extends Model {
 			->where('import_history.network_id', $networkID)
 			->whereExists(function ($query) {
 				$query->select(DB::raw(1))
-				->from('contact_history')
-				->whereRaw('contact_history.console_id = careconsole.id');
+					->from('contact_history')
+					->whereRaw('contact_history.console_id = careconsole.id');
 			})
 			->whereNull('archived_date')
 			->whereNull('recall_date')
@@ -273,8 +273,8 @@ class Careconsole extends Model {
 			->where('import_history.network_id', $networkID)
 			->whereExists(function ($query) {
 				$query->select(DB::raw(1))
-				->from('contact_history')
-				->whereRaw('contact_history.console_id = careconsole.id');
+					->from('contact_history')
+					->whereRaw('contact_history.console_id = careconsole.id');
 			})
 			->whereNull('archived_date')
 			->whereNull('recall_date')
@@ -391,13 +391,17 @@ class Careconsole extends Model {
 			->get(['*', 'careconsole.id', 'careconsole.created_at']);
 	}
 
-	public static function filterPatientByDaysPandings($lowerlimit, $upperlimit,$patientdata) {
+	public static function filterPatientByDaysPendings($lowerlimit, $upperlimit, $patientdata) {
 		$data = [];
 		$i=0;
 		foreach($patientdata as $patient)
 		{
-
+			if($patient['days-pending'] >= $lowerlimit && $patient['days-pending'] < $upperlimit ){
+				$data[$i] = $patient;
+				$i++;
+			}
 		}
+		return $data;
 	}
 
 }
