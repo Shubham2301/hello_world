@@ -33,6 +33,8 @@ $(document).ready(function () {
         $('#form_appointment_time').val($(this).attr('data-time'));
         $('#form_appointment_date').val($(this).attr('data-date'));
         $('.availability').removeClass('active');
+        $('.availability').html('');
+        $('#availabilityModal').modal('hide');
         $('.availability-text').addClass('hide');
         $('.schedule_button').addClass('active');
     });
@@ -474,28 +476,31 @@ function getOpenSlots(week) {
         success: function (e) {
             e = $.parseJSON(e);
             var apptSlots = e.GetOpenApptSlotsResult;
-            if(e.length === 0)
+            if (e.length === 0)
                 return;
             e.forEach(function (elem) {
                 var k = 0;
                 content += '<div class="weekday"><p class="date">' + elem.date + '<br>' + weekday[i] + '</p>';
-
-
                 var slot = elem.slots['ApptSlots'];
                 if (slot) {
-                    content += '<div id="' + weekday[i] + '" class="carousel mycarousel"><a class="" href="#' + weekday[i] + '" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-up time_glyph" aria-hidden="true"></span></a><ul class="carousel-inner time_selector" role="listbox">';
+//                    content += '<div id="' + weekday[i] + '" class="carousel mycarousel"><a class="" href="#' + weekday[i] + '" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-up time_glyph" aria-hidden="true"></span></a><ul class="carousel-inner time_selector" role="listbox">';
+//                    slot.forEach(function (time) {
+//                        if (k == 0) {
+//                            content += '<li class="item active" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
+//                            k++;
+//                        } else
+//                            content += '<li class="item" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
+//                    });
+//                    content += '</ul><a class="" href="#' + weekday[i] + '" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-down time_glyph" aria-hidden="true"></span></a></div>';
+                    content += '<div id="' + weekday[i] + '"><ul class="time_selector">';
                     slot.forEach(function (time) {
-                        if (k == 0) {
-                            content += '<li class="item active" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
-                            k++;
-                        } else
                             content += '<li class="item" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
                     });
-                    content += '</ul><a class="" href="#' + weekday[i] + '" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-down time_glyph" aria-hidden="true"></span></a></div>';
+                    content += '</ul></div>';
+
                 } else {
                     content += '<p>N/A</p>';
                 }
-
                 content += '</div>';
                 i += 1;
             });
@@ -535,15 +540,19 @@ function getAppointmentTypes() {
         success: function (e) {
             e = $.parseJSON(e);
             var apptTypes = e.GetApptTypesResult.ApptType;
-            content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Appointment Type <b class="caret"></b></span></a><ul class="dropdown-menu appointment_dropdown" id="custom_dropdown">';
-            apptTypes.forEach(function (elem) {
-                content += '<li  value="' + elem.ApptTypeKey + '" data-name=" ' + elem.ApptTypeName + ' ">' + elem.ApptTypeName + '</li>';
-                //                $('#appointment-type').append('<option value="' + elem.ApptTypeKey + '">' + elem.ApptTypeName + '</option>');
-            });
-            $('#appointment-type').removeClass('hidden');
+            if (apptTypes) {
+                content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Appointment Type <b class="caret"></b></span></a><ul class="dropdown-menu appointment_dropdown" id="custom_dropdown">';
+                apptTypes.forEach(function (elem) {
+                    content += '<li  value="' + elem.ApptTypeKey + '" data-name=" ' + elem.ApptTypeName + ' ">' + elem.ApptTypeName + '</li>';
+                });
+                $('#appointment-type').removeClass('hidden');
+                content += '</ul></div>';
+                $('.appointment_type_list').html(content);
+            } else {
+                $('p.alert_message').text('No data received');
+                $('#alert').modal('show');
+            }
             $('.ajax.appointment_type').removeClass('active');
-            content += '</ul></div>';
-            $('.appointment_type_list').html(content);
         },
         error: function () {
             $('.ajax.appointment_type').removeClass('active');

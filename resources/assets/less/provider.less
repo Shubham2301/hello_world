@@ -249,7 +249,6 @@ Section : Imports
     justify-content: space-between;
     background-color: @light-gray;
     color: #000;
-    margin-bottom: 5em;
     padding: 1em 0;
     overflow: auto;
     font-size: 0.8em;
@@ -321,11 +320,16 @@ input {
     widows: auto;
     color: black;
 }
-ul.time_selector>li {
-    cursor: pointer;
-    &:hover,
-    &:active {
-        color: #0071bc;
+ul.time_selector {
+    list-style-type: none;
+    padding: 0;
+    &>li {
+        padding: .5em 0;
+        cursor: pointer;
+        &:hover,
+        &:active {
+            color: #0071bc;
+        }
     }
 }
 .time_glyph {
@@ -358,13 +362,9 @@ p.patient_dropdown_data {
 .provider_detail_text {
     font-size: .9em;
 }
-
-
-
 #practice_name {
     text-decoration: underline;
 }
-
 #button_active {
     background-color: #d2d3d5;
     background-image: linear-gradient(#d2d3d5 10%, #d2d3d5 90%);

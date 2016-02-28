@@ -141,6 +141,7 @@ a:focus {
 }
 .modal-dialog.center {
     .modal-dialog.alert;
+    width: 80%;
 }
 .modal.fade .modal-dialog {
     -webkit-transform: translate(0, -100%);
@@ -171,4 +172,15 @@ a:focus {
             }
         }
     }
+}
+select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background-image: url('../../images/dropdown-img.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 2em 2em;
+}
+select::-ms-expand {
+    display: none;
 }

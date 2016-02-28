@@ -16,6 +16,13 @@ Section : General
 ---------------------------
 */
 
+* {
+    -moz-box-sizing: border-box;
+}
+*:before,
+*:after {
+    -moz-box-sizing: border-box;
+}
 body {
     font-family: 'Arial', sans-serif;
     position: fixed;
@@ -122,18 +129,17 @@ Section : Header
     font-size: 1em;
     color: #4d4d4d;
 }
-.light_header_text{
+.light_header_text {
     font-size: .8em;
     color: #9d9fa2;
     margin-top: auto;
 }
-.dark_header_text{
+.dark_header_text {
     font-size: .8em;
     color: #4d4d4d;
     margin-top: auto;
 }
-
-.ocuhub_sso_logoff{
+.ocuhub_sso_logoff {
     cursor: pointer;
 }
 
@@ -145,6 +151,7 @@ Section : Body
 
 .content {
     flex: 1 1 auto;
+    overflow-y: auto;
 }
 //.logo_opacity {
 //    opacity: 0.8;
@@ -199,9 +206,13 @@ p.error {
 .content-row-margin-scheduling {
     margin: 0;
 }
+.search_bar{
+    height: 2.8em;
+}
 .search_input {
     background-color: #ffffff;
     font-size: 1.2em;
+    height: 100%;
     display: flex;
     &>input,
     &>input:focus {
@@ -220,6 +231,10 @@ p.error {
 }
 .search_dropdown {
     background-color: rgb(236, 236, 236);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     &>select {
         width: 100%;
         background: none;
@@ -227,10 +242,15 @@ p.error {
         border: none;
         border-radius: 0;
         font-size: 1.1em;
-        height: 2.8em;
         box-shadow: none;
         outline: none;
-        cursor: pointer
+        cursor: pointer;
+            -moz-appearance: none;
+    -webkit-appearance: none;
+    background-image: url('../../images/dropdown-triangle.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 1em 1em;
     }
 }
 .select_provider_button {
@@ -346,7 +366,7 @@ Section : Sidebar
 }
 .sidebar_menu_item {
     display: block;
-	cursor: pointer;
+    cursor: pointer;
     border-radius: 5px;
     padding: 0;
     box-shadow: 0 1px 1px #898989;
@@ -653,11 +673,9 @@ Section : Footer
         display: block;
     }
 }
-
 .network_logo {
-	> img {
+    > img {
         width: 40%;
         margin-left: 30%;
-	}
-
+    }
 }
