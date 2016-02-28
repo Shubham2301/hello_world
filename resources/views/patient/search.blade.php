@@ -1,5 +1,6 @@
 @if(!$data['admin'])
 <div class="row content-row-margin-scheduling">
+   <div class="search_bar">
     <div class="col-xs-10 search_input">
         <input type="text" class="" id="search_patient_input">
         <span class="glyphicon glyphicon-search" id="search_patient_button" aria-hidden="true"></span>
@@ -17,6 +18,7 @@
             <option value="address">Address</option>
         </select>
     </div>
+    </div >
     <div class="col-xs-12 search_filter">
         <!--
         <div class="search_filter_item">
@@ -31,7 +33,7 @@
 @else
 <div class="row content-row-margin patient_admin_search active">
 	<div class="col-xs-1">
-		<p style="font-size:1.3em;padding-top: 2px;color: #fff;padding-left: 15px;">Patient</p>
+		<p style="font-size:1.3em;padding-top: 2px;color: #fff;padding-left: 15px;">Patients</p>
 	</div>
     <div class="col-xs-2">
         <button id="open_patient_form" type="button" class="btn add-btn" >Add New</button>

@@ -1,4 +1,5 @@
 <div class="row content-row-margin-scheduling">
+   <div class="search_bar">
     <div class="col-xs-10 search_input">
         <input type="text" class="" id="search_practice_input" >
         <span class="glyphicon glyphicon-search" id="search_practice_button" aria-hidden="true"></span>
@@ -14,7 +15,7 @@
             <option value="zip">zip code</option>
         </select>
     </div>
-
+</div>
   <div class="col-xs-12 search_filter">
         <!--
         <div class="search_filter_item">

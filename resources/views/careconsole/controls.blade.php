@@ -6,7 +6,7 @@
 <div class="C3_day_row" data-stageid ="{{$control['stage_id'] }}">
 	@if($control['type'] == 1)
 	@foreach($control['options'] as $option)
-	<div class="C3_day_box low" style="color:{{ $option['color_indicator'] }}" data-name="">
+	<div class="C3_day_box low" style="color:{{ $option['color_indicator'] }}" data-name="{{ $option['display_name'] }}">
 		<h4>{{ $option['description'] }}</h4>
 		<p>{{ $option['display_name'] }}</p>
 	</div>

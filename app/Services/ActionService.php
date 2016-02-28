@@ -28,10 +28,10 @@ class ActionService {
 			$actionResultID = 14;
 			$actionResultName = 'patient-notes';
 		}
-        $contactDate = new DateTime();
-        
+		$contactDate = new DateTime();
+
 		$actionResultName = ActionResult::find($actionResultID)->name;
-        
+
 		$contact = new ContactHistory;
 		$contact->action_id = $actionID;
 		$contact->action_result_id = $actionResultID;
@@ -48,21 +48,21 @@ class ActionService {
 			case 'requested-data':
 				break;
 			case 'move-to-console':
-                $console = Careconsole::find($consoleID);
-                $date = new DateTime($recallDate);
+				$console = Careconsole::find($consoleID);
+				$date = new DateTime($recallDate);
 				$console->recall_date = null;
-                $date = new DateTime();
-                $console->stage_id = 1;
-                $console->stage_updated_at = $date->format('Y-m-d H:m:s');
-                $console->save();
+				$date = new DateTime();
+				$console->stage_id = 1;
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
+				$console->save();
 				break;
-            case 'recall-later':
-                $console = Careconsole::find($consoleID);
-                $date = new DateTime($recallDate);
+			case 'recall-later':
+				$console = Careconsole::find($consoleID);
+				$date = new DateTime($recallDate);
 				$console->recall_date = $date->format('Y-m-d H:m:s');
-                $date = new DateTime();
-                $console->stage_updated_at = $date->format('Y-m-d H:m:s');
-                $console->save();
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
+				$console->save();
 				break;    
 			case 'unarchive':
 				$console = Careconsole::find($consoleID);
@@ -162,6 +162,22 @@ class ActionService {
 				break;
 		}
 		return $contact->id;
+	}
+
+	public function getContactActions($consoleID){
+		$contactsData = ContactHistory::getContactHistory($consoleID);
+		$i=0;
+		$actions = [];
+		foreach($contactsData as $contact){
+			$date = new \DateTime($contact['contact_activity_date']);
+			$actions[$i]['date']=$date->format('j F Y');
+			$actions[$i]['name']=$contact['display_name'];
+			$actions[$i]['notes']=$contact['notes'];
+			$i++;
+		}
+
+		return $actions;
+
 	}
 
 }

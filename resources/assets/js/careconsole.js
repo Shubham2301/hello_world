@@ -35,16 +35,19 @@ $(document).ready(function() {
         var kpi_name = $(this).attr('data-name');
         var stageID = $(this).parent().attr('data-stageid');
         if (kpi_name) {
+
             $('#current_stage').val(stageID);
-            $('#current_kpi').val(kpi_name);
             $('#current_sort_field').val();
             $('#current_sort_order').val();
-            getPatientData();
-        } else {
-            $('#current_stage').val(stageID);
-            $('#current_kpi').val('0');
-            $('#current_sort_field').val();
-            $('#current_sort_order').val();
+
+            if ($(this).hasClass('low')) {
+                $('#current_kpi').val('0');
+                setPandingDayslimit(kpi_name, stageID);
+
+
+            } else {
+                $('#current_kpi').val(kpi_name);
+            }
             getPatientData();
         }
 
@@ -61,7 +64,7 @@ $(document).ready(function() {
             $('.drilldown').removeClass('active');
             $('.drilldown>.section-header').html('');
             $('.drilldown>.subsection-header>p').html('');
-            $('.circle drilldown_kpi_indicator').css('background-color','transparent');
+            $('.circle drilldown_kpi_indicator').css('background-color', 'transparent');
         } else {
             $('.console_buckets').removeClass('active');
             $(this).addClass('active');
@@ -72,12 +75,12 @@ $(document).ready(function() {
             $('.drilldown').addClass('active');
             $('.drilldown>.section-header').html($(this).find('p').html());
             $('.drilldown>.subsection-header>p').html('');
-            $('.circle drilldown_kpi_indicator').css('background-color','transparent');
+            $('.circle drilldown_kpi_indicator').css('background-color', 'transparent');
             bucketData($(this).attr('data-name'));
         }
     });
     $('#recall_date').datetimepicker({
-                format: 'YYYY/MM/DD',
+        format: 'YYYY/MM/DD',
     });
 
     $('.day_box.active').on('click', function() {
@@ -122,6 +125,7 @@ $(document).ready(function() {
         $('.stage').removeClass('sidebar_items_active');
         $('.subsection-header').removeClass('active');
         $('.console_buckets').removeClass('active');
+        $('.patient_records_info').removeClass('active');
 
         var stage_id = '';
         var stage_name = '';
@@ -135,6 +139,7 @@ $(document).ready(function() {
         if ($('#current_stage').val() === '-1') {
             return;
         }
+        show_patient = true;
         $('#form_recall_date').hide();
         switch ($(this).attr('data-name')) {
             case 'schedule':
@@ -148,7 +153,7 @@ $(document).ready(function() {
                 $('#action_console_id').val($(this).parent().attr('data-consoleid'));
                 $('#action_stage_id').val($('#current_stage').val());
                 $('#action_header').html($(this).attr('data-displayname'));
-                if ( $(this).attr('data-name') === 'move-to-console') {
+                if ($(this).attr('data-name') === 'move-to-console') {
 
                 }
                 var results = actionResults[$(this).attr('data-id')];
@@ -167,6 +172,8 @@ $(document).ready(function() {
         }
     });
     $('#records_action_dropdown').on('click', '.careconsole_action', function() {
+        show_patient = true;
+        $('#form_recall_date').hide();
         switch ($(this).attr('data-name')) {
             case 'schedule':
                 window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
@@ -174,7 +181,7 @@ $(document).ready(function() {
             default:
                 $('#action_patient_id').val($(this).attr('data-patientid'));
                 $('#action_id').val($(this).attr('data-id'));
-                $('#action_console_id').val($(this).parent().attr('data-consoleid'));
+                $('#action_console_id').val($(this).attr('data-consoleid'));
                 $('#action_stage_id').val($(this).attr('data-stageid'));
                 $('#action_header').html($(this).attr('data-displayname'));
                 var results = actionResults[$(this).attr('data-id')];
@@ -193,6 +200,8 @@ $(document).ready(function() {
         }
     });
     $('#search_action_dropdown').on('click', '.careconsole_action', function() {
+        $('#form_recall_date').hide();
+        show_patient = false;
         switch ($(this).attr('data-name')) {
             case 'schedule':
                 window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
@@ -200,7 +209,7 @@ $(document).ready(function() {
             default:
                 $('#action_patient_id').val($(this).attr('data-patientid'));
                 $('#action_id').val($(this).attr('data-id'));
-                $('#action_console_id').val($(this).parent().attr('data-consoleid'));
+                $('#action_console_id').val($(this).attr('data-consoleid'));
                 $('#action_stage_id').val($(this).attr('data-stageid'));
                 $('#action_header').html($(this).attr('data-displayname'));
                 var results = actionResults[$(this).attr('data-id')];
@@ -215,6 +224,7 @@ $(document).ready(function() {
                     $('#action_result_id').html('<option value="-1">No Action Results</option>');
                     $('#action_results').hide();
                 }
+
                 $('#actionModal').modal('show');
         }
     });
@@ -227,6 +237,15 @@ $(document).ready(function() {
         $('.search_result').addClass('active');
         $('.search_result_info').removeClass('active');
 
+    });
+
+    $('.contact_attempts').on('click', '.history_item', function() {
+        $('.history_item').each(function() {
+            $(this).removeClass('active');
+        });
+        $(this).addClass('active');
+        var index = $(this).attr('data-index');
+        $('.patient_contact_info').find('.contact_notes').text(contact_notes[index]);
     });
     $(document).on('click', '.drilldown_header_item', function() {
         var field = $(this).find('.sort_order');
@@ -262,10 +281,16 @@ $(document).ready(function() {
         $('.patient_records_info').removeClass('active');
     });
 
+
 });
 
 var actionResults = {};
 var patientdata = [];
+var llimit = -1;
+var ulimit = -1;
+var show_patient = true;
+var contact_notes = [];
+
 
 function searchc3() {
     $('.search_result_info').removeClass('active');
@@ -291,9 +316,8 @@ function searchc3() {
                     $('.search_result').html(content);
                     $('.search_result').addClass('active');
                 } else if (patientdata.length != 0) {
-                    $('.result_title.stage_name').html(patientdata[0].stage_name);
-                    $('.search_result_info').addClass('active');
-                    $('.search_result').removeClass('active');
+                    setSearchFields(0);
+                    $('#back_to_search').removeClass('active');
                 }
             },
             error: function error() {
@@ -343,7 +367,9 @@ function getPatientData() {
         'stage': stageID,
         'kpi': kpiName,
         'sort_field': sortField,
-        'sort_order': sortOrder
+        'sort_order': sortOrder,
+        'lower_limit': llimit,
+        'upper_limit': ulimit,
     };
     $('.drilldown_content').html('');
     $.ajax({
@@ -354,6 +380,8 @@ function getPatientData() {
         async: false,
         success: function success(e) {
             var data = $.parseJSON(e);
+            llimit = -1;
+            ulimit = -1;
             if (data.length === 0) {
                 return;
             }
@@ -382,7 +410,6 @@ function getPatientData() {
 }
 
 function action() {
-
     var formData = {
         'console_id': $('#action_console_id').val(),
         'stage_id': $('#action_stage_id').val(),
@@ -401,7 +428,9 @@ function action() {
         async: false,
         success: function success(e) {
             $('#actionModal').modal('hide');
-            getPatientData();
+            if (show_patient)
+                getPatientData();
+            show_patient = true;
             $('#action_notes').html('');
             $('#action_notes').val('');
             $('#action_result_id').val(0);
@@ -453,10 +482,11 @@ function setSearchFields(index) {
     $('#status_color').css('background-color', patient.stage_color);
     var content = '';
     patient.actions.forEach(function(action) {
+        actionResults[action.id] = action.action_results;
         content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid = "' + patient.id + '" data-consoleid="' + patient.console_id + '" data-stageid="' + patient.stage_id + '" ><a href="#">' + action.display_name + '</a></li>';
     });
     $('#search_action_dropdown').html(content);
-
+    $('#back_to_search').removeClass('active');
 }
 
 function bucketData(bucketName) {
@@ -518,11 +548,26 @@ function setPatientRecords(consoleID) {
             $('.patient_records_info').find('.patient_phone').text(data.phone);
             $('.patient_records_info').find('.scheduled_to').text(data.scheduled_to);
             $('.patient_records_info').find('.appointment_date').text(data.appointment_date);
-            $('.patient_records_info').find('.attempt_phone').text(data.attempt_phon);
-            $('.patient_records_info').find('.attempt_archive').text(data.archive);
-            $('.patient_records_info').find('.attempt_other').text(data.other);
             var content = '';
+            contact_notes = [];
+            var i = 0;
+            var show_active = 'active';
+            if (data.contacts_attempt.length > 0) {
+                data.contacts_attempt.forEach(function(contact) {
+                    content += '<p class="history_item ' + show_active + '" data-index = "' + i + '"><span class="history_item_name ">' + contact.name + '</span> <span class="history_item_date attempt_phone">' + contact.date + '</span></p>';
+                    contact_notes[i] = 'no notes found';
+                    if (contact.notes)
+                        contact_notes[i] = contact.notes;
+                    show_active = '';
+                    i++;
+                });
+                $('.contact_attempts').html(content);
+            } else {
+                $('.contact_attempts').text('NO Info Found');
+            }
+            content = '';
             data.actions.forEach(function(action) {
+                actionResults[action.id] = action.action_results;
                 content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid= "' + data.patient_id + '" data-consoleid="' + consoleID + '" data-stageid = "' + data.stageid + '"><a href="#">' + action.display_name + '</a></li>';
             });
             $('#records_action_dropdown').html(content);
@@ -536,4 +581,38 @@ function setPatientRecords(consoleID) {
         processData: false
 
     });
+}
+
+function setPandingDayslimit(kpi_name, stageID) {
+
+    switch (kpi_name) {
+        case 'Low':
+            if (stageID == '1') {
+                llimit = 0;
+                ulimit = 4;
+            } else {
+                llimit = 0;
+                ulimit = 3;
+            }
+
+            break;
+        case 'Normal':
+            if (stageID == '1') {
+                llimit = 4;
+                ulimit = 8;
+            } else {
+                llimit = 3;
+                ulimit = 5;
+            }
+            break;
+        case 'Urgent':
+            if (stageID == '1') {
+                llimit = 8;
+                ulimit = 10000;
+            } else {
+                llimit = 0;
+                ulimit = 10000;
+            }
+            break;
+    }
 }
