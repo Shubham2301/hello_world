@@ -49,11 +49,11 @@ class CareConsoleService {
 				$controls[$i]['options'][$j]['color_indicator'] = $option->color_indicator;
 				$controls[$i]['options'][$j]['description'] = $option->description;
 				$controls[$i]['options'][$j]['count'] = 0;
-				if($controls[$i]['type']== 2 ){
+				if ($controls[$i]['type'] == 2) {
 					$controls[$i]['options'][$j]['kpi_name'] = '';
-					if(isset($kpis[$j])){
+					if (isset($kpis[$j])) {
 						$controls[$i]['options'][$j]['kpi_name'] = $kpis[$j]->name;
-						$controls[$i]['options'][$j]['count']=$this->KPIService->getCount($kpis[$j]->name, $networkID, $stageID);
+						$controls[$i]['options'][$j]['count'] = $this->KPIService->getCount($kpis[$j]->name, $networkID, $stageID);
 					}
 				}
 				$j++;
@@ -140,11 +140,11 @@ class CareConsoleService {
 			$patientsData = $this->array_msort($patientsData, $sortParams);
 		}
 
-
 		$listing['patients'] = $patientsData;
 
-		if($ulimit != -1)
+		if ($ulimit != -1) {
 			$listing['patients'] = Careconsole::filterPatientByDaysPendings($llimit, $ulimit, $patientsData);
+		}
 
 		$listing['headers'] = $headerData;
 
@@ -205,7 +205,7 @@ class CareConsoleService {
 			case 'archived-at':
 				$date = new \DateTime($patient['archived_at']);
 				return $date->format($dateFormat);
-				break;    
+				break;
 			case 'current-stage':
 				return CareconsoleStage::find($patient['stage_id'])->display_name;
 				break;

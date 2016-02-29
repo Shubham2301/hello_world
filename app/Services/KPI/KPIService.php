@@ -87,13 +87,13 @@ class KPIService {
 			case 'no-show':
 				$patients = Careconsole::getAppointmentStatusPatients($networkID, $stageID, $kpiName);
 			case 'waiting-for-report':
-				$patients = Careconsole::getStageWaitingPatients($networkID, $stageID, $kpiName);
+				$patients = Careconsole::getStageWaitingPatients($networkID, $stageID);
 			case 'reports-overdue':
-				$patients = Careconsole::getStageOverduePatients($networkID, $stageID, $kpiName);
+				$patients = Careconsole::getStageOverduePatients($networkID, $stageID);
 			case 'ready-to-be-completed':
-				$patients = Careconsole::getStageWaitingPatients($networkID, $stageID, $kpiName);
+				$patients = Careconsole::getStageWaitingPatients($networkID, $stageID);
 			case 'overdue':
-				$patients = Careconsole::getStageOverduePatients($networkID, $stageID, $kpiName);
+				$patients = Careconsole::getStageOverduePatients($networkID, $stageID);
 				break;
 			default:
 				$patients = [];
