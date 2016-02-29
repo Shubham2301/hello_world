@@ -33,7 +33,7 @@
         <div class="col-xs-12">
             <form method="POST" action="{{$data['url']}}">
                 {!! csrf_field() !!} {{ method_field('POST') }}
-                <div class="panel-group" id="accordion">
+                <div class="panel-group accordian_margin" id="accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
