@@ -10,6 +10,7 @@ use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
 use myocuhub\Models\Practice;
+use myocuhub\Patient;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
 
@@ -247,7 +248,14 @@ class CareConsoleService {
 				return $provider . ' from ' . $practice;
 				break;
 			case 'last-scheduled-to':
-				return '-';
+				$previousProvider = Patient::getPreviousProvider($patient['patient_id']);
+				if ($previousProvider['id'] === null) {
+					return '-';
+				}
+				$lastScheduledTo = '';
+				$lastScheduledTo .= $previousProvider['title'] . ' ' . $previousProvider['firstname'] . ' ' . $previousProvider['lastname'] . ' from ';
+				$lastScheduledTo .= $previousProvider['name'];
+				return $lastScheduledTo;
 				break;
 			default:
 				return '-';
