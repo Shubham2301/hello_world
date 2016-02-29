@@ -45,6 +45,10 @@ $(document).ready(function() {
             $("#search_user_button").trigger("click");
         }
     });
+    $('.user_search_content').on('click', 'p.edituser_from_row', function(){
+        var user_id = $(this).parents('.search_item').attr('data-id');
+        window.location = '/administration/users/edit/' + user_id + '';
+    });
 
 });
 var currentpage = 1;
