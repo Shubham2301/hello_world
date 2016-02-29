@@ -20,10 +20,9 @@
     </div>
     @else
     <div class="content-section active" id="directmail-console">
-
-        <button id="refreshBtn" class="btn-primary" onclick="refreshPage()">Refresh Page</button>
-
-        <br>
+        <img id="loadingImg" alt="Loading..."   src="{{ asset('/images/ajax-loader.gif') }}" style="width:1em;display: none;">
+        <button id="refreshBtn" class="btn btn-primary" style="width:20%;" onclick="refreshPage()">Refresh Page</button>
+        <button id="getCodeBtn" class="btn dismiss_button" style="width:20%;display: none;">Get Code</button>
 
         @if (Session::has('request_failed_msg'))
         <div class="alert alert-danger">
@@ -34,11 +33,6 @@
             {{ Session::get('request_failed_msg') }}
         </div>
         @endif
-
-        <button id="getCodeBtn" style="display: none;">Get Code</button>
-
-        <img id="loadingImg" alt="Loading..."	src="{{ asset('/images/loading-x.gif') }}" style="display: none;">
-
         <form id="ocuhubSESFm" action="{{ $ses['sso_logon_url'] }}" method="post" target="_blank">
             <input id="id_token" type='hidden' name='token' value="" />
         </form>
