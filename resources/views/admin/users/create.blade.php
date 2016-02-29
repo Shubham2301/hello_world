@@ -31,7 +31,7 @@
             <span class="add_title">Add User</span>
         </div>
         <div class="col-xs-12">
-            <form method="POST" action="/administration/users">
+            <form method="POST" action="{{$data['url']}}">
                 {!! csrf_field() !!} {{ method_field('POST') }}
                 <div class="panel-group" id="accordion">
                     <div class="panel panel-default">
@@ -45,10 +45,10 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::select('usertype', $userTypes, null, array('class' => 'input, add_user_input', 'placeholder' => 'Select User Types', 'id' => 'user_type', 'required' => 'required')) !!} {!! Form::select('userlevel', $userLevels, null, array('class' => 'input, add_user_input', 'placeholder' => 'Select User Levels', 'id' => 'user_level', 'required' => 'required')) !!}
+                                        {!! Form::select('usertype', $userTypes, $user['usertype_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select User Types', 'id' => 'user_type', 'required' => 'required')) !!} {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => 'input, add_user_input', 'placeholder' => 'Select User Levels', 'id' => 'user_level', 'required' => 'required')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::select('role', $roles, null, array('class' => 'input, add_user_input', 'placeholder' => 'Select Role', 'id' => 'role', 'required' => 'required')) !!}
+                                        {!! Form::select('role', $roles, $user['role_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select Role', 'id' => 'role', 'required' => 'required')) !!}
                                     </div>
                                 </div>
                             </div>
@@ -65,10 +65,10 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::text('title', old('title'), array('class' => 'input, add_user_input', 'placeholder' => 'Title', 'id' => 'title')) !!} {!! Form::text('firstname', old('firstname'), array('class' => 'input, add_user_input', 'placeholder' => 'First Name', 'id' => 'first_name', 'required' => 'required')) !!} {!! Form::text('middlename', old('middlename'), array('class' => 'input, add_user_input', 'placeholder' => 'Middle Name', 'id' => 'middle_name')) !!} {!! Form::text('lastname', old('lastname'), array('class' => 'input, add_user_input', 'placeholder' => 'Last Name', 'id' => 'last_name', 'required' => 'required')) !!} {!! Form::text('npi', old('npi'), array('class' => 'input, add_user_input', 'placeholder' => 'NPI', 'id' => 'npi', 'required' => 'required')) !!}
+                                        {!! Form::text('title', $user['title'], array('class' => 'input, add_user_input', 'placeholder' => 'Title', 'id' => 'title')) !!} {!! Form::text('firstname', $user['firstname'], array('class' => 'input, add_user_input', 'placeholder' => 'First Name', 'id' => 'first_name', 'required' => 'required')) !!} {!! Form::text('middlename', $user['middlename'], array('class' => 'input, add_user_input', 'placeholder' => 'Middle Name', 'id' => 'middle_name')) !!} {!! Form::text('lastname', $user['lastname'], array('class' => 'input, add_user_input', 'placeholder' => 'Last Name', 'id' => 'last_name', 'required' => 'required')) !!} {!! Form::text('npi', $user['npi'], array('class' => 'input, add_user_input', 'placeholder' => 'NPI', 'id' => 'npi', 'required' => 'required')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::text('cellphone', old('cellphone'), array('class' => 'input, add_user_input', 'placeholder' => 'Phone Number', 'id' => 'cell_phone')) !!} {!! Form::text('address1', old('address1'), array('class' => 'input, add_user_input', 'placeholder' => 'Address 1', 'id' => 'address1', 'required' => 'required')) !!} {!! Form::text('address2', old('address2'), array('class' => 'input, add_user_input', 'placeholder' => 'Address 2', 'id' => 'address2')) !!} {!! Form::text('city', old('city'), array('class' => 'input, add_user_input', 'placeholder' => 'City', 'id' => 'city')) !!} {!! Form::text('zip', old('zip'), array('class' => 'input, add_user_input', 'placeholder' => 'Zip', 'id' => 'zip')) !!}
+                                        {!! Form::text('cellphone', $user['cellphone'], array('class' => 'input, add_user_input', 'placeholder' => 'Phone Number', 'id' => 'cell_phone')) !!} {!! Form::text('address1', $user['address1'], array('class' => 'input, add_user_input', 'placeholder' => 'Address 1', 'id' => 'address1', 'required' => 'required')) !!} {!! Form::text('address2', $user['address2'], array('class' => 'input, add_user_input', 'placeholder' => 'Address 2', 'id' => 'address2')) !!} {!! Form::text('city', $user['city'], array('class' => 'input, add_user_input', 'placeholder' => 'City', 'id' => 'city')) !!} {!! Form::text('zip', $user['zip'], array('class' => 'input, add_user_input', 'placeholder' => 'Zip', 'id' => 'zip')) !!}
                                     </div>
                                 </div>
                             </div>
@@ -85,10 +85,10 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::email('email', old('email'), array('class' => 'input, add_user_input','required' => 'required', 'placeholder' => 'Email', 'id' => 'email')) !!} {!! Form::email('sesemail', old('sesemail'), array('class' => 'input, add_user_input', 'placeholder' => 'SES Email', 'id' => 'ses_email')) !!}
+                                        {!! Form::email('email', $user['email'], array('class' => 'input, add_user_input','required' => 'required', 'placeholder' => 'Email', 'id' => 'email')) !!} {!! Form::email('sesemail', $user['sesemail'], array('class' => 'input, add_user_input', 'placeholder' => 'SES Email', 'id' => 'ses_email')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::password('password', array('class' => 'input, add_user_input', 'placeholder' => 'Password', 'id' => 'password')) !!} {!! Form::password('password_confirmation', array('class' => 'input, add_user_input', 'placeholder' => 'Password Confirmation', 'id' => 'confirm_password', 'required' => 'required')) !!}
+                                        {!! Form::password('password', array('class' => 'input, add_user_input', 'placeholder' => 'Password', 'id' => 'password', 'required' => 'required')) !!} {!! Form::password('password_confirmation', array('class' => 'input, add_user_input', 'placeholder' => 'Password Confirmation', 'id' => 'confirm_password', 'required' => 'required')) !!}
                                     </div>
                                     <div class="col-xs-12">
                                         {!! Form::submit('Save', array('class' => 'btn add_user_submit_button')) !!}

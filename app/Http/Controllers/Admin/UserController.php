@@ -9,6 +9,7 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\UserLevel;
 use myocuhub\Role;
+use myocuhub\Role_user;
 use myocuhub\User;
 use myocuhub\Usertype;
 
@@ -32,11 +33,16 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create() {
+        $user = array();
+        $user = User::find(3)->toArray();
+        $user = array_fill_keys(array_keys($user), null);
+        $user['role_id'] = '';
 		$userTypes = $this->getUserTypes();
 		$roles = $this->getRoles();
 		$userLevels = $this->getUserLevels();
+        $data['url'] = '/administration/users';
 		$data['user_active'] = true;
-		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data);
+		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data)->with('user', $user);
 	}
 
 	/**
@@ -73,7 +79,6 @@ class UserController extends Controller {
 		$user->level = $request->input('userlevel');
 
 		$user->save();
-
 		$user->assign($request->input('role'));
 
 		if ($user) {
@@ -107,9 +112,29 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($id) {
+	public function edit(Request $request, $id) {
+        $level = Auth::user()->level;
 		$user = User::find($id);
-		return view('admin.users.create')->with('user', $user);
+        if($level > $user->level){
+            $request->session()->flash('error', 'Not Allowed!');
+            return redirect('administration/users');
+        }
+        else{
+            $data = array();
+            $role_id = Role_user::where('user_id', '=', $id)->first();
+            if(isset($role_id)){
+                $role = Role::find($role_id->role_id);
+                $user['role_id'] = $role->name;
+            } else{
+                $user['role_id'] = '';
+            }
+            $userTypes = $this->getUserTypes();
+            $roles = $this->getRoles();
+            $userLevels = $this->getUserLevels();
+            $data['user_active'] = true;
+            $data['url'] = '/administration/users/update/' . $id;
+            return view('admin.users.create')->with('user', $user)->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data);
+        }
 	}
 
 	/**
@@ -120,7 +145,35 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(Request $request, $id) {
-		//
+        $user = User::find($id);
+
+        $user->title = $request->input('title');
+		$user->firstname = $request->input('firstname');
+		$user->middlename = $request->input('middlename');
+		$user->lastname = $request->input('lastname');
+		$user->password = bcrypt($request->input('password'));
+		$user->email = $request->input('email');
+		$user->npi = $request->input('npi');
+		$user->cellphone = $request->input('cellphone');
+		$user->sesemail = $request->input('sesemail');
+		$user->calendar = $request->input('calendar');
+		$user->address1 = $request->input('address1');
+		$user->address2 = $request->input('address2');
+		$user->city = $request->input('city');
+		$user->state = $request->input('state');
+		$user->zip = $request->input('zip');
+		$user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
+		$user->usertype_id = $request->input('usertype');
+		$user->level = $request->input('userlevel');
+		$user->save();
+
+        $action = 'update user of id =' . $id;
+		$description = '';
+		$filename = basename(__FILE__);
+		$ip = $request->getClientIp();
+		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+        return redirect('/administration/users');
 	}
 
 	/**
