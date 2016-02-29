@@ -44,8 +44,7 @@ class PatientController extends Controller {
 	public function create(Request $request) {
 
 		$data = array();
-		$data = Patient::find(1)->toArray();
-		$data = array_fill_keys(array_keys($data), null);
+		$data = Patient::getColumnNames();
 		$data['admin'] = true;
 		$data['back_btn'] = 'back_to_select_patient_btn';
 		$data['url'] = '/administration/patients/add';
@@ -61,8 +60,7 @@ class PatientController extends Controller {
 
 	public function createByAdmin() {
 		$data = array();
-		$data = Patient::find(1)->toArray();
-		$data = array_fill_keys(array_keys($data), null);
+		$data = Patient::getColumnNames();
 		$data['admin'] = true;
 		$data['back_btn'] = 'back_to_admin_patient_btn';
 		$data['url'] = '/administration/patients/add';
@@ -193,7 +191,7 @@ class PatientController extends Controller {
 		$data = Patient::find($id);
 		if (!$data) {
 			$data['url'] = '/administration/patients/add';
-			$data = array_fill_keys(array_keys($data), null);
+			$data = Patient::getColumnNames();
 		}
 		$data['admin'] = true;
 		$data['back_btn'] = 'back_to_admin_patient_btn';

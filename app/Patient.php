@@ -14,9 +14,9 @@ class Patient extends Model {
 				$query->where(function ($query) use ($filter) {
 					switch ($filter['type']) {
 						case 'name':
-							$query->where('firstname', $filter['value'])
-							->orWhere('middlename', $filter['value'])
-							->orWhere('lastname', $filter['value']);
+							$query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
 							break;
 
 						case 'ssn':
@@ -36,10 +36,10 @@ class Patient extends Model {
 							break;
 
 						case 'all':
-							$query->where('firstname', $filter['value'])
-							->orWhere('middlename', $filter['value'])
-							->orWhere('lastname', $filter['value'])
-							->orWhere('lastfourssn', $filter['value'])
+							$query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('lastfourssn', 'LIKE', '%' . $filter['value'] . '%')
 							->orWhere('city', 'LIKE', '%' . $filter['value'] . '%')
 							->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
 							->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
@@ -56,10 +56,16 @@ class Patient extends Model {
 	}
 
 	public static function getPatientsByName($name) {
-		return self::where('firstname', $name)
-			->orWhere('middlename', $name)
-			->orWhere('lastname', $name)
+		return self::where('firstname','LIKE', '%' . $name . '%')
+			->orWhere('middlename', 'LIKE', '%' . $name . '%')
+			->orWhere('lastname', 'LIKE', '%' . $name . '%')
 			->get();
+	}
+
+	public static function getColumnNames(){
+		$patients  = \Schema::getColumnListing('patients');
+		$dummy_array =  array_fill_keys(array_keys($patients), null);
+		return array_combine($patients, $dummy_array);
 	}
 
 }

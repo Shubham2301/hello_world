@@ -4,13 +4,13 @@ $(document).ready(function() {
     loadAllPractices();
     if ($('#editmode').val() && $('#editmode').val() != "-1") {
         var val = $('#editmode').val();
+        var location_index = parseInt($('#location_index').val());
         showinfo = false;
         var formData = {
             'practice_id': val
         };
-        getPracticeInfo(formData)
-        setNewLocationField();
-        setEditMode();
+        getPracticeInfo(formData);
+        setEditMode(location_index);
     }
     $('#search_practice_button').on('click', function() {
         var searchvalue = $('#search_practice_input').val();
@@ -34,7 +34,7 @@ $(document).ready(function() {
         var practice_name = $('#practice_name').val();
 
         if (practice_name != '') {
-            //$('#add_location').trigger('click');
+
             var counter = parseInt($('.location_counter').text());
             if ((!locations[counter]) && validateLocation()) {
                 getLocationData();
@@ -51,7 +51,8 @@ $(document).ready(function() {
                 createPractice(formdata);
             } else {
                 //for edit mode
-                updateLocationData(counter);
+                if (locations[counter])
+                    updateLocationData(counter);
                 formdata.push({
                     "practice_id": practice_id,
                     "practice_name": $('#practice_name').val(),
@@ -67,6 +68,10 @@ $(document).ready(function() {
             $('#alert').modal('show');
         }
     });
+	$('#dontsave_new_practice').on('click',function(){
+		$('#back_to_select_practice_btn').trigger('click');
+	});
+
     $('#add_location').on('click', function() {
         var counter = parseInt($('.location_counter').text());
         if (!locations[counter]) {
@@ -147,11 +152,11 @@ $(document).ready(function() {
     });
     $('#edit_practice').on('click', function() {
         var val = $(this).attr('data-id');
-        window.location = '/administration/practices/edit/' + val + '';
+        window.location = '/administration/practices/edit/' + val + '/-1';
     });
     $('.practice_list').on('click', '.editpractice_from_row', function() {
         var val = $(this).parents('.search_item').attr('data-id');
-        window.location = '/administration/practices/edit/' + val + '';
+        window.location = '/administration/practices/edit/' + val + '/-1';
     });
     $('.practice_list').on('click', '.removepractice_from_row', function() {
         var val = $(this).parents('.search_item').attr('data-id');
@@ -216,6 +221,30 @@ $(document).ready(function() {
                 $(this).find('input').prop('checked', false);
             });
     });
+    $('#new_location').on('click', function() {
+		var val = $('#edit_practice').attr('data-id');
+		window.location = '/administration/practices/edit/' + val + '/' + currentPractice.locations.length;
+    });
+    $('.practice_location_item_list').on('click', '.edit_location_frominfo', function() {
+        var index = $(this).parent().parent().attr('data-index');
+        var val = $('#edit_practice').attr('data-id');
+        window.location = '/administration/practices/edit/' + val + '/' + index;
+    });
+    $('.practice_location_item_list').on('click', '.edit_location_frominfo', function() {
+        var index = $(this).parent().parent().attr('data-index');
+        var val = $('#edit_practice').attr('data-id');
+        window.location = '/administration/practices/edit/' + val + '/' + index;
+    });
+    $('.practice_location_item_list').on('click', '.remove_location_frominfo', function() {
+		var index = $(this).parent().parent().attr('data-locationid');
+		var location_dom = $(this).parent().parent();
+		var formData = {
+			'location_id':index
+		};
+		removeLocation(formData,location_dom);
+
+    });
+
     $(document).keypress(function(e) {
         if (e.which == 13) {
             $("#search_practice_button").trigger("click");
@@ -388,7 +417,6 @@ function refreshAttributes() {
     locations = [];
     setNewLocationField()
     $('.location_counter').text(0);
-    //$('#dontsave').trigger('click');
     $('#practice_name').val('');
 }
 
@@ -417,17 +445,18 @@ function getPracticeInfo(formdata) {
 }
 
 function showPracticeInfo(info) {
-
     $('#edit_practice').attr('data-id', info.practice_id);
     $('#the_practice_name').text(info.practice_name);
     var content = '';
-    if (true) {
+    if (info.locations.length > 0) {
+        var i = 0;
         info.locations.forEach(function(location) {
-            content += '<div class="row practice_location_item"><div class="col-xs-3 practice_info"><p>' + location.locationname + '</p><p>' + location.addressline1 + '<br>' + location.addressline2 + '</p><p>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p>Assign roles </p><p>Assign users</p><p>Edit</p><br><center><span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></center></div><div class="col-xs-5"><div class="row">';
+            content += '<div class="row practice_location_item" data-locationid = "' + location.id + '" data-index="' + i + '"><div class="col-xs-3 practice_info"><p>' + location.locationname + '</p><p>' + location.addressline1 + '<br>' + location.addressline2 + '</p><p>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p>Assign roles </p><p>Assign users</p><p class="edit_location_frominfo">Edit</p><br><center class="remove_location_frominfo"><span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></center></div><div class="col-xs-5"><div class="row">';
             info.users.forEach(function(user) {
                 content += '<div class="col-xs-12 practice_users "><p style="width: 100%;"><input type="checkbox"><span>' + user.firstname + '</span><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background:#e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;float: right;margin-bottom: 5px;"></span></p></div>';
             });
             content += '</div></div></div>';
+            i++;
         });
 
         $('.practice_location_item_list').html(content);
@@ -439,18 +468,29 @@ function showPracticeInfo(info) {
     }
 }
 
-function setEditMode() {
+function setEditMode(location_index) {
     locations = currentPractice.locations;
     var practice_name = currentPractice.practice_name;
     if (locations.length > 0) {
         var index = locations.length - 1;
-        popupLocationFields(locations[index]);
-        $('.location_counter').text(index);
+        if (location_index == -1) {
+            popupLocationFields(locations[index]);
+            $('.location_counter').text(index);
+        } else if (location_index > index) {
+            setNewLocationField();
+            $('.location_counter').text(locations.length);
+            $('#locationname').focus();
+        } else {
+            popupLocationFields(locations[location_index]);
+            $('.location_counter').text(location_index);
+			$('#locationname').focus();
+        }
+
+
     } else
         $('.location_counter').text(0);
     $('#practice_name').val(currentPractice.practice_name);
     $('#practice_email').val(currentPractice.practice_email);
-
 
 }
 
@@ -504,6 +544,25 @@ function updateLocationData(index) {
     locations[index]['state'] = $('#state').val();
     locations[index]['zip'] = $('#zip').val();
     locations[index]['phone'] = $('#phone').val();
+}
+
+function removeLocation(formData, location_dom){
+	$.ajax({
+		url: '/administration/practices/removelocation',
+		type: 'GET',
+		data: $.param(formData),
+		contentType: 'text/html',
+		async: false,
+		success: function success(e) {
+		location_dom.remove();
+	},
+		   error: function error() {
+		$('p.alert_message').text('Error searching');
+		$('#alert').modal('show');
+	},
+		cache: false,
+			processData: false
+});
 }
 
 function showModalConfirmDialog(msg, handler) {
