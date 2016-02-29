@@ -281,7 +281,6 @@ function validateLocation() {
     if ($('#locationname').val() == "") return false;
     else if ($('#location_code').val() == "") return false;
     else if ($('#addressline1').val() == "") return false;
-    else if ($('#addressline2').val() == "") return false;
     else if ($('#city').val() == "") return false;
     else if ($('#state').val() == "") return false;
     else if ($('#zip').val() == "") return false;
