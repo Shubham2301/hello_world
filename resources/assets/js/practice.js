@@ -33,7 +33,7 @@ $(document).ready(function() {
         var formdata = [];
         var practice_name = $('#practice_name').val();
 
-        if (practice_name != '') {
+		if (practice_name != '' && $('#practice_email').val()  != '') {
 
             var counter = parseInt($('.location_counter').text());
             if ((!locations[counter]) && validateLocation()) {
@@ -64,7 +64,7 @@ $(document).ready(function() {
             }
 
         } else {
-            $('p.alert_message').text('practice name is missing');
+            $('p.alert_message').text('practice name or practice email is missing');
             $('#alert').modal('show');
         }
     });
