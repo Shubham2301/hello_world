@@ -25,7 +25,7 @@
             <div class="file_exchange_navbar">
                 <span class="file_exchange_navbar_content_left">
             <button id="" type="button" class="btn add-btn" data-toggle="modal" data-target="#newfolderModal">Add Folder</button>&nbsp;
-            <button id="" type="button" class="btn add-doc-btn file_input">Add Document</button>
+            <button id="" type="button" class="btn add-doc-btn file_input" data-toggle="modal" data-target="#newfileModal">Add Document</button>
         </span>
                 <span class="file_exchange_navbar_content_right">
             <span class="file_exchange_button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{URL::asset('images/sidebar/share-icon.png')}}" style="width:30px;"></span>
@@ -47,26 +47,33 @@
             <div class="col-xs-2 no-padding">Date Modified</div>
         </div>
         <hr class="main">
+        @foreach($folderlist as $folder)
         <div class="row arial col_content">
-            <div class="col-xs-1">
-                <input type="checkbox" class="checkbox">
+            <div class="col-xs-1" style="text-align: center;">
+                <input type="checkbox" class="checkbox" style="display: inline;  margin-left: 0">
+                <img src='{{URL::asset('images/sidebar/admin-file-icon-hover.png')}}' style="width: 3em;">
             </div>
-            <div class="col-xs-7 no-padding" id="item_name">Folder 1</div>
-            <div class="col-xs-2 no-padding" id="item_last_change_author">Eric Hoell</div>
-            <div class="col-xs-2 no-padding" id="item_last_change_date">02/20/2016</div>
-            <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic">Description is a really important part of this segment, more important than the file name maybe. One line of the description will be shown on opening the portalbut by clicking on that, the complete description will be available.</div>
+            <div class="col-xs-7 no-padding"><a href="file_exchange?id={{$folder['id']}}">{{ $folder['name'] }}</a></div>
+            <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
+            <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
+            <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" >{{ $folder['description'] }}</div>
         </div>
         <hr>
+        @endforeach
+
+        @foreach($filelist as $file)
         <div class="row arial col_content">
-            <div class="col-xs-1">
-                <input type="checkbox" class="checkbox">
+            <div class="col-xs-1" style="text-align: center;">
+                <input type="checkbox" class="checkbox" style="display: inline; margin-left: 0">
+                <img src='{{URL::asset('images/sidebar/admin-file-icon.png')}}' style="width: 3em;">
             </div>
-            <div class="col-xs-7 no-padding">Folder 2</div>
-            <div class="col-xs-2 no-padding">John Doe</div>
-            <div class="col-xs-2 no-padding">02/17/2016</div>
-            <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" >Description is a really important part of this segment, more important than the file name maybe. One line of the description will be shown on opening the portalbut by clicking on that, the complete description will be available.</div>
+            <div class="col-xs-7 no-padding">{{ $file['name'] }}</div>
+            <div class="col-xs-2 no-padding">{{ $file['modified_by'] }}</div>
+            <div class="col-xs-2 no-padding">{{ $file['updated_at'] }}</div>
+            <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" >{{ $file['description'] }}</div>
         </div>
         <hr>
+        @endforeach
     </div>
     <div class="item_info">
         <span class="title arial_bold">
@@ -100,6 +107,7 @@
         </span>
     </div>
 </div>
-@include('file_exchange.add')
+@include('file_exchange.addFolder')
+@include('file_exchange.addfile')
 
 @endsection

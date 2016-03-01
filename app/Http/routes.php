@@ -80,6 +80,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::resource('bulkimport', 'BulkImportController');
 	});
 	Route::resource('file_exchange', 'FileExchange\FileExchangeController');
+	Route::post('createFolder', 'FileExchange\FileExchangeController@createFolder');
+	Route::post('uploadDocument', 'FileExchange\FileExchangeController@uploadDocument');
 
 	//Ccda routes
 	Route::post('/import/ccda', 'CcdaController@saveCcda');
