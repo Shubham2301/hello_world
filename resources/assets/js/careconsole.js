@@ -491,21 +491,21 @@ function setSearchFields(index) {
 
 	if(patient['stage_id'] == 1)
 		{
-			$('.result_title.scheduled_to').text('Days Pending');
-			$('.result_text.scheduled_to').text('    '+patient.days_pending);
-			$('.result_title.appointment_date').text('Last Scheduled To');
-			$('.result_text.appointment_date').text('  '+patient.last_scheduled_to);
-			$('.result_title.contact_attampt').parent().show();
-			$('.result_title.contact_attampt').text('Contact Attempts');
-			$('.result_text.contact_attampt').text('    '+patient.contact_attempts);
+			$('.result_title.searchfield_1').text('Days Pending');
+			$('.result_text.searchfield_1').text('    '+patient.days_pending);
+			$('.result_title.searchfield_2').text('Last Scheduled To');
+			$('.result_text.searchfield_2').text('  '+patient.last_scheduled_to);
+			$('.result_title.searchfield_3').parent().show();
+			$('.result_title.searchfield_3').text('Contact Attempts');
+			$('.result_text.searchfield_3').text('    '+patient.contact_attempts);
 		}
 	else{
-		$('.result_title.scheduled_to').text('Scheduled To');
-		$('.result_text.scheduled_to').text(patient.scheduled_to);
-		$('.result_title.appointment_date').text('Appointment Date');
-		$('.result_text.appointment_date').text(patient.appointment_date);
-		$('.result_title.contact_attampt').parent().hide();
-		$('.result_title.contact_attampt').parents().css('border', 'none');
+		$('.result_title.searchfield_1').text('Scheduled To');
+		$('.result_text.searchfield_1').text(patient.scheduled_to);
+		$('.result_title.searchfield_2').text('Appointment Date');
+		$('.result_text.searchfield_2').text(patient.appointment_date);
+		$('.result_title.searchfield_3').parent().hide();
+		$('.result_title.searchfield_3').parents().css('border', 'none');
 
 	}
 
