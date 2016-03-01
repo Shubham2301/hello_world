@@ -77,7 +77,7 @@
 </div>
 <div class="row content-row-margin no_item_found">
     <p>No results found matching :</p>
-    <p>asdfggg</p>
+    <p></p>
 </div>
 <div class="row content-row-margin patient_info arial" data-id="">
     <div class="col-xs-12">
