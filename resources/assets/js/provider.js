@@ -324,7 +324,7 @@ function fillPatientInfo(data) {
 
 //function that displays the providers near patients
 function showPreviousProvider() {
-    var provider_list = new Array("1", "John Doe", "Becker Eye", "Gurgaon", "Eyes");
+    var provider_list = new Array("1", "John Doe", "Becker Eye", "4885 Olde Towne Parkway", "Eyes");
     var content = '<div class="col-xs-12 list_seperator" data-id="' + provider_list[0] + '"><div class="row"><div class="col-xs-12 arial_bold">' + provider_list[2] + '</div><div class="col-xs-6 arial">' + provider_list[1] + '<br>' + provider_list[4] + '</div><div class="col-xs-6 arial">' + provider_list[3] + '</div></div></div>';
     $('.provider_near_patient_list').html(content);
     $('.provider_near').removeClass('glyphicon-chevron-right');
@@ -333,7 +333,7 @@ function showPreviousProvider() {
 
 //function that displays the previous providers of the patients
 function showProviderNear() {
-    var provider_list = new Array("1", "John Doe", "Becker Eye", "Gurgaon", "Eyes");
+    var provider_list = new Array("1", "John Doe", "Becker Eye", "4885 Olde Towne Parkway", "Eyes");
     var content = '<div class="col-xs-12 list_seperator" data-id="' + provider_list[0] + '"><div class="row"><div class="col-xs-12 arial_bold">' + provider_list[2] + '</div><div class="col-xs-6 arial">' + provider_list[1] + '<br>' + provider_list[4] + '</div><div class="col-xs-6 arial">' + provider_list[3] + '</div></div></div>';
     $('.previous_provider_patient_list').html(content);
     $('.provider_previous').removeClass('glyphicon-chevron-right');
