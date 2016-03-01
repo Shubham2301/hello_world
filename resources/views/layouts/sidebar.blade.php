@@ -7,7 +7,7 @@
 </div>
 <ul class="sidebar_item_list arial">
     <?php $menus = \myocuhub\Models\Menu::renderForUser(Auth::user())?> @foreach($menus as $menu)
-    <li id="menu-{{ $menu->name }}" class="sidebar_menu_item" onclick="location.href = '{{$menu->url}}'">
+    <li id="menu-{{ $menu->name }}" class="sidebar_menu_item {{ array_key_exists($menu->name, $data) ? 'active' : '' }}" onclick="location.href = '{{$menu->url}}'">
         <a class="sidebar_item" href="{{ $menu->url }}">
             <span class="menu_item_icon"><img src="{{URL::asset($menu->icon_path.'.png')}}" class="image"></span>
             <span class="menu_item_label">{{ $menu->display_name }}</span>

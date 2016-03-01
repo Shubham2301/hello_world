@@ -54,6 +54,7 @@ class AppointmentController extends Controller {
 		$data['patient_id'] = $patient_id;
 		$patient = Patient::find($patient_id);
 		$data['patient_name'] = $patient->firstname . ' ' . $patient->lastname;
+        $data['schedule-patient'] = true;
 
 		return view('appointment.index')->with('data', $data);
 	}

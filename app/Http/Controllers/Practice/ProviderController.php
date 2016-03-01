@@ -23,6 +23,7 @@ class ProviderController extends Controller {
 	public function index(Request $request) {
 		$data = array();
 		$data['admin'] = false;
+        $data['schedule-patient'] = true;
 		if ($request->has('referraltype_id')) {
 			$data['referraltype_id'] = $request->input('referraltype_id');
 		}

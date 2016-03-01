@@ -18,7 +18,7 @@ class HomeController extends Controller {
 	 */
 	public function index() {
         $data = array();
-        $data['home_active'] = true;
+        $data['schedule-patient'] = true;
 		return view('home')->with('data', $data);
 	}
 
