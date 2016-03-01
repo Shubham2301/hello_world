@@ -2,8 +2,8 @@
 
 namespace myocuhub\Http\Controllers\Admin;
 
-use Event;
 use Auth;
+use Event;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
@@ -214,7 +214,7 @@ class UserController extends Controller {
 		return $userLevelArray;
 	}
 
-	public function search(Request $request){
+	public function search(Request $request) {
 		$tosearchdata = json_decode($request->input('data'), true);
 		$users = User::getUsersByName($tosearchdata['value'])->paginate(5);
 		//$users = User::where('name', 'like', '%' . $tosearchdata['value'] . '%')->paginate(6);
@@ -229,8 +229,10 @@ class UserController extends Controller {
 			//$data[$i]['name'] = $user->lastname.', '.$user->firstname;
 			$data[$i]['email'] = $user->email;
 			$data[$i]['practice'] = 'No Practice found ';
-			if($user->getPractice())
-			$data[$i]['practice'] = $user->getPractice()->name;
+			if ($user->getPractice()) {
+				$data[$i]['practice'] = $user->getPractice()->name;
+			}
+
 			$i++;
 		}
 		return json_encode($data);

@@ -3,6 +3,7 @@
 namespace myocuhub\Http\Controllers\Patient;
 
 use Auth;
+use DateTime;
 use Event;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
@@ -23,7 +24,6 @@ class PatientController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request) {
-
 		$data = array();
 		$data['admin'] = false;
 		if ($request->has('referraltype_id')) {
@@ -44,8 +44,7 @@ class PatientController extends Controller {
 	public function create(Request $request) {
 
 		$data = array();
-		$data = Patient::find(1)->toArray();
-		$data = array_fill_keys(array_keys($data), null);
+		$data = Patient::getColumnNames();
 		$data['admin'] = true;
 		$data['back_btn'] = 'back_to_select_patient_btn';
 		$data['url'] = '/administration/patients/add';
@@ -61,8 +60,7 @@ class PatientController extends Controller {
 
 	public function createByAdmin() {
 		$data = array();
-		$data = Patient::find(1)->toArray();
-		$data = array_fill_keys(array_keys($data), null);
+		$data = Patient::getColumnNames();
 		$data['admin'] = true;
 		$data['back_btn'] = 'back_to_admin_patient_btn';
 		$data['url'] = '/administration/patients/add';
@@ -105,7 +103,7 @@ class PatientController extends Controller {
 		$careconsole->import_id = $importHistory->id;
 		$careconsole->patient_id = $patient->id;
 		$careconsole->stage_id = 1;
-		$date = new \DateTime();
+		$date = new DateTime();
 		$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
 		$careconsole->save();
 
@@ -131,7 +129,6 @@ class PatientController extends Controller {
 	 */
 	public function show(Request $request) {
 		$id = $request->input('id');
-
 		$patientData = [];
 
 		$patient = Patient::find($id);
@@ -139,20 +136,21 @@ class PatientController extends Controller {
 //		$patient->birthdate = date("d F Y", strtotime($patient->birthdate));
 		$careconsole = Careconsole::where('patient_id', '=', $id)->first();
 		$insurance = PatientInsurance::where('patient_id', '=', $id)->first(['insurance_carrier']);
+		$previousProvider = Patient::getPreviousProvider($id);
+		$patientData['referred_to_practice_user'] = '';
+		$patientData['referred_to_practice'] = '';
+		if ($previousProvider['id'] !== null) {
+			$patientData['referred_to_practice_user'] = $previousProvider['title'] . ' ' . $previousProvider['lastname'] . ', ' . $previousProvider['firstname'];
+			$patientData['referred_to_practice'] = $previousProvider['name'];
+		}
 		if (isset($careconsole->referral_id)) {
 			$referral_history = ReferralHistory::find($careconsole->referral_id);
 		}
-
 		if (isset($referral_history)) {
 			$referred_to_practice = Practice::find($referral_history->referred_to_practice_id);
-			$patientData['referred_to_practice'] = $referred_to_practice->name;
-			$referred_to_practice_user = User::find($referral_history->referred_to_practice_user_id);
-			$patientData['referred_to_practice_user'] = $referred_to_practice_user->name;
 			$patientData['referred_by_practice'] = $referral_history->referred_by_practice;
 			$patientData['referred_by_provider'] = $referral_history->referred_by_provider;
 		} else {
-			$patientData['referred_to_practice'] = '';
-			$patientData['referred_to_practice_user'] = '';
 			$patientData['referred_by_practice'] = '';
 			$patientData['referred_by_provider'] = '';
 		}
@@ -171,7 +169,8 @@ class PatientController extends Controller {
 		$patientData['city'] = $patient->city;
 		$patientData['id'] = $patient->id;
 		$patientData['cellphone'] = $patient->cellphone;
-		$patientData['birthdate'] = date("d F Y", strtotime($patient->birthdate));
+		$birthdate = new DateTime($patient->birthdate);
+		$patientData['birthdate'] = $birthdate->format('F j Y');
 
 		$ccda = Ccda::where('patient_id', $id)->first();
 		if (!($ccda)) {
@@ -193,7 +192,7 @@ class PatientController extends Controller {
 		$data = Patient::find($id);
 		if (!$data) {
 			$data['url'] = '/administration/patients/add';
-			$data = array_fill_keys(array_keys($data), null);
+			$data = Patient::getColumnNames();
 		}
 		$data['admin'] = true;
 		$data['back_btn'] = 'back_to_admin_patient_btn';
@@ -240,7 +239,7 @@ class PatientController extends Controller {
 
 		$filters = json_decode($request->input('data'), true);
 
-		$patients = Patient::getPatients($filters)->orderBy('lastname','asc')->paginate(5);
+		$patients = Patient::getPatients($filters)->orderBy('lastname', 'asc')->paginate(5);
 		$data = [];
 		$i = 0;
 		foreach ($patients as $patient) {
@@ -253,7 +252,8 @@ class PatientController extends Controller {
 			$data[$i]['addressline1'] = $patient->addressline1;
 			$data[$i]['addressline2'] = $patient->addressline2;
 			$data[$i]['city'] = $patient->city;
-			$data[$i]['birthdate'] = date('Y-m-d', strtotime($patient->birthdate));
+			$birthdate = new DateTime($patient->birthdate);
+			$data[$i]['birthdate'] = $birthdate->format('F j Y');
 			$i++;
 		}
 		$data[0]['total'] = $patients->total();

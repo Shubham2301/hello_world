@@ -30,4 +30,10 @@ class Network extends Model {
 		return $this->hasMany('myocuhub\Models\NetworkStage')
 		            ->leftJoin('careconsole_stages', 'network_stage.stage_id', '=', 'careconsole_stages.id')->orderBy('stage_order');
 	}
+
+	public static function getColumnNames(){
+		$network  = \Schema::getColumnListing('networks');
+		$dummy_array =  array_fill_keys(array_keys($network), null);
+		return array_combine($network, $dummy_array);
+	}
 }

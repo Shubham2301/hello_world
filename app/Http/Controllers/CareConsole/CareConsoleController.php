@@ -9,7 +9,6 @@ use myocuhub\Models\Action;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
-use myocuhub\Models\ContactHistory;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
@@ -146,8 +145,10 @@ class CareConsoleController extends Controller {
 		$upper_limit = $request->upper_limit;
 
 		$listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder);
-		if($upper_limit != -1)
-			$listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder,$lower_limit,$upper_limit);
+		if ($upper_limit != -1) {
+			$listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder, $lower_limit, $upper_limit);
+		}
+
 		$actions = $this->CareConsoleService->getActions($stageID);
 		$controls = $this->CareConsoleService->getControls($stageID);
 		$drilldown['controls'] = (sizeof($controls) === 0) ? '' : view('careconsole.controls')->with('controls', $controls)->render();
@@ -191,8 +192,8 @@ class CareConsoleController extends Controller {
 				$results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
 				$results[$i]['actions'] = $this->CareConsoleService->getActions($console->stage_id);
 
-				$results[$i]['scheduled_to'] = 'info not found';
-				$results[$i]['appointment_date'] = 'info not found';
+				$results[$i]['scheduled_to'] = '-';
+				$results[$i]['appointment_date'] = '-';
 				if ($patient['appointment_id']) {
 					$appointment = Appointment::find($patient['appointment_id']);
 					$provider = User::find($appointment->provider_id);
@@ -230,20 +231,19 @@ class CareConsoleController extends Controller {
 		$data['actions'] = $this->CareConsoleService->getActions($console->stage_id);
 		$data['stageid'] = $console->stage_id;
 
-
 		$appointment = Appointment::find($console->appointment_id);
 		$provider = null;
-		$data['appointment_type'] = 'not found';
+		$data['appointment_type'] = '-';
 		if ($appointment) {
 			$provider = User::find($appointment->provider_id);
 			$data['appointment_type'] = $appointment->appointmenttype;
 		}
 
-		$data['scheduled_to'] = ($provider) ? $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname : 'no info found';
+		$data['scheduled_to'] = ($provider) ? $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname : '-';
 
-		$data['appointment_date'] = ($console->appointment_id) ? $this->CareConsoleService->getPatientFieldValue($console, 'appointment-date') : 'no info found';
+		$data['appointment_date'] = ($console->appointment_id) ? $this->CareConsoleService->getPatientFieldValue($console, 'appointment-date') : '-';
 
-		$data['contacts_attempt'] =$this->ActionService->getContactActions($consoleID);
+		$data['contacts_attempt'] = $this->ActionService->getContactActions($consoleID);
 
 		return json_encode($data);
 	}

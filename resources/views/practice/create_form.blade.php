@@ -11,14 +11,15 @@
         <div class="panel-heading">
             <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-        Practice Details</a>
+        Form Section 1</a>
       </h4>
         </div>
         <div id="collapse1" class="panel-collapse collapse in">
             <div class="panel-body">
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
-                        <input id="editmode" type="hidden" value="{{$id}}"> {!! Form::text('practice_name', old('practice_name'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Name', 'id' => 'practice_name')) !!} {!! Form::text('practice_email', old('practice_email'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Email', 'id' => 'practice_email')) !!}
+                        <input id="editmode" type="hidden" value="{{$data['id']}}">
+                        <input id="location_index" type="hidden" value="{{$data['location_index']}}"> {!! Form::text('practice_name', old('practice_name'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Name*', 'id' => 'practice_name')) !!} {!! Form::text('practice_email', old('practice_email'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Email*', 'id' => 'practice_email')) !!}
 
                     </div>
                     <div class="col-sm-6 col-xs-12 ocuapps_options">
@@ -42,7 +43,7 @@
         <div class="panel-heading">
             <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-        Practice Location Details</a>
+        Form Section 2</a>
       </h4>
         </div>
         <div id="collapse2" class="panel-collapse collapse">
@@ -64,16 +65,16 @@
                     </div>
                     <div class="row content-row-margin">
                         <div class="col-sm-6 col-xs-12">
-                            <input class="add_practice_input" id="locationname" type="text" placeholder="Location Name">
-                            <input class="add_practice_input" id="location_code" type="text" placeholder="Location Code">
-                            <input class="add_practice_input" id="addressline1" type="text" placeholder="AddressLine1">
-                            <input class="add_practice_input" id="city" type="text" placeholder="City">
-                            <input class="add_practice_input" id="state" type="text" placeholder="State">
+                            <input class="add_practice_input" id="locationname" type="text" placeholder="Location Name*">
+                            <input class="add_practice_input" id="location_code" type="text" placeholder="Location Code*">
+                            <input class="add_practice_input" id="addressline1" type="text" placeholder="Address*">
+                            <input class="add_practice_input" id="city" type="text" placeholder="City*">
+                            <input class="add_practice_input" id="state" type="text" placeholder="State*">
                         </div>
                         <div class="col-sm-6 col-xs-12">
-                            <input class="add_practice_input" id="zip" type="text" placeholder="Zip">
-                            <input class="add_practice_input" id="phone" type="text" placeholder="Phone">
-                            <input class="add_practice_input" id="addressline2" type="text" placeholder="AddressLine2">
+                            <input class="add_practice_input" id="zip" type="text" placeholder="Zip*">
+                            <input class="add_practice_input" id="phone" type="text" placeholder="Phone*">
+                            <input class="add_practice_input" id="addressline2" type="text" placeholder="AddressLine2" style="display:none;">
                         </div>
                     </div>
                 </div>

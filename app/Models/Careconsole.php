@@ -53,8 +53,8 @@ class Careconsole extends Model {
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
 			->get(['*', 'careconsole.id', 'careconsole.created_at']);
 	}
-    
-    /**
+
+	/**
 	 * @param $networkID
 	 */
 	public static function getRecallPatients($networkID) {
@@ -64,7 +64,7 @@ class Careconsole extends Model {
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
 			->get(['*', 'careconsole.id', 'careconsole.created_at']);
 	}
-    
+
 	/**
 	 * @param $networkID
 	 */
@@ -115,8 +115,8 @@ class Careconsole extends Model {
 			->where('import_history.network_id', $networkID)
 			->whereExists(function ($query) {
 				$query->select(DB::raw(1))
-					->from('contact_history')
-					->whereRaw('contact_history.console_id = careconsole.id');
+				->from('contact_history')
+				->whereRaw('contact_history.console_id = careconsole.id');
 			})
 			->whereNull('archived_date')
 			->whereNull('recall_date')
@@ -273,8 +273,8 @@ class Careconsole extends Model {
 			->where('import_history.network_id', $networkID)
 			->whereExists(function ($query) {
 				$query->select(DB::raw(1))
-					->from('contact_history')
-					->whereRaw('contact_history.console_id = careconsole.id');
+				->from('contact_history')
+				->whereRaw('contact_history.console_id = careconsole.id');
 			})
 			->whereNull('archived_date')
 			->whereNull('recall_date')
@@ -378,25 +378,65 @@ class Careconsole extends Model {
 	 * @param $statusName
 	 * @return null
 	 */
-	public static function getAppointmentStatusPatients($networkID, $stageID, $statusName) {
-		return self::where('stage_id', $stageID)
-			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
-			->where('import_history.network_id', $networkID)
-			->leftjoin('appointments', 'careconsole.appointment_id', '=', 'appointments.id')
-			->leftjoin('kpis', 'appointments.appointment_status', '=', 'kpis.id')
-			->where('kpis.name', '=', $statusName)
-			->whereNull('archived_date')
-			->whereNull('recall_date')
-			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
-			->get(['*', 'careconsole.id', 'careconsole.created_at']);
+	public static function getStageWaitingPatients($networkID, $stageID) {
+
+		$sqlResult = DB::select("select *, `careconsole`.id, `careconsole`.created_at from `careconsole`
+            	left join `import_history`
+            	on `import_history`.`id` = `careconsole`.`import_id`
+            	left join `patients`
+            	on `careconsole`.`patient_id` = `patients`.`id`
+            	where `import_history`.`network_id` = $networkID and
+            	`stage_id` = $stageID and
+            	`careconsole`.`archived_date` is null and
+            	`careconsole`.`recall_date` is null and
+            	datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) < 5");
+
+		$results = array();
+		$i = 0;
+		foreach ($sqlResult as $result) {
+			$results[$i] = get_object_vars($result);
+			$i++;
+		}
+		return $results;
 	}
 
+	/**
+	 * @param $networkID
+	 * @param $stageID
+	 * @return mixed
+	 */
+	public static function getStageOverduePatients($networkID, $stageID) {
+
+		$sqlResult = DB::select("select *, `careconsole`.id, `careconsole`.created_at from `careconsole`
+            	left join `import_history`
+            	on `import_history`.`id` = `careconsole`.`import_id`
+            	left join `patients`
+            	on `careconsole`.`patient_id` = `patients`.`id`
+            	where `stage_id` = $stageID and
+            	`import_history`.`network_id` = $networkID and
+            	`careconsole`.`archived_date` is null and
+            	`careconsole`.`recall_date` is null and
+            	datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) > 4");
+
+		$results = array();
+		$i = 0;
+		foreach ($sqlResult as $result) {
+			$results[$i] = get_object_vars($result);
+			$i++;
+		}
+		return $results;
+	}
+	/**
+	 * @param $lowerlimit
+	 * @param $upperlimit
+	 * @param $patientdata
+	 * @return mixed
+	 */
 	public static function filterPatientByDaysPendings($lowerlimit, $upperlimit, $patientdata) {
 		$data = [];
-		$i=0;
-		foreach($patientdata as $patient)
-		{
-			if($patient['days-pending'] >= $lowerlimit && $patient['days-pending'] < $upperlimit ){
+		$i = 0;
+		foreach ($patientdata as $patient) {
+			if ($patient['days-pending'] >= $lowerlimit && $patient['days-pending'] < $upperlimit) {
 				$data[$i] = $patient;
 				$i++;
 			}

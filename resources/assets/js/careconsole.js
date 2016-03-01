@@ -1,10 +1,9 @@
-$(document).ready(function() {
+$(document).ready(function () {
     loadImportForm();
     $('#datetimepicker_action_date').datetimepicker({
         format: 'YYYY-MM-DD',
     });
-
-    $('#search_bar_open').on('click', function() {
+    $('#search_bar_open').on('click', function () {
         if (($('#search_bar_open').hasClass('active'))) {
             $('#search_bar_open').removeClass('active');
             $('#search_bar_open').removeClass('glyphicon-chevron-left');
@@ -23,9 +22,7 @@ $(document).ready(function() {
             $('.search_result').removeClass('active');
         }
     });
-
-    $(document).on('click', '.C3_day_box', function() {
-
+    $(document).on('click', '.C3_day_box', function () {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
         } else {
@@ -35,26 +32,19 @@ $(document).ready(function() {
         var kpi_name = $(this).attr('data-name');
         var stageID = $(this).parent().attr('data-stageid');
         if (kpi_name) {
-
             $('#current_stage').val(stageID);
             $('#current_sort_field').val();
             $('#current_sort_order').val();
-
             if ($(this).hasClass('low')) {
                 $('#current_kpi').val('0');
                 setPandingDayslimit(kpi_name, stageID);
-
-
             } else {
                 $('#current_kpi').val(kpi_name);
             }
             getPatientData();
         }
-
-
     });
-
-    $(document).on('click', '.console_buckets', function() {
+    $(document).on('click', '.console_buckets', function () {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             $('.c3_overview_link').removeClass('active');
@@ -82,14 +72,11 @@ $(document).ready(function() {
     $('#recall_date').datetimepicker({
         format: 'YYYY/MM/DD',
     });
-
-    $('.day_box.active').on('click', function() {
+    $('.day_box.active').on('click', function () {
         $(this).removeClass('active');
     });
-
     $('#search_do').on('click', searchc3);
-
-    $('.c3_overview_link').on('click', function() {
+    $('.c3_overview_link').on('click', function () {
         refreshOverview();
         $('.c3_overview_link').removeClass('active');
         $('.control_section').removeClass('active');
@@ -99,8 +86,7 @@ $(document).ready(function() {
         $('.stage').removeClass('sidebar_items_active');
         $('#current_stage').val('-1');
     });
-
-    $('.info_section').on('click', function() {
+    $('.info_section').on('click', function () {
         $('.c3_overview_link').addClass('active');
         $('.control_section').addClass('active');
         $('ul.c3_sidebar_list').addClass('active');
@@ -116,7 +102,7 @@ $(document).ready(function() {
         $('#current_stage').val(stage_id);
         showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator);
     });
-    $('.stage').on('click', function() {
+    $('.stage').on('click', function () {
         $('.c3_overview_link').addClass('active');
         $('.control_section').addClass('active');
         $('ul.c3_sidebar_list').addClass('active');
@@ -135,119 +121,135 @@ $(document).ready(function() {
         $('#current_stage').val(stage_id);
         showStageData(stage_id, stage_name);
     });
-    $('#drilldown_patients_listing').on('click', '.careconsole_action', function() {
+    $('#drilldown_patients_listing').on('click', '.careconsole_action', function () {
         if ($('#current_stage').val() === '-1') {
             return;
         }
         show_patient = true;
         $('#form_recall_date').hide();
-        switch ($(this).attr('data-name')) {
-            case 'schedule':
-                window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).parent().attr('data-patientid');
-                break;
-            case 'recall-later':
-                $('#form_recall_date').show();
-            default:
-                $('#action_patient_id').val($(this).parent().attr('data-patientid'));
-                $('#action_id').val($(this).attr('data-id'));
-                $('#action_console_id').val($(this).parent().attr('data-consoleid'));
-                $('#action_stage_id').val($('#current_stage').val());
-                $('#action_header').html($(this).attr('data-displayname'));
-                if ($(this).attr('data-name') === 'move-to-console') {
+        showDate = false;
+        if ($(this).attr('data-name') == 'recall-later')
+            showDate = true;
 
-                }
-                var results = actionResults[$(this).attr('data-id')];
-                if (results.length > 0) {
-                    var content = '<option value="0">Select Action Result</option>';
-                    results.forEach(function(result) {
-                        content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
-                    });
-                    $('#action_result_id').html(content);
-                    $('#action_results').show();
-                } else if (results.length === 0) {
-                    $('#action_result_id').html('<option value="-1">No Action Results</option>');
-                    $('#action_results').hide();
-                }
-                $('#actionModal').modal('show');
+        switch ($(this).attr('data-name')) {
+        case 'schedule':
+            window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).parent().attr('data-patientid');
+            break;
+        case 'recall-later':
+            $('#form_recall_date').show();
+
+
+        default:
+            $('#action_patient_id').val($(this).parent().attr('data-patientid'));
+            $('#action_id').val($(this).attr('data-id'));
+            $('#action_console_id').val($(this).parent().attr('data-consoleid'));
+            $('#action_stage_id').val($('#current_stage').val());
+            $('#action_header').html($(this).attr('data-displayname'));
+            if ($(this).attr('data-name') === 'move-to-console') {
+
+            }
+            var results = actionResults[$(this).attr('data-id')];
+            if (results.length > 0) {
+                var content = '<option value="0">Select Action Result</option>';
+                results.forEach(function (result) {
+                    content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
+                });
+                $('#action_result_id').html(content);
+                $('#action_results').show();
+            } else if (results.length === 0) {
+                $('#action_result_id').html('<option value="-1">No Action Results</option>');
+                $('#action_results').hide();
+            }
+            $('#actionModal').modal('show');
         }
     });
-    $('#records_action_dropdown').on('click', '.careconsole_action', function() {
+    $('#records_action_dropdown').on('click', '.careconsole_action', function () {
         show_patient = true;
         $('#form_recall_date').hide();
+        showDate = false;
+        if ($(this).attr('data-name') == 'recall-later')
+            showDate = true;
         switch ($(this).attr('data-name')) {
-            case 'schedule':
-                window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
-                break;
-            default:
-                $('#action_patient_id').val($(this).attr('data-patientid'));
-                $('#action_id').val($(this).attr('data-id'));
-                $('#action_console_id').val($(this).attr('data-consoleid'));
-                $('#action_stage_id').val($(this).attr('data-stageid'));
-                $('#action_header').html($(this).attr('data-displayname'));
-                var results = actionResults[$(this).attr('data-id')];
-                if (results.length > 0) {
-                    var content = '<option value="0">Select Action Result</option>';
-                    results.forEach(function(result) {
-                        content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
-                    });
-                    $('#action_result_id').html(content);
-                    $('#action_results').show();
-                } else if (results.length === 0) {
-                    $('#action_result_id').html('<option value="-1">No Action Results</option>');
-                    $('#action_results').hide();
-                }
-                $('#actionModal').modal('show');
+        case 'schedule':
+            window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
+            break;
+        case 'recall-later':
+            $('#form_recall_date').show();
+        default:
+            $('#action_patient_id').val($(this).attr('data-patientid'));
+            $('#action_id').val($(this).attr('data-id'));
+            $('#action_console_id').val($(this).attr('data-consoleid'));
+            $('#action_stage_id').val($(this).attr('data-stageid'));
+            $('#action_header').html($(this).attr('data-displayname'));
+            var results = actionResults[$(this).attr('data-id')];
+            if (results.length > 0) {
+                var content = '<option value="0">Select Action Result</option>';
+                results.forEach(function (result) {
+                    content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
+                });
+                $('#action_result_id').html(content);
+                $('#action_results').show();
+            } else if (results.length === 0) {
+                $('#action_result_id').html('<option value="-1">No Action Results</option>');
+                $('#action_results').hide();
+            }
+            $('#actionModal').modal('show');
         }
     });
-    $('#search_action_dropdown').on('click', '.careconsole_action', function() {
+    $('#search_action_dropdown').on('click', '.careconsole_action', function () {
         $('#form_recall_date').hide();
+        showDate = false;
         show_patient = false;
+        if ($(this).attr('data-name') == 'recall-later')
+            showDate = true;
         switch ($(this).attr('data-name')) {
-            case 'schedule':
-                window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
-                break;
-            default:
-                $('#action_patient_id').val($(this).attr('data-patientid'));
-                $('#action_id').val($(this).attr('data-id'));
-                $('#action_console_id').val($(this).attr('data-consoleid'));
-                $('#action_stage_id').val($(this).attr('data-stageid'));
-                $('#action_header').html($(this).attr('data-displayname'));
-                var results = actionResults[$(this).attr('data-id')];
-                if (results.length > 0) {
-                    var content = '<option value="0">Select Action Result</option>';
-                    results.forEach(function(result) {
-                        content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
-                    });
-                    $('#action_result_id').html(content);
-                    $('#action_results').show();
-                } else if (results.length === 0) {
-                    $('#action_result_id').html('<option value="-1">No Action Results</option>');
-                    $('#action_results').hide();
-                }
+        case 'schedule':
+            window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
+            break;
+        case 'recall-later':
+            $('#form_recall_date').show();
+            showDate = true;
+            break;
+        default:
+            $('#action_patient_id').val($(this).attr('data-patientid'));
+            $('#action_id').val($(this).attr('data-id'));
+            $('#action_console_id').val($(this).attr('data-consoleid'));
+            $('#action_stage_id').val($(this).attr('data-stageid'));
+            $('#action_header').html($(this).attr('data-displayname'));
+            var results = actionResults[$(this).attr('data-id')];
+            if (results.length > 0) {
+                var content = '<option value="0">Select Action Result</option>';
+                results.forEach(function (result) {
+                    content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
+                });
+                $('#action_result_id').html(content);
+                $('#action_results').show();
+            } else if (results.length === 0) {
+                $('#action_result_id').html('<option value="-1">No Action Results</option>');
+                $('#action_results').hide();
+            }
 
-                $('#actionModal').modal('show');
+            $('#actionModal').modal('show');
         }
     });
-
-    $('.search_result').on('click', '.search_result_row', function() {
+    $('.search_result').on('click', '.search_result_row', function () {
         var index = $(this).attr('data-index');
         setSearchFields(index);
     });
-    $('#back_to_search').on('click', function() {
+    $('#back_to_search').on('click', function () {
         $('.search_result').addClass('active');
         $('.search_result_info').removeClass('active');
 
     });
-
-    $('.contact_attempts').on('click', '.history_item', function() {
-        $('.history_item').each(function() {
+    $('.contact_attempts').on('click', '.history_item', function () {
+        $('.history_item').each(function () {
             $(this).removeClass('active');
         });
         $(this).addClass('active');
         var index = $(this).attr('data-index');
         $('.patient_contact_info').find('.contact_notes').text(contact_notes[index]);
     });
-    $(document).on('click', '.drilldown_header_item', function() {
+    $(document).on('click', '.drilldown_header_item', function () {
         var field = $(this).find('.sort_order');
         if (field.length === 0) {
             return;
@@ -269,7 +271,7 @@ $(document).ready(function() {
         $('#current_sort_order').val(field.attr('data-order'));
         getPatientData();
     });
-    $(document).on('click', '.drilldown_item>div', function() {
+    $(document).on('click', '.drilldown_item>div', function () {
         if ($(this).attr('data-name') === 'actions') {
             return;
         }
@@ -277,11 +279,9 @@ $(document).ready(function() {
         setPatientRecords(consoleID);
         $('.patient_records_info').addClass('active');
     });
-    $(document).on('click', '.close_patient_records_info', function() {
+    $(document).on('click', '.close_patient_records_info', function () {
         $('.patient_records_info').removeClass('active');
     });
-
-
 });
 
 var actionResults = {};
@@ -290,7 +290,7 @@ var llimit = -1;
 var ulimit = -1;
 var show_patient = true;
 var contact_notes = [];
-
+var showDate = false;
 
 function searchc3() {
     $('.search_result_info').removeClass('active');
@@ -305,19 +305,21 @@ function searchc3() {
             contentType: 'text/html',
             async: false,
             success: function success(e) {
+                $('#back_to_search').addClass('active');
                 patientdata = $.parseJSON(e);
                 if (patientdata.length > 1) {
                     var content = '';
                     var index = 0;
-                    patientdata.forEach(function(patient) {
+                    patientdata.forEach(function (patient) {
                         content += '<div class="search_result_row row" data-index= "' + index + '"><div class="col-xs-12 search_result_row_text"><p class="result_title result_name">' + patient.name + '</p><p class="result_title scheduled_name"><strong>Scheduled-to&nbsp;&nbsp;</strong>' + patient.scheduled_to + '</p></div></div>';
                         index++;
                     });
                     $('.search_result').html(content);
                     $('.search_result').addClass('active');
                 } else if (patientdata.length != 0) {
-                    setSearchFields(0);
                     $('#back_to_search').removeClass('active');
+                    setSearchFields(0);
+
                 }
             },
             error: function error() {
@@ -391,7 +393,7 @@ function getPatientData() {
             var controls = data.controls;
             listing = data.listing;
             if (actions.length > 0) {
-                actions.forEach(function(action) {
+                actions.forEach(function (action) {
                     actionResults[action.id] = action.action_results;
                     actionList += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '"><a href="#">' + action.display_name + '</a></li>';
                 });
@@ -410,6 +412,16 @@ function getPatientData() {
 }
 
 function action() {
+    if (($('#recall_date').val()) == '' && (showDate)) {
+        $('p.alert_message').text('please select a date');
+        $('#alert').modal('show');
+        return;
+    }
+    if ($('#action_result_id').val() == '0') {
+        $('p.alert_message').text('please select a result');
+        $('#alert').modal('show');
+        return;
+    }
     var formData = {
         'console_id': $('#action_console_id').val(),
         'stage_id': $('#action_stage_id').val(),
@@ -457,9 +469,9 @@ function refreshOverview() {
             }
             var stages = e.stages;
 
-            stages.forEach(function(stage) {
+            stages.forEach(function (stage) {
                 var kpis = stage.kpis;
-                kpis.forEach(function(kpi) {
+                kpis.forEach(function (kpi) {
                     $('.info_section_number.' + kpi.name).html(kpi.count);
                 });
             });
@@ -481,12 +493,12 @@ function setSearchFields(index) {
     $('.search_result').removeClass('active');
     $('#status_color').css('background-color', patient.stage_color);
     var content = '';
-    patient.actions.forEach(function(action) {
+    patient.actions.forEach(function (action) {
         actionResults[action.id] = action.action_results;
         content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid = "' + patient.id + '" data-consoleid="' + patient.console_id + '" data-stageid="' + patient.stage_id + '" ><a href="#">' + action.display_name + '</a></li>';
     });
     $('#search_action_dropdown').html(content);
-    $('#back_to_search').removeClass('active');
+
 }
 
 function bucketData(bucketName) {
@@ -512,7 +524,7 @@ function bucketData(bucketName) {
             var actions = data.actions;
             listing = data.listing;
             if (actions.length > 0) {
-                actions.forEach(function(action) {
+                actions.forEach(function (action) {
                     actionResults[action.id] = action.action_results;
                     actionList += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '"><a href="#">' + action.display_name + '</a></li>';
                 });
@@ -553,9 +565,9 @@ function setPatientRecords(consoleID) {
             var i = 0;
             var show_active = 'active';
             if (data.contacts_attempt.length > 0) {
-                data.contacts_attempt.forEach(function(contact) {
+                data.contacts_attempt.forEach(function (contact) {
                     content += '<p class="history_item ' + show_active + '" data-index = "' + i + '"><span class="history_item_name ">' + contact.name + '</span> <span class="history_item_date attempt_phone">' + contact.date + '</span></p>';
-                    contact_notes[i] = 'no notes found';
+                    contact_notes[i] = '-';
                     if (contact.notes)
                         contact_notes[i] = contact.notes;
                     show_active = '';
@@ -563,10 +575,10 @@ function setPatientRecords(consoleID) {
                 });
                 $('.contact_attempts').html(content);
             } else {
-                $('.contact_attempts').text('NO Info Found');
+                $('.contact_attempts').text('-');
             }
             content = '';
-            data.actions.forEach(function(action) {
+            data.actions.forEach(function (action) {
                 actionResults[action.id] = action.action_results;
                 content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid= "' + data.patient_id + '" data-consoleid="' + consoleID + '" data-stageid = "' + data.stageid + '"><a href="#">' + action.display_name + '</a></li>';
             });
@@ -586,33 +598,33 @@ function setPatientRecords(consoleID) {
 function setPandingDayslimit(kpi_name, stageID) {
 
     switch (kpi_name) {
-        case 'Low':
-            if (stageID == '1') {
-                llimit = 0;
-                ulimit = 4;
-            } else {
-                llimit = 0;
-                ulimit = 3;
-            }
+    case 'Low':
+        if (stageID == '1') {
+            llimit = 0;
+            ulimit = 4;
+        } else {
+            llimit = 0;
+            ulimit = 3;
+        }
 
-            break;
-        case 'Normal':
-            if (stageID == '1') {
-                llimit = 4;
-                ulimit = 8;
-            } else {
-                llimit = 3;
-                ulimit = 5;
-            }
-            break;
-        case 'Urgent':
-            if (stageID == '1') {
-                llimit = 8;
-                ulimit = 10000;
-            } else {
-                llimit = 0;
-                ulimit = 10000;
-            }
-            break;
+        break;
+    case 'Normal':
+        if (stageID == '1') {
+            llimit = 4;
+            ulimit = 8;
+        } else {
+            llimit = 3;
+            ulimit = 5;
+        }
+        break;
+    case 'Urgent':
+        if (stageID == '1') {
+            llimit = 8;
+            ulimit = 10000;
+        } else {
+            llimit = 0;
+            ulimit = 10000;
+        }
+        break;
     }
 }

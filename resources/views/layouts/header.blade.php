@@ -22,7 +22,7 @@
 <div class="col-xs-3 hidden-xs header-left">
     <div class="col-xs-5 network_logo" >
         @if(Auth::check())
-        <img src="{{URL::asset('images/networks/default_network_logo.jpg')}}" class="img-responsive">
+        <img src="{{URL::asset('images/networks/network_'. Auth::user()->getNetwork(Auth::user()->id)->id .'.png')}}" onerror="this.src = '{{URL::asset('images/networks/default_network_logo.jpg')}}'">
         @endif
     </div>
 </div>

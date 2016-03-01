@@ -110,7 +110,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('administration/permissions', 'Admin\PermissionController');
 	Route::get('administration/practices', 'Practice\PracticeController@administration');
 	Route::get('administration/practices/create', 'Practice\PracticeController@create');
-	Route::get('administration/practices/edit/{id}', 'Practice\PracticeController@edit');
+	Route::get('administration/practices/edit/{id}/{location}', 'Practice\PracticeController@edit');
+	Route::get('administration/practices/removelocation', 'Practice\PracticeController@removelocation');
 	Route::post('administration/network/add', 'Admin\NetworkController@add');
 	Route::get('administration/providers', 'Practice\ProviderController@administration');
 
