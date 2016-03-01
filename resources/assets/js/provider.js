@@ -1,4 +1,9 @@
 $(document).ready(function () {
+    $('#select_date').datetimepicker({
+        format: 'MM/DD/YYYY',
+        minDate: new Date(),
+        defaultDate: new Date()
+    });
     if (!$('#from_admin').val()) {
         var id = $('#form_patient_id').attr('value');
         var formData = {
@@ -20,11 +25,9 @@ $(document).ready(function () {
     $('.availability').on('click', '#previous_week', function () {
         var week = $('.availability').attr('data-value');
         $('.schedule_button').removeClass('active');
-        if ($('.availability').attr('data-value') > 0) {
-            week--;
-            $('.availability').attr('data-value', week);
-            getOpenSlots(week);
-        }
+        week--;
+        $('.availability').attr('data-value', week);
+        getOpenSlots(week);
     });
 
     $('.availability').on('click', 'li', function () {
@@ -156,7 +159,7 @@ $(document).ready(function () {
         $('#appointment_time').html('');
         $('#appointment_type_list').html('');
         $('.availability-btn').removeClass('hide');
-        $('p.get_availability').addClass('hide');
+        $('.get_availability').addClass('hide');
         $('.availability').html('');
         $('.availability').removeClass('active');
         $('.schedule_button').removeClass('active');
@@ -181,7 +184,7 @@ $(document).ready(function () {
         $('#appointment_type').html(appointment_type);
         $('#appointment_type').attr('value', $(this).val());
         $('#appointment_type').attr('data-name', appointment_type);
-        $('p.get_availability').removeClass('hide');
+        $('.get_availability').removeClass('hide');
     });
     $('#get_availability').on('click', function () {
         $('.availability').attr('data-value', 0);
@@ -189,6 +192,7 @@ $(document).ready(function () {
         $('#appointment_time').html('');
         $('.availability-text').removeClass('hide');
         $('.schedule_button').removeClass('active');
+        $('.availability').html('');
         getOpenSlots(0);
     });
 
@@ -235,7 +239,7 @@ function clearHTML() {
     $('.availability-text').removeClass('hide');
     $('.availability-btn').removeClass('hide');
     $('.availability').removeClass('active');
-    $('p.get_availability').addClass('hide');
+    $('.get_availability').addClass('hide');
 }
 
 function showPatientInfo() {
@@ -453,18 +457,20 @@ function getOpenSlots(week) {
     var provider_id = $('#form_provider_acc_key').val();
     var location_id = $('#form_location_code').val();
     var appointment_type = $('#appointment_type').attr('value');
+    var selected_date = $('#select_date').val();
     var week = week;
     var formData = {
         'provider_id': provider_id,
         'location_id': location_id,
         'appointment_type': appointment_type,
         'week': week,
+        'selected_date': selected_date,
     };
     $('#form_appointment_type_name').val($('#appointment_type').attr('data-name'));
     $('#form_appointment_type_id').val($('#appointment_type').attr('value'));
     var content = '';
     var weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    content += '<span class="glyphicon glyphicon-chevron-left availability_glyph" id="previous_week"></span>';
+    content += '<span class="glyphicon glyphicon-chevron-left availability_glyph available" id="previous_week"></span>';
     var i = 0;
     $.ajax({
         url: '/providers/openslots',
@@ -483,19 +489,23 @@ function getOpenSlots(week) {
                 content += '<div class="weekday"><p class="date">' + elem.date + '<br>' + weekday[i] + '</p>';
                 var slot = elem.slots['ApptSlots'];
                 if (slot) {
-//                    content += '<div id="' + weekday[i] + '" class="carousel mycarousel"><a class="" href="#' + weekday[i] + '" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-up time_glyph" aria-hidden="true"></span></a><ul class="carousel-inner time_selector" role="listbox">';
-//                    slot.forEach(function (time) {
-//                        if (k == 0) {
-//                            content += '<li class="item active" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
-//                            k++;
-//                        } else
-//                            content += '<li class="item" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
-//                    });
-//                    content += '</ul><a class="" href="#' + weekday[i] + '" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-down time_glyph" aria-hidden="true"></span></a></div>';
+                    //                    content += '<div id="' + weekday[i] + '" class="carousel mycarousel"><a class="" href="#' + weekday[i] + '" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-up time_glyph" aria-hidden="true"></span></a><ul class="carousel-inner time_selector" role="listbox">';
+                    //                    slot.forEach(function (time) {
+                    //                        if (k == 0) {
+                    //                            content += '<li class="item active" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
+                    //                            k++;
+                    //                        } else
+                    //                            content += '<li class="item" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
+                    //                    });
+                    //                    content += '</ul><a class="" href="#' + weekday[i] + '" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-down time_glyph" aria-hidden="true"></span></a></div>';
                     content += '<div id="' + weekday[i] + '"><ul class="time_selector">';
-                    slot.forEach(function (time) {
+                    if (slot.length) {
+                        slot.forEach(function (time) {
                             content += '<li class="item" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
-                    });
+                        });
+                    } else {
+                        content += '<li class="item" data-time="' + slot.ApptStartTime + '" data-date="' + elem.date + '">' + slot.ApptStartTime + '</li>';
+                    }
                     content += '</ul></div>';
 
                 } else {
@@ -506,9 +516,6 @@ function getOpenSlots(week) {
             });
             content += '<span class="glyphicon glyphicon-chevron-right availability_glyph available" id="next_week"></span>';
             $('.availability').html(content);
-            if ($('.availability').attr('data-value') != 0) {
-                $('#previous_week').addClass('available');
-            }
             $('.availability').addClass('active');
             $('.ajax.appointment_schedule').removeClass('active');
         },

@@ -154,12 +154,13 @@ class ProviderController extends Controller {
 		$locationKey = $request->input('location_id');
 		$AppointmentType = $request->input('appointment_type');
 		$week_advance = $request->input('week');
+		$selected_date = $request->input('selected_date');
 
 		$providerInfo['LocKey'] = $locationKey;
 		$providerInfo['AcctKey'] = $providerKey;
 		$providerInfo['ApptTypeKey'] = $AppointmentType;
 
-		$dates = $this->getDatesOfWeek($week_advance);
+		$dates = $this->getDatesOfWeek($week_advance, $selected_date);
 
 		$slots = [];
 		$i = 0;
@@ -178,10 +179,10 @@ class ProviderController extends Controller {
 		return view('provider.admin')->with('data', $data);
 	}
 
-	protected function getDatesOfWeek($week_advance) {
+	protected function getDatesOfWeek($week_advance, $selected_date) {
 
-		$date = date("m/d/Y");
-		$date = date("d-m-Y", strtotime($date) + (86400 * $week_advance * 7));
+//		$date = date("m/d/Y");
+		$date = date("d-m-Y", strtotime($selected_date) + (86400 * $week_advance * 7));
 		$ts = strtotime($date);
 		$year = date('o', $ts);
 		$week = date('W', $ts);
