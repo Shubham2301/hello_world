@@ -17,8 +17,18 @@
                                 <lable for="exampleInputName1"><strong style="padding-left:3em;">Network</strong></lable>
                             </div>
                             <div class="col-md-7 form-group">
-                                <span class="network_name">{{ $network['name'] }}</span>
-                                <input type="hidden" value="{{ $network['id'] }}">
+								@if($network['super_admin'])
+								<select name="network_id">
+                               	<option value="0">Select a Network</option>
+								   @foreach ($network['networks'] as $network)
+								   <option value="{{$network->id}}">{{$network->name}}</option>
+								   @endforeach
+                               </select>
+                               @else
+								<span class="network_name">{{ $network['name'] }}</span>
+								<input type="hidden" value="{{ $network['id'] }}" name="network_id">
+                               @endif
+
                             </div>
                             <div class="col-md-2"></div>
                         </div>
