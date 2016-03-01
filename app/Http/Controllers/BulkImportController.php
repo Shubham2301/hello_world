@@ -23,7 +23,7 @@ class BulkImportController extends Controller {
 		$network = User::getNetwork($userID);
 		$data['id'] = $network->network_id;
 		$data['name'] = $network->name;
-		$super_admin =User::find(5)->hasRole('administrator');
+		$super_admin =User::find($userID)->hasRole('administrator');
 		$data['super_admin'] = $super_admin;
 		if($super_admin)
 			$data['networks'] = Network::all();
