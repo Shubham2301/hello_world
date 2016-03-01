@@ -492,21 +492,19 @@ function setSearchFields(index) {
 	if(patient['stage_id'] == 1)
 		{
 			$('.result_title.searchfield_1').text('Days Pending');
-			$('.result_text.searchfield_1').text('    '+patient.days_pending);
+			$('.result_text.searchfield_1').text(patient.days_pending);
 			$('.result_title.searchfield_2').text('Last Scheduled To');
-			$('.result_text.searchfield_2').text('  '+patient.last_scheduled_to);
-			$('.result_title.searchfield_3').parent().show();
+			$('.result_text.searchfield_2').text(patient.last_scheduled_to);
+			$('.result_title.searchfield_3').parent().parent().show();
 			$('.result_title.searchfield_3').text('Contact Attempts');
-			$('.result_text.searchfield_3').text('    '+patient.contact_attempts);
+			$('.result_text.searchfield_3').text(patient.contact_attempts);
 		}
 	else{
 		$('.result_title.searchfield_1').text('Scheduled To');
 		$('.result_text.searchfield_1').text(patient.scheduled_to);
 		$('.result_title.searchfield_2').text('Appointment Date');
 		$('.result_text.searchfield_2').text(patient.appointment_date);
-		$('.result_title.searchfield_3').parent().hide();
-		$('.result_title.searchfield_3').parents().css('border', 'none');
-
+		$('.result_title.searchfield_3').parent().parent().hide();
 	}
 
 
