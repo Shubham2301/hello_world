@@ -45,7 +45,7 @@
 
 							</div>
                             <div class="col-xs-11 search_result_row_text">
-                                <p class="result_title">Scheduled To</p>
+								<p class="result_title scheduled_to">Scheduled To</p>
                                 <p class="result_text scheduled_to">-</p>
                             </div>
                         </div>
@@ -54,10 +54,19 @@
 
 							</div>
                             <div class="col-xs-11 search_result_row_text">
-                                <p class="result_title">Appointment Date</p>
+								<p class="result_title appointment_date">Appointment Date</p>
                                 <p class="result_text appointment_date">-</p>
                             </div>
                         </div>
+						<div class="search_result_row row">
+							<div class="col-xs-1">
+
+							</div>
+							<div class="col-xs-11 search_result_row_text">
+								<p class="result_title contact_attampt">Contact Attampt</p>
+								<p class="result_text contact_attampt">-</p>
+							</div>
+						</div>
 
                         <div class="search_result_row row">
                            <div class="col-xs-3"></div>

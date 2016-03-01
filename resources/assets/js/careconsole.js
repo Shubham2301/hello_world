@@ -486,12 +486,34 @@ function refreshOverview() {
 
 function setSearchFields(index) {
     var patient = patientdata[index];
-    $('.result_title.stage_name').html(patient.stage_name);
-    $('.result_text.scheduled_to').text(patient.scheduled_to);
-    $('.result_text.appointment_date').text(patient.appointment_date);
+	$('.result_title.stage_name').html(patient.stage_name);
+	$('#status_color').css('background-color', patient.stage_color);
+
+	if(patient['stage_id'] == 1)
+		{
+			$('.result_title.scheduled_to').text('Days Pending');
+			$('.result_text.scheduled_to').text('    '+patient.days_pending);
+			$('.result_title.appointment_date').text('Last Scheduled To');
+			$('.result_text.appointment_date').text('  '+patient.last_scheduled_to);
+			$('.result_title.contact_attampt').parent().show();
+			$('.result_title.contact_attampt').text('Contact Attempts');
+			$('.result_text.contact_attampt').text('    '+patient.contact_attempts);
+		}
+	else{
+		$('.result_title.scheduled_to').text('Scheduled To');
+		$('.result_text.scheduled_to').text(patient.scheduled_to);
+		$('.result_title.appointment_date').text('Appointment Date');
+		$('.result_text.appointment_date').text(patient.appointment_date);
+		$('.result_title.contact_attampt').parent().hide();
+		$('.result_title.contact_attampt').parents().css('border', 'none');
+
+	}
+
+
+
     $('.search_result_info').addClass('active');
     $('.search_result').removeClass('active');
-    $('#status_color').css('background-color', patient.stage_color);
+
     var content = '';
     patient.actions.forEach(function (action) {
         actionResults[action.id] = action.action_results;
