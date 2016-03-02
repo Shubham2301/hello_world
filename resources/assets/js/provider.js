@@ -14,14 +14,13 @@ $(document).ready(function () {
         getOpenSlots(0);
         $('#availabilityModal').modal('show');
     });
-    if (!$('#from_admin').click()) {
+    if (!$('#from_admin').val()) {
         var id = $('#form_patient_id').attr('value');
         var formData = {
             'id': id
         };
         getPatientInfo(formData);
     }
-
     $('.carousel').carousel({
         interval: false
     });
