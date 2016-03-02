@@ -52,47 +52,53 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request) {
-		$user = new User;
 
-		// Save the User information
-		$user->title = $request->input('title');
-		$user->firstname = $request->input('firstname');
-		$user->middlename = $request->input('middlename');
-		$user->lastname = $request->input('lastname');
+        if($request->input('password') == $request->input('password_confirmation'))  {
+            $user = new User;
 
-		// TODO
-		// Auto generate password
-		$user->password = bcrypt($request->input('password'));
+            // Save the User information
+            $user->title = $request->input('title');
+            $user->firstname = $request->input('firstname');
+            $user->middlename = $request->input('middlename');
+            $user->lastname = $request->input('lastname');
 
-		$user->email = $request->input('email');
-		$user->npi = $request->input('npi');
-		$user->cellphone = $request->input('cellphone');
-		$user->sesemail = $request->input('sesemail');
-		$user->calendar = $request->input('calendar');
-		$user->address1 = $request->input('address1');
-		$user->address2 = $request->input('address2');
-		$user->city = $request->input('city');
-		$user->state = $request->input('state');
-		$user->zip = $request->input('zip');
-		$user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
-		$user->usertype_id = $request->input('usertype');
-		$user->level = $request->input('userlevel');
+            // TODO
+            // Auto generate password
+            $user->password = bcrypt($request->input('password'));
 
-		$user->save();
-		$user->assign($request->input('role'));
+            $user->email = $request->input('email');
+            $user->npi = $request->input('npi');
+            $user->cellphone = $request->input('cellphone');
+            $user->sesemail = $request->input('sesemail');
+            $user->calendar = $request->input('calendar');
+            $user->address1 = $request->input('address1');
+            $user->address2 = $request->input('address2');
+            $user->city = $request->input('city');
+            $user->state = $request->input('state');
+            $user->zip = $request->input('zip');
+            $user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
+            $user->usertype_id = $request->input('usertype');
+            $user->level = $request->input('userlevel');
 
-		if ($user) {
-			$request->session()->flash('success', 'User Created Successfully!');
+            $user->save();
+            $user->assign($request->input('role'));
 
-			$action = 'new user created';
-			$description = '';
-			$filename = basename(__FILE__);
-			$ip = $request->getClientIp();
-			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-			return redirect('administration/users');
-		} else {
-			return redirect()->back();
-		}
+            if ($user) {
+                $request->session()->flash('success', 'User Created Successfully!');
+
+                $action = 'new user created';
+                $description = '';
+                $filename = basename(__FILE__);
+                $ip = $request->getClientIp();
+                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+                return redirect('administration/users');
+            } else {
+                return redirect()->back();
+            }
+        } else{
+            $request->session()->flash('error', 'Passwords do not match');
+            return redirect()->back();
+        }
 	}
 
 	/**
