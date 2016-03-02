@@ -28,7 +28,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-        Form Section 1</a>
+        General Information</a>
       </h4>
             </div>
             <div id="collapse1" class="panel-collapse collapse in">
@@ -45,7 +45,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-        Form Section 2</a>
+        Location Details</a>
       </h4>
             </div>
             <div id="collapse2" class="panel-collapse collapse">

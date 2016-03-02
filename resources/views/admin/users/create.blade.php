@@ -47,7 +47,7 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-        Form Section 1</a>
+        Roles and User Access</a>
       </h4>
                         </div>
                         <div id="collapse1" class="panel-collapse collapse in">
@@ -69,7 +69,7 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-        Form Section 2</a>
+        General Information</a>
       </h4>
                         </div>
                         <div id="collapse2" class="panel-collapse collapse">
@@ -89,7 +89,7 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-        Form Section 3</a>
+        Direct Address and Password</a>
       </h4>
                         </div>
                         <div id="collapse3" class="panel-collapse collapse">
