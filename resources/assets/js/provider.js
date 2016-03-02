@@ -1,8 +1,18 @@
 $(document).ready(function () {
     $('#select_date').datetimepicker({
+        defaultDate: false,
         format: 'MM/DD/YYYY',
         minDate: new Date(),
-        defaultDate: new Date()
+    });
+    $('#select_date').datetimepicker().on('dp.hide', function (ev) {
+        $('.availability').attr('data-value', 0);
+        $('#appointment_date').html('');
+        $('#appointment_time').html('');
+        $('.availability-text').removeClass('hide');
+        $('.schedule_button').removeClass('active');
+        $('.availability').html('');
+        getOpenSlots(0);
+        $('#availabilityModal').modal('show');
     });
     if (!$('#from_admin').val()) {
         var id = $('#form_patient_id').attr('value');
@@ -11,7 +21,6 @@ $(document).ready(function () {
         };
         getPatientInfo(formData);
     }
-
     $('.carousel').carousel({
         interval: false
     });
@@ -188,15 +197,15 @@ $(document).ready(function () {
         $('#appointment_type').attr('data-name', appointment_type);
         $('.get_availability').removeClass('hide');
     });
-    $('#get_availability').on('click', function () {
-        $('.availability').attr('data-value', 0);
-        $('#appointment_date').html('');
-        $('#appointment_time').html('');
-        $('.availability-text').removeClass('hide');
-        $('.schedule_button').removeClass('active');
-        $('.availability').html('');
-        getOpenSlots(0);
-    });
+//    $('#get_availability').on('click', function () {
+//        $('.availability').attr('data-value', 0);
+//        $('#appointment_date').html('');
+//        $('#appointment_time').html('');
+//        $('.availability-text').removeClass('hide');
+//        $('.schedule_button').removeClass('active');
+//        $('.availability').html('');
+//        getOpenSlots(0);
+//    });
 
     $('.provider_near_patient').on('click', function () {
         $('.provider_near_patient_list').toggleClass("active");
@@ -530,7 +539,7 @@ function getOpenSlots(week) {
 }
 
 function getAppointmentTypes() {
-
+    $('#select_date').val('');
     $('.ajax.appointment_type').addClass('active');
     var provider_id = $('#form_provider_acc_key').val();
     var location_id = $('#form_location_code').val();
