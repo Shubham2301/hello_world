@@ -32,6 +32,12 @@
                         <span class="provider_detail_text arial" id="location_address"></span>
                         <br>
                         <span class="provider_detail_text arial" id="location_contact"></span>
+                        <br>
+                        <br>
+                        <span class="provider_detail_text arial appointment_type_not_found" style="display:none;">
+                            <span class="bold arial_bold">Appointment Types</span><br>
+                            No appointment types found for this location. Select another location or call the practice  to schedule an appointment.
+                        </span>
                     </p>
                     <p>
                         <span id="appointment_type_list" class="appointment_type_list"></span>
