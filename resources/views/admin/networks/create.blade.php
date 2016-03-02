@@ -28,7 +28,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-        Form Section 1</a>
+        General Information</a>
       </h4>
             </div>
             <div id="collapse1" class="panel-collapse collapse in">
@@ -45,7 +45,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-        Form Section 2</a>
+        Location Details</a>
       </h4>
             </div>
             <div id="collapse2" class="panel-collapse collapse">
@@ -59,19 +59,17 @@
 
                         </div>
                     </div>
-                    <div class="row content-row-margin">
-
-                        <div class="col-xs-8 col-sm-8 col-md-8">
-                            {!! Form::submit('save', array('class' => 'btn btn-default btn-primary save_network_button')) !!}
-                            <button type="button" class="btn add-btn btn-primary" id="dontsave_network">Don't Save</button>
-                        </div>
-                        <div class="col-xs-4 col-sm-4"></div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <div class="row content-row-margin">
+        <div class="col-xs-8 col-sm-8 col-md-8">
+            {!! Form::submit('save', array('class' => 'btn btn-default btn-primary save_network_button')) !!}
+            <button type="button" class="btn add-btn btn-primary" id="dontsave_network">Don't Save</button>
+        </div>
+        <div class="col-xs-4 col-sm-4"></div>
+    </div>
     {!! Form::close() !!}
 </div>
 

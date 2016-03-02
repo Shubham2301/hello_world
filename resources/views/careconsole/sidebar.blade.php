@@ -23,7 +23,7 @@
     </div>
     <ul class="c3_sidebar_list sidebar_item_list">
         @foreach($overview['stages'] as $stage)
-        <li class="sidebar_menu_item">
+        <li class="sidebar_menu_item" data-id="{{ $stage['id'] }}">
             <div class="stage box" id="sidebar_{{ $stage['name'] }}" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}"><span style="background-color:{{ $stage['color_indicator'] }}"><p class="stage-notation">{{ $stage['abbr'] }}</p></span><p>{{ $stage['display_name'] }}</p></div>
             <!-- <ul>
                 <div class="info_box">

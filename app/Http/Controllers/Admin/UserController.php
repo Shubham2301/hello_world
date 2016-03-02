@@ -81,7 +81,16 @@ class UserController extends Controller {
             $user->level = $request->input('userlevel');
 
             $user->save();
-            $user->assign($request->input('role'));
+
+            $roles = array();
+            $roles = $request->input('role');
+            foreach($roles as $role)  {
+                $save_role = new Role_user();
+                $role_id = Role::where('display_name', '=', $role)->first();
+                $save_role->user_id = $user->id;
+                $save_role->role_id = $role_id->id;
+                $save_role->save();
+            }
 
             if ($user) {
                 $request->session()->flash('success', 'User Created Successfully!');
@@ -127,12 +136,10 @@ class UserController extends Controller {
         }
         else{
             $data = array();
-            $role_id = Role_user::where('user_id', '=', $id)->first();
-            if(isset($role_id)){
+            $role_ids = Role_user::where('user_id', '=', $id)->get();
+            foreach($role_ids as $role_id) {
                 $role = Role::find($role_id->role_id);
-                $user['role_id'] = $role->name;
-            } else{
-                $user['role_id'] = '';
+                $user[$role->display_name] = $role->display_name;
             }
             $userTypes = $this->getUserTypes();
             $roles = $this->getRoles();
@@ -171,7 +178,41 @@ class UserController extends Controller {
 		$user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
 		$user->usertype_id = $request->input('usertype');
 		$user->level = $request->input('userlevel');
-		$user->save();
+
+        $user->save();
+
+        $previous_roles = Role_user::where('user_id', '=', $user->id)->get();
+        $i = 0;
+        $previous_roles_id = array();
+        foreach($previous_roles as $previous_role)  {
+            $previous_roles_id[$i] = $previous_role->role_id;
+            $i++;
+        }
+        $i = 0;
+        $new_roles = $request->input('role');
+        $new_roles_id = array();
+        foreach($new_roles as $new_role)    {
+            $new_role_name = Role::where('display_name', '=', $new_role)->first();
+            $new_roles_id[$i] = $new_role_name->id;
+            $i++;
+        }
+        $roles_diff = array_intersect($previous_roles_id, $new_roles_id);
+        if(isset($roles_diff)) {
+            $remove_roles = array_diff($previous_roles_id, $new_roles_id);
+            foreach($remove_roles as $remove_role)  {
+                $delete_role = Role_user::where('role_id', '=', $remove_role)->delete();
+                $key = array_search($remove_role, $remove_roles);
+                unset($remove_roles[$key]);
+            }
+            $add_roles = array_diff($new_roles_id, $previous_roles_id);
+            foreach($add_roles as $add_role)    {
+                $new_role = new Role_user();
+                $new_role->user_id = $user->id;
+                $new_role->role_id = $add_role;
+                $new_role->save();
+            }
+        }
+
 
         $action = 'update user of id =' . $id;
 		$description = '';
