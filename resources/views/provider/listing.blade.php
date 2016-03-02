@@ -41,11 +41,10 @@
                         <span class="bold arial_bold">Appointment&nbsp;</span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax appointment_schedule">
                         <br>
                     </p>
-                        <input type="text" class="get_availability hide select_date" id="select_date">
+                        <input type="text" class="get_availability hide select_date" id="select_date" placeholder="Select Date">
                     <span style="display:flex;">
-                        <p class="get_availability hide availability-btn" id="get_availability" style="padding:.3em;" data-toggle="modal" data-target="#availabilityModal">
+                        <p class="get_availability hide availability-btn" id="get_availability" style="padding:.3em;">
                             <span id="appointment_date"></span>
-                            <span class="availability-text">Availability</span>
                             <br><span id="appointment_time"></span>
                     </p>
                     </span>
