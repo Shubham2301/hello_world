@@ -426,6 +426,20 @@ class Careconsole extends Model {
 		}
 		return $results;
 	}
+
+	public static function getAppointmentStatusPatients($networkID, $stageID, $statusName) {
+		return self::where('stage_id', $stageID)
+			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
+			->where('import_history.network_id', $networkID)
+			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+			->leftjoin('appointments', 'careconsole.appointment_id', '=', 'appointments.id')
+			->leftjoin('kpis', 'appointments.appointment_status', '=', 'kpis.id')
+			->whereNull('archived_date')
+			->whereNull('recall_date')
+			->where('kpis.name', '=', $statusName)
+			->get();
+		return;
+	}
 	/**
 	 * @param $lowerlimit
 	 * @param $upperlimit
