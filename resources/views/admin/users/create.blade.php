@@ -56,8 +56,15 @@
                                     <div class="col-xs-12 col-sm-6">
                                         {!! Form::select('usertype', $userTypes, $user['usertype_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select User Types*', 'id' => 'user_type', 'required' => 'required')) !!} {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => 'input, add_user_input', 'placeholder' => 'Select User Levels*', 'id' => 'user_level', 'required' => 'required')) !!}
                                     </div>
-                                    <div class="col-xs-12 col-sm-6">
-                                        {!! Form::select('role', $roles, $user['role_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select Role*', 'id' => 'role', 'required' => 'required')) !!}
+                                    <div class="col-xs-12 col-sm-6" style="color:#fff;">
+                                       @foreach($roles as $role)
+                                       @if(isset($user[$role]))
+                                            {!! Form::checkbox('role[]', $role, true); !!}
+                                       @else
+                                            {!! Form::checkbox('role[]', $role); !!}
+                                       @endif
+                                        {!! Form::label('role', $role); !!}<br>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
