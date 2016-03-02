@@ -298,11 +298,11 @@ class CareConsoleService {
 	/**
 	 */
 
-	public function moveToConsoleAsPending(){
+	public function moveRecallPatientsToConsoleAsPending() {
 		$networkID = User::getNetwork(Auth::user()->id)->network_id;
 		$patients = Careconsole::getRecallPatientsToMove($networkID);
 
-		foreach($patients as $patient){
+		foreach ($patients as $patient) {
 			$console = Careconsole::find($patient['id']);
 			$console->recall_date = null;
 			$date = new \DateTime();
@@ -310,5 +310,6 @@ class CareConsoleService {
 			$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 			$console->save();
 		}
+
 	}
 }
