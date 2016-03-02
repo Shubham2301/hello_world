@@ -191,7 +191,6 @@ class CareConsoleController extends Controller {
 				$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
 				$results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
 				$results[$i]['actions'] = $this->CareConsoleService->getActions($console->stage_id);
-
 				$results[$i]['scheduled_to'] = '-';
 				$results[$i]['appointment_date'] = '-';
 				if ($patient['appointment_id']) {
@@ -200,6 +199,9 @@ class CareConsoleController extends Controller {
 					$results[$i]['scheduled_to'] = $provider->lastname . ', ' . $provider->firstname;
 					$results[$i]['appointment_date'] = $this->CareConsoleService->getPatientFieldValue($patient, 'appointment-date');
 				}
+				$results[$i]['days_pending'] = $this->CareConsoleService->getPatientFieldValue($console, 'days-pending');
+				$results[$i]['last_scheduled_to'] = $this->CareConsoleService->getPatientFieldValue($console, 'last-scheduled-to');
+				$results[$i]['contact_attempts'] = $this->CareConsoleService->getPatientFieldValue($console, 'contact-attempts');
 				$i++;
 			}
 		}

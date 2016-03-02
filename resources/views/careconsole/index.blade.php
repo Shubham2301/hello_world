@@ -37,7 +37,7 @@
                                 <div class="circle" id="status_color"></div>
                             </div>
                             <div class="col-xs-11 search_result_row_text">
-                                <p class="result_title stage_name">Past Appointments</p>
+                                <p class="result_title stage_name"></p>
                             </div>
                         </div>
                         <div class="search_result_row row">
@@ -45,8 +45,8 @@
 
 							</div>
                             <div class="col-xs-11 search_result_row_text">
-                                <p class="result_title">Scheduled To</p>
-                                <p class="result_text scheduled_to">-</p>
+								<p class="result_title searchfield_1"></p>
+								<p class="result_text searchfield_1"></p>
                             </div>
                         </div>
                         <div class="search_result_row row">
@@ -54,10 +54,19 @@
 
 							</div>
                             <div class="col-xs-11 search_result_row_text">
-                                <p class="result_title">Appointment Date</p>
-                                <p class="result_text appointment_date">-</p>
+								<p class="result_title searchfield_2"></p>
+								<p class="result_text searchfield_2"></p>
                             </div>
                         </div>
+						<div class="search_result_row row">
+							<div class="col-xs-1">
+
+							</div>
+							<div class="col-xs-11 search_result_row_text">
+								<p class="result_title searchfield_3"></p>
+								<p class="result_text searchfield_3"></p>
+							</div>
+						</div>
 
                         <div class="search_result_row row">
                            <div class="col-xs-3"></div>
@@ -67,8 +76,6 @@
                                     <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                                 </p>
 								   <ul class="dropdown-menu" id="search_action_dropdown">
-								   	<li>ASDF</li>
-								   	<li>EFGH</li>
 								   </ul>
 								</div>
                                 <p id='back_to_search'>back to search</p>

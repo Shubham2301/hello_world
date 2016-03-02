@@ -137,3 +137,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/patient/destroy/{id}', 'Patient\PatientController@destroy');
 
 });
+
+Route::get('foo',function(){
+	$u = myocuhub\User::find(5)->hasRole('administrator');
+	dd($u);
+
+
+});
