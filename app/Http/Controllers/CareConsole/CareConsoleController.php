@@ -33,6 +33,8 @@ class CareConsoleController extends Controller {
 	}
 
 	public function index() {
+		// TODO: add task moveRecallPatientsToConsoleAsPending() on nightly CRON
+		$CareConsoleService->moveRecallPatientsToConsoleAsPending();
 		$overview = $this->getOverviewData();
 		return view('careconsole.index')->with('overview', $overview);
 	}
