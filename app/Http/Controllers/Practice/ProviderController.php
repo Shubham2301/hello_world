@@ -113,7 +113,7 @@ class ProviderController extends Controller {
 
 		$filters = json_decode($request->input('data'), true);
 		//search quar
-		$providers = User::practiceUser($filters);
+		$providers = User::providers($filters);
 		$data = [];
 		$i = 0;
 

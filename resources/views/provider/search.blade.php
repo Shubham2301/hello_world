@@ -11,7 +11,7 @@
             <option value="all">All</option>
             <option value="pratice_name">Practice Name</option>
             <option value="location">Location</option>
-            <option value="doctor_name">Doctor name</option>
+            <option value="provider_name">Provider Name</option>
             <option value="zip">zip code</option>
         </select>
     </div>
