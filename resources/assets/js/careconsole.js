@@ -496,13 +496,33 @@ function refreshOverview() {
 function setSearchFields(index) {
 	var patient = patientdata[index];
 	$('.result_title.stage_name').html(patient.stage_name);
-	$('.result_text.scheduled_to').text(patient.scheduled_to);
-	$('.result_text.appointment_date').text(patient.appointment_date);
+	$('#status_color').css('background-color', patient.stage_color);
+
+	if(patient['stage_id'] == 1)
+	{
+		$('.result_title.searchfield_1').text('Days Pending');
+		$('.result_text.searchfield_1').text(patient.days_pending);
+		$('.result_title.searchfield_2').text('Last Scheduled To');
+		$('.result_text.searchfield_2').text(patient.last_scheduled_to);
+		$('.result_title.searchfield_3').parent().parent().show();
+		$('.result_title.searchfield_3').text('Contact Attempts');
+		$('.result_text.searchfield_3').text(patient.contact_attempts);
+	}
+	else{
+		$('.result_title.searchfield_1').text('Scheduled To');
+		$('.result_text.searchfield_1').text(patient.scheduled_to);
+		$('.result_title.searchfield_2').text('Appointment Date');
+		$('.result_text.searchfield_2').text(patient.appointment_date);
+		$('.result_title.searchfield_3').parent().parent().hide();
+	}
+
+
+
 	$('.search_result_info').addClass('active');
 	$('.search_result').removeClass('active');
-	$('#status_color').css('background-color', patient.stage_color);
+
 	var content = '';
-	patient.actions.forEach(function(action) {
+	patient.actions.forEach(function (action) {
 		actionResults[action.id] = action.action_results;
 		content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid = "' + patient.id + '" data-consoleid="' + patient.console_id + '" data-stageid="' + patient.stage_id + '" ><a href="#">' + action.display_name + '</a></li>';
 	});
