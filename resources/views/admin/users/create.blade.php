@@ -57,14 +57,9 @@
                                         {!! Form::select('usertype', $userTypes, $user['usertype_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select User Types*', 'id' => 'user_type', 'required' => 'required')) !!} {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => 'input, add_user_input', 'placeholder' => 'Select User Levels*', 'id' => 'user_level', 'required' => 'required')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6" style="color:#fff;">
-                                       @foreach($roles as $role)
-                                       @if(isset($user[$role]))
-                                            {!! Form::checkbox('role[]', $role, true); !!}
-                                       @else
-                                            {!! Form::checkbox('role[]', $role); !!}
-                                       @endif
-                                        {!! Form::label('role', $role); !!}<br>
-                                        @endforeach
+                                       <h4>Roles*</h4>
+                                        @foreach($roles as $role) @if(isset($user[$role])) {!! Form::checkbox('role[]', $role, true); !!} @else {!! Form::checkbox('role[]', $role); !!} @endif {!! Form::label('role', $role); !!}
+                                        <br> @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -106,13 +101,13 @@
                                     <div class="col-xs-12 col-sm-6">
                                         {!! Form::password('password', array('class' => 'input, add_user_input', 'placeholder' => 'Password*', 'id' => 'password', 'required' => 'required')) !!} {!! Form::password('password_confirmation', array('class' => 'input, add_user_input', 'placeholder' => 'Password Confirmation*', 'id' => 'confirm_password', 'required' => 'required')) !!}
                                     </div>
-                                    <div class="col-xs-12">
-                                        {!! Form::submit('Save', array('class' => 'btn add_user_submit_button')) !!}
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-xs-12 no-padding">
+                    {!! Form::submit('Save', array('class' => 'btn add_user_submit_button')) !!}
                 </div>
             </form>
         </div>

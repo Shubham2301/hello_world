@@ -56,15 +56,15 @@
                         {!! Form::text('address_1', $data['addressline1'], array('class' => 'add_patient_input', 'name' => 'addressline1', 'placeholder' => 'Address 1', 'id' => 'Address_1')) !!} {!! Form::text('address_2', $data['addressline2'], array('class' => 'add_patient_input', 'name' => 'addressline2', 'placeholder' => 'Address 2', 'id' => 'Address_2')) !!} {!! Form::text('City', $data['city'], array('class' => 'add_patient_input', 'name' => 'city', 'placeholder' => 'City', 'id' => 'city')) !!} {!! Form::text('State', $data['state'], array('class' => 'add_patient_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state')) !!} {!! Form::text('Zip', $data['zip'], array('class' => 'add_patient_input', 'name' => 'zip', 'placeholder' => 'ZIP', 'id' => 'zip')) !!} @if(!$data['admin']) {!! Form::hidden('referraltype_id', $data['referraltype_id'], array('name' => 'referraltype_id' , 'id' => 'form_referraltype_id')) !!} {!! Form::hidden('action', $data['action'], array('name' => 'action' , 'id' => 'form_action')) !!} @endif
                     </div>
                 </div>
-                <div class="row content-row-margin add_patient_footer">
-                    <div class="col-xs-8 col-sm-8 col-md-8">
-                        {!! Form::submit('Save', array('class' => 'btn btn-default btn-primary save_patient_button')) !!}
-                        <button type="button" class="btn add-btn" id="dontsave_new_patient">Don't Save</button>
-                    </div>
-                    <div class="col-xs-4 col-sm-4"></div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="row content-row-margin add_patient_footer">
+    <div class="col-xs-8 col-sm-8 col-md-8">
+        {!! Form::submit('Save', array('class' => 'btn btn-default btn-primary save_patient_button')) !!}
+        <button type="button" class="btn add-btn" id="dontsave_new_patient">Don't Save</button>
+    </div>
+    <div class="col-xs-4 col-sm-4"></div>
 </div>
 {!! Form::close() !!}

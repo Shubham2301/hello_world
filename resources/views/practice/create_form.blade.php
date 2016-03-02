@@ -78,15 +78,14 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="row content-row-margin ">
-                    <div class="col-xs-8 col-sm-8 col-md-8">
-                        <button type="button" class="btn save_practice_button" id="savepractice">Save</button>
-                        <button type="button" class="btn add-btn " id="dontsave_new_practice">Don't Save</button>
-                    </div>
-                    <div class="col-xs-4 col-sm-4"></div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="row content-row-margin ">
+    <div class="col-xs-8 col-sm-8 col-md-8">
+        <button type="button" class="btn save_practice_button" id="savepractice">Save</button>
+        <button type="button" class="btn add-btn " id="dontsave_new_practice">Don't Save</button>
+    </div>
+    <div class="col-xs-4 col-sm-4"></div>
 </div>

@@ -59,19 +59,17 @@
 
                         </div>
                     </div>
-                    <div class="row content-row-margin">
-
-                        <div class="col-xs-8 col-sm-8 col-md-8">
-                            {!! Form::submit('save', array('class' => 'btn btn-default btn-primary save_network_button')) !!}
-                            <button type="button" class="btn add-btn btn-primary" id="dontsave_network">Don't Save</button>
-                        </div>
-                        <div class="col-xs-4 col-sm-4"></div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <div class="row content-row-margin">
+        <div class="col-xs-8 col-sm-8 col-md-8">
+            {!! Form::submit('save', array('class' => 'btn btn-default btn-primary save_network_button')) !!}
+            <button type="button" class="btn add-btn btn-primary" id="dontsave_network">Don't Save</button>
+        </div>
+        <div class="col-xs-4 col-sm-4"></div>
+    </div>
     {!! Form::close() !!}
 </div>
 
