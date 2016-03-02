@@ -444,4 +444,15 @@ class Careconsole extends Model {
 		return $data;
 	}
 
+	/**
+	 * @param $networkID
+	 */
+	public static function getRecallPatientsToMove($networkID) {
+		return self::whereNotNull('recall_date')
+			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
+			->where('import_history.network_id', $networkID)
+			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+			->whereRaw('datediff(`recall_date`, CURRENT_TIMESTAMP) = 1')
+			->get(['*', 'careconsole.id', 'careconsole.created_at']);
+	}
 }

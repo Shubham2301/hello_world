@@ -295,4 +295,20 @@ class CareConsoleService {
 
 	}
 
+	/**
+	 */
+
+	public function moveToConsoleAsPending(){
+		$networkID = User::getNetwork(Auth::user()->id)->network_id;
+		$patients = Careconsole::getRecallPatientsToMove($networkID);
+
+		foreach($patients as $patient){
+			$console = Careconsole::find($patient['id']);
+			$console->recall_date = null;
+			$date = new DateTime();
+			$console->stage_id = 1;
+			$console->stage_updated_at = $date('Y-m-d H:m:s');
+			$console->save();
+		}
+	}
 }

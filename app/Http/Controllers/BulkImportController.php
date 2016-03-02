@@ -23,6 +23,12 @@ class BulkImportController extends Controller {
 		$network = User::getNetwork($userID);
 		$data['id'] = $network->network_id;
 		$data['name'] = $network->name;
+		$super_admin =User::find($userID)->hasRole('administrator');
+		$data['super_admin'] = $super_admin;
+		if($super_admin)
+			$data['networks'] = Network::all();
+
+
 		return view('layouts.import')->with('network', $data);
 	}
 
@@ -42,9 +48,9 @@ class BulkImportController extends Controller {
 	}
 
 	public function importPatientsXlsx(Request $request) {
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$networkID = $network->network_id;
+//		$userID = Auth::user()->id;
+//		$network = User::getNetwork($userID);
+		$networkID = $request->network_id;
 
 		if ($request->hasFile('patient_xlsx')) {
 			$i = 0;
