@@ -57,6 +57,7 @@ $(document).ready(function () {
     });
     $('#search_practice_button').on('click', function () {
         $('.schedule_button').removeClass('active');
+		$('.practice_list').removeClass('active');
         $('.schedule_button').attr('data-id', 0);
         $('.schedule_button').attr('data-practice-id', 0);
         $('.availability').removeClass('active');
@@ -143,6 +144,7 @@ $(document).ready(function () {
 
     $('.search_filter').on('click', '.remove_option', function () {
         $(this).parent().remove();
+		$("#search_practice_button").trigger("click");
 
     });
     $('.schedule_button').on('click', function () {
