@@ -555,11 +555,13 @@ function getAppointmentTypes() {
                     content += '<li  value="' + elem.ApptTypeKey + '" data-name=" ' + elem.ApptTypeName + ' ">' + elem.ApptTypeName + '</li>';
                 });
                 $('#appointment-type').removeClass('hidden');
+                $('.appointment_type_not_found').hide();
                 content += '</ul></div>';
                 $('.appointment_type_list').html(content);
             } else {
-                $('p.alert_message').text('No data received');
-                $('#alert').modal('show');
+                $('.appointment_type_not_found').show();
+                // $('p.alert_message').text('No data received');
+                // $('#alert').modal('show');
             }
             $('.ajax.appointment_type').removeClass('active');
         },
