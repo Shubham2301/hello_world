@@ -18,15 +18,21 @@
 
 					<div class="search_result">
 						<div class="search_result_row row" data-index="">
-							<div class="col-xs-12 search_result_row_text">
+							<div class="col-xs-1">
+								<div class="circle" id="" style="background-color:green"></div>
+							</div>
+							<div class="col-xs-11 search_result_row_text">
 								<p class="result_title result_name">Allen Rovenstine</p>
 								<p class="result_title scheduled_name"><strong>Scheduled-to&nbsp;&nbsp;</strong>Daniel Garibaldi</p>
 							</div>
 						</div>
 						<div class="search_result_row row" data-index="">
-							<div class="col-xs-12 search_result_row_text">
+							<div class="col-xs-1">
+								<div class="circle" id="" style="background-color:green"></div>
+							</div>
+							<div class="col-xs-11 search_result_row_text">
 								<p class="result_title result_name">Allen Rovenstine</p>
-								<p class="result_title scheduled_name"><strong>Scheduled-to&nbsp;&nbsp;</strong>Daniel Garibaldi</p>
+								<p class="result_title scheduled_name"><strong>Contact stage</p>
 							</div>
 						</div>
 					</div>

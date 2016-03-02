@@ -289,6 +289,11 @@ $(document).ready(function() {
 	$(document).on('click', '.close_patient_records_info', function() {
 		$('.patient_records_info').removeClass('active');
 	});
+	$(document).keypress(function(e) {
+		if (e.which == 13 && $('#search_data').val() != '') {
+			searchc3();
+		}
+	});
 });
 
 var actionResults = {};
@@ -319,7 +324,8 @@ function searchc3() {
 			var content = '';
 			var index = 0;
 			patientdata.forEach(function(patient) {
-			content += '<div class="search_result_row row" data-index= "' + index + '"><div class="col-xs-12 search_result_row_text"><p class="result_title result_name">' + patient.name + '</p><p class="result_title scheduled_name"><strong>Scheduled-to&nbsp;&nbsp;</strong>' + patient.scheduled_to + '</p></div></div>';
+			content += '<div class="search_result_row row" data-index= "' + index + '"><div class="col-xs-1"><div class="circle" id="" style="background-color:'+patient.stage_color+'"></div></div><div class="col-xs-11 search_result_row_text"><p class="result_title result_name">' + patient.name + '</p><p class="result_title scheduled_name"><strong>'+patient.stage_name+'</strong></p></div></div>';
+
 			index++;
 		});
 		$('.search_result').html(content);
@@ -515,7 +521,6 @@ function setSearchFields(index) {
 		$('.result_text.searchfield_2').text(patient.appointment_date);
 		$('.result_title.searchfield_3').parent().parent().hide();
 	}
-
 
 
 	$('.search_result_info').addClass('active');

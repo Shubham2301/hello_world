@@ -138,9 +138,3 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-Route::get('foo',function(){
-	$u = myocuhub\User::find(5)->hasRole('administrator');
-	dd($u);
-
-
-});
