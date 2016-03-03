@@ -29,8 +29,8 @@
         </span>
                 <span class="file_exchange_navbar_content_right">
             <span class="file_exchange_button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{URL::asset('images/sidebar/share-icon.png')}}" style="width:30px;"></span>
-                <span class="file_exchange_button" data-toggle="tooltip" title="Trash" data-placement="bottom"><img src="{{URL::asset('images/sidebar/trash-icon.png')}}" style="width:30px;"></span>
-                <span class="file_exchange_button" data-toggle="tooltip" title="Download" data-placement="bottom"><img src="{{URL::asset('images/sidebar/download-icon.png')}}" style="width:30px;"></span>
+                <span class="file_exchange_button trash-button" data-toggle="tooltip" title="Trash" data-placement="bottom"><img src="{{URL::asset('images/sidebar/trash-icon.png')}}" style="width:30px;"></span>
+                <span class="file_exchange_button download-button" data-toggle="tooltip" title="Download" data-placement="bottom"><img src="{{URL::asset('images/sidebar/download-icon.png')}}" style="width:30px;"></span>
                 <span class="file_exchange_button" data-toggle="tooltip" title="Details" data-placement="bottom" id="details"><img src="{{URL::asset('images/sidebar/details-icon.png')}}" style="width:30px;"></span>
                 </span>
             </div>
@@ -50,10 +50,12 @@
         @foreach($folderlist as $folder)
         <div class="row arial col_content">
             <div class="col-xs-1" style="text-align: center;">
-                <input type="checkbox" class="checkbox" style="display: inline;  margin-left: 0">
+                <input type="checkbox" class="checkbox folder-check" style="display: inline;  margin-left: 0" data-id="{{ $folder['id'] }}">
                 <img src='{{URL::asset('images/sidebar/admin-file-icon-hover.png')}}' style="width: 3em;">
             </div>
-            <div class="col-xs-7 no-padding"><a href="file_exchange?id={{$folder['id']}}">{{ $folder['name'] }}</a></div>
+            <div class="col-xs-7 no-padding">
+                <a href="file_exchange?id={{$folder['id']}}">{{ $folder['name'] }}</a>
+            </div>
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
             <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" >{{ $folder['description'] }}</div>
@@ -64,7 +66,7 @@
         @foreach($filelist as $file)
         <div class="row arial col_content">
             <div class="col-xs-1" style="text-align: center;">
-                <input type="checkbox" class="checkbox" style="display: inline; margin-left: 0">
+                <input type="checkbox" class="checkbox file-check" style="display: inline; margin-left: 0" data-id="{{ $file['id'] }}">
                 <img src='{{URL::asset('images/sidebar/admin-file-icon.png')}}' style="width: 3em;">
             </div>
             <div class="col-xs-7 no-padding">{{ $file['name'] }}</div>

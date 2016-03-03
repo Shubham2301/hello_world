@@ -23,9 +23,11 @@ class Folder extends Model
     }
 
     public static function getActiveFolders($parent_id=0) {
-    	if(!$parent_id){
+
+    	if($parent_id == null){
     		return Folder::where('status', '=', '1')
     			->where('owner_id', '=', Auth::user()->id)
+                ->whereNull('parent_id')
     			->orderBy('name', 'asc')->get();
     	}
 

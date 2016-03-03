@@ -17,7 +17,7 @@
                     <button type="submit" class="btn add-btn">Add</button>&nbsp;&nbsp;
                     <button type="button" class="btn dismiss-button" data-dismiss="modal">Cancel</button>
                 </span>   
-                <input type="hidden" name="parent_id" value="">         
+                <input type="hidden" name="parent_id" value="{{ $parent_id }}">         
         </div>
         {!! Form::close()!!}
     </div>

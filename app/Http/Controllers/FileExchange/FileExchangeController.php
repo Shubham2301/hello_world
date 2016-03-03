@@ -6,7 +6,9 @@ use Auth;
 use Event;
 use Storage;
 
+
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Folder;
@@ -56,7 +58,7 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist]);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id]);
 	}
 
 	public function folderDetails($folder_id=0)
@@ -97,6 +99,8 @@ class FileExchangeController extends Controller {
 		$folder->owner_id = Auth::user()->id;
 		$folder->status = '1';
 
+		$parent_treepath = '/';
+
 		if($parent_id !="" ){
 			$parentFolder = Folder::find($parent_id);
 			$parent_treepath = $parentFolder->treepath;
@@ -108,7 +112,8 @@ class FileExchangeController extends Controller {
 		$id = $folder->id;
 
 		$newFolder = Folder::find($id);
-		$newFolder->treepath = $parent_treepath . '/' . $id . '/';
+		$treepath = $parent_treepath . '' . $id . '/';
+		$newFolder->treepath = $treepath;
 		$newFolder->save();
 
 		$folderHistory = new FolderHistory();
@@ -116,29 +121,39 @@ class FileExchangeController extends Controller {
 		$folderHistory->modified_by = Auth::user()->id;
 		$folderHistory->save();
 
-		Storage::makeDirectory($request->foldername);
+		Storage::makeDirectory($treepath);
 
-		return redirect('file_exchange');
+		// return redirect('file_exchange');
+		return redirect()
+        	->back()
+        	->withSuccess("Folder '$request->foldername' created.");
+        
 	}
 
 	public function uploadDocument(Request $request)
 	{
 		$parent_id = $request->parent_id;
 
-		$parent_treepath = '';
+		$parent_treepath = '/';
 		
 		$file = new File();
-		// TOOD - Genearte a unique name for the file.
-		$file->name = $request->filename;
+		
 		$file->title = $request->filename;
 		$file->description = $request->filedescription;
 		$file->creator_id = Auth::user()->id;
 		$file->status = '1';
+		$extension = $request->file('add_document')->getClientOriginalExtension();
+		$file->extension = $extension;
+		$file->mimetype = $request->file('add_document')->getClientMimeType();
+		$file->filesize = $request->file('add_document')->getClientSize();
+		// TOOD - Genearte a unique name for the file.
+		$fileName = rand(11111,99999);//.'.'.$extension; 
+		$file->name = $fileName;
 
-		if($parent_id !="" ){
+		if($parent_id != null ){
 			$parentFolder = Folder::find($parent_id);
 			$parent_treepath = $parentFolder->treepath;
-			$file->parent_id = $parent_id;
+			$file->folder_id = $parent_id;
 		}	
 
 		$file->save();
@@ -146,7 +161,7 @@ class FileExchangeController extends Controller {
 		$id = $file->id;
 
 		$newFile = File::find($id);
-		$treepath = $parent_treepath . '/' . $id . '/';
+		$treepath = $parent_treepath; // . '' . $id . '/';
 		$newFile->treepath = $treepath;
 		$newFile->save();
 
@@ -156,10 +171,32 @@ class FileExchangeController extends Controller {
 		$fileHistory->save();
 
 		Storage::put(
-            Auth::user()->id . '' . $treepath,
-            file_get_contents($request->file('add_document'))
+            $parent_treepath . '/'. $fileName . '.' . $file->extension,
+            file_get_contents($request->file('add_document')->getRealPath())
         );
 
-		return redirect('file_exchange');
+		// return redirect('file_exchange');
+
+		return redirect()
+        	->back()
+        	->withSuccess("Document '$request->filename' created.");
+
+	}   
+
+	public function downloadFile(Request $request)
+	{
+		$id = $request->id;
+
+		if($id == '' ){
+			return "Invalid File ID";
+		}
+
+		$file = File::find($id);
+
+		$downloadFile = Storage::get($file->treepath .''. $file->name . '.' . $file->extension);
+
+		return response($downloadFile, 200)
+			->header('Content-Type', $file->mimetype)
+			->header("Content-Disposition", "attachment; filename=\"" . $file->title . '.' . $file->extension . "\"");
 	}
 }

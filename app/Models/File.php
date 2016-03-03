@@ -22,9 +22,10 @@ class File extends Model
     }
 
     public static function getActiveFiles($folder_id=0) {
-    	if(!$folder_id){
+    	if($folder_id == null){
     		return File::where('status', '=', '1')
     			->where('creator_id', '=', Auth::user()->id)
+                ->whereNull('folder_id')
     			->orderBy('title', 'asc')->get();
     	}
 
