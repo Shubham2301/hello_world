@@ -23,7 +23,7 @@ class ProviderController extends Controller {
 	public function index(Request $request) {
 		$data = array();
 		$data['admin'] = false;
-        $data['schedule-patient'] = true;
+		$data['schedule-patient'] = true;
 		if ($request->has('referraltype_id')) {
 			$data['referraltype_id'] = $request->input('referraltype_id');
 		}
@@ -182,12 +182,12 @@ class ProviderController extends Controller {
 
 	protected function getDatesOfWeek($week_advance, $selected_date) {
 
-//		$date = date("m/d/Y");
+		//		$date = date("m/d/Y");
 		$date = date("d-m-Y", strtotime($selected_date) + (86400 * $week_advance * 7));
 		$ts = strtotime($date);
 		$year = date('o', $ts);
 		$week = date('W', $ts);
-//        $var = 7*$week_advance;
+		//        $var = 7*$week_advance;
 		$dates = [];
 		for ($i = 0; $i < 7; $i++) {
 			$ts = strtotime($year . 'W' . $week . $i);
