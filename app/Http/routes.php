@@ -20,6 +20,7 @@ Route::get('/', function () {
 });
 
 Route::resource('roletest', 'TestroleController');
+Route::get('testmail', 'TestMailController@testMail');
 
 Route::get('/start', 'TestroleController@start');
 
@@ -101,8 +102,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('techsupport', 'SupportController@techSupportIndex');
 
 	Route::resource('administration/users', 'Admin\UserController');
-    Route::get('administration/users/edit/{id}', 'Admin\UserController@edit');
-    Route::post('administration/users/update/{id}', 'Admin\UserController@update');
+	Route::get('administration/users/edit/{id}', 'Admin\UserController@edit');
+	Route::post('administration/users/update/{id}', 'Admin\UserController@update');
 	Route::get('users/search', 'Admin\UserController@search');
 
 	Route::resource('administration/roles', 'Admin\RoleController');
@@ -137,4 +138,3 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/patient/destroy/{id}', 'Patient\PatientController@destroy');
 
 });
-
