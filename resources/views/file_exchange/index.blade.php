@@ -49,7 +49,7 @@
         <hr class="main">
         <div class="row arial col_content">
             <div class="col-xs-1">
-                <input type="checkbox" class="checkbox">
+                <input type="checkbox" class="checkbox file-exchange">
             </div>
             <div class="col-xs-7 no-padding" id="item_name">Folder 1</div>
             <div class="col-xs-2 no-padding" id="item_last_change_author">Eric Hoell</div>
@@ -59,7 +59,7 @@
         <hr>
         <div class="row arial col_content">
             <div class="col-xs-1">
-                <input type="checkbox" class="checkbox">
+                <input type="checkbox" class="checkbox file-exchange">
             </div>
             <div class="col-xs-7 no-padding">Folder 2</div>
             <div class="col-xs-2 no-padding">John Doe</div>

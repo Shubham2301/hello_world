@@ -13,8 +13,8 @@
         <span class="left"></span>
         <span class="right announcement_navbar arial">
             <span class="announcement_navbar_left">
-                <span class="announcement_tabs" id="show_announcements">View</span>
-                <span class="announcement_tabs" id="make_announcements">Make</span>
+                <span class="announcement_tabs view" id="show_announcements">View</span>
+                <span class="announcement_tabs make" id="make_announcements">Make</span>
             </span>
             <span class="announcement_navbar_right">
                 <span class="sent_by_me" id="sent_by_me"><span>Sent to me</span><img src="{{URL::asset('images/toggle-icon.png')}}"></span>

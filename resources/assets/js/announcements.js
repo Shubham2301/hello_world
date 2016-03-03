@@ -159,7 +159,7 @@ function makeAnnouncementForm() {
             for (var i = 0; i < roles.role_data.length; i++) {
                 content += '<option value="' + roles.role_data[i][1] + '">' + roles.role_data[i][0] + '</option>';
             }
-            content += '</select></span></span><span class="make_row"><span class="left arial_bold">Title</span><span class="right"><input type="text" id="title"></span></span><span class="make_row"><span class="left arial_bold">Message</span><span class="right"><textarea name="textarea" id="message"></textarea></span></span><span class="make_row"><span class="left arial_bold">Type</span><span class="right"><span><input type="checkbox" class="type" value="General">&nbsp;General</span><span><input type="checkbox" class="type" value="News">&nbsp;News</span><span><input type="checkbox" class="type" value="Test">&nbsp;Test</span></span></span><span class="make_row"><span class="left arial_bold">Priority</span><span class="right"><span><input type="checkbox" class="priority" value="Normal">&nbsp;Normal</span><span><input type="checkbox" class="priority" value="Important">&nbsp;Important</span><span></span></span></span><span class="make_row"><span class="left arial_bold">Schedule</span><span class="right"><input type="text" id="schedule"></span></span><span class="make_row arial_bold button_row"><button id="publish">Publish</button><button id="preview">Preview</button><button id="close_announcement">Cancel</button></span></span></span><input type="hidden" value="' + roles.user + '" id="user_name"><input type="hidden" value="" id="priority"><input type="hidden" value="" id="type">';
+            content += '</select></span></span><span class="make_row"><span class="left arial_bold">Schedule</span><span class="right"><input type="text" id="schedule"></span></span><span class="make_row"><span class="left arial_bold">Title</span><span class="right"><input type="text" id="title"></span></span><span class="make_row"><span class="left arial_bold">Message</span><span class="right"><textarea name="textarea" id="message"></textarea></span></span><span class="make_row"><span class="left arial_bold">Type</span><span class="right"><span><input type="radio" class="type" value="General">&nbsp;General</span><span><input type="radio" class="type" value="News">&nbsp;News</span><span><input type="radio" class="type" value="Test">&nbsp;Test</span></span></span><span class="make_row"><span class="left arial_bold">Priority</span><span class="right"><span><input type="radio" class="priority" value="Normal">&nbsp;Normal</span><span><input type="radio" class="priority" value="Important">&nbsp;Important</span><span></span></span></span><span class="make_row arial_bold button_row"><button id="publish">Publish</button><button id="preview">Preview</button><button id="close_announcement">Cancel</button></span></span></span><input type="hidden" value="' + roles.user + '" id="user_name"><input type="hidden" value="" id="priority"><input type="hidden" value="" id="type">';
             $('.announcement_content').html(content);
             var date = new Date();
             $('#schedule').datetimepicker({
@@ -199,7 +199,12 @@ function showAnnouncements() {
                     } else {
                         content += '<span class="item_left"></span>';
                     }
-                    content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right excerpt">' + announcement.excerpt + '.....</span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
+                    content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span>';
+                    if(announcement.message == announcement.excerpt)
+                        content += '<span class="item_right excerpt">' + announcement.excerpt + '</span>';
+                    else
+                        content += '<span class="item_right excerpt">' + announcement.excerpt + '......</span>';
+                    content += '</span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
                 });
             }
             $('.announcement_content').html(content);
@@ -279,9 +284,14 @@ function makeAnnouncement() {
         success: function (e) {
             var id = $.parseJSON(e);
             resetDefaults();
-            $('.delete').removeClass('active');
-            $('.back-button').removeClass('active');
-            $('.sent_by_me').removeClass('active');
+            //            $('.delete').removeClass('active');
+            //            $('.back-button').removeClass('active');
+            //            $('.sent_by_me').removeClass('active');
+            $('.announcement_content').html('');
+            $('.back-button').addClass('active');
+            $('#sent_by_me').addClass('sent_to_me')
+            $('.view').addClass('active');
+            $('.make').removeClass('active');
             getAnnouncementDetail(id);
         },
         error: function () {
@@ -383,7 +393,12 @@ function announcementByUserList() {
                 announcements.forEach(function (announcement) {
                     content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section"><span class="from">To: ' + announcement.from + '</span><span class=" from date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section">';
                     content += '<span class="item_left"></span>';
-                    content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right excerpt">' + announcement.excerpt + '.....</span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
+                    content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span>';
+                    if(announcement.message == announcement.excerpt)
+                        content += '<span class="item_right excerpt">' + announcement.excerpt + '</span>';
+                    else
+                        content += '<span class="item_right excerpt">' + announcement.excerpt + '.....</span>';
+                    content += '</span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
                 });
             }
             $('.announcement_content').html(content);
