@@ -76,9 +76,8 @@ CanResetPasswordContract {
 		return self::query()
 			->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
 			->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
-			->leftjoin('role_user', 'users.id', '=', 'role_user.user_id')
 			->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
-			->where('role_id', 6)
+			->where('level', 3)
 			->where(function ($query) use ($filters) {
 				foreach ($filters as $filter) {
 					$query->where(function ($query) use ($filter) {
