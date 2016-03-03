@@ -33,10 +33,9 @@
                         <br>
                         <span class="provider_detail_text arial" id="location_contact"></span>
                         <br>
-                        <br>
                         <span class="provider_detail_text arial appointment_type_not_found" style="display:none;">
-                            <span class="bold arial_bold">Appointment Types</span><br>
-                            No appointment types found for this location. Select another location or call the practice  to schedule an appointment.
+                            <span class="bold arial_bold">Appointment Types</span>
+                        <br> No appointment types found for this location. Select another location or call the practice to schedule an appointment.
                         </span>
                     </p>
                     <p>
@@ -47,13 +46,13 @@
                         <span class="bold arial_bold">Appointment&nbsp;</span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax appointment_schedule">
                         <br>
                     </p>
-                        <input type="text" class="get_availability hide select_date" id="select_date" placeholder="Select Date">
-                    <span style="display:flex;">
-                        <p class="get_availability hide availability-btn" id="get_availability" style="padding:.3em;">
+                    <span class="appointment_detail">
+                        <span class="get_availability hide availability-btn" id="get_availability">
                             <span id="appointment_date"></span>
-                            <br><span id="appointment_time"></span>
-                    </p>
+                    <br><span id="appointment_time"></span><br>
                     </span>
+                    </span>
+                    <input type="text" class="get_availability hide select_date" id="select_date" placeholder="Select Date">
                 </div>
             </div>
         </div>

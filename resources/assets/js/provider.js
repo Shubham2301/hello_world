@@ -8,6 +8,7 @@ $(document).ready(function () {
         $('.availability').attr('data-value', 0);
         $('#appointment_date').html('');
         $('#appointment_time').html('');
+        $('.appointment_detail').addClass('hide');
         $('.availability-text').removeClass('hide');
         $('.schedule_button').removeClass('active');
         $('.availability').html('');
@@ -43,6 +44,7 @@ $(document).ready(function () {
         $('#appointment_date').text($(this).attr('data-date'));
         $('#appointment_time').text($(this).attr('data-time'));
         $('#form_appointment_time').val($(this).attr('data-time'));
+        $('.appointment_detail').removeClass('hide');
         $('#form_appointment_date').val($(this).attr('data-date'));
         $('.availability').removeClass('active');
         $('.availability').html('');
@@ -66,7 +68,7 @@ $(document).ready(function () {
     });
     $('#search_practice_button').on('click', function () {
         $('.schedule_button').removeClass('active');
-		$('.practice_list').removeClass('active');
+        $('.practice_list').removeClass('active');
         $('.schedule_button').attr('data-id', 0);
         $('.schedule_button').attr('data-practice-id', 0);
         $('.availability').removeClass('active');
@@ -153,7 +155,7 @@ $(document).ready(function () {
 
     $('.search_filter').on('click', '.remove_option', function () {
         $(this).parent().remove();
-		$("#search_practice_button").trigger("click");
+        $("#search_practice_button").trigger("click");
 
     });
     $('.schedule_button').on('click', function () {
@@ -168,6 +170,7 @@ $(document).ready(function () {
         $('#appointment_type').html('');
         $('#appointment_date').html('');
         $('#appointment_time').html('');
+        $('.appointment_detail').addClass('hide');
         $('#appointment_type_list').html('');
         $('.availability-btn').removeClass('hide');
         $('.get_availability').addClass('hide');
@@ -187,6 +190,7 @@ $(document).ready(function () {
         $('#appointment_type').html('');
         $('#appointment_date').html('');
         $('#appointment_time').html('');
+        $('.appointment_detail').addClass('hide');
         $('.availability-btn').removeClass('hide');
         $('.availability').html('');
         $('.availability').removeClass('active');
@@ -197,15 +201,6 @@ $(document).ready(function () {
         $('#appointment_type').attr('data-name', appointment_type);
         $('.get_availability').removeClass('hide');
     });
-//    $('#get_availability').on('click', function () {
-//        $('.availability').attr('data-value', 0);
-//        $('#appointment_date').html('');
-//        $('#appointment_time').html('');
-//        $('.availability-text').removeClass('hide');
-//        $('.schedule_button').removeClass('active');
-//        $('.availability').html('');
-//        getOpenSlots(0);
-//    });
 
     $('.provider_near_patient').on('click', function () {
         $('.provider_near_patient_list').toggleClass("active");
@@ -246,6 +241,7 @@ function clearHTML() {
     $('#appointment_type_list').html('');
     $('#appointment_date').html('');
     $('#appointment_time').html('');
+    $('.appointment_detail').addClass('hide');
     $('.availability').html('');
     $('.availability-text').removeClass('hide');
     $('.availability-btn').removeClass('hide');
@@ -479,9 +475,13 @@ function getOpenSlots(week) {
     };
     $('#form_appointment_type_name').val($('#appointment_type').attr('data-name'));
     $('#form_appointment_type_id').val($('#appointment_type').attr('value'));
+    $('.availability').addClass('active');
     var content = '';
+    content += '<span class="slot_header" style="margin:1em;"><span class="slot_header_text">Fetching slots!</span></span>';
+    $('.availability').html(content);
+    content = '';
     var weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    content += '<span class="glyphicon glyphicon-chevron-left availability_glyph available" id="previous_week"></span>';
+    content += '<span class="slot_header"><span class="glyphicon glyphicon-chevron-left availability_glyph available" id="previous_week" data-toggle="tooltip" title="Previous week slots" data-placement="right"></span><span class="glyphicon glyphicon-chevron-right availability_glyph available" id="next_week" data-toggle="tooltip" title="Next week slots" data-placement="right"></span><span class="slot_header_text">Please pick an appointment time</span><span class="glyphicon glyphicon-remove availability_glyph available" data-dismiss="modal" data-toggle="tooltip" title="Close this window" data-placement="left"></span></span><span class="slot_body">';
     var i = 0;
     $.ajax({
         url: '/providers/openslots',
@@ -525,9 +525,9 @@ function getOpenSlots(week) {
                 content += '</div>';
                 i += 1;
             });
-            content += '<span class="glyphicon glyphicon-chevron-right availability_glyph available" id="next_week"></span>';
+            content += '</span>';
             $('.availability').html(content);
-            $('.availability').addClass('active');
+            $('[data-toggle="tooltip"]').tooltip();
             $('.ajax.appointment_schedule').removeClass('active');
         },
         error: function () {
