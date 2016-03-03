@@ -119,7 +119,8 @@ CanResetPasswordContract {
 						}
 					});
 				}
-			})->get();
+			})->groupBy('users.id')
+			->get(['*', 'practices.id']);
 
 	}
 
