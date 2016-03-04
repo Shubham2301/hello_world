@@ -1,0 +1,227 @@
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
+#button_active {
+    background-color: #d2d3d5;
+    background-image: linear-gradient(#d2d3d5 10%, #d2d3d5 90%);
+    box-shadow: 0 1px 1px #d2d3d5;
+    color: #6B31D7;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.user_listing {
+    display: none;
+    &.active {
+        display: block
+    }
+}
+.search_item {
+    margin: 1em;
+    border-bottom: 1px solid #fff;
+    color: #f2f2f2;
+    &:hover {
+        color: #fff;
+    }
+}
+.search_name,
+.search_edit {
+    display: inline-flex;
+}
+.search_edit {
+    cursor: pointer;
+}
+#row_action_dropdown {
+    background-color: #ebeced;
+    margin-top: -9px;
+    box-shadow: 0px 0px 3px #82888f;
+    border-radius: 5px;
+    text-align: center;
+    width: 10em;
+    color: black;
+}
+.removeuser_img {
+    width: 28px;
+    margin-top: -0.2em;
+    padding: 4px;
+    cursor: pointer;
+}
+#row_remove_dropdown {
+    bckground-color: #fff;
+    margin-top: -3px;
+    box-shadow: 0px 0px 3px #82888f;
+    border-radius: 5px;
+    text-align: center;
+    width: 20em;
+    margin-left: -19em;
+    color: black;
+    height: 9em;
+}
+.confirm_text {
+    margin-top: 8px;
+    font-size: 15px;
+}
+.confirm_buttons {
+    margin-top: 11px;
+    padding: 11px;
+}
+.confirm_yes {
+    background: #fff;
+    color: #F22F2F;
+    margin-right: 19px;
+    border-color: red;
+    border-radius: 3px;
+    padding-left: 11px;
+    padding-right: 11px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    &:hover {
+        background: red;
+        color: #fff;
+    }
+}
+.confirm_no {
+    background: #fff;
+    color: #F22F2F;
+    margin-right: 19px;
+    border-color: red;
+    border-radius: 3px;
+    padding-left: 11px;
+    padding-right: 11px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    &:hover {
+        background: red;
+        color: #fff;
+    }
+}
+.search_input_box {
+    background-color: #ffffff;
+    font-size: 1em;
+    &>input,
+    &>input:focus {
+        width: 100%;
+        border: none;
+        padding: 6px 12px;
+        color: #4d4d4d;
+        outline: none;
+    }
+    &>span {
+        color: #0071bc;
+        position: absolute;
+        right: 0;
+    }
+}
+.glyp {
+    padding-top: 8px;
+    padding-right: 5px;
+    cursor: pointer;
+}
+#refresh_users {
+    background: maroon;
+    color: white;
+    padding: 3px;
+    display: none;
+    border-radius: 3px;
+    font-size: 0.9em;
+    height: 20px;
+    margin-top: 6px;
+    width: 37%;
+    cursor: pointer;
+    &.active {
+        display: block;
+    }
+}
+.search_header {
+    margin: 1em;
+    border-bottom: 1px solid #fff;
+}
+.action_dropdown {
+    width: 38px;
+    margin-top: -0.6em;
+}
+p.pagination {
+    color: black;
+    display: inline-block;
+    margin: 0px;
+}
+.p_right,
+.p_left {
+    cursor: pointer;
+}
+.assign_role_image {
+    width: 25%;
+    margin-right: 5px;
+}
+.assign_user_image {
+    width: 25%;
+    margin-right: 5px;
+}
+
+/*
+---------------------------
+Create User Section
+---------------------------
+*/
+
+.back_btn {
+    color: #f2f2f2;
+    background-color: #808080;
+    padding: 6px 22px;
+    margin: 0 1em 0 0;
+    &:hover,
+    &:active,
+    &:focus {
+        color: #f2f2f2;
+    }
+}
+.add_title {
+    font-size: 1.4em;
+    margin: auto 0;
+}
+.add_user_input {
+    display: block;
+    color: #fff;
+    background-color: @font-color-4;
+    border: 2px solid @font-color-4;
+    margin: 1em;
+    width: 60%;
+    border-radius: .2em;
+    padding: .5em;
+    font-size: 1.1em;
+    &::placeholder {
+        color: #b2e3f5;
+    }
+    &:focus {
+        border: 2px solid #fff;
+        color: #66c7eb;
+        box-shadow: 0px 0px 2px #fff;
+    }
+}
+.form_row_margin {
+    margin: 1em;
+}
+.accordian_margin{
+    margin-left: 0;
+}
+.add_user_submit_button {
+    color: #4d4d4d;
+    background-color: #00B6F1;
+    border-color: #2e6da4;
+    font-size: 1.1em;
+    &:hover{
+        background-color: #0071bc;
+        color: #fff;
+    }
+}
+.roles{
+    color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+    &>.title{
+        font-size: 1.3em;
+    }
+    &>span{
+        font-size: .9em;
+    }
+}

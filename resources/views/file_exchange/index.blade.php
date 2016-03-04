@@ -50,7 +50,7 @@
         @foreach($folderlist as $folder)
         <div class="row arial col_content">
             <div class="col-xs-1" style="text-align: center;">
-                <input type="checkbox" class="checkbox folder-check" style="display: inline;  margin-left: 0" data-id="{{ $folder['id'] }}">
+                <input type="checkbox" class="checkbox file-exchange folder-check" style="display: inline;  margin-left: 0" data-id="{{ $folder['id'] }}">
                 <img src='{{URL::asset('images/sidebar/admin-file-icon-hover.png')}}' style="width: 3em;">
             </div>
             <div class="col-xs-7 no-padding">
@@ -66,7 +66,7 @@
         @foreach($filelist as $file)
         <div class="row arial col_content">
             <div class="col-xs-1" style="text-align: center;">
-                <input type="checkbox" class="checkbox file-check" style="display: inline; margin-left: 0" data-id="{{ $file['id'] }}">
+                <input type="checkbox" class="checkbox file-exchange file-check" style="display: inline; margin-left: 0" data-id="{{ $file['id'] }}">
                 <img src='{{URL::asset('images/sidebar/admin-file-icon.png')}}' style="width: 3em;">
             </div>
             <div class="col-xs-7 no-padding">{{ $file['name'] }}</div>

@@ -38,7 +38,7 @@ class RolesSeeder extends Seeder
 	            'name' => 'patient-admin',
 	            'display_name' => 'Patient Admin',
 	            'description' => 'A member of this role can create and manage patients across practices.',
-	        ],	
+	        ],
 	        [
 	            'name' => 'files-admin',
 	            'display_name' => 'Files Admin',
@@ -48,22 +48,22 @@ class RolesSeeder extends Seeder
 	            'name' => 'bulk-import',
 	            'display_name' => 'Bulk Import Admin',
 	            'description' => 'Ocuhub Bulk Import Admin',
-	        ],	
+	        ],
 	        [
 	            'name' => 'announcements-admin',
 	            'display_name' => 'Announcements Admin',
 	            'description' => 'Members of this role can create new announcements.',
-	        ],	
+	        ],
 	        [
 	            'name' => 'care-console',
 	            'display_name' => 'Care Console',
 	            'description' => '',
-	        ],	
+	        ],
 	        [
 	            'name' => 'administrator',
 	            'display_name' => 'Administrators',
 	            'description' => 'Administrators are super users who can do anything.',
-	        ],		        
+	        ],
         ]);
     }
 }

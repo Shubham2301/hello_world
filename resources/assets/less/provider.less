@@ -246,30 +246,44 @@ Section : Imports
 }
 .availability {
     display: none;
-    justify-content: space-between;
     background-color: @light-gray;
     color: #000;
-    margin-bottom: 5em;
     padding: 1em 0;
     overflow: auto;
     font-size: 0.8em;
     border-radius: .3em;
     &.active {
         display: flex;
-    }
-    &>.weekday {
-        text-align: center;
-        &>p.date {
-            font-size: 1.2em;
-            font-weight: 600;
-            text-decoration: underline;
-            padding: 0 .2em;
+        flex-direction: column;
+        &>.slot_header {
+            display: inherit;
+            justify-content: space-between;
+            flex-direction: row;
+            margin-bottom: 1em;
+            &>.slot_header_text {
+                font-size: 1.5em;
+                margin: auto;
+            }
         }
-        &>p.appointment_start_time {
-            font-size: 1em;
-            cursor: pointer;
-            &:hover {
-                color: @font-color-4;
+        &>.slot_body {
+            display: inherit;
+            justify-content: space-around;
+            flex-direction: row;
+            &>.weekday {
+                text-align: center;
+                &>p.date {
+                    font-size: 1.2em;
+                    font-weight: 600;
+                    text-decoration: underline;
+                    padding: 0 .2em;
+                }
+                &>p.appointment_start_time {
+                    font-size: 1em;
+                    cursor: pointer;
+                    &:hover {
+                        color: @font-color-4;
+                    }
+                }
             }
         }
     }
@@ -285,9 +299,7 @@ input {
 }
 .availability-btn {
     color: #000;
-    background-color: #ebebeb;
     border: none;
-    cursor: pointer;
 }
 .hide {
     display: none;
@@ -296,7 +308,15 @@ input {
     color: #82888f;
     background-color: #cccccc;
     align-self: flex-start;
-    padding: 1em;
+    &.glyphicon-chevron-left {
+        padding: 1em .5em 1em 1em;
+    }
+    &.glyphicon-chevron-right {
+        padding: 1em 1em 1em .5em;
+    }
+    &.glyphicon-remove {
+        padding: 1em;
+    }
     &.available {
         color: #000;
         cursor: pointer;
@@ -321,11 +341,16 @@ input {
     widows: auto;
     color: black;
 }
-ul.time_selector>li {
-    cursor: pointer;
-    &:hover,
-    &:active {
-        color: #0071bc;
+ul.time_selector {
+    list-style-type: none;
+    padding: 0;
+    &>li {
+        padding: .5em 0;
+        cursor: pointer;
+        &:hover,
+        &:active {
+            color: #0071bc;
+        }
     }
 }
 .time_glyph {
@@ -335,10 +360,10 @@ li {
     cursor: pointer;
 }
 #appointment_date {
-    color: #4d4d4d;
+    color: #fff;
 }
 #appointment_time {
-    color: #808080;
+    color: #fff;
 }
 p.patient_dropdown_data {
     margin: 0;
@@ -358,13 +383,9 @@ p.patient_dropdown_data {
 .provider_detail_text {
     font-size: .9em;
 }
-
-
-
 #practice_name {
     text-decoration: underline;
 }
-
 #button_active {
     background-color: #d2d3d5;
     background-image: linear-gradient(#d2d3d5 10%, #d2d3d5 90%);
@@ -372,4 +393,17 @@ p.patient_dropdown_data {
     color: #1b998b;
     font-size: 1.2em;
     font-weight: bold;
+}
+.select_date {
+    display: block;
+    color: #000;
+    background-color: #f2f2f2;
+    border: 2px solid #f2f2f2;
+    margin: 0 0 .5em 0;
+    width: 60%;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+.get_availability{
+    margin: 0;
 }

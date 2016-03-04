@@ -76,15 +76,13 @@
         </div>
     </div>
     -->
-
     </div>
-
 </div>
 <div class="row content-row-margin no_item_found">
     <p>No results found matching :</p>
-    <p>asdfggg</p>
+    <p></p>
 </div>
-<div class="row content-row-margin practice_info" data-id="">
+<div class="row content-row-margin practice_info" data-id="" >
     <div class="col-xs-12">
         <div class="row practice_info_header">
             <div class="col-md-2">
@@ -112,12 +110,8 @@
                             <button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button>
                             <button type="button" class="btn btn-info btn-lg confirm_no">NO</button>
                         </li>
-                    </ul>
-
-
+					</ul>
                 </div>
-
-
             </div>
         </div>
         <div class="row location_info_header">
@@ -126,7 +120,7 @@
             </div>
             <div class="col-xs-4">
                 <center>
-                    <button type="button" class="btn add">add+</button>
+                    <button type="button" class="btn add" id="new_location" >add+</button>
                 </center>
             </div>
             <div class="col-md-5">
@@ -154,10 +148,8 @@
                     <div class="practice_users">
                         <input type="checkbox"> <span><p class="user_name">practice user1</p></span><span><img src="" alt="0"></span>
                     </div>
-
                 </div>
             </div>
         </div>
-
     </div>
 </div>

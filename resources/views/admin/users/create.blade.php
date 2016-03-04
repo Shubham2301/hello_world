@@ -1,257 +1,117 @@
-@extends('layouts.master')
+@extends('layouts.master') @section('title', 'My Ocuhub - Administration') @section('imports')
+<link rel="stylesheet" type="text/css" href="{{elixir('css/users.css')}}">
+<script type="text/javascript" src="{{elixir('js/users.js')}}"></script>
+@endsection @section('sidebar') @include('admin.sidebar') @endsection @section('content') @if (Session::has('success'))
+<div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>
+            <i class="fa fa-check-circle fa-lg fa-fw"></i> Success. &nbsp;
+        </strong> {{ Session::get('success') }}
+</div>
+@endif
 
-@section('title', 'My Ocuhub - Administration')
-
-@section('content')
-    @if (Session::has('success'))
-    <div class="alert alert-success">
+<div class="content-section active" id="admin-user-console">
+    @if (Session::has('error'))
+    <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>
-            <i class="fa fa-check-circle fa-lg fa-fw"></i> Success. &nbsp;
-        </strong>
-        {{ Session::get('success') }}
+            <i class="fa fa-check-circle fa-lg fa-fw"></i> Error. &nbsp;
+        </strong> {{ Session::get('error') }}
+    </div>
+    @endif @if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <strong>Whoops! Something went wrong!</strong>
+
+        <br>
+        <br>
+
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
     @endif
-    
-    <div class="content-section active" id="admin-user-console">
-        
-        <div class="admin-console-section active" id="admin-create-user">
-            <div class="row content-row-margin">
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <h3>Create User</h3>
-                    </div>
-                </div>
-            </div>
-            @if (count($errors) > 0)
-                <!-- Form Error List -->
-                <div class="alert alert-danger">
-                    <strong>Whoops! Something went wrong!</strong>
-
-                    <br><br>
-
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form method="POST" action="/administration/users">
-                {!! csrf_field() !!}
-                {{ method_field('POST') }}
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('usertype', 'User Type') !!}
+    <div class="row form_row_margin">
+        <div class="col-xs-12 top_nav">
+            <a href="/administration/users">
+                <button class="btn back_btn">Back</button>
+            </a>
+            <span class="add_title">Add User</span>
+        </div>
+        <div class="col-xs-12">
+            <form method="POST" action="{{$data['url']}}">
+                {!! csrf_field() !!} {{ method_field('POST') }}
+                <div class="panel-group accordian_margin" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+        Roles and User Access</a>
+      </h4>
                         </div>
-                        <div class="col-sm-10">
-                            {!! Form::select('usertype', $userTypes, null, array('class' => 'input')) !!}
+                        <div id="collapse1" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        {!! Form::select('usertype', $userTypes, $user['usertype_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select User Types*', 'id' => 'user_type', 'required' => 'required')) !!} {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => 'input, add_user_input', 'placeholder' => 'Select User Levels*', 'id' => 'user_level', 'required' => 'required')) !!}
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6" style="color:#fff;">
+                                       <h4>Roles*</h4>
+                                        @foreach($roles as $role) @if(isset($user[$role])) {!! Form::checkbox('role[]', $role, true); !!} @else {!! Form::checkbox('role[]', $role); !!} @endif {!! Form::label('role', $role); !!}
+                                        <br> @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('userlevel', 'User Level') !!}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+        General Information</a>
+      </h4>
                         </div>
-                        <div class="col-sm-10">
-                            {!! Form::select('userlevel', $userLevels, null, array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('title', 'Title*') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::text('title', old('title'), array('class' => 'input')) !!}
+                        <div id="collapse2" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        {!! Form::text('title', $user['title'], array('class' => 'input, add_user_input', 'placeholder' => 'Title', 'id' => 'title')) !!} {!! Form::text('firstname', $user['firstname'], array('class' => 'input, add_user_input', 'placeholder' => 'First Name*', 'id' => 'first_name', 'required' => 'required')) !!} {!! Form::text('middlename', $user['middlename'], array('class' => 'input, add_user_input', 'placeholder' => 'Middle Name', 'id' => 'middle_name')) !!} {!! Form::text('lastname', $user['lastname'], array('class' => 'input, add_user_input', 'placeholder' => 'Last Name*', 'id' => 'last_name', 'required' => 'required')) !!} {!! Form::text('npi', $user['npi'], array('class' => 'input, add_user_input', 'placeholder' => 'NPI*', 'id' => 'npi', 'required' => 'required')) !!}
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        {!! Form::text('cellphone', $user['cellphone'], array('class' => 'input, add_user_input', 'placeholder' => 'Phone Number*', 'id' => 'cell_phone')) !!} {!! Form::text('address1', $user['address1'], array('class' => 'input, add_user_input', 'placeholder' => 'Address 1*', 'id' => 'address1', 'required' => 'required')) !!} {!! Form::text('address2', $user['address2'], array('class' => 'input, add_user_input', 'placeholder' => 'Address 2', 'id' => 'address2')) !!} {!! Form::text('city', $user['city'], array('class' => 'input, add_user_input', 'placeholder' => 'City', 'id' => 'city')) !!} {!! Form::text('zip', $user['zip'], array('class' => 'input, add_user_input', 'placeholder' => 'Zip', 'id' => 'zip')) !!}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('firstname', 'First Name*') !!}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+        Direct Address and Password</a>
+      </h4>
                         </div>
-                        <div class="col-sm-10">
-                            {!! Form::text('firstname', old('firstname'), array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('middlename', 'Middle Name') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::text('middlename', old('middlename'), array('class' => 'input')) !!}
+                        <div id="collapse3" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        {!! Form::email('email', $user['email'], array('class' => 'input, add_user_input','required' => 'required', 'placeholder' => 'Email*', 'id' => 'email')) !!} {!! Form::email('sesemail', $user['sesemail'], array('class' => 'input, add_user_input', 'placeholder' => 'SES Email', 'id' => 'ses_email')) !!}
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        {!! Form::password('password', array('class' => 'input, add_user_input', 'placeholder' => 'Password*', 'id' => 'password', 'required' => 'required')) !!} {!! Form::password('password_confirmation', array('class' => 'input, add_user_input', 'placeholder' => 'Password Confirmation*', 'id' => 'confirm_password', 'required' => 'required')) !!}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('lastname', 'Last Name*') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::text('lastname', old('lastname'), array('class' => 'input')) !!}
-                        </div>
-                    </div>
+                <div class="col-xs-12 no-padding">
+                    {!! Form::submit('Save', array('class' => 'btn add_user_submit_button')) !!}
                 </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('email', 'Email*') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::email('email', old('email'), array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('npi', 'NPI*') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::text('npi', old('npi'), array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('cellphone', 'Cell Phone') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::text('cellphone', old('cellphone'), array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('sesemail', 'Direct Address') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::email('sesemail', old('sesemail'), array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('calendar', 'Calendar') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::checkbox('calendar', old('calendar')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('address1', 'Address 1') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::text('address1', old('address1'), array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('address2', 'Address 2') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::text('address2', old('address2'), array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('city', 'City') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::text('city', old('city'), array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('zip', 'Zip') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::text('zip', old('zip'), array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('password', 'Password') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::password('password', array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('password_confirmation', 'Confirm Password') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::password('password_confirmation', array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::label('role', 'Role Name') !!}
-                        </div>
-                        <div class="col-sm-10">
-                            {!! Form::select('role', $roles, null, array('class' => 'input')) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row content-row-margin">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            {!! Form::submit('Save', array('class' => 'button')) !!}
-                        </div>
-                        <div class="col-sm-10"></div>
-                    </div>
-                </div>
-
             </form>
         </div>
     </div>
+</div>
 
 @endsection

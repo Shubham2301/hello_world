@@ -2,9 +2,7 @@
 
 namespace myocuhub\Http\Controllers\Practice;
 
-use Event;
 use Illuminate\Http\Request;
-use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Practice;
 use myocuhub\Services\FourPatientCare\FourPatientCare;
@@ -24,7 +22,8 @@ class ProviderController extends Controller {
 
 	public function index(Request $request) {
 		$data = array();
-        $data['admin'] = false;
+		$data['admin'] = false;
+		$data['schedule-patient'] = true;
 		if ($request->has('referraltype_id')) {
 			$data['referraltype_id'] = $request->input('referraltype_id');
 		}
@@ -54,7 +53,7 @@ class ProviderController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request) {
-		
+
 	}
 
 	/**
@@ -114,7 +113,7 @@ class ProviderController extends Controller {
 
 		$filters = json_decode($request->input('data'), true);
 		//search quar
-		$providers = User::practiceUser($filters);
+		$providers = User::providers($filters);
 		$data = [];
 		$i = 0;
 
@@ -138,11 +137,11 @@ class ProviderController extends Controller {
 	public function getAppointmentTypes(Request $request) {
 		$providerInfo = array();
 
-		$providerID = $request->input('provider_id');
-		$locationID = $request->input('location_id');
+		$providerKey = $request->input('provider_id');
+		$locationKey = $request->input('location_id');
 
-		$providerInfo['LocKey'] = 3839;
-		$providerInfo['AcctKey'] = 8042;
+		$providerInfo['LocKey'] = $locationKey;
+		$providerInfo['AcctKey'] = $providerKey;
 
 		$apptTypes = $this->fourPatientCare->getApptTypes($providerInfo);
 
@@ -152,49 +151,48 @@ class ProviderController extends Controller {
 	public function getOpenSlots(Request $request) {
 		$providerInfo = array();
 
-		$providerID = $request->input('provider_id');
-		$locationID = $request->input('location_id');
+		$providerKey = $request->input('provider_id');
+		$locationKey = $request->input('location_id');
 		$AppointmentType = $request->input('appointment_type');
 		$week_advance = $request->input('week');
+		$selected_date = $request->input('selected_date');
 
-		$providerInfo['LocKey'] = 3839;
-		$providerInfo['AcctKey'] = 8042;
+		$providerInfo['LocKey'] = $locationKey;
+		$providerInfo['AcctKey'] = $providerKey;
 		$providerInfo['ApptTypeKey'] = $AppointmentType;
 
+		$dates = $this->getDatesOfWeek($week_advance, $selected_date);
 
-        $dates = $this->getDatesOfWeek($week_advance);
-
-        $slots = [];
-        $i = 0;
-        foreach($dates as $date)
-        {
-            $slots[$i]['date'] = $date;
-            $providerInfo['GetSlotsOnDate'] = $date;
-            $slots[$i]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
-            $i++;
-        }
+		$slots = [];
+		$i = 0;
+		foreach ($dates as $date) {
+			$slots[$i]['date'] = $date;
+			$providerInfo['GetSlotsOnDate'] = $date;
+			$slots[$i]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
+			$i++;
+		}
 		return json_encode($slots);
 	}
 	public function administration(Request $request) {
-        $data = array();
-        $data['admin'] = true;
-        $data['provider_active'] = true;
+		$data = array();
+		$data['admin'] = true;
+		$data['provider_active'] = true;
 		return view('provider.admin')->with('data', $data);
 	}
 
-	protected function getDatesOfWeek($week_advance) {
+	protected function getDatesOfWeek($week_advance, $selected_date) {
 
-        $date = date("m/d/Y");
-        $date = date("d-m-Y", strtotime($date) + (86400*$week_advance*7));
-        $ts = strtotime($date);
-        $year = date('o', $ts);
-        $week = date('W', $ts);
-//        $var = 7*$week_advance;
-        $dates = [];
-        for($i = 0; $i < 7; $i++) {
-            $ts = strtotime($year.'W'.$week.$i);
-            $dates[] = date("m/d/Y", $ts);
-        }
-        return $dates;
+		//		$date = date("m/d/Y");
+		$date = date("d-m-Y", strtotime($selected_date) + (86400 * $week_advance * 7));
+		$ts = strtotime($date);
+		$year = date('o', $ts);
+		$week = date('W', $ts);
+		//        $var = 7*$week_advance;
+		$dates = [];
+		for ($i = 0; $i < 7; $i++) {
+			$ts = strtotime($year . 'W' . $week . $i);
+			$dates[] = date("m/d/Y", $ts);
+		}
+		return $dates;
 	}
 }
