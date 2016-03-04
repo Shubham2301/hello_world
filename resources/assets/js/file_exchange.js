@@ -20,6 +20,9 @@ $(document).ready(function () {
             $('.download-button').show();
         }
     });
+    $('.share-button').on('click', function(){
+        $('#shareModal').modal('show'); 
+    });
     $('.files').on('click', '.description_text', function () {
         $(this).css('height', 'auto');
     });

@@ -28,7 +28,7 @@
             <button id="" type="button" class="btn add-doc-btn file_input" data-toggle="modal" data-target="#newfileModal">Add Document</button>
         </span>
                 <span class="file_exchange_navbar_content_right">
-            <span class="file_exchange_button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{URL::asset('images/sidebar/share-icon.png')}}" style="width:30px;"></span>
+            <span class="file_exchange_button share-button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{URL::asset('images/sidebar/share-icon.png')}}" style="width:30px;"></span>
                 <span class="file_exchange_button trash-button" data-toggle="tooltip" title="Trash" data-placement="bottom"><img src="{{URL::asset('images/sidebar/trash-icon.png')}}" style="width:30px;"></span>
                 <span class="file_exchange_button download-button" data-toggle="tooltip" title="Download" data-placement="bottom"><img src="{{URL::asset('images/sidebar/download-icon.png')}}" style="width:30px;"></span>
                 <span class="file_exchange_button" data-toggle="tooltip" title="Details" data-placement="bottom" id="details"><img src="{{URL::asset('images/sidebar/details-icon.png')}}" style="width:30px;"></span>
@@ -109,5 +109,6 @@
 </div>
 @include('file_exchange.addFolder')
 @include('file_exchange.addfile')
+@include('file_exchange.share')
 
 @endsection
