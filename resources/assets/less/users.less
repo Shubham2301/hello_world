@@ -2,6 +2,11 @@
 @import 'fonts.less';
 @import 'media.less';
 @import 'helper.less';
+
+
+.user_admin_search{
+    display: flex;
+}
 #button_active {
     background-color: #d2d3d5;
     background-image: linear-gradient(#d2d3d5 10%, #d2d3d5 90%);
@@ -95,7 +100,12 @@
         color: #fff;
     }
 }
+.add-btn {
+    margin: 0 1em;
+}
 .search_input_box {
+    display: flex;
+    flex-direction: row;
     background-color: #ffffff;
     font-size: 1em;
     &>input,
@@ -109,13 +119,22 @@
     &>span {
         color: #0071bc;
         position: absolute;
-        right: 0;
     }
 }
 .glyp {
     padding-top: 8px;
     padding-right: 5px;
     cursor: pointer;
+    margin: auto;
+    margin-top: 2em;
+    margin-left: -2em;
+}
+.page_title{
+    font-size: 1.3em;
+    padding-top: 2px;
+    color: #fff;
+    padding-left: 15px;
+    margin: 0 1em 0 0;
 }
 #refresh_users {
     background: maroon;
@@ -125,8 +144,7 @@
     border-radius: 3px;
     font-size: 0.9em;
     height: 20px;
-    margin-top: 6px;
-    width: 37%;
+    margin: auto 1em;
     cursor: pointer;
     &.active {
         display: block;
