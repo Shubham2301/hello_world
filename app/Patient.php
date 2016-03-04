@@ -76,4 +76,15 @@ class Patient extends Model {
 		return array_combine($patients, $dummy_array);
 	}
 
+	public static function getPreviousProvidersList($patientID) {
+		return self::where('patients.id', $patientID)
+			->leftjoin('appointments', 'patients.id', '=', 'appointments.patient_id')
+			->orderBy('start_datetime', 'DESC')
+			->leftjoin('users', 'appointments.provider_id', '=', 'users.id')
+			->leftjoin('practices', 'appointments.practice_id', '=', 'practices.id')
+			->leftjoin('practice_location', 'appointments.location_id', '=', 'practice_location.id')
+			->groupBy('users.id')
+			->get();
+	}
+
 }
