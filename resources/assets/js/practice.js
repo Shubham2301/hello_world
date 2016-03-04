@@ -449,15 +449,22 @@ function showPracticeInfo(info) {
     var content = '';
     if (info.locations.length > 0) {
         var i = 0;
+        content += '<div class="panel-group accordian_margin location_accordian" id="accordion">';
         info.locations.forEach(function(location) {
-            content += '<div class="row practice_location_item" data-locationid = "' + location.id + '" data-index="' + i + '"><div class="col-xs-3 practice_info"><p>' + location.locationname + '</p><p>' + location.addressline1 + '<br>' + location.addressline2 + '</p><p>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p>Assign roles </p><p>Assign users</p><p class="edit_location_frominfo">Edit</p><br><center class="remove_location_frominfo"><span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></center></div><div class="col-xs-5"><div class="row">';
+            content +='<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse' + i + '">' + location.locationname + '</a></h4></div>';
+            if(i == 0)
+                content +='<div id="collapse' + i + '" class="panel-collapse collapse in"><div class="panel-body location_accordian_body">';
+            else
+                content +='<div id="collapse' + i + '" class="panel-collapse collapse"><div class="panel-body">';
+            content += '<div class="row practice_location_item" data-locationid = "' + location.id + '" data-index="' + i + '"><div class="col-xs-3 practice_info"><p>' + location.addressline1 + '<br>' + location.addressline2 + '</p><p>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p>Assign roles </p><p>Assign users</p><p class="edit_location_frominfo">Edit</p><br><center class="remove_location_frominfo"><span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></center></div><div class="col-xs-5"><div class="row">';
             info.users.forEach(function(user) {
                 content += '<div class="col-xs-12 practice_users "><p style="width: 100%;"><input type="checkbox"><span>' + user.firstname + '</span><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background:#e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;float: right;margin-bottom: 5px;"></span></p></div>';
             });
             content += '</div></div></div>';
+            content += '</div></div></div>';
             i++;
         });
-
+        content +='</div>';
         $('.practice_location_item_list').html(content);
         $('.practice_list').removeClass('active');
         $('.practice_info').addClass('active');
