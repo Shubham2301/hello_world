@@ -50,11 +50,10 @@
         @foreach($folderlist as $folder)
         <div class="row arial col_content">
             <div class="col-xs-1" style="text-align: center;">
-                <input type="checkbox" class="checkbox file-exchange folder-check" style="display: inline;  margin-left: 0" data-id="{{ $folder['id'] }}">
-                <img src='{{URL::asset('images/sidebar/admin-file-icon-hover.png')}}' style="width: 3em;">
+                <input type="checkbox" class="checkbox file-exchange folder-check" style="display: inline;" data-id="{{ $folder['id'] }}">
             </div>
             <div class="col-xs-7 no-padding">
-                <a href="file_exchange?id={{$folder['id']}}">{{ $folder['name'] }}</a>
+                <a href="file_exchange?id={{$folder['id']}}"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $folder['name'] }}</a>
             </div>
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
@@ -66,10 +65,9 @@
         @foreach($filelist as $file)
         <div class="row arial col_content">
             <div class="col-xs-1" style="text-align: center;">
-                <input type="checkbox" class="checkbox file-exchange file-check" style="display: inline; margin-left: 0" data-id="{{ $file['id'] }}">
-                <img src='{{URL::asset('images/sidebar/admin-file-icon.png')}}' style="width: 3em;">
+                <input type="checkbox" class="checkbox file-exchange file-check" style="display: inline;" data-id="{{ $file['id'] }}">
             </div>
-            <div class="col-xs-7 no-padding">{{ $file['name'] }}</div>
+            <div class="col-xs-7 no-padding"><img src="{{URL::asset('images/files-white.png')}}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $file['name'] }}</div>
             <div class="col-xs-2 no-padding">{{ $file['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $file['updated_at'] }}</div>
             <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" >{{ $file['description'] }}</div>
