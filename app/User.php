@@ -28,8 +28,8 @@ CanResetPasswordContract {
 	 * @var array
 	 */
 	protected $fillable = ['name', 'email', 'sesemail',
-		'password', 'firstname', 'lastname', 'npi', 'cellphone', 'state',
-		'address1', 'address2', 'city', 'zip'];
+						   'password', 'firstname', 'lastname', 'npi', 'cellphone', 'state',
+						   'address1', 'address2', 'city', 'zip'];
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
@@ -72,10 +72,13 @@ CanResetPasswordContract {
 		return $this->belongsTo(Usertype::class);
 	}
 
-	public static function practiceUser($filters) {
+	public static function providers($filters) {
 		return self::query()
 			->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
 			->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
+			->leftjoin('role_user', 'users.id', '=', 'role_user.user_id')
+			->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
+			->where('role_id', 6)
 			->where(function ($query) use ($filters) {
 				foreach ($filters as $filter) {
 					$query->where(function ($query) use ($filter) {
@@ -84,31 +87,34 @@ CanResetPasswordContract {
 								$query->where('practices.name', 'LIKE', '%' . $filter['value'] . '%');
 								break;
 							case 'location':
-								$query->where('city', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('state', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('address1', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('address2', 'LIKE', '%' . $filter['value'] . '%');
+								$query->where('practice_location.city', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('practice_location.state', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('locationname', 'LIKE', '%' . $filter['value'] . '%');
 								break;
 							case 'zip':
-								$query->where('zip', $filter['value']);
+								$query->where('practice_location.zip', $filter['value']);
 								break;
-							case 'doctor_name':
+							case 'provider_name':
 								$query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
-								->orwhere('users.name', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
+									->orwhere('users.name', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
 								break;
 							case 'all':
 								$query->where('practices.name', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('city', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('state', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('address1', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('address2', 'LIKE', '%' . $filter['value'] . '%')
-								->orwhere('zip', $filter['value'])
-								->orwhere('firstname', 'LIKE', '%' . $filter['value'] . '%')
-								->orwhere('users.name', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
+									->orWhere('practice_location.city', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('practice_location.state', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
+									->orwhere('practice_location.zip', $filter['value'])
+									->orwhere('firstname', 'LIKE', '%' . $filter['value'] . '%')
+									->orwhere('users.name', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
+									->orWhere('locationname', 'LIKE', '%' . $filter['value'] . '%')
+									->where('practice_location.zip', $filter['value']);
 								break;
 
 						}
