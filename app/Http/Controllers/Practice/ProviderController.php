@@ -7,6 +7,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Practice;
 use myocuhub\Services\FourPatientCare\FourPatientCare;
 use myocuhub\User;
+use myocuhub\Patient;
 
 class ProviderController extends Controller {
 	/**
@@ -110,7 +111,6 @@ class ProviderController extends Controller {
 	}
 
 	public function search(Request $request) {
-
 		$filters = json_decode($request->input('data'), true);
 		//search quar
 		$providers = User::providers($filters);
@@ -195,4 +195,27 @@ class ProviderController extends Controller {
 		}
 		return $dates;
 	}
+
+	public function getPreviousProviders(Request $request){
+		$patientID= $request->patient_id;
+		$providers = Patient::getPreviousProvidersList($patientID);
+		$data = [];
+		$i =0;
+		foreach($providers as $provider){
+			if (!$provider->provider_id || !$provider->practice_id)
+			{
+				continue;
+			}
+			$data[$i]['id'] = $provider->provider_id;
+			$data[$i]['name'] = $provider->title.' '.$provider->firstname.' '.$provider->lastname;
+			$data[$i]['practice_id'] = $provider->practice_id;
+			$data[$i]['practice_name'] = $provider->name;
+			$data[$i]['speciality'] = $provider->speciality;
+			$data[$i]['location_address'] = $provider->addressline1;
+			$i++;
+
+		}
+		return json_encode($data);
+	}
+
 }

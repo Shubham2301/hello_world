@@ -80,7 +80,7 @@ $(document).ready(function() {
             $('.search_filter').append(searchoption);
             $('#search_patient_input').val('');
             $('#search_patient_input').focus();
-
+			$('.search_filter').addClass('active');
         }
     });
     $('.search_filter').on('click', '.remove_option', function() {
