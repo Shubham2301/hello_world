@@ -360,7 +360,7 @@ function showPreviousProvider(providers) {
 		$('.previous_provider_patient_list').html(content);
     }
 	else{
-		$('.previous_provider_patient_list').html('NO previous provider found');
+		$('.previous_provider_patient_list').html('No previous providers found');
 	}
 
     $('.provider_previous').removeClass('glyphicon-chevron-right');
