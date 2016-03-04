@@ -70,6 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
 	Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
 	Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
+	Route::get('providers/previous', 'Practice\ProviderController@getPreviousProviders');
 
 	Route::resource('directmail', 'DirectMail\DirectMailController');
 	Route::resource('patients', 'Patient\PatientController');
