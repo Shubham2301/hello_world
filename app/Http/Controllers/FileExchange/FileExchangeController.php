@@ -13,8 +13,10 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Folder;
 use myocuhub\Models\FolderHistory;
+use myocuhub\Models\FolderShare;
 use myocuhub\Models\File;
 use myocuhub\Models\FileHistory;
+use myocuhub\Models\FileShare;
 use myocuhub\User;
 
 class FileExchangeController extends Controller {
@@ -198,5 +200,76 @@ class FileExchangeController extends Controller {
 		return response($downloadFile, 200)
 			->header('Content-Type', $file->mimetype)
 			->header("Content-Disposition", "attachment; filename=\"" . $file->title . '.' . $file->extension . "\"");
+	}
+
+	public function sharedWithMe(Request $request, $sortOnRecent='')
+	{
+		$userId = Auth::user()->id;
+
+		if($request->id && Folder::find($request->id)->sharedWithUser($userId)){
+			return $this->index($request);
+		}
+
+		$sharedfolders = FolderShare::getSharedFoldersForUser($userId);//, $request->id);
+
+		$folderlist = array();
+
+		$i = 0;
+
+		foreach ($sharedfolders as $sharedfolder) {
+			$folder = Folder::find($sharedfolder->folder_id);
+			if(!$folder->status){
+				continue;
+			}
+			$folderlist[$i]['id'] = $folder->id;
+			$folderlist[$i]['parent_id'] = $folder->parent_id;
+			$folderlist[$i]['name'] = $folder->name;
+			$folderlist[$i]['description'] = $folder->description;
+			$folderHistory = $folder->history()->orderBy('created_at', 'desc')->first();
+			$folderlist[$i]['modified_by'] = User::find($folderHistory->modified_by)->name;
+			$folderlist[$i]['updated_at'] = $folderHistory->updated_at;
+			$i++;
+		}
+
+		$folderlist = array_values(array_sort($folderlist, function($value) {
+					    return $value['name'];
+					}));
+
+		$sharedfiles = FileShare::getSharedFilesForUser($userId);//, $request->id);
+
+		$filelist = array();
+
+		$i = 0;
+
+		foreach ($sharedfiles as $sharedfile) {
+			$file = File::find($sharedfile->file_id);
+			if(!$file->status){
+				continue;
+			}
+			$filelist[$i]['id'] = $file->id;
+			$filelist[$i]['name'] = $file->title;
+			$filelist[$i]['description'] = $file->description;
+			$fileHistory = $file->history()->orderBy('created_at', 'desc')->first();
+			$filelist[$i]['modified_by'] = User::find($fileHistory->modified_by)->name;
+			$filelist[$i]['updated_at'] = $fileHistory->updated_at;
+			$i++;
+		}
+
+		if($sortOnRecent != ''){
+			$folderlist = array_values(array_sort($folderlist, function($value) {
+					    return $value['updated_at'];
+					}));
+
+			$filelist = array_values(array_sort($filelist, function($value) {
+					    return $value['updated_at'];
+					}));
+		}
+
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id]);		
+	}
+
+	public function recentShareChanges(Request $request)
+	{
+		return $this->sharedWithMe($request, 'true');
 	}
 }

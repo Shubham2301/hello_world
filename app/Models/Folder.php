@@ -7,7 +7,7 @@ use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 use myocuhub\Models\FolderHistory;
-use myocuhub\Model\FolderShare;
+use myocuhub\Models\FolderShare;
 
 class Folder extends Model
 {
@@ -17,7 +17,7 @@ class Folder extends Model
     	return $this->hasMany(FolderHistory::class);
     }
 
-    public function sharedwith()
+    public function shares()
     {
     	return $this->hasMany(FolderShare::class);
     }
@@ -35,5 +35,11 @@ class Folder extends Model
     		->where('owner_id', '=', Auth::user()->id)
     		->where('parent_id', '=', $parent_id)
     		->orderBy('name', 'asc')->get();
+    }
+
+    public function sharedWithUser($userId)
+    {   
+        return $this->shares()->where('user_id', '=', $userId)->count();
+        // return FolderShare::where('user_id', '=', $userId);        
     }
 }

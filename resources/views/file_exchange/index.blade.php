@@ -54,7 +54,7 @@
                 <img src='{{URL::asset('images/sidebar/admin-file-icon-hover.png')}}' style="width: 3em;">
             </div>
             <div class="col-xs-7 no-padding">
-                <a href="file_exchange?id={{$folder['id']}}">{{ $folder['name'] }}</a>
+                <a href="?id={{$folder['id']}}">{{ $folder['name'] }}</a>
             </div>
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
