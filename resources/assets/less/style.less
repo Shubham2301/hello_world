@@ -103,7 +103,6 @@ Section : Header
     margin: 0;
     min-height: 0;
 }
-
 .navbar-toggle {
     border: none;
     margin: 0;
@@ -208,7 +207,7 @@ p.error {
 .content-row-margin-scheduling {
     margin: 0;
 }
-.search_bar{
+.search_bar {
     height: 2.8em;
 }
 .search_input {
@@ -247,12 +246,12 @@ p.error {
         box-shadow: none;
         outline: none;
         cursor: pointer;
-            -moz-appearance: none;
-    -webkit-appearance: none;
-    background-image: url('../../images/dropdown-triangle.png');
-    background-repeat: no-repeat;
-    background-position: right center;
-    background-size: 1em 1em;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        background-image: url('../../images/dropdown-triangle.png');
+        background-repeat: no-repeat;
+        background-position: right center;
+        background-size: 1em 1em;
     }
 }
 .select_provider_button {
@@ -373,20 +372,24 @@ Section : Sidebar
     padding: 0;
     box-shadow: 0 1px 1px #898989;
     overflow-x: hidden;
-    .gradient(#f0f2f5, #e0e3e6);
+    .gradient(#f0f2f5,
+    #e0e3e6);
     &.active {
         background-color: #d2d3d5;
-        .gradient(#d2d3d5, #d2d3d5);
+        .gradient(#d2d3d5,
+        #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
     }
     &:hover {
         background-color: #f0f2f5;
-        .gradient(#f0f2f5, #f0f2f5);
+        .gradient(#f0f2f5,
+        #f0f2f5);
         box-shadow: 0 1px 1px #898989;
     }
     &:active {
         background-color: #d2d3d5;
-        .gradient(#d2d3d5, #d2d3d5);
+        .gradient(#d2d3d5,
+        #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
     }
     &>a {
@@ -406,6 +409,76 @@ Section : Sidebar
             margin: 5px 0 3px 0;
             color: #4d4d4d;
             font-size: 1em;
+        }
+    }
+}
+.main_sidebar_menu_item {
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    padding: 0;
+    box-shadow: 0 1px 1px #898989;
+    overflow-x: hidden;
+    color: #4d4d4d;
+    &:visited,
+    &:active,
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        color: #4d4d4d;
+    }
+    &>.sidebar_img {
+        display: flex;
+        flex-grow: 2;
+        flex-basis: 0;
+        flex-direction: row;
+        justify-content: center;
+        &>img {
+            margin: auto;
+            width: 80%;
+            height: 100%;
+        }
+    }
+    &>.sidebar_title {
+        display: flex;
+        flex-grow: 6;
+        flex-basis: 0;
+        flex-direction: row;
+        justify-content: center;
+        border-left: 1px solid #b3b3b3;
+        margin: .2em 0;
+        padding: 0 .2em 0 .4em;
+        &>.sidebar_title_text{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-right: auto;
+        }
+        &>.notification {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            color: #fff;
+            background-color: #00b6f1;
+            border-radius: 4.5em;
+            font-size: .7em;
+            padding: .2em 0.6em;
+            margin-bottom: auto;
+            visibility: hidden;
+            &.care_console_notification{
+                background-color: transparent;
+                margin: auto;
+                &>.sidebar_priority_image{
+                    width: 30%;
+                    height: 100%;
+                }
+            }
+            &.active{
+                visibility: visible;
+            }
+            &>.notification_text{
+                margin: auto;
+            }
         }
     }
 }
@@ -494,7 +567,8 @@ Section : Admin Sidebar
     padding: 0;
     box-shadow: 0 1px 1px #898989;
     overflow-x: hidden;
-    .gradient(#f0f2f5, #e0e3e6);
+    .gradient(#f0f2f5,
+    #e0e3e6);
     &>.sidebar_button_subsection {
         color: #000;
         text-decoration: none;
@@ -504,7 +578,8 @@ Section : Admin Sidebar
         cursor: pointer;
         &:hover {
             background-color: #f0f2f5;
-            .gradient(#f0f2f5, #f0f2f5);
+            .gradient(#f0f2f5,
+            #f0f2f5);
             box-shadow: 0 1px 1px #898989;
             .img_on_hover {
                 display: block;
@@ -515,7 +590,8 @@ Section : Admin Sidebar
         }
         &:active {
             background-color: #d2d3d5;
-            .gradient(#d2d3d5, #d2d3d5);
+            .gradient(#d2d3d5,
+            #d2d3d5);
             box-shadow: 0 1px 1px #d2d3d5;
         }
         &>span {
@@ -567,7 +643,8 @@ File Exchange Sidebar
     box-shadow: 0 1px 1px #898989;
     overflow-x: hidden;
     color: #4d4d4d;
-    .gradient(#f0f2f5, #e0e3e6);
+    .gradient(#f0f2f5,
+    #e0e3e6);
     &>.sidebar_img {
         display: flex;
         flex-grow: 1;
@@ -587,14 +664,16 @@ File Exchange Sidebar
     }
     &:hover {
         background-color: #f0f2f5;
-        .gradient(#f0f2f5, #f0f2f5);
+        .gradient(#f0f2f5,
+        #f0f2f5);
         box-shadow: 0 1px 1px #898989;
         color: #4d4d4d;
         text-decoration: none;
     }
     &:active {
         background-color: #d2d3d5;
-        .gradient(#d2d3d5, #d2d3d5);
+        .gradient(#d2d3d5,
+        #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
         color: #4d4d4d;
         text-decoration: none;

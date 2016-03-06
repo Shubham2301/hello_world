@@ -7,14 +7,27 @@
 </div>
 <ul class="sidebar_item_list arial">
     <?php $menus = \myocuhub\Models\Menu::renderForUser(Auth::user())?> @foreach($menus as $menu)
-    <li id="menu-{{ $menu->name }}" class="sidebar_menu_item {{ array_key_exists($menu->name, $data) ? 'active' : '' }}" onclick="location.href = '{{$menu->url}}'">
-        <a class="sidebar_item" href="{{ $menu->url }}">
-            <span class="menu_item_icon"><img src="{{URL::asset($menu->icon_path.'.png')}}" class="image"></span>
-            <span class="menu_item_label">{{ $menu->display_name }}</span>
-        </a>
-    </li>
-    @endforeach
+        <li id="menu-{{ $menu->name }}" class="sidebar_menu_item {{ array_key_exists($menu->name, $data) ? 'active' : '' }}" onclick="location.href = '{{$menu->url}}'">
+            <a class="main_sidebar_menu_item" href="{{ $menu->url }}">
+                <span class="sidebar_img"><img src="{{URL::asset($menu->icon_path.'.png')}}" class="image"></span>
+                <span class="sidebar_title">
+                    <span class="sidebar_title_text">
+                        {{ $menu->display_name }}
+                    </span>
+                    @if($menu->name == "care-console")
+                        <span class="notification arial_bold care_console_notification active" id="menu-notification-{{ $menu->name }}">
+                            <img src="{{URL::asset('images/priority-icon.png')}}" class="sidebar_priority_image">
+                        </span>
+                    @else
+                        <span class="notification arial_bold" id="menu-notification-{{ $menu->name }}">
+                            <span class="notification_text" data-toggle="tooltip" data-placement="bottom" title="You have unread notifications">
+                                0
+                            </span>
+                        </span>
+                    @endif
+                </span>
+            </a>
+        </li>
+        @endforeach
 </ul>
 @endif
-
-{{-- TODO : add active button for current menu item : {{ array_key_exists('directmail_active', $data) ? 'active' : '' }} --}}
