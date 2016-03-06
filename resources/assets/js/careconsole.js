@@ -428,6 +428,7 @@ function action() {
 		$('#action_notes').html('');
 		$('#action_notes').val('');
 		$('#action_result_id').val(0);
+		$('#recall_date').val('');
 	},
 		   error: function error() {
 		$('p.alert_message').text('Error:');
