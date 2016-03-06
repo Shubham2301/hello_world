@@ -27,7 +27,7 @@ class FileExchangeController extends Controller {
 	 */
 	public function index(Request $request) {
 
-		$folders = Folder::getActiveFolders($request->id);
+		$folders = Folder::getFolders($request->id);
 
 		$folderlist = array();
 
@@ -44,7 +44,7 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		$files = File::getActiveFiles($request->id);
+		$files = File::getFiles($request->id);
 
 		$filelist = array();
 
@@ -190,7 +190,9 @@ class FileExchangeController extends Controller {
 		$id = $request->id;
 
 		if($id == '' ){
-			return "Invalid File ID";
+			return redirect()
+        	->back()
+        	->withErrors("Invalid Request!"); 
 		}
 
 		$file = File::find($id);
@@ -271,5 +273,61 @@ class FileExchangeController extends Controller {
 	public function recentShareChanges(Request $request)
 	{
 		return $this->sharedWithMe($request, 'true');
+	}
+
+	public function deleteFile(Request $request)
+	{
+		if(!$request->id) {
+			return redirect()
+        	->back()
+        	->withSuccess("Invalid Request!"); 
+		}
+
+		$file = File::find($request->id);
+
+		$file->status = 0;
+		$file->save();
+
+		return redirect()
+        	->back()
+        	->withSuccess("Successfully Deleted!"); 
+	}
+
+	public function showtrash(Request $request)
+	{
+		$folders = Folder::getFolders($request->id, 0);
+
+		$folderlist = array();
+
+		$i = 0;
+
+		foreach ($folders as $folder) {
+			$folderlist[$i]['id'] = $folder->id;
+			$folderlist[$i]['parent_id'] = $folder->parent_id;
+			$folderlist[$i]['name'] = $folder->name;
+			$folderlist[$i]['description'] = $folder->description;
+			$folderHistory = $folder->history()->orderBy('created_at', 'desc')->first();
+			$folderlist[$i]['modified_by'] = User::find($folderHistory->modified_by)->name;
+			$folderlist[$i]['updated_at'] = $folderHistory->updated_at;
+			$i++;
+		}
+
+		$files = File::getFiles($request->id, 0);
+
+		$filelist = array();
+
+		$i = 0;
+
+		foreach ($files as $file) {
+			$filelist[$i]['id'] = $file->id;
+			$filelist[$i]['name'] = $file->title;
+			$filelist[$i]['description'] = $file->description;
+			$fileHistory = $file->history()->orderBy('created_at', 'desc')->first();
+			$filelist[$i]['modified_by'] = User::find($fileHistory->modified_by)->name;
+			$filelist[$i]['updated_at'] = $fileHistory->updated_at;
+			$i++;
+		}
+
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id]);
 	}
 }
