@@ -152,6 +152,11 @@ $(document).ready(function() {
 				showDate = true;
 				showActionModel(data);
 				break;
+			case 'annual-exam':
+//				$('#form_recall_date').show();
+//				showDate = true;
+				showActionModel(data);
+				break;
 
 			default:
 				showActionModel(data);

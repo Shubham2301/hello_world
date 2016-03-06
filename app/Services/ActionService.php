@@ -136,6 +136,14 @@ class ActionService {
 				$console->save();
 				break;
 			case 'annual-exam':
+				$console = Careconsole::find($consoleID);
+				$date = new DateTime();
+				$date->add(new \DateInterval('P1Y'));
+				$console->recall_date = $date->format('Y-m-d H:m:s');
+				$date = new DateTime();
+				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
+				$console->save();
+				break;
 			case 'refer-to-specialist':
 			case 'highrisk-contact-pcp':
 			default:
