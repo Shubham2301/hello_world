@@ -20,6 +20,7 @@ Route::get('/', function () {
 });
 
 Route::resource('roletest', 'TestroleController');
+Route::get('testmail', 'TestMailController@testMail');
 
 Route::get('/start', 'TestroleController@start');
 
@@ -61,12 +62,15 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('careconsole/drilldown', 'CareConsole\CareConsoleController@getDrilldownData');
 		Route::get('careconsole/action', 'CareConsole\CareConsoleController@action');
 		Route::get('careconsole/searchpatient', 'CareConsole\CareConsoleController@searchPatients');
+		Route::get('careconsole/bucketpatients', 'CareConsole\CareConsoleController@getBucketPatients');
+		Route::get('/careconsole/patient/records', 'CareConsole\CareConsoleController@getPatientRecords');
 		Route::resource('careconsole', 'CareConsole\CareConsoleController');
 	});
 
 	Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
 	Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
 	Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
+	Route::get('providers/previous', 'Practice\ProviderController@getPreviousProviders');
 
 	Route::resource('directmail', 'DirectMail\DirectMailController');
 	Route::resource('patients', 'Patient\PatientController');
@@ -104,14 +108,28 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('techsupport', 'SupportController@techSupportIndex');
 
 	Route::resource('administration/users', 'Admin\UserController');
+	Route::get('administration/users/edit/{id}', 'Admin\UserController@edit');
+	Route::post('administration/users/update/{id}', 'Admin\UserController@update');
+	Route::get('users/search', 'Admin\UserController@search');
+
 	Route::resource('administration/roles', 'Admin\RoleController');
 	Route::resource('administration/networks', 'Admin\NetworkController');
 	Route::resource('administration/permissions', 'Admin\PermissionController');
 	Route::get('administration/practices', 'Practice\PracticeController@administration');
 	Route::get('administration/practices/create', 'Practice\PracticeController@create');
-	Route::get('administration/practices/edit/{id}', 'Practice\PracticeController@edit');
+	Route::get('administration/practices/edit/{id}/{location}', 'Practice\PracticeController@edit');
+	Route::get('administration/practices/removelocation', 'Practice\PracticeController@removelocation');
 	Route::post('administration/network/add', 'Admin\NetworkController@add');
 	Route::get('administration/providers', 'Practice\ProviderController@administration');
+
+	Route::get('/announcements/list', 'AnnouncementController@index');
+	Route::get('/announcements/store', 'AnnouncementController@store');
+	Route::get('/announcements/create', 'AnnouncementController@create');
+	Route::get('/announcements/show', 'AnnouncementController@show');
+	Route::get('/announcements/archive', 'AnnouncementController@destroy');
+	Route::get('/announcements/update', 'AnnouncementController@update');
+	Route::get('/announcements/announcementbyuserlist', 'AnnouncementController@get_announcement_by_user');
+
 	Route::get('/administration/patients/create', 'Patient\PatientController@createByAdmin');
 	Route::get('administration/patients', 'Patient\PatientController@administration');
 	Route::post('administration/patients/add', 'Patient\PatientController@store');

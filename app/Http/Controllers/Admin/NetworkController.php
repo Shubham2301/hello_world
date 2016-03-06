@@ -29,8 +29,7 @@ class NetworkController extends Controller {
 	 */
 	public function create() {
         $data = [];
-        $data = Network::find(1)->toArray();
-        $data = array_fill_keys(array_keys($data),null);
+		$data = Network::getColumnNames();
         $data['id']= -1;
         $data['url']='/administration/network/add';
         return view('admin.networks.create')->with('data', $data);

@@ -13,7 +13,7 @@
                         <a href="/file_exchange"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="drop_image"></a>
                     </li>
                     <li>
-                        <a href="#" id="open_announcement"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a>
+                        <a href="#" id="menu-announcements"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a>
                     </li>
                     <li>
                         <a href="/home"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a>
@@ -116,7 +116,7 @@
                                             <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-user-icon-hover.png')}}" style="width:100%"></span>
                                             <span class="add_text">add+</span>
                                         </a>
-                                        <a class="sidebar_button_subsection subsection_admin_title" href="/administration/users">
+										<a class="sidebar_button_subsection subsection_admin_title" href="/administration/users" id="{{ array_key_exists('user_active', $data) ? 'button_active' : '' }}">
                                             <span>Users</span>
                                         </a>
                                     </li>

@@ -23,6 +23,12 @@ class BulkImportController extends Controller {
 		$network = User::getNetwork($userID);
 		$data['id'] = $network->network_id;
 		$data['name'] = $network->name;
+		$super_admin =User::find($userID)->hasRole('administrator');
+		$data['super_admin'] = $super_admin;
+		if($super_admin)
+			$data['networks'] = Network::all();
+
+
 		return view('layouts.import')->with('network', $data);
 	}
 
@@ -42,9 +48,9 @@ class BulkImportController extends Controller {
 	}
 
 	public function importPatientsXlsx(Request $request) {
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$networkID = $network->network_id;
+//		$userID = Auth::user()->id;
+//		$network = User::getNetwork($userID);
+		$networkID = $request->network_id;
 
 		if ($request->hasFile('patient_xlsx')) {
 			$i = 0;
@@ -120,6 +126,9 @@ class BulkImportController extends Controller {
 								$careconsole->import_id = $importHistory->id;
 								$careconsole->patient_id = $patient->id;
 								$careconsole->stage_id = 1;
+								$careconsole->stage_id = $data['priority'];
+								$date = new \DateTime();
+								$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
 								$careconsole->save();
 								$i++;
 							}

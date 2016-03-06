@@ -103,6 +103,13 @@ a:focus {
     background-color: #abe1f9;
     border-color: #abe1f9;
 }
+.logout_btn {
+    background-color: #9d9fa2;
+    padding: .5em .7em;
+    color: #fff;
+    border-radius: 0.35em;
+    cursor: pointer;
+}
 ::-webkit-scrollbar {
     width: .5em;
     height: .5em;
@@ -141,6 +148,7 @@ a:focus {
 }
 .modal-dialog.center {
     .modal-dialog.alert;
+    width: 80%;
 }
 .modal.fade .modal-dialog {
     -webkit-transform: translate(0, -100%);
@@ -171,4 +179,39 @@ a:focus {
             }
         }
     }
+}
+select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background-image: url('../../images/dropdown-img.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 2em 2em;
+}
+select::-ms-expand {
+    display: none;
+}
+
+/*
+-----------------------
+Accordian
+-----------------------
+*/
+
+.panel-title {
+    color: #fff;
+    &>a {
+        font-size: 1.3em;
+        text-decoration: none;
+        &:hover,
+        &:active {
+            text-decoration: none;
+        }
+    }
+}
+.panel-heading {
+    padding: 0;
+}
+.panel-group {
+    margin: 2em;
 }

@@ -54,6 +54,7 @@ class AppointmentController extends Controller {
 		$data['patient_id'] = $patient_id;
 		$patient = Patient::find($patient_id);
 		$data['patient_name'] = $patient->firstname . ' ' . $patient->lastname;
+        $data['schedule-patient'] = true;
 
 		return view('appointment.index')->with('data', $data);
 	}
@@ -181,7 +182,7 @@ class AppointmentController extends Controller {
 		$date = new DateTime($appointmentTime);
 		$appointment->start_datetime = $date->format('Y-m-d H:m:s');
 		$appointment->save();
-		dd($appointment);
+
 		$careconsole = Careconsole::where('patient_id', $patientID)
 			->orderBy('created_at', 'desc')
 			->first();
@@ -189,8 +190,9 @@ class AppointmentController extends Controller {
 		if ($careconsole != NULL) {
 			$careconsole->appointment_id = $appointment->id;
 			$careconsole->stage_id = 2;
+			$date = new DateTime();
+			$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
 			$careconsole->update();
-			echo $careconsole;
 		}
 
 		$apptResult = $this->fourPatientCare->requestApptInsert($apptInfo);

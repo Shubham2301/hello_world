@@ -7,10 +7,21 @@ $(document).ready(function () {
         $('.item_info').removeClass('active');
     });
     $('.files').on('change', '.checkbox', function () {
-        if ($('.file_exchange_navbar_content_right').hasClass('active'))
+        if($('.checkbox:checkbox:checked').length === 0){
             $('.file_exchange_navbar_content_right').removeClass('active');
-        else
+        }
+        else if($('.checkbox:checkbox:checked').length !== 0 && !$('.file_exchange_navbar_content_right').hasClass('active')){
             $('.file_exchange_navbar_content_right').addClass('active');
+        }
+        if ($('.checkbox:checkbox:checked').length > 1) {
+            $('.download-button').hide();
+        }   
+        else{
+            $('.download-button').show();
+        }
+    });
+    $('.share-button').on('click', function(){
+        $('#shareModal').modal('show'); 
     });
     $('.files').on('click', '.description_text', function () {
         $(this).css('height', 'auto');

@@ -8,7 +8,7 @@
                 <ul class="dropdown-menu sidebar" >
                     <li class="hello"><a href="/directmail"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="drop_image"></a></li>
                     <li><a href="file_exchange"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="drop_image"></a></li>
-                    <li><a href="#" id="open_announcement"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a></li>
+                    <li><a href="#" id="menu-announcements"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a></li>
                     <li><a href="/home"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a></li>
                     <li><a href="#"><img src="{{URL::asset('images/sidebar/records.png')}}" class="drop_image"></a></li>
                     <li><a href="/careconsole"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="drop_image"></a></li>
@@ -23,10 +23,9 @@
     </div>
     <ul class="c3_sidebar_list sidebar_item_list">
         @foreach($overview['stages'] as $stage)
-        <li class="sidebar_menu_item">
+        <li class="sidebar_menu_item" data-id="{{ $stage['id'] }}">
             <div class="stage box" id="sidebar_{{ $stage['name'] }}" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}"><span style="background-color:{{ $stage['color_indicator'] }}"><p class="stage-notation">{{ $stage['abbr'] }}</p></span><p>{{ $stage['display_name'] }}</p></div>
-            <!--
-            <ul>
+            <!-- <ul>
                 <div class="info_box">
                     <div class="top">
                         @if(isset($stage['kpis']))
@@ -45,8 +44,7 @@
                         @endif
                     </div>
                 </div>
-            </ul>
-            -->
+            </ul> -->
         </li>
         @endforeach
         <!--
@@ -55,5 +53,19 @@
         </li>
         -->
     </ul>
+    <div class="C3_day_row console_bucket_row">
+        <div class="console_buckets"  data-name="recall" style="color:black">
+            <img src="{{URL::asset('images/recall-icon.png')}}" alt="">
+            <p>Recall</p>
+        </div>
+        <div class=" console_buckets" data-name="archived" style="color:black">
+            <img src="{{URL::asset('images/archive-icon.png')}}" alt="">
+            <p>Archive</p>
+        </div>
+        <div class=" console_buckets"  data-name="priority" style="color:black">
+            <img src="{{URL::asset('images/priority-icon.png')}}" alt="">
+            <p>Priority</p>
+        </div>
+    </div>
     <div class="control_section"></div>
 </div>
