@@ -35,7 +35,6 @@
                             <option value="">Select Language*</option>
                             <option value="english">English</option>
                             <option value="french">French</option>
-                            <option value="hindi">Hindi</option>
                         </select>
                     </div>
                 </div>
