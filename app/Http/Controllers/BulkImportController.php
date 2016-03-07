@@ -133,7 +133,6 @@ class BulkImportController extends Controller {
 								$careconsole->import_id = $importHistory->id;
 								$careconsole->patient_id = $patient->id;
 								$careconsole->stage_id = 1;
-								$careconsole->stage_id = $data['priority'];
 								$date = new \DateTime();
 								$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
 								$careconsole->save();
@@ -149,7 +148,7 @@ class BulkImportController extends Controller {
 			$filename = basename(__FILE__);
 			$ip = $request->getClientIp();
 			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-			return "You have imported " . $i . " patients\n Patients added- ".$new_patients."\n Patient already exit- ".$old_patients;
+			return "You have imported " . $i . " patients </br> Patients added- ".$new_patients."</br> Patient already exist- ".$old_patients;
 		}
 		return "try again";
 	}
