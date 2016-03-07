@@ -6,6 +6,18 @@ $(document).ready(function () {
     $('#close_item_info').on('click', function () {
         $('.item_info').removeClass('active');
     });
+    $('#add_document').on('change',function () {
+        var path = $('#add_document').val();
+        $('#new_filename').html('');
+        if (path) {
+            var startIndex = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/'));
+            var filename = path.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = filename.substring(1);
+            }
+            $('#new_filename').html(filename);
+        }
+    });
     $('.share-button').on('click', function () {
         var files = [];
         var folders = [];
