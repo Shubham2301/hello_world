@@ -28,7 +28,7 @@ class PracticeController extends Controller {
 		$id = -1;
 		$data = array();
 		$data['practice_active'] = true;
-		$data['id']= $id;
+		$data['id'] = $id;
 		$data['location_index'] = -1;
 		return view('practice.create')->with('data', $data);
 	}
@@ -121,7 +121,7 @@ class PracticeController extends Controller {
 		$practice->name = $practicename;
 		$practice->email = $practiceemail;
 		$practice->save();
-		$practicelocation = PracticeLocation::where('practice_id',$practiceid)->delete();
+		$practicelocation = PracticeLocation::where('practice_id', $practiceid)->delete();
 		foreach ($locations as $location) {
 			$practicelocation = new PracticeLocation;
 			$practicelocation->locationname = $location['locationname'];
@@ -190,9 +190,22 @@ class PracticeController extends Controller {
 		return view('practice.admin')->with('data', $data);
 	}
 
-	public function removelocation(Request $request){
-		$data= PracticeLocation::find($request->location_id)->delete();
+	public function removelocation(Request $request) {
+		$data = PracticeLocation::find($request->location_id)->delete();
 
 		return json_encode($data);
+	}
+	public function practiceUsers(Request $request) {
+		$practiceId = $request->id;
+		$practiceUsers = User::practiceUserById($practiceId);
+		$i = 0;
+
+		foreach ($practiceUsers as $user) {
+			$users[$i]['id'] = $user->user_id;
+			$users[$i]['name'] = $user->lastname . ', ' . $user->firstname;
+			$i++;
+		}
+
+		return json_encode($users);
 	}
 }

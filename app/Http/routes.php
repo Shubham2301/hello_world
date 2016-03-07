@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('practices/store', 'Practice\PracticeController@store');
 	Route::get('practices/update', 'Practice\PracticeController@update');
 	Route::get('practices/remove', 'Practice\PracticeController@destroy');
+	Route::get('practices/users', 'Practice\PracticeController@practiceUsers');
 
 	Route::group(['middleware' => 'role:care-console'], function () {
 		Route::get('careconsole/overview', 'CareConsole\CareConsoleController@getOverviewData');
@@ -84,6 +85,14 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::resource('bulkimport', 'BulkImportController');
 	});
 	Route::resource('file_exchange', 'FileExchange\FileExchangeController');
+	Route::post('createFolder', 'FileExchange\FileExchangeController@createFolder');
+	Route::post('uploadDocument', 'FileExchange\FileExchangeController@uploadDocument');
+	Route::get('downloadFile', 'FileExchange\FileExchangeController@downloadFile');
+	Route::get('sharedWithMe', 'FileExchange\FileExchangeController@sharedWithMe');
+	Route::get('recentShareChanges', 'FileExchange\FileExchangeController@recentShareChanges');
+	Route::get('deleteFile', 'FileExchange\FileExchangeController@deleteFile');
+	Route::get('trash', 'FileExchange\FileExchangeController@showtrash');
+	Route::post('shareFilesFolders', 'FileExchange\FileExchangeController@shareFilesFolders');
 
 	//Ccda routes
 	Route::post('/import/ccda', 'CcdaController@saveCcda');

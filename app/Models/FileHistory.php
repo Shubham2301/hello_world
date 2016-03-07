@@ -4,6 +4,7 @@ namespace myocuhub\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PracticeNetwork extends Model {
-	protected $table = 'practice_network';
+class FileHistory extends Model
+{
+    protected $table = 'file_history';
 }

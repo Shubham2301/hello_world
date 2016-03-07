@@ -10,6 +10,14 @@ class Network extends Model {
 	/**
 	 * @return mixed
 	 */
+	public function practices() {
+		// TODO : optimize
+		return $this->hasMany('myocuhub\Models\PracticeNetwork')
+		            ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id');
+	}
+	/**
+	 * @return mixed
+	 */
 	public function referralTypes() {
 		// TODO : optimize
 		return $this->hasMany('myocuhub\NetworkReferraltype')
@@ -31,9 +39,9 @@ class Network extends Model {
 		            ->leftJoin('careconsole_stages', 'network_stage.stage_id', '=', 'careconsole_stages.id')->orderBy('stage_order');
 	}
 
-	public static function getColumnNames(){
-		$network  = \Schema::getColumnListing('networks');
-		$dummy_array =  array_fill_keys(array_keys($network), null);
+	public static function getColumnNames() {
+		$network = \Schema::getColumnListing('networks');
+		$dummy_array = array_fill_keys(array_keys($network), null);
 		return array_combine($network, $dummy_array);
 	}
 }
