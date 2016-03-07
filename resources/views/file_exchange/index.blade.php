@@ -108,6 +108,6 @@
     </div>
 </div>
 @include('file_exchange.addFolder')
-@include('file_exchange.addfile')
+@include('file_exchange.addFile')
 @include('file_exchange.share')
 @endsection
