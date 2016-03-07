@@ -64,7 +64,7 @@ class FileExchangeController extends Controller {
 		$networkPractices = Network::find($networkID)->practices;
 
 		$i = 0;
-
+		$practices = [];
 		foreach ($networkPractices as $practice) {
 			$practices[$i]['id'] = $practice->id;
 			$practices[$i]['name'] = $practice->name;
