@@ -51,6 +51,8 @@ class BulkImportController extends Controller {
 //		$userID = Auth::user()->id;
 //		$network = User::getNetwork($userID);
 		$networkID = $request->network_id;
+		$new_patients = 0;
+		$old_patients = 0;
 
 		if ($request->hasFile('patient_xlsx')) {
 			$i = 0;
@@ -121,12 +123,16 @@ class BulkImportController extends Controller {
 								$patients['birthdate'] = $data['birthdate'];
 								$patients['gender'] = $data['gender'];
 								//$patients['insurancecarrier'] = $data['insurance_type'];
+								$previous_id = Patient::orderBy('id', 'decs')->first()->id;
 								$patient = Patient::firstOrCreate($patients);
+								if($patient->id > $previous_id)
+									$new_patients = $new_patients+1;
+								else
+									$old_patients = $old_patients+1;
 								$careconsole = new Careconsole;
 								$careconsole->import_id = $importHistory->id;
 								$careconsole->patient_id = $patient->id;
 								$careconsole->stage_id = 1;
-								$careconsole->stage_id = $data['priority'];
 								$date = new \DateTime();
 								$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
 								$careconsole->save();
@@ -142,7 +148,7 @@ class BulkImportController extends Controller {
 			$filename = basename(__FILE__);
 			$ip = $request->getClientIp();
 			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-			return "You have imported " . $i . " patients";
+			return "You have imported " . $i . " patients </br> Patients added- ".$new_patients."</br> Patient already exist- ".$old_patients;
 		}
 		return "try again";
 	}
