@@ -453,6 +453,8 @@ Section : Sidebar
             flex-direction: column;
             justify-content: center;
             margin-right: auto;
+			flex-basis: 0;
+			flex-grow: 10;
         }
         &>.notification {
             display: flex;
@@ -468,8 +470,10 @@ Section : Sidebar
             &.care_console_notification{
                 background-color: transparent;
                 margin: auto;
+				flex-basis: 0;
+				flex-grow: 2;
                 &>.sidebar_priority_image{
-                    width: 30%;
+                    width: 100%;
                     height: 100%;
                 }
             }
