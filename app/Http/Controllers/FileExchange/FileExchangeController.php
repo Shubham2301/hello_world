@@ -71,7 +71,9 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices]);
+		$breadcrumbs = $this->getBreadcrumbs($request);
+
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs]);
 	}
 
 	public function folderDetails($folder_id = 0) {
@@ -285,7 +287,9 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices]);
+		$breadcrumbs = $this->getBreadcrumbs($request);
+
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs]);
 	}
 
 	public function recentShareChanges(Request $request) {
@@ -356,7 +360,9 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices]);
+		$breadcrumbs = $this->getBreadcrumbs($request);
+
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs]);
 	}
 	public function shareFilesFolders(Request $request) {
 
@@ -391,5 +397,27 @@ class FileExchangeController extends Controller {
 			->back()
 			->withSuccess("Successfully Shared!");
 
+	}
+
+	public function getBreadcrumbs(Request $request) {
+
+		if ($request->id === null || $request->id === '') {
+			$request->session()->forget('breadcrumb');
+		} else {
+			$folderName = Folder::find($request->id)->name;
+			$current = ['id' => $request->id, 'name' => $folderName];
+			$breadcrumbs = $request->session()->get('breadcrumb', []);
+			if (in_array($current, $breadcrumbs)) {
+				do {
+					$top = array_pop($breadcrumbs);
+				} while (!($top == $current));
+				$request->session()->forget('breadcrumb');
+				$request->session()->put('breadcrumb', $breadcrumbs);
+			}
+			$request->session()->push('breadcrumb', $current);
+		}
+
+		$breadcrumbs = $request->session()->get('breadcrumb', []);
+		return $breadcrumbs;
 	}
 }

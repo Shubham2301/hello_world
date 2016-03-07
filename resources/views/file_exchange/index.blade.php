@@ -2,40 +2,41 @@
 <link rel="stylesheet" type="text/css" href="{{elixir('css/file_exchange.css')}}">
 <script type="text/javascript" src="{{elixir('js/file_exchange.js')}}"></script>
 @endsection
-
 @section('sidebar')
-    @include('file_exchange.sidebar')
+@include('file_exchange.sidebar')
 @endsection
-
 @section('content')
-
 @if (Session::has('success'))
 <div class="alert alert-success">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <strong>
-            <i class="fa fa-check-circle fa-lg fa-fw"></i> Success. &nbsp;
-        </strong> {{ Session::pull('success') }}
+    <i class="fa fa-check-circle fa-lg fa-fw"></i> Success. &nbsp;
+    </strong> {{ Session::pull('success') }}
 </div>
-
 @endif
-
 <div class="content-section active">
     <div class="row">
         <div class="col-xs-offset-1">
             <div class="file_exchange_navbar">
                 <span class="file_exchange_navbar_content_left">
-            <button id="" type="button" class="btn add-btn" data-toggle="modal" data-target="#newfolderModal">Add Folder</button>&nbsp;
-            <button id="" type="button" class="btn add-doc-btn file_input" data-toggle="modal" data-target="#newfileModal">Add Document</button>
-        </span>
+                    <button id="" type="button" class="btn add-btn" data-toggle="modal" data-target="#newfolderModal">Add Folder</button>&nbsp;
+                    <button id="" type="button" class="btn add-doc-btn file_input" data-toggle="modal" data-target="#newfileModal">Add Document</button>
+                </span>
                 <span class="file_exchange_navbar_content_right">
-            <span class="file_exchange_button share-button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{URL::asset('images/sidebar/share-icon.png')}}" style="width:30px;"></span>
-                <span class="file_exchange_button trash-button" data-toggle="tooltip" title="Trash" data-placement="bottom"><img src="{{URL::asset('images/sidebar/trash-icon.png')}}" style="width:30px;"></span>
-                <span class="file_exchange_button download-button" data-toggle="tooltip" title="Download" data-placement="bottom"><img src="{{URL::asset('images/sidebar/download-icon.png')}}" style="width:30px;"></span>
-                <span class="file_exchange_button info-button" data-toggle="tooltip" title="Details" data-placement="bottom" id="details"><img src="{{URL::asset('images/sidebar/details-icon.png')}}" style="width:30px;"></span>
+                    <span class="file_exchange_button share-button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{URL::asset('images/sidebar/share-icon.png')}}" style="width:30px;"></span>
+                    <span class="file_exchange_button trash-button" data-toggle="tooltip" title="Trash" data-placement="bottom"><img src="{{URL::asset('images/sidebar/trash-icon.png')}}" style="width:30px;"></span>
+                    <span class="file_exchange_button download-button" data-toggle="tooltip" title="Download" data-placement="bottom"><img src="{{URL::asset('images/sidebar/download-icon.png')}}" style="width:30px;"></span>
+                    <span class="file_exchange_button info-button" data-toggle="tooltip" title="Details" data-placement="bottom" id="details"><img src="{{URL::asset('images/sidebar/details-icon.png')}}" style="width:30px;"></span>
                 </span>
             </div>
             <div class="folder_path active">
-                Folder 2 > Subfolder 1
+                <!-- Folder 2 > Subfolder 1 -->
+                @for($i = 0; $i< sizeof($breadcrumbs); $i++)
+                @if($i !== 0)
+                <span>&nbsp;>&nbsp;</span>
+                @endif
+                <a href="/file_exchange?id={{ $breadcrumbs[$i]['id'] }}"> {{ $breadcrumbs[$i]['name'] }}</a>
+                @endfor
             </div>
         </div>
     </div>
@@ -61,7 +62,6 @@
         </div>
         <hr>
         @endforeach
-
         @foreach($filelist as $file)
         <div class="row arial col_content">
             <div class="col-xs-1" style="text-align: center;">
@@ -78,7 +78,7 @@
     <div class="item_info">
         <span class="title arial_bold">
             <span>Folder 1</span>
-        <span class="glyphicon glyphicon-remove" id="close_item_info"></span>
+            <span class="glyphicon glyphicon-remove" id="close_item_info"></span>
         </span>
         <br>
         <span class="modifications arial_bold">
@@ -87,15 +87,15 @@
         <br>
         <span class="modification_history">
             <span>Me</span>
-        <span>16-Feb-2016</span>
+            <span>16-Feb-2016</span>
         </span>
         <span class="modification_history">
             <span>Eric Hoell</span>
-        <span>10-Feb-2016</span>
+            <span>10-Feb-2016</span>
         </span>
         <span class="modification_history">
             <span>John Doe</span>
-        <span>26-Jan-2016</span>
+            <span>26-Jan-2016</span>
         </span>
         <br>
         <span class="modifications arial_bold">
@@ -103,12 +103,11 @@
         </span>
         <br>
         <span class="description arial_italic">
-        Description is a really important part of this segment, more important than the file name maybe. One line of the description will be shown on opening the portalbut by clicking on that, the complete description will be available.
+            Description is a really important part of this segment, more important than the file name maybe. One line of the description will be shown on opening the portalbut by clicking on that, the complete description will be available.
         </span>
     </div>
 </div>
 @include('file_exchange.addFolder')
 @include('file_exchange.addfile')
 @include('file_exchange.share')
-
 @endsection
