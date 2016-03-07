@@ -11,6 +11,9 @@ use myocuhub\Models\Careconsole;
 use myocuhub\Models\ImportHistory;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
+use myocuhub\Models\PracticeUser;
+use myocuhub\Models\NetworkUser;
+use myocuhub\Models\PracticeNetwork;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\User;
@@ -72,14 +75,30 @@ class BulkImportController extends Controller {
 								$users['cellphone'] = $data['phone_number'];
 								$users['cellphone'] = $data['cell_number'];
 								//npi cannot be null
-								$users['npi'] = '1234'; 	//$data['npi'];
+								$users['npi'] = '1234';
+								if($data['npi'])
+									$users['npi'] = $data['npi'];
 								$users['state'] = $data['state'];
 								$users['address1'] = $data['address_1'];
 								$users['address2'] = $data['address_2'];
 								$users['city'] = $data['city'];
 								$users['zip'] = $data['zip_code'];
 								$user = User::firstOrCreate($users);
+
 								//map user with organization
+								if($data['practice_name'])
+								{
+									$practice_id = Practice::where('name', 'LIKE','%'.$data['practice_name'].'%' )->first()->id;
+									if($practice_id ){
+										$userdata = [];
+										$userdata['practice_id'] = $practice_id;
+										$userdata['user_id'] = $user->id;
+										$practice_user = PracticeUser::firstOrCreate($userdata);
+										unset($userdata['practice_id']);
+										$userdata['network_id'] = $networkID;
+										$network_user = NetworkUser::firstOrCreate($userdata);
+									}
+								}
 							}
 						}
 						break;
@@ -100,6 +119,11 @@ class BulkImportController extends Controller {
 								$locations['state'] = $data['state'];
 								$locations['zip'] = $data['zip'];
 								$location = PracticeLocation::firstOrCreate($locations);
+
+								$practicedata = [];
+								$practicedata['network_id'] = $networkID;
+								$practicedata['practice_id'] = $practice->id;
+								$practice_network = PracticeNetwork::firstOrCreate($practicedata);
 							}
 
 						}
