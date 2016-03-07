@@ -183,6 +183,11 @@ $(document).ready(function() {
 				showDate = true;
 				showActionModel(data);
 				break;
+			case 'annual-exam':
+				$('#form_recall_date').show();
+				showDate = true;
+				showActionModel(data);
+				break;
 			default:
 				showActionModel(data);
 		}
@@ -203,6 +208,11 @@ $(document).ready(function() {
 				window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
 				break;
 			case 'recall-later':
+				$('#form_recall_date').show();
+				showDate = true;
+				showActionModel(data);
+				break;
+			case 'annual-exam':
 				$('#form_recall_date').show();
 				showDate = true;
 				showActionModel(data);
