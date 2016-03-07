@@ -2,6 +2,8 @@ $(document).ready(function () {
 
     $('[data-toggle="tooltip"]').tooltip();
 
+    countUnreadAnnouncements();
+
     $('#menu-announcements').on('click', function () {
         $('.announcement_box').addClass('visible');
         $('#show_announcements').addClass('active');
@@ -133,6 +135,37 @@ $(document).ready(function () {
     });
 });
 
+function countUnreadAnnouncements() {
+
+    var count = 0;
+    $.ajax({
+        url: '/announcements/list',
+        type: 'GET',
+        data: '',
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            var announcements = $.parseJSON(e);
+            if (announcements.length != 0) {
+                announcements.forEach(function (announcement) {
+                    if (announcement.read == 0) {
+                        count++;
+                    }
+                });
+                $('#menu-notification-announcements>.notification_text').html(count);
+                $('#menu-notification-announcements').addClass('active');
+            }
+            if(count == 0) {
+                $('#menu-notification-announcements').removeClass('active');
+            }
+        },
+        error: function () {},
+        cache: false,
+        processData: false
+    });
+
+}
+
 function resetDefaults() {
     $('.delete').removeClass('active');
     $('.mark_as_read').removeClass('active');
@@ -200,7 +233,7 @@ function showAnnouncements() {
                         content += '<span class="item_left"></span>';
                     }
                     content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span>';
-                    if(announcement.message == announcement.excerpt)
+                    if (announcement.message == announcement.excerpt)
                         content += '<span class="item_right excerpt">' + announcement.excerpt + '</span>';
                     else
                         content += '<span class="item_right excerpt">' + announcement.excerpt + '......</span>';
@@ -244,7 +277,6 @@ function getAnnouncementDetail(id) {
                 content += '<span class="title">From: ' + announcement.from + '</span>';
             content += '<span class="date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section"><span class="item_left"></span><span class="title arial_bold item_right"><span class="" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right">' + announcement.message + '</span></span></span>';
             $('.announcement_content').html(content);
-
         },
         error: function () {
             $('p.alert_message').text('Error');
@@ -253,6 +285,7 @@ function getAnnouncementDetail(id) {
         cache: false,
         processData: false
     });
+    countUnreadAnnouncements();
 }
 
 function makeAnnouncement() {
@@ -326,6 +359,7 @@ function archiveAnnouncement(id) {
         cache: false,
         processData: false
     });
+    countUnreadAnnouncements();
 
 }
 
@@ -352,6 +386,7 @@ function markAnnouncement(id) {
         cache: false,
         processData: false
     });
+    countUnreadAnnouncements();
 }
 
 function previewAnnouncement() {
@@ -394,7 +429,7 @@ function announcementByUserList() {
                     content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section"><span class="from">To: ' + announcement.from + '</span><span class=" from date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section">';
                     content += '<span class="item_left"></span>';
                     content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span>';
-                    if(announcement.message == announcement.excerpt)
+                    if (announcement.message == announcement.excerpt)
                         content += '<span class="item_right excerpt">' + announcement.excerpt + '</span>';
                     else
                         content += '<span class="item_right excerpt">' + announcement.excerpt + '.....</span>';

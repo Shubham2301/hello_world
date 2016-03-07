@@ -58,6 +58,7 @@ function scheduleAppointment() {
             }
             $('.appointment_confirm').hide();
             $('.appointment_confirmed').show();
+            $('#back').addClass('hide');
 
         },
         error: function () {},
