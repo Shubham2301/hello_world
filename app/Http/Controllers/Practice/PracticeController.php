@@ -201,7 +201,7 @@ class PracticeController extends Controller {
 		$i = 0;
 
 		foreach ($practiceUsers as $user) {
-			$users[$i]['id'] = $user->id;
+			$users[$i]['id'] = $user->user_id;
 			$users[$i]['name'] = $user->lastname . ', ' . $user->firstname;
 			$i++;
 		}

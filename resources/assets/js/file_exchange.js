@@ -6,6 +6,18 @@ $(document).ready(function () {
     $('#close_item_info').on('click', function () {
         $('.item_info').removeClass('active');
     });
+    $('.share-button').on('click', function () {
+        var files = [];
+        var folders = [];
+        $.each($('.folder-check.checkbox:checkbox:checked'), function (index, val) {
+           folders.push($(this).attr('data-id'));
+        });
+        $.each($('.file-check.checkbox:checkbox:checked'), function (index, val) {
+           files.push($(this).attr('data-id'));
+        });
+        $('#share_files').val(files);
+        $('#share_folders').val(folders);
+    });
     $('#share_practices').on('change', function () {
         practiceUsers($(this).val());
     });

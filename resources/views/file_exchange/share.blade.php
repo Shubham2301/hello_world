@@ -1,6 +1,6 @@
 <div class="modal fade" id="shareModal" role="dialog">
     <div class="modal-dialog form_model center">
-        {!! Form::open(array('url' => 'shareDocument', 'method' => 'POST', 'id'=>'share_document')) !!}
+        {!! Form::open(array('url' => 'shareFilesFolders', 'method' => 'POST', 'id'=>'share_files_folders')) !!}
         <div class="modal-content">
                 {!! csrf_field() !!}
                 <span class="modal_title arial_bold">Share</span>
@@ -38,6 +38,8 @@
                     <button type="button" class="btn dismiss-button" data-dismiss="modal">Cancel</button>
                 </span>
                 <input type="hidden" name="parent_id" value="{{ $parent_id }}">
+                <input type="hidden" name="share_folders" id="share_folders" value="">
+                <input type="hidden" name="share_files" id="share_files" value="">
         </div>
         {!! Form::close()!!}
     </div>

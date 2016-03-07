@@ -213,6 +213,8 @@ class FileExchangeController extends Controller {
 
 	public function sharedWithMe(Request $request, $sortOnRecent = '') {
 		$userId = Auth::user()->id;
+		$network = User::getNetwork($userId);
+		$networkID = $network->network_id;
 
 		if ($request->id && Folder::find($request->id)->sharedWithUser($userId)) {
 			return $this->index($request);
@@ -273,7 +275,17 @@ class FileExchangeController extends Controller {
 			}));
 		}
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id]);
+		$networkPractices = Network::find($networkID)->practices;
+
+		$i = 0;
+
+		foreach ($networkPractices as $practice) {
+			$practices[$i]['id'] = $practice->id;
+			$practices[$i]['name'] = $practice->name;
+			$i++;
+		}
+
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices]);
 	}
 
 	public function recentShareChanges(Request $request) {
@@ -299,6 +311,9 @@ class FileExchangeController extends Controller {
 
 	public function showtrash(Request $request) {
 		$folders = Folder::getFolders($request->id, 0);
+		$userId = Auth::user()->id;
+		$network = User::getNetwork($userId);
+		$networkID = $network->network_id;
 
 		$folderlist = array();
 
@@ -331,6 +346,50 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id]);
+		$networkPractices = Network::find($networkID)->practices;
+
+		$i = 0;
+
+		foreach ($networkPractices as $practice) {
+			$practices[$i]['id'] = $practice->id;
+			$practices[$i]['name'] = $practice->name;
+			$i++;
+		}
+
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices]);
+	}
+	public function shareFilesFolders(Request $request) {
+
+		$editable = ($request->share_writable === 'on') ? 1 : 0;
+		$folders = explode(',', $request->share_folders);
+		$files = explode(',', $request->share_files);
+		$userId = $request->share_users;
+
+		foreach ($folders as $folder) {
+			$folderShare = new FolderShare;
+
+			$folderShare->folder_id = $folder;
+			$folderShare->user_id = $userId;
+			$folderShare->editable = $editable;
+
+			$folderShare->save();
+			echo $folderShare;
+		}
+
+		foreach ($files as $file) {
+			$fileShare = new FileShare;
+
+			$fileShare->file_id = $file;
+			$fileShare->user_id = $userId;
+			$fileShare->editable = $editable;
+
+			$fileShare->save();
+			echo $fileShare;
+		}
+
+		return redirect()
+			->back()
+			->withSuccess("Successfully Shared!");
+
 	}
 }
