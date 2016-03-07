@@ -9,6 +9,9 @@
                     <span class="right">
                         <select name="share_practices" class="form-control" id="share_practices">
                             <option value="0">Select Practice</option>
+                            @foreach($practices as $practice)
+                            <option value="{{ $practice['id'] }}">{{ $practice['name'] }}</option>
+                            @endforeach
                         </select>
                     </span>
                 </span>

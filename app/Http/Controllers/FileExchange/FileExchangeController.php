@@ -3,21 +3,18 @@
 namespace myocuhub\Http\Controllers\FileExchange;
 
 use Auth;
-use Event;
-use Storage;
-
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
-use myocuhub\Models\Folder;
-use myocuhub\Models\FolderHistory;
-use myocuhub\Models\FolderShare;
 use myocuhub\Models\File;
 use myocuhub\Models\FileHistory;
 use myocuhub\Models\FileShare;
+use myocuhub\Models\Folder;
+use myocuhub\Models\FolderHistory;
+use myocuhub\Models\FolderShare;
+use myocuhub\Network;
 use myocuhub\User;
+use Storage;
 
 class FileExchangeController extends Controller {
 	/**
@@ -26,6 +23,10 @@ class FileExchangeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request) {
+
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
 
 		$folders = Folder::getFolders($request->id);
 
@@ -60,13 +61,22 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id]);
+		$networkPractices = Network::find($networkID)->practices;
+
+		$i = 0;
+
+		foreach ($networkPractices as $practice) {
+			$practices[$i]['id'] = $practice->id;
+			$practices[$i]['name'] = $practice->name;
+			$i++;
+		}
+
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices]);
 	}
 
-	public function folderDetails($folder_id=0)
-	{
-		if(!$folder_id){
-			return 'Please provide folder id';	
+	public function folderDetails($folder_id = 0) {
+		if (!$folder_id) {
+			return 'Please provide folder id';
 		}
 
 		$folder = Folder::find($folder_id);
@@ -87,14 +97,13 @@ class FileExchangeController extends Controller {
 		}
 
 		return $details;
-	}	
+	}
 
-	public function createFolder(Request $request)
-	{
+	public function createFolder(Request $request) {
 		$parent_id = $request->parent_id;
 
 		$parent_treepath = '';
-		
+
 		$folder = new Folder();
 		$folder->name = $request->foldername;
 		$folder->description = $request->folderdescription;
@@ -103,11 +112,11 @@ class FileExchangeController extends Controller {
 
 		$parent_treepath = '/';
 
-		if($parent_id !="" ){
+		if ($parent_id != "") {
 			$parentFolder = Folder::find($parent_id);
 			$parent_treepath = $parentFolder->treepath;
 			$folder->parent_id = $parent_id;
-		}	
+		}
 
 		$folder->save();
 
@@ -127,19 +136,18 @@ class FileExchangeController extends Controller {
 
 		// return redirect('file_exchange');
 		return redirect()
-        	->back()
-        	->withSuccess("Folder '$request->foldername' created.");
-        
+			->back()
+			->withSuccess("Folder '$request->foldername' created.");
+
 	}
 
-	public function uploadDocument(Request $request)
-	{
+	public function uploadDocument(Request $request) {
 		$parent_id = $request->parent_id;
 
 		$parent_treepath = '/';
-		
+
 		$file = new File();
-		
+
 		$file->title = $request->filename;
 		$file->description = $request->filedescription;
 		$file->creator_id = Auth::user()->id;
@@ -149,14 +157,14 @@ class FileExchangeController extends Controller {
 		$file->mimetype = $request->file('add_document')->getClientMimeType();
 		$file->filesize = $request->file('add_document')->getClientSize();
 		// TOOD - Genearte a unique name for the file.
-		$fileName = rand(11111,99999);//.'.'.$extension; 
+		$fileName = rand(11111, 99999); //.'.'.$extension;
 		$file->name = $fileName;
 
-		if($parent_id != null ){
+		if ($parent_id != null) {
 			$parentFolder = Folder::find($parent_id);
 			$parent_treepath = $parentFolder->treepath;
 			$file->folder_id = $parent_id;
-		}	
+		}
 
 		$file->save();
 
@@ -173,46 +181,44 @@ class FileExchangeController extends Controller {
 		$fileHistory->save();
 
 		Storage::put(
-            $parent_treepath . '/'. $fileName . '.' . $file->extension,
-            file_get_contents($request->file('add_document')->getRealPath())
-        );
+			$parent_treepath . '/' . $fileName . '.' . $file->extension,
+			file_get_contents($request->file('add_document')->getRealPath())
+		);
 
 		// return redirect('file_exchange');
 
 		return redirect()
-        	->back()
-        	->withSuccess("Document '$request->filename' created.");
+			->back()
+			->withSuccess("Document '$request->filename' created.");
 
-	}   
+	}
 
-	public function downloadFile(Request $request)
-	{
+	public function downloadFile(Request $request) {
 		$id = $request->id;
 
-		if($id == '' ){
+		if ($id == '') {
 			return redirect()
-        	->back()
-        	->withErrors("Invalid Request!"); 
+				->back()
+				->withErrors("Invalid Request!");
 		}
 
 		$file = File::find($id);
 
-		$downloadFile = Storage::get($file->treepath .''. $file->name . '.' . $file->extension);
+		$downloadFile = Storage::get($file->treepath . '' . $file->name . '.' . $file->extension);
 
 		return response($downloadFile, 200)
 			->header('Content-Type', $file->mimetype)
 			->header("Content-Disposition", "attachment; filename=\"" . $file->title . '.' . $file->extension . "\"");
 	}
 
-	public function sharedWithMe(Request $request, $sortOnRecent='')
-	{
+	public function sharedWithMe(Request $request, $sortOnRecent = '') {
 		$userId = Auth::user()->id;
 
-		if($request->id && Folder::find($request->id)->sharedWithUser($userId)){
+		if ($request->id && Folder::find($request->id)->sharedWithUser($userId)) {
 			return $this->index($request);
 		}
 
-		$sharedfolders = FolderShare::getSharedFoldersForUser($userId);//, $request->id);
+		$sharedfolders = FolderShare::getSharedFoldersForUser($userId); //, $request->id);
 
 		$folderlist = array();
 
@@ -220,7 +226,7 @@ class FileExchangeController extends Controller {
 
 		foreach ($sharedfolders as $sharedfolder) {
 			$folder = Folder::find($sharedfolder->folder_id);
-			if(!$folder->status){
+			if (!$folder->status) {
 				continue;
 			}
 			$folderlist[$i]['id'] = $folder->id;
@@ -233,11 +239,11 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		$folderlist = array_values(array_sort($folderlist, function($value) {
-					    return $value['name'];
-					}));
+		$folderlist = array_values(array_sort($folderlist, function ($value) {
+			return $value['name'];
+		}));
 
-		$sharedfiles = FileShare::getSharedFilesForUser($userId);//, $request->id);
+		$sharedfiles = FileShare::getSharedFilesForUser($userId); //, $request->id);
 
 		$filelist = array();
 
@@ -245,7 +251,7 @@ class FileExchangeController extends Controller {
 
 		foreach ($sharedfiles as $sharedfile) {
 			$file = File::find($sharedfile->file_id);
-			if(!$file->status){
+			if (!$file->status) {
 				continue;
 			}
 			$filelist[$i]['id'] = $file->id;
@@ -257,30 +263,28 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		if($sortOnRecent != ''){
-			$folderlist = array_values(array_sort($folderlist, function($value) {
-					    return $value['updated_at'];
-					}));
+		if ($sortOnRecent != '') {
+			$folderlist = array_values(array_sort($folderlist, function ($value) {
+				return $value['updated_at'];
+			}));
 
-			$filelist = array_values(array_sort($filelist, function($value) {
-					    return $value['updated_at'];
-					}));
+			$filelist = array_values(array_sort($filelist, function ($value) {
+				return $value['updated_at'];
+			}));
 		}
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id]);		
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id]);
 	}
 
-	public function recentShareChanges(Request $request)
-	{
+	public function recentShareChanges(Request $request) {
 		return $this->sharedWithMe($request, 'true');
 	}
 
-	public function deleteFile(Request $request)
-	{
-		if(!$request->id) {
+	public function deleteFile(Request $request) {
+		if (!$request->id) {
 			return redirect()
-        	->back()
-        	->withSuccess("Invalid Request!"); 
+				->back()
+				->withSuccess("Invalid Request!");
 		}
 
 		$file = File::find($request->id);
@@ -289,12 +293,11 @@ class FileExchangeController extends Controller {
 		$file->save();
 
 		return redirect()
-        	->back()
-        	->withSuccess("Successfully Deleted!"); 
+			->back()
+			->withSuccess("Successfully Deleted!");
 	}
 
-	public function showtrash(Request $request)
-	{
+	public function showtrash(Request $request) {
 		$folders = Folder::getFolders($request->id, 0);
 
 		$folderlist = array();

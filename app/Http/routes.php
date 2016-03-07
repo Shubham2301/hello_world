@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('practices/store', 'Practice\PracticeController@store');
 	Route::get('practices/update', 'Practice\PracticeController@update');
 	Route::get('practices/remove', 'Practice\PracticeController@destroy');
+	Route::get('practices/users', 'Practice\PracticeController@practiceUsers');
 
 	Route::group(['middleware' => 'role:care-console'], function () {
 		Route::get('careconsole/overview', 'CareConsole\CareConsoleController@getOverviewData');
@@ -91,7 +92,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('recentShareChanges', 'FileExchange\FileExchangeController@recentShareChanges');
 	Route::get('deleteFile', 'FileExchange\FileExchangeController@deleteFile');
 	Route::get('trash', 'FileExchange\FileExchangeController@showtrash');
-
 
 	//Ccda routes
 	Route::post('/import/ccda', 'CcdaController@saveCcda');
