@@ -129,14 +129,19 @@ $(document).ready(function() {
 		showStageData(stage_id, stage_name);
 	});
 	$('#drilldown_patients_listing').on('click', '.careconsole_action', function() {
+		var data = [];
+		data['patient_id'] = $(this).parent().attr('data-patientid');
+		data['action_id'] = $(this).attr('data-id');
+		data['console_id'] = $(this).parent().attr('data-consoleid');
+		data['stage_id'] = $('#current_stage').val();
+		data['action_header'] = $(this).attr('data-displayname');
+
 		if ($('#current_stage').val() === '-1') {
 			return;
 		}
 		show_patient = true;
 		$('#form_recall_date').hide();
 		showDate = false;
-		if ($(this).attr('data-name') == 'recall-later')
-			showDate = true;
 
 		switch ($(this).attr('data-name')) {
 			case 'schedule':
@@ -144,71 +149,31 @@ $(document).ready(function() {
 				break;
 			case 'recall-later':
 				$('#form_recall_date').show();
-
+				showDate = true;
+				showActionModel(data);
+				break;
+			case 'annual-exam':
+				$('#form_recall_date').show();
+				showDate = true;
+				showActionModel(data);
+				break;
 
 			default:
-				$('#action_patient_id').val($(this).parent().attr('data-patientid'));
-				$('#action_id').val($(this).attr('data-id'));
-				$('#action_console_id').val($(this).parent().attr('data-consoleid'));
-				$('#action_stage_id').val($('#current_stage').val());
-				$('#action_header').html($(this).attr('data-displayname'));
-				if ($(this).attr('data-name') === 'move-to-console') {
-
-				}
-				var results = actionResults[$(this).attr('data-id')];
-				if (results.length > 0) {
-					var content = '<option value="0">Select Action Result</option>';
-					results.forEach(function(result) {
-						content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
-					});
-					$('#action_result_id').html(content);
-					$('#action_results').show();
-				} else if (results.length === 0) {
-					$('#action_result_id').html('<option value="-1">No Action Results</option>');
-					$('#action_results').hide();
-				}
-				$('#actionModal').modal('show');
+				showActionModel(data);
 		}
 	});
 	$('#records_action_dropdown').on('click', '.careconsole_action', function() {
+		var data = [];
+		data['patient_id'] = $(this).attr('data-patientid');
+		data['action_id'] = $(this).attr('data-id');
+		data['console_id'] = $(this).attr('data-consoleid');
+		data['stage_id'] = $(this).attr('data-stageid');
+		data['action_header'] = $(this).attr('data-displayname');
+
 		show_patient = true;
 		$('#form_recall_date').hide();
 		showDate = false;
-		if ($(this).attr('data-name') == 'recall-later')
-			showDate = true;
-		switch ($(this).attr('data-name')) {
-			case 'schedule':
-				window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
-				break;
-			case 'recall-later':
-				$('#form_recall_date').show();
-			default:
-				$('#action_patient_id').val($(this).attr('data-patientid'));
-				$('#action_id').val($(this).attr('data-id'));
-				$('#action_console_id').val($(this).attr('data-consoleid'));
-				$('#action_stage_id').val($(this).attr('data-stageid'));
-				$('#action_header').html($(this).attr('data-displayname'));
-				var results = actionResults[$(this).attr('data-id')];
-				if (results.length > 0) {
-					var content = '<option value="0">Select Action Result</option>';
-					results.forEach(function(result) {
-						content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
-					});
-					$('#action_result_id').html(content);
-					$('#action_results').show();
-				} else if (results.length === 0) {
-					$('#action_result_id').html('<option value="-1">No Action Results</option>');
-					$('#action_results').hide();
-				}
-				$('#actionModal').modal('show');
-		}
-	});
-	$('#search_action_dropdown').on('click', '.careconsole_action', function() {
-		$('#form_recall_date').hide();
-		showDate = false;
-		show_patient = false;
-		if ($(this).attr('data-name') == 'recall-later')
-			showDate = true;
+
 		switch ($(this).attr('data-name')) {
 			case 'schedule':
 				window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
@@ -216,27 +181,44 @@ $(document).ready(function() {
 			case 'recall-later':
 				$('#form_recall_date').show();
 				showDate = true;
+				showActionModel(data);
+				break;
+			case 'annual-exam':
+				$('#form_recall_date').show();
+				showDate = true;
+				showActionModel(data);
 				break;
 			default:
-				$('#action_patient_id').val($(this).attr('data-patientid'));
-				$('#action_id').val($(this).attr('data-id'));
-				$('#action_console_id').val($(this).attr('data-consoleid'));
-				$('#action_stage_id').val($(this).attr('data-stageid'));
-				$('#action_header').html($(this).attr('data-displayname'));
-				var results = actionResults[$(this).attr('data-id')];
-				if (results.length > 0) {
-					var content = '<option value="0">Select Action Result</option>';
-					results.forEach(function(result) {
-						content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
-					});
-					$('#action_result_id').html(content);
-					$('#action_results').show();
-				} else if (results.length === 0) {
-					$('#action_result_id').html('<option value="-1">No Action Results</option>');
-					$('#action_results').hide();
-				}
+				showActionModel(data);
+		}
+	});
+	$('#search_action_dropdown').on('click', '.careconsole_action', function() {
+		var data = [];
+		data['patient_id'] = $(this).attr('data-patientid');
+		data['action_id'] = $(this).attr('data-id');
+		data['console_id'] = $(this).attr('data-consoleid');
+		data['stage_id'] = $(this).attr('data-stageid');
+		data['action_header'] = $(this).attr('data-displayname');
 
-				$('#actionModal').modal('show');
+		$('#form_recall_date').hide();
+		showDate = false;
+		show_patient = false;
+		switch ($(this).attr('data-name')) {
+			case 'schedule':
+				window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
+				break;
+			case 'recall-later':
+				$('#form_recall_date').show();
+				showDate = true;
+				showActionModel(data);
+				break;
+			case 'annual-exam':
+				$('#form_recall_date').show();
+				showDate = true;
+				showActionModel(data);
+				break;
+			default:
+				showActionModel(data);
 		}
 	});
 	$('.search_result').on('click', '.search_result_row', function() {
@@ -461,6 +443,7 @@ function action() {
 		$('#action_notes').html('');
 		$('#action_notes').val('');
 		$('#action_result_id').val(0);
+		$('#recall_date').val('');
 	},
 		   error: function error() {
 		$('p.alert_message').text('Error:');
@@ -661,4 +644,26 @@ function setPandingDayslimit(kpi_name, stageID) {
 			}
 			break;
 	}
+}
+
+function showActionModel(data){
+
+	$('#action_patient_id').val(data['patient_id']);
+	$('#action_id').val(data['action_id']);
+	$('#action_console_id').val(data['console_id']);
+	$('#action_stage_id').val(data['stage_id']);
+	$('#action_header').html(data['action_header']);
+	var results = actionResults[data['action_id']];
+	if (results.length > 0) {
+		var content = '<option value="0">Select Action Result</option>';
+		results.forEach(function(result) {
+			content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
+		});
+		$('#action_result_id').html(content);
+		$('#action_results').show();
+	} else if (results.length === 0) {
+		$('#action_result_id').html('<option value="-1">No Action Results</option>');
+		$('#action_results').hide();
+	}
+	$('#actionModal').modal('show');
 }

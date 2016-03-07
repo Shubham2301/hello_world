@@ -146,7 +146,7 @@ function importPatients() {
         type: 'POST',
         success: function(dataofconfirm) {
             $('.import_form').removeClass('active');
-            $('.success_message').text(dataofconfirm);
+            $('.success_message').html(dataofconfirm);
             $('.success_message').addClass('active');
             $('.import_button').removeClass('active');
             $('.dismiss_button').text('Ok');

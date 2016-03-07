@@ -15,7 +15,10 @@ Section : Imports
         display: block;
     }
 }
-
+.import-btn{
+    margin-left: auto;
+    margin-right: 1em;
+}
 .patient_list_item {
     border-top: 1px solid;
     opacity: 0.9;
@@ -109,7 +112,7 @@ Section : Imports
 }
 
 .add-btn {
-    float: left;
+    margin: 0 1em;
 }
 
 .lastseenby_show {
@@ -263,9 +266,12 @@ p.patient_dropdown_data {
     font-size: .9em;
 }
 .search_input_box {
+    display: flex;
+    flex-direction: row;
     background-color: #ffffff;
     font-size: 1em;
-    &>input, &>input:focus {
+    &>input,
+    &>input:focus {
         width: 100%;
         border: none;
         padding: 6px 12px;
@@ -275,12 +281,23 @@ p.patient_dropdown_data {
     &>span {
         color: #0071bc;
         position: absolute;
-        right: 0;
-        margin-top: 9px;
-        padding-right: 11px;
     }
 }
-
+.glyp {
+    padding-top: 8px;
+    padding-right: 5px;
+    cursor: pointer;
+    margin: auto;
+    margin-top: 2em;
+    margin-left: -2em;
+}
+.page_title{
+    font-size: 1.3em;
+    padding-top: 2px;
+    color: #fff;
+    padding-left: 15px;
+    margin: 0 1em 0 0;
+}
 .btn {
     padding: 6px 22px;
 }
@@ -293,18 +310,11 @@ p.patient_dropdown_data {
     border-radius: 3px;
     font-size: 0.9em;
     height: 20px;
-    margin-top: 6px;
-    width: 37%;
+    margin: auto 1em;
     cursor: pointer;
     &.active {
         display: block;
     }
-}
-
-.glyp {
-    pding-top: 8px;
-    padding-right: 5px;
-    cursor: pointer;
 }
 
 .search_header {
@@ -410,7 +420,7 @@ p.patient_dropdown_data {
 .patient_admin_search {
     display: none;
     &.active{
-        display: block;
+        display: flex;
     }
 }
 
