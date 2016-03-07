@@ -137,8 +137,7 @@ class ActionService {
 				break;
 			case 'annual-exam':
 				$console = Careconsole::find($consoleID);
-				$date = new DateTime();
-				$date->add(new \DateInterval('P1Y'));
+				$date = new DateTime($recallDate);
 				$console->recall_date = $date->format('Y-m-d H:m:s');
 				$date = new DateTime();
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');

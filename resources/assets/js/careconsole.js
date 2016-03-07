@@ -153,8 +153,8 @@ $(document).ready(function() {
 				showActionModel(data);
 				break;
 			case 'annual-exam':
-//				$('#form_recall_date').show();
-//				showDate = true;
+				$('#form_recall_date').show();
+				showDate = true;
 				showActionModel(data);
 				break;
 
