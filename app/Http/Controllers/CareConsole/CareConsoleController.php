@@ -185,6 +185,13 @@ class CareConsoleController extends Controller {
 		foreach ($patients as $patient) {
 			$console = Careconsole::where('patient_id', $patient->id)->first();
 			if ($console) {
+				$results[$i]['archived_date'] = null;
+				$results[$i]['recall_date'] = null;
+				if($console->archived_date)
+					$results[$i]['archived_date'] =$console->archived_date;
+				if($console->recall_date)
+					$results[$i]['recall_date'] =$console->recall_date;
+
 				$patient['appointment_id'] = $console->appointment_id;
 				$results[$i]['id'] = $patient->id;
 				$results[$i]['console_id'] = $console->id;
@@ -192,6 +199,11 @@ class CareConsoleController extends Controller {
 				$results[$i]['name'] = $patient->lastname . ', ' . $patient->firstname;
 				$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
 				$results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
+				if($console->recall_date)
+				$results[$i]['actions'] = $this->CareConsoleService->getActions(8);
+				else if($console->archived_date)
+				$results[$i]['actions'] = $this->CareConsoleService->getActions(6);
+				else
 				$results[$i]['actions'] = $this->CareConsoleService->getActions($console->stage_id);
 				$results[$i]['scheduled_to'] = '-';
 				$results[$i]['appointment_date'] = '-';

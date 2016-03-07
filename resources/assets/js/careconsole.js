@@ -484,11 +484,35 @@ function refreshOverview() {
 
 function setSearchFields(index) {
 	var patient = patientdata[index];
-	$('.result_title.stage_name').html(patient.stage_name);
-	$('#status_color').css('background-color', patient.stage_color);
+//	$('.result_title.stage_name').html(patient.stage_name);
+//	$('#status_color').css('background-color', patient.stage_color);
+	if(patient.recall_date){
+		$('.result_title.stage_name').html('Recalled');
+		$('#status_color').css('background-color', patient.stage_color);
+		$('.result_title.searchfield_1').text('Recall date');
+		$('.result_text.searchfield_1').text(patient.recall_date);
+		$('.result_title.searchfield_2').parent().parent().hide();
+		if(patient.archived_date)
+		$('.result_title.searchfield_2').parent().parent().show();
+		$('.result_title.searchfield_2').text('Archived date');
+		$('.result_text.searchfield_2').text(patient.archived_date);
+		$('.result_title.searchfield_3').parent().parent().hide();
 
-	if(patient['stage_id'] == 1)
+	}
+	else if(patient.archived_date){
+		$('.result_title.stage_name').html('Archived');
+		$('#status_color').css('background-color', patient.stage_color);
+		$('.result_title.searchfield_1').text('Archived date');
+		$('.result_text.searchfield_1').text(patient.archived_date);
+		$('.result_title.searchfield_2').parent().parent().hide();
+		$('.result_title.searchfield_3').parent().parent().hide();
+	}
+
+	else if(patient['stage_id'] == 1)
 	{
+		$('.result_title.stage_name').html(patient.stage_name);
+		$('#status_color').css('background-color', patient.stage_color);
+		$('.result_title.searchfield_2').parent().parent().show();
 		$('.result_title.searchfield_1').text('Days Pending');
 		$('.result_text.searchfield_1').text(patient.days_pending);
 		$('.result_title.searchfield_2').text('Last Scheduled To');
@@ -498,8 +522,11 @@ function setSearchFields(index) {
 		$('.result_text.searchfield_3').text(patient.contact_attempts);
 	}
 	else{
+		$('.result_title.stage_name').html(patient.stage_name);
+		$('#status_color').css('background-color', patient.stage_color);
 		$('.result_title.searchfield_1').text('Scheduled To');
 		$('.result_text.searchfield_1').text(patient.scheduled_to);
+		$('.result_title.searchfield_2').parent().parent().show();
 		$('.result_title.searchfield_2').text('Appointment Date');
 		$('.result_text.searchfield_2').text(patient.appointment_date);
 		$('.result_title.searchfield_3').parent().parent().hide();
@@ -645,6 +672,31 @@ function setPandingDayslimit(kpi_name, stageID) {
 			break;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function showActionModel(data){
 
