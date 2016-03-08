@@ -18,7 +18,12 @@
             </a>
         </div>
         <div>
-            <p class="add_title">Add New Network</p>
+            <p class="add_title">
+            @if(isset($data['email']))
+                Edit Network
+            @else
+                Add New Network
+            @endif</p>
         </div>
         <input type="hidden" id="editmode" value="{{$data['id']}}">
     </div>

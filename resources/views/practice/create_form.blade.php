@@ -3,7 +3,13 @@
         <button type="button" id="back_to_select_practice_btn" class="btn back back_practice">Back</button>
     </div>
     <div>
-        <p class="add_title">Add New Practice</p>
+        <p class="add_title">
+            @if(isset($data['edit']))
+                Edit Practice
+            @else
+                Add New Practice
+            @endif
+        </p>
     </div>
 </div>
 <div class="panel-group" id="accordion">

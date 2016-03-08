@@ -101,6 +101,7 @@ class PracticeController extends Controller {
 		$data['practice_active'] = true;
 		$data['id'] = $id;
 		$data['location_index'] = $location;
+        $data['edit'] = true;
 		return view('practice.create')->with('data', $data);
 	}
 
