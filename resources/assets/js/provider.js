@@ -504,7 +504,7 @@ function getOpenSlots(week) {
     $('#form_appointment_type_id').val($('#appointment_type').attr('value'));
     $('.availability').addClass('active');
     var content = '';
-    content += '<span class="slot_header" style="margin:1em;"><span class="slot_header_text">Fetching slots!</span></span>';
+    content += '<span class="slot_header" style="margin:1em;"><span class="slot_header_text">Retrieving Available Appointments</span></span>';
     $('.availability').html(content);
     content = '';
     var weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
