@@ -7,6 +7,7 @@ use Event;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Models\NetworkUser;
 use myocuhub\Models\UserLevel;
 use myocuhub\Role;
 use myocuhub\Role_user;
@@ -34,7 +35,8 @@ class UserController extends Controller {
 	 */
 	public function create() {
 		$user = array();
-		$user = User::find(3)->toArray();
+		$userID = Auth::user()->id;
+		$user = User::find($userID)->toArray();
 		$user = array_fill_keys(array_keys($user), null);
 		$user['role_id'] = '';
 		$userTypes = $this->getUserTypes();
@@ -52,6 +54,10 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request) {
+
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
 
 		if ($request->input('password') == $request->input('password_confirmation')) {
 			$user = new User;
@@ -94,6 +100,11 @@ class UserController extends Controller {
 
 			if ($user) {
 				$request->session()->flash('success', 'User Created Successfully!');
+
+				$networkUser = new NetworkUser;
+				$networkUser->user_id = $user->id;
+				$networkUser->network_id = $networkID;
+				$networkUser->save();
 
 				$action = 'new user created';
 				$description = '';
@@ -260,6 +271,9 @@ class UserController extends Controller {
 	}
 
 	public function search(Request $request) {
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+
 		$tosearchdata = json_decode($request->input('data'), true);
 		$users = User::getUsersByName($tosearchdata['value'])->paginate(5);
 		//$users = User::where('name', 'like', '%' . $tosearchdata['value'] . '%')->paginate(6);
@@ -270,12 +284,12 @@ class UserController extends Controller {
 		$i = 0;
 		foreach ($users as $user) {
 			$data[$i]['id'] = $user->id;
-			$data[$i]['name'] = $user->name;
-			//$data[$i]['name'] = $user->lastname.', '.$user->firstname;
+			$data[$i]['name'] = $user->lastname . ', ' . $user->firstname;
 			$data[$i]['email'] = $user->email;
-			$data[$i]['practice'] = 'No Practice found ';
-			if ($user->getPractice()) {
-				$data[$i]['practice'] = $user->getPractice()->name;
+			$data[$i]['level'] = UserLevel::find($user->level)->name;
+			$data[$i]['practice'] = $network->name;
+			if ($practice = $user->practice) {
+				$data[$i]['practice'] = $practice->name;
 			}
 			$i++;
 		}
