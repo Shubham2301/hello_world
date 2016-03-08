@@ -45,6 +45,12 @@ class PatientController extends Controller {
 	public function create(Request $request) {
 
 		$data = array();
+        $gender = array();
+        $gender['Male'] = 'Male';
+        $gender['Female'] = 'Female';
+        $language = array();
+        $language['English'] = 'English';
+        $language['French'] = 'French';
 		$data = Patient::getColumnNames();
 		$data['admin'] = true;
 		$data['back_btn'] = 'back_to_select_patient_btn';
@@ -56,17 +62,24 @@ class PatientController extends Controller {
 		if ($request->has('action')) {
 			$data['action'] = $request->input('action');
 		}
-		return view('patient.admin')->with('data', $data);
+		return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
 	}
 
 	public function createByAdmin() {
-		$data = array();
+
+        $gender = array();
+        $gender['Male'] = 'Male';
+        $gender['Female'] = 'Female';
+        $language = array();
+        $language['English'] = 'English';
+        $language['French'] = 'French';
+        $data = array();
 		$data = Patient::getColumnNames();
 		$data['admin'] = true;
 		$data['back_btn'] = 'back_to_admin_patient_btn';
 		$data['url'] = '/administration/patients/add';
 		$data['referraltype_id'] = -1;
-		return view('patient.admin')->with('data', $data);
+		return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
 	}
 
 	/**
@@ -189,6 +202,12 @@ class PatientController extends Controller {
 	 */
 	public function edit($id) {
 
+        $gender = array();
+        $gender['Male'] = 'Male';
+        $gender['Female'] = 'Female';
+        $language = array();
+        $language['English'] = 'English';
+        $language['French'] = 'French';
 		$data = array();
 		$data = Patient::find($id);
 		if (!$data) {
@@ -200,7 +219,7 @@ class PatientController extends Controller {
 		$data['url'] = '/administration/patients/update/' . $id;
 		$data['referraltype_id'] = -1;
 
-		return view('patient.admin')->with('data', $data);
+		return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
 	}
 
 	/**
