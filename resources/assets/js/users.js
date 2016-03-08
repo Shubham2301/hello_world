@@ -1,6 +1,11 @@
 'use strict';
 $(document).ready(function() {
     loadAllUsers();
+
+    $('.profile_img_upload').on('change',function () {
+        
+    });
+
     $('#search_user_button').on('click', function() {
         var searchvalue = $('#search_user_input').val();
         $('.no_item_found > p:eq(1)').text(searchvalue);

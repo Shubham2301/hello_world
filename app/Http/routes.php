@@ -47,6 +47,8 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 Route::group(['middleware' => 'auth'], function () {
 
+	Route::get('editprofile', 'Admin\UserController@editProfile');
+	Route::post('updateprofile', 'Admin\UserController@updateProfile');
 	Route::get('home/removereferral', 'HomeController@removeReferral');
 	Route::get('home/addreferral', 'HomeController@addReferral');
 	Route::get('home/getreferrallist', 'HomeController@show');

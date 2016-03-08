@@ -3,11 +3,11 @@
     <h4>{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</h4>
 </div>
 <div class="sidebar_menu center">
-    <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'">
+    <a href="/editprofile"><img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'"></a>
 </div>
 <ul class="sidebar_item_list arial">
     <?php $menus = \myocuhub\Models\Menu::renderForUser(Auth::user())?> @foreach($menus as $menu)
-        <li id="menu-{{ $menu->name }}" class="sidebar_menu_item {{ array_key_exists($menu->name, $data) ? 'active' : '' }}" onclick="location.href = '{{$menu->url}}'">
+        <li id="menu-{{ $menu->name }}" class="sidebar_menu_item @if(isset($data)){{ array_key_exists($menu->name, $data) ? 'active' : '' }}@endif" onclick="location.href = '{{$menu->url}}'">
             <a class="main_sidebar_menu_item" href="{{ $menu->url }}">
                 <span class="sidebar_img"><img src="{{URL::asset($menu->icon_path.'.png')}}" class="image"></span>
                 <span class="sidebar_title">
