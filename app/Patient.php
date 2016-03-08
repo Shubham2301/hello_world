@@ -3,20 +3,27 @@
 namespace myocuhub;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use myocuhub\User;
 
 class Patient extends Model {
 
 	protected $fillable = ['title', 'firstname', 'lastname', 'workphone', 'homephone', 'cellphone', 'email', 'addressline1', 'addressline2', 'city',
-						   'zip', 'lastfourssn', 'birthdate', 'gender', 'insurancecarrier', 'country', 'preferredlanguage', 'state'];
+		'zip', 'lastfourssn', 'birthdate', 'gender', 'insurancecarrier', 'country', 'preferredlanguage', 'state'];
 	public static function getPatients($filters) {
+
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
+
 		return self::where(function ($query) use ($filters) {
 			foreach ($filters as $filter) {
 				$query->where(function ($query) use ($filter) {
 					switch ($filter['type']) {
 						case 'name':
 							$query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
+							->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+							->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
 							break;
 
 						case 'ssn':
@@ -30,28 +37,33 @@ class Patient extends Model {
 							break;
 						case 'address':
 							$query->where('city', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('country', 'LIKE', '%' . $filter['value'] . '%');
+							->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
+							->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
+							->orWhere('country', 'LIKE', '%' . $filter['value'] . '%');
 							break;
 
 						case 'all':
 							$query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('lastfourssn', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('city', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('country', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('cellphone', 'LIKE', '%' . $filter['value'] . '%')
-								->orWhere('email', 'LIKE', '%' . $filter['value'] . '%');
+							->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+							->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
+							->orWhere('lastfourssn', 'LIKE', '%' . $filter['value'] . '%')
+							->orWhere('city', 'LIKE', '%' . $filter['value'] . '%')
+							->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
+							->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
+							->orWhere('country', 'LIKE', '%' . $filter['value'] . '%')
+							->orWhere('cellphone', 'LIKE', '%' . $filter['value'] . '%')
+							->orWhere('email', 'LIKE', '%' . $filter['value'] . '%');
 
 							break;
 					}
 				});
 			}
-		});
+		})
+			->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
+			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
+			->where('import_history.network_id', $networkID)
+            ->orderBy('lastname', 'asc')
+			->paginate(5);
 
 	}
 
