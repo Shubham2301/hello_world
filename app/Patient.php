@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model {
 
 	protected $fillable = ['title', 'firstname', 'lastname', 'workphone', 'homephone', 'cellphone', 'email', 'addressline1', 'addressline2', 'city',
-		'zip', 'lastfourssn', 'birthdate', 'gender', 'insurancecarrier', 'country', 'preferredlanguage', 'state'];
+						   'zip', 'lastfourssn', 'birthdate', 'gender', 'insurancecarrier', 'country', 'preferredlanguage', 'state'];
 	public static function getPatients($filters) {
 		return self::where(function ($query) use ($filters) {
 			foreach ($filters as $filter) {
@@ -15,8 +15,8 @@ class Patient extends Model {
 					switch ($filter['type']) {
 						case 'name':
 							$query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
+								->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
 							break;
 
 						case 'ssn':
@@ -30,22 +30,22 @@ class Patient extends Model {
 							break;
 						case 'address':
 							$query->where('city', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('country', 'LIKE', '%' . $filter['value'] . '%');
+								->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('country', 'LIKE', '%' . $filter['value'] . '%');
 							break;
 
 						case 'all':
 							$query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('lastfourssn', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('city', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('country', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('cellphone', 'LIKE', '%' . $filter['value'] . '%')
-							->orWhere('email', 'LIKE', '%' . $filter['value'] . '%');
+								->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('lastfourssn', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('city', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('country', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('cellphone', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('email', 'LIKE', '%' . $filter['value'] . '%');
 
 							break;
 					}
@@ -55,11 +55,14 @@ class Patient extends Model {
 
 	}
 
-	public static function getPatientsByName($name) {
+	public static function getPatientsByName($name, $networkID) {
 		return self::where('firstname', 'LIKE', '%' . $name . '%')
 			->orWhere('middlename', 'LIKE', '%' . $name . '%')
 			->orWhere('lastname', 'LIKE', '%' . $name . '%')
-			->get();
+			->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
+			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
+			->where('import_history.network_id', $networkID)
+			->get(['*', 'patients.id']);
 	}
 	public static function getPreviousProvider($patientID) {
 		return self::where('patients.id', $patientID)

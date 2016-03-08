@@ -178,7 +178,8 @@ class CareConsoleController extends Controller {
 	 * @param Request $request
 	 */
 	public function searchPatients(Request $request) {
-		$patients = Patient::getPatientsByName($request->name);
+		$networkID = User::getNetwork(Auth::user()->id)->network_id;
+		$patients = Patient::getPatientsByName($request->name,$networkID);
 		$i = 0;
 		$results = [];
 
@@ -200,11 +201,11 @@ class CareConsoleController extends Controller {
 				$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
 				$results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
 				if($console->recall_date)
-				$results[$i]['actions'] = $this->CareConsoleService->getActions(8);
+					$results[$i]['actions'] = $this->CareConsoleService->getActions(8);
 				else if($console->archived_date)
-				$results[$i]['actions'] = $this->CareConsoleService->getActions(6);
+					$results[$i]['actions'] = $this->CareConsoleService->getActions(6);
 				else
-				$results[$i]['actions'] = $this->CareConsoleService->getActions($console->stage_id);
+					$results[$i]['actions'] = $this->CareConsoleService->getActions($console->stage_id);
 				$results[$i]['scheduled_to'] = '-';
 				$results[$i]['appointment_date'] = '-';
 				if ($patient['appointment_id']) {
