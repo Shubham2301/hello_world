@@ -26,7 +26,7 @@ class PatientController extends Controller {
 	public function index(Request $request) {
 		$data = array();
 		$data['admin'] = false;
-        $data['schedule-patient'] = true;
+		$data['schedule-patient'] = true;
 		if ($request->has('referraltype_id')) {
 			$data['referraltype_id'] = $request->input('referraltype_id');
 		}
@@ -240,7 +240,7 @@ class PatientController extends Controller {
 
 		$filters = json_decode($request->input('data'), true);
 
-		$patients = Patient::getPatients($filters)->orderBy('lastname', 'asc')->paginate(5);
+		$patients = Patient::getPatients($filters);
 		$data = [];
 		$i = 0;
 		foreach ($patients as $patient) {
