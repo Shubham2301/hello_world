@@ -37,7 +37,13 @@
             <a href="/administration/users">
                 <button class="btn back_btn">Back</button>
             </a>
-            <span class="add_title">Add User</span>
+            <span class="add_title">
+            @if(isset($user['email']))
+                Edit User
+            @else
+                Add New User
+            @endif
+            </span>
         </div>
         <div class="col-xs-12">
             <form method="POST" action="{{$data['url']}}">

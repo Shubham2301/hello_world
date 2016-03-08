@@ -1,19 +1,22 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $('#select_date').datetimepicker({
         defaultDate: false,
         format: 'MM/DD/YYYY',
         minDate: new Date(),
     });
-    $('#select_date').datetimepicker().on('dp.hide', function(ev) {
-        $('.availability').attr('data-value', 0);
-        $('#appointment_date').html('');
-        $('#appointment_time').html('');
-        $('.appointment_detail').addClass('hide');
-        $('.availability-text').removeClass('hide');
-        $('.schedule_button').removeClass('active');
-        $('.availability').html('');
-        getOpenSlots(0);
-        $('#availabilityModal').modal('show');
+    $('#select_date').datetimepicker().on('dp.hide', function (ev) {
+        var selected_date = $('#select_date').val();
+        if (selected_date) {
+            $('.availability').attr('data-value', 0);
+            $('#appointment_date').html('');
+            $('#appointment_time').html('');
+            $('.appointment_detail').addClass('hide');
+            $('.availability-text').removeClass('hide');
+            $('.schedule_button').removeClass('active');
+            $('.availability').html('');
+            getOpenSlots(0);
+            $('#availabilityModal').modal('show');
+        }
     });
     if (!$('#from_admin').val()) {
         var id = $('#form_patient_id').attr('value');
@@ -25,14 +28,14 @@ $(document).ready(function() {
     $('.carousel').carousel({
         interval: false
     });
-    $('.availability').on('click', '#next_week', function() {
+    $('.availability').on('click', '#next_week', function () {
         var week = $('.availability').attr('data-value');
         $('.schedule_button').removeClass('active');
         week++;
         $('.availability').attr('data-value', week);
         getOpenSlots(week);
     });
-    $('.availability').on('click', '#previous_week', function() {
+    $('.availability').on('click', '#previous_week', function () {
         var week = $('.availability').attr('data-value');
         $('.schedule_button').removeClass('active');
         week--;
@@ -40,7 +43,7 @@ $(document).ready(function() {
         getOpenSlots(week);
     });
 
-    $('.availability').on('click', 'li', function() {
+    $('.availability').on('click', 'li', function () {
         $('#appointment_date').text($(this).attr('data-date'));
         $('#appointment_time').text($(this).attr('data-time'));
         $('#form_appointment_time').val($(this).attr('data-time'));
@@ -55,7 +58,7 @@ $(document).ready(function() {
 
     $('.view_selected_patient').on('click', showPatientInfo);
 
-    $('#change_patient_button').on('click', function() {
+    $('#change_patient_button').on('click', function () {
         $('#form_select_provider').attr('action', "/patients");
         $('#form_provider_id').prop('disabled', true);
         $('#form_practice_id').prop('disabled', true);
@@ -66,7 +69,7 @@ $(document).ready(function() {
         $('#form_location').prop('disabled', true);
         $('#form_select_provider').submit();
     });
-    $('#search_practice_button').on('click', function() {
+    $('#search_practice_button').on('click', function () {
         $('.schedule_button').removeClass('active');
         $('.practice_list').removeClass('active');
         $('.schedule_button').attr('data-id', 0);
@@ -85,7 +88,7 @@ $(document).ready(function() {
             $('#search_practice_input').focus();
     });
 
-    $('.lastseenby_show').on('click', function() {
+    $('.lastseenby_show').on('click', function () {
         $('.lastseen_content').toggleClass('active');
         if ($('.lastseen_content').hasClass('active')) {
             $('.lastseenby_icon').removeClass('glyphicon-chevron-right');
@@ -96,7 +99,7 @@ $(document).ready(function() {
         }
     });
 
-    $('.referredby_show').on('click', function() {
+    $('.referredby_show').on('click', function () {
         $('.referredby_content').toggleClass('active');
         if ($('.referredby_content').hasClass('active')) {
             $('.referredby_icon').removeClass('glyphicon-chevron-right');
@@ -106,7 +109,7 @@ $(document).ready(function() {
             $('.referredby_icon').addClass('glyphicon-chevron-right');
         }
     });
-    $('.insurance_provider_show').on('click', function() {
+    $('.insurance_provider_show').on('click', function () {
         $('.insurance_provider_content').toggleClass('active');
         if ($('.insurance_provider_content').hasClass('active')) {
             $('.insurance_provider_icon').removeClass('glyphicon-chevron-right');
@@ -117,7 +120,7 @@ $(document).ready(function() {
         }
     });
 
-    $('.practice_list').on('click', '.practice_list_item', function() {
+    $('.practice_list').on('click', '.practice_list_item', function () {
         var provider_id = $(this).attr('data-id');
         var practice_id = $(this).attr('practice-id');
         var formData = {
@@ -127,7 +130,7 @@ $(document).ready(function() {
 
         getProviderInfo(formData);
     });
-    $('#change_practice_button').on('click', function() {
+    $('#change_practice_button').on('click', function () {
         $('.practice_list').addClass('active');
         $('.practice_info').removeClass('active');
         $('.schedule_button').removeClass('active');
@@ -139,7 +142,7 @@ $(document).ready(function() {
         clearHTML();
     });
 
-    $('#add_practice_search_option').on('click', function() {
+    $('#add_practice_search_option').on('click', function () {
         var stype = $('#search_practice_input_type').val();
         var type = $('#search_practice_input_type').find(":selected").text();
         var value = $('#search_practice_input').val();
@@ -153,16 +156,16 @@ $(document).ready(function() {
         }
     });
 
-    $('.search_filter').on('click', '.remove_option', function() {
+    $('.search_filter').on('click', '.remove_option', function () {
         $(this).parent().remove();
         $("#search_practice_button").trigger("click");
 
     });
-    $('.schedule_button').on('click', function() {
+    $('.schedule_button').on('click', function () {
         scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
     });
 
-    $('.locations').on('click', 'ul.dropdown-menu>li', function() {
+    $('.locations').on('click', 'ul.dropdown-menu>li', function () {
         var location_address = $(this).attr('data-address_1') + ' ' + $(this).attr('data-address_2');
         var location_contact = $(this).attr('data-contact');
         $('#location_address').html('');
@@ -185,7 +188,7 @@ $(document).ready(function() {
         getAppointmentTypes();
     });
 
-    $('.appointment_type_list').on('click', 'ul.appointment_dropdown>li', function() {
+    $('.appointment_type_list').on('click', 'ul.appointment_dropdown>li', function () {
         var appointment_type = $(this).attr('data-name');
         $('#appointment_type').html('');
         $('#appointment_date').html('');
@@ -202,7 +205,7 @@ $(document).ready(function() {
         $('.get_availability').removeClass('hide');
     });
 
-    $('.provider_near_patient').on('click', function() {
+    $('.provider_near_patient').on('click', function () {
         $('.provider_near_patient_list').toggleClass("active");
         if ($('.provider_near_patient_list').hasClass("active"))
             showProviderNear();
@@ -212,7 +215,7 @@ $(document).ready(function() {
         }
     });
 
-    $('.previous_provider_patient').on('click', function() {
+    $('.previous_provider_patient').on('click', function () {
         $('.previous_provider_patient_list').toggleClass("active");
         if ($('.previous_provider_patient_list').hasClass("active")) {
             var id = $('#form_patient_id').attr('value');
@@ -226,19 +229,19 @@ $(document).ready(function() {
         }
     });
 
-	$('.previous_provider_patient_list').on('click', '.previous_provider_item',function(){
-		var provider_id = $(this).attr('data-id');
-		var practice_id = $(this).attr('data-practiceid');
-		var formData = {
-			'provider_id': provider_id,
-			'practice_id': practice_id
-		};
+    $('.previous_provider_patient_list').on('click', '.previous_provider_item', function () {
+        var provider_id = $(this).attr('data-id');
+        var practice_id = $(this).attr('data-practiceid');
+        var formData = {
+            'provider_id': provider_id,
+            'practice_id': practice_id
+        };
 
-		getProviderInfo(formData);
+        getProviderInfo(formData);
 
-	});
+    });
 
-    $(document).keypress(function(e) {
+    $(document).keypress(function (e) {
         if (e.which == 13) {
             $("#search_practice_button").trigger("click");
         }
@@ -302,11 +305,11 @@ function getPatientInfo(formData) {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var info = $.parseJSON(e);
             fillPatientInfo(info);
         },
-        error: function() {
+        error: function () {
             $('p.alert_message').text('Error getting patient information');
             $('#alert').modal('show');
         },
@@ -354,14 +357,13 @@ function showPreviousProvider(providers) {
 
     var content = '';
     if (providers.length > 0) {
-        providers.forEach(function(provider) {
+        providers.forEach(function (provider) {
             content += '<div class="col-xs-12 list_seperator previous_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '"><div class="row"><div class="col-xs-12 arial_bold">' + provider.practice_name + '</div><div class="col-xs-6 arial">' + provider.name + '<br>' + provider.speciality + '</div><div class="col-xs-6 arial">' + provider.location_address + '</div></div></div>';
         });
-		$('.previous_provider_patient_list').html(content);
+        $('.previous_provider_patient_list').html(content);
+    } else {
+        $('.previous_provider_patient_list').html('No previous providers found');
     }
-	else{
-		$('.previous_provider_patient_list').html('No previous providers found');
-	}
 
     $('.provider_previous').removeClass('glyphicon-chevron-right');
     $('.provider_previous').addClass('glyphicon-chevron-down');
@@ -389,7 +391,7 @@ function showProviderInfo(data) {
     var content = '';
     content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Location <b class="caret"></b></span></a><ul class="dropdown-menu location_dropdown" id="custom_dropdown">';
     if (locations.length > 0) {
-        locations.forEach(function(location) {
+        locations.forEach(function (location) {
             content += '<li data-id="' + location.id + '" data-code="' + location.location_code + '" data-address_1="' + location.addressline1 + '" data-address_2="' + location.addressline2 + '" data-contact="' + location.phone + '">' + location.locationname + '</li>';
         });
     }
@@ -409,11 +411,11 @@ function getProviderInfo(formData) {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var info = $.parseJSON(e);
             showProviderInfo(info);
         },
-        error: function() {
+        error: function () {
             $('p.alert_message').text('Error getting practice information');
             $('#alert').modal('show');
         },
@@ -435,18 +437,18 @@ function getProviders(formData) {
         }),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var practices = $.parseJSON(e);
             var content = '<p><bold>' + practices.length + '<bold> results found</p><br>';
             if (practices.length > 0) {
-                practices.forEach(function(practice) {
+                practices.forEach(function (practice) {
                     content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.provider_id + '"  practice-id="' + practice.practice_id + '" ><div class="row content-row-margin"><div class="col-xs-12 arial_bold provider_list_title">' + practice.provider_name + ' </div><div class="col-xs-6 provider_list_detail"> ' + practice.practice_name + ' </div><div class="col-xs-6 provider_list_detail">' + practice.practice_speciality + '' + '<br> ' + '' + ' </div></div></div>';
                 });
             }
             $('.practice_list').html(content);
             $('.practice_list').addClass('active');
         },
-        error: function() {
+        error: function () {
             $('p.alert_message').text('Error searching');
             $('#alert').modal('show');
         },
@@ -465,7 +467,7 @@ function getOptionContent(type, value, stype) {
 function getSearchType() {
     var searchdata = [];
 
-    $('.search_filter_item').each(function() {
+    $('.search_filter_item').each(function () {
         var stype = $(this).children('.item_type').attr('data-stype');
         var name = $(this).children('.item_value').text();
         searchdata.push({
@@ -502,7 +504,7 @@ function getOpenSlots(week) {
     $('#form_appointment_type_id').val($('#appointment_type').attr('value'));
     $('.availability').addClass('active');
     var content = '';
-    content += '<span class="slot_header" style="margin:1em;"><span class="slot_header_text">Fetching slots!</span></span>';
+    content += '<span class="slot_header" style="margin:1em;"><span class="slot_header_text">Retrieving Available Appointments</span></span>';
     $('.availability').html(content);
     content = '';
     var weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -515,12 +517,12 @@ function getOpenSlots(week) {
         data: $.param(formData),
         contentType: 'text/html',
         //        async: false,
-        success: function(e) {
+        success: function (e) {
             e = $.parseJSON(e);
             var apptSlots = e.GetOpenApptSlotsResult;
             if (e.length === 0)
                 return;
-            e.forEach(function(elem) {
+            e.forEach(function (elem) {
                 var k = 0;
                 content += '<div class="weekday"><p class="date">' + elem.date + '<br>' + weekday[i] + '</p>';
                 var slot = elem.slots['ApptSlots'];
@@ -536,7 +538,7 @@ function getOpenSlots(week) {
                     //                    content += '</ul><a class="" href="#' + weekday[i] + '" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-down time_glyph" aria-hidden="true"></span></a></div>';
                     content += '<div id="' + weekday[i] + '"><ul class="time_selector">';
                     if (slot.length) {
-                        slot.forEach(function(time) {
+                        slot.forEach(function (time) {
                             content += '<li class="item" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
                         });
                     } else {
@@ -555,7 +557,7 @@ function getOpenSlots(week) {
             $('[data-toggle="tooltip"]').tooltip();
             $('.ajax.appointment_schedule').removeClass('active');
         },
-        error: function() {
+        error: function () {
             $('.ajax.appointment_schedule').removeClass('active');
         },
         cache: false,
@@ -580,12 +582,12 @@ function getAppointmentTypes() {
         data: $.param(formData),
         contentType: 'text/html',
         async: true,
-        success: function(e) {
+        success: function (e) {
             e = $.parseJSON(e);
             var apptTypes = e.GetApptTypesResult.ApptType;
             if (apptTypes) {
                 content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Appointment Type <b class="caret"></b></span></a><ul class="dropdown-menu appointment_dropdown" id="custom_dropdown">';
-                apptTypes.forEach(function(elem) {
+                apptTypes.forEach(function (elem) {
                     content += '<li  value="' + elem.ApptTypeKey + '" data-name=" ' + elem.ApptTypeName + ' ">' + elem.ApptTypeName + '</li>';
                 });
                 $('#appointment-type').removeClass('hidden');
@@ -599,7 +601,7 @@ function getAppointmentTypes() {
             }
             $('.ajax.appointment_type').removeClass('active');
         },
-        error: function() {
+        error: function () {
             $('.ajax.appointment_type').removeClass('active');
         },
         cache: false,
@@ -614,11 +616,11 @@ function getPreviousProviders(formData) {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var info = $.parseJSON(e);
             showPreviousProvider(info);
         },
-        error: function() {
+        error: function () {
             $('p.alert_message').text('Error getting practice information');
             $('#alert').modal('show');
         },

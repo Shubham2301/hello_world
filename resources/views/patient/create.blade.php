@@ -5,7 +5,13 @@
     </div>
 
     <div>
-        <p class="add_title">Add New Patient</p>
+        <p class="add_title">
+            @if(isset($data['email']))
+                Edit Patient
+            @else
+                Add New Patient
+            @endif
+        </p>
     </div>
 </div>
 {!! Form::open(array('url' => $data['url'], 'method' => 'POST', 'id' => 'form_add_patients')) !!}
