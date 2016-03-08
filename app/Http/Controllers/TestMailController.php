@@ -10,7 +10,7 @@ class TestMailController extends Controller {
 		$user = Auth::user();
 
 		$result = Mail::send('emails.test', ['user' => $user], function ($m) use ($user) {
-			$m->from('support@myocuhub.com', 'Ocuhub');
+			$m->from('support@ocuhub.com', 'Ocuhub');
 			$m->to('kd@coloredcow.in', 'KD')->subject('Test Application');
 		});
 		dd($result);
