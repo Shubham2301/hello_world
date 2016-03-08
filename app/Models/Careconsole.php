@@ -309,7 +309,10 @@ class Careconsole extends Model {
             	on `careconsole`.`appointment_id` = `appointments`.`id`
             	left join `patients`
             	on `careconsole`.`patient_id` = `patients`.`id`
-            	where `stage_id` = $stageID and
+				left join `import_history`
+            	on `import_history`.`id` = `careconsole`.`import_id`
+            	where `import_history`.`network_id` = $networkID and
+            	`stage_id` = $stageID and
             	`careconsole`.`archived_date` is null and
             	`careconsole`.`recall_date` is null and
             	datediff(`start_datetime`, CURRENT_TIMESTAMP) > 1");
@@ -334,7 +337,10 @@ class Careconsole extends Model {
             	on `careconsole`.`appointment_id` = `appointments`.`id`
             	left join `patients`
             	on `careconsole`.`patient_id` = `patients`.`id`
-            	where `stage_id` = $stageID and
+				left join `import_history`
+            	on `import_history`.`id` = `careconsole`.`import_id`
+            	where `import_history`.`network_id` = $networkID and
+            	`stage_id` = $stageID and
             	`careconsole`.`archived_date` is null and
             	`careconsole`.`recall_date` is null and
             	datediff(`start_datetime`, CURRENT_TIMESTAMP) = 1");
@@ -358,7 +364,10 @@ class Careconsole extends Model {
             	on `careconsole`.`appointment_id` = `appointments`.`id`
             	left join `patients`
             	on `careconsole`.`patient_id` = `patients`.`id`
-            	where `stage_id` = $stageID and
+				left join `import_history`
+            	on `import_history`.`id` = `careconsole`.`import_id`
+            	where `import_history`.`network_id` = $networkID and
+            	`stage_id` = $stageID and
             	`careconsole`.`archived_date` is null and
             	`careconsole`.`recall_date` is null and
             	datediff(`start_datetime`, CURRENT_TIMESTAMP) < 0");
