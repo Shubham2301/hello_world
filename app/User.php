@@ -9,6 +9,8 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Support\Facades\Auth;
+use myocuhub\User;
 
 class User extends Model implements AuthenticatableContract,
 AuthorizableContract,
@@ -28,8 +30,8 @@ CanResetPasswordContract {
 	 * @var array
 	 */
 	protected $fillable = ['name', 'email', 'sesemail',
-						   'password', 'firstname', 'lastname', 'npi', 'cellphone', 'state',
-						   'address1', 'address2', 'city', 'zip'];
+		'password', 'firstname', 'lastname', 'npi', 'cellphone', 'state',
+		'address1', 'address2', 'city', 'zip'];
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
@@ -73,6 +75,11 @@ CanResetPasswordContract {
 	}
 
 	public static function providers($filters) {
+
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
+
 		return self::query()
 			->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
 			->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
@@ -87,40 +94,44 @@ CanResetPasswordContract {
 								break;
 							case 'location':
 								$query->where('practice_location.city', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('practice_location.state', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('locationname', 'LIKE', '%' . $filter['value'] . '%');
+								->orWhere('practice_location.state', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('locationname', 'LIKE', '%' . $filter['value'] . '%');
 								break;
 							case 'zip':
 								$query->where('practice_location.zip', $filter['value']);
 								break;
 							case 'provider_name':
 								$query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
-									->orwhere('users.name', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
+								->orwhere('users.name', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
 								break;
 							case 'all':
 								$query->where('practices.name', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('practice_location.city', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('practice_location.state', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
-									->orwhere('practice_location.zip', $filter['value'])
-									->orwhere('firstname', 'LIKE', '%' . $filter['value'] . '%')
-									->orwhere('users.name', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
-									->orWhere('locationname', 'LIKE', '%' . $filter['value'] . '%')
-									->where('practice_location.zip', $filter['value']);
+								->orWhere('practice_location.city', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('practice_location.state', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
+								->orwhere('practice_location.zip', $filter['value'])
+								->orwhere('firstname', 'LIKE', '%' . $filter['value'] . '%')
+								->orwhere('users.name', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
+								->orWhere('locationname', 'LIKE', '%' . $filter['value'] . '%')
+								->where('practice_location.zip', $filter['value']);
 								break;
 
 						}
 					});
 				}
-			})->groupBy('users.id')
-			->get(['*', 'practices.id']);
+			})
+            ->groupBy('users.id')
+            ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
+            ->where('practice_network.network_id', $networkID)
+            ->get(['*', 'practices.id']);
+			
 
 	}
 
