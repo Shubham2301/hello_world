@@ -17,13 +17,13 @@
     
     <div class="row content-row-margin">
         <div class="col-sm-12">
-            {!! Form::email('email', old('email'), array('class' => 'input', 'name' => 'email', 'placeholder' => 'EMAIL/USERNAME', 'id' => 'email')) !!}
+            {!! Form::email('email', old('email'), array('class' => 'login_form_input', 'name' => 'email', 'placeholder' => 'EMAIL/USERNAME', 'id' => 'email')) !!}
         </div>
     </div>
     
     <div class="row content-row-margin">
         <div class="col-sm-12">
-            {!! Form::password('password', array('class' => 'input', 'name' => 'password','placeholder' => 'PASSWORD', 'id' => 'password')) !!}
+            {!! Form::password('password', array('class' => 'login_form_input', 'name' => 'password','placeholder' => 'PASSWORD', 'id' => 'password')) !!}
         </div>
     </div>
 
