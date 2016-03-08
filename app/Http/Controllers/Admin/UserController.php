@@ -283,12 +283,12 @@ class UserController extends Controller {
 		$data[0]['currentPage'] = $users->currentPage();
 		$i = 0;
 		foreach ($users as $user) {
-			$data[$i]['id'] = $user->id;
+			$data[$i]['id'] = $user->user_id;
 			$data[$i]['name'] = $user->lastname . ', ' . $user->firstname;
 			$data[$i]['email'] = $user->email;
 			$data[$i]['level'] = UserLevel::find($user->level)->name;
 			$data[$i]['practice'] = $network->name;
-			if ($practice = $user->practice) {
+			if ($practice = User::getPractice($user->user_id)) {
 				$data[$i]['practice'] = $practice->name;
 			}
 			$i++;

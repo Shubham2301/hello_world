@@ -154,9 +154,12 @@ CanResetPasswordContract {
 			->first();
 	}
 
-	public function practice() {
-		return $this->hasOne(Models\PracticeUser::class)
-		            ->leftJoin('practices', 'practice_user.practice_id', '=', 'practices.id');
+	public static function getPractice($userID) {
+		return self::query()
+			->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
+			->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
+			->where('user_id', $userID)
+			->first();
 	}
 
 	public static function getUsersByName($name) {
