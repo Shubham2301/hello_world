@@ -161,18 +161,18 @@ class BulkImportController extends Controller {
 								if(!$patient){
 									$patient = Patient::create($patients);
 									$new_patients = $new_patients+1;
+									$careconsole = new Careconsole;
+									$careconsole->import_id = $importHistory->id;
+									$careconsole->patient_id = $patient->id;
+									$careconsole->stage_id = 1;
+									$date = new \DateTime();
+									$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
+									$careconsole->save();
 								}
 								else
 									$old_patients = $old_patients+1;
-								$careconsole = new Careconsole;
-								$careconsole->import_id = $importHistory->id;
-								$careconsole->patient_id = $patient->id;
-								$careconsole->stage_id = 1;
-								$date = new \DateTime();
-								$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
-								$careconsole->save();
-								$i++;
 							}
+							$i++;
 						}
 						break;
 				}
