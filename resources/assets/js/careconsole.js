@@ -83,6 +83,7 @@ $(document).ready(function() {
     });
     $('#search_do').on('click', searchc3);
     $('.c3_overview_link').on('click', function() {
+		$('.console_buckets').removeClass('active');
         refreshOverview();
         $('.c3_overview_link').removeClass('active');
         $('.control_section').removeClass('active');
@@ -454,7 +455,6 @@ function action() {
 }
 
 function refreshOverview() {
-
     $.ajax({
         url: '/careconsole/overview',
         type: 'GET',
