@@ -69,17 +69,15 @@ class Patient extends Model {
 
 	}
 
-	public static function getPatientsByName($name, $networkID) {
-		return self::where('firstname', 'LIKE', '%' . $name . '%')
-			->orWhere('middlename', 'LIKE', '%' . $name . '%')
-			->orWhere('lastname', 'LIKE', '%' . $name . '%')
-			->where(function ($query) {
-				if (session('user-level') == 1) {
-					return;
-				}
-				$query->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
-				->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
-				->where('import_history.network_id', $session('network-id'));
+	public static function getPatientsByName($name) {
+		return self::query()
+			->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
+			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
+			->where('import_history.network_id', session('network-id'))
+			->where(function ($query) use ($name) {
+				$query->where('firstname', 'LIKE', '%' . $name . '%')
+				->orWhere('middlename', 'LIKE', '%' . $name . '%')
+				->orWhere('lastname', 'LIKE', '%' . $name . '%');
 			})
 			->get(['*', 'patients.id']);
 	}
