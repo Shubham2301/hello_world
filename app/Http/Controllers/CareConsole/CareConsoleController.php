@@ -247,6 +247,7 @@ class CareConsoleController extends Controller {
 		$data['phone'] = $patient->cellphone;
 		$data['actions'] = $this->CareConsoleService->getActions($console->stage_id);
 		$data['stageid'] = $console->stage_id;
+		$data['priority'] = $console->priority;
 
 		$appointment = Appointment::find($console->appointment_id);
 		$provider = null;
