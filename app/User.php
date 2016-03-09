@@ -9,7 +9,6 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Support\Facades\Auth;
 use myocuhub\Models\UserLevel;
 use myocuhub\User;
 
@@ -80,10 +79,6 @@ CanResetPasswordContract {
 
 	public static function providers($filters) {
 
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$networkID = $network->network_id;
-
 		return self::query()
 			->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
 			->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
@@ -132,8 +127,15 @@ CanResetPasswordContract {
 				}
 			})
 			->groupBy('users.id')
-			->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
-			->where('practice_network.network_id', $networkID)
+			->where(function ($query) {
+				if (session('user-level') == 1) {
+					return;
+				} else {
+					$query->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
+					->where('practice_network.network_id', session('network-id'));
+				}
+			})
+
 			->get(['*', 'practices.id']);
 
 	}
@@ -163,13 +165,16 @@ CanResetPasswordContract {
 	}
 
 	public static function getUsersByName($name) {
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$networkID = $network->network_id;
 
 		return self::query()
-			->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
-			->where('network_user.network_id', $networkID)
+			->where(function ($query) {
+				if (session('user-level') == 1) {
+					return;
+				} else {
+					$query->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
+					->where('network_user.network_id', session('network-id'));
+				}
+			})
 			->where(function ($query) use ($name) {
 				$query->where('firstname', 'LIKE', '%' . $name . '%')
 				->orWhere('middlename', 'LIKE', '%' . $name . '%')

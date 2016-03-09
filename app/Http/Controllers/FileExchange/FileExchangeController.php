@@ -24,10 +24,6 @@ class FileExchangeController extends Controller {
 	 */
 	public function index(Request $request) {
 
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$networkID = $network->network_id;
-
 		$folders = Folder::getFolders($request->id);
 
 		$folderlist = array();
@@ -60,8 +56,11 @@ class FileExchangeController extends Controller {
 			$filelist[$i]['updated_at'] = $fileHistory->updated_at;
 			$i++;
 		}
-
-		$networkPractices = Network::find($networkID)->practices;
+		if (session('user-level') === 1) {
+			$networkPractices = Practices::all();
+		} else {
+			$networkPractices = Network::find(session('network-id'))->practices;
+		}
 
 		$i = 0;
 		$practices = [];
@@ -214,9 +213,8 @@ class FileExchangeController extends Controller {
 	}
 
 	public function sharedWithMe(Request $request, $sortOnRecent = '') {
+
 		$userId = Auth::user()->id;
-		$network = User::getNetwork($userId);
-		$networkID = $network->network_id;
 
 		if ($request->id && Folder::find($request->id)->sharedWithUser($userId)) {
 			return $this->index($request);
@@ -277,12 +275,16 @@ class FileExchangeController extends Controller {
 			}));
 		}
 
-		$networkPractices = Network::find($networkID)->practices;
+		if (session('user-level') === 1) {
+			$networkPractices = Practices::all();
+		} else {
+			$networkPractices = Network::find(session('network-id'))->practices;
+		}
 
 		$i = 0;
-        
-        $practices = [];
-        
+
+		$practices = [];
+
 		foreach ($networkPractices as $practice) {
 			$practices[$i]['id'] = $practice->id;
 			$practices[$i]['name'] = $practice->name;
@@ -316,11 +318,8 @@ class FileExchangeController extends Controller {
 	}
 
 	public function showtrash(Request $request) {
-		$folders = Folder::getFolders($request->id, 0);
-		$userId = Auth::user()->id;
-		$network = User::getNetwork($userId);
-		$networkID = $network->network_id;
 
+		$folders = Folder::getFolders($request->id, 0);
 		$folderlist = array();
 
 		$i = 0;
@@ -352,10 +351,14 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		$networkPractices = Network::find($networkID)->practices;
+		if (session('user-level') === 1) {
+			$networkPractices = Practices::all();
+		} else {
+			$networkPractices = Network::find(session('network-id'))->practices;
+		}
 
 		$i = 0;
-        $practices = [];
+		$practices = [];
 		foreach ($networkPractices as $practice) {
 			$practices[$i]['id'] = $practice->id;
 			$practices[$i]['name'] = $practice->name;

@@ -272,11 +272,9 @@ class UserController extends Controller {
 
 	public function search(Request $request) {
 		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
 
 		$tosearchdata = json_decode($request->input('data'), true);
 		$users = User::getUsersByName($tosearchdata['value'])->paginate(5);
-		//$users = User::where('name', 'like', '%' . $tosearchdata['value'] . '%')->paginate(6);
 		$data = [];
 		$data[0]['total'] = $users->total();
 		$data[0]['lastpage'] = $users->lastPage();
@@ -287,9 +285,12 @@ class UserController extends Controller {
 			$data[$i]['name'] = $user->lastname . ', ' . $user->firstname;
 			$data[$i]['email'] = $user->email;
 			$data[$i]['level'] = UserLevel::find($user->level)->name;
-			$data[$i]['practice'] = $network->name;
-			if ($practice = User::getPractice($user->user_id)) {
-				$data[$i]['practice'] = $practice->name;
+			$data[$i]['practice'] = 'Ocuhub';
+			if ($network = User::getNetwork($user->id)) {
+				$data[$i]['practice'] = $network->name;
+			}
+			if ($user->practice_id) {
+				$data[$i]['practice'] = Practice::find($user->practice_id)->name;
 			}
 			$i++;
 		}
