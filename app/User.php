@@ -79,7 +79,7 @@ CanResetPasswordContract {
 
 	public static function providers($filters) {
 
-		return self::query()
+		$query = self::query()
 			->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
 			->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
 			->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
@@ -126,18 +126,18 @@ CanResetPasswordContract {
 					});
 				}
 			})
-			->groupBy('users.id')
-			->where(function ($query) {
-				if (session('user-level') == 1) {
-					return;
-				} else {
-					$query->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
-					->where('practice_network.network_id', session('network-id'));
-				}
-			})
+			->groupBy('users.id');
 
-			->get(['*', 'practices.id']);
-
+		if (session('user-level') == 1) {
+			return $query
+				->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
+				->get(['*', 'practices.id']);
+		} else {
+			return $query
+				->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
+				->where('practice_network.network_id', session('network-id'))
+				->get(['*', 'practices.id']);
+		}
 	}
 
 	public static function practiceUserById($practice_id) {
@@ -167,14 +167,8 @@ CanResetPasswordContract {
 	public static function getUsersByName($name) {
 
 		return self::query()
-			->where(function ($query) {
-				if (session('user-level') == 1) {
-					return;
-				} else {
-					$query->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
-					->where('network_user.network_id', session('network-id'));
-				}
-			})
+			->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
+			->where('network_user.network_id', session('network-id'))
 			->where(function ($query) use ($name) {
 				$query->where('firstname', 'LIKE', '%' . $name . '%')
 				->orWhere('middlename', 'LIKE', '%' . $name . '%')

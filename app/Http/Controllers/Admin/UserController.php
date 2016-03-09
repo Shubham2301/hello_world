@@ -274,7 +274,14 @@ class UserController extends Controller {
 		$userID = Auth::user()->id;
 
 		$tosearchdata = json_decode($request->input('data'), true);
-		$users = User::getUsersByName($tosearchdata['value'])->paginate(5);
+		if (session('user-level') == 1) {
+			$users = User::where('firstname', 'LIKE', '%' . $tosearchdata['value'] . '%')
+				->orWhere('middlename', 'LIKE', '%' . $tosearchdata['value'] . '%')
+				->orWhere('lastname', 'LIKE', '%' . $tosearchdata['value'] . '%')->paginate(5);
+		} else {
+			$users = User::getUsersByName($tosearchdata['value'])->paginate(5);
+		}
+
 		$data = [];
 		$data[0]['total'] = $users->total();
 		$data[0]['lastpage'] = $users->lastPage();
