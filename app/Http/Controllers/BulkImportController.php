@@ -177,8 +177,9 @@ class BulkImportController extends Controller {
 								}
 								else
 									$old_patients = $old_patients+1;
+								$i++;
 							}
-							$i++;
+
 						}
 						break;
 				}
