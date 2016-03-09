@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Support\Facades\Auth;
+use myocuhub\Models\UserLevel;
 use myocuhub\User;
 
 class User extends Model implements AuthenticatableContract,
@@ -69,6 +70,9 @@ CanResetPasswordContract {
 
 		return $this->roles()->save($role);
 	}
+	public function UserLevel() {
+		return $this->belongsTo(Models\UserLevel::class);
+	}
 
 	public function usertype() {
 		return $this->belongsTo(Usertype::class);
@@ -127,11 +131,10 @@ CanResetPasswordContract {
 					});
 				}
 			})
-            ->groupBy('users.id')
-            ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
-            ->where('practice_network.network_id', $networkID)
-            ->get(['*', 'practices.id']);
-			
+			->groupBy('users.id')
+			->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
+			->where('practice_network.network_id', $networkID)
+			->get(['*', 'practices.id']);
 
 	}
 
@@ -151,20 +154,26 @@ CanResetPasswordContract {
 			->first();
 	}
 
-	public function practice() {
-		return $this->hasOne(Models\PracticeUser::class);
-	}
-
-	public function getPractice() {
-		if ($this->practice) {
-			$practice_id = $this->practice->practice_id;
-			return Models\Practice::find($practice_id);
-		}
+	public static function getPractice($userID) {
+		return self::query()
+			->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
+			->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
+			->where('user_id', $userID)
+			->first();
 	}
 
 	public static function getUsersByName($name) {
-		return self::where('firstname', 'LIKE', '%' . $name . '%')
-			->orWhere('middlename', 'LIKE', '%' . $name . '%')
-			->orWhere('lastname', 'LIKE', '%' . $name . '%');
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+		$networkID = $network->network_id;
+
+		return self::query()
+			->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
+			->where('network_user.network_id', $networkID)
+			->where(function ($query) use ($name) {
+				$query->where('firstname', 'LIKE', '%' . $name . '%')
+				->orWhere('middlename', 'LIKE', '%' . $name . '%')
+				->orWhere('lastname', 'LIKE', '%' . $name . '%');
+			});
 	}
 }

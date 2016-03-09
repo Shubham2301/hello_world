@@ -7,6 +7,7 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
+use myocuhub\Network;
 use myocuhub\User;
 
 class PracticeController extends Controller {
@@ -101,7 +102,7 @@ class PracticeController extends Controller {
 		$data['practice_active'] = true;
 		$data['id'] = $id;
 		$data['location_index'] = $location;
-        $data['edit'] = true;
+		$data['edit'] = true;
 		return view('practice.create')->with('data', $data);
 	}
 
@@ -168,7 +169,7 @@ class PracticeController extends Controller {
 
 	public function search(Request $request) {
 		$tosearchdata = json_decode($request->input('data'), true);
-		$practices = Practice::where('name', 'like', '%' . $tosearchdata['value'] . '%')->paginate(5);
+		$practices = Network::practicesByName($tosearchdata['value']);
 		$data = [];
 		$data[0]['total'] = $practices->total();
 		$data[0]['lastpage'] = $practices->lastPage();

@@ -6,18 +6,21 @@
 			<input type="checkbox" id="checked_all_users">&nbsp;&nbsp;
 			<p style="color:black"><strong>Name</strong></p>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-xs-3">
 			<p style="color:black"><strong>Email</strong></p>
 		</div>
-		<div class="col-xs-3">
-			<p style="color:black"><strong>Practice</strong></p>
+		<div class="col-xs-2">
+			<p style="color:black"><strong>Level</strong></p>
+		</div>
+		<div class="col-xs-2">
+			<p style="color:black"><strong>Practice/Network</strong></p>
 		</div>
 		<div class="col-xs-2">
 			<input type="hidden" id="dropdown_natural_img" value="{{asset('images/dropdown-natural-01.png')}}">
 			<input type="hidden" id="dropdown_onhover_img" value="{{asset('images/dropdown-hover-01.png')}}">
 			<input type="hidden" id="dropdown_active_img" value="{{asset('images/dropdown-active-01.png')}}">
 			<input type="hidden" id="active_user_img" value="{{asset('images/deactivate.png')}}">
-			<p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong>2 of 2</strong></span>
+			<p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong></strong></span>
 			<span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
 		</div>
 	</div>

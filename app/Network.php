@@ -3,6 +3,8 @@
 namespace myocuhub;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use myocuhub\User;
 
 class Network extends Model {
 	protected $fillable = ['id', 'name', 'email', 'phone', 'addressline1', 'addressline2', 'city', 'state', 'zip', 'country'];
@@ -15,6 +17,16 @@ class Network extends Model {
 		return $this->hasMany('myocuhub\Models\PracticeNetwork')
 		            ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id');
 	}
+	public static function practicesByName($search) {
+		$userID = Auth::user()->id;
+		$network = User::getNetwork($userID);
+
+		return self::where('networks.id', $network->id)
+			->leftJoin('practice_network', 'networks.id', '=', 'practice_network.network_id')
+			->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
+			->where('practices.name', 'like', '%' . $search . '%')->paginate(5);
+	}
+
 	/**
 	 * @return mixed
 	 */

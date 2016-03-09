@@ -45,12 +45,12 @@ class PatientController extends Controller {
 	public function create(Request $request) {
 
 		$data = array();
-        $gender = array();
-        $gender['Male'] = 'Male';
-        $gender['Female'] = 'Female';
-        $language = array();
-        $language['English'] = 'English';
-        $language['French'] = 'French';
+		$gender = array();
+		$gender['Male'] = 'Male';
+		$gender['Female'] = 'Female';
+		$language = array();
+		$language['English'] = 'English';
+		$language['French'] = 'French';
 		$data = Patient::getColumnNames();
 		$data['admin'] = true;
 		$data['back_btn'] = 'back_to_select_patient_btn';
@@ -67,13 +67,13 @@ class PatientController extends Controller {
 
 	public function createByAdmin() {
 
-        $gender = array();
-        $gender['Male'] = 'Male';
-        $gender['Female'] = 'Female';
-        $language = array();
-        $language['English'] = 'English';
-        $language['French'] = 'French';
-        $data = array();
+		$gender = array();
+		$gender['Male'] = 'Male';
+		$gender['Female'] = 'Female';
+		$language = array();
+		$language['English'] = 'English';
+		$language['French'] = 'French';
+		$data = array();
 		$data = Patient::getColumnNames();
 		$data['admin'] = true;
 		$data['back_btn'] = 'back_to_admin_patient_btn';
@@ -202,12 +202,12 @@ class PatientController extends Controller {
 	 */
 	public function edit($id) {
 
-        $gender = array();
-        $gender['Male'] = 'Male';
-        $gender['Female'] = 'Female';
-        $language = array();
-        $language['English'] = 'English';
-        $language['French'] = 'French';
+		$gender = array();
+		$gender['Male'] = 'Male';
+		$gender['Female'] = 'Female';
+		$language = array();
+		$language['English'] = 'English';
+		$language['French'] = 'French';
 		$data = array();
 		$data = Patient::find($id);
 		if (!$data) {
@@ -263,7 +263,7 @@ class PatientController extends Controller {
 		$data = [];
 		$i = 0;
 		foreach ($patients as $patient) {
-			$data[$i]['id'] = $patient->id;
+			$data[$i]['id'] = $patient->patient_id;
 			$data[$i]['fname'] = $patient->firstname;
 			$data[$i]['lname'] = $patient->lastname;
 			$data[$i]['email'] = $patient->email;
