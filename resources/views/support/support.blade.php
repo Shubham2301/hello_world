@@ -18,9 +18,19 @@
 
     <div class="row content-row-margin">
         <div class="col-xs-12 section-header">
-            <span class="">Tech Support</span>
+            <span class="arial_bold">Contact OcuHub Support</span>
             <br>
-            <p style="margin-top:5em;font-size:xx-large;"><strong>Coming Soon..</strong></p>
+            <span><p>
+                <br>
+                <br>
+                Need help? Save time by starting your support request via email and we will have an expert contact within 24 hours.
+                <br>
+                <br>
+                <span class="arial_bold">Support Options</span><br>
+                Email- support@ocuhub.com<br>
+                Call- (888) 227-3365
+                </p>
+            </span>
         </div>
     </div>
 
