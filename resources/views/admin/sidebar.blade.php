@@ -80,16 +80,16 @@
                                             <span>Patients</span>
                                         </a>
                                     </li>
-                                    <!-- <li class="admin_sidebar_menu_item">
-                                        <a class="sidebar_button_subsection subsection_admin_add" href="/administration/providers">
-                                            <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-provider-icon.png')}}" style="width:100%"></span>
-                                            <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-provider-icon-hover.png')}}" style="width:100%"></span>
-                                            <span class="add_text">add+</span>
-                                        </a>
-                                        <a class="sidebar_button_subsection subsection_admin_title" href="/administration/providers" id="{{ array_key_exists('provider_active', $data) ? 'button_active' : '' }}">
-                                            <span>Providers</span>
-                                        </a>
-                                    </li> -->
+                                        <!-- <li class="admin_sidebar_menu_item">
+                                            <a class="sidebar_button_subsection subsection_admin_add" href="/administration/providers">
+                                                <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-provider-icon.png')}}" style="width:100%"></span>
+                                                <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-provider-icon-hover.png')}}" style="width:100%"></span>
+                                                <span class="add_text">add+</span>
+                                            </a>
+                                            <a class="sidebar_button_subsection subsection_admin_title" href="/administration/providers" id="{{ array_key_exists('provider_active', $data) ? 'button_active' : '' }}">
+                                                <span>Providers</span>
+                                            </a>
+                                        </li> -->
                                     @if(2 >= Auth::user()->level)
                                     <li class="admin_sidebar_menu_item">
                                         <a class="sidebar_button_subsection subsection_admin_add" href="/administration/practices/create">

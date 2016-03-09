@@ -1,7 +1,7 @@
 <div class="row height header">
     <div class="col-xs-3 hidden-xs header-left">
         <div class="col-xs-8 col-xs-offset-2 network_logo">
-            @if( Auth::check() && session('user-level') > 1) )
+            @if( Auth::check()  && session('user-level') > 1 )
             <img src="{{URL::asset('images/networks/network_'. Auth::user()->getNetwork(Auth::user()->id)->id .'.png')}}" onerror="this.src = '{{URL::asset('images/networks/default_network_logo.png')}}'">
             @endif
         </div>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="ocuhub-navbar-collapse">
                     <ul class="nav navbar-nav arial_bold header_navbar_items">
-                        <li class="menu-item"><a href="/home">HOME</a></li>
+                        <li class="menu-item"><a href="/home">HOME </a></li>
                         <li class="menu-item"><a href="/techsupport">TECH SUPPORT</a></li>
                         <li class="menu-item"><span class="ocuhub_sso_logoff logout_btn"><span onclick="singleSignOff()">LOGOUT</span></span>
                     </li>
