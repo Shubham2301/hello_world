@@ -10,7 +10,7 @@ class Patient extends Model {
 		'zip', 'lastfourssn', 'birthdate', 'gender', 'insurancecarrier', 'country', 'preferredlanguage', 'state'];
 	public static function getPatients($filters) {
 
-		return self::where(function ($query) use ($filters) {
+		$query = self::where(function ($query) use ($filters) {
 			foreach ($filters as $filter) {
 				$query->where(function ($query) use ($filter) {
 					switch ($filter['type']) {
@@ -52,17 +52,20 @@ class Patient extends Model {
 					}
 				});
 			}
-		})
-			->where(function ($query) {
-				if (session('user-level') == 1) {
-					return;
-				}
-				$query->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
+		});
+
+		if (session('user-level') == 1) {
+			return $query
+				->orderBy('lastname', 'asc')
+				->paginate(5);
+		} else {
+			return $query
+				->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
 				->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
-				->where('import_history.network_id', $session('network-id'));
-			})
-			->orderBy('lastname', 'asc')
-			->paginate(5);
+				->where('import_history.network_id', session('network-id'))
+				->orderBy('lastname', 'asc')
+				->paginate(5);
+		}
 
 	}
 

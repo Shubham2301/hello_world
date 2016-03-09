@@ -260,6 +260,7 @@ class PatientController extends Controller {
 		$filters = json_decode($request->input('data'), true);
 
 		$patients = Patient::getPatients($filters);
+
 		$data = [];
 		$i = 0;
 		foreach ($patients as $patient) {
