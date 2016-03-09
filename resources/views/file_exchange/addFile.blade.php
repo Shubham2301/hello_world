@@ -18,7 +18,7 @@
                     <span class="left">File</span>
                     <span class="right">
                         <span class="file-input" style="width: 100%;text-align: left;">
-                            <button type="button" class="btn add-btn" style="display: block;float: left;"><input type="file" name="add_document" id="add_document" style="opacity: 0;position: absolute;">Select</button>
+                            <button type="button" class="btn add-btn" style="display: block;float: left;"><input type="file" name="add_document" id="add_document" style="opacity: 0;position: absolute;">Browse</button>
                             <br><br>
                             <span id="new_filename"></span>
                         </span>
