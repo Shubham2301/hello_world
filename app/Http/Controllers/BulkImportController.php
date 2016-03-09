@@ -72,22 +72,27 @@ class BulkImportController extends Controller {
 							if (array_filter($data->toArray())) {
 								$users['name'] = $data['name'];
 								$users['email'] = $data['contact_email'];
-								$users['cellphone'] = $data['phone_number'];
-								$users['cellphone'] = $data['cell_number'];
+								$users['cellphone'] = (int)$data['phone_number'];
+								$users['cellphone'] = (int)$data['cell_number'];
 								//npi cannot be null
 								$users['npi'] = '1234';
 								if($data['npi'])
-									$users['npi'] = $data['npi'];
+									$users['npi'] =(int) $data['npi'];
 								$users['state'] = $data['state'];
 								$users['address1'] = $data['address_1'];
 								$users['address2'] = $data['address_2'];
 								$users['city'] = $data['city'];
-								$users['zip'] = $data['zip_code'];
+								$users['zip'] = (int) $data['zip_code'];
 
 								$user =  User::where($users)->first();
+								$checkemail =User::where('email','LIKE','%'.$users['email'].'%')->first();
 								if(!$user){
-									$users['password'] = Hash::make('ocuhub');
-									$user = User::create($users);
+
+									$users['password'] = \Hash::make('ocuhub');
+									if($checkemail)
+										$user = $checkemail;
+									else
+										$user = User::create($users);
 
 								}
 								//map user with organization
@@ -120,12 +125,12 @@ class BulkImportController extends Controller {
 									$practice = Practice::create($practices);
 								$locations['practice_id'] = $practice->id;
 								$locations['locationname'] = $data['location_name'];
-								$locations['phone'] = $data['phone_number'];
+								$locations['phone'] = (int)$data['phone_number'];
 								$locations['addressline1'] = $data['address_1'];
 								$locations['addressline2'] = $data['address_2'];
 								$locations['city'] = $data['city'];
 								$locations['state'] = $data['state'];
-								$locations['zip'] = $data['zip'];
+								$locations['zip'] = (int)$data['zip'];
 
 								$location = PracticeLocation::where($locations);
 								if(!$location)
@@ -147,17 +152,18 @@ class BulkImportController extends Controller {
 								$patients['title'] = 'Mr';
 								$patients['firstname'] = $name[0];
 								$patients['lastname'] = $name[1];
-								$patients['cellphone'] = $data['phone_number'];
+								$patients['cellphone'] = (int)$data['phone_number'];
 								$patients['email'] = $data['email'];
 								$patients['addressline1'] = $data['address_1'];
 								$patients['addressline2'] = $data['address_2'];
 								$patients['city'] = $data['city'];
-								$patients['zip'] = $data['zip'];
-								$patients['lastfourssn'] = $data['ssn_last_digits'];
-								$patients['birthdate'] = $data['birthdate'];
+								$patients['zip'] = (int)$data['zip'];
+								$patients['lastfourssn'] =(int) $data['ssn_last_digits'];
+								$patients['birthdate'] = date('Y-m-d',strtotime($data['birthdate']));
 								$patients['gender'] = $data['gender'];
 								//$patients['insurancecarrier'] = $data['insurance_type'];
 								$patient = Patient::where($patients)->first();
+
 								if(!$patient){
 									$patient = Patient::create($patients);
 									$new_patients = $new_patients+1;
