@@ -85,9 +85,14 @@ class BulkImportController extends Controller {
 								$users['zip'] = (int) $data['zip_code'];
 
 								$user =  User::where($users)->first();
+								$checkemail =User::where('email','LIKE','%'.$users['email'].'%')->first();
 								if(!$user){
+
 									$users['password'] = \Hash::make('ocuhub');
-									$user = User::create($users);
+									if($checkemail)
+										$user = $checkemail;
+									else
+										$user = User::create($users);
 
 								}
 								//map user with organization
@@ -154,7 +159,7 @@ class BulkImportController extends Controller {
 								$patients['city'] = $data['city'];
 								$patients['zip'] = (int)$data['zip'];
 								$patients['lastfourssn'] =(int) $data['ssn_last_digits'];
-								$patients['birthdate'] = date('Y-m-d',$data['birthdate']);
+								$patients['birthdate'] = date('Y-m-d',strtotime($data['birthdate']));
 								$patients['gender'] = $data['gender'];
 								//$patients['insurancecarrier'] = $data['insurance_type'];
 								$patient = Patient::where($patients)->first();
