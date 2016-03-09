@@ -51,8 +51,8 @@ class BulkImportController extends Controller {
 	}
 
 	public function importPatientsXlsx(Request $request) {
-//		$userID = Auth::user()->id;
-//		$network = User::getNetwork($userID);
+		//		$userID = Auth::user()->id;
+		//		$network = User::getNetwork($userID);
 		$networkID = $request->network_id;
 		$new_patients = 0;
 		$old_patients = 0;
@@ -83,8 +83,13 @@ class BulkImportController extends Controller {
 								$users['address2'] = $data['address_2'];
 								$users['city'] = $data['city'];
 								$users['zip'] = $data['zip_code'];
-								$user = User::firstOrCreate($users);
 
+								$user =  User::where($users)->first();
+								if(!$user){
+									$users['password'] = Hash::make('ocuhub');
+									$user = User::create($users);
+
+								}
 								//map user with organization
 								if($data['practice_name'])
 								{
@@ -109,7 +114,10 @@ class BulkImportController extends Controller {
 							if (array_filter($data->toArray())) {
 								$practices['name'] = $data['practice_name'];
 								//$practices['email']           = '';
-								$practice = Practice::firstOrCreate($practices);
+
+								$practice = Practice::where($practices)->first();
+								if(!$practice)
+									$practice = Practice::create($practices);
 								$locations['practice_id'] = $practice->id;
 								$locations['locationname'] = $data['location_name'];
 								$locations['phone'] = $data['phone_number'];
@@ -118,8 +126,10 @@ class BulkImportController extends Controller {
 								$locations['city'] = $data['city'];
 								$locations['state'] = $data['state'];
 								$locations['zip'] = $data['zip'];
-								$location = PracticeLocation::firstOrCreate($locations);
 
+								$location = PracticeLocation::where($locations);
+								if(!$location)
+									$location = PracticeLocation::create($locations);
 								$practicedata = [];
 								$practicedata['network_id'] = $networkID;
 								$practicedata['practice_id'] = $practice->id;
@@ -147,21 +157,22 @@ class BulkImportController extends Controller {
 								$patients['birthdate'] = $data['birthdate'];
 								$patients['gender'] = $data['gender'];
 								//$patients['insurancecarrier'] = $data['insurance_type'];
-								$previous_id = Patient::orderBy('id', 'decs')->first()->id;
-								$patient = Patient::firstOrCreate($patients);
-								if($patient->id > $previous_id)
+								$patient = Patient::where($patients)->first();
+								if(!$patient){
+									$patient = Patient::create($patients);
 									$new_patients = $new_patients+1;
+									$careconsole = new Careconsole;
+									$careconsole->import_id = $importHistory->id;
+									$careconsole->patient_id = $patient->id;
+									$careconsole->stage_id = 1;
+									$date = new \DateTime();
+									$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
+									$careconsole->save();
+								}
 								else
 									$old_patients = $old_patients+1;
-								$careconsole = new Careconsole;
-								$careconsole->import_id = $importHistory->id;
-								$careconsole->patient_id = $patient->id;
-								$careconsole->stage_id = 1;
-								$date = new \DateTime();
-								$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
-								$careconsole->save();
-								$i++;
 							}
+							$i++;
 						}
 						break;
 				}
