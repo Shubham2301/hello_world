@@ -397,7 +397,7 @@ function getPatientData() {
 	$('#drilldown_patients_listing').html(listing);
 	if (showcontrolls)
 		$('.control_section').html(controls);
-	$('.dropdown-menu.action_dropdownmenu').html(actionList);
+	//$('.dropdown-menu.action_dropdownmenu').html(actionList);
 },
 	error: function error() {
 		$('p.alert_message').text('Error:');
@@ -452,7 +452,6 @@ function action() {
 		processData: false
 });
 }
-
 function refreshOverview() {
 
 	$.ajax({
@@ -481,11 +480,10 @@ function refreshOverview() {
 		processData: false
 });
 }
-
 function setSearchFields(index) {
 	var patient = patientdata[index];
-//	$('.result_title.stage_name').html(patient.stage_name);
-//	$('#status_color').css('background-color', patient.stage_color);
+	//	$('.result_title.stage_name').html(patient.stage_name);
+	//	$('#status_color').css('background-color', patient.stage_color);
 	if(patient.recall_date){
 		$('.result_title.stage_name').html('Recalled');
 		$('#status_color').css('background-color', patient.stage_color);
@@ -493,7 +491,7 @@ function setSearchFields(index) {
 		$('.result_text.searchfield_1').text(patient.recall_date);
 		$('.result_title.searchfield_2').parent().parent().hide();
 		if(patient.archived_date)
-		$('.result_title.searchfield_2').parent().parent().show();
+			$('.result_title.searchfield_2').parent().parent().show();
 		$('.result_title.searchfield_2').text('Archived date');
 		$('.result_text.searchfield_2').text(patient.archived_date);
 		$('.result_title.searchfield_3').parent().parent().hide();
@@ -544,7 +542,6 @@ function setSearchFields(index) {
 	$('#search_action_dropdown').html(content);
 
 }
-
 function bucketData(bucketName) {
 
 	var formData = {
@@ -583,7 +580,6 @@ function bucketData(bucketName) {
 		processData: false
 });
 }
-
 function setPatientRecords(consoleID) {
 	var formData = {
 		'consoleID': consoleID
@@ -638,7 +634,6 @@ function setPatientRecords(consoleID) {
 
 });
 }
-
 function setPandingDayslimit(kpi_name, stageID) {
 
 	switch (kpi_name) {
@@ -672,32 +667,6 @@ function setPandingDayslimit(kpi_name, stageID) {
 			break;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function showActionModel(data){
 
 	$('#action_patient_id').val(data['patient_id']);

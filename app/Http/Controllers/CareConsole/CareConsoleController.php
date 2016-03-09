@@ -155,7 +155,7 @@ class CareConsoleController extends Controller {
 		$controls = $this->CareConsoleService->getControls($stageID);
 		$drilldown['controls'] = (sizeof($controls) === 0) ? '' : view('careconsole.controls')->with('controls', $controls)->render();
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
-		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->render();
+		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->with('actions', $actions)->render();
 
 		return json_encode($drilldown);
 	}
@@ -234,7 +234,7 @@ class CareConsoleController extends Controller {
 		$actions = $this->CareConsoleService->getActions($bucketID);
 
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
-		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->render();
+		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->with('actions', $actions)->render();
 		return json_encode($drilldown);
 	}
 	public function getPatientRecords(Request $request) {
