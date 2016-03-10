@@ -14,6 +14,7 @@ use myocuhub\Role;
 use myocuhub\Role_user;
 use myocuhub\User;
 use myocuhub\Usertype;
+use myocuhub\Models\Menu;
 
 class UserController extends Controller {
 
@@ -53,8 +54,14 @@ class UserController extends Controller {
 				$networkData[$network->id] = $network->name;
 			}
 		}
+        $menu_options = Menu::all();
+        $menuData = [];
+        foreach ($menu_options as $menu_option) {
+            if($menu_option->id != 3 && $menu_option->id != 5)
+            $menuData[$menu_option->id] = $menu_option->display_name;
+        }
 
-		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data)->with('user', $user)->with('networks', $networkData);
+		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data)->with('user', $user)->with('networks', $networkData)->with('menuoption', $menuData);
 	}
 
 	/**
@@ -91,6 +98,7 @@ class UserController extends Controller {
 			$user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
 			$user->usertype_id = $request->input('usertype');
 			$user->level = $request->input('userlevel');
+			$user->menu_id = $request->input('landing_page');
 
 			$user->save();
 
@@ -164,9 +172,15 @@ class UserController extends Controller {
 			$userTypes = $this->getUserTypes();
 			$roles = $this->getRoles();
 			$userLevels = $this->getUserLevels();
+            $menu_options = Menu::all();
+            $menuData = [];
+            foreach ($menu_options as $menu_option) {
+                if($menu_option->id != 3 && $menu_option->id != 5)
+                $menuData[$menu_option->id] = $menu_option->display_name;
+            }
 			$data['user_active'] = true;
 			$data['url'] = '/administration/users/update/' . $id;
-			return view('admin.users.create')->with('user', $user)->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data);
+			return view('admin.users.create')->with('user', $user)->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels, 'menuoption' => $menuData])->with('data', $data);
 		}
 	}
 
@@ -198,6 +212,7 @@ class UserController extends Controller {
 		$user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
 		$user->usertype_id = $request->input('usertype');
 		$user->level = $request->input('userlevel');
+        $user->menu_id = $request->input('landing_page');
 
 		$user->save();
 
@@ -301,8 +316,10 @@ class UserController extends Controller {
 			$data[$i]['id'] = $user->user_id;
 			$data[$i]['name'] = $user->lastname . ', ' . $user->firstname;
 			$data[$i]['email'] = $user->email;
-
-			$data[$i]['level'] = UserLevel::find($user->level)->name;
+            if($user->level)
+                $data[$i]['level'] = UserLevel::find($user->level)->name;
+            else
+                $data[$i]['level'] = 'Undefined';
 			$data[$i]['practice'] = 'Ocuhub';
 			if ($network = User::getNetwork($user->id)) {
 				$data[$i]['practice'] = $network->name;
