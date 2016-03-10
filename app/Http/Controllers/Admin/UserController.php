@@ -286,7 +286,10 @@ class UserController extends Controller {
 			$data[$i]['id'] = $user->user_id;
 			$data[$i]['name'] = $user->lastname . ', ' . $user->firstname;
 			$data[$i]['email'] = $user->email;
-			$data[$i]['level'] = UserLevel::find($user->level)->name;
+            if($user->level != 0)
+			 $data[$i]['level'] = UserLevel::find($user->level)->name;
+            else
+			 $data[$i]['level'] = 'Undefined';
 			$data[$i]['practice'] = $network->name;
 			if ($practice = User::getPractice($user->user_id)) {
 				$data[$i]['practice'] = $practice->name;

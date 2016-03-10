@@ -772,3 +772,32 @@ Section : Footer
         max-height: 2.5em;
     }
 }
+/*
+---------------------------
+Section : Admin
+---------------------------
+*/
+.admin_delete{
+    margin: auto 0;
+    visibility: hidden;
+    &.active{
+        visibility: visible;
+    }
+    .cancel_image,
+    .cancel_image-hover {
+        width: 1.5em;
+        cursor: pointer;
+        display: none;
+    }
+    .cancel_image {
+        display: block;
+    }
+    &:hover {
+        .cancel_image-hover {
+            display: block;
+        }
+        .cancel_image {
+            display: none;
+        }
+    }
+}

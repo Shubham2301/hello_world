@@ -23,6 +23,10 @@
 -->
 <div class="row content-row-margin practice_action active">
 		<p class="page_title">Practices</p>
+        <span class="admin_delete" data-toggle="tooltip" title="Delete Practice" data-placement="top">
+                    <img class="cancel_image" src="{{URL::asset('images/delete-natural.png')}}">
+                    <img class="cancel_image-hover" src="{{URL::asset('images/delete-natural-hover.png')}}">
+        </span>
         <button id="open_practice_form" type="button" class="btn add-btn" >Add New</button>
         <span class="search_input_box">
             <input type="text" class="" id="search_practice_input" placeholder="search">
