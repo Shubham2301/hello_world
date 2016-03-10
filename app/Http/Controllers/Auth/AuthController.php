@@ -62,4 +62,17 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+    protected function authenticated($request, $user)
+    {
+        if($user->menu_id == 1)
+            return redirect('/directmail');
+        elseif($user->menu_id == 2)
+            return redirect('/file_exchange');
+        elseif($user->menu_id == 6)
+            return redirect('/careconsole');
+        elseif($user->menu_id == 7)
+            return redirect('/administration/practices');
+        else
+            return redirect('/home');
+    }
 }
