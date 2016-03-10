@@ -195,7 +195,12 @@ class BulkImportController extends Controller {
 			$filename = basename(__FILE__);
 			$ip = $request->getClientIp();
 			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-			return "You have imported " . $i . " patients </br> Patients added- ".$new_patients."</br> Patient already exist- ".$old_patients;
+
+			$patients = [];
+			$patients['total'] = $i;
+			$patients['patients_added'] = $new_patients;
+			$patients['already_exist'] = $old_patients;
+			return json_encode($patients);
 		}
 		return "try again";
 	}
