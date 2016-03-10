@@ -55,10 +55,10 @@ class ActionService {
 				$console->stage_id = 1;
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactshistory = ContactHistory::where('console_id', $consoleID )->get();
-				if($contactshistory)
+				$contactHistory = ContactHistory::where('console_id', $consoleID )->get();
+				if($contactHistory)
 				{
-					foreach($contactshistory as $history){
+					foreach($contactHistory as $history){
 						$history->archived = 1;
 						$history->save();
 					}
@@ -71,10 +71,10 @@ class ActionService {
 				$date = new DateTime();
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactshistory = ContactHistory::where('console_id', $consoleID )->get();
-				if($contactshistory)
+				$contactHistory = ContactHistory::where('console_id', $consoleID )->get();
+				if($contactHistory)
 				{
-					foreach($contactshistory as $history){
+					foreach($contactHistory as $history){
 						$history->archived = 1;
 						$history->save();
 					}
@@ -96,10 +96,10 @@ class ActionService {
 				$console->archived_date = $date->format('Y-m-d H:m:s');
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactshistory = ContactHistory::where('console_id', $consoleID )->get();
-				if($contactshistory)
+				$contactHistory = ContactHistory::where('console_id', $consoleID )->get();
+				if($contactHistory)
 				{
-					foreach($contactshistory as $history){
+					foreach($contactHistory as $history){
 						$history->archived = 1;
 						$history->save();
 					}
@@ -166,10 +166,10 @@ class ActionService {
 				$date = new DateTime();
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactshistory = ContactHistory::where('console_id', $consoleID )->get();
-				if($contactshistory)
+				$contactHistory = ContactHistory::where('console_id', $consoleID )->get();
+				if($contactHistory)
 				{
-					foreach($contactshistory as $history){
+					foreach($contactHistory as $history){
 						$history->archived = 1;
 						$history->save();
 					}
@@ -196,10 +196,10 @@ class ActionService {
 				$console->archived_date = $date->format('Y-m-d H:m:s');
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactshistory = ContactHistory::where('console_id', $consoleID )->get();
-				if($contactshistory)
+				$contactHistory = ContactHistory::where('console_id', $consoleID )->get();
+				if($contactHistory)
 				{
-					foreach($contactshistory as $history){
+					foreach($contactHistory as $history){
 						$history->archived = 1;
 						$history->save();
 					}
