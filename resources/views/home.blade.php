@@ -13,7 +13,7 @@
         <strong>
             <i class="fa fa-check-circle fa-lg fa-fw"></i> Failure. &nbsp;
         </strong>
-        {{ Session::get('failure') }}
+        {{ Session::pull('failure') }}
     </div>
     @endif
 	<p class="message arial_bold">Select type of patient you are referring</p>

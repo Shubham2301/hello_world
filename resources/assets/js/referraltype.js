@@ -72,7 +72,6 @@ function printList() {
         } else {
             content += '<div class="referral_type"><span class="glyphicon glyphicon-remove-circle remove_referral_type" style="visibility:hidden;"></span><div class="tile add_tile" id="add_tiles"><center><p class="referral_edit"><span class=" glyphicon glyphicon-plus-sign" aria-hidden="true"></span></p></center></div></div>';
             content += '<div class="referral_type"><span class="glyphicon glyphicon-remove-circle remove_referral_type" style="visibility:hidden;"></span><div class="tile configuration_tile" id="edit_tiles"><center><p class="referral_edit"><span class=" glyphicon glyphicon-ok" aria-hidden="true"></span></p></center></div></div>';
-
         }
 
         $('#referraltypes_list').html(content);
@@ -83,8 +82,11 @@ function printList() {
             $('.remove_referral_type').addClass('edit');
         }
     } else {
-
-        content += '<div class="referral_type"><span class="glyphicon glyphicon-remove-circle remove_referral_type" style="visibility:hidden;"></span><div class="tile configuration_tile" id="edit_tiles"><center><p class="referral_edit"><span class=" glyphicon glyphicon-pencil" aria-hidden="true"></span></p></center></div></div>';
+        if( info['user_level'] === '1'){
+            content += '';
+        } else {
+            content += '<div class="referral_type"><span class="glyphicon glyphicon-remove-circle remove_referral_type" style="visibility:hidden;"></span><div class="tile configuration_tile" id="edit_tiles"><center><p class="referral_edit"><span class=" glyphicon glyphicon-pencil" aria-hidden="true"></span></p></center></div></div>';
+        }
 
         $('#referraltypes_list').html(content);
 

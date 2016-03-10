@@ -174,11 +174,17 @@ class BulkImportController extends Controller {
 									$date = new \DateTime();
 									$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
 									$careconsole->save();
+									$action = "new patient ($patient->id) created and added to console ($careconsole->id) ";
+									$description = '';
+									$filename = basename(__FILE__);
+									$ip = $request->getClientIp();
+									Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 								}
 								else
 									$old_patients = $old_patients+1;
+								$i++;
 							}
-							$i++;
+
 						}
 						break;
 				}

@@ -2,13 +2,11 @@
 
 namespace myocuhub\Http\Controllers;
 
-use Auth;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Network;
 use myocuhub\NetworkReferraltype;
 use myocuhub\ReferralType;
-use myocuhub\User;
 
 class HomeController extends Controller {
 	/**
@@ -17,8 +15,8 @@ class HomeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-        $data = array();
-        $data['schedule-patient'] = true;
+		$data = array();
+		$data['schedule-patient'] = true;
 		return view('home')->with('data', $data);
 	}
 
@@ -48,13 +46,16 @@ class HomeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show() {
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$referralType = Network::find($network->network_id)->referralTypes;
+		if (session('user-level') == 1) {
+			$referralType = ReferralType::all();
+		} else {
+			$referralType = Network::find(session('network-id'))->referralTypes;
+		}
 		$referralTypeList = ReferralType::all();
 		$data = [];
 		$data[0] = $referralType;
 		$data[1] = $referralTypeList;
+		$data['user_level'] = session('user-level');
 		return json_encode($data);
 	}
 
@@ -92,25 +93,24 @@ class HomeController extends Controller {
 	// Functions for Referral Type Tiles
 
 	public function removeReferral(Request $request) {
+		if (session('user-level') > 1) {
+			NetworkReferraltype::where('network_id', session('network-id'))
+				->where('referraltype_id', $id)
+				->delete();
+		}
 
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$id = $request->input('id');
-
-		NetworkReferraltype::where('network_id', $network->network_id)
-			->where('referraltype_id', $id)
-			->delete();
 		return;
 	}
 
 	public function addReferral(Request $request) {
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$id = $request->input('id');
-		$newref = new NetworkReferraltype;
-		$newref->network_id = $network->network_id;
-		$newref->referraltype_id = $id;
-		$newref->save();
+
+		if (session('user-level') > 1) {
+			$id = $request->input('id');
+			$newref = new NetworkReferraltype;
+			$newref->network_id = session('network-id');
+			$newref->referraltype_id = $id;
+			$newref->save();
+		}
 		return;
 	}
 }

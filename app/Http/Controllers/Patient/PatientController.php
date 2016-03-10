@@ -66,7 +66,6 @@ class PatientController extends Controller {
 	}
 
 	public function createByAdmin() {
-
 		$gender = array();
 		$gender['Male'] = 'Male';
 		$gender['Female'] = 'Female';
@@ -92,41 +91,47 @@ class PatientController extends Controller {
 		$userID = Auth::user()->id;
 		$network = User::getNetwork($userID);
 		$networkID = $network->network_id;
+		$data = $request->all();
+		unset($data['_token']);
+		$patient = Patient::where($data)->first();
+		if(!$patient){
+			$patient = new Patient;
+			$patient->firstname = $request->input('firstname');
+			$patient->lastname = $request->input('lastname');
+			$patient->email = $request->input('email');
+			$patient->gender = $request->input('gender');
+			$patient->lastfourssn = $request->input('lastfourssn');
+			$patient->addressline1 = $request->input('addressline1');
+			$patient->addressline2 = $request->input('addressline2');
+			$patient->city = $request->input('city');
+			$patient->zip = $request->input('zip');
+			$patient->birthdate = $request->input('birthdate');
+			$patient->preferredlanguage = $request->input('preferredlanguage');
+			$patient->cellphone = $request->input('cellphone');
+			$patient->state = $request->input('state');
+			$patient->save();
 
-		$patient = new Patient;
-		$patient->firstname = $request->input('firstname');
-		$patient->lastname = $request->input('lastname');
-		$patient->email = $request->input('email');
-		$patient->gender = $request->input('gender');
-		$patient->lastfourssn = $request->input('lastfourssn');
-		$patient->addressline1 = $request->input('addressline1');
-		$patient->addressline2 = $request->input('addressline2');
-		$patient->city = $request->input('city');
-		$patient->zip = $request->input('zip');
-		$patient->birthdate = $request->input('birthdate');
-		$patient->preferredlanguage = $request->input('preferredlanguage');
-		$patient->cellphone = $request->input('cellphone');
-		$patient->state = $request->input('state');
-		$patient->save();
+			$importHistory = new ImportHistory;
+			$importHistory->network_id = $networkID;
+			$importHistory->save();
 
-		$importHistory = new ImportHistory;
-		$importHistory->network_id = $networkID;
-		$importHistory->save();
+			$careconsole = new Careconsole;
+			$careconsole->import_id = $importHistory->id;
+			$careconsole->patient_id = $patient->id;
+			$careconsole->stage_id = 1;
+			$date = new DateTime();
+			$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
+			$careconsole->save();
 
-		$careconsole = new Careconsole;
-		$careconsole->import_id = $importHistory->id;
-		$careconsole->patient_id = $patient->id;
-		$careconsole->stage_id = 1;
-		$date = new DateTime();
-		$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
-		$careconsole->save();
-
-		$action = "new patient($patient->id) created and added to console($careconsole->id)";
-		$description = '';
-		$filename = basename(__FILE__);
-		$ip = $request->getClientIp();
-		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
+			$action = "new patient ($patient->id) created and added to console ($careconsole->id) ";
+			$description = '';
+			$filename = basename(__FILE__);
+			$ip = $request->getClientIp();
+			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+		}
+		else{
+			$request->session()->put('success', 'patient already exists');
+		}
 		if (!$request->has('action')) {
 			return redirect('/administration/patients');
 		}
@@ -144,10 +149,8 @@ class PatientController extends Controller {
 	public function show(Request $request) {
 		$id = $request->input('id');
 		$patientData = [];
-
 		$patient = Patient::find($id);
-
-//		$patient->birthdate = date("d F Y", strtotime($patient->birthdate));
+		//		$patient->birthdate = date("d F Y", strtotime($patient->birthdate));
 		$careconsole = Careconsole::where('patient_id', '=', $id)->first();
 		$insurance = PatientInsurance::where('patient_id', '=', $id)->first(['insurance_carrier']);
 		$previousProvider = Patient::getPreviousProvider($id);
@@ -260,6 +263,7 @@ class PatientController extends Controller {
 		$filters = json_decode($request->input('data'), true);
 
 		$patients = Patient::getPatients($filters);
+
 		$data = [];
 		$i = 0;
 		foreach ($patients as $patient) {

@@ -14,7 +14,7 @@
         <strong>
             <i class="fa fa-check-circle fa-lg fa-fw"></i> Success. &nbsp;
         </strong>
-        {{ Session::get('success') }}
+        {{ Session::pull('success') }}
     </div>
     @endif
 

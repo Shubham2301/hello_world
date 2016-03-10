@@ -178,8 +178,15 @@ class CareConsoleController extends Controller {
 	 * @param Request $request
 	 */
 	public function searchPatients(Request $request) {
-		$networkID = User::getNetwork(Auth::user()->id)->network_id;
-		$patients = Patient::getPatientsByName($request->name,$networkID);
+
+		if (session('user-level') == 1) {
+			$practices = Patient::where('firstname', 'LIKE', '%' . $tosearchdata['value'] . '%')
+				->orWhere('middlename', 'LIKE', '%' . $tosearchdata['value'] . '%')
+				->orWhere('lastname', 'LIKE', '%' . $tosearchdata['value'] . '%')
+				->get(['*', 'patients.id']);
+		} else {
+			$patients = Patient::getPatientsByName($request->name, session('network-id'));
+		}
 		$i = 0;
 		$results = [];
 
@@ -188,10 +195,13 @@ class CareConsoleController extends Controller {
 			if ($console) {
 				$results[$i]['archived_date'] = null;
 				$results[$i]['recall_date'] = null;
-				if($console->archived_date)
-					$results[$i]['archived_date'] =$console->archived_date;
-				if($console->recall_date)
-					$results[$i]['recall_date'] =$console->recall_date;
+				if ($console->archived_date) {
+					$results[$i]['archived_date'] = $console->archived_date;
+				}
+
+				if ($console->recall_date) {
+					$results[$i]['recall_date'] = $console->recall_date;
+				}
 
 				$patient['appointment_id'] = $console->appointment_id;
 				$results[$i]['id'] = $patient->id;
@@ -200,12 +210,14 @@ class CareConsoleController extends Controller {
 				$results[$i]['name'] = $patient->lastname . ', ' . $patient->firstname;
 				$results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
 				$results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
-				if($console->recall_date)
+				if ($console->recall_date) {
 					$results[$i]['actions'] = $this->CareConsoleService->getActions(8);
-				else if($console->archived_date)
+				} else if ($console->archived_date) {
 					$results[$i]['actions'] = $this->CareConsoleService->getActions(6);
-				else
+				} else {
 					$results[$i]['actions'] = $this->CareConsoleService->getActions($console->stage_id);
+				}
+
 				$results[$i]['scheduled_to'] = '-';
 				$results[$i]['appointment_date'] = '-';
 				if ($patient['appointment_id']) {
@@ -247,6 +259,7 @@ class CareConsoleController extends Controller {
 		$data['phone'] = $patient->cellphone;
 		$data['actions'] = $this->CareConsoleService->getActions($console->stage_id);
 		$data['stageid'] = $console->stage_id;
+		$data['priority'] = $console->priority;
 
 		$appointment = Appointment::find($console->appointment_id);
 		$provider = null;
