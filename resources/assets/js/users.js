@@ -5,6 +5,9 @@ $(document).ready(function() {
     $('.profile_img_upload').on('change',function () {
         
     });
+    $('.profile_img_upload').on('change',function () {
+        
+    });
 
     $('#search_user_button').on('click', function() {
         var searchvalue = $('#search_user_input').val();

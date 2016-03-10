@@ -9,6 +9,7 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\NetworkUser;
 use myocuhub\Models\UserLevel;
+use myocuhub\Network;
 use myocuhub\Role;
 use myocuhub\Role_user;
 use myocuhub\User;
@@ -44,7 +45,16 @@ class UserController extends Controller {
 		$userLevels = $this->getUserLevels();
 		$data['url'] = '/administration/users';
 		$data['user_active'] = true;
-		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data)->with('user', $user);
+		$user['network_id'] = '';
+		$networkData = [];
+		$networks = Network::all();
+		if (session('user-level') == 1) {
+			foreach ($networks as $network) {
+				$networkData[$network->id] = $network->name;
+			}
+		}
+
+		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data)->with('user', $user)->with('networks', $networkData);
 	}
 
 	/**
@@ -54,10 +64,6 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request) {
-
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$networkID = $network->network_id;
 
 		if ($request->input('password') == $request->input('password_confirmation')) {
 			$user = new User;
@@ -103,7 +109,11 @@ class UserController extends Controller {
 
 				$networkUser = new NetworkUser;
 				$networkUser->user_id = $user->id;
-				$networkUser->network_id = $networkID;
+				if (session('user-level') == 1) {
+					$networkUser->network_id = $request->input('user_network');
+				} else {
+					$networkUser->network_id = session('network_id');
+				}
 				$networkUser->save();
 
 				$action = 'new user created';
