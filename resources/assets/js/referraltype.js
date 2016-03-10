@@ -87,7 +87,7 @@ function printList() {
         } else {
             content += '<div class="referral_type"><span class="glyphicon glyphicon-remove-circle remove_referral_type" style="visibility:hidden;"></span><div class="tile configuration_tile" id="edit_tiles"><center><p class="referral_edit"><span class=" glyphicon glyphicon-pencil" aria-hidden="true"></span></p></center></div></div>';
         }
-        
+
         $('#referraltypes_list').html(content);
 
         $('.remove_referral_type').removeClass('edit');

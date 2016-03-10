@@ -21,12 +21,11 @@
             <p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong>2 of 2</strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
         </div>
     </div>
-    <div class="practice_search_content">
-        <form action="">
+    <form action="">
             <input type="hidden" id="assign_role_image_path" value="{{URL::asset('images/assign-role-icon-01.png')}}">
             <input type="hidden" id="assign_user_image_path" value="{{URL::asset('images/assign-user-icon-01.png')}}">
         </form>
-
+    <div class="practice_search_content">
         <!--
         <div class="row search_item" data-id="11">
         <div class="col-xs-3" style="display:inline-flex">

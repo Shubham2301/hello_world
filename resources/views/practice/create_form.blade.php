@@ -29,17 +29,6 @@
 
                     </div>
                     <div class="col-sm-6 col-xs-12 ocuapps_options">
-                        <p style="font-size:1.2em;margin-left: 1em;">OcuApps</p>
-                        <span class="ocuapps_input"><input type="checkbox"> <p>Calendar Intregation</p></span>
-                        <br>
-                        <span class="ocuapps_input"><input type="checkbox"> <p>Data Interpretation</p></span>
-                        <br>
-                        <span class="ocuapps_input"><input type="checkbox"> <p>Demographics</p></span>
-                        <br>
-                        <span class="ocuapps_input"><input type="checkbox"> <p>Patient Notification</p></span>
-                        <br>
-                        <span class="ocuapps_input"><input type="checkbox"> <p>Telephony</p></span>
-                        <br>
                     </div>
                 </div>
             </div>

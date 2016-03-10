@@ -147,6 +147,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('networks/destroy/{id}', 'Admin\NetworkController@destroy');
 
 	Route::get('/patients/create', 'Patient\PatientController@create');
-	Route::get('/patient/destroy/{id}', 'Patient\PatientController@destroy');
+	Route::get('/patient/destroy', 'Patient\PatientController@destroy');
 
 });

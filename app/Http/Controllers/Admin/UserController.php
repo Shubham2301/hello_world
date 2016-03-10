@@ -291,6 +291,7 @@ class UserController extends Controller {
 			$data[$i]['id'] = $user->user_id;
 			$data[$i]['name'] = $user->lastname . ', ' . $user->firstname;
 			$data[$i]['email'] = $user->email;
+
 			$data[$i]['level'] = UserLevel::find($user->level)->name;
 			$data[$i]['practice'] = 'Ocuhub';
 			if ($network = User::getNetwork($user->id)) {
