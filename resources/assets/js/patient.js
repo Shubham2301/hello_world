@@ -137,10 +137,24 @@ $(document).ready(function() {
             $('.patient_search_content').each(function() {
                 $(this).find('input').prop('checked', true);
             });
-        } else
+            $('.admin_delete').addClass('active');
+            $('.delete_from_row_dropdown').addClass('hide');
+        } else {
             $('.patient_search_content').each(function() {
                 $(this).find('input').prop('checked', false);
             });
+            $('.admin_delete').removeClass('active');
+            $('.delete_from_row_dropdown').removeClass('hide');
+        }
+    });
+    $('.patient_search_content').on('change', '.admin_checkbox_row', function () {
+        if ($("input[name='checkbox']:checked").length > 0) {
+            $('.admin_delete').addClass('active');
+            $('.delete_from_row_dropdown').addClass('hide');
+        } else {
+            $('.admin_delete').removeClass('active');
+            $('.delete_from_row_dropdown').removeClass('hide');
+        }
     });
     $('.patient_list').on('click', '.search_name', function() {
         var patient_id = $(this).parents('.search_item').attr('data-id');
@@ -148,6 +162,9 @@ $(document).ready(function() {
             'id': patient_id
         };
         getPatientInfo(formData);
+    });
+    $('.admin_delete').on('click', function(){
+        getCheckedID();
     });
     $('#open_patient_form').on('click', function() {
         window.location = '/administration/patients/create';
@@ -170,9 +187,11 @@ $(document).ready(function() {
     });
     $('.patient_list').on('click', '.removepatient_from_row', function() {
         var val = $(this).parents('.search_item').attr('data-id');
+        var id = [];
+        id.push(val);
         showModalConfirmDialog('Are you sure?', function(outcome) {
             if (outcome) {
-                removePatient(val);
+                removePatient(id);
                 $(this).parents('.search_item').remove();
             }
         });
@@ -191,6 +210,15 @@ $(document).ready(function() {
 });
 var currentpage = 1;
 var lastpage = 0;
+
+function getCheckedID() {
+    var id = [];
+        $.each($("input[name='checkbox']:checked"), function () {
+            id.push($(this).attr('data-id'));
+        });
+        removePatient(id);
+        $('.admin_delete').removeClass('active');
+}
 
 function loadAllPatients() {
     var searchdata = [];
@@ -303,7 +331,7 @@ function getPatients(formData, page) {
                 var content = '';
                 if (patients.length > 0 && patients[0]['total'] > 0) {
                     patients.forEach(function(patient) {
-                        content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3" style="display:inline-flex"><div><input type="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + patient.lname + ', ' + patient.fname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p><div><a href="/providers?referraltype_id=6&action=schedule_appointment&patient_id=' + patient.id + '"><img class="action_dropdown_img" src="' + active_img + '" alt=""></a></div></p>&nbsp;&nbsp;<p class="editPatient_from_row" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepatient_from_row"><img src="' + delete_img + '" alt="" class="removepatient_img"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+                        content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3" style="display:inline-flex"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + patient.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + patient.lname + ', ' + patient.fname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p><div><a href="/providers?referraltype_id=6&action=schedule_appointment&patient_id=' + patient.id + '"><img class="action_dropdown_img" src="' + active_img + '" alt=""></a></div></p>&nbsp;&nbsp;<p class="editPatient_from_row" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepatient_from_row"><img src="' + delete_img + '" alt="" class="removepatient_img"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     });
 
                     currentpage = patients[0]['currentPage'];
@@ -406,10 +434,16 @@ function updatePatientData() {
 }
 
 function removePatient(id) {
+    var removeId = {};
+    var i = 0;
+    id.forEach(function (item) {
+        removeId[i] = item;
+        i++;
+    });
     $.ajax({
-        url: '/patient/destroy/' + id,
+        url: '/patient/destroy/',
         type: 'GET',
-        data: '',
+        data: $.param(removeId),
         contentType: 'text/html',
         async: false,
         success: function success(e) {
@@ -424,6 +458,10 @@ function removePatient(id) {
         cache: false,
         processData: false
     });
+    $('.patient_search_content').each(function() {
+                $(this).find('input').prop('checked', false);
+    });
+    $('#checked_all_patients').prop('checked', false);
 }
 
 function showModalConfirmDialog(msg, handler) {

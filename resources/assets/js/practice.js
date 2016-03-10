@@ -572,7 +572,10 @@ function removePractice(id) {
         cache: false,
         processData: false
     });
-
+    $('.practice_search_content').each(function() {
+                $(this).find('input').prop('checked', false);
+    });
+    $('#checked_all_practice').prop('checked', false);
 }
 
 function updateLocationData(index) {

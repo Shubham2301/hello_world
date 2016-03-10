@@ -249,13 +249,20 @@ class PatientController extends Controller {
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Request $request, $id) {
-		$patient = Patient::where('id', $id)->delete();
-		$action = 'delete patient of id =' . $id;
-		$description = '';
-		$filename = basename(__FILE__);
-		$ip = $request->getClientIp();
-		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+	public function destroy(Request $request) {
+        $i = 0;
+        while(1){
+            if($request->input($i)){
+                $patient = Patient::where('id', $request->input($i))->delete();
+                $action = 'delete patient of id =' . $request->input($i);
+                $description = '';
+                $filename = basename(__FILE__);
+                $ip = $request->getClientIp();
+                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+                $i++;   }
+            else
+                break;
+            }
 	}
 
 	public function search(Request $request) {

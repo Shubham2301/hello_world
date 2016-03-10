@@ -22,12 +22,12 @@
             <p class="" style="color:black"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong></strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
         </div>
     </div>
-
-    <div class="patient_search_content">
         <form action="">
             <input type="hidden" id="assign_role_image_path" value="{{URL::asset('images/assign-role-icon-01.png')}}">
             <input type="hidden" id="assign_user_image_path" value="{{URL::asset('images/assign-user-icon-01.png')}}">
         </form>
+    <div class="patient_search_content">
+
 
         <!--
         <div class="row search_item" data-id="11">
