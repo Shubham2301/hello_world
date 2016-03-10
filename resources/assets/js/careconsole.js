@@ -176,6 +176,7 @@ $(document).ready(function() {
         showDate = false;
 
         switch ($(this).attr('data-name')) {
+            case 'reschedule':
             case 'schedule':
                 window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
                 break;
