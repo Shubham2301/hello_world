@@ -37,7 +37,7 @@ class ActionService {
 		$contact->action_result_id = $actionResultID;
 		$contact->notes = $notes;
 		$contact->console_id = $consoleID;
-		$contact->contact_activity_date = $contactDate->format('Y-m-d H:m:s');;
+		$contact->contact_activity_date = $contactDate->format('Y-m-d H:m:s');
 		$contact->save();
 		switch ($actionName) {
 			case 'contact-attempted-by-phone':
@@ -55,6 +55,14 @@ class ActionService {
 				$console->stage_id = 1;
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
+				$contactshistory = ContactHistory::where('console_id', $consoleID )->get();
+				if($contactshistory)
+				{
+					foreach($contactshistory as $history){
+						$history->archived = 1;
+						$history->save();
+					}
+				}
 				break;
 			case 'recall-later':
 				$console = Careconsole::find($consoleID);
@@ -63,6 +71,14 @@ class ActionService {
 				$date = new DateTime();
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
+				$contactshistory = ContactHistory::where('console_id', $consoleID )->get();
+				if($contactshistory)
+				{
+					foreach($contactshistory as $history){
+						$history->archived = 1;
+						$history->save();
+					}
+				}
 				break;    
 			case 'unarchive':
 				$console = Careconsole::find($consoleID);
@@ -80,6 +96,14 @@ class ActionService {
 				$console->archived_date = $date->format('Y-m-d H:m:s');
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
+				$contactshistory = ContactHistory::where('console_id', $consoleID )->get();
+				if($contactshistory)
+				{
+					foreach($contactshistory as $history){
+						$history->archived = 1;
+						$history->save();
+					}
+				}
 				break;
 			case 'kept-appointment':
 				$console = Careconsole::find($consoleID);
@@ -142,6 +166,14 @@ class ActionService {
 				$date = new DateTime();
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
+				$contactshistory = ContactHistory::where('console_id', $consoleID )->get();
+				if($contactshistory)
+				{
+					foreach($contactshistory as $history){
+						$history->archived = 1;
+						$history->save();
+					}
+				}
 				break;
 			case 'refer-to-specialist':
 			case 'highrisk-contact-pcp':
@@ -164,6 +196,14 @@ class ActionService {
 				$console->archived_date = $date->format('Y-m-d H:m:s');
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
+				$contactshistory = ContactHistory::where('console_id', $consoleID )->get();
+				if($contactshistory)
+				{
+					foreach($contactshistory as $history){
+						$history->archived = 1;
+						$history->save();
+					}
+				}
 				break;
 			default:
 				break;
