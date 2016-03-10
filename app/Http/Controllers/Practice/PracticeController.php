@@ -7,6 +7,7 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
+use myocuhub\Models\PracticeNetwork;
 use myocuhub\Network;
 use myocuhub\User;
 
@@ -60,6 +61,10 @@ class PracticeController extends Controller {
 			$practicelocation->location_code = $location['location_code'];
 			$practicelocation->save();
 		}
+		$practiceNetwork = new PracticeNetwork;
+		$practiceNetwork->practice_id = $practice->id;
+		$practiceNetwork->network_id = session('network-id');
+		$practiceNetwork->save();
 		$action = 'new practice created';
 		$description = '';
 		$filename = basename(__FILE__);
@@ -155,16 +160,17 @@ class PracticeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function destroy(Request $request) {
-        $i = 0;
-        while(1){
-            if($request->input($i)){
-                $practice_id = $request->input($i);
-                $practicelocation = PracticeLocation::where('practice_id', $practice_id)->delete();
-                $practices = Practice::where('id', $practice_id)->delete();
-                $i++;   }
-            else
-                break;
-            }
+		$i = 0;
+		while (1) {
+			if ($request->input($i)) {
+				$practice_id = $request->input($i);
+				$practicelocation = PracticeLocation::where('practice_id', $practice_id)->delete();
+				$practices = Practice::where('id', $practice_id)->delete();
+				$i++;} else {
+				break;
+			}
+
+		}
 
 		$action = 'deleted practice';
 		$description = '';
