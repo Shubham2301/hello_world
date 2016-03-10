@@ -305,10 +305,17 @@ class CareConsoleService {
 		foreach ($patients as $patient) {
 			$console = Careconsole::find($patient['id']);
 			$console->recall_date = null;
+			$console->archived_date = null;
 			$date = new \DateTime();
 			$console->stage_id = 1;
 			$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 			$console->save();
+			$contactshistory = ContactHistory::where('console_id', $console->id )->first();
+			if($contactshistory){
+				$contactshistory->archived = 1;
+				$contactshistory->save();
+			}
+
 		}
 
 	}

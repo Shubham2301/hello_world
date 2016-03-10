@@ -134,7 +134,11 @@ class Careconsole extends Model {
 			->join('contact_history', 'careconsole.id', '=', 'contact_history.console_id', 'left outer')
 			->whereNull('archived_date')
 			->whereNull('recall_date')
-			->whereNull('console_id')
+			->where(function($query){
+				$query->whereNull('console_id')
+					->orWhere('archived', 1);
+
+			})
 			->count();
 	}
 
@@ -291,7 +295,11 @@ class Careconsole extends Model {
 			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
 			->where('import_history.network_id', $networkID)
 			->leftjoin('contact_history', 'careconsole.id', '=', 'contact_history.console_id')
-			->whereNull('console_id')
+			->where(function($query){
+				$query->whereNull('console_id')
+				->orWhere('archived', 1);
+
+			})
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
 			->whereNull('archived_date')
 			->whereNull('recall_date')
