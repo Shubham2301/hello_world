@@ -150,7 +150,10 @@ function importPatients() {
         contentType: false,
         type: 'POST',
         success: function (dataofconfirm) {
-            $('.success_message').html(dataofconfirm);
+			var patients = $.parseJSON(dataofconfirm);
+			var message = '<span style="color:#4d4d4d;">You have imported </span> <span style="color:#0071bc;">'+patients.total+' patients </span> </br><span style="color:#4d4d4d;"> Patients added- </span><span style="color:#0071bc;">'+patients.patients_added+'</br><span style="color:#4d4d4d;"> Patient already exist- </span><span style="color:#0071bc;">' + patients.already_exist +'</span>';
+
+			$('.success_message').html(message);
             $('.dismiss_button').text('Ok');
             $('.dismiss_button').removeClass('hide');
             if (typeof refreshOverview == 'function') {
