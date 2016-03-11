@@ -76,7 +76,7 @@ $(document).ready(function() {
         }
     });
     $('#recall_date').datetimepicker({
-        format: 'YYYY/MM/DD',
+        format: 'MM/DD/YYYY',
     });
     $('.day_box.active').on('click', function() {
         $(this).removeClass('active');
