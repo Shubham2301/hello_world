@@ -86,6 +86,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
 		Route::resource('bulkimport', 'BulkImportController');
 	});
+    Route::get('file_exchange/update_description', 'FileExchange\FileExchangeController@changeDescription');
+    Route::get('file_exchange/showinfo', 'FileExchange\FileExchangeController@show');
 	Route::resource('file_exchange', 'FileExchange\FileExchangeController');
 	Route::post('createFolder', 'FileExchange\FileExchangeController@createFolder');
 	Route::post('uploadDocument', 'FileExchange\FileExchangeController@uploadDocument');
