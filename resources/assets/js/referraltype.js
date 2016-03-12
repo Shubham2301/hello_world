@@ -99,7 +99,7 @@ function getReferralTypeList() {
     var info = "";
 
     $.ajax({
-        url: '/home/getreferrallist',
+        url: 'getreferrallist',
         type: 'GET',
         contentType: 'text/html',
         async: false,
@@ -131,7 +131,7 @@ function removeReferralType(id) {
     };
 
     $.ajax({
-        url: '/home/removereferral',
+        url: 'removereferral',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',
@@ -157,7 +157,7 @@ function addReferralType(id, display_name, name) {
     };
 
     $.ajax({
-        url: '/home/addreferral',
+        url: 'addreferral',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',

@@ -49,9 +49,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('editprofile', 'Admin\UserController@editProfile');
 	Route::post('updateprofile', 'Admin\UserController@updateProfile');
-	Route::get('home/removereferral', 'HomeController@removeReferral');
-	Route::get('home/addreferral', 'HomeController@addReferral');
-	Route::get('home/getreferrallist', 'HomeController@show');
 	Route::get('patients/search', 'Patient\PatientController@search');
 	Route::get('providers/search', 'Practice\ProviderController@search');
 	Route::get('practices/search', 'Practice\PracticeController@search');
@@ -86,6 +83,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
 		Route::resource('bulkimport', 'BulkImportController');
 	});
+    Route::get('file_exchange/update_description', 'FileExchange\FileExchangeController@changeDescription');
+    Route::get('file_exchange/showinfo', 'FileExchange\FileExchangeController@show');
 	Route::resource('file_exchange', 'FileExchange\FileExchangeController');
 	Route::post('createFolder', 'FileExchange\FileExchangeController@createFolder');
 	Route::post('uploadDocument', 'FileExchange\FileExchangeController@uploadDocument');
@@ -117,6 +116,11 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('administration/users/edit/{id}', 'Admin\UserController@edit');
 	Route::post('administration/users/update/{id}', 'Admin\UserController@update');
 	Route::get('users/search', 'Admin\UserController@search');
+
+    Route::resource('referraltype', 'ReferralTypeController');
+	Route::get('removereferral', 'ReferralTypeController@removeReferral');
+	Route::get('addreferral', 'ReferralTypeController@addReferral');
+	Route::get('getreferrallist', 'ReferralTypeController@show');
 
 	Route::resource('administration/roles', 'Admin\RoleController');
 	Route::resource('administration/networks', 'Admin\NetworkController');

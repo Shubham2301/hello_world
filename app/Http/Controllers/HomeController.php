@@ -2,11 +2,11 @@
 
 namespace myocuhub\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
-use myocuhub\Network;
-use myocuhub\NetworkReferraltype;
-use myocuhub\ReferralType;
+use myocuhub\Role_user;
+use myocuhub\User;
 
 class HomeController extends Controller {
 	/**
@@ -15,9 +15,28 @@ class HomeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$data = array();
-		$data['schedule-patient'] = true;
-		return view('home')->with('data', $data);
+        $userID = Auth::user()->id;
+        $user = User::find($userID);
+        if(isset($user->menu_id)) {
+            if($user->menu_id == 1)
+                return redirect('/directmail');
+            elseif($user->menu_id == 2)
+                return redirect('/file_exchange');
+            elseif($user->menu_id == 4)
+                return redirect('/referraltype');
+            elseif($user->menu_id == 6)
+                return redirect('/careconsole');
+            elseif($user->menu_id == 7)
+                return redirect('/administration/practices');
+        }
+        $roles = Role_user::where('user_id', '=', $userID)->get();
+        foreach($roles as $role)    {
+            if($role->role_id == 12) {
+                return redirect('/careconsole');
+                break;
+            }
+        }
+		return redirect('/referraltype');
 	}
 
 	/**
@@ -46,17 +65,7 @@ class HomeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show() {
-		if (session('user-level') == 1) {
-			$referralType = ReferralType::all();
-		} else {
-			$referralType = Network::find(session('network-id'))->referralTypes;
-		}
-		$referralTypeList = ReferralType::all();
-		$data = [];
-		$data[0] = $referralType;
-		$data[1] = $referralTypeList;
-		$data['user_level'] = session('user-level');
-		return json_encode($data);
+        //
 	}
 
 	/**
@@ -88,29 +97,5 @@ class HomeController extends Controller {
 	 */
 	public function destroy($id) {
 		//
-	}
-
-	// Functions for Referral Type Tiles
-
-	public function removeReferral(Request $request) {
-		if (session('user-level') > 1) {
-			NetworkReferraltype::where('network_id', session('network-id'))
-				->where('referraltype_id', $id)
-				->delete();
-		}
-
-		return;
-	}
-
-	public function addReferral(Request $request) {
-
-		if (session('user-level') > 1) {
-			$id = $request->input('id');
-			$newref = new NetworkReferraltype;
-			$newref->network_id = session('network-id');
-			$newref->referraltype_id = $id;
-			$newref->save();
-		}
-		return;
 	}
 }

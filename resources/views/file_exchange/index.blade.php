@@ -51,60 +51,31 @@
         @foreach($folderlist as $folder)
         <div class="row arial col_content">
             <div class="col-xs-1" style="text-align: center;">
-                <input type="checkbox" class="checkbox file-exchange folder-check" style="display: inline;" data-id="{{ $folder['id'] }}">
+                <input type="checkbox" class="checkbox file-exchange folder-check" style="display: inline;" data-id="{{ $folder['id'] }}" data-name="folder">
             </div>
             <div class="col-xs-7 no-padding">
                 <a href="file_exchange?id={{$folder['id']}}"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $folder['name'] }}</a>
             </div>
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
-            <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" >{{ $folder['description'] }}</div>
+            <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $folder['id'] }}_folder">{{ $folder['description'] }}</div>
         </div>
         <hr>
         @endforeach
         @foreach($filelist as $file)
         <div class="row arial col_content">
             <div class="col-xs-1" style="text-align: center;">
-                <input type="checkbox" class="checkbox file-exchange file-check" style="display: inline;" data-id="{{ $file['id'] }}">
+                <input type="checkbox" class="checkbox file-exchange file-check" name="checkbox" style="display: inline;" data-id="{{ $file['id'] }}" data-name="file">
             </div>
             <div class="col-xs-7 no-padding"><img src="{{URL::asset('images/files-white.png')}}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $file['name'] }}</div>
             <div class="col-xs-2 no-padding">{{ $file['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $file['updated_at'] }}</div>
-            <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" >{{ $file['description'] }}</div>
+            <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $file['id'] }}_file" >{{ $file['description'] }}</div>
         </div>
         <hr>
         @endforeach
     </div>
-    <div class="item_info">
-        <span class="title arial_bold">
-            <span>Folder 1</span>
-            <span class="glyphicon glyphicon-remove" id="close_item_info"></span>
-        </span>
-        <br>
-        <span class="modifications arial_bold">
-            Modifications
-        </span>
-        <br>
-        <span class="modification_history">
-            <span>Me</span>
-            <span>16-Feb-2016</span>
-        </span>
-        <span class="modification_history">
-            <span>Eric Hoell</span>
-            <span>10-Feb-2016</span>
-        </span>
-        <span class="modification_history">
-            <span>John Doe</span>
-            <span>26-Jan-2016</span>
-        </span>
-        <br>
-        <span class="modifications arial_bold">
-            Edit Description
-        </span>
-        <br>
-        <span class="description arial_italic">
-            Description is a really important part of this segment, more important than the file name maybe. One line of the description will be shown on opening the portalbut by clicking on that, the complete description will be available.
-        </span>
+    <div class="item_info" id="item_info">
     </div>
 </div>
 @include('file_exchange.addFolder')
