@@ -13,7 +13,7 @@ class ContactHistory extends Model
 		return self::where('console_id', $consoleID)
 			->leftjoin('actions', 'contact_history.action_id', '=', 'actions.id')
 			->leftjoin('careconsole', 'contact_history.console_id', '=', 'careconsole.id')
-			->whereNull('archived_date')
+			->orderBy('contact_activity_date','decs')
 			->get(['*', 'contact_history.id']);
 
 	}
