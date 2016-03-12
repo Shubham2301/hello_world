@@ -9,7 +9,7 @@
                     <li class="hello"><a href="/directmail"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="drop_image"></a></li>
                     <li><a href="file_exchange"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="drop_image"></a></li>
                     <li><a href="#" id="menu-announcements"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a></li>
-                    <li><a href="/home"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a></li>
+                    <li><a href="/referraltype"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a></li>
                     <li><a href="#"><img src="{{URL::asset('images/sidebar/records.png')}}" class="drop_image"></a></li>
                     <li><a href="/careconsole"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="drop_image"></a></li>
                     <li><a href="/administration/practices"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a></li>

@@ -2,7 +2,6 @@
 
 namespace myocuhub\Http\Controllers\Auth;
 
-use myocuhub\User;
 use Validator;
 use myocuhub\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -62,18 +61,5 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
-    protected function authenticated($request, $user)
-    {
-        if(isset($user->menu_id)) {
-            if($user->menu_id == 1)
-                return redirect('/directmail');
-            elseif($user->menu_id == 2)
-                return redirect('/file_exchange');
-            elseif($user->menu_id == 6)
-                return redirect('/careconsole');
-            elseif($user->menu_id == 7)
-                return redirect('/administration/practices');
-        }
-        return redirect('/home');
-    }
+
 }
