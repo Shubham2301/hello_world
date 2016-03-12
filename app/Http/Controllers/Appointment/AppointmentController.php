@@ -12,6 +12,7 @@ use myocuhub\Models\Practice;
 use myocuhub\Patient;
 use myocuhub\Services\FourPatientCare\FourPatientCare;
 use myocuhub\User;
+use myocuhub\Models\ContactHistory;
 
 class AppointmentController extends Controller {
 	/**
@@ -190,9 +191,25 @@ class AppointmentController extends Controller {
 		if ($careconsole != NULL) {
 			$careconsole->appointment_id = $appointment->id;
 			$careconsole->stage_id = 2;
+			$careconsole->recall_date = null;
+			$careconsole->archived_date = null;
 			$date = new DateTime();
 			$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
 			$careconsole->update();
+
+
+			$provider = User::find($providerID);
+			$scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+			$notes = $scheduledTo.'</br>'.$appointment->start_datetime.'</br>'.$appointmentType;
+
+			$contactDate = new DateTime();
+			$contactHistory = new ContactHistory;
+			$contactHistory->action_id = 9;
+			$contactHistory->action_result_id = 14;
+			$contactHistory->notes = $notes;
+			$contactHistory->console_id = $careconsole->id;
+			$contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:m:s');
+			$contactHistory->save();
 		}
 
 		$apptResult = $this->fourPatientCare->requestApptInsert($apptInfo);

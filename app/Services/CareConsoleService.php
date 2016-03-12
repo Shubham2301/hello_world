@@ -309,6 +309,7 @@ class CareConsoleService {
 			$date = new \DateTime();
 			$console->stage_id = 1;
 			$console->stage_updated_at = $date->format('Y-m-d H:m:s');
+			$console->entered_console_at = $date->format('Y-m-d H:m:s');
 			$console->save();
 		}
 

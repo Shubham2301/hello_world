@@ -49,11 +49,11 @@ class ActionService {
 				break;
 			case 'move-to-console':
 				$console = Careconsole::find($consoleID);
-				$date = new DateTime($recallDate);
 				$console->recall_date = null;
 				$date = new DateTime();
 				$console->stage_id = 1;
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
+				$console->entered_console_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				$contactHistory = ContactHistory::where('console_id', $consoleID )->get();
 				if($contactHistory)
@@ -88,6 +88,7 @@ class ActionService {
 				$console->appointment_id = null;
 				$console->referral_id = null;
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
+				$console->entered_console_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			case 'archive':
@@ -213,8 +214,13 @@ class ActionService {
 
 	public function getContactActions($consoleID){
 		$contactsData = ContactHistory::getContactHistory($consoleID);
-		$i=0;
+		$console = Careconsole::find($consoleID);
+		$date = new \DateTime($console->entered_console_at);
 		$actions = [];
+		$actions[0]['date']=$date->format('j F Y');
+		$actions[0]['name']= 'Entered-into-system';
+		$actions[0]['notes']='-';
+		$i=1;
 		foreach($contactsData as $contact){
 			$date = new \DateTime($contact['contact_activity_date']);
 			$actions[$i]['date']=$date->format('j F Y');

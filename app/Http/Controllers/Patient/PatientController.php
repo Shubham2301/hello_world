@@ -93,6 +93,15 @@ class PatientController extends Controller {
 		$networkID = $network->network_id;
 		$data = $request->all();
 		unset($data['_token']);
+		$referraltypeID = 0;
+		$action = '';
+		if($request->has('referraltype_id')){
+			$referraltypeID = $request->input('referraltype_id');
+			$action = $request->input('action');
+			unset($data['referraltype_id']);
+			unset($data['action']);
+		}
+
 		$patient = Patient::where($data)->first();
 		if(!$patient){
 			$patient = new Patient;
@@ -121,6 +130,7 @@ class PatientController extends Controller {
 			$careconsole->stage_id = 1;
 			$date = new DateTime();
 			$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
+			$careconsole->entered_console_at = $date->format('Y-m-d H:m:s');
 			$careconsole->save();
 
 			$action = "new patient ($patient->id) created and added to console ($careconsole->id) ";
