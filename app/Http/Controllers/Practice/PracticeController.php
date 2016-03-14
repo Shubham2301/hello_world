@@ -200,7 +200,7 @@ class PracticeController extends Controller {
 			$data[$i]['name'] = $practice->name;
 			$data[$i]['email'] = $practice->email;
 			$data[$i]['address'] = '4885 Olde Towne Parkway, Marietta, GA 30076';
-			$data[$i]['ocuapps'] = 'Calender Intregation';
+			$data[$i]['ocuapps'] = '';
 			$i++;
 		}
 		return json_encode($data);
