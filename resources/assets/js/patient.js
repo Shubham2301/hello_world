@@ -248,7 +248,7 @@ function showPatientInfo(data) {
     $('#select_provider_button').addClass('active');
     $('.action-btns').removeClass('active');
     $('#import_patients').hide();
-    $('#import_ccda_button').attr('data-id', data.id);
+	$('#ccda_patient_id').val(data.id);
     $('#download_ccda').attr('data-href', '/download/' + data.id);
     $('#view_ccda').attr('data-href', '/show/ccda/' + data.id);
     $('.lastseen_content').html('<p class="patient_dropdown_data">' + data.referred_to_practice_user + '</p><p class="patient_dropdown_data">' + data.referred_to_practice + '</p>');

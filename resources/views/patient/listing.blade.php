@@ -87,20 +87,23 @@
             <p class="button_type_1" id="change_patient_button">Change Patient</p>
             <br>
 
-            <div class="dropdown">
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle ccda_text">Patient File <b class="caret"></b></a>
-                <ul class="dropdown-menu " id="ccda_dropdown">
-                    <li style="cursor:pointer;" class="ccda_present">
-                        <p data-href="" id="view_ccda"> <img class="ccda_view_icon" src="{{URL::asset('images/view-icon.png')}}" alt=""> <span>View</span></a>
-                    </li>
-                    <li style="cursor:pointer;">
-                        <p id="import_ccda_button" data-toggle="modal" data-target="#importCcda" data-id=""><img class="ccda_upload_icon" src="{{URL::asset('images/arrow-up-icon.png')}}" alt=""> <span>Upload</span> </p>
-                    </li>
-                    <li style="cursor:pointer;" class="ccda_present">
-                        <p data-href="" id="download_ccda"> <img class="ccda_download_icon" src="{{URL::asset('images/arrow-down-icon.png')}}" alt=""> <span>Download</span> </p>
-                    </li>
-                </ul>
-            </div>
+			{!! Form::open(array('url' => 'import/ccda', 'method' => 'POST', 'files'=>true,'id'=>'import_ccda_form')) !!}
+			{!! Form::hidden('patient_id', '', array('id' => 'ccda_patient_id')) !!}
+
+			<div class="row input_row">
+				<div class="col-md-3 form-group">
+				</div>
+				<div class="col-md-7 ">
+					<span class="file-input">Upload Patient File{!!Form::file('patient_ccda')!!}
+					</span>
+					<span class="filename"></span>
+
+				</div>
+				<div class="col-md-2"></div>
+			</div>
+
+			{!! Form::close() !!}
+
             <p class="button_type_1" style="display:none;" id="compare_ccda_button" data-toggle="modal" data-target="#compareCcda">update CCDA</p>
         </div>
         <div class="col-xs-8">
