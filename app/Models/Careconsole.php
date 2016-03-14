@@ -90,6 +90,7 @@ class Careconsole extends Model {
 			->whereNull('recall_date')
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
 			->get(['*', 'careconsole.id', 'careconsole.created_at']);
+
 	}
 
 	/**
@@ -115,9 +116,9 @@ class Careconsole extends Model {
 			->where('import_history.network_id', $networkID)
 			->whereExists(function ($query) {
 				$query->select(DB::raw(1))
-					->from('contact_history')
-					->whereRaw('contact_history.console_id = careconsole.id')
-					->whereNull('contact_history.archived');
+				->from('contact_history')
+				->whereRaw('contact_history.console_id = careconsole.id')
+				->whereNull('contact_history.archived');
 			})
 			->whereNull('archived_date')
 			->whereNull('recall_date')
@@ -135,9 +136,9 @@ class Careconsole extends Model {
 			->join('contact_history', 'careconsole.id', '=', 'contact_history.console_id', 'left outer')
 			->whereNull('archived_date')
 			->whereNull('recall_date')
-			->where(function($query){
+			->where(function ($query) {
 				$query->whereNull('console_id')
-					->orWhere('archived', 1);
+				->orWhere('archived', 1);
 			})
 			->groupBy('patient_id')
 			->get()->count();
@@ -278,9 +279,9 @@ class Careconsole extends Model {
 			->where('import_history.network_id', $networkID)
 			->whereExists(function ($query) {
 				$query->select(DB::raw(1))
-					->from('contact_history')
-					->whereRaw('contact_history.console_id = careconsole.id')
-					->whereNull('contact_history.archived');
+				->from('contact_history')
+				->whereRaw('contact_history.console_id = careconsole.id')
+				->whereNull('contact_history.archived');
 			})
 			->whereNull('archived_date')
 			->whereNull('recall_date')
@@ -297,9 +298,9 @@ class Careconsole extends Model {
 			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
 			->where('import_history.network_id', $networkID)
 			->leftjoin('contact_history', 'careconsole.id', '=', 'contact_history.console_id')
-			->where(function($query){
+			->where(function ($query) {
 				$query->whereNull('console_id')
-					->orWhere('archived', 1);
+				->orWhere('archived', 1);
 
 			})
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
@@ -457,7 +458,7 @@ class Careconsole extends Model {
 			->whereNull('archived_date')
 			->whereNull('recall_date')
 			->where('kpis.name', '=', $statusName)
-			->get();
+			->get(['*', 'careconsole.id', 'careconsole.created_at']);
 		return;
 	}
 	/**

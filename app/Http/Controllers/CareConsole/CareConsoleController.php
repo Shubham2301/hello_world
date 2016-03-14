@@ -250,10 +250,10 @@ class CareConsoleController extends Controller {
 		return json_encode($drilldown);
 	}
 	public function getPatientRecords(Request $request) {
+		$data = [];
 		$consoleID = $request->consoleID;
 		$console = Careconsole::find($consoleID);
 		$patient = Patient::find($console->patient_id);
-		$data = [];
 		$data['patient_id'] = $console->patient_id;
 		$data['name'] = $patient->lastname . ', ' . $patient->firstname;
 		$data['phone'] = $patient->cellphone;
