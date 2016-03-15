@@ -172,15 +172,24 @@ class UserController extends Controller {
 			$userTypes = $this->getUserTypes();
 			$roles = $this->getRoles();
 			$userLevels = $this->getUserLevels();
+            $networkData = [];
+            $networks = Network::all();
+            if (session('user-level') == 1) {
+                foreach ($networks as $network) {
+                    $networkData[$network->id] = $network->name;
+                }
+            }
             $menu_options = Menu::all();
             $menuData = [];
             foreach ($menu_options as $menu_option) {
                 if($menu_option->id != 3 && $menu_option->id != 5)
                 $menuData[$menu_option->id] = $menu_option->display_name;
             }
+            $user_network = NetworkUser::where('user_id', '=', $id)->first();
+            $user['network_id'] = $user_network->network_id;
 			$data['user_active'] = true;
 			$data['url'] = '/administration/users/update/' . $id;
-			return view('admin.users.create')->with('user', $user)->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels, 'menuoption' => $menuData])->with('data', $data);
+			return view('admin.users.create')->with('user', $user)->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels, 'menuoption' => $menuData])->with('data', $data)->with('networks', $networkData);
 		}
 	}
 
@@ -263,8 +272,29 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($id) {
-		//
+	public function destroy(Request $request) {
+        $currentUserID = Auth::user()->id;
+        $i = 0;
+		while (1) {
+			if ($request->input($i)) {
+				$user_id = $request->input($i);
+                if($currentUserID <= $user_id){
+                    $user = User::find($user_id);
+                    $user->active = 0;
+                    $user->save();
+                }
+				$i++;}
+            else {
+				break;
+			}
+
+		}
+
+//		$action = 'deleted users';
+//		$description = '';
+//		$filename = basename(__FILE__);
+//		$ip = $request->getClientIp();
+//		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 	}
 
 	public function getUserTypes() {
@@ -300,9 +330,20 @@ class UserController extends Controller {
 
 		$tosearchdata = json_decode($request->input('data'), true);
 		if (session('user-level') == 1) {
-			$users = User::where('firstname', 'LIKE', '%' . $tosearchdata['value'] . '%')
-				->orWhere('middlename', 'LIKE', '%' . $tosearchdata['value'] . '%')
-				->orWhere('lastname', 'LIKE', '%' . $tosearchdata['value'] . '%')->paginate(5);
+            $search_val = $tosearchdata['value'];
+            $users = User::where(function ($query) use ($search_val) {
+                $query->where('firstname', 'LIKE', '%' . $search_val . '%')
+                ->where('active', '=', '1');
+			})
+            ->orWhere(function ($query) use ($search_val) {
+                $query->where('middlename', 'LIKE', '%' . $search_val . '%')
+                ->where('active', '=', '1');
+			})
+            ->orWhere(function ($query) use ($search_val) {
+                $query->where('lastname', 'LIKE', '%' . $search_val . '%')
+                ->where('active', '=', '1');
+			})
+            ->paginate(5);
 		} else {
 			$users = User::getUsersByName($tosearchdata['value'])->paginate(5);
 		}
@@ -313,7 +354,7 @@ class UserController extends Controller {
 		$data[0]['currentPage'] = $users->currentPage();
 		$i = 0;
 		foreach ($users as $user) {
-			$data[$i]['id'] = $user->user_id;
+			$data[$i]['id'] = $user->id;
 			$data[$i]['name'] = $user->lastname . ', ' . $user->firstname;
 			$data[$i]['email'] = $user->email;
             if($user->level)
