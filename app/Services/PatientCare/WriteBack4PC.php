@@ -18,9 +18,9 @@ class WriteBack4PC extends PatientCare {
 		$input['AccessID'] = self::getAccessID();
 		$input['SecurityCode'] = self::getSecurityCode();
 
-		$client = new SoapClient(self::wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
-		$response = $client->__soapCall("OcuHub_ApptSchedule", array($input), array('soapaction' => self::ProviderApptScheduleAction, 'uri' => self::host));
-
+		$client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
+		$response = $client->__soapCall("OcuHub_ApptSchedule", array($input), array('soapaction' => self::$ProviderApptScheduleAction, 'uri' => self::$host));
+		dd($response->OcuHub_ApptScheduleResult);
 		return $response;
 	}
 
