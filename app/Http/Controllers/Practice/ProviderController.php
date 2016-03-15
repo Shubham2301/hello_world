@@ -3,10 +3,10 @@
 namespace myocuhub\Http\Controllers\Practice;
 
 use Illuminate\Http\Request;
+use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Practice;
 use myocuhub\Patient;
-use myocuhub\Services\FourPatientCare\FourPatientCare;
 use myocuhub\User;
 
 class ProviderController extends Controller {
@@ -15,10 +15,8 @@ class ProviderController extends Controller {
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	private $fourPatientCare;
 
-	function __construct(FourPatientCare $fourPatientCare) {
-		$this->fourPatientCare = $fourPatientCare;
+	function __construct() {
 	}
 
 	public function index(Request $request) {
@@ -143,7 +141,7 @@ class ProviderController extends Controller {
 		$providerInfo['LocKey'] = $locationKey;
 		$providerInfo['AcctKey'] = $providerKey;
 
-		$apptTypes = $this->fourPatientCare->getApptTypes($providerInfo);
+		$apptTypes = WebScheduling4PC::getApptTypes($providerInfo);
 
 		return json_encode($apptTypes);
 	}
@@ -168,7 +166,7 @@ class ProviderController extends Controller {
 		foreach ($dates as $date) {
 			$slots[$i]['date'] = $date;
 			$providerInfo['GetSlotsOnDate'] = $date;
-			$slots[$i]['slots'] = $this->fourPatientCare->getOpenApptSlots($providerInfo);
+			$slots[$i]['slots'] = WebScheduling4PC::getOpenApptSlots($providerInfo);
 			$i++;
 		}
 		return json_encode($slots);
