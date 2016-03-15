@@ -15,7 +15,7 @@ var warnTimeInterval;
 var timeLeft;
 var showCounter = false;
 var sessionWarningID;
-var sessionMax = 3;
+var sessionMax = 30;
 
 // timer for session
 function startTimer() {
