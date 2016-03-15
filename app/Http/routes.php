@@ -47,6 +47,8 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 Route::group(['middleware' => 'auth'], function () {
 
+	Route::get('writeback', 'Appointment\WriteBackController@index');
+
 	Route::get('editprofile', 'Admin\UserController@editProfile');
 	Route::post('updateprofile', 'Admin\UserController@updateProfile');
 	Route::get('patients/search', 'Patient\PatientController@search');
@@ -83,8 +85,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
 		Route::resource('bulkimport', 'BulkImportController');
 	});
-    Route::get('file_exchange/update_description', 'FileExchange\FileExchangeController@changeDescription');
-    Route::get('file_exchange/showinfo', 'FileExchange\FileExchangeController@show');
+	Route::get('file_exchange/update_description', 'FileExchange\FileExchangeController@changeDescription');
+	Route::get('file_exchange/showinfo', 'FileExchange\FileExchangeController@show');
 	Route::resource('file_exchange', 'FileExchange\FileExchangeController');
 	Route::post('createFolder', 'FileExchange\FileExchangeController@createFolder');
 	Route::post('uploadDocument', 'FileExchange\FileExchangeController@uploadDocument');
@@ -118,7 +120,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('users/search', 'Admin\UserController@search');
 	Route::get('users/remove', 'Admin\UserController@destroy');
 
-    Route::resource('referraltype', 'ReferralTypeController');
+	Route::resource('referraltype', 'ReferralTypeController');
 	Route::get('removereferral', 'ReferralTypeController@removeReferral');
 	Route::get('addreferral', 'ReferralTypeController@addReferral');
 	Route::get('getreferrallist', 'ReferralTypeController@show');
