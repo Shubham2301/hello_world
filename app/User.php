@@ -164,15 +164,24 @@ CanResetPasswordContract {
 			->first();
 	}
 
-	public static function getUsersByName($name) {
+	public static function getUsersByName($search_val) {
 
-		return self::query()
+        return self::query()
 			->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
 			->where('network_user.network_id', session('network-id'))
-			->where(function ($query) use ($name) {
-				$query->where('firstname', 'LIKE', '%' . $name . '%')
-				->orWhere('middlename', 'LIKE', '%' . $name . '%')
-				->orWhere('lastname', 'LIKE', '%' . $name . '%');
+            ->where(function ($query) use ($search_val) {
+				$query->where(function ($query) use ($search_val) {
+                    $query->where('firstname', 'LIKE', '%' . $search_val . '%')
+                    ->where('active', '=', '1');
+                })
+                ->orWhere(function ($query) use ($search_val) {
+                    $query->where('middlename', 'LIKE', '%' . $search_val . '%')
+                    ->where('active', '=', '1');
+                })
+                ->orWhere(function ($query) use ($search_val) {
+                    $query->where('lastname', 'LIKE', '%' . $search_val . '%')
+                    ->where('active', '=', '1');
+                });
 			});
 	}
 }

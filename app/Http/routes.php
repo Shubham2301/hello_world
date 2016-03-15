@@ -116,6 +116,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('administration/users/edit/{id}', 'Admin\UserController@edit');
 	Route::post('administration/users/update/{id}', 'Admin\UserController@update');
 	Route::get('users/search', 'Admin\UserController@search');
+	Route::get('users/remove', 'Admin\UserController@destroy');
 
     Route::resource('referraltype', 'ReferralTypeController');
 	Route::get('removereferral', 'ReferralTypeController@removeReferral');

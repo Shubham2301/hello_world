@@ -62,4 +62,13 @@ class AuthController extends Controller
         ]);
     }
 
+    public function authenticated($request, $user)
+    {
+        if ($user->active) {
+            return redirect()->intended($this->redirectPath());
+        } else {
+            return redirect('/auth/logout');
+        }
+    }
+
 }
