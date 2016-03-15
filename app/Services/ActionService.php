@@ -215,14 +215,18 @@ class ActionService {
 	public function getContactActions($consoleID){
 		$contactsData = ContactHistory::getContactHistory($consoleID);
 		$console = Careconsole::find($consoleID);
-		$date = new \DateTime($console->entered_console_at);
+		$date = new \DateTime();
+
+		if($console->entered_console_at != 0)
+			$date = new \DateTime($console->entered_console_at);
 		$actions = [];
 		$actions[0]['date']=$date->format('j F Y');
 		$actions[0]['name']= 'Entered-into-system';
 		$actions[0]['notes']='-';
 		$i=1;
 		foreach($contactsData as $contact){
-			$date = new \DateTime($contact['contact_activity_date']);
+			if($contact['contact_activity_date'] != 0)
+				$date = new \DateTime($contact['contact_activity_date']);
 			$actions[$i]['date']=$date->format('j F Y');
 			$actions[$i]['name']=$contact['display_name'];
 			$actions[$i]['notes']=$contact['notes'];

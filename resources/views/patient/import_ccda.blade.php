@@ -12,22 +12,6 @@
                 <div class="content-section active">
 
                     <div class="import_form active">
-                        {!! Form::open(array('url' => 'import/ccda', 'method' => 'POST', 'files'=>true,'id'=>'import_ccda_form')) !!} {!! Form::hidden('patient_id', '', array('id' => 'ccda_patient_id')) !!}
-
-                        <div class="row input_row">
-                            <div class="col-md-3 form-group">
-                                <label for="exampleInputFile"><strong style="padding-left:3em;">File</strong></label>
-                            </div>
-                            <div class="col-md-7 ">
-                                <span class="file-input">Select{!!Form::file('patient_ccda')!!}
-                                </span>
-                                <span class="filename"></span>
-
-                            </div>
-                            <div class="col-md-2"></div>
-                        </div>
-
-                        {!! Form::close() !!}
                     </div>
                     <p class="success_message"></p>
                 </div>
