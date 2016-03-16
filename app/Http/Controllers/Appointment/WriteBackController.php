@@ -18,10 +18,13 @@ class WriteBackController extends Controller {
 		$input = [];
 		$input['NPI'] = '991234567';
 		$input['Start'] = $startDate->format('Y-m-d');
-		$input['DaysForward'] = 14;
+		$input['DaysForward'] = 2;
 
 		$schedule = WriteBack4PC::ProviderApptSchedule($input);
 
+		if (sizeof($schedule)) {
+
+		}
 	}
 
 }
