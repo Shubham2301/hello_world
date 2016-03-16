@@ -39,6 +39,7 @@ elixir(function (mix) {
     mix.babel(['toxml.js'],'public/js/toxml.js');
     mix.babel(['file_exchange.js'],'public/js/file_exchange.js');
 	mix.babel(['users.js'],'public/js/users.js');
+	mix.babel(['session_timeout.js'],'public/js/session_timeout.js');
 
     mix.version(['css/style.css',
                 'css/directmail.css',
@@ -63,7 +64,8 @@ elixir(function (mix) {
                 'js/careconsole.js',
                 'js/networks.js',
                 'js/file_exchange.js',
-				 'js/users.js'
+				 'js/users.js',
+				 'js/session_timeout.js'
                 ]);
 
 });
