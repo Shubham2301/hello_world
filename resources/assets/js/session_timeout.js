@@ -1,9 +1,9 @@
 $(document).ready(function() {
     startTimer();
     $(document).on('click', function() {
-		if (!showCounter){
-        clickAction();
-		}
+        if (!showCounter) {
+            clickAction();
+        }
     });
 });
 
@@ -19,23 +19,25 @@ var sessionMax = 30;
 
 // timer for session
 function startTimer() {
-	showCounter = false;
+    showCounter = false;
     sessionReset = ((sessionMax) * 60) * 1000;
-    warningTimer(sessionReset);
+    if ($('#loged_in').val())
+        warningTimer(sessionReset);
 
 }
 
 //start warning timer
 function warningTimer(sessionReset) {
     // calculate two minutes from the session max length
-    var warningTime = sessionReset - 170000;
+
+    var warningTime = sessionReset - 120000;
     timeLeft = 120;
     sessionWarningID = setInterval("warnSession()", warningTime);
 }
 
 // action when session has reached its length
 function expireSession() {
-	window.location = "auth/logout";
+    window.location = "auth/logout";
 }
 
 //action for warning
@@ -44,7 +46,7 @@ function warnSession() {
         backdrop: 'static',
         keyboard: false
     });
-	showCounter = true;
+    showCounter = true;
     warnTimeInterval = setInterval("countDown()", 900);
 }
 
@@ -57,10 +59,10 @@ function clickAction() {
 
 // two minutes counter
 function countDown() {
-	showCounter = true;
+    showCounter = true;
     if (timeLeft == 1)
         expireSession();
     var result = parseInt(timeLeft / 60) + ':' + timeLeft % 60; //formart seconds into 00:00
-	document.getElementById('warning_counter').innerHTML = result;
+    document.getElementById('warning_counter').innerHTML = result;
     timeLeft--;
 }

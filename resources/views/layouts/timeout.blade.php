@@ -2,10 +2,11 @@
 	<div class="modal-dialog alert">
 		<div class="modal-content session_timeout">
 			<div class="modal-body  ">
-				<div>
-					<span style="font-weight:bold">Warning!</span> Due to inactivity you will be logged out <span id='warning_counter'> </span>. To extend the session click on extend buton.
-					<input type="button" id="extend_btn" data-dismiss="modal" onclick="clickAction()" value="Extend">
+				<div style="text-align:center">
+					<span style="font-weight:bold;color:red;">Warning!</span> Due to inactivity you will be logged out in <span id='warning_counter' style="font-size: 15px;"> </span>.Click <input type="button" id="extend_btn" data-dismiss="modal" onclick="clickAction()" value="Extend">to extend the session
+
 				</div>
+				<input type="hidden" id='loged_in' value="{{Auth::check()}}">
 			</div>
 		</div>
 	</div>
