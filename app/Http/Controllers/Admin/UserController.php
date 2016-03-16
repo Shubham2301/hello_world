@@ -15,6 +15,8 @@ use myocuhub\Role_user;
 use myocuhub\User;
 use myocuhub\Usertype;
 use myocuhub\Models\Menu;
+use myocuhub\Models\Practice;
+use myocuhub\Models\PracticeUser;
 
 class UserController extends Controller {
 
@@ -47,6 +49,7 @@ class UserController extends Controller {
 		$data['url'] = '/administration/users';
 		$data['user_active'] = true;
 		$user['network_id'] = '';
+        $user['practice_id'] = '';
 		$networkData = [];
 		$networks = Network::all();
 		if (session('user-level') == 1) {
@@ -60,8 +63,28 @@ class UserController extends Controller {
             if($menu_option->id != 3 && $menu_option->id != 5)
             $menuData[$menu_option->id] = $menu_option->display_name;
         }
+        
+        $networkPractices = [];
+        
+        if (session('user-level') === 1) {
+			$networkPractices = Practices::all();
+		} else {
+			$networkPractices = Network::find(session('network-id'))->practices;
+		}
 
-		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data)->with('user', $user)->with('networks', $networkData)->with('menuoption', $menuData);
+		$i = 0;
+
+		$practices = [];
+
+		foreach ($networkPractices as $practice) {
+			$practices[$practice->id] = $practice->name;
+		}
+        
+        if(session('user-level') > 2) {
+            $user['practice_id'] = User::getPractice(Auth::user()->id)->id;
+        }
+
+		return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data)->with('user', $user)->with('networks', $networkData)->with('menuoption', $menuData)->with('practices', $practices);
 	}
 
 	/**
@@ -98,12 +121,13 @@ class UserController extends Controller {
 			$user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
 			$user->usertype_id = $request->input('usertype');
 			$user->level = $request->input('userlevel');
-			$user->menu_id = $request->input('landing_page');
-
+            if($request->input('landing_page') != ''){
+                $user->menu_id = $request->input('landing_page', null);
+            }
 			$user->save();
 
 			$roles = array();
-			$roles = $request->input('role');
+			$roles = $request->input('role', []);
 			foreach ($roles as $role) {
 				$save_role = new Role_user();
 				$role_id = Role::where('display_name', '=', $role)->first();
@@ -120,10 +144,19 @@ class UserController extends Controller {
 				if (session('user-level') == 1) {
 					$networkUser->network_id = $request->input('user_network');
 				} else {
-					$networkUser->network_id = session('network_id');
+					$networkUser->network_id = session('network-id');
 				}
 				$networkUser->save();
-
+                
+                if($request->input('user_practice') !== '' && $request->input('user_practice')){
+                    
+                    $practiceUser = new PracticeUser;
+				    $practiceUser->user_id = $user->id;
+				    $practiceUser->practice_id = $request->input('user_practice');
+                    $practiceUser->save();
+                    
+                }
+                
 				$action = 'new user created';
 				$description = '';
 				$filename = basename(__FILE__);
@@ -187,9 +220,29 @@ class UserController extends Controller {
             }
             $user_network = NetworkUser::where('user_id', '=', $id)->first();
             $user['network_id'] = $user_network->network_id;
+            $user['practice_id'] = ($practice = User::getPractice($id))? $practice->id : '';
 			$data['user_active'] = true;
 			$data['url'] = '/administration/users/update/' . $id;
-			return view('admin.users.create')->with('user', $user)->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels, 'menuoption' => $menuData])->with('data', $data)->with('networks', $networkData);
+            
+            $networkPractices = [];
+
+            if (session('user-level') === '1') {
+                $networkPractices = Practice::all();
+
+            } else {
+                $networkPractices = Network::find(session('network-id'))->practices;
+            }
+
+            $i = 0;
+
+            $practices = [];
+
+            foreach ($networkPractices as $practice) {
+                $practices[$practice->id] = $practice->name;
+            }
+        
+            
+			return view('admin.users.create')->with('user', $user)->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels, 'menuoption' => $menuData])->with('data', $data)->with('networks', $networkData)->with('practices', $practices);
 		}
 	}
 
@@ -347,14 +400,20 @@ class UserController extends Controller {
 		} else {
 			$users = User::getUsersByName($tosearchdata['value'])->paginate(5);
 		}
-
+        
 		$data = [];
 		$data[0]['total'] = $users->total();
 		$data[0]['lastpage'] = $users->lastPage();
 		$data[0]['currentPage'] = $users->currentPage();
 		$i = 0;
 		foreach ($users as $user) {
-			$data[$i]['id'] = $user->id;
+            
+            if (session('user-level') == 1)
+                $id = $user->id;
+            else
+                $id = $user->user_id;   
+            
+			$data[$i]['id'] = $id;
 			$data[$i]['name'] = $user->lastname . ', ' . $user->firstname;
 			$data[$i]['email'] = $user->email;
             if($user->level)
@@ -362,11 +421,12 @@ class UserController extends Controller {
             else
                 $data[$i]['level'] = 'Undefined';
 			$data[$i]['practice'] = 'Ocuhub';
-			if ($network = User::getNetwork($user->id)) {
+            
+			if ($network = User::getNetwork($id)) {
 				$data[$i]['practice'] = $network->name;
 			}
-			if ($user->practice_id) {
-				$data[$i]['practice'] = Practice::find($user->practice_id)->name;
+			if ($practice = User::getPractice($id)) {
+				$data[$i]['practice'] = $practice->name;
 			}
 			$i++;
 		}

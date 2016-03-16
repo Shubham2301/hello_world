@@ -65,6 +65,13 @@
                                         @if(session('user-level') == 1)
                                         {!! Form::select('user_network', $networks, $user['network_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select Network*', 'id' => 'user_network', 'required' => 'required')) !!}
                                         @endif
+                                        @if(session('user-level') == 1 || session('user-level') == 2)
+                                        {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'required' => 'required')) !!}
+                                        @else
+                                        {!! Form::hidden('user_practice', $user['practice_id'], array('id' => 'user_practice')) !!}
+                                        @endif
+
+
                                         {!! Form::select('landing_page', $menuoption, $user['menu_id'], array('class' => 'add_user_input', 'placeholder' => 'Select Landing Page', 'id' => 'landing_page')) !!}
 
                                     </div>
