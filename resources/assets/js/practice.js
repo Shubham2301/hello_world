@@ -257,7 +257,11 @@ $(document).ready(function () {
         }
     });
     $('.admin_delete').on('click', function(){
-        getCheckedID();
+        showModalConfirmDialogTotal('Are you sure?', function (outcome) {
+            if (outcome) {
+                getCheckedID();
+            }
+        });
     });
 
     $(document).keypress(function (e) {
@@ -272,6 +276,16 @@ var currentPractice = [];
 var showinfo = true;
 var currentpage = 0;
 var lastpage = 0;
+
+function showModalConfirmDialogTotal(msg, handler) {
+    $('.admin_delete_dropdown').on('click', '.confirm_yes', function (evt) {
+        handler(true);
+    });
+    $('.admin_delete_dropdown').on('click', '.confirm_no', function (evt) {
+        handler(false);
+    });
+
+}
 
 function getCheckedID() {
     var id = [];
