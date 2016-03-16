@@ -5,14 +5,14 @@ namespace myocuhub\Http\Controllers\Appointment;
 use Auth;
 use DateTime;
 use Illuminate\Http\Request;
+use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
+use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Practice;
 use myocuhub\Patient;
-use myocuhub\Services\FourPatientCare\FourPatientCare;
 use myocuhub\User;
-use myocuhub\Models\ContactHistory;
 
 class AppointmentController extends Controller {
 	/**
@@ -20,10 +20,8 @@ class AppointmentController extends Controller {
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	private $fourPatientCare;
 
-	function __construct(FourPatientCare $fourPatientCare) {
-		$this->fourPatientCare = $fourPatientCare;
+	function __construct() {
 	}
 
 	public function index(Request $request) {
@@ -55,7 +53,7 @@ class AppointmentController extends Controller {
 		$data['patient_id'] = $patient_id;
 		$patient = Patient::find($patient_id);
 		$data['patient_name'] = $patient->firstname . ' ' . $patient->lastname;
-        $data['schedule-patient'] = true;
+		$data['schedule-patient'] = true;
 
 		return view('appointment.index')->with('data', $data);
 	}
@@ -138,7 +136,9 @@ class AppointmentController extends Controller {
 		$apptInfo['LocKey'] = 3839;
 		$apptInfo['AcctKey'] = 8042;
 		$apptInfo['ApptTypeKey'] = $appointmentTypeKey;
-		$apptInfo['ApptStartDateTime'] = $appointmentTime;
+        $startime = new DateTime($appointmentTime);
+		$apptInfo['ApptStartDateTime'] = '03/21/2016 11:00:00 AM'; //$startime->format('m/d/Y H:m:s'); // 03/21/2016 11:03 MM/DD/YYYY HH:MM
+        //dd($appointmentTime);
 		$apptInfo['PatientData']['Title'] = $patient->title;
 		$apptInfo['PatientData']['FirstName'] = $patient->firstname;
 		$apptInfo['PatientData']['LastName'] = $patient->lastname;
@@ -197,10 +197,9 @@ class AppointmentController extends Controller {
 			$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
 			$careconsole->update();
 
-
 			$provider = User::find($providerID);
 			$scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
-			$notes = $scheduledTo.'</br>'.$appointment->start_datetime.'</br>'.$appointmentType;
+			$notes = $scheduledTo . '</br>' . $appointment->start_datetime . '</br>' . $appointmentType;
 
 			$contactDate = new DateTime();
 			$contactHistory = new ContactHistory;
@@ -212,7 +211,7 @@ class AppointmentController extends Controller {
 			$contactHistory->save();
 		}
 
-		$apptResult = $this->fourPatientCare->requestApptInsert($apptInfo);
+		$apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
 
 		return $apptResult;
 	}
