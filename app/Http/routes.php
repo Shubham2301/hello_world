@@ -124,6 +124,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('removereferral', 'ReferralTypeController@removeReferral');
 	Route::get('addreferral', 'ReferralTypeController@addReferral');
 	Route::get('getreferrallist', 'ReferralTypeController@show');
+	Route::get('administration/getreferrallist', 'ReferralTypeController@show');
 
 	Route::resource('administration/roles', 'Admin\RoleController');
 	Route::resource('administration/networks', 'Admin\NetworkController');

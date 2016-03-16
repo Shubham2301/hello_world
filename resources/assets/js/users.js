@@ -9,6 +9,19 @@ $(document).ready(function() {
         
     });
 
+    $('#user_level').on('change',function () {
+        if($(this).val() == 3){
+            $('#user_practice').show();
+        } else {
+            $('#user_practice').hide();
+        }
+        if($(this).val() == 1){
+            $('#user_network').hide();
+        } else {
+           $('#user_network').show();
+        }
+    });
+
     $('#search_user_button').on('click', function() {
         var searchvalue = $('#search_user_input').val();
         $('.no_item_found > p:eq(1)').text(searchvalue);

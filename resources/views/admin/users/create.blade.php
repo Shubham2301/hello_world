@@ -63,10 +63,10 @@
                                         {!! Form::select('usertype', $userTypes, $user['usertype_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select User Types*', 'id' => 'user_type', 'required' => 'required')) !!}
                                         {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => 'input, add_user_input', 'placeholder' => 'Select User Levels*', 'id' => 'user_level', 'required' => 'required')) !!}
                                         @if(session('user-level') == 1)
-                                        {!! Form::select('user_network', $networks, $user['network_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select Network*', 'id' => 'user_network', 'required' => 'required')) !!}
+                                        {!! Form::select('user_network', $networks, $user['network_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select Network*', 'id' => 'user_network', 'required' => 'required', 'style' => ($user['network_id'] == '') ? 'display:none' : "display:inline-block")) !!}
                                         @endif
                                         @if(session('user-level') == 1 || session('user-level') == 2)
-                                        {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'required' => 'required')) !!}
+                                        {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => 'input, add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'required' => 'required', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
                                         @else
                                         {!! Form::hidden('user_practice', $user['practice_id'], array('id' => 'user_practice')) !!}
                                         @endif
