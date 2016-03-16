@@ -13,6 +13,8 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected $commands = [
 		\myocuhub\Console\Commands\Inspire::class,
+		\myocuhub\Console\Commands\WriteBack::class,
+		\myocuhub\Console\Commands\CareConsoleRecallPatients::class,
 	];
 
 	/**
@@ -25,7 +27,7 @@ class Kernel extends ConsoleKernel {
 		$schedule->command('careconsole:recallpatients')
 		         ->withoutOverlapping()
 		         ->daily();
-		$schedule->command('writeback4pc')
+		$schedule->command('writeback')
 		         ->withoutOverlapping()
 		         ->daily();
 	}

@@ -44,10 +44,10 @@ class WebScheduling4PC extends PatientCare {
 		$input['AccessID'] = self::getAccessID();
 		$input['SecurityCode'] = self::getSecurityCode();
 
-		//        $client = new SoapClient(self::wsdl , array('trace' => 1,  'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
-		//        $response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => self::requestApptInsertAction, 'uri' => self::host));
-		//
-		//        return json_encode($response);
+//		$client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
+//		$response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => self::$requestApptInsertAction, 'uri' => self::$host));
+//
+//		return json_encode($response);
 	}
 
 }

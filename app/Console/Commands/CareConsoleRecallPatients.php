@@ -34,6 +34,6 @@ class CareConsoleRecallPatients extends Command {
 	 * @return mixed
 	 */
 	public function handle() {
-
+		$this->comment(PHP_EOL . 'Recall Handle has not been setup' . PHP_EOL);
 	}
 }

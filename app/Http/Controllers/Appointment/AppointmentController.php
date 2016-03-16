@@ -136,7 +136,9 @@ class AppointmentController extends Controller {
 		$apptInfo['LocKey'] = 3839;
 		$apptInfo['AcctKey'] = 8042;
 		$apptInfo['ApptTypeKey'] = $appointmentTypeKey;
-		$apptInfo['ApptStartDateTime'] = $appointmentTime;
+        $startime = new DateTime($appointmentTime);
+		$apptInfo['ApptStartDateTime'] = '03/21/2016 11:00:00 AM'; //$startime->format('m/d/Y H:m:s'); // 03/21/2016 11:03 MM/DD/YYYY HH:MM
+        //dd($appointmentTime);
 		$apptInfo['PatientData']['Title'] = $patient->title;
 		$apptInfo['PatientData']['FirstName'] = $patient->firstname;
 		$apptInfo['PatientData']['LastName'] = $patient->lastname;
@@ -210,7 +212,7 @@ class AppointmentController extends Controller {
 		}
 
 		$apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
-
+		
 		return $apptResult;
 	}
 }

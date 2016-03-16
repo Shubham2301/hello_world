@@ -2,15 +2,17 @@
 
 namespace myocuhub\Console\Commands;
 
+use DateTime;
 use Illuminate\Console\Command;
+use myocuhub\Facades\WriteBack4PC;
 
-class WriteBack4PC extends Command {
+class WriteBack extends Command {
 	/**
 	 * The name and signature of the console command.
 	 *
 	 * @var string
 	 */
-	protected $signature = 'writeback4pc';
+	protected $signature = 'writeback';
 
 	/**
 	 * The console command description.
@@ -34,6 +36,17 @@ class WriteBack4PC extends Command {
 	 * @return mixed
 	 */
 	public function handle() {
-		//
+
+		$this->comment(PHP_EOL . $this->description . PHP_EOL);
+
+		$startDate = new DateTime();
+
+		$input = [];
+		$input['NPI'] = '991234567';
+		$input['Start'] = $startDate->format('Y-m-d');
+		$input['DaysForward'] = 2;
+
+		$schedule = WriteBack4PC::ProviderApptSchedule($input);
+
 	}
 }
