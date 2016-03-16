@@ -55,10 +55,9 @@ class ActionService {
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->entered_console_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactHistory = ContactHistory::where('console_id', $consoleID )->get();
-				if($contactHistory)
-				{
-					foreach($contactHistory as $history){
+				$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
+				if ($contactHistory) {
+					foreach ($contactHistory as $history) {
 						$history->archived = 1;
 						$history->save();
 					}
@@ -71,15 +70,14 @@ class ActionService {
 				$date = new DateTime();
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactHistory = ContactHistory::where('console_id', $consoleID )->get();
-				if($contactHistory)
-				{
-					foreach($contactHistory as $history){
+				$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
+				if ($contactHistory) {
+					foreach ($contactHistory as $history) {
 						$history->archived = 1;
 						$history->save();
 					}
 				}
-				break;    
+				break;
 			case 'unarchive':
 				$console = Careconsole::find($consoleID);
 				$date = new DateTime();
@@ -97,10 +95,9 @@ class ActionService {
 				$console->archived_date = $date->format('Y-m-d H:m:s');
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactHistory = ContactHistory::where('console_id', $consoleID )->get();
-				if($contactHistory)
-				{
-					foreach($contactHistory as $history){
+				$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
+				if ($contactHistory) {
+					foreach ($contactHistory as $history) {
 						$history->archived = 1;
 						$history->save();
 					}
@@ -167,10 +164,9 @@ class ActionService {
 				$date = new DateTime();
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactHistory = ContactHistory::where('console_id', $consoleID )->get();
-				if($contactHistory)
-				{
-					foreach($contactHistory as $history){
+				$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
+				if ($contactHistory) {
+					foreach ($contactHistory as $history) {
 						$history->archived = 1;
 						$history->save();
 					}
@@ -197,10 +193,9 @@ class ActionService {
 				$console->archived_date = $date->format('Y-m-d H:m:s');
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactHistory = ContactHistory::where('console_id', $consoleID )->get();
-				if($contactHistory)
-				{
-					foreach($contactHistory as $history){
+				$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
+				if ($contactHistory) {
+					foreach ($contactHistory as $history) {
 						$history->archived = 1;
 						$history->save();
 					}
@@ -212,24 +207,29 @@ class ActionService {
 		return $contact->id;
 	}
 
-	public function getContactActions($consoleID){
+	public function getContactActions($consoleID) {
 		$contactsData = ContactHistory::getContactHistory($consoleID);
 		$console = Careconsole::find($consoleID);
+
 		$date = new \DateTime();
 
-		if($console->entered_console_at != 0)
+		if ($console->entered_console_at != 0) {
 			$date = new \DateTime($console->entered_console_at);
+		}
+
 		$actions = [];
-		$actions[0]['date']=$date->format('j F Y');
-		$actions[0]['name']= 'Entered-into-system';
-		$actions[0]['notes']='-';
-		$i=1;
-		foreach($contactsData as $contact){
-			if($contact['contact_activity_date'] != 0)
+		$actions[0]['date'] = $date->format('j F Y');
+		$actions[0]['name'] = 'Entered-into-system';
+		$actions[0]['notes'] = '-';
+		$i = 1;
+		foreach ($contactsData as $contact) {
+			if ($contact['contact_activity_date'] != 0) {
 				$date = new \DateTime($contact['contact_activity_date']);
-			$actions[$i]['date']=$date->format('j F Y');
-			$actions[$i]['name']=$contact['display_name'];
-			$actions[$i]['notes']=$contact['notes'];
+			}
+
+			$actions[$i]['date'] = $date->format('j F Y');
+			$actions[$i]['name'] = $contact['display_name'];
+			$actions[$i]['notes'] = $contact['notes'];
 			$i++;
 		}
 

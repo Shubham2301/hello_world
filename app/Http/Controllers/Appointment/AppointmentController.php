@@ -212,7 +212,7 @@ class AppointmentController extends Controller {
 		}
 
 		$apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
-		
+
 		return $apptResult;
 	}
 }

@@ -48,6 +48,7 @@ class WebScheduling4PC extends PatientCare {
 //		$response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => self::$requestApptInsertAction, 'uri' => self::$host));
 //
 //		return json_encode($response);
+
 	}
 
 }
