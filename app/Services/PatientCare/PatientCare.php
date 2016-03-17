@@ -12,6 +12,7 @@ class PatientCare {
 	protected static $getApptTypesAction;
 	protected static $getOpenApptSlotsAction;
 	protected static $requestApptInsertAction;
+	protected static $getInsListAction;
 	protected static $ProviderApptScheduleAction;
 
 	public function __construct() {
@@ -27,6 +28,10 @@ class PatientCare {
 	}
 
 	public static function getApptTypes($input) {
+		//
+	}
+
+	public static function getInsList($input) {
 		//
 	}
 

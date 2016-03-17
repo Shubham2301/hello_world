@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
 	Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
+	Route::get('providers/insurancelist', 'Practice\ProviderController@getInsuranceList');
 	Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
 	Route::get('providers/previous', 'Practice\ProviderController@getPreviousProviders');
 

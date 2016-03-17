@@ -4,6 +4,10 @@ $(document).ready(function () {
         format: 'MM/DD/YYYY',
         minDate: new Date(),
     });
+    $(document).on('click', '.dropdown_ins_list>li', function (){
+        console.log($(this).attr('data-name'));
+        $('#ins_selected').html($(this).attr('data-name'));
+    });
     $('#select_date').datetimepicker().on('dp.hide', function (ev) {
         var selected_date = $('#select_date').val();
         if (selected_date) {
@@ -161,6 +165,7 @@ $(document).ready(function () {
         $("#search_practice_button").trigger("click");
 
     });
+
     $('.schedule_button').on('click', function () {
         scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
     });
@@ -414,9 +419,43 @@ function getProviderInfo(formData) {
         success: function (e) {
             var info = $.parseJSON(e);
             showProviderInfo(info);
+            getInsuranceList(formData);
         },
         error: function () {
             $('p.alert_message').text('Error getting practice information');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+
+}
+
+function getInsuranceList(formData){
+        $('#ins_list').html('');
+        $.ajax({
+        url: '/providers/insurancelist',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            e = $.parseJSON(e);            
+            var content = '';
+            content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Insurance List <b class="caret"></b></span></a><ul class="dropdown-menu dropdown_ins_list" id="custom_dropdown">';
+            if (e.GetInsListResult.length == 0) {
+                var insList = e.GetInsListResult;
+                insList.forEach(function (elem) {
+                    content += '<li  value="' + elem.InsKey + '" data-name=" ' + elem.InsName + ' ">' + elem.InsName + '</li>';
+                });
+            }
+            content += '<li  value="1" data-name="No Insurance">No Insurance</li>';
+            content += '<li  value="2" data-name="Other Insurance">Other Insurance</li>';
+            content += '</ul></div>';
+            $('#ins_list').html(content);
+        },
+        error: function () {
+            $('p.alert_message').text('Error getting Accepted Insurance List');
             $('#alert').modal('show');
         },
         cache: false,

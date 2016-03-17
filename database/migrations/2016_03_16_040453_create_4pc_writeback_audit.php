@@ -27,11 +27,9 @@ class Create4pcWritebackAudit extends Migration {
 		});
 		Schema::table('appointments', function (Blueprint $table) {
 			$table->integer('fpc_id')->nullable;
-			$table->integer('fpc_appointment')->nullable;
 		});
 		Schema::table('patients', function (Blueprint $table) {
 			$table->integer('fpc_id')->nullable;
-			$table->integer('fpc_patient')->nullable;
 		});
 	}
 

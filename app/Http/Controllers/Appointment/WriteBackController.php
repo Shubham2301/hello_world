@@ -16,7 +16,6 @@ class WriteBackController extends Controller {
 
 		$startDate = new DateTime();
 
-
 		$providers = User::getProviderNPIs();
 
 		$input = [];
@@ -25,8 +24,9 @@ class WriteBackController extends Controller {
 		$input['DaysForward'] = 14;
 
 		$schedule = WriteBack4PC::ProviderApptSchedule($input);
-		
-		
+
+		dd($schedule);
+
 		if (sizeof($schedule)) {
 
 		}

@@ -13,6 +13,7 @@ class WebScheduling4PC extends PatientCare {
 		self::$getApptTypesAction = 'http://WebScheduling.4PatientCare.Com/GetApptTypes';
 		self::$getOpenApptSlotsAction = 'http://WebScheduling.4PatientCare.Com/GetOpenApptSlots';
 		self::$requestApptInsertAction = 'http://WebScheduling.4PatientCare.Com/RequestApptInsert';
+		self::$getInsListAction = 'http://WebScheduling.4PatientCare.Com/GetInsList';
 		self::$host = 'www.4patientcare.ws';
 
 	}
@@ -24,6 +25,17 @@ class WebScheduling4PC extends PatientCare {
 
 		$client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
 		$response = $client->__soapCall("GetApptTypes", array($input), array('soapaction' => self::$getApptTypesAction, 'uri' => self::$host));
+
+		return $response;
+	}
+
+	public static function getInsList($input) {
+
+		$input['AccessID'] = self::getAccessID();
+		$input['SecurityCode'] = self::getSecurityCode();
+
+		$client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
+		$response = $client->__soapCall("GetInsList", array($input), array('soapaction' => self::$getInsListAction, 'uri' => self::$host));
 
 		return $response;
 	}
@@ -43,11 +55,12 @@ class WebScheduling4PC extends PatientCare {
 
 		$input['AccessID'] = self::getAccessID();
 		$input['SecurityCode'] = self::getSecurityCode();
-
-//		$client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
-//		$response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => self::$requestApptInsertAction, 'uri' => self::$host));
-//
-//		return json_encode($response);
+		//dd($input);
+		//MM/DD/YYYY HH:MM 24 Hr military format
+		$client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
+		$response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => self::$requestApptInsertAction, 'uri' => self::$host));
+		dd($response);
+		return json_encode($response);
 
 	}
 
