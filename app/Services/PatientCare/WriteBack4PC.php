@@ -18,6 +18,16 @@ class WriteBack4PC extends PatientCare {
 		self::$host = 'www.4patientcare.net';
 	}
 
+	/**
+	 *
+	 * ProviderApptSchedule() provides a list of scheduled appointments for a provider.
+	 * These appointments may or may not have been scheduled by Ocuhub.
+	 *
+	 * This function was written as a part of a batch process that runs every midnight. However, its use can be extend otherwise.
+	 *
+	 * @param $input
+	 * @return SOAP response
+	 */
 	public static function ProviderApptSchedule($input) {
 
 		$input['AccessID'] = self::getAccessID();
@@ -29,6 +39,22 @@ class WriteBack4PC extends PatientCare {
 		return $response;
 	}
 
+	/**
+	 *
+	 * OcuhubAppointmentWriteback() takes input as the list of appointment schedules provided by 4PC
+	 * for a specific provider based on their NPI numbers.
+	 *
+	 * This method updated the Ocuhub Database with the 4PC database.
+	 * It performs two responsibilties
+	 * - Appointments that were scheduled by Ocuhub should be updated with latest relevant information provided by 4PC.
+	 * - Appointment that were scheduled outside Ocuhub can be brought into the Ocuhub system.
+	 *
+	 * With the intention that Ocuhub users can manage all their 4pC appointments from a single interface.
+	 *
+	 * This function was written as a part of a batch process that runs every midnight. However, its use can be extend otherwise.
+	 *
+	 * @param $schedules
+	 */
 	public function OcuhubAppointmentWriteback($schedules) {
 
 		foreach ($schedules as $schedule) {

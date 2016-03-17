@@ -18,6 +18,13 @@ class WebScheduling4PC extends PatientCare {
 
 	}
 
+	/**
+	 *
+	 * getApptTypes() retrieves a list of appointment types for a specific provider at a specific location.
+	 *
+	 * @param $input
+	 * @return mixed
+	 */
 	public static function getApptTypes($input) {
 
 		$input['AccessID'] = self::getAccessID();
@@ -29,6 +36,13 @@ class WebScheduling4PC extends PatientCare {
 		return $response;
 	}
 
+	/**
+	 *
+	 * getInsList() retrieves a list of accepted insurance types for a specific provider at a specific location.
+	 *
+	 * @param $input
+	 * @return mixed
+	 */
 	public static function getInsList($input) {
 
 		$input['AccessID'] = self::getAccessID();
@@ -40,6 +54,13 @@ class WebScheduling4PC extends PatientCare {
 		return $response;
 	}
 
+	/**
+	 *
+	 * getOpenApptSlots() retrieves a list of available time slots on a given day for a specific provider at a specific location.
+	 *
+	 * @param $input
+	 * @return mixed
+	 */
 	public static function getOpenApptSlots($input) {
 
 		$input['AccessID'] = self::getAccessID();
@@ -51,6 +72,15 @@ class WebScheduling4PC extends PatientCare {
 		return $response->GetOpenApptSlotsResult;
 	}
 
+	/**
+	 *
+	 * requestApptInsert() schedules an appointment with a 4PC register practice and provider
+	 *
+	 * In case of successfull scheduling 4PC returns the 4PC appointment ID and a status message.
+	 * Sends a -1 instead.
+	 *
+	 * @param $input
+	 */
 	public static function requestApptInsert($input) {
 
 		$input['AccessID'] = self::getAccessID();
