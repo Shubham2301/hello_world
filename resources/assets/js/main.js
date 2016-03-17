@@ -14,6 +14,7 @@ $(document).ajaxComplete(function(){
 
 $(document).ready(function () {
 
+    $("a").tooltip({container:'body'});
     //    $('.menu-item').on('click', function () {
     //        if ($(this).hasClass('active') || $(this).hasClass('dropdown-toggle'))
     //            return;

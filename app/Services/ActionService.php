@@ -219,7 +219,7 @@ class ActionService {
 
 		$actions = [];
 		$actions[0]['date'] = $date->format('j F Y');
-		$actions[0]['name'] = 'Entered-into-system';
+		$actions[0]['name'] = 'Entered into console';
 		$actions[0]['notes'] = '-';
 		$i = 1;
 		foreach ($contactsData as $contact) {

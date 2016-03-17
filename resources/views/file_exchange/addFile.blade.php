@@ -17,11 +17,18 @@
                 <span class="modal_content_row">
                     <span class="left">File</span>
                     <span class="right">
+<!--
                         <span class="file-input" style="width: 100%;text-align: left;">
                             <button type="button" class="btn add-btn" style="display: block;float: left;"><input type="file" name="add_document" id="add_document" style="opacity: 0;position: absolute;" required>Select</button>
                             <br><br>
                             <span id="new_filename"></span>
                         </span>
+-->
+                   <div class="fileUpload btn btn-primary add-btn file-input">
+                       <span>Select</span>
+                        <input type="file" class="upload" name="add_document" id="add_document" required/>
+                   </div>
+                            <span id="new_filename"></span>
                     </span>
                 </span>
 
