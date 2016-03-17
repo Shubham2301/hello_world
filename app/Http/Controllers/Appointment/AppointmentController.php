@@ -176,7 +176,7 @@ class AppointmentController extends Controller {
 		$apptInfo['PatientData']['ReferredBy3'] = '';
 		$apptInfo['PatientData']['ReferredBy4'] = '';
 		$apptInfo['PatientData']['ReferredBy5'] = '';
-		$apptInfo['PatientData']['IsPatKnown'] = '1';
+		$apptInfo['PatientData']['IsPatKnown'] = ($patient->fpc_id) ? '1' : '0';
 
 		$appointment = new Appointment;
 		$appointment->provider_id = $providerID;
