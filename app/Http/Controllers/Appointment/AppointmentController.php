@@ -200,7 +200,8 @@ class AppointmentController extends Controller {
 		}
 
 		$appointment->save();
-
+            
+        
 		$careconsole = Careconsole::where('patient_id', $patientID)
 			->orderBy('created_at', 'desc')
 			->first();
@@ -227,6 +228,8 @@ class AppointmentController extends Controller {
 			$contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:m:s');
 			$contactHistory->save();
 		}
+        
+        
 
 		return $result;
 	}

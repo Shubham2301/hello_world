@@ -2,7 +2,7 @@
 	<div style="max-width:80%;width: 98%;display: inline-block;padding: 1%;font-family: arial, sans-serif;border: solid 1px transparent;border-radius: 2px;margin: 1% 10%;background-color: white;box-shadow: 0 0 5px #ddd;">
 		<div>
 			<div style="width: 50%;display: inline-block;margin-bottom:1em;">
-				<img src="http://access.myocuhub.com/images/ocuhub-logo.png" style="width:10em" alt="">
+				<img src="https://access.myocuhub.com/images/ocuhub-logo.png" style="width:10em" alt="">
 			</div>
 			<div style="width: 49%;display: inline-block;margin-bottom:1em;">
 				<p style="display: inline-block;margin:0;font-weight: bold;float: right;font-size: 130%;colo:#333">DJ & Charlie Eye Associates</p>
@@ -19,7 +19,7 @@
 				<p style="font-size: 120%;color:#0071bc">Annual Eye Exam</p>
 				<div style="display: inline-block;margin:0.5em 0;text-align:center;border-radius:2px;padding: 1em 2em;border:solid 2px #ddd">
 				    <p style="font-size: 120%;font-weight:bold;color:#333">PROVIDER</p>
-				    <img src="http://access.myocuhub.com/images/emails/email-provider-icon.png" style="width:50%" alt="">
+				    <img src="https://access.myocuhub.com/images/emails/email-provider-icon.png" style="width:50%" alt="">
 				    <p style="color:#4d4d4d;">Dr. DJ Johnson</p>
 			    </div>
 			</div>
