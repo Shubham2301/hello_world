@@ -24,7 +24,7 @@
                             <span id="new_filename"></span>
                         </span>
 -->
-                   <div class="fileUpload btn btn-primary add-btn file-input">
+                   <div class="fileUpload btn btn-primary add-btn file-input" style="border-radius:0;">
                        <span>Select</span>
                         <input type="file" class="upload" name="add_document" id="add_document" required/>
                    </div>
