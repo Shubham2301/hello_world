@@ -146,6 +146,20 @@ class ProviderController extends Controller {
 		return json_encode($apptTypes);
 	}
 
+	public function getInsuranceList(Request $request) {
+		$providerInfo = array();
+
+		$providerKey = $request->input('provider_id');
+		$locationKey = $request->input('practice_id');
+
+		$providerInfo['LocKey'] = $locationKey;
+		$providerInfo['AcctKey'] = $providerKey;
+
+		$insList = WebScheduling4PC::getInsList($providerInfo);
+
+		return json_encode($insList);
+	}
+
 	public function getOpenSlots(Request $request) {
 		$providerInfo = array();
 

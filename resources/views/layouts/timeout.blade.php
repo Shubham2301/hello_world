@@ -1,5 +1,5 @@
 <div class="modal fade" id="timeout" role="dialog">
-	<div class="modal-dialog alert">
+	<div class="modal-dialog alert" style="margin: 0;">
 		<div class="modal-content session_timeout">
 			<div class="modal-body  ">
 				<div style="text-align:center">

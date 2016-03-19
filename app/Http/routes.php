@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
 	Route::get('providers/appointmenttypes', 'Practice\ProviderController@getAppointmentTypes');
+	Route::get('providers/insurancelist', 'Practice\ProviderController@getInsuranceList');
 	Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
 	Route::get('providers/previous', 'Practice\ProviderController@getPreviousProviders');
 
@@ -124,6 +125,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('removereferral', 'ReferralTypeController@removeReferral');
 	Route::get('addreferral', 'ReferralTypeController@addReferral');
 	Route::get('getreferrallist', 'ReferralTypeController@show');
+	Route::get('administration/getreferrallist', 'ReferralTypeController@show');
 
 	Route::resource('administration/roles', 'Admin\RoleController');
 	Route::resource('administration/networks', 'Admin\NetworkController');

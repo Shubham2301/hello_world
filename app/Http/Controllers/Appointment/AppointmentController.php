@@ -136,9 +136,10 @@ class AppointmentController extends Controller {
 		$apptInfo['LocKey'] = 3839;
 		$apptInfo['AcctKey'] = 8042;
 		$apptInfo['ApptTypeKey'] = $appointmentTypeKey;
-        $startime = new DateTime($appointmentTime);
-		$apptInfo['ApptStartDateTime'] = '03/21/2016 11:00:00 AM'; //$startime->format('m/d/Y H:m:s'); // 03/21/2016 11:03 MM/DD/YYYY HH:MM
-        //dd($appointmentTime);
+		$startime = new DateTime($appointmentTime);
+		$apptInfo['ApptStartDateTime'] = '03/21/2016 10:30'; //$startime->format('m/d/Y H:m'); // 03/21/2016 11:03 MM/DD/YYYY HH:MM
+		//$apptInfo['ApptStartTime'] = $startime->format('m/d/Y H:m');
+		//dd($appointmentTime);
 		$apptInfo['PatientData']['Title'] = $patient->title;
 		$apptInfo['PatientData']['FirstName'] = $patient->firstname;
 		$apptInfo['PatientData']['LastName'] = $patient->lastname;
@@ -148,29 +149,34 @@ class AppointmentController extends Controller {
 		$apptInfo['PatientData']['State'] = $patient->state;
 		$apptInfo['PatientData']['Zip'] = $patient->zip;
 		$apptInfo['PatientData']['Country'] = $patient->country;
-		//        $apptInfo['PatientData']['HomePhone'] = $patient->homephone;
-		//        $apptInfo['PatientData']['WorkPhone'] = $patient->workphone;
+		$apptInfo['PatientData']['HomePhone'] = ($patient->homephone) ? $patient->homephone : '';
+		$apptInfo['PatientData']['WorkPhone'] = ($patient->workphone) ? $patient->workphone : '';
 		$apptInfo['PatientData']['CellPhone'] = $patient->cellphone;
 		$apptInfo['PatientData']['Email'] = $patient->email;
 		$birthdate = new DateTime($patient->birthdate);
-		$apptInfo['PatientData']['DOB'] = $birthdate->format('Y-m-d');
+		$apptInfo['PatientData']['DOB'] = $birthdate->format('Y-m-d') . 'T00:00:00';
 
 		$apptInfo['PatientData']['PreferredLanguage'] = $patient->preferredlanguage;
 		$apptInfo['PatientData']['Gender'] = $patient->gender;
-		$apptInfo['PatientData']['L4dssn'] = $patient->lastfourssn;
+		$apptInfo['PatientData']['L4DSSN'] = $patient->lastfourssn;
 //        $apptInfo['PatientData']['InsuranceCarrier'] = $patient->insurancecarrier;
-		$apptInfo['PatientData']['InsuranceCarrier'] = 100;
+		$apptInfo['PatientData']['InsuranceCarrier'] = 1;
 
-//        $apptInfo['PatientData']['OtherInsurance'] = '';
-		//        $apptInfo['PatientData']['SubscriberName'] = '';
+		$apptInfo['PatientData']['OtherInsurance'] = '';
+		$apptInfo['PatientData']['SubscriberName'] = '';
 		$birthdate = new DateTime($patient->birthdate);
-		$apptInfo['PatientData']['SubscriberDOB'] = $birthdate->format('Y-m-d');
-//        $apptInfo['PatientData']['SubscriberID'] = '';
-		//        $apptInfo['PatientData']['GroupNum'] = '';
-		//        $apptInfo['PatientData']['RelationshipToPatient'] = '';
-		//        $apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
+		$apptInfo['PatientData']['SubscriberDOB'] = $birthdate->format('Y-m-d') . 'T00:00:00';
+		$apptInfo['PatientData']['SubscriberID'] = '';
+		$apptInfo['PatientData']['GroupNum'] = '';
+		$apptInfo['PatientData']['RelationshipToPatient'] = '';
+		$apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
 		$apptInfo['PatientData']['ReferredBy'] = '';
-		$apptInfo['PatientData']['IsPatKnown'] = '1';
+		$apptInfo['PatientData']['NotesBox'] = '';
+		$apptInfo['PatientData']['ReferredBy2'] = '';
+		$apptInfo['PatientData']['ReferredBy3'] = '';
+		$apptInfo['PatientData']['ReferredBy4'] = '';
+		$apptInfo['PatientData']['ReferredBy5'] = '';
+		$apptInfo['PatientData']['IsPatKnown'] = ($patient->fpc_id) ? '1' : '0';
 
 		$appointment = new Appointment;
 		$appointment->provider_id = $providerID;
@@ -182,8 +188,20 @@ class AppointmentController extends Controller {
 		$appointment->appointmenttype = $appointmentType;
 		$date = new DateTime($appointmentTime);
 		$appointment->start_datetime = $date->format('Y-m-d H:m:s');
-		$appointment->save();
 
+		$apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
+		$result = '';
+		if ($apptResult['RequestApptInsertResult']['ApptKey'] != -1) {
+			$appointment->fpc_id = $apptResult['RequestApptInsertResult']['ApptKey'];
+			$result = 'Appointment Scheduled Successfully';
+		} else {
+			$result = 'Appointment could not be scheduled with 4PC at this moment. Please try again or contact our support team.';
+			return $result;
+		}
+
+		$appointment->save();
+            
+        
 		$careconsole = Careconsole::where('patient_id', $patientID)
 			->orderBy('created_at', 'desc')
 			->first();
@@ -210,9 +228,9 @@ class AppointmentController extends Controller {
 			$contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:m:s');
 			$contactHistory->save();
 		}
+        
+        
 
-		$apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
-
-		return $apptResult;
+		return $result;
 	}
 }

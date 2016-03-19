@@ -21,10 +21,12 @@
                         <br><span class="provider_detail_text arial" id="provider_name"></span></p>
                     <p><span class="bold arial_bold">Speciality</span>
                         <br><span class="provider_detail_text arial" id="speciality"></span></p>
-                    <p><span class="bold arial_bold">Insurance</span>
-                        <br>
-                        <span class="glyphicon glyphicon-ok-circle"></span>
+                    <p>
+                        <span id="ins_list" class="ins_list"></span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax ins_list">
+                        <span id="ins_selected"></span>
+                        </span>
                     </p>
+
                 </div>
                 <div class="col-xs-6 ">
                     <p>

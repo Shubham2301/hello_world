@@ -185,7 +185,7 @@ CanResetPasswordContract {
 			});
 	}
 
-	public static function getProviderNPIs() {
+	public static function get4PCProviderNPIs() {
 
 		return self::whereNotNull('npi')
 			->whereNotNull('acc_key')

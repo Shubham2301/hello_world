@@ -13,7 +13,7 @@
 			<p style="color:black"><strong>Level</strong></p>
 		</div>
 		<div class="col-xs-2">
-			<p style="color:black"><strong>Practice/Network</strong></p>
+			<p style="color:black"><strong>Organization</strong></p>
 		</div>
 		<div class="col-xs-2">
 			<input type="hidden" id="dropdown_natural_img" value="{{asset('images/dropdown-natural-01.png')}}">
