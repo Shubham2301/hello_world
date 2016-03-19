@@ -97,9 +97,9 @@
                 &nbsp;&nbsp;&nbsp;
                 <p id="edit_practice" class="btn" data-toggle="modal" data-target="#create_practice" data-id="">Edit</p>
                 &nbsp;
-                <div class="dropdown">
+                <div class="dropdown pracice_remove_dropdown">
                     <span id="remove_practice" area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle">
-                        <img src="{{asset('images/delete-active-01.png')}}" alt="" class="removepractice_img" style="    width:34%; margin-top:5px;">
+                        <img src="{{asset('images/delete-natural-hover.png')}}" alt="" class="removepractice_img" style="    width:28%;margin: auto 0;">
                    </span>
                     <ul class="dropdown-menu" id="remove_action_dropdown">
                         <li class="confirm_text">
