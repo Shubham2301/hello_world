@@ -105,7 +105,9 @@ Section : Imports
 }
 .patient_previous_information {
     display: none;
-    margin: 2em 4em;
+    width: 90%;
+    margin: 1.5em auto;
+    padding: 0 15px;
     & p {
         color: black;
         font-size: 1.2em;
@@ -117,7 +119,7 @@ Section : Imports
     }
 }
 .list_seperator {
-    padding: 1em 2em;
+    padding: 1em 0;
     border-bottom: solid 1px white;
     color: #f2f2f2;
     &:hover {
@@ -127,7 +129,7 @@ Section : Imports
 }
 .provider_near_patient,
 .previous_provider_patient {
-    font-size: 1.1em;
+    font-size: 1em;
     color: #333;
     &>p {
         cursor: pointer;
@@ -206,7 +208,7 @@ Section : Imports
 }
 #practice_listing {
     width: 90%;
-    margin-left: 40px;
+    margin: 2em auto;
 }
 .practice_list {
     overflow-y: scroll;
@@ -406,4 +408,16 @@ p.patient_dropdown_data {
 }
 .get_availability{
     margin: 0;
+}
+.preference{
+    color: #4d4d4d;
+    cursor: pointer;
+}
+.custom_dropdown{
+    display: flex;
+}
+.custom_dropdown_img{
+    width: 1.5em;
+    height: 1.5em;
+    margin: auto .5em;
 }

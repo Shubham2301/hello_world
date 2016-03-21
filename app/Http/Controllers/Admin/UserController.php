@@ -345,7 +345,7 @@ class UserController extends Controller {
 
 		}
 
-//		$action = 'deleted users';
+		//		$action = 'deleted users';
 		//		$description = '';
 		//		$filename = basename(__FILE__);
 		//		$ip = $request->getClientIp();
@@ -388,15 +388,15 @@ class UserController extends Controller {
 			$search_val = $tosearchdata['value'];
 			$users = User::where(function ($query) use ($search_val) {
 				$query->where('firstname', 'LIKE', '%' . $search_val . '%')
-				->where('active', '=', '1');
+					->where('active', '=', '1');
 			})
 				->orWhere(function ($query) use ($search_val) {
 					$query->where('middlename', 'LIKE', '%' . $search_val . '%')
-					->where('active', '=', '1');
+						->where('active', '=', '1');
 				})
 				->orWhere(function ($query) use ($search_val) {
 					$query->where('lastname', 'LIKE', '%' . $search_val . '%')
-					->where('active', '=', '1');
+						->where('active', '=', '1');
 				})
 				->paginate(5);
 		} elseif (session('user-level') == '2') {
@@ -409,15 +409,15 @@ class UserController extends Controller {
 				->where('practice_user.practice_id', User::getPractice($userID)->id)
 				->where(function ($query) use ($search_val) {
 					$query->where('firstname', 'LIKE', '%' . $search_val . '%')
-					->where('active', '=', '1');
+						->where('active', '=', '1');
 				})
 				->orWhere(function ($query) use ($search_val) {
 					$query->where('middlename', 'LIKE', '%' . $search_val . '%')
-					->where('active', '=', '1');
+						->where('active', '=', '1');
 				})
 				->orWhere(function ($query) use ($search_val) {
 					$query->where('lastname', 'LIKE', '%' . $search_val . '%')
-					->where('active', '=', '1');
+						->where('active', '=', '1');
 				})
 				->whereNotNull('practice_id')
 				->where('practice_user.practice_id', User::getPractice($userID)->id)
@@ -475,14 +475,32 @@ class UserController extends Controller {
 	}
 
 	public function updateProfile(Request $request) {
-		$user = Auth::user();
 
+		if($request->ajax()){
+			if($request->hasFile('profile_img')){
+				$file = $request->file('profile_img');
+				$destinationPath = '/images/temp';
+				$extension = $file->getClientOriginalExtension();
+				$pictureName = str_random(9) . ".jpg";
+				$upload_success = $file->move(public_path() . '/' . $destinationPath, $pictureName);
+				return \URL::asset('images/temp/'.$pictureName);
+			}
+		}
+
+		$user = Auth::user();
 		$user->title = $request->title;
 		$user->lastname = $request->lastname;
 		$user->firstname = $request->firstname;
-
 		$password = $request->password;
 		$confirmation = $request->password_confirmation;
+
+		if($request->hasFile('profile_img')){
+			$file = $request->file('profile_img');
+			$destinationPath = 'images/users/';
+			$extension = $file->getClientOriginalExtension();
+			$pictureName = 'user_'. Auth::user()->id .'.jpg';
+			$upload_success = $file->move(public_path() . '/' . $destinationPath, $pictureName);
+		}
 		if ($password !== '' && $confirmation !== '') {
 			if ($password != $confirmation) {
 				$request->session()->flash('error', 'Passwords do not match');
