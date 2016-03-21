@@ -3,10 +3,8 @@ $(document).ready(function() {
     loadAllUsers();
 
     $('.profile_img_upload').on('change',function () {
-        
-    });
-    $('.profile_img_upload').on('change',function () {
-        
+		if($(this).val() != '')
+		changePicture();
     });
 
     $('#user_level').on('change',function () {
@@ -225,3 +223,18 @@ function removeUser(id) {
     loadAllUsers();
 }
 
+function changePicture(){
+	var myform = document.getElementById("profile_form");
+	var fd = new FormData(myform);
+	$.ajax({
+		url: "/updateprofile",
+		data: fd,
+		cache: false,
+		processData: false,
+		contentType: false,
+		type: 'POST',
+		success: function(e) {
+			$('#profile_image_view').attr('src',e);
+		}
+	});
+}
