@@ -50,7 +50,7 @@
                     <div class="col-xs-6">
                         {!! Form::password('password_confirmation', array('class' => 'input, add_user_input edit_profile_input', 'placeholder' => 'Password Confirmation', 'id' => 'confirm_password')) !!}
                     </div>
-					<div class="col-xs-12" style="text-align:right;margin-top:69px;">
+					<div class="col-xs-12" style="text-align:right;margin-top:41px;">
                         {!! Form::submit('Save', array('class' => 'btn add_user_submit_button')) !!}
                     </div>
                 </div>
