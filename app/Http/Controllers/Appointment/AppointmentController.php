@@ -190,8 +190,9 @@ class AppointmentController extends Controller {
 		$appointment->start_datetime = $date->format('Y-m-d H:m:s');
 		$apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
 		$result = '';
-		if ($apptResult['RequestApptInsertResult']['ApptKey'] != -1) {
-			$appointment->fpc_id = $apptResult['RequestApptInsertResult']['ApptKey'];
+
+		if ($apptResult->RequestApptInsertResult->ApptKey != -1) {
+			$appointment->fpc_id = $apptResult->RequestApptInsertResult->ApptKey;
 			$result = 'Appointment Scheduled Successfully';
 		} else {
 			$result = 'Appointment could not be scheduled with 4PC at this moment. Please try again or contact our support team.';
