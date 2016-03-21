@@ -11,7 +11,7 @@
             <br>
             <p class="button_type_1" id="change_practice_button">Change Provider</p>
             <br>
-            <p id="openModel" type="button" class="button_type_1" data-toggle="modal" data-target="#provider_preferences">Provider Preferences</p>
+            <p id="openModel" class="arial_bold preference" data-toggle="modal" data-target="#provider_preferences">Provider Preferences</p>
         </div>
         <div class="col-xs-8">
             <p class="bold arial_bold" id="practice_name">Opthalmic Consultants of Long Island</p>

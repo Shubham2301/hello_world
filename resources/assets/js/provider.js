@@ -394,7 +394,7 @@ function showProviderInfo(data) {
     $('.schedule_button').attr('data-practice-id', data.practice_id);
     var locations = data.locations;
     var content = '';
-    content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Location <b class="caret"></b></span></a><ul class="dropdown-menu location_dropdown" id="custom_dropdown">';
+    content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold custom_dropdown">Select Location <img src="/images/dropdown-img.png" class="custom_dropdown_img"></span></a><ul class="dropdown-menu location_dropdown" id="custom_dropdown">';
     if (locations.length > 0) {
         locations.forEach(function (location) {
             content += '<li data-id="' + location.id + '" data-code="' + location.location_code + '" data-address_1="' + location.addressline1 + '" data-address_2="' + location.addressline2 + '" data-contact="' + location.phone + '">' + location.locationname + '</li>';
@@ -442,7 +442,7 @@ function getInsuranceList(formData){
         success: function (e) {
             e = $.parseJSON(e);            
             var content = '';
-            content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Insurance List <b class="caret"></b></span></a><ul class="dropdown-menu dropdown_ins_list" id="custom_dropdown">';
+            content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold custom_dropdown">Select Insurance List <img src="/images/dropdown-img.png" class="custom_dropdown_img"></span></a><ul class="dropdown-menu dropdown_ins_list" id="custom_dropdown">';
             if (e.GetInsListResult.length == 0) {
                 var insList = e.GetInsListResult;
                 insList.forEach(function (elem) {
@@ -625,7 +625,7 @@ function getAppointmentTypes() {
             e = $.parseJSON(e);
             var apptTypes = e.GetApptTypesResult.ApptType;
             if (apptTypes) {
-                content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold">Select Appointment Type <b class="caret"></b></span></a><ul class="dropdown-menu appointment_dropdown" id="custom_dropdown">';
+                content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold custom_dropdown">Select Appointment Type <img src="/images/dropdown-img.png" class="custom_dropdown_img"></span></a><ul class="dropdown-menu appointment_dropdown" id="custom_dropdown">';
                 apptTypes.forEach(function (elem) {
                     content += '<li  value="' + elem.ApptTypeKey + '" data-name=" ' + elem.ApptTypeName + ' ">' + elem.ApptTypeName + '</li>';
                 });
