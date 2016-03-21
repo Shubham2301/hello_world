@@ -19,6 +19,7 @@ class WriteBackController extends Controller {
 		$providers = User::get4PCProviderNPIs();
 		$schedules = [];
 		foreach ($providers as $provider) {
+
 			$input = [];
 			$input['NPI'] = $provider->npi;
 			$input['Start'] = $startDate->format('Y-m-d');
@@ -31,7 +32,6 @@ class WriteBackController extends Controller {
 					'schedule' => $schedule['OcuHub_ApptScheduleResult']['ApptDetail'],
 				];
 			}
-
 		}
 
 		$writeBackResult = WriteBack4PC::OcuhubAppointmentWriteback($schedules);
