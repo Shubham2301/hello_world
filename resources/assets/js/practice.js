@@ -525,9 +525,8 @@ function showPracticeInfo(info) {
                 content += '<div id="collapse' + i + '" class="panel-collapse collapse in"><div class="panel-body location_accordian_body">';
             else
                 content += '<div id="collapse' + i + '" class="panel-collapse collapse"><div class="panel-body">';
-
             content += '<div class="row practice_location_item" data-locationid = "' + location.id + '" data-index="' + i + '"><div class="col-xs-3 practice_info"><p>' + location.addressline1 + '<br>' + location.addressline2 + '</p><p>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p class="hide">Assign roles </p><p class="hide">Assign users</p><p class="edit_location_frominfo">Edit</p><br><center class="remove_location_frominfo"><span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></center></div><div class="col-xs-5"><div class="row">';
-            info.users.forEach(function(user) {
+            info.users.forEach(function (user) {
                 content += '<div class="col-xs-12 practice_users "><p style="width: 100%;"><input type="checkbox"><span>' + user.firstname + '</span><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background:#e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;float: right;margin-bottom: 5px;"></span></p></div>';
             });
             content += '</div></div></div>';

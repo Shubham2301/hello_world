@@ -144,9 +144,7 @@ class WriteBack4PC extends PatientCare {
 					 * Appointment was scheduled by Ocuhub
 					 */
 
-
                     $appt = Appointment::find($appt[0]['id']);
-
 					$appt->practice_id = $practiceLocation->practice_id;
 					$appt->location_id = $practiceLocation->id;
 					$appt->provider_id = $provider->id;
