@@ -196,6 +196,13 @@ class AppointmentController extends Controller {
 			$result = 'Appointment Scheduled Successfully';
 		} else {
 			$result = 'Appointment could not be scheduled with 4PC at this moment. Please try again or contact our support team.';
+
+            $action = 'Attempt to shedule appointment failed for Provider = '.$providerID.' Location = '.$locationID.' for Date '.$appointmentTime;
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 			return $result;
 		}
 
