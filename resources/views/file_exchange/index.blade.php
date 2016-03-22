@@ -31,10 +31,11 @@
             </div>
             <div class="folder_path active">
                 <!-- Folder 2 > Subfolder 1 -->
-                @for($i = 0; $i< sizeof($breadcrumbs); $i++)
-                @if($i !== 0)
-                <span>&nbsp;>&nbsp;</span>
+				@if(sizeof($breadcrumbs)>0)
+				<a href="/file_exchange"> {{ 'All' }}</a>
                 @endif
+                @for($i = 0; $i< sizeof($breadcrumbs); $i++)
+                <span>&nbsp;>&nbsp;</span>
                 <a href="/file_exchange?id={{ $breadcrumbs[$i]['id'] }}"> {{ $breadcrumbs[$i]['name'] }}</a>
                 @endfor
             </div>
