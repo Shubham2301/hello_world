@@ -46,17 +46,24 @@ class FileExchangeController extends Controller {
 
 		$filelist = array();
 
-		$i = 0;
+		$j = 0;
 
 		foreach ($files as $file) {
-			$filelist[$i]['id'] = $file->id;
-			$filelist[$i]['name'] = $file->title;
-			$filelist[$i]['description'] = $file->description;
+			$filelist[$j]['id'] = $file->id;
+			$filelist[$j]['name'] = $file->title;
+			$filelist[$j]['description'] = $file->description;
 			$fileHistory = $file->history()->orderBy('created_at', 'desc')->first();
-			$filelist[$i]['modified_by'] = User::find($fileHistory->modified_by)->name;
-			$filelist[$i]['updated_at'] = $fileHistory->updated_at;
-			$i++;
+			$filelist[$j]['modified_by'] = User::find($fileHistory->modified_by)->name;
+			$filelist[$j]['updated_at'] = $fileHistory->updated_at;
+			$j++;
 		}
+
+        if ($i==0 && $j==0)
+            $empty = 'true';
+        else
+            $empty = 'false';
+
+
 		if (session('user-level') === 1) {
 			$networkPractices = Practices::all();
 		} else {
@@ -73,7 +80,7 @@ class FileExchangeController extends Controller {
 
 		$breadcrumbs = $this->getBreadcrumbs($request);
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs]);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty]);
 	}
 
 	public function folderDetails($folder_id = 0) {
@@ -250,21 +257,26 @@ class FileExchangeController extends Controller {
 
 		$filelist = array();
 
-		$i = 0;
+		$j = 0;
 
 		foreach ($sharedfiles as $sharedfile) {
 			$file = File::find($sharedfile->file_id);
 			if (!$file->status) {
 				continue;
 			}
-			$filelist[$i]['id'] = $file->id;
-			$filelist[$i]['name'] = $file->title;
-			$filelist[$i]['description'] = $file->description;
+			$filelist[$j]['id'] = $file->id;
+			$filelist[$j]['name'] = $file->title;
+			$filelist[$j]['description'] = $file->description;
 			$fileHistory = $file->history()->orderBy('created_at', 'desc')->first();
-			$filelist[$i]['modified_by'] = User::find($fileHistory->modified_by)->name;
-			$filelist[$i]['updated_at'] = $fileHistory->updated_at;
-			$i++;
+			$filelist[$j]['modified_by'] = User::find($fileHistory->modified_by)->name;
+			$filelist[$j]['updated_at'] = $fileHistory->updated_at;
+			$j++;
 		}
+
+        if ($i==0 && $j==0)
+            $empty = 'true';
+        else
+            $empty = 'false';
 
 		if ($sortOnRecent != '') {
 			$folderlist = array_values(array_sort($folderlist, function ($value) {
@@ -294,7 +306,7 @@ class FileExchangeController extends Controller {
 
 		$breadcrumbs = $this->getBreadcrumbs($request);
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs]);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty]);
 	}
 
 	public function recentShareChanges(Request $request) {
@@ -340,17 +352,22 @@ class FileExchangeController extends Controller {
 
 		$filelist = array();
 
-		$i = 0;
+		$j = 0;
 
 		foreach ($files as $file) {
-			$filelist[$i]['id'] = $file->id;
-			$filelist[$i]['name'] = $file->title;
-			$filelist[$i]['description'] = $file->description;
+			$filelist[$j]['id'] = $file->id;
+			$filelist[$j]['name'] = $file->title;
+			$filelist[$j]['description'] = $file->description;
 			$fileHistory = $file->history()->orderBy('created_at', 'desc')->first();
-			$filelist[$i]['modified_by'] = User::find($fileHistory->modified_by)->name;
-			$filelist[$i]['updated_at'] = $fileHistory->updated_at;
-			$i++;
+			$filelist[$j]['modified_by'] = User::find($fileHistory->modified_by)->name;
+			$filelist[$j]['updated_at'] = $fileHistory->updated_at;
+			$j++;
 		}
+
+        if ($i==0 && $j==0)
+            $empty = 'true';
+        else
+            $empty = 'false';
 
 		if (session('user-level') === 1) {
 			$networkPractices = Practices::all();
@@ -368,7 +385,7 @@ class FileExchangeController extends Controller {
 
 		$breadcrumbs = $this->getBreadcrumbs($request);
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs]);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty]);
 	}
 	public function shareFilesFolders(Request $request) {
 
