@@ -74,6 +74,9 @@
         </div>
         <hr>
         @endforeach
+        @if($empty == 'true')
+            <p>No files or folder found</p>
+        @endif
     </div>
     <div class="item_info" id="item_info">
     </div>

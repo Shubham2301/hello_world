@@ -35,7 +35,7 @@ Section : Imports
         border-bottom: 2px solid #fff;
         border-top: 1px solid #fff;
         color: #000;
-        padding: 0.5em 15px;
+        padding: .7em 0 .5em 0;
         margin: 1em 0;
     }
     &.active {
@@ -97,7 +97,6 @@ Section : Imports
     float: right;
     padding-right: 12px;
     font-size: .8em;
-    text-decoration: underline;
     right: 0;
     position: absolute;
     display: none;
@@ -105,12 +104,18 @@ Section : Imports
         display: inline-block;
     }
     &>a {
-        color: black;
-
+        color: #4d4d4d;
         cursor: pointer;
+        text-decoration: none;
+        border-bottom: 1px solid #4d4d4d;
+        padding-bottom: .1em;
+        text-decoration: none;
     }
 }
-
+#add_patient_btn{
+    padding: 0;
+    margin-right: 10px;
+}
 .add-btn {
     margin: 0 1em;
 }

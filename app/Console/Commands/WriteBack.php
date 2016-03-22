@@ -5,6 +5,7 @@ namespace myocuhub\Console\Commands;
 use DateTime;
 use Illuminate\Console\Command;
 use myocuhub\Facades\WriteBack4PC;
+use myocuhub\User;
 
 class WriteBack extends Command {
 	/**
@@ -19,7 +20,7 @@ class WriteBack extends Command {
 	 *
 	 * @var string
 	 */
-	protected $description = 'Retrieves appointment schedules form 4PC and updates Ocuhub Database.';
+	protected $description = 'Retrieving appointment schedules from 4PC and updating Ocuhub Database.';
 
 	/**
 	 * Create a new command instance.
@@ -41,12 +42,30 @@ class WriteBack extends Command {
 
 		$startDate = new DateTime();
 
-		$input = [];
-		$input['NPI'] = '991234567';
-		$input['Start'] = $startDate->format('Y-m-d');
-		$input['DaysForward'] = 2;
+		$providers = User::get4PCProviderNPIs();
+		$schedules = [];
 
-		$schedule = WriteBack4PC::ProviderApptSchedule($input);
+		foreach ($providers as $provider) {
+			if ($provider->npi == '') {
+				continue;
+			}
+
+			$input = [];
+			$input['NPI'] = $provider->npi;
+			$input['Start'] = $startDate->format('Y-m-d');
+			$input['DaysForward'] = 14;
+
+			$schedule = WriteBack4PC::ProviderApptSchedule($input);
+
+			if (sizeof($schedule->OcuHub_ApptScheduleResult) != 0) {
+				$schedules[] = [
+					'npi' => $provider->npi,
+					'schedule' => $schedule->OcuHub_ApptScheduleResult->ApptDetail,
+				];
+			}
+		}
+
+		$writeBackResult = WriteBack4PC::OcuhubAppointmentWriteback($schedules);
 
 	}
 }

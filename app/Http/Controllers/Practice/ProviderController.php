@@ -8,6 +8,8 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Practice;
 use myocuhub\Patient;
 use myocuhub\User;
+use Event;
+use myocuhub\Events\MakeAuditEntry;
 
 class ProviderController extends Controller {
 	/**
@@ -143,6 +145,13 @@ class ProviderController extends Controller {
 
 		$apptTypes = WebScheduling4PC::getApptTypes($providerInfo);
 
+        if(!isset($apptTypes->GetApptTypesResult->ApptType)){
+            $action = 'No data received for Provider = ' . $providerKey.' Location = '.$locationKey;
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        }
 		return json_encode($apptTypes);
 	}
 

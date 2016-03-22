@@ -138,20 +138,20 @@
     <div class="col-xs-12 patient_table_header">
         <div class="col-xs-4 lastseenby">
             <div class="lastseenby_show arial_bold">
-                <p><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></p>
+                <span><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></span>
             </div>
 
         </div>
 
         <div class="col-xs-4 referredby">
             <div class="referredby_show arial_bold">
-                <p> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></p>
+                <span> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></span>
             </div>
         </div>
 
         <div class="col-xs-4 insurance_provider">
             <div class="insurance_provider_show arial_bold">
-                <p><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></p>
+                <span><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></span>
             </div>
         </div>
     </div>
