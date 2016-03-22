@@ -58,7 +58,7 @@
             </div>
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
-            <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $folder['id'] }}_folder">{{ $folder['description'] }}</div>
+			<div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $folder['id'] }}_folder"><p style="width:67em;">{{ $folder['description'] }}</p></div>
         </div>
         <hr>
         @endforeach

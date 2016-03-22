@@ -62,7 +62,7 @@ $(document).ready(function () {
         $('#shareModal').modal('show'); 
     });
     $('.files').on('click', '.description_text', function () {
-        $(this).css('height', 'auto');
+		$(this).toggleClass('show_discription');
     });
     $('.download-button').on('click', function(){
         if($('.file-check:checkbox:checked').length > 1) {
