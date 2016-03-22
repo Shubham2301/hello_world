@@ -71,6 +71,7 @@ class BulkImportController extends Controller {
 							$users = [];
 							if (array_filter($data->toArray())) {
 								$users['name'] = $data['name'];
+								$users['firstname'] = $data['name'];
 								$users['email'] = $data['contact_email'];
 								$users['cellphone'] = (int)$data['phone_number'];
 								$users['cellphone'] = (int)$data['cell_number'];
@@ -83,6 +84,8 @@ class BulkImportController extends Controller {
 								$users['address2'] = $data['address_2'];
 								$users['city'] = $data['city'];
 								$users['zip'] = (int) $data['zip_code'];
+								$users['level'] = 3;
+
 
 								$user =  User::where($users)->first();
 								$checkemail =User::where('email','LIKE','%'.$users['email'].'%')->first();
