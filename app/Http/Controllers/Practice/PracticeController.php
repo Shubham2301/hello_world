@@ -200,6 +200,7 @@ class PracticeController extends Controller {
 			$data[$i]['name'] = $practice->name;
 			$data[$i]['email'] = ($practice->email) ? $practice->email : '-';
 			$data[$i]['address'] = '4885 Olde Towne Parkway, Marietta, GA 30076';
+			$data[$i]['locations'] = PracticeLocation::where('practice_id', $practice->id)->get();
 			$i++;
 		}
 		return json_encode($data);

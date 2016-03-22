@@ -1,4 +1,4 @@
-<div class="row content-row-margin practice_list ">
+<div class="row content-row-margin practice_list">
 
     <p id="search_results" class="search_result"><strong></strong></p>
     <div class="row search_header">
@@ -37,7 +37,11 @@
             </div>
         </div>
         <div class="col-xs-3">practice.address </div>
-        <div class="col-xs-1"></div>
+        <div class="col-xs-1">
+			<span class="glyphicon glyphicon-chevron-up glyph_design" id="location_address_next"></span>
+			<span><p class="location_counter">0</p></span>
+			<span class="glyphicon glyphicon-chevron-down glyph_design" id="location_address_previous"></span>
+        </div>
         <div class="col-xs-3">
             <p>practice.ocuapps </p>
         </div>
