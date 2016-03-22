@@ -89,8 +89,8 @@ class WebScheduling4PC extends PatientCare {
 		//MM/DD/YYYY HH:MM 24 Hr military format
 		$client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
 		$response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => self::$requestApptInsertAction, 'uri' => self::$host));
-		dd($response);
-		return json_encode($response);
+
+		return $response;
 
 	}
 

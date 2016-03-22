@@ -5,12 +5,14 @@ namespace myocuhub\Http\Controllers\Appointment;
 use Auth;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Practice;
+use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
 use myocuhub\User;
 
@@ -137,9 +139,7 @@ class AppointmentController extends Controller {
 		$apptInfo['AcctKey'] = 8042;
 		$apptInfo['ApptTypeKey'] = $appointmentTypeKey;
 		$startime = new DateTime($appointmentTime);
-		$apptInfo['ApptStartDateTime'] = '03/21/2016 10:30'; //$startime->format('m/d/Y H:m'); // 03/21/2016 11:03 MM/DD/YYYY HH:MM
-		//$apptInfo['ApptStartTime'] = $startime->format('m/d/Y H:m');
-		//dd($appointmentTime);
+		$apptInfo['ApptStartDateTime'] = $startime->format('m/d/Y H:m');
 		$apptInfo['PatientData']['Title'] = $patient->title;
 		$apptInfo['PatientData']['FirstName'] = $patient->firstname;
 		$apptInfo['PatientData']['LastName'] = $patient->lastname;
@@ -188,11 +188,11 @@ class AppointmentController extends Controller {
 		$appointment->appointmenttype = $appointmentType;
 		$date = new DateTime($appointmentTime);
 		$appointment->start_datetime = $date->format('Y-m-d H:m:s');
-
 		$apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
 		$result = '';
-		if ($apptResult['RequestApptInsertResult']['ApptKey'] != -1) {
-			$appointment->fpc_id = $apptResult['RequestApptInsertResult']['ApptKey'];
+
+		if ($apptResult->RequestApptInsertResult->ApptKey != -1) {
+			$appointment->fpc_id = $apptResult->RequestApptInsertResult->ApptKey;
 			$result = 'Appointment Scheduled Successfully';
 		} else {
 			$result = 'Appointment could not be scheduled with 4PC at this moment. Please try again or contact our support team.';
@@ -207,8 +207,36 @@ class AppointmentController extends Controller {
 		}
 
 		$appointment->save();
-            
-        
+
+		$practice = Practice::find($appointment->practice_id);
+		$appt['practice_name'] = $practice->name;
+		$appt['appt_type'] = $appointmentType;
+		$provider = User::find($appointment->provider_id);
+		$appt['provider_name'] = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+		$location = PracticeLocation::find($appointment->location_id);
+		$appt['location_name'] = $location->locationname;
+		$appt['location_address'] = $location->addressline1 . ', ' . $location->addressline2 . ', ' . $location->city . ', ' . $location->state . ', ' . $location->zip;
+		$appt['practice_phone'] = $location->phone;
+		$date = new DateTime($appointment->start_datetime);
+		$appt['appt_startdate'] = $date->format('F d, Y');
+		$appt['appt_starttime'] = $date->format('h m A');
+		$appt['patient_name'] = $patient->title . ' ' . $patient->lastname . ', ' . $patient->firstname;
+		$appt['patient_email'] = $patient->email;
+		$appt['patient_phone'] = $patient->cellphone;
+		$appt['patient_ssn'] = $patient->lastfourssn;
+		$appt['patient_address'] = $patient->addressline1 . ', ' . $patient->addressline2 . ', ' . $patient->city . ', ' . $patient->state . ', ' . $patient->zip;
+		$appt['patient_dob'] = $date->format('F d, Y');
+
+		$mailToPatient = Mail::send('emails.appt-confirmation-patient', ['appt' => $appt], function ($m) use ($patient) {
+			$m->from('support@ocuhub.com', 'Ocuhub');
+			$m->to($patient->email, $patient->lastname . ', ' . $patient->firstname)->subject('Patient Appointment has been scheduled');
+		});
+
+		$mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($provider) {
+			$m->from('support@ocuhub.com', 'Ocuhub');
+			$m->to($provider->email, $provider->lastname . ', ' . $provider->firstname)->subject('Provider has been scheduled');
+		});
+
 		$careconsole = Careconsole::where('patient_id', $patientID)
 			->orderBy('created_at', 'desc')
 			->first();
@@ -235,8 +263,6 @@ class AppointmentController extends Controller {
 			$contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:m:s');
 			$contactHistory->save();
 		}
-        
-        
 
 		return $result;
 	}
