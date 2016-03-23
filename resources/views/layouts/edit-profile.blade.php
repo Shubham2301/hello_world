@@ -17,14 +17,14 @@
 </div>
 @endif
 <div class="container">
-	<div class="row" style="margin-top: 3em;">
+	<div class="row" style="margin-top: 1em;">
         <div class="col-xs-12">
             <a href="/home">
                 <button class="btn back_btn">Back</button>
             </a>
         </div>
 		{!! Form::open(array('url' => '/updateprofile', 'method' => 'post','files'=>true, 'id'=>'profile_form')) !!}
-            <div class="col-xs-12">
+            <div class="col-xs-12" style="margin-top:4em;">
                 <div class="col-xs-5 center-align" style="display: flex; flex-direction: column;">
                     <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="img-responsive edit_profile_img" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'" id="profile_image_view">
                     <br>
