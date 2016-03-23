@@ -25,14 +25,13 @@
         </div>
 		{!! Form::open(array('url' => '/updateprofile', 'method' => 'post','files'=>true, 'id'=>'profile_form')) !!}
             <div class="col-xs-12">
-                <div class="col-xs-5 center-align">
+                <div class="col-xs-5 center-align" style="display: flex; flex-direction: column;">
                     <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="img-responsive edit_profile_img" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'" id="profile_image_view">
                     <br>
-                    <p class="button_type_1" id="change_practice_button file_button">
-                        <input type="file" name="profile_img" class="profile_img_upload file_upload">
-                        <span>Change Profile Image</span>
-                    </p>
-                    </p>
+                    <div class="fileUpload btn btn-primary add-btn" style="margin: 0 auto;" id="change_practice_button file_button">
+                       <span>Change Profile Image</span>
+                        <input type="file" class="upload profile_img_upload" name="profile_img" id="add_document" required/>
+                   </div>
                 </div>
                 <div class="col-xs-7">
                     <div class="col-xs-2">
