@@ -14,7 +14,7 @@
     </strong> {{ Session::pull('success') }}
 </div>
 @endif
-<div class="content-section active">
+<div class="content-section active" style="min-height: 40vh;">
     <div class="row">
         <div class="col-xs-offset-1">
             <div class="file_exchange_navbar">
@@ -75,9 +75,6 @@
         </div>
         <hr>
         @endforeach
-        @if($empty == 'true')
-            <p>No files or folder found</p>
-        @endif
     </div>
     <div class="item_info" id="item_info">
     </div>
@@ -85,4 +82,9 @@
 @include('file_exchange.addFolder')
 @include('file_exchange.addFile')
 @include('file_exchange.share')
+    @if($empty == 'true')
+            <div style="display: flex;flex-direction: row;justify-content: center;">
+                <span>No files or folder found</span>
+            </div>
+    @endif
 @endsection
