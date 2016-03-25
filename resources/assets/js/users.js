@@ -1,26 +1,39 @@
 'use strict';
-$(document).ready(function() {
+$(document).ready(function () {
     loadAllUsers();
 
-    $('.profile_img_upload').on('change',function () {
-		if($(this).val() != '')
-		changePicture();
+    $('.profile_img_upload').on('change', function () {
+        if ($(this).val() != '')
+            changePicture();
     });
 
-    $('#user_level').on('change',function () {
-        if($(this).val() == 3){
+    $('.popover_text').popover({
+        trigger: "manual"
+    });
+
+    $('.add_user_submit_button').on('click', function () {
+        checkForm();
+    });
+
+    $('#user_level').on('change', function () {
+        if ($(this).val() == 3) {
             $('#user_practice').show();
+            $('#user_practice').prop('required', true);
         } else {
             $('#user_practice').hide();
+            $('#user_practice').prop('required', false);
         }
-        if($(this).val() == 1){
+        if ($(this).val() == 1) {
             $('#user_network').hide();
+            $('#user_network').prop('required', false);
         } else {
-           $('#user_network').show();
+            $('#user_network').show();
+            $('#user_network').prop('required', true);
+
         }
     });
 
-    $('#search_user_button').on('click', function() {
+    $('#search_user_button').on('click', function () {
         var searchvalue = $('#search_user_input').val();
         $('.no_item_found > p:eq(1)').text(searchvalue);
         $('.no_item_found > p:eq(1)').css('padding-left', '4em');
@@ -31,40 +44,40 @@ $(document).ready(function() {
         getUsers(formData, 0);
         $('#refresh_users').addClass('active');
     });
-    $('.p_left').on('click', function() {
+    $('.p_left').on('click', function () {
         if (currentpage > 1)
             getUsers(null, currentpage - 1);
     });
-    $('.p_right').on('click', function() {
+    $('.p_right').on('click', function () {
         if (currentpage < lastpage)
             getUsers(null, currentpage + 1);
     });
-    $('#refresh_users').on('click', function() {
+    $('#refresh_users').on('click', function () {
         $('#search_user_input').val('');
         loadAllUsers();
     });
-    $('.user_search_content').on('mouseenter', '.action_dropdown', function() {
+    $('.user_search_content').on('mouseenter', '.action_dropdown', function () {
         $(this).attr('src', $('#dropdown_onhover_img').val());
     });
-    $('.user_search_content').on('mouseleave', '.action_dropdown', function() {
+    $('.user_search_content').on('mouseleave', '.action_dropdown', function () {
         $(this).attr('src', $('#dropdown_natural_img').val());
     });
-    $('#checked_all_users').on('change', function() {
+    $('#checked_all_users').on('change', function () {
         if ($(this).is(":checked")) {
-            $('.user_search_content').each(function() {
+            $('.user_search_content').each(function () {
                 $(this).find('input').prop('checked', true);
             });
             $('.admin_delete').addClass('active');
             $('.delete_from_row_dropdown').addClass('hide');
-        } else{
-            $('.user_search_content').each(function() {
+        } else {
+            $('.user_search_content').each(function () {
                 $(this).find('input').prop('checked', false);
             });
             $('.admin_delete').removeClass('active');
             $('.delete_from_row_dropdown').removeClass('hide');
         }
     });
-    $('.admin_delete').on('click', function(){
+    $('.admin_delete').on('click', function () {
 
         showModalConfirmDialogTotal('Are you sure?', function (outcome) {
             if (outcome) {
@@ -72,12 +85,12 @@ $(document).ready(function() {
             }
         });
     });
-    $(document).keypress(function(e) {
+    $(document).keypress(function (e) {
         if (e.which == 13) {
             $("#search_user_button").trigger("click");
         }
     });
-    $('.user_search_content').on('click', 'p.edituser_from_row', function(){
+    $('.user_search_content').on('click', 'p.edituser_from_row', function () {
         var user_id = $(this).parents('.search_item').attr('data-id');
         window.location = '/administration/users/edit/' + user_id + '';
     });
@@ -103,16 +116,29 @@ $(document).ready(function() {
     });
 
 });
+var flag = 0;
+$(document).click(function () {
+    if (flag == 0) {
+        $('.popover_text').popover("hide");
+    }
+    flag = 0;
+});
+$(document).keypress(function (e) {
+    if (flag == 0) {
+        $('.popover_text').popover("hide");
+    }
+    flag = 0;
+});
 var currentpage = 1;
 var lastpage = 0;
 
 function getCheckedID() {
     var id = [];
-        $.each($("input[name='checkbox']:checked"), function () {
-            id.push($(this).attr('data-id'));
-        });
-        removeUser(id);
-        $('.admin_delete').removeClass('active');
+    $.each($("input[name='checkbox']:checked"), function () {
+        id.push($(this).attr('data-id'));
+    });
+    removeUser(id);
+    $('.admin_delete').removeClass('active');
 }
 
 function loadAllUsers() {
@@ -133,6 +159,7 @@ function showModalConfirmDialog(msg, handler) {
     });
 
 }
+
 function showModalConfirmDialogTotal(msg, handler) {
     $('.admin_delete_dropdown').on('click', '.confirm_yes', function (evt) {
         handler(true);
@@ -162,10 +189,10 @@ function getUsers(formData, page) {
             var content = '';
             $('#search_results').text('');
             if (users.length > 0 && users[0]['total'] > 0) {
-                users.forEach(function(user) {
-		content += '<div class="row search_item" data-id="' + user.id + '"><div class="col-xs-3 search_name"><input type="checkbox" class="admin_checkbox_row" data-id="' + user.id + '" name="checkbox">&nbsp;&nbsp;<p>' + user.name + '</p></div><div class="col-xs-3">' + user.email + '</div><div class="col-xs-2"><p>' + user.level + '</p></div><div class="col-xs-2"><p>' + user.practice + '</p></div><div class="col-xs-2 search_edit"><p><div class="dropdown dropdown_action"><span  area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown" src="' + scheduleimg + '" alt=""></span><ul class="dropdown-menu" id="row_action_dropdown">';
-//                  content += '<li><a href="" style="margin-left: -5.1em;"><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px;">&nbsp;Roles</a></li>';
-                   content += '<li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">&nbsp;Impersonate User</a></li></ul></div></p><p class="edituser_from_row">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removeuser_from_row"><img src="' + activate_img + '" alt="" class="removeuser_img" data-toggle="tooltip" title="Deactivate User" data-placement="top"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to deactivate this person?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+                users.forEach(function (user) {
+                    content += '<div class="row search_item" data-id="' + user.id + '"><div class="col-xs-3 search_name"><input type="checkbox" class="admin_checkbox_row" data-id="' + user.id + '" name="checkbox">&nbsp;&nbsp;<p>' + user.name + '</p></div><div class="col-xs-3">' + user.email + '</div><div class="col-xs-2"><p>' + user.level + '</p></div><div class="col-xs-2"><p>' + user.practice + '</p></div><div class="col-xs-2 search_edit"><p><div class="dropdown dropdown_action"><span  area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown" src="' + scheduleimg + '" alt=""></span><ul class="dropdown-menu" id="row_action_dropdown">';
+                    //                  content += '<li><a href="" style="margin-left: -5.1em;"><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px;">&nbsp;Roles</a></li>';
+                    content += '<li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">&nbsp;Impersonate User</a></li></ul></div></p><p class="edituser_from_row">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removeuser_from_row"><img src="' + activate_img + '" alt="" class="removeuser_img" data-toggle="tooltip" title="Deactivate User" data-placement="top"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to deactivate this person?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                 });
                 currentpage = users[0]['currentPage'];
                 lastpage = users[0]['lastpage'];
@@ -177,7 +204,7 @@ function getUsers(formData, page) {
                 $('.user_listing').addClass('active');
                 $('[data-toggle="tooltip"]').tooltip();
                 if ($('#checked_all_users').is(":checked")) {
-                    $('.user_search_content').each(function() {
+                    $('.user_search_content').each(function () {
                         $(this).find('input').prop('checked', true);
                     });
                 }
@@ -218,25 +245,43 @@ function removeUser(id) {
         cache: false,
         processData: false
     });
-    $('.user_search_content').each(function() {
-                $(this).find('input').prop('checked', false);
+    $('.user_search_content').each(function () {
+        $(this).find('input').prop('checked', false);
     });
     $('#checked_all_users').prop('checked', false);
     loadAllUsers();
 }
 
-function changePicture(){
-	var myform = document.getElementById("profile_form");
-	var fd = new FormData(myform);
-	$.ajax({
-		url: "/updateprofile",
-		data: fd,
-		cache: false,
-		processData: false,
-		contentType: false,
-		type: 'POST',
-		success: function(e) {
-			$('#profile_image_view').attr('src',e);
-		}
-	});
+function changePicture() {
+    var myform = document.getElementById("profile_form");
+    var fd = new FormData(myform);
+    $.ajax({
+        url: "/updateprofile",
+        data: fd,
+        cache: false,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function (e) {
+            $('#profile_image_view').attr('src', e);
+        }
+    });
+}
+
+function checkForm() {
+    var fields = $('.panel-body').find('.add_user_input');
+    fields.each(function (field) {
+        if ($(this).prop('required')) {
+            if ($(this).val() == "") {
+                $($(this).parents('.panel-default').find('.popover_text')).popover("show");
+                flag = 1;
+                return false;
+            } else if ($('input[name="role[]"]:checked').length == 0) {
+                $($('input[name="role[]"]').parents('.panel-default').find('.popover_text')).popover("show");
+                flag = 1;
+                return false;
+            }
+        }
+    });
+
 }
