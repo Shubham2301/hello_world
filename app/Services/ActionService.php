@@ -28,6 +28,7 @@ class ActionService {
 			$actionResultID = 14;
 			$actionResultName = 'patient-notes';
 		}
+
 		$contactDate = new DateTime();
 
 		$actionResultName = ActionResult::find($actionResultID)->name;
@@ -50,10 +51,10 @@ class ActionService {
 			case 'move-to-console':
 				$console = Careconsole::find($consoleID);
 				$console->recall_date = null;
+				$console->archived_date = null;
 				$date = new DateTime();
 				$console->stage_id = 1;
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
-				$console->entered_console_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
 				if ($contactHistory) {
@@ -86,7 +87,6 @@ class ActionService {
 				$console->appointment_id = null;
 				$console->referral_id = null;
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
-				$console->entered_console_at = $date->format('Y-m-d H:m:s');
 				$console->save();
 				break;
 			case 'archive':
@@ -210,31 +210,32 @@ class ActionService {
 	public function getContactActions($consoleID) {
 		$contactsData = ContactHistory::getContactHistory($consoleID);
 		$console = Careconsole::find($consoleID);
-
-		$date = new \DateTime();
-
-		if ($console->entered_console_at != 0) {
-			$date = new \DateTime($console->entered_console_at);
-		}
-
 		$actions = [];
-		$actions[0]['date'] = $date->format('j F Y');
-		$actions[0]['name'] = 'Entered into console';
-		$actions[0]['notes'] = '-';
-		$i = 1;
+		$date = new \DateTime();
+		$i = 0;
 		foreach ($contactsData as $contact) {
-			if ($contact['contact_activity_date'] != 0) {
+			if ($contact['contact_activity_date'] != 0)
 				$date = new \DateTime($contact['contact_activity_date']);
-			}
 
 			$actions[$i]['date'] = $date->format('j F Y');
 			$actions[$i]['name'] = $contact['display_name'];
+
+			if ($contact['name'] == 'unarchive' || $contact['name'] == 'move-to-console')
+				$actions[$i]['name'] = 'entered into console';
+
 			$actions[$i]['notes'] = $contact['notes'];
 			$i++;
 		}
 
-		return $actions;
+		$date = new \DateTime();
+		if ($console->entered_console_at != 0) {
+			$date = new \DateTime($console->entered_console_at);
+		}
 
+		$actions[$i]['date'] = $date->format('j F Y');
+		$actions[$i]['name'] = 'entered into console';
+		$actions[$i]['notes'] = '-';
+		return $actions;
 	}
 
 }

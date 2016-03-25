@@ -17,11 +17,13 @@ use myocuhub\User;
 class CareConsoleService {
 
 	private $KPIService;
+	private $ActionService;
 	/**
 	 * @param KPIService $KPIService
 	 */
-	public function __construct(KPIService $KPIService) {
+	public function __construct(KPIService $KPIService, ActionService $ActionService) {
 		$this->KPIService = $KPIService;
+		$this->ActionService = $ActionService;
 	}
 
 	/**
@@ -301,17 +303,11 @@ class CareConsoleService {
 	public function moveRecallPatientsToConsoleAsPending() {
 		$networkID = User::getNetwork(Auth::user()->id)->network_id;
 		$patients = Careconsole::getRecallPatientsToMove($networkID);
-
 		foreach ($patients as $patient) {
 			$console = Careconsole::find($patient['id']);
-			$console->recall_date = null;
-			$console->archived_date = null;
-			$date = new \DateTime();
-			$console->stage_id = 1;
-			$console->stage_updated_at = $date->format('Y-m-d H:m:s');
-			$console->entered_console_at = $date->format('Y-m-d H:m:s');
-			$console->save();
-		}
 
+			//moved patient back into console
+			$this->ActionService->userAction(34, '-1', null, 'moved to console', $console->id);
+		}
 	}
 }
