@@ -238,8 +238,9 @@ $(document).ready(function() {
         window.location = '/administration/practices/edit/' + val + '/' + index;
     });
     $('.practice_location_item_list').on('click', '.remove_location_frominfo', function() {
-        var index = $(this).parent().parent().attr('data-locationid');
-        var location_dom = $(this).parent().parent();
+
+		var index = $(this).closest('.practice_location_item').attr('data-locationid');
+		var location_dom = $(this).closest('.panel-default');
         var formData = {
             'location_id': index
         };
@@ -262,7 +263,6 @@ $(document).ready(function() {
             }
         });
     });
-
     $('.practice_list').on('click', '.location_address_previous', function() {
         var index = $(this).parent().attr('data-index');
         var counter = parseInt($(this).parent().find('.location_address_counter').text());
@@ -513,6 +513,7 @@ function getPracticeInfo(formdata) {
 }
 
 function showPracticeInfo(info) {
+	var deleteImg = $('#delete_practice_img').val();
     $('#edit_practice').attr('data-id', info.practice_id);
     $('#the_practice_name').text(info.practice_name);
     var content = '';
@@ -525,7 +526,7 @@ function showPracticeInfo(info) {
                 content += '<div id="collapse' + i + '" class="panel-collapse collapse in"><div class="panel-body location_accordian_body">';
             else
                 content += '<div id="collapse' + i + '" class="panel-collapse collapse"><div class="panel-body">';
-            content += '<div class="row practice_location_item" data-locationid = "' + location.id + '" data-index="' + i + '"><div class="col-xs-3 practice_info"><p>' + location.addressline1 + '<br>' + location.addressline2 + '</p><p>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p class="hide">Assign roles </p><p class="hide">Assign users</p><p class="edit_location_frominfo">Edit</p><br><center class="remove_location_frominfo"><span class="glyphicon glyphicon-remove" area-hidden="true" style="background: maroon;color: white;padding: 3px;border-radius: 3px;font-size: 0.9em;"></span></center></div><div class="col-xs-5"><div class="row">';
+			content += '<div class="row practice_location_item" data-locationid = "' + location.id + '" data-index="' + i + '"><div class="col-xs-3 practice_info"><p>' + location.addressline1 + '<br>' + location.addressline2 + '</p><p>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p class="hide">Assign roles </p><p class="hide">Assign users</p><p class="edit_location_frominfo">Edit</p><br><center class=""><span class="remove_location_frominfo"><img src="'+deleteImg+'"/></span></center></div><div class="col-xs-5"><div class="row">';
             info.users.forEach(function (user) {
                 content += '<div class="col-xs-12 practice_users "><p style="width: 100%;"><input type="checkbox"><span>' + user.firstname + '</span><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background:#e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;float: right;margin-bottom: 5px;"></span></p></div>';
             });
