@@ -60,10 +60,10 @@ class FileExchangeController extends Controller {
 			$j++;
 		}
 
-        if ($i==0 && $j==0)
-            $empty = 'true';
-        else
-            $empty = 'false';
+		if ($i==0 && $j==0)
+			$empty = 'true';
+		else
+			$empty = 'false';
 
 
 		if (session('user-level') === 1) {
@@ -275,10 +275,10 @@ class FileExchangeController extends Controller {
 			$j++;
 		}
 
-        if ($i==0 && $j==0)
-            $empty = 'true';
-        else
-            $empty = 'false';
+		if ($i==0 && $j==0)
+			$empty = 'true';
+		else
+			$empty = 'false';
 
 		if ($sortOnRecent != '') {
 			$folderlist = array_values(array_sort($folderlist, function ($value) {
@@ -366,10 +366,10 @@ class FileExchangeController extends Controller {
 			$j++;
 		}
 
-        if ($i==0 && $j==0)
-            $empty = 'true';
-        else
-            $empty = 'false';
+		if ($i==0 && $j==0)
+			$empty = 'true';
+		else
+			$empty = 'false';
 
 		if (session('user-level') === 1) {
 			$networkPractices = Practices::all();
@@ -446,72 +446,72 @@ class FileExchangeController extends Controller {
 		return $breadcrumbs;
 	}
 
-    public function show(Request $request) {
-        $type = $request->name;
-        $id = $request->id;
-        if($type == 'folder') {
+	public function show(Request $request) {
+		$type = $request->name;
+		$id = $request->id;
+		if($type == 'folder') {
 
-            $folderInfo = array();
+			$folderInfo = array();
 
-            $folder = Folder::find($id);
+			$folder = Folder::find($id);
 			$folderInfo['name'][0] = $folder->name;
 			$folderInfo['description'][0] = $folder->description;
 			$folderHistory = FolderHistory::where('folder_id', '=', $id)->orderBy('created_at', 'desc')->take(3)->get();
-            $i = 0;
-            foreach($folderHistory as $history){
-                $folderInfo['modified_by'][$i] = User::find($history->modified_by)->name;
-                $updateDate = new DateTime($history->updated_at);
-                $folderInfo['updated_at'][$i] = $updateDate->format('j F Y');
-                $i++;
-            }
-            return($folderInfo);
+			$i = 0;
+			foreach($folderHistory as $history){
+				$folderInfo['modified_by'][$i] = User::find($history->modified_by)->name;
+				$updateDate = new DateTime($history->updated_at);
+				$folderInfo['updated_at'][$i] = $updateDate->format('j F Y');
+				$i++;
+			}
+			return($folderInfo);
 
-        }
-        else {
+		}
+		else {
 
-            $fileInfo = array();
+			$fileInfo = array();
 
-            $file = File::find($id);
+			$file = File::find($id);
 			$fileInfo['name'][0] = $file->title;
 			$fileInfo['description'][0] = $file->description;
 			$fileHistory = FileHistory::where('file_id', '=', $id)->orderBy('created_at', 'desc')->take(3)->get();
-            $i = 0;
-            foreach($fileHistory as $history){
-                $fileInfo['modified_by'][$i] = User::find($history->modified_by)->name;
-                $updateDate = new DateTime($history->updated_at);
-                $fileInfo['updated_at'][$i] = $updateDate->format('j F Y');
-                $i++;
-            }
-            return($fileInfo);
-        }
-    }
+			$i = 0;
+			foreach($fileHistory as $history){
+				$fileInfo['modified_by'][$i] = User::find($history->modified_by)->name;
+				$updateDate = new DateTime($history->updated_at);
+				$fileInfo['updated_at'][$i] = $updateDate->format('j F Y');
+				$i++;
+			}
+			return($fileInfo);
+		}
+	}
 
-    public function changeDescription(Request $request) {
-        $id = $request->id;
-        $description = $request->description;
-        $type = $request->name;
-        $data = array();
-        $data['id'] = $id;
-        $data['name'] = $type;
-        $data['description'] = $description;
-        if($type == 'folder') {
-            $folder = Folder::find($id);
-            $folder->description = $description;
-            $folder->save();
-            $folderHistory = new FolderHistory();
-            $folderHistory->folder_id = $id;
-            $folderHistory->modified_by = Auth::user()->id;
-            $folderHistory->save();
-        }
-        else {
-            $file = File::find($id);
-            $file->description = $description;
-            $file->save();
-            $fileHistory = new FileHistory();
-            $fileHistory->file_id = $id;
-            $fileHistory->modified_by = Auth::user()->id;
-            $fileHistory->save();
-        }
-        return $data;
-    }
+	public function changeDescription(Request $request) {
+		$id = $request->id;
+		$description = $request->description;
+		$type = $request->name;
+		$data = array();
+		$data['id'] = $id;
+		$data['name'] = $type;
+		$data['description'] = $description;
+		if($type == 'folder') {
+			$folder = Folder::find($id);
+			$folder->description = $description;
+			$folder->save();
+			$folderHistory = new FolderHistory();
+			$folderHistory->folder_id = $id;
+			$folderHistory->modified_by = Auth::user()->id;
+			$folderHistory->save();
+		}
+		else {
+			$file = File::find($id);
+			$file->description = $description;
+			$file->save();
+			$fileHistory = new FileHistory();
+			$fileHistory->file_id = $id;
+			$fileHistory->modified_by = Auth::user()->id;
+			$fileHistory->save();
+		}
+		return $data;
+	}
 }

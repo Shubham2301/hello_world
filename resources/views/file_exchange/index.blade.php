@@ -59,7 +59,11 @@
             </div>
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
-			@if(str_word_count($folder['description']) > 0)
+
+			@if(str_word_count($folder['description']) > 15)
+			<div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $folder['id'] }}_folder" style="cursor:pointer;"><p style="width:67em;">{{ $folder['description'] }}</p></div>
+
+			@elseif(str_word_count($folder['description']) > 0)
 			<div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $folder['id'] }}_folder"><p style="width:67em;">{{ $folder['description'] }}</p></div>
        		@endif
         </div>
@@ -73,7 +77,10 @@
             <div class="col-xs-7 no-padding"><img src="{{URL::asset('images/files-white.png')}}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $file['name'] }}</div>
             <div class="col-xs-2 no-padding">{{ $file['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $file['updated_at'] }}</div>
-			@if(str_word_count($file['description'] ) > 0)
+			@if(str_word_count($file['description']) > 15)
+			<div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $file['id'] }}_file" style="cursor:pointer;">{{ $file['description'] }}</div>
+
+			@elseif(str_word_count($file['description'] ) > 0)
             <div class="col-xs-11 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $file['id'] }}_file" >{{ $file['description'] }}</div>
 			@endif
         </div>
