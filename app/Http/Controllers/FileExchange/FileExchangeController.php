@@ -38,7 +38,8 @@ class FileExchangeController extends Controller {
 			$folderlist[$i]['description'] = $folder->description;
 			$folderHistory = $folder->history()->orderBy('created_at', 'desc')->first();
 			$folderlist[$i]['modified_by'] = User::find($folderHistory->modified_by)->name;
-			$folderlist[$i]['updated_at'] = $folderHistory->updated_at;
+			$updateDate = new DateTime($folderHistory->updated_at);
+			$folderlist[$i]['updated_at'] = $updateDate->format('j F Y');
 			$i++;
 		}
 
@@ -54,7 +55,8 @@ class FileExchangeController extends Controller {
 			$filelist[$j]['description'] = $file->description;
 			$fileHistory = $file->history()->orderBy('created_at', 'desc')->first();
 			$filelist[$j]['modified_by'] = User::find($fileHistory->modified_by)->name;
-			$filelist[$j]['updated_at'] = $fileHistory->updated_at;
+			$updateDate = new DateTime($fileHistory->updated_at);
+			$filelist[$j]['updated_at'] = $updateDate->format('j F Y');
 			$j++;
 		}
 
