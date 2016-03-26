@@ -42,6 +42,12 @@ class Careconsole extends Model {
 	public function appointment() {
 		return $this->hasOne('myocuhub\Models\Appointments');
 	}
+	/**
+	 * @return mixed
+	 */
+	public function stage(){
+		return $this->hasOne('myocuhub\Models\CareconsoleStage', 'id', 'stage_id');
+	}
 
 	/**
 	 * @param $networkID
