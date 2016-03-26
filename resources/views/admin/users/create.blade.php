@@ -79,7 +79,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6" style="color:#fff;">
                                        <h4>Roles*</h4>
-                                        @foreach($roles as $role) @if(isset($user[$role])) {!! Form::checkbox('role[]', $role, true); !!} @else {!! Form::checkbox('role[]', $role); !!} @endif {!! Form::label('role', $role); !!}
+                                        @foreach($roles as $role) @if(isset($user[$role])) {!! Form::checkbox('role[]', $role, true, array('id' => $role)); !!} @else {!! Form::checkbox('role[]', $role, null, array('id' => $role)); !!} @endif {!! Form::label($role, $role); !!}
                                         <br> @endforeach
                                     </div>
 
