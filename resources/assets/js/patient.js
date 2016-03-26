@@ -244,8 +244,10 @@ function showPatientInfo(data) {
 	$('#patient_name').text(data.lastname + ', '+ data.firstname);
     $('#patient_email').text(data.email);
     $('#patient_dob').text(data.birthdate);
-    $('#patient_add1').text(data.addressline1 + ',');
-    $('#patient_add2').text(data.addressline2 + ',');
+    if(data.addressline1 != '')
+        $('#patient_add1').text(data.addressline1 + ',');
+    if(data.addressline2 != '')
+        $('#patient_add2').text(data.addressline2 + '');
     $('#patient_add3').text(data.city);
     $('#patient_phone').text(data.cellphone);
     $('#patient_ssn').text(data.lastfourssn);
