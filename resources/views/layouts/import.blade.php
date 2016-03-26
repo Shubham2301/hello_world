@@ -37,7 +37,7 @@
                                 <label for="exampleInputFile"><strong style="padding-left:3em;" >File</strong></label>
                             </div>
                             <div class="col-md-7 ">
-                                <span class="file-input">Select{!!Form::file('patient_xlsx')!!}
+								<span class="xlsx_file-input ">Select{!!Form::file('patient_xlsx')!!}
                                 </span>
                                 <span class="filename"></span>
 
