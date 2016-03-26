@@ -7,11 +7,16 @@ $(document).ready(function() {
         $('.no_item_found > p:eq(1)').text(searchvalue);
         $('.no_item_found > p:eq(1)').css('padding-left', '4em');
         $('.no_item_found').removeClass('active');
-        var formData = {
-            'value': searchvalue
-        };
-        getNetworks(formData, 0);
-        $('#refresh_networks').addClass('active');
+        if (searchvalue != '') {
+            var formData = {
+                'value': searchvalue
+            };
+            getNetworks(formData, 0);
+            $('#refresh_networks').addClass('active');
+        } else {
+            $('#refresh_networks').removeClass('active');
+            loadAllNetworks();
+        }
     });
     $('.network_listing').on('click', '.editnetwork_from_row', function() {
         var val = $(this).parents('.search_item').attr('data-id');

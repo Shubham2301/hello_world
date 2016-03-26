@@ -17,11 +17,16 @@ $(document).ready(function() {
         $('.no_item_found > p:eq(1)').text(searchvalue);
         $('.no_item_found > p:eq(1)').css('padding-left', '4em');
         $('.no_item_found').removeClass('active');
-        var formData = {
-            'value': searchvalue
-        };
-        getPractices(formData, 0);
-        $('#refresh_practices').addClass('active');
+        if (searchvalue != '') {
+            var formData = {
+                'value': searchvalue
+            };
+            getPractices(formData, 0);
+            $('#refresh_practices').addClass('active');
+        } else {
+            $('#refresh_practices').removeClass('active');
+            loadAllPractices();
+        }
     });
     $('#back').on('click', function() {
         $('.practice_info').removeClass('active');

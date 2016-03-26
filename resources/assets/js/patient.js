@@ -15,13 +15,18 @@ $(document).ready(function() {
             $('.no_item_found > p:eq(1)').text(val);
             $('.no_item_found > p:eq(1)').css('padding-left', '4em');
             $('.no_item_found').removeClass('active');
-            var searchdata = [];
-            searchdata.push({
-                "type": 'name',
-                "value": val,
-            });
-            getPatients(searchdata, 0);
-            $('#refresh_patients').addClass('active');
+            if (val != '') {
+                var searchdata = [];
+                searchdata.push({
+                    "type": 'name',
+                    "value": val,
+                });
+                getPatients(searchdata, 0);
+                $('#refresh_patients').addClass('active');
+            } else {
+                $('#refresh_patients').removeClass('active');
+                loadAllPatients();
+            }
         } else {
             $("#add_search_option").trigger("click");
             $('#search_patient_input').val('');
