@@ -7,7 +7,7 @@
                 <span class="modal_content_row">
                     <span class="left">Name</span>
 
-                    <span class="right"><input type="text" name="foldername"></span>
+                    <span class="right"><input type="text" name="foldername" required></span>
                 </span>
                 <span class="modal_content_row">
                     <span class="left">Description</span>
