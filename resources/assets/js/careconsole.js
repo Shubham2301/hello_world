@@ -700,5 +700,6 @@ function showActionModel(data) {
         $('#action_result_id').html('<option value="-1">No Action Results</option>');
         $('#action_results').hide();
     }
+	$('#action_notes').val('');
     $('#actionModal').modal('show');
 }
