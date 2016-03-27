@@ -62,6 +62,7 @@ $(document).ready(function () {
         $('#shareModal').modal('show'); 
     });
     $('.files').on('click', '.description_text', function () {
+		if($(this).attr('data-clickable'))
 		$(this).toggleClass('show_discription');
     });
     $('.download-button').on('click', function(){

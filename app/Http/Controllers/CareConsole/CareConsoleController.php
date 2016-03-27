@@ -169,9 +169,12 @@ class CareConsoleController extends Controller {
 		$recallDate = $request->recall_date;
 		$notes = $request->notes;
 		$consoleID = $request->console_id;
-
 		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID);
-		return json_encode($contactHistoryID);
+		$stage = CareConsole::find($consoleID)->stage;
+		$patientStage['id'] = $stage->id;
+		$patientStage['name'] = $stage->display_name;
+
+		return json_encode($patientStage);
 	}
 
 	/**

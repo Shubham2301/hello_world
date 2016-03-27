@@ -5,9 +5,13 @@ $(document).ready(function() {
 
     });
     $(document).on('change', '.file-input input[type="file"]', function() {
-        //        var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
-        //        $('.filename').html(filename);
-        saveCcdafile();
+        if ($(this).val() != '')
+            saveCcdafile();
+    });
+
+	$(document).on('change', '.xlsx_file-input input[type="file"]', function() {
+        var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+        $('.filename').html(filename);
     });
 
     $(document).on('click', '.import_button', function() {

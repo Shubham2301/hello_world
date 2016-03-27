@@ -72,6 +72,7 @@ $(document).ready(function() {
             $('.drilldown>.section-header').html($(this).find('p').html());
             $('.drilldown>.subsection-header>p').html('');
             $('.circle drilldown_kpi_indicator').css('background-color', 'transparent');
+
             bucketData($(this).attr('data-name'));
         }
     });
@@ -83,7 +84,7 @@ $(document).ready(function() {
     });
     $('#search_do').on('click', searchc3);
     $('.c3_overview_link').on('click', function() {
-		$('.console_buckets').removeClass('active');
+        $('.console_buckets').removeClass('active');
         refreshOverview();
         $('.c3_overview_link').removeClass('active');
         $('.control_section').removeClass('active');
@@ -350,7 +351,8 @@ function showStageData(stage_id, stage_name) {
     $('.drilldown>.section-header').html(stage_name);
     $('#current_stage').val(stage_id);
     $('#current_kpi').val('0');
-
+    if (stage_id < 6)
+        $('.console_buckets').removeClass('active');
     getPatientData();
 }
 
@@ -440,9 +442,10 @@ function action() {
         cache: false,
         async: false,
         success: function success(e) {
+            var stage = $.parseJSON(e);
             $('#actionModal').modal('hide');
             if (show_patient)
-                getPatientData();
+                showStageData(stage.id, stage.name);
             show_patient = true;
             $('#action_notes').html('');
             $('#action_notes').val('');
@@ -606,7 +609,7 @@ function setPatientRecords(consoleID) {
             contact_notes = [];
             var i = 0;
             var show_active = 'active';
-			$('.patient_contact_info').find('.contact_notes').html('');
+            $('.patient_contact_info').find('.contact_notes').html('');
             if (data.contacts_attempt.length > 0) {
                 data.contacts_attempt.forEach(function(contact) {
                     content += '<p class="history_item ' + show_active + '" data-index = "' + i + '"><span class="history_item_name ">' + contact.name + '</span> <span class="history_item_date attempt_phone">' + contact.date + '</span></p>';
@@ -625,11 +628,9 @@ function setPatientRecords(consoleID) {
                 actionResults[action.id] = action.action_results;
                 if (data.priority == 1 && action.id == 30) {
 
-                }
-				else if(!data.priority && action.id == 31 ){
+                } else if (!data.priority && action.id == 31) {
 
-				}
-				else {
+                } else {
                     content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid= "' + data.patient_id + '" data-consoleid="' + consoleID + '" data-stageid = "' + data.stageid + '"><a href="#">' + action.display_name + '</a></li>';
                 }
             });
@@ -699,5 +700,6 @@ function showActionModel(data) {
         $('#action_result_id').html('<option value="-1">No Action Results</option>');
         $('#action_results').hide();
     }
+	$('#action_notes').val('');
     $('#actionModal').modal('show');
 }

@@ -267,3 +267,25 @@
           border-color: #cde8f4;
     }
 }
+
+.xlsx_file-input {
+	position: relative;
+    overflow: hidden;
+    color: #4d4d4d;
+    display: inline-block;
+    font-weight: bold;
+	padding-right: 30px;
+}
+.xlsx_file-input input[type="file"] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	min-width: 100%;
+	min-height: 100%;
+	text-align: right;
+	filter: alpha(opacity=0);
+	opacity: 0;
+	outline: none;
+	display: block;
+	cursor: pointer;
+}
