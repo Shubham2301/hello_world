@@ -28,7 +28,7 @@
                     @endcan
                     @if(2 == Auth::user()->usertype_id)
                     <li>
-                        <a href="/administration/practices" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a>
+                        <a href="/administration/patients" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a>
                     </li>
                     @endif
                 </ul>

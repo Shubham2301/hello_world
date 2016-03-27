@@ -15,7 +15,7 @@
                     <li><a href="/careconsole" data-toggle="tooltip" title="Care Console" data-placement="right"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="drop_image"></a></li>
                     @endcan
                     @if(2 == Auth::user()->usertype_id)
-                    <li><a href="/administration/practices" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a></li>
+                    <li><a href="/administration/patients" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a></li>
                     @endif
                 </ul>
             </div>
