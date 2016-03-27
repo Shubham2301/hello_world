@@ -247,7 +247,6 @@ class CareConsoleController extends Controller {
 		$bucketID = $bucket->id;
 		$listing = $this->CareConsoleService->getBucketPatientsListing($bucketID);
 		$actions = $this->CareConsoleService->getActions($bucketID);
-
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
 		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->with('actions', $actions)->render();
 		return json_encode($drilldown);

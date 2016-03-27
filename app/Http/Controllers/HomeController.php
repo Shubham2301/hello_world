@@ -15,27 +15,29 @@ class HomeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-        $userID = Auth::user()->id;
-        $user = User::find($userID);
-        if(isset($user->menu_id)) {
-            if($user->menu_id == 1)
-                return redirect('/directmail');
-            elseif($user->menu_id == 2)
-                return redirect('/file_exchange');
-            elseif($user->menu_id == 4)
-                return redirect('/referraltype');
-            elseif($user->menu_id == 6)
-                return redirect('/careconsole');
-            elseif($user->menu_id == 7)
-                return redirect('/administration/practices');
-        }
-        $roles = Role_user::where('user_id', '=', $userID)->get();
-        foreach($roles as $role)    {
-            if($role->role_id == 12) {
-                return redirect('/careconsole');
-                break;
-            }
-        }
+		$userID = Auth::user()->id;
+		$user = User::find($userID);
+		if (isset($user->menu_id)) {
+			if ($user->menu_id == 1) {
+				return redirect('/directmail');
+			} elseif ($user->menu_id == 2) {
+				return redirect('/file_exchange');
+			} elseif ($user->menu_id == 4) {
+				return redirect('/referraltype');
+			} elseif ($user->menu_id == 6) {
+				return redirect('/careconsole');
+			} elseif ($user->menu_id == 7) {
+				return redirect('/administration/practices');
+			}
+
+		}
+		$roles = Role_user::where('user_id', '=', $userID)->get();
+		foreach ($roles as $role) {
+			if ($role->role_id == 12) {
+				return redirect('/careconsole');
+				break;
+			}
+		}
 		return redirect('/referraltype');
 	}
 
@@ -65,7 +67,7 @@ class HomeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show() {
-        //
+		//
 	}
 
 	/**

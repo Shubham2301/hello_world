@@ -188,6 +188,7 @@ class AppointmentController extends Controller {
 		$appointment->appointmenttype = $appointmentType;
 		$date = new DateTime($appointmentTime);
 		$appointment->start_datetime = $date->format('Y-m-d H:m:s');
+
 		$apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
 		$result = '';
 
@@ -197,11 +198,11 @@ class AppointmentController extends Controller {
 		} else {
 			$result = 'Appointment could not be scheduled with 4PC at this moment. Please try again or contact our support team.';
 
-            $action = 'Attempt to shedule appointment failed for Provider = '.$providerID.' Location = '.$locationID.' for Date '.$appointmentTime;
-            $description = '';
-            $filename = basename(__FILE__);
-            $ip = $request->getClientIp();
-            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+			$action = 'Attempt to shedule appointment failed for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
+			$description = '';
+			$filename = basename(__FILE__);
+			$ip = $request->getClientIp();
+			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
 			return $result;
 		}
@@ -210,6 +211,11 @@ class AppointmentController extends Controller {
 
 		$practice = Practice::find($appointment->practice_id);
 		$appt['practice_name'] = $practice->name;
+		$loggedInUser = Auth::user();
+		$network = User::getNetwork($loggedInUser->id);
+		$appt['user_name'] = $loggedInUser->name;
+		$appt['user_network'] = $network->name;
+		$appt['user_email'] = $loggedInUser->email;
 		$appt['appt_type'] = $appointmentType;
 		$provider = User::find($appointment->provider_id);
 		$appt['provider_name'] = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
@@ -222,7 +228,7 @@ class AppointmentController extends Controller {
 		$appt['appt_starttime'] = $date->format('h m A');
 		$appt['patient_name'] = $patient->title . ' ' . $patient->lastname . ', ' . $patient->firstname;
 		$appt['patient_email'] = $patient->email;
-		$appt['patient_phone'] = $patient->cellphone;
+		$appt['patient_phone'] = $patient->cellphone . ', ' . $patient->workphone . ', ' . $patient->homephone;
 		$appt['patient_ssn'] = $patient->lastfourssn;
 		$appt['patient_address'] = $patient->addressline1 . ', ' . $patient->addressline2 . ', ' . $patient->city . ', ' . $patient->state . ', ' . $patient->zip;
 		$appt['patient_dob'] = $date->format('F d, Y');
