@@ -19,8 +19,10 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-        Patient Information</a>
+                <span class="popover_text" data-content="Please fill all the required fields">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                    Patient Information</a>
+                </span>
       </h4>
         </div>
         <div id="collapse1" class="panel-collapse collapse in">
@@ -55,8 +57,10 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-        Patient Address</a>
+                <span class="popover_text" data-content="Please fill all the required fields">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                    Patient Address</a>
+                </span>
       </h4>
         </div>
         <div id="collapse2" class="panel-collapse collapse">
