@@ -6,15 +6,11 @@ $(document).ready(function() {
     $('#search_bar_open').on('click', function() {
         if (($('#search_bar_open').hasClass('active'))) {
             $('#search_bar_open').removeClass('active');
-            $('#search_bar_open').removeClass('glyphicon-chevron-left');
-            $('#search_bar_open').addClass('glyphicon-chevron-right');
             $('#search_do').addClass('active');
             $('.search').addClass('active');
             $('#search_data').addClass('active');
         } else {
             $('#search_bar_open').addClass('active');
-            $('#search_bar_open').removeClass('glyphicon-chevron-right');
-            $('#search_bar_open').addClass('glyphicon-chevron-left');
             $('#search_do').removeClass('active');
             $('.search').removeClass('active');
             $('#search_data').removeClass('active');
@@ -311,7 +307,7 @@ function searchc3() {
                     var content = '';
                     var index = 0;
                     patientdata.forEach(function(patient) {
-                        content += '<div class="search_result_row row" data-index= "' + index + '"><div class="col-xs-1"><div class="circle" id="" style="background-color:' + patient.stage_color + '"></div></div><div class="col-xs-11 search_result_row_text"><p class="result_title result_name">' + patient.name + '</p><p class="result_title scheduled_name"><strong>' + patient.stage_name + '</strong></p></div></div>';
+                        content += '<div class="search_result_row row" data-index= "' + index + '"><div class="col-xs-1 search_color_col"><div class="circle" id="" style="background-color:' + patient.stage_color + '"></div></div><div class="col-xs-11 search_result_row_text"><p class="result_title arial_bold result_name">' + patient.name + '</p><p class="result_title arial_bold scheduled_name">' + patient.stage_name + '</p></div></div>';
 
                         index++;
                     });

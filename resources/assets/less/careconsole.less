@@ -36,7 +36,7 @@ Section : Imports
         }
     }
     &.active {
-        background-color: #fff;
+        background-color: rgba(255, 255, 255, 0.95);
     }
 }
 
@@ -48,6 +48,7 @@ input#search_data {
     width: 8em;
     font-size: .8em;
     color: #9d9fa2;
+    background-color: transparent;
     &:focus {
         outline: none;
     }
@@ -57,18 +58,19 @@ input#search_data {
 }
 
 .search_result_info {
+    font-weight: normal;
     display: none;
     &.active {
         display: block;
     }
     &>.search_result_row {
-        color: black;
+        color: #4d4d4d;
         display: flex;
-        padding: 5px 5px;
+        padding: .6em 0;
         font-size: .6em;
         margin: 0 5px 0 10px;
         text-align: left;
-        border-top: solid 1px #ddd;
+        border-top: solid 1px #ccc;
         &>.circle {
             padding: 0;
             margin: 5px;
@@ -76,9 +78,12 @@ input#search_data {
         &>.col-xs-offset-2 {
             margin-left: 11.666667%;
         }
-        &>.search_result_row_text>p {
+        &>.search_result_row_text{
             padding: 0;
-            margin: 0;
+            &>p {
+                padding: 0;
+                margin: 0;
+            }
         }
     }
 }
@@ -89,6 +94,7 @@ input#search_data {
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
+    font-weight: normal;
 }
 
 .overview_section {
@@ -106,6 +112,7 @@ input#search_data {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    box-shadow: 0 0 4px rgba(0,113,188,.75);
 }
 
 .info_section {
@@ -126,8 +133,8 @@ input#search_data {
 
 .circle {
     margin: .8em .5em 1.35em 0;
-    width: .8em;
-    height: .8em;
+    width: .7em;
+    height: .7em;
     border-radius: 50%;
     align-self: flex-end;
     &.green {
@@ -168,7 +175,7 @@ input#search_data {
 .bottom {
     width: 100%;
     text-align: center;
-    color: #fff;
+    color: rgba(255,255,255,.95);;
     background-color: #006d91;
     padding: 1em 0;
     font-size: 1em;
@@ -270,7 +277,6 @@ ul.c3_sidebar_list {
             border-left: 1px solid #82888f;
             margin: auto 0;
             padding: 7px;
-            font-weight: 600;
             width: 75%;
         }
     }
@@ -416,14 +422,19 @@ ul.c3_sidebar_list {
 .console_buckets {
     background-color: #e3e3e3;
     border-radius: .4em;
-    height: 4em;
+    height: 5em;
     width: 5em;
     overflow: hidden;
     text-align: center;
     cursor: pointer;
     box-shadow: 0 0 5px #898989;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     &>p {
         margin: 0;
+        color: #4d4d4d;
     }
     &>h4 {
         margin: 11px 0 0 0;
@@ -548,10 +559,6 @@ p.no_of_patients {
     font-weight: bold;
 }
 
-.result_title {
-    font-weight: bold;
-}
-
 #back_to_search {
     text-decoration: underline;
     color: #00B6F1;
@@ -639,7 +646,7 @@ p.no_of_patients {
 .console_buckets {
     font-size: 0.8em;
     &>img {
-        width: 50%;
+        width: 60%;
     }
 }
 
@@ -649,7 +656,9 @@ p.no_of_patients {
 
 #status_color {
     background-color: green;
-    margin-top: 4px;
+    margin-top: 3px;
+    align-self: center;
+    margin: .2em 0;
 }
 
 #search_action_dropdown {
@@ -685,12 +694,77 @@ p.no_of_patients {
         }
     }
 }
-
 #search_do {
 	cursor: pointer;
+    &>img{
+        width: 1.6em;
+    }
 }
 
 .contact_attempts {
 	height: 7em;
 	overflow-y: scroll;
+}
+#search_bar_open{
+    cursor: pointer;
+    margin-left: .3em;
+    &>img{
+        width: .6em;
+    }
+    &>.active_img{
+            display: none;
+        }
+        &>.right_natural{
+            display: inline-block;
+        }
+        &>.right_active{
+            display: none;
+        }
+        &:hover {
+            &>.right_natural{
+                display: none;
+            }
+            &>.right_active{
+                display: inline-block;
+            }
+        }
+    &.active{
+        &>.non_active_img{
+            display: none;
+        }
+        &>.left_natural{
+            display: inline-block;
+        }
+        &>.left_active{
+            display: none;
+        }
+        &:hover {
+            &>.left_natural{
+                display: none;
+            }
+            &>.left_active{
+                display: inline-block;
+            }
+        }
+    }
+}
+.search_color_col{
+    display: flex;
+    flex-direction: column;
+    padding: 0 .5em 0 0;
+}
+.take_action_col{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    &>.dropdown{
+        background-color: #ebebeb;
+        &>p{
+            margin: auto;
+            padding: .5em;
+            &>img{
+                width: .6em;
+            }
+        }
+    }
 }
