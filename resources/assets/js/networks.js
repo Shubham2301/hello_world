@@ -2,6 +2,14 @@
 
 $(document).ready(function() {
     loadAllNetworks();
+
+    $('.popover_text').popover({
+        trigger: "manual"
+    });
+
+    $('.save_network_button').on('click', function () {
+        checkForm();
+    });
     $('#search_network_button').on('click', function() {
         var searchvalue = $('#search_network_input').val();
         $('.no_item_found > p:eq(1)').text(searchvalue);
@@ -74,6 +82,19 @@ $(document).ready(function() {
 });
 var currentpage = 1;
 var lastpage = 0;
+var flag = 0;
+$(document).click(function () {
+    if (flag == 0) {
+        $('.popover_text').popover("hide");
+    }
+    flag = 0;
+});
+$(document).keypress(function (e) {
+    if (flag == 0) {
+        $('.popover_text').popover("hide");
+    }
+    flag = 0;
+});
 
 function getNetworks(formData, page) {
     var tojson = JSON.stringify(formData);
@@ -163,5 +184,17 @@ function removeNetwork(id) {
         },
         cache: false,
         processData: false
+    });
+}
+function checkForm(){
+    var fields = $('.panel-body').find('.add_network_input');
+    fields.each(function (field) {
+        if ($(this).prop('required')) {
+            if ($(this).val() == "") {
+                $($(this).parents('.panel-default').find('.popover_text')).popover("show");
+                flag = 1;
+                return false;
+            }
+        }
     });
 }

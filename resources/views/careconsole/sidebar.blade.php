@@ -11,8 +11,12 @@
                     <li><a href="#" id="menu-announcements" data-toggle="tooltip" title="Announcements" data-placement="right"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a></li>
                     <li><a href="/referraltype" data-toggle="tooltip" title="Schedule Patients" data-placement="right"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a></li>
                     <li><a href="#" data-toggle="tooltip" title="Patients Records" data-placement="right"><img src="{{URL::asset('images/sidebar/records.png')}}" class="drop_image"></a></li>
+                    @can('care-console')
                     <li><a href="/careconsole" data-toggle="tooltip" title="Care Console" data-placement="right"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="drop_image"></a></li>
+                    @endcan
+                    @if(2 == Auth::user()->usertype_id)
                     <li><a href="/administration/practices" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a></li>
+                    @endif
                 </ul>
             </div>
         </div>

@@ -52,7 +52,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <span class="popover_text" data-content="Please fill all the required feilds">
+                                <span class="popover_text" data-content="Please fill all the required fields">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
         Roles and User Access</a>
                                 </span>
@@ -90,7 +90,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <span class="popover_text" data-content="Please fill all the required feilds">
+                                <span class="popover_text" data-content="Please fill all the required fields">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
         General Information</a>
                                 </span>
@@ -120,7 +120,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading" >
                             <h4 class="panel-title">
-                                <span class="popover_text" data-content="Please fill all the required feilds">
+                                <span class="popover_text" data-content="Please fill all the required fields">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
             Direct Address and Password</a>
                                 </span>

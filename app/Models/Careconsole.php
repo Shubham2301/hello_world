@@ -45,7 +45,7 @@ class Careconsole extends Model {
 	/**
 	 * @return mixed
 	 */
-	public function stage(){
+	public function stage() {
 		return $this->hasOne('myocuhub\Models\CareconsoleStage', 'id', 'stage_id');
 	}
 
@@ -53,7 +53,9 @@ class Careconsole extends Model {
 	 * @param $networkID
 	 */
 	public static function getArchivedPatients($networkID) {
+
 		return self::whereNotNull('archived_date')
+			->whereNotNull('careconsole.liferay_id')
 			->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
 			->where('import_history.network_id', $networkID)
 			->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')

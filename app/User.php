@@ -83,7 +83,7 @@ CanResetPasswordContract {
 			->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
 			->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
 			->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
-			->where('level', 3)
+			->where('usertype_id', 1)
 			->where(function ($query) use ($filters) {
 				foreach ($filters as $filter) {
 					$query->where(function ($query) use ($filter) {
@@ -189,7 +189,7 @@ CanResetPasswordContract {
 
 		return self::whereNotNull('npi')
 			->whereNotNull('acc_key')
-			->where('level', 3)
+			->where('usertype_id', 1)
 			->get(['id', 'npi']);
 	}
 }

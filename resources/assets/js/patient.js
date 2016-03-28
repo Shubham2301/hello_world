@@ -8,6 +8,14 @@ $(document).ready(function() {
     $('#dob').datetimepicker({
         format: 'YYYY/MM/DD'
     });
+
+    $('.popover_text').popover({
+        trigger: "manual"
+    });
+
+    $('.save_patient_button').on('click', function () {
+        checkForm();
+    });
     $('#search_patient_button').on('click', function() {
 
         if ($('#from_admin').val()) {
@@ -215,7 +223,19 @@ $(document).ready(function() {
 });
 var currentpage = 1;
 var lastpage = 0;
-
+var flag = 0;
+$(document).click(function () {
+    if (flag == 0) {
+        $('.popover_text').popover("hide");
+    }
+    flag = 0;
+});
+$(document).keypress(function (e) {
+    if (flag == 0) {
+        $('.popover_text').popover("hide");
+    }
+    flag = 0;
+});
 function getCheckedID() {
     var id = [];
         $.each($("input[name='checkbox']:checked"), function () {
@@ -479,5 +499,17 @@ function showModalConfirmDialog(msg, handler) {
     $('.patient_list').on('click', '.confirm_no', function(evt) {
         handler(false);
     });
+}
 
+function checkForm(){
+    var fields = $('.panel-body').find('.add_patient_input');
+    fields.each(function (field) {
+        if ($(this).prop('required')) {
+            if ($(this).val() == "") {
+                $($(this).parents('.panel-default').find('.popover_text')).popover("show");
+                flag = 1;
+                return false;
+            }
+        }
+    });
 }
