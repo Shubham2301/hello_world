@@ -422,14 +422,6 @@ function getProviderInfo(formData) {
             //getInsuranceList(formData);
             var content = '';
             content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold custom_dropdown">Select Insurance List <img src="/images/dropdown-img.png" class="custom_dropdown_img"></span></a><ul class="dropdown-menu dropdown_ins_list" id="custom_dropdown">';
-            content += '<li  value="14065" data-name="Aetna">Aetna</li>';
-            content += '<li  value="14069" data-name="Anthem/BCBS">Anthem/BCBS</li>';
-            content += '<li  value="14066" data-name="Cigna">Cigna</li>';
-            content += '<li  value="14070" data-name="GEHA">GEHA</li>';
-            content += '<li  value="12786" data-name="Medicare">Medicare</li>';
-            content += '<li  value="14064" data-name="Optima">Optima</li>';
-            content += '<li  value="14067" data-name="Tricare">Tricare</li>';
-            content += '<li  value="14068" data-name="United">United</li>';
             content += '<li  value="1" data-name="No Insurance">No Insurance</li>';
             content += '<li  value="2" data-name="Other Insurance">Other Insurance</li>';
             content += '</ul></div>';
