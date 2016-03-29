@@ -123,9 +123,18 @@ class UserController extends Controller {
 			$user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
 			$user->usertype_id = $request->input('usertype');
 			$user->level = $request->input('userlevel');
+			$roles = array();
+			$roles = $request->input('role', []);
+
 			if ($request->input('landing_page') != '') {
 				$user->menu_id = $request->input('landing_page', null);
 			}
+
+			else if(in_array("Care Coordinator", $roles))
+				$user->menu_id = 6;
+			else
+				$user->menu_id = 4;
+
 			$user->save();
 
 			$roles = array();
