@@ -108,7 +108,11 @@ class UserController extends Controller {
 
 			// TODO
 			// Auto generate password
+			if($request->input('password') != '')
 			$user->password = bcrypt($request->input('password'));
+
+			else
+				$user->password = bcrypt(str_random(12));
 
 			$user->email = $request->input('email');
 			$user->npi = $request->input('npi');
@@ -272,7 +276,6 @@ class UserController extends Controller {
 		$user->firstname = $request->input('firstname');
 		$user->middlename = $request->input('middlename');
 		$user->lastname = $request->input('lastname');
-		$user->password = bcrypt($request->input('password'));
 		$user->email = $request->input('email');
 		$user->npi = $request->input('npi');
 		$user->cellphone = $request->input('cellphone');
@@ -289,6 +292,19 @@ class UserController extends Controller {
 		$menuID = $request->input('landing_page');
 		if($menuID != '')
 			$user->menu_id = $menuID;
+
+
+		$password = $request->input('password');
+		$confirmPassword = $request->input('password_confirmation');
+
+		if($password != '' && $password != $confirmPassword )
+		{
+			$request->session()->flash('error', 'Passwords do not match');
+			return redirect()->back();
+		}
+
+		if($password != '' && $password === $confirmPassword )
+			$user->password = bcrypt($request->input('password'));
 
 		$user->save();
 
