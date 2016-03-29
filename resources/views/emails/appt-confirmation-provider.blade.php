@@ -72,24 +72,24 @@
 					</div>
 					<div style="color:#4d4d4d;display:inline-block;width:30%;border-left: solid 4px rgba(0, 113, 188, 0.4);padding-left: 1em;margin-left:20%;">
 						 <span style="font-weight:bold">Insurance Carrier</span><br>
-						No Insurance <br>
+						{{ $appt['insurance_carrier'] }} <br>
 						<br>
 						 <span style="font-weight:bold">Subscriber Name</span><br>
-						<br>
+						{{ $appt['subscriber_name'] }} <br>
 						<br>
 						<span style="font-weight:bold">Group</span><br>
-						<br>
+						{{ $appt['insurance_group_no'] }} <br>
 						<br>
 					</div>
 					<div style="color:#4d4d4d;display:inline-block;width:30%;position: absolute;">
 						<span style="font-weight:bold">Subscriber ID</span><br>
-						 <br>
+						{{ $appt['subscriber_id'] }} <br>
 						<br>
 						<span style="font-weight:bold">Subscriber DOB</span><br>
-						 <br>
+						{{ $appt['subscriber_birthdate'] }} <br>
 						<br>
 						<span style="font-weight:bold">Relationship to Patient</span><br>
-						 <br>
+						{{ $appt['subscriber_relation'] }} <br>
 						<br>
 					</div>
 				</div>
