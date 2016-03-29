@@ -10,8 +10,8 @@
                     <li><a href="file_exchange" data-toggle="tooltip" title="File Exchange" data-placement="right"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="drop_image"></a></li>
                     <li><a href="#" id="menu-announcements" data-toggle="tooltip" title="Announcements" data-placement="right"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a></li>
                     <li><a href="/referraltype" data-toggle="tooltip" title="Schedule Patients" data-placement="right"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a></li>
-                    <li><a href="#" data-toggle="tooltip" title="Patients Records" data-placement="right"><img src="{{URL::asset('images/sidebar/records.png')}}" class="drop_image"></a></li>
-                    @can('care-console')
+<!--                    <li><a href="#" data-toggle="tooltip" title="Patients Records" data-placement="right"><img src="{{URL::asset('images/sidebar/records.png')}}" class="drop_image"></a></li>-->
+                    @can('care-cordination')
                     <li><a href="/careconsole" data-toggle="tooltip" title="Care Console" data-placement="right"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="drop_image"></a></li>
                     @endcan
                     @if(2 == Auth::user()->usertype_id)
