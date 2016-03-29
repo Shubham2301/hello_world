@@ -88,12 +88,19 @@ a:focus {
     text-align: center;
 }
 .add-btn,
-.add-btn:hover,
 .add-btn:focus {
     float: right;
     color: #fff;
-    background-color: #0086fb;
-    border-color: #0086fb;
+    background-color: #0071bc;
+    box-shadow: 0 0 2px rgba(0,0,0,.5);
+    border: none;
+    &:hover{
+        background-color: #0071d8;
+        color: #fff;
+    }
+    &:active{
+        box-shadow: none;
+    }
 }
 .add-doc-btn,
 .add-doc-btn:hover,

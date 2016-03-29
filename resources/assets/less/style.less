@@ -599,6 +599,18 @@ Section : Admin Sidebar
                 display: none;
             }
         }
+        &.patients:hover{
+            color: #de3c4b;
+        }
+        &.practices:hover{
+            color: #7e6551;
+        }
+        &.networks:hover{
+            color: #808080;
+        }
+        &.users:hover{
+            color: #6b31d7;
+        }
         &:active {
             background-color: #d2d3d5;
             .gradient(#d2d3d5,
@@ -612,6 +624,8 @@ Section : Admin Sidebar
             justify-content: center;
             &.add_text {
                 display: flex;
+                flex-direction: row;
+                align-items: center;
             }
             &.img_on_hover {
                 display: none;

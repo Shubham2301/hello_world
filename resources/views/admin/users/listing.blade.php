@@ -1,26 +1,26 @@
 <div class="row content-row-margin user_listing">
 
-	<p id="search_results" class="search_result"><strong></strong></p>
-	<div class="row search_header">
+	<p id="search_results" class="search_result"></p>
+	<div class="row search_header arial">
 		<div class="col-xs-3 search_name">
 			<input type="checkbox" id="checked_all_users">&nbsp;&nbsp;
-			<p style="color:black"><strong>Name</strong></p>
+			<p style="color:#333">Name</p>
 		</div>
 		<div class="col-xs-3">
-			<p style="color:black"><strong>Email</strong></p>
+			<p style="color:#333">Email</p>
 		</div>
 		<div class="col-xs-2">
-			<p style="color:black"><strong>Level</strong></p>
+			<p style="color:#333">Level</p>
 		</div>
 		<div class="col-xs-2">
-			<p style="color:black"><strong>Organization</strong></p>
+			<p style="color:#333">Organization</p>
 		</div>
-		<div class="col-xs-2">
-			<input type="hidden" id="dropdown_natural_img" value="{{asset('images/dropdown-natural-01.png')}}">
-			<input type="hidden" id="dropdown_onhover_img" value="{{asset('images/dropdown-hover-01.png')}}">
-			<input type="hidden" id="dropdown_active_img" value="{{asset('images/dropdown-active-01.png')}}">
-			<input type="hidden" id="active_user_img" value="{{asset('images/deactivate.png')}}">
-			<p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong></strong></span>
+		<div class="col-xs-2 pagination_col">
+			<input type="hidden" id="dropdown_natural_img" value="{{asset('images/dropdown-natural-new.png')}}">
+			<input type="hidden" id="dropdown_onhover_img" value="{{asset('images/dropdown-hover-new.png')}}">
+			<input type="hidden" id="dropdown_active_img" value="{{asset('images/dropdown-active-new.png')}}">
+			<input type="hidden" id="active_user_img" value="{{asset('images/deactivate-icon.png')}}">
+			<p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"></span>
 			<span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
 		</div>
 	</div>

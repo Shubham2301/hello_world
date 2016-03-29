@@ -11,7 +11,7 @@
     box-shadow: 0 1px 1px #d2d3d5;
     color: #6B31D7;
     font-size: 1.2em;
-    font-weight: bold;
+    .arial_bold;
 }
 .user_listing {
     display: none;
@@ -20,19 +20,32 @@
     }
 }
 .search_item {
-    margin: 1em;
-    border-bottom: 1px solid #fff;
+    margin: 0 1em;
+    padding: .8em 0;
+    border-bottom: 1px solid #f2f2f2;
     color: #f2f2f2;
     &:hover {
         color: #fff;
+    }
+    &>div>p{
+        margin: 0;
+        &.edituser_from_row{
+            margin: 0 1em;
+        }
     }
 }
 .search_name,
 .search_edit {
     display: inline-flex;
 }
+.search_name{
+    padding: 0;
+}
 .search_edit {
     cursor: pointer;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
 }
 #row_action_dropdown {
     background-color: #ebeced;
@@ -44,9 +57,7 @@
     color: black;
 }
 .removeuser_img {
-    width: 28px;
-    margin-top: -0.2em;
-    padding: 4px;
+    width: 25px;
     cursor: pointer;
 }
 #row_remove_dropdown {
@@ -104,7 +115,7 @@
 .search_input_box {
     display: flex;
     flex-direction: row;
-    background-color: #ffffff;
+    background-color: #f6f6f6;;
     font-size: 1em;
     &>input,
     &>input:focus {
@@ -149,15 +160,14 @@
     }
 }
 .search_header {
-    margin: 1em;
-    border-bottom: 1px solid #fff;
+    margin: 0 1em;
+    border-bottom: 2px solid #f2f2f2;
 }
 .action_dropdown {
-    width: 38px;
-    margin-top: -0.6em;
+    width: 30px;
 }
 p.pagination {
-    color: black;
+    color: #333;
     display: inline-block;
     margin: 0px;
 }
@@ -173,7 +183,6 @@ p.pagination {
     width: 25%;
     margin-right: 5px;
 }
-
 /*
 ---------------------------
 Create User Section
@@ -305,4 +314,11 @@ Create User Section
 .panel-title>span>a {
     text-decoration: none;
     font-size: 1.3em;
+}
+.pagination_col{
+    text-align: right;
+    padding: 0;
+}
+input[type=checkbox]{
+    margin-right: 1em;
 }
