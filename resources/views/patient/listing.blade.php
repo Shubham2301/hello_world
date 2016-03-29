@@ -108,8 +108,9 @@
         </div>
         <div class="col-xs-8">
             <p class="bold arial_bold" id="patient_name"></p>
+            <hr class="underline">
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-6 space_below">
                     <p><span class="bold arial_bold">Email</span>
                         <br><span class="patient_detail_info" id="patient_email"> </span></p>
                     <p><span class="bold arial_bold">Date of Birth</span>
@@ -137,20 +138,20 @@
     </div>
     <div class="col-xs-12 patient_table_header">
         <div class="col-xs-4 lastseenby">
-            <div class="lastseenby_show arial_bold">
+            <div class="lastseenby_show arial">
                 <span><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></span>
             </div>
 
         </div>
 
         <div class="col-xs-4 referredby">
-            <div class="referredby_show arial_bold">
+            <div class="referredby_show arial">
                 <span> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></span>
             </div>
         </div>
 
         <div class="col-xs-4 insurance_provider">
-            <div class="insurance_provider_show arial_bold">
+            <div class="insurance_provider_show arial">
                 <span><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></span>
             </div>
         </div>

@@ -14,6 +14,10 @@ Section : Imports
     &.active {
         display: block;
     }
+    &>p{
+        margin-bottom: .5em;
+    }
+    margin-top: .5em;
 }
 .import-btn{
     margin-left: auto;
@@ -34,7 +38,7 @@ Section : Imports
     &>.patient_table_header {
         border-bottom: 2px solid #fff;
         border-top: 1px solid #fff;
-        color: #000;
+        color: #333;
         padding: .7em 0 .5em 0;
         margin: 1em 0;
     }
@@ -264,9 +268,18 @@ p.patient_dropdown_data {
 }
 
 #patient_name {
-    text-decoration: underline;
+    margin: 0;
 }
-
+.underline{
+    border: 0;
+    border-top: 2px solid #f2f2f2;
+    width: 2em;
+    margin-left: 0;
+    margin-top: 0;
+}
+.space_below>p{
+    margin-bottom: 1.3em;
+}
 .patient_detail_info {
     font-size: .9em;
 }

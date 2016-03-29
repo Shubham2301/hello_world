@@ -384,9 +384,9 @@ function getPatients(formData, page) {
                 }
 
             } else {
-                var content = '<p><bold>' + 0 + '<bold> results found</p><br>';
+                var content = '<p><bold>' + 0 + '<bold> results found</p>';
                 if (patients.length > 0 && patients[0]['total'] > 0) {
-                    content = '<p><bold>' + patients.length + '<bold> results found</p><br>';
+                    content = '<p><bold>' + patients.length + '<bold> results found</p>';
                     patients.forEach(function(patient) {
                         content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin arial"><div class="col-xs-12 arial_bold patient_list_name">' + patient.lname + ', ' + patient.fname + '</div><div class="col-xs-6 patient_list_data"> ' + patient.birthdate + '<br>' + patient.phone + '</div><div class="col-xs-6 patient_list_data">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
                     });
