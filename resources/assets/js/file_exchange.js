@@ -73,11 +73,18 @@ $(document).ready(function () {
         window.location = '/downloadFile?id=' + file_id;
     });
     $('.trash-button').on('click', function(){
-        if($('.file-check:checkbox:checked').length > 1) {
-            return;
-        }
-        var file_id = $('.file-check:checkbox:checked').attr('data-id');
-        window.location = '/deleteFile?id=' + file_id;
+		var files = [];
+		var folders = [];
+		$.each($('.folder-check.checkbox:checkbox:checked'), function (index, val) {
+			folders.push($(this).attr('data-id'));
+		});
+		$.each($('.file-check.checkbox:checkbox:checked'), function (index, val) {
+			files.push($(this).attr('data-id'));
+		});
+		$('#delete_files').val(files);
+		$('#delete_folders').val(folders);
+		$('#delete_files_folders').submit();
+
     });
 });
 
