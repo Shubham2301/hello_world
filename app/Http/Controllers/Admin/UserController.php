@@ -277,7 +277,9 @@ class UserController extends Controller {
 		$user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
 		$user->usertype_id = $request->input('usertype');
 		$user->level = $request->input('userlevel');
-		$user->menu_id = $request->input('landing_page');
+		$menuID = $request->input('landing_page');
+		if($menuID != '')
+			$user->menu_id = $menuID;
 
 		$user->save();
 
