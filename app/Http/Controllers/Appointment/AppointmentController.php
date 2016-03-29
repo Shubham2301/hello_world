@@ -11,6 +11,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
+use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
@@ -56,8 +57,25 @@ class AppointmentController extends Controller {
 		$patient = Patient::find($patient_id);
 		$data['patient_name'] = $patient->firstname . ' ' . $patient->lastname;
 		$data['schedule-patient'] = true;
+		$patientInsurance = PatientInsurance::where('patient_id', $data['patient_id'])->first();
 
-		return view('appointment.index')->with('data', $data);
+		if (sizeof($patientInsurance) > 0) {
+			$insurance['insurance_carrier'] = $patientInsurance->insurance_carrier;
+			$insurance['subscriber_name'] = $patientInsurance->subscriber_name;
+			$insurance['subscriber_id'] = $patientInsurance->subscriber_id;
+			$insurance['subscriber_birthdate'] = $patientInsurance->subscriber_birthdate;
+			$insurance['subscriber_relation'] = $patientInsurance->subscriber_relation;
+			$insurance['insurance_group_no'] = $patientInsurance->insurance_group_no;
+		} else {
+			$insurance['insurance_carrier'] = '';
+			$insurance['subscriber_name'] = '';
+			$insurance['subscriber_id'] = '';
+			$insurance['subscriber_birthdate'] = '';
+			$insurance['subscriber_relation'] = '';
+			$insurance['insurance_group_no'] = '';
+		}
+
+		return view('appointment.index')->with('data', $data)->with('insurance', $insurance);
 	}
 
 	/**
@@ -135,6 +153,22 @@ class AppointmentController extends Controller {
 		$appointmentTime = $request->input('appointment_time');
 		$patient = Patient::find($patientID);
 
+		$patientInsurance = PatientInsurance::where('patient_id', $patientID)->first();
+		//$patientInsurance = PatientInsurance::find($patientInsurance->id);
+		if (sizeof($patientInsurance) == 0) {
+			$patientInsurance = new PatientInsurance;
+			$patientInsurance->patient_id = $patientID;
+		} else {
+			$patientInsurance = PatientInsurance::find($patientInsurance->id);
+		}
+		$patientInsurance->insurance_carrier = ($request->input('insurance_carrier') != '') ? $request->input('insurance_carrier') : $patientInsurance->insurance_carrier;
+		$patientInsurance->subscriber_name = ($request->input('subscriber_name') != '') ? $request->input('subscriber_name') : $patientInsurance->subscriber_name;
+		$patientInsurance->subscriber_birthdate = ($request->input('subscriber_dob') != '') ? $request->input('subscriber_dob') . ' 00:00:00' : $patientInsurance->subscriber_birthdate;
+		$patientInsurance->subscriber_id = ($request->input('subscriber_id') != '') ? $request->input('subscriber_id') : $patientInsurance->subscriber_id;
+		$patientInsurance->insurance_group_no = ($request->input('insurance_group') != '') ? $request->input('insurance_group') : $patientInsurance->insurance_group_no;
+		$patientInsurance->subscriber_relation = ($request->input('subscriber_relation') != '') ? $request->input('subscriber_relation') : $patientInsurance->subscriber_relation;
+		$patientInsurance->save();
+		dd();
 		$apptInfo['LocKey'] = 3839;
 		$apptInfo['AcctKey'] = 8042;
 		$apptInfo['ApptTypeKey'] = $appointmentTypeKey;
@@ -160,15 +194,15 @@ class AppointmentController extends Controller {
 		$apptInfo['PatientData']['Gender'] = $patient->gender;
 		$apptInfo['PatientData']['L4DSSN'] = $patient->lastfourssn;
 //        $apptInfo['PatientData']['InsuranceCarrier'] = $patient->insurancecarrier;
-		$apptInfo['PatientData']['InsuranceCarrier'] = 1;
+		$apptInfo['PatientData']['InsuranceCarrier'] = 0;
 
-		$apptInfo['PatientData']['OtherInsurance'] = '';
-		$apptInfo['PatientData']['SubscriberName'] = '';
+		$apptInfo['PatientData']['OtherInsurance'] = $patientInsurance->insurance_carrier;
+		$apptInfo['PatientData']['SubscriberName'] = $patientInsurance->subscriber_name;
 		$birthdate = new DateTime($patient->birthdate);
-		$apptInfo['PatientData']['SubscriberDOB'] = $birthdate->format('Y-m-d') . 'T00:00:00';
-		$apptInfo['PatientData']['SubscriberID'] = '';
-		$apptInfo['PatientData']['GroupNum'] = '';
-		$apptInfo['PatientData']['RelationshipToPatient'] = '';
+		$apptInfo['PatientData']['SubscriberDOB'] = ($patientInsurance->subscriber_birthdate == '') ? '0000-00-00T00:00:00' : $patientInsurance->subscriber_birthdate;
+		$apptInfo['PatientData']['SubscriberID'] = $patientInsurance->subscriber_id;
+		$apptInfo['PatientData']['GroupNum'] = $patientInsurance->insurance_group;
+		$apptInfo['PatientData']['RelationshipToPatient'] = $patientInsurance->subscriber_relation;
 		$apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
 		$apptInfo['PatientData']['ReferredBy'] = '';
 		$apptInfo['PatientData']['NotesBox'] = '';
