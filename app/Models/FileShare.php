@@ -9,6 +9,8 @@ use myocuhub\Models\File;
 class FileShare extends Model
 {
     protected $table = 'fileshares';
+	protected $fillable = ['file_id','user_id','editable'];
+	protected $primaryKey = 'file_id';
 
     public function file()
     {
