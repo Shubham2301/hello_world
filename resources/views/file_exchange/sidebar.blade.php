@@ -28,7 +28,7 @@
                     @endcan
                     @if(2 == Auth::user()->usertype_id)
                     <li>
-                        <a href="/administration/practices"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a>
+                        <a href="/administration/patients"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a>
                     </li>
                     @endif
                 </ul>
