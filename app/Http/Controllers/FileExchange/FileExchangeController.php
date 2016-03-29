@@ -323,9 +323,10 @@ class FileExchangeController extends Controller {
 		}
 
 		$file = File::find($request->id);
-
+		if($file){
 		$file->status = 0;
 		$file->save();
+		}
 
 		return redirect()
 			->back()
@@ -392,29 +393,42 @@ class FileExchangeController extends Controller {
 	public function shareFilesFolders(Request $request) {
 
 		$editable = ($request->share_writable === 'on') ? 1 : 0;
-		$folders = explode(',', $request->share_folders);
-		$files = explode(',', $request->share_files);
+		$folders =[];
+		$files = [];
+		if($request->share_folders != '')
+			$folders = explode(',', $request->share_folders);
+		if($request->share_files != '')
+			$files = explode(',', $request->share_files);
+
 		$userId = $request->share_users;
-
 		foreach ($folders as $folder) {
-			$folderShare = new FolderShare;
-
-			$folderShare->folder_id = $folder;
-			$folderShare->user_id = $userId;
-			$folderShare->editable = $editable;
-
-			$folderShare->save();
+			$data = [];
+			$data['folder_id'] = $folder;
+			$data['user_id'] = $userId;
+			$folderShare = FolderShare::where($data)->first();
+			if(!$folderShare){
+				$data['editable'] = $editable;
+				$folderShare = FolderShare::create($data);
+			}
+			else{
+				$folderShare->editable = $editable;
+				$folderShare->save();
+			}
 			echo $folderShare;
 		}
-
 		foreach ($files as $file) {
-			$fileShare = new FileShare;
-
-			$fileShare->file_id = $file;
-			$fileShare->user_id = $userId;
-			$fileShare->editable = $editable;
-
-			$fileShare->save();
+			$data = [];
+			$data['file_id'] = $file;
+			$data['user_id'] = $userId;
+			$fileShare = FileShare::where($data)->first();
+			if(!$fileShare){
+				$data['editable'] = $editable;
+				$fileShare = FileShare::create($data);
+			}
+			else{
+				$fileShare->editable = $editable;
+				$fileShare->save();
+			}
 			echo $fileShare;
 		}
 
