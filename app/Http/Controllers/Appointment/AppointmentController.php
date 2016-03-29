@@ -238,9 +238,9 @@ class AppointmentController extends Controller {
 			$m->to($patient->email, $patient->lastname . ', ' . $patient->firstname)->subject('Appointment has been scheduled');
 		});
 
-		$mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($provider) {
+		$mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($practice) {
 			$m->from('support@ocuhub.com', 'Ocuhub');
-			$m->to($practice->email, $provider->lastname . ', ' . $provider->firstname)->subject('Request for Appointment');
+			$m->to($practice->email, $practice->name)->subject('Request for Appointment');
 		});
 
 		$careconsole = Careconsole::where('patient_id', $patientID)
