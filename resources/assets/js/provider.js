@@ -178,6 +178,7 @@ $(document).ready(function () {
         $('#appointment_type').html('');
         $('#appointment_date').html('');
         $('#appointment_time').html('');
+        $('.appointment_type_not_found').hide();
         $('.appointment_detail').addClass('hide');
         $('#appointment_type_list').html('');
         $('.availability-btn').removeClass('hide');
@@ -198,6 +199,7 @@ $(document).ready(function () {
         $('#appointment_type').html('');
         $('#appointment_date').html('');
         $('#appointment_time').html('');
+        $('.appointment_type_not_found').hide();
         $('.appointment_detail').addClass('hide');
         $('.availability-btn').removeClass('hide');
         $('.availability').html('');
@@ -271,6 +273,7 @@ function clearHTML() {
     $('.availability-btn').removeClass('hide');
     $('.availability').removeClass('active');
     $('.get_availability').addClass('hide');
+    $('.appointment_type_not_found').hide();
 }
 
 function showPatientInfo() {
