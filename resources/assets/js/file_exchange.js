@@ -52,11 +52,18 @@ $(document).ready(function () {
         if ($('.checkbox:checkbox:checked').length > 1) {
             $('.download-button').hide();
             $('.info-button').hide();
-        }   
+        }
+
         else{
             $('.download-button').show();
             $('.info-button').show();
         }
+
+		if ($('.folder-check.checkbox:checkbox:checked').length > 0) {
+			$('.download-button').hide();
+		}
+
+
     });
     $('.share-button').on('click', function(){
         $('#shareModal').modal('show'); 
