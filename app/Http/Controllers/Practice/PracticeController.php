@@ -221,7 +221,7 @@ class PracticeController extends Controller {
 		$practiceId = $request->id;
 		$practiceUsers = User::practiceUserById($practiceId);
 		$i = 0;
-
+		$users = [];
 		foreach ($practiceUsers as $user) {
 			$users[$i]['id'] = $user->user_id;
 			$users[$i]['name'] = $user->lastname . ', ' . $user->firstname;

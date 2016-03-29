@@ -9,6 +9,9 @@ use myocuhub\Models\Folder;
 class FolderShare extends Model
 {
     protected $table = 'foldershares';
+	protected $fillable = ['folder_id','user_id','editable'];
+	protected $primaryKey = 'folder_id';
+
 
     public function folder()
     {
