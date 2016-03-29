@@ -45,11 +45,13 @@ $(document).ready(function() {
                 getPatientData();
             }
         }
+        setSidebarButtonActive();
     });
     $(document).on('click', '.console_buckets', function() {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             $('.c3_overview_link').removeClass('active');
+            $('.console_bucket_row').removeClass('hide');
             $('.control_section').removeClass('active');
             $('ul.c3_sidebar_list').removeClass('active');
             $('.before_drilldown').show();
@@ -61,6 +63,7 @@ $(document).ready(function() {
             $('.console_buckets').removeClass('active');
             $(this).addClass('active');
             $('.c3_overview_link').addClass('active');
+            $('.console_bucket_row').addClass('hide');
             $('.control_section').addClass('active');
             $('ul.c3_sidebar_list').addClass('active');
             $('.before_drilldown').hide();
@@ -83,15 +86,18 @@ $(document).ready(function() {
         $('.console_buckets').removeClass('active');
         refreshOverview();
         $('.c3_overview_link').removeClass('active');
+        $('.console_bucket_row').removeClass('hide');
         $('.control_section').removeClass('active');
         $('ul.c3_sidebar_list').removeClass('active');
         $('.before_drilldown').show();
         $('.drilldown').removeClass('active');
         $('.stage').removeClass('sidebar_items_active');
         $('#current_stage').val('-1');
+        setSidebarButtonActive();
     });
     $('.info_section').on('click', function() {
         $('.c3_overview_link').addClass('active');
+        $('.console_bucket_row').addClass('hide');
         $('.control_section').addClass('active');
         $('ul.c3_sidebar_list').addClass('active');
         $('.before_drilldown').hide();
@@ -108,6 +114,7 @@ $(document).ready(function() {
     });
     $('.stage').on('click', function() {
         $('.c3_overview_link').addClass('active');
+        $('.console_bucket_row').addClass('hide');
         $('.control_section').addClass('active');
         $('ul.c3_sidebar_list').addClass('active');
         $('.before_drilldown').hide();
@@ -338,6 +345,7 @@ function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator) {
     $('.drilldown_kpi_indicator').css('background-color', kpi_indicator);
     $('#current_stage').val(stage_id);
     $('#current_kpi').val(kpi_id);
+    setSidebarButtonActive();
 
     getPatientData();
 }
@@ -346,6 +354,7 @@ function showStageData(stage_id, stage_name) {
     $('#sidebar_' + stage_id).addClass('sidebar_items_active');
     $('.drilldown>.section-header').html(stage_name);
     $('#current_stage').val(stage_id);
+    setSidebarButtonActive();
     $('#current_kpi').val('0');
     if (stage_id < 6)
         $('.console_buckets').removeClass('active');
@@ -698,4 +707,10 @@ function showActionModel(data) {
     }
 	$('#action_notes').val('');
     $('#actionModal').modal('show');
+}
+
+function setSidebarButtonActive(){
+    var stageID = $('#current_stage').val();
+    $(".stage.box").parent('.sidebar_menu_item').removeClass('active');
+    $(".stage.box[data-id="+ stageID +"]").parent('.sidebar_menu_item').addClass('active');
 }

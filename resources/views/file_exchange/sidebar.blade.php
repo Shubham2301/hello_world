@@ -1,6 +1,6 @@
 <div class="no-padding">
     <div class="row sidebar_header center">
-        <div class="col-lg-2 col-md-2">
+        <div>
             <div class="dropdown">
                 <button class="dropdown-toggle admin_button" type="button" data-toggle="dropdown">
                 <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'">
@@ -34,7 +34,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-lg-9 col-md-10">
+        <div>
             <h3 class="title">Files Exchange</h3>
         </div>
     </div>
