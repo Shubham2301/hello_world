@@ -168,7 +168,7 @@ class AppointmentController extends Controller {
 		$patientInsurance->insurance_group_no = ($request->input('insurance_group') != '') ? $request->input('insurance_group') : $patientInsurance->insurance_group_no;
 		$patientInsurance->subscriber_relation = ($request->input('subscriber_relation') != '') ? $request->input('subscriber_relation') : $patientInsurance->subscriber_relation;
 		$patientInsurance->save();
-		dd();
+
 		$apptInfo['LocKey'] = 3839;
 		$apptInfo['AcctKey'] = 8042;
 		$apptInfo['ApptTypeKey'] = $appointmentTypeKey;
@@ -198,10 +198,10 @@ class AppointmentController extends Controller {
 
 		$apptInfo['PatientData']['OtherInsurance'] = $patientInsurance->insurance_carrier;
 		$apptInfo['PatientData']['SubscriberName'] = $patientInsurance->subscriber_name;
-		$birthdate = new DateTime($patient->birthdate);
-		$apptInfo['PatientData']['SubscriberDOB'] = ($patientInsurance->subscriber_birthdate == '') ? '0000-00-00T00:00:00' : $patientInsurance->subscriber_birthdate;
+		$subscriber_birthdate = new DateTime($patientInsurance->subscriber_birthdate);
+		$apptInfo['PatientData']['SubscriberDOB'] = $subscriber_birthdate->format('Y-m-d') . 'T00:00:00';
 		$apptInfo['PatientData']['SubscriberID'] = $patientInsurance->subscriber_id;
-		$apptInfo['PatientData']['GroupNum'] = $patientInsurance->insurance_group;
+		$apptInfo['PatientData']['GroupNum'] = '';
 		$apptInfo['PatientData']['RelationshipToPatient'] = $patientInsurance->subscriber_relation;
 		$apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
 		$apptInfo['PatientData']['ReferredBy'] = '';
@@ -224,6 +224,7 @@ class AppointmentController extends Controller {
 		$appointment->start_datetime = $date->format('Y-m-d H:m:s');
 
 		$apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
+
 		$result = '';
 
 		if ($apptResult->RequestApptInsertResult->ApptKey != -1) {
@@ -266,6 +267,14 @@ class AppointmentController extends Controller {
 		$appt['patient_ssn'] = $patient->lastfourssn;
 		$appt['patient_address'] = $patient->addressline1 . ', ' . $patient->addressline2 . ', ' . $patient->city . ', ' . $patient->state . ', ' . $patient->zip;
 		$appt['patient_dob'] = $date->format('F d, Y');
+
+		$appt['insurance_carrier'] = $patientInsurance->insurance_carrier;
+		$appt['subscriber_name'] = $patientInsurance->subscriber_name;
+		$appt['subscriber_id'] = $patientInsurance->subscriber_id;
+		$date = new DateTime($patientInsurance->subscriber_birthdate);
+		$appt['subscriber_birthdate'] = $date->format('F d, Y');
+		$appt['insurance_group_no'] = $patientInsurance->insurance_group_no;
+		$appt['subscriber_relation'] = $patientInsurance->subscriber_relation;
 
 		$mailToPatient = Mail::send('emails.appt-confirmation-patient', ['appt' => $appt], function ($m) use ($patient) {
 			$m->from('support@ocuhub.com', 'Ocuhub');
