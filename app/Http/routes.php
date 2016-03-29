@@ -94,7 +94,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('downloadFile', 'FileExchange\FileExchangeController@downloadFile');
 	Route::get('sharedWithMe', 'FileExchange\FileExchangeController@sharedWithMe');
 	Route::get('recentShareChanges', 'FileExchange\FileExchangeController@recentShareChanges');
-	Route::get('deleteFile', 'FileExchange\FileExchangeController@deleteFile');
+	Route::post('deleteFilesFolders', 'FileExchange\FileExchangeController@deleteFile');
 	Route::get('trash', 'FileExchange\FileExchangeController@showtrash');
 	Route::post('shareFilesFolders', 'FileExchange\FileExchangeController@shareFilesFolders');
 

@@ -316,18 +316,29 @@ class FileExchangeController extends Controller {
 	}
 
 	public function deleteFile(Request $request) {
-		if (!$request->id) {
-			return redirect()
-				->back()
-				->withSuccess("Invalid Request!");
+
+		$folders =[];
+		$files = [];
+		if($request->delete_folders != '')
+			$folders = explode(',', $request->delete_folders);
+		if($request->delete_files != '')
+			$files = explode(',', $request->delete_files);
+		foreach ($folders as $folderID) {
+			$folder = Folder::find($folderID);
+			if($folder){
+				$folder->status = 0;
+				$folder->save();
+			}
 		}
 
-		$file = File::find($request->id);
-		if($file){
-		$file->status = 0;
-		$file->save();
-		}
+		foreach ($files as $fileID) {
 
+			$file = File::find($fileID);
+			if($file){
+				$file->status = 0;
+				$file->save();
+			}
+		}
 		return redirect()
 			->back()
 			->withSuccess("Successfully Deleted!");

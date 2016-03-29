@@ -1,7 +1,12 @@
-@extends('layouts.master') @section('title', 'My Ocuhub - File Exchange') @section('imports')
+@extends('layouts.master')
+@section('title', 'My Ocuhub - File Exchange')
+@section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/file_exchange.css')}}">
 <script type="text/javascript" src="{{elixir('js/file_exchange.js')}}"></script>
-@endsection @section('sidebar') @include('file_exchange.sidebar') @endsection @section('content') @if (Session::has('success'))
+@endsection @section('sidebar')
+@include('file_exchange.sidebar')
+@endsection @section('content')
+@if (Session::has('success'))
 <div class="alert alert-success">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <strong>
@@ -85,8 +90,17 @@
     <div class="item_info" id="item_info">
     </div>
 </div>
-@include('file_exchange.addFolder') @include('file_exchange.addFile') @include('file_exchange.share') @if($empty == 'true')
+@include('file_exchange.addFolder')
+@include('file_exchange.addFile')
+@include('file_exchange.share')
+@if($empty == 'true')
 <div style="display: flex;flex-direction: row;justify-content: center;">
     <span>No files or folder found</span>
 </div>
-@endif @endsection
+
+@endif
+{!! Form::open(array('url' => 'deleteFilesFolders', 'method' => 'POST', 'id'=>'delete_files_folders')) !!}
+<input type="hidden" name="delete_folders" id="delete_folders" value="">
+<input type="hidden" name="delete_files" id="delete_files" value="">
+{!! Form::close()!!}
+@endsection
