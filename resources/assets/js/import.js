@@ -9,16 +9,24 @@ $(document).ready(function() {
             saveCcdafile();
     });
 
-	$(document).on('change', '.xlsx_file-input input[type="file"]', function() {
+    $(document).on('change', '.xlsx_file-input input[type="file"]', function() {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         $('.filename').html(filename);
     });
 
     $(document).on('click', '.import_button', function() {
-        importPatients();
+        if ($('.xlsx_file-input input[type="file"]').val())
+            importPatients();
+        else {
+            $('p.alert_message').text('please select a valid xlsx file');
+            $('#alert').modal('show');
+			$('#alert').css("z-index", "1500");
+        }
     });
 
     $(document).on('click', '.open_import', function() {
+		$('.xlsx_file-input input[type="file"]').val('');
+		$('.filename').html('');
         $('.import_form').addClass('active');
         $('.success_message').text('');
         $('.success_message').removeClass('active');
