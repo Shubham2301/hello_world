@@ -20,8 +20,11 @@
     </div>
     @else
     <div class="content-section active" id="directmail-console">
+        
+        
+        <div id="impersonateBtn">Impersonate User</div> 
         <img id="loadingImg" alt="Loading..."   src="{{ asset('/images/ajax-loader.gif') }}" style="width:1em;display: none;">
-        <button id="refreshBtn" class="btn btn-primary" style="width:20%;" onclick="refreshPage()">Refresh Page</button>
+        <div id="refreshBtn" onclick="refreshPage()"><img src="{{ asset('/images/refresh-icon-01.png') }}" alt=""></div>
         <button id="getCodeBtn" class="btn dismiss_button" style="width:20%;display: none;">Get Code</button>
 
         @if (Session::has('request_failed_msg'))
@@ -40,7 +43,11 @@
     </div>
 
     <script>
-
+        
+        $('#impersonateBtn').on('click', function(){
+            $('#impersonateModal').modal('show');
+        });
+        
         var timerCount = '{{ $ses['display_count_timer'] }}';
 
         function refreshPage() {
@@ -164,12 +171,12 @@
         }
 
         if (!window.location.search) {
-            document.getElementById("getCodeBtn").click();
+         //   document.getElementById("getCodeBtn").click();
         }
     </script>
 
     @endif
 
-
+@include('directmail.impersonation')
 
 @endsection

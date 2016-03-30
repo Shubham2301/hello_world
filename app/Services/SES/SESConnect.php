@@ -2,6 +2,8 @@
 
 namespace myocuhub\Services\SES;
 
+use Auth;
+
 class SESConnect extends SES {
 //    protected $tokenURL;
 	//    protected $authorizationURL;
@@ -30,8 +32,12 @@ class SESConnect extends SES {
 	public function hasDirectMail() {
 
 		$connection = array();
-
-		$user = \Auth::user();
+        if(session('impersonation-id') == '' ){
+            $user = User::find(session('impersonation-id'));
+        } else {
+            $user = Auth::user();
+        }
+		
 		$sesEmail = $user->sesemail;
 
 		if (!$sesEmail) {

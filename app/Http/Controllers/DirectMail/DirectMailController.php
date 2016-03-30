@@ -30,6 +30,21 @@ class DirectMailController extends Controller {
 		return view('directmail.index')->with('ses', $ses)->with('data', $data);
 
 	}
+    
+    public function beginImpersonate(Request $request) {
+        
+        session(['impersonation-id' => $request->id]);
+        
+        $this->index();
+
+	}
+    
+    public function endImpersonate(Request $request) {
+        
+        session(['impersonation-id' => '']);
+        
+        $this->index();
+	}
 
 	/**
 	 * Show the form for creating a new resource.
