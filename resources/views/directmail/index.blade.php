@@ -22,7 +22,20 @@
     <div class="content-section active" id="directmail-console">
         
         
+        @if(session('impersonation-id') != '' )
+        <div style="position:absolute">
+            <div style="background-color:#fff;padding:0.25em;border-radius:100%;width:2.5em;display:inline-block">
+                <img style="width:2em" src="{{ asset('/images/impersonate-icon-01.png') }}" alt="">
+            </div>
+            <span style="display:inline-block">Impersonating Mustafa, George</span>
+            <div style="display:inline-block">
+                <img src="{{ asset('/images/close-white.png') }}" style="margin-top:-1em;width:1em" alt="">
+            </div>
+        </div>
+        @else
         <div id="impersonateBtn">Impersonate User</div> 
+        @endif
+        
         <img id="loadingImg" alt="Loading..."   src="{{ asset('/images/ajax-loader.gif') }}" style="width:1em;display: none;">
         <div id="refreshBtn" onclick="refreshPage()"><img src="{{ asset('/images/refresh-icon-01.png') }}" alt=""></div>
         <button id="getCodeBtn" class="btn dismiss_button" style="width:20%;display: none;">Get Code</button>
