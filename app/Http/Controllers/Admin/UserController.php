@@ -506,11 +506,11 @@ class UserController extends Controller {
 		if($request->ajax()){
 			if($request->hasFile('profile_img')){
 				$file = $request->file('profile_img');
-				$destinationPath = '/images/temp';
+				$destinationPath = 'images/temp';
 				$extension = $file->getClientOriginalExtension();
 				$pictureName = str_random(9) . ".jpg";
 				$upload_success = $file->move(public_path() . '/' . $destinationPath, $pictureName);
-				return \URL::asset('images/temp/'.$pictureName);
+				return \URL::asset('/images/temp/'.$pictureName);
 			}
 		}
 
