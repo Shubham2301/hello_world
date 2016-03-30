@@ -31,6 +31,7 @@
                         <a href="/administration/patients" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a>
                     </li>
                     @endif
+                    <li><a href="/reports" data-toggle="tooltip" title="Reports" data-placement="right"><img src="{{URL::asset('images/sidebar/reports.png')}}" class="drop_image"></a></li>
                 </ul>
             </div>
         </div>
