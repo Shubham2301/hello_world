@@ -22,5 +22,12 @@
         {{ Session::pull('success') }}
     </div>
     @endif
-
+<span class="report_header">
+    <span class="arial_bold title">Reports</span>
+    <span class="input_field">Start Date<input type="text" id="start_date"></span>
+    <span class="input_field">End Date<input type="text" id="end_date"></span>
+</span>
+<div class="row reporting_content arial">
+    @include('reporting.content')
+</div>
 @endsection
