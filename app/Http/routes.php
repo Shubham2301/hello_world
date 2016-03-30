@@ -159,5 +159,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/patient/destroy', 'Patient\PatientController@destroy');
 
     Route::resource('reports', 'ReportingController');
+    Route::get('reports/show', 'ReportingController@show');
 
 });

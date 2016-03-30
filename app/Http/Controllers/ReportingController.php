@@ -49,7 +49,7 @@ class ReportingController extends Controller
      */
     public function show($id)
     {
-        //
+        return 1;
     }
 
     /**

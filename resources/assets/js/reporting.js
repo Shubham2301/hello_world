@@ -11,11 +11,45 @@ $(document).ready(function () {
         format: 'MM/DD/YYYY',
         maxDate: cur_date,
     });
+    var old_start_date = $('#start_date').val();
+    var old_end_date = $('#end_date').val();
     $('#start_date').datetimepicker().on('dp.hide', function (ev) {
         var start_date = $('#start_date').val();
+        if (start_date != old_start_date) {
+            old_start_date = $('#start_date').val();
+            getReport();
+        }
     });
     $('#end_date').datetimepicker().on('dp.hide', function (ev) {
         var end_date = $('#end_date').val();
         $('#start_date').data("DateTimePicker").maxDate(new Date(end_date));
+        if (end_date != old_end_date) {
+            old_end_date = $('#end_date').val();
+            getReport();
+        }
     });
 });
+
+function getReport() {
+    var formData = {
+        'start_date': $('#start_date').val(),
+        'end_date': $('#end_date').val()
+    };
+    $.ajax({
+        url: '/reports/show',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            var info = $.parseJSON(e);
+
+        },
+        error: function () {
+            $('p.alert_message').text('Error generating report');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+}
