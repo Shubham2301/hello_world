@@ -22,18 +22,19 @@
     <div class="content-section active" id="directmail-console">
         
         
-        @if(session('impersonation-id') != '' )
+        
         <div style="position:absolute">
-            <div style="background-color:#fff;padding:0.25em;border-radius:100%;width:2.5em;display:inline-block">
+            <div style="background-color:#d3eefa;padding:0.25em;border-radius:100%;width:2.5em;display:inline-block">
                 <img style="width:2em" src="{{ asset('/images/impersonate-icon-01.png') }}" alt="">
             </div>
-            <span style="display:inline-block">Impersonating Mustafa, George</span>
+            <span style="display:inline-block"> &nbsp;Impersonating <span class="arial_bold">Mustafa, George</span>&nbsp;</span>
             <div style="display:inline-block">
-                <img src="{{ asset('/images/close-white.png') }}" style="margin-top:-1em;width:1em" alt="">
+                <img src="{{ asset('/images/close-white.png') }}" style="margin-top: -0.2em;width: 0.7em;" alt="">
             </div>
         </div>
+        @if(session('impersonation-id') != '' )
         @else
-        <div id="impersonateBtn">Impersonate User</div> 
+<!--        <div id="impersonateBtn">Impersonate User</div> -->
         @endif
         
         <img id="loadingImg" alt="Loading..."   src="{{ asset('/images/ajax-loader.gif') }}" style="width:1em;display: none;">
