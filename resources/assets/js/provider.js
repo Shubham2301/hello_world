@@ -138,6 +138,7 @@ $(document).ready(function () {
         $('.practice_list').addClass('active');
         $('.practice_info').removeClass('active');
         $('.schedule_button').removeClass('active');
+        $('.appointment_type_not_found').hide();
         $('.schedule_button').attr('data-id', 0);
         $('.schedule_button').attr('data-practice-id', 0);
         $('.availability').removeClass('active');
@@ -478,6 +479,7 @@ function getInsuranceList(formData){
 function getProviders(formData) {
     $('.practice_list').addClass('active');
     $('.practice_info').removeClass('active');
+    $('.appointment_type_not_found').hide();
     var tojson = JSON.stringify(formData);
     $.ajax({
         url: '/providers/search',
