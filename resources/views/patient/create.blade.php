@@ -29,7 +29,7 @@
             <div class="panel-body">
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
-                        {!! Form::text('FirstName', $data['firstname'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'firstname', 'placeholder' => 'First Name*', 'id' => 'first_name')) !!} {!! Form::text('LastName', $data['lastname'], array('class' => 'add_patient_input', 'name' => 'lastname', 'placeholder' => 'Last Name', 'id' => 'last_name')) !!} {!! Form::email('email', $data['email'], array('class' => 'add_patient_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email')) !!} {!! Form::text('phone', $data['cellphone'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'cellphone', 'placeholder' => 'Phone*', 'id' => 'phone')) !!}
+						{!! Form::text('FirstName', $data['firstname'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'firstname', 'placeholder' => 'First Name*', 'id' => 'first_name')) !!} {!! Form::text('LastName', $data['lastname'], array('class' => 'add_patient_input', 'name' => 'lastname', 'placeholder' => 'Last Name*', 'id' => 'last_name','required' => 'required')) !!} {!! Form::email('email', $data['email'], array('class' => 'add_patient_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email')) !!} {!! Form::text('phone', $data['cellphone'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'cellphone', 'placeholder' => 'Phone*', 'id' => 'phone')) !!}
                     </div>
                     <div class="col-sm-6 col-xs-12">
 <!--
