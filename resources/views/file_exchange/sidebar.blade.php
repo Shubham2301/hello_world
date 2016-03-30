@@ -18,10 +18,12 @@
                     <li>
                         <a href="/home"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a>
                     </li>
+<!--
                     <li>
                         <a href="#"><img src="{{URL::asset('images/sidebar/records.png')}}" class="drop_image"></a>
                     </li>
-                    @can('care-console')
+-->
+                    @can('care-cordination')
                     <li>
                         <a href="/careconsole"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="drop_image"></a>
                     </li>

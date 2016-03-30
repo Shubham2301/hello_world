@@ -107,8 +107,8 @@
                                         {!! Form::text('npi', $user['npi'], array('class' => ' add_user_input', 'placeholder' => 'NPI', 'id' => 'npi')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::text('cellphone', $user['cellphone'], array('class' => ' add_user_input', 'placeholder' => 'Phone Number*', 'id' => 'cell_phone')) !!}
-                                        {!! Form::text('address1', $user['address1'], array('class' => ' add_user_input', 'placeholder' => 'Address 1*', 'id' => 'address1', 'required' => 'required')) !!}
+                                        {!! Form::text('cellphone', $user['cellphone'], array('class' => ' add_user_input', 'placeholder' => 'Phone Number', 'id' => 'cell_phone')) !!}
+                                        {!! Form::text('address1', $user['address1'], array('class' => ' add_user_input', 'placeholder' => 'Address 1', 'id' => 'address1')) !!}
                                         {!! Form::text('address2', $user['address2'], array('class' => ' add_user_input', 'placeholder' => 'Address 2', 'id' => 'address2')) !!}
                                         {!! Form::text('city', $user['city'], array('class' => ' add_user_input', 'placeholder' => 'City', 'id' => 'city')) !!}
                                         {!! Form::text('zip', $user['zip'], array('class' => ' add_user_input', 'placeholder' => 'Zip', 'id' => 'zip')) !!}
@@ -134,8 +134,8 @@
                                         {!! Form::email('sesemail', $user['sesemail'], array('class' => ' add_user_input', 'placeholder' => 'SES Email', 'id' => 'ses_email')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::password('password', array('class' => ' add_user_input', 'placeholder' => 'Password*', 'id' => 'password', 'required' => 'required')) !!}
-                                        {!! Form::password('password_confirmation', array('class' => ' add_user_input', 'placeholder' => 'Password Confirmation*', 'id' => 'confirm_password', 'required' => 'required')) !!}
+                                        {!! Form::password('password', array('class' => ' add_user_input', 'placeholder' => 'Password', 'id' => 'password')) !!}
+                                        {!! Form::password('password_confirmation', array('class' => ' add_user_input', 'placeholder' => 'Password Confirmation', 'id' => 'confirm_password')) !!}
                                     </div>
                                 </div>
                             </div>
