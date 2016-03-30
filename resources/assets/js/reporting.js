@@ -1,12 +1,21 @@
 $(document).ready(function () {
+    var cur_date = new Date();
+    var set_start_date = new Date(cur_date.getTime());
     $('#start_date').datetimepicker({
-        defaultDate: new Date(),
+        defaultDate: set_start_date.setDate(cur_date.getDate() - 30),
         format: 'MM/DD/YYYY',
-        maxDate: new Date(),
+        maxDate: cur_date,
     });
     $('#end_date').datetimepicker({
-        defaultDate: new Date(),
+        defaultDate: cur_date,
         format: 'MM/DD/YYYY',
-        maxDate: new Date(),
+        maxDate: cur_date,
+    });
+    $('#start_date').datetimepicker().on('dp.hide', function (ev) {
+        var start_date = $('#start_date').val();
+    });
+    $('#end_date').datetimepicker().on('dp.hide', function (ev) {
+        var end_date = $('#end_date').val();
+        $('#start_date').data("DateTimePicker").maxDate(new Date(end_date));
     });
 });
