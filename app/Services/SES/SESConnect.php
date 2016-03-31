@@ -2,6 +2,9 @@
 
 namespace myocuhub\Services\SES;
 
+use Auth;
+use myocuhub\User;
+
 class SESConnect extends SES {
 //    protected $tokenURL;
 	//    protected $authorizationURL;
@@ -27,11 +30,83 @@ class SESConnect extends SES {
 
 	}
 
+	public function checkScope($userId) {
+        
+        $user = Auth::user();
+		$usertype = $user->usertype_id;
+		$level = $user->level;
+        
+        if ($usertype == '2') {
+			if ($level === '2') {
+				$networkId = User::getNetwork($user->id)->id;
+				$user_networkId = User::getNetwork($userId)->id;
+                
+                if($networkId != $user_networkId){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+                
+			} elseif ($level === '3') {
+				$practiceId = User::getPractice($user->id)->id;
+                $user_practiceId = User::getPractice($userId)->id;
+                
+                if($practiceId != $user_practiceId){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+			}
+		} else {
+			return false;
+		}
+        
+        return false;
+        
+	}
+	public function getImpersonationScope() {
+		$user = Auth::user();
+		$usertype = $user->usertype_id;
+		$level = $user->level;
+		$scope = [];
+
+		if ($usertype == '2') {
+			if ($level === '2') {
+				$networkId = User::getNetwork($user->id)->id;
+				$users = User::networkUserById($networkId);
+
+                foreach($users as $user){
+                    $scope[] = ['id' => $user->id, 'name' => $user->name];
+                }
+                
+			} elseif ($level === '3') {
+				$practiceId = User::getPractice($user->id)->id;
+                $users = User::practiceUserById($practiceId);
+                
+                foreach($users as $user){
+                    $scope[] = ['id' => $user->id, 'name' => $user->name];
+                }
+			}
+		} else {
+			return $scope;
+		}
+		return $scope;
+	}
+
 	public function hasDirectMail() {
 
 		$connection = array();
+		if (session('impersonation-id') != '') {
+			$user = User::find(session('impersonation-id'));
+			if (!$user) {
+				$user = Auth::user();
+			}
+		} else {
+			$user = Auth::user();
+		}
 
-		$user = \Auth::user();
 		$sesEmail = $user->sesemail;
 
 		if (!$sesEmail) {

@@ -11,7 +11,7 @@
                     <div class="active">
                         <div class="row input_row">
                             <div class="col-md-4 form-group">
-                                <lable for="insurance_carrier"><strong style="color:black;padding-left:1em;">Insurance Carrier</strong></lable>
+                                <label for="insurance_carrier"><strong style="color:black;padding-left:1em;">Insurance Carrier</strong></label>
                             </div>
                             <div class="col-md-6 form-group">
                                 <input type="text" class="form-control" name="insurance_carrier" id="insurance_carrier" value="{{ $insurance['insurance_carrier'] }}">
@@ -68,7 +68,7 @@
             </div>
             <div class="modal-footer">
                 <div style="margin-right:40%">
-                    <button type="button" class="btn btn-primary confirm_action active" data-dismiss="modal">Confirm</button>
+                    <button type="button" onclick="$('#add_insurance').prop('checked', true);" class="btn btn-primary confirm_action active" data-dismiss="modal">Confirm</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
