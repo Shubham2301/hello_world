@@ -33,11 +33,11 @@ class SESConnect extends SES {
 	public function checkScope($userId) {
         
         $user = Auth::user();
-		$usertype = $user->usertype_id;
-		$level = $user->level;
+		$usertype = intval($user->usertype_id);
+		$level = intval($user->level);
         
-        if (intval($usertype) === 2) {
-			if (intval($level) === 2) {
+        if ($usertype === 2) {
+			if ($level === 2) {
 				$networkId = User::getNetwork($user->id)->id;
 				$user_networkId = User::getNetwork($userId)->id;
                 
@@ -48,7 +48,7 @@ class SESConnect extends SES {
                     return true;
                 }
                 
-			} elseif (intval($level) === 3) {
+			} elseif ($level === 3) {
 				$practiceId = User::getPractice($user->id)->id;
                 $user_practiceId = User::getPractice($userId)->id;
                 
@@ -68,12 +68,12 @@ class SESConnect extends SES {
 	}
 	public function getImpersonationScope() {
 		$user = Auth::user();
-		$usertype = $user->usertype_id;
-		$level = $user->level;
+		$usertype = intval($user->usertype_id);
+		$level = intval($user->level);
 		$scope = [];
 
-		if ($usertype == '2') {
-			if ($level === '2') {
+		if ($usertype == 2) {
+			if ($level === 2) {
 				$networkId = User::getNetwork($user->id)->id;
 				$users = User::networkUserById($networkId);
 
@@ -81,7 +81,7 @@ class SESConnect extends SES {
                     $scope[] = ['id' => $user->id, 'name' => $user->name];
                 }
                 
-			} elseif ($level === '3') {
+			} elseif ($level === 3) {
 				$practiceId = User::getPractice($user->id)->id;
                 $users = User::practiceUserById($practiceId);
                 
