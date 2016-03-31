@@ -109,7 +109,7 @@ class UserController extends Controller {
 			// TODO
 			// Auto generate password
 			if($request->input('password') != '')
-			$user->password = bcrypt($request->input('password'));
+				$user->password = bcrypt($request->input('password'));
 
 			else
 				$user->password = bcrypt(str_random(12));
@@ -199,13 +199,13 @@ class UserController extends Controller {
 		$data['user'] = $user;
 		$data['usertype'] = '';
 		if($user->usertype)
-		$data['usertype'] = $user->usertype->name;
+			$data['usertype'] = $user->usertype->name;
 		$data['network'] = ' ';
 		if(User::getNetwork($userID))
-		$data['network'] = User::getNetwork($userID)->name;
+			$data['network'] = User::getNetwork($userID)->name;
 		$data['Practice'] = '';
 		if(User::getPractice($userID))
-		$data['Practice'] = User::getPractice($userID);
+			$data['Practice'] = User::getPractice($userID);
 
 		$data['Roles'] = $user->roles;
 
@@ -285,7 +285,6 @@ class UserController extends Controller {
 	 */
 	public function update(Request $request, $id) {
 		$user = User::find($id);
-
 		$user->title = $request->input('title');
 		$user->firstname = $request->input('firstname');
 		$user->middlename = $request->input('middlename');
@@ -353,6 +352,25 @@ class UserController extends Controller {
 				$new_role->save();
 			}
 		}
+
+			if ($user->level > 2 && $request->input('user_practice') !== '' && $request->input('user_practice')) {
+				$userData = [];
+				$userData['practice_id'] = $request->input('user_practice');
+				$userData['user_id'] = $user->id;
+				$practice_user = PracticeUser::firstOrCreate($userData);
+			}
+			else
+			{
+				$practiceUser = PracticeUser::where('user_id', $user->id)->delete();
+				$userData = [];
+				$userData['user_id'] = $user->id;
+				if (session('user-level') == '1') {
+					$userData['network_id'] = $request->input('user_network');
+				} else {
+					$userData['network_id'] = session('network-id');
+				}
+				$network_user = NetworkUser::firstOrCreate($userData);
+			}
 
 		$action = 'update user of id =' . $id;
 		$description = '';
