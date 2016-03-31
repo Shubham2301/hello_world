@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    var insurancePrompt = 0;
+
     $('#subscriber_dob').datetimepicker({
         format: 'YYYY-MM-DD'
     });
@@ -6,8 +8,14 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
     $('.appointment_confirmed').hide();
     $('#confirm_appointment').on('click', function () {
+        if(insurancePrompt == 0 && $('#add_insurance:checked').length == 0){
+            prompForInsurance();
+            insurancePrompt++;
+            return;
+        }
         scheduleAppointment();
     });
+
     $('#schedule_new_patient').on('click', function () {
         $('#form_patient_id').prop('disabled', true);
         $('#form_schedule_another_appointment').submit();
@@ -26,6 +34,10 @@ $(document).ready(function () {
         $('#form_schedule_another_appointment').submit();
     });
 });
+
+function prompForInsurance(){
+    $('#insuranceModal').modal('show');
+}
 
 function scheduleAppointment() {
 
