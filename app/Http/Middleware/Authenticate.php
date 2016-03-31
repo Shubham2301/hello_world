@@ -42,8 +42,6 @@ class Authenticate {
 			}
 		}
 
-		Session::flush();
-
 		$user = Auth::user();
 
 		if ($network = User::getNetwork($user->id)) {
