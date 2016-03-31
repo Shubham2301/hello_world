@@ -2,7 +2,9 @@
 
 namespace myocuhub\Http\Controllers\DirectMail;
 
+use Auth;
 use myocuhub\User;
+use myocuhub\Models\ImpersonationAudit;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Services\SES\SESConnect;
@@ -40,8 +42,17 @@ class DirectMailController extends Controller {
 		if (!$this->sesConnect->checkScope($request->impersonateuser)) {
 			$request->session()->flash('no_direct_mail', 'You do not have access rights to impersonate this user.');
 		} else {
+            $audit = new ImpersonationAudit;
+            
 			session(['impersonation-id' => $request->impersonateuser]);
             session(['impersonation-name' => User::find($request->impersonateuser)->name]);
+            
+            $audit->user_impersonated_id = $request->impersonateuser;
+            $audit->logged_in_user_id = Auth::user()->id;
+            $audit->action = 'BEGIN IMPERSONATION';
+            
+            $audit->save();
+            
 		}
 
 		return redirect('directmail');
@@ -49,10 +60,18 @@ class DirectMailController extends Controller {
 	}
 
 	public function endImpersonate() {
-
+        
+        $audit = new ImpersonationAudit;
+        
+        $audit->user_impersonated_id = session('impersonation-id');
+        $audit->logged_in_user_id = Auth::user()->id;
+        $audit->action = 'END IMPERSONATION';
+        
 		session(['impersonation-id' => '']);
         session(['impersonation-name' => '']);
-
+        
+        $audit->save();
+        
 		return redirect('directmail');
 	}
 
