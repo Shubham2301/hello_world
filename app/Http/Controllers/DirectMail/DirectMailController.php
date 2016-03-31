@@ -2,6 +2,7 @@
 
 namespace myocuhub\Http\Controllers\DirectMail;
 
+use myocuhub\User;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Services\SES\SESConnect;
@@ -19,6 +20,7 @@ class DirectMailController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request) {
+
 		$ses = $this->sesConnect->getDirectMail();
 
 		if (!$ses['direct_mail_str']) {
@@ -27,23 +29,31 @@ class DirectMailController extends Controller {
 		$data = array();
 		$data['direct-mail'] = true;
 
-		return view('directmail.index')->with('ses', $ses)->with('data', $data);
+		$impersonation = $this->sesConnect->getImpersonationScope();
+        
+		return view('directmail.index')->with('ses', $ses)->with('data', $data)->with('impersonation', $impersonation);
 
 	}
-    
-    public function beginImpersonate(Request $request) {
-        
-        session(['impersonation-id' => $request->id]);
-        
-        $this->index();
+
+	public function beginImpersonate(Request $request) {
+
+		if (!$this->sesConnect->checkScope($request->impersonateuser)) {
+			$request->session()->flash('no_direct_mail', 'You do not have access rights to impersonate this user.');
+		} else {
+			session(['impersonation-id' => $request->impersonateuser]);
+            session(['impersonation-name' => User::find($request->impersonateuser)->name]);
+		}
+
+		return redirect('directmail');
 
 	}
-    
-    public function endImpersonate(Request $request) {
-        
-        session(['impersonation-id' => '']);
-        
-        $this->index();
+
+	public function endImpersonate() {
+
+		session(['impersonation-id' => '']);
+        session(['impersonation-name' => '']);
+
+		return redirect('directmail');
 	}
 
 	/**
