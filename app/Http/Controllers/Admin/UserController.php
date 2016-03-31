@@ -329,7 +329,7 @@ class UserController extends Controller {
 			$i++;
 		}
 		$i = 0;
-		$new_roles = $request->input('role');
+		$new_roles = $request->input('role', []);
 		$new_roles_id = array();
 		foreach ($new_roles as $new_role) {
 			$new_role_name = Role::where('display_name', '=', $new_role)->first();
@@ -353,24 +353,24 @@ class UserController extends Controller {
 			}
 		}
 
-			if ($user->level > 2 && $request->input('user_practice') !== '' && $request->input('user_practice')) {
-				$userData = [];
-				$userData['practice_id'] = $request->input('user_practice');
-				$userData['user_id'] = $user->id;
-				$practice_user = PracticeUser::firstOrCreate($userData);
+		if ($user->level > 2 && $request->input('user_practice') !== '' && $request->input('user_practice')) {
+			$userData = [];
+			$userData['practice_id'] = $request->input('user_practice');
+			$userData['user_id'] = $user->id;
+			$practice_user = PracticeUser::firstOrCreate($userData);
+		}
+		else
+		{
+			$practiceUser = PracticeUser::where('user_id', $user->id)->delete();
+			$userData = [];
+			$userData['user_id'] = $user->id;
+			if (session('user-level') == '1') {
+				$userData['network_id'] = $request->input('user_network');
+			} else {
+				$userData['network_id'] = session('network-id');
 			}
-			else
-			{
-				$practiceUser = PracticeUser::where('user_id', $user->id)->delete();
-				$userData = [];
-				$userData['user_id'] = $user->id;
-				if (session('user-level') == '1') {
-					$userData['network_id'] = $request->input('user_network');
-				} else {
-					$userData['network_id'] = session('network-id');
-				}
-				$network_user = NetworkUser::firstOrCreate($userData);
-			}
+			$network_user = NetworkUser::firstOrCreate($userData);
+		}
 
 		$action = 'update user of id =' . $id;
 		$description = '';
@@ -388,27 +388,17 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function destroy(Request $request) {
-		$currentUserID = Auth::user()->id;
-		$i = 0;
-		while (1) {
-			if ($request->input($i)) {
-				$user_id = $request->input($i);
-				if ($currentUserID <= $user_id) {
-					$user = User::find($user_id);
-					$user->active = 0;
-					$user->save();
-				}
-				$i++;} else {
-				break;
-			}
 
-		}
+		if(!$request->input() || $request->input() === '' || sizeof($request->input()) < 1 )
+			return ;
 
-		//		$action = 'deleted users';
-		//		$description = '';
-		//		$filename = basename(__FILE__);
-		//		$ip = $request->getClientIp();
-		//		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+		$deactivate = User::whereIn('id', $request->input())->update(['active' => 0]);
+
+		$action = 'deleted '.sizeof($request->input()).' users';
+		$description = '';
+		$filename = basename(__FILE__);
+		$ip = $request->getClientIp();
+		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 	}
 
 	public function getUserTypes() {
