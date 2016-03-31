@@ -3,7 +3,11 @@
 @import 'media.less';
 @import 'helper.less';
 .user_admin_search {
-    display: flex;
+    display: none;
+	&.active{
+		display: flex;
+	}
+
 }
 #button_active {
     background-color: #d2d3d5;
@@ -308,4 +312,54 @@ Create User Section
 .panel-title>span>a {
     text-decoration: none;
     font-size: 1.3em;
+}
+
+.user_info {
+	display: none;
+    margin-top: 2em;
+	&.active{
+		display: block;
+	}
+}
+
+#user_name {
+	text-decoration: underline;
+	font-size:1.2em;
+}
+
+.user_detail_info {
+	font-size: .9em;
+}
+
+
+
+.user_back {
+	float: left;
+	margin-left:2em;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.back {
+	color: #f2f2f2;
+	background-color: #808080;
+	&:hover {
+		background-color: #0086fb;
+		color: #f2f2f2;
+	}
+}
+
+.user_row_name{
+	cursor: pointer;
+}
+
+.section-break {
+	border-top: 1px solid #f2f2f2;
+}
+.section_header {
+	margin-top:1em;
+	font-size:1.2em;
+}
+
+.row_content_margin {
+	margin-top: 1em;
 }

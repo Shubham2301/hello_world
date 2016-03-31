@@ -193,9 +193,23 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show($id) {
-		$user = User::find($id);
-		return view('admin.users.show')->with('user', $user);
+	public function show($userID) {
+		$user = User::find($userID);
+
+		$data['user'] = $user;
+		$data['usertype'] = '';
+		if($user->usertype)
+		$data['usertype'] = $user->usertype->name;
+		$data['network'] = ' ';
+		if(User::getNetwork($userID))
+		$data['network'] = User::getNetwork($userID)->name;
+		$data['Practice'] = '';
+		if(User::getPractice($userID))
+		$data['Practice'] = User::getPractice($userID);
+
+		$data['Roles'] = $user->roles;
+
+		return view('admin.users.show')->with('data', $data);
 	}
 
 	/**

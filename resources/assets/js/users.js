@@ -119,6 +119,17 @@ $(document).ready(function () {
             }
         });
     });
+	$('.user_listing').on('click', '.user_row_name', function(){
+		var id = $(this).closest('.search_item').attr('data-id');
+		showUserInfo(id)
+	});
+	$('.user_info').on('click','.user_back',function(){
+		$('.user_admin_search').addClass('active');
+		$('.user_listing').addClass('active');
+		$('.no_item_found').removeClass('active');
+		$('.user_info').removeClass('active');
+	});
+
 
 });
 var flag = 0;
@@ -181,6 +192,7 @@ function getUsers(formData, page) {
     var scheduleimg = $('#dropdown_natural_img').val();
     var assign_role_image = $('#assign_role_image_path').val();
     var assign_user_image = $('#assign_user_image_path').val();
+	$('.user_admin_search').addClass('active');
     $.ajax({
         url: '/users/search?page=' + page,
         type: 'GET',
@@ -195,7 +207,7 @@ function getUsers(formData, page) {
             $('#search_results').text('');
             if (users.length > 0 && users[0]['total'] > 0) {
                 users.forEach(function (user) {
-                    content += '<div class="row search_item" data-id="' + user.id + '"><div class="col-xs-3 search_name"><input type="checkbox" class="admin_checkbox_row" data-id="' + user.id + '" name="checkbox">&nbsp;&nbsp;<p>' + user.name + '</p></div><div class="col-xs-3">' + user.email + '</div><div class="col-xs-2"><p>' + user.level + '</p></div><div class="col-xs-2"><p>' + user.practice + '</p></div><div class="col-xs-2 search_edit"><p><div class="dropdown dropdown_action"><span  area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown" src="' + scheduleimg + '" alt=""></span><ul class="dropdown-menu" id="row_action_dropdown">';
+                    content += '<div class="row search_item" data-id="' + user.id + '"><div class="col-xs-3 search_name"><input type="checkbox" class="admin_checkbox_row" data-id="' + user.id + '" name="checkbox">&nbsp;&nbsp;<p class="user_row_name">' + user.name + '</p></div><div class="col-xs-3">' + user.email + '</div><div class="col-xs-2"><p>' + user.level + '</p></div><div class="col-xs-2"><p>' + user.practice + '</p></div><div class="col-xs-2 search_edit"><p><div class="dropdown dropdown_action"><span  area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown" src="' + scheduleimg + '" alt=""></span><ul class="dropdown-menu" id="row_action_dropdown">';
                     //                  content += '<li><a href="" style="margin-left: -5.1em;"><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px;">&nbsp;Roles</a></li>';
                     content += '<li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">&nbsp;Impersonate User</a></li></ul></div></p><p class="edituser_from_row">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removeuser_from_row"><img src="' + activate_img + '" alt="" class="removeuser_img" data-toggle="tooltip" title="Deactivate User" data-placement="top"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to deactivate this person?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                 });
@@ -288,4 +300,28 @@ function checkForm() {
             }
         }
     });
+}
+
+function showUserInfo(id){
+	$.ajax({
+		url: '/users/show/'+id,
+		type: 'GET',
+		contentType: 'text/html',
+		async: false,
+		success: function (e) {
+		$('.user_admin_search').removeClass('active');
+		$('.user_listing').removeClass('active');
+		$('.no_item_found').removeClass('active');
+		$('.user_info').addClass('active');
+		$('.user_info').html(e);
+	},
+		   error: function error() {
+		$('p.alert_message').text('Error searching');
+		$('#alert').modal('show');
+	},
+		cache: false,
+			processData: false
+});
+
+
 }
