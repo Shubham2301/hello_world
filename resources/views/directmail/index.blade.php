@@ -72,9 +72,17 @@
         });
         
         $("#end-impersonation-form").submit(function () {
-           $("#reload-active-direct").submit();
+            @if(session('impersonation-id') != '')
+                $("#reload-active-direct").submit();
+            @else
+                $('#impersonation-form').submit();
+            @endif
         });
         
+        function beginImpersonation() {
+             $("#end-impersonation-form").submit();
+        }    
+            
         function endImpersonation () {
             $("#end-impersonation-form").submit();
         }

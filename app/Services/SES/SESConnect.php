@@ -36,8 +36,8 @@ class SESConnect extends SES {
 		$usertype = $user->usertype_id;
 		$level = $user->level;
         
-        if ($usertype == '2') {
-			if ($level === '2') {
+        if (intval($usertype) === 2) {
+			if (intval($level) === 2) {
 				$networkId = User::getNetwork($user->id)->id;
 				$user_networkId = User::getNetwork($userId)->id;
                 
@@ -48,7 +48,7 @@ class SESConnect extends SES {
                     return true;
                 }
                 
-			} elseif ($level === '3') {
+			} elseif (intval($level) === 3) {
 				$practiceId = User::getPractice($user->id)->id;
                 $user_practiceId = User::getPractice($userId)->id;
                 
