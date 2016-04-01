@@ -114,6 +114,12 @@ class UserController extends Controller {
 			else
 				$user->password = bcrypt(str_random(12));
 
+			$alreadyAssignEmail = User::where('email', $request->input('email'))->first();
+			if($alreadyAssignEmail){
+				$request->session()->flash('error', 'Email already Exists');
+				return redirect()->back();
+			}
+
 			$user->email = $request->input('email');
 			$user->npi = $request->input('npi');
 			$user->cellphone = $request->input('cellphone');
