@@ -11,6 +11,7 @@ $(document).ready(function () {
         format: 'MM/DD/YYYY',
         maxDate: cur_date,
     });
+    getReport();
     var old_start_date = $('#start_date').val();
     var old_end_date = $('#end_date').val();
     $('#start_date').datetimepicker().on('dp.hide', function (ev) {
