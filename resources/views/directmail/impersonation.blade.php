@@ -29,7 +29,7 @@
             </div>
             <div class="modal-footer">
                 <div style="margin-right:40%">
-                    <button type="button" onclick="$('#impersonation-form').submit()" class="btn btn-primary confirm_action active" data-dismiss="modal">Impersonate</button>
+                    <button type="button" onclick="beginImpersonation()" class="btn btn-primary confirm_action active" data-dismiss="modal">Impersonate</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
