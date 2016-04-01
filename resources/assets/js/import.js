@@ -11,7 +11,10 @@ $(document).ready(function() {
 
     $(document).on('change', '.xlsx_file-input input[type="file"]', function() {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+        var clear_image_path = $('#clear_image_path').val();
+        filename += '&nbsp;&nbsp;<img src="'+ clear_image_path +'" class="clear_image_path" data-toggle="tooltip" title="Remove File" data-placement="top">';
         $('.filename').html(filename);
+        $('[data-toggle="tooltip"]').tooltip();
     });
 
     $(document).on('click', '.import_button', function() {
@@ -24,15 +27,19 @@ $(document).ready(function() {
         }
     });
 
+    $('.filename').on('click', '.clear_image_path', function() {
+        $('.xlsx_file-input input[type="file"]').val('');
+		$('.filename').html('');
+    });
+
     $(document).on('click', '.open_import', function() {
-		$('.xlsx_file-input input[type="file"]').val('');
+        $('.xlsx_file-input input[type="file"]').val('');
 		$('.filename').html('');
         $('.import_form').addClass('active');
         $('.success_message').text('');
         $('.success_message').removeClass('active');
         $('.import_button').addClass('active');
         $('.dismiss_button').text('Cancel');
-
     });
 
     $(document).on('click', '#import_ccda_button', function() {

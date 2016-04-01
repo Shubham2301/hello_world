@@ -43,7 +43,8 @@
             <span class="glyphicon glyphicon-search glyp" id="search_patient_button" aria-hidden="true"></span>
         </span>
         <span class="glyphicon glyphicon-remove" id="refresh_patients" area-hidden="true"></span>
-        <button type="button" data-toggle="modal" data-target="#importModal"  class="btn import-btn">Import</button>
+        <button type="button" data-toggle="modal" data-target="#importModal"  class="btn import-btn open_import">Import</button>
+        <input type="hidden" id="clear_image_path" value="{{URL::asset('images/close-active.png')}}">
 </div>
 
 <div class="row content-row-margin patient_admin_back">
