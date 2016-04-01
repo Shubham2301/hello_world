@@ -17,6 +17,7 @@ use myocuhub\Role;
 use myocuhub\Role_user;
 use myocuhub\User;
 use myocuhub\Usertype;
+use Validator;
 
 class UserController extends Controller {
 
@@ -96,100 +97,89 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request) {
-
-		if ($request->input('password') == $request->input('password_confirmation')) {
-			$user = new User;
-
-			// Save the User information
-			$user->title = $request->input('title');
-			$user->firstname = $request->input('firstname');
-			$user->middlename = $request->input('middlename');
-			$user->lastname = $request->input('lastname');
-
-			// TODO
-			// Auto generate password
-			if($request->input('password') != '')
-				$user->password = bcrypt($request->input('password'));
-
-			else
-				$user->password = bcrypt(str_random(12));
-
-			$alreadyAssignEmail = User::where('email', $request->input('email'))->first();
-			if($alreadyAssignEmail){
-				$request->session()->flash('error', 'Email already Exists');
-				return redirect()->back();
-			}
-
-			$user->email = $request->input('email');
-			$user->npi = $request->input('npi');
-			$user->cellphone = $request->input('cellphone');
-			$user->sesemail = $request->input('sesemail');
-			$user->calendar = $request->input('calendar');
-			$user->address1 = $request->input('address1');
-			$user->address2 = $request->input('address2');
-			$user->city = $request->input('city');
-			$user->state = $request->input('state');
-			$user->zip = $request->input('zip');
-			$user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
-			$user->usertype_id = $request->input('usertype');
-			$user->level = $request->input('userlevel');
-			$roles = array();
-			$roles = $request->input('role', []);
-
-			if ($request->input('landing_page') != '') {
-				$user->menu_id = $request->input('landing_page');
-			}
-
-			else if(in_array("Care Coordinator", $roles))
-				$user->menu_id = 6;
-			else
-				$user->menu_id = 4;
-
-			$user->save();
-
-			$roles = array();
-			$roles = $request->input('role', []);
-			foreach ($roles as $role) {
-				$save_role = new Role_user();
-				$role_id = Role::where('display_name', '=', $role)->first();
-				$save_role->user_id = $user->id;
-				$save_role->role_id = $role_id->id;
-				$save_role->save();
-			}
-
-			if ($user) {
-				$request->session()->flash('success', 'User Created Successfully!');
-				$networkUser = new NetworkUser;
-				$networkUser->user_id = $user->id;
-				if (session('user-level') == '1') {
-					$networkUser->network_id = $request->input('user_network');
-				} else {
-					$networkUser->network_id = session('network-id');
-				}
-				$networkUser->save();
-
-				if ($user->level > 2 && $request->input('user_practice') !== '' && $request->input('user_practice')) {
-
-					$practiceUser = new PracticeUser;
-					$practiceUser->user_id = $user->id;
-					$practiceUser->practice_id = $request->input('user_practice');
-					$practiceUser->save();
-
-				}
-
-				$action = 'new user created';
-				$description = '';
-				$filename = basename(__FILE__);
-				$ip = $request->getClientIp();
-				Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-				return redirect('administration/users');
-			} else {
-				return redirect()->back();
-			}
-		} else {
-			$request->session()->flash('error', 'Passwords do not match');
-			return redirect()->back();
+		$validator = $this->validateData($request->all());
+		if($validator->fails())
+		{
+			$request->session()->flash('error', $validator->errors()->first());
+			return redirect()->back()->withInput();
 		}
+
+		$user = new User;
+
+		// Save the User information
+		$user->title = $request->input('title');
+		$user->firstname = $request->input('firstname');
+		$user->middlename = $request->input('middlename');
+		$user->lastname = $request->input('lastname');
+		$user->password = bcrypt(str_random(12));
+		// TODO
+		// Auto generate password
+		if($request->input('password') != '')
+			$user->password = bcrypt($request->input('password'));
+
+		$user->email = $request->input('email');
+		$user->npi = $request->input('npi');
+		$user->cellphone = $request->input('cellphone');
+		$user->sesemail = $request->input('sesemail');
+		$user->calendar = $request->input('calendar');
+		$user->address1 = $request->input('address1');
+		$user->address2 = $request->input('address2');
+		$user->city = $request->input('city');
+		$user->state = $request->input('state');
+		$user->zip = $request->input('zip');
+		$user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
+		$user->usertype_id = $request->input('usertype');
+		$user->level = $request->input('userlevel');
+		$roles = array();
+		$roles = $request->input('role', []);
+
+		if ($request->input('landing_page') != '') {
+			$user->menu_id = $request->input('landing_page');
+		}
+
+		else if(in_array("Care Coordinator", $roles))
+			$user->menu_id = 6;
+		else
+			$user->menu_id = 4;
+
+		if(!$user->save())
+			return redirect()->back();
+
+		$roles = array();
+		$roles = $request->input('role', []);
+		foreach ($roles as $role) {
+			$save_role = new Role_user();
+			$role_id = Role::where('display_name', '=', $role)->first();
+			$save_role->user_id = $user->id;
+			$save_role->role_id = $role_id->id;
+			$save_role->save();
+		}
+		$request->session()->flash('success', 'User Created Successfully!');
+		$networkUser = new NetworkUser;
+		$networkUser->user_id = $user->id;
+		$networkUser->network_id = session('network-id');
+		if (session('user-level') == '1')
+			$networkUser->network_id = $request->input('user_network');
+		    $networkUser->save();
+
+		if ($user->level > 2 && $request->input('user_practice') !== '' && $request->input('user_practice')) {
+
+			$practiceUser = new PracticeUser;
+			$practiceUser->user_id = $user->id;
+			$practiceUser->practice_id = $request->input('user_practice');
+			$practiceUser->save();
+
+		}
+
+		$action = 'new user created';
+		$description = '';
+		$filename = basename(__FILE__);
+		$ip = $request->getClientIp();
+		Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+		return redirect('administration/users');
+
+
+
 	}
 
 	/**
@@ -289,6 +279,13 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(Request $request, $id) {
+		$validator = $this->validateData($request->all(),$id);
+		if($validator->fails())
+		{
+			$request->session()->flash('error', $validator->errors()->first());
+			return redirect()->back();
+		}
+
 		$user = User::find($id);
 		$user->title = $request->input('title');
 		$user->firstname = $request->input('firstname');
@@ -310,18 +307,10 @@ class UserController extends Controller {
 		$menuID = $request->input('landing_page');
 		if($menuID != '')
 			$user->menu_id = $menuID;
-
-
 		$password = $request->input('password');
 		$confirmPassword = $request->input('password_confirmation');
 
-		if($password != '' && $password != $confirmPassword )
-		{
-			$request->session()->flash('error', 'Passwords do not match');
-			return redirect()->back();
-		}
-
-		if($password != '' && $password === $confirmPassword )
+		if($password != '')
 			$user->password = bcrypt($request->input('password'));
 
 		$user->save();
@@ -566,4 +555,28 @@ class UserController extends Controller {
 		$request->session()->flash('success', 'User Information Updated');
 		return redirect()->back();
 	}
+
+	public function validateData($data,$userID = 0) {
+		$rules = $this->validationRules($data, $userID);
+		$validator = Validator::make($data, $rules);
+		return $validator;
+	}
+
+	public function validationRules($data, $userID){
+		$validationRules = [
+			'title' => 'required|max:255',
+			'body' => 'sometimes|required',
+			'password' => 'sometimes|same:password_confirmation',
+			'email' => 'sometimes|email|unique:users,email,'.$userID,
+			'sesemail' => 'sometimes|email',
+			'sesemail' => 'sometimes|email',
+			'address1' => 'sometimes|max:120',
+			'address2' => 'sometimes|max:120',
+			'city' => 'sometimes|max:20',
+			'state' => 'sometimes|max:20',
+			'zip' => 'sometimes|numeric'
+		];
+		return $validationRules;
+	}
+
 }
