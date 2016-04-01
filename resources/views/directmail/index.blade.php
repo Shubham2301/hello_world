@@ -57,7 +57,7 @@
         <form id="ocuhubSESFm" action="{{ $ses['sso_logon_url'] }}" method="post" target="_blank">
             <input id="id_token" type='hidden' name='token' value="" />
         </form>
-        <iframe id="ocuhubSESiframeId" name="ocuhubSESiframe" src="" frameborder="0" style="display:none;position:relative;width: 100%;flex: 1 1 auto;"></iframe>
+        <iframe id="ocuhubSESiframeId" name="ocuhubSESiframe" src="" frameborder="0" style="display:none;position:relative;width: 100%;flex: 1 1 auto;margin-top: 3em;"></iframe>
         
         <div>
             <form id="end-impersonation-form" target="end-impersonation-iframe" action="https://direct.ocuhub.com/sesidpserver/connect/endsession" method="GET"></form>
@@ -72,9 +72,17 @@
         });
         
         $("#end-impersonation-form").submit(function () {
-           $("#reload-active-direct").submit();
+            @if(session('impersonation-id') != '')
+                $("#reload-active-direct").submit();
+            @else
+                $('#impersonation-form').submit();
+            @endif
         });
         
+        function beginImpersonation() {
+             $("#end-impersonation-form").submit();
+        }    
+            
         function endImpersonation () {
             $("#end-impersonation-form").submit();
         }
