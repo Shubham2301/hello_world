@@ -114,6 +114,12 @@ class UserController extends Controller {
 			else
 				$user->password = bcrypt(str_random(12));
 
+			$alreadyAssignEmail = User::where('email', $request->input('email'))->first();
+			if($alreadyAssignEmail){
+				$request->session()->flash('error', 'Email already Exists');
+				return redirect()->back();
+			}
+
 			$user->email = $request->input('email');
 			$user->npi = $request->input('npi');
 			$user->cellphone = $request->input('cellphone');
@@ -131,7 +137,7 @@ class UserController extends Controller {
 			$roles = $request->input('role', []);
 
 			if ($request->input('landing_page') != '') {
-				$user->menu_id = $request->input('landing_page', null);
+				$user->menu_id = $request->input('landing_page');
 			}
 
 			else if(in_array("Care Coordinator", $roles))
@@ -153,7 +159,6 @@ class UserController extends Controller {
 
 			if ($user) {
 				$request->session()->flash('success', 'User Created Successfully!');
-
 				$networkUser = new NetworkUser;
 				$networkUser->user_id = $user->id;
 				if (session('user-level') == '1') {
