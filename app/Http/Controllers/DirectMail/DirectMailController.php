@@ -23,7 +23,7 @@ class DirectMailController extends Controller {
 	 */
 	public function index(Request $request) {
 
-		if (session('impersonation-logged-in') != Auth::user()->id) {
+		if (session('impersonation-logged-in') != '' && session('impersonation-logged-in') != Auth::user()->id) {
 			$audit = new ImpersonationAudit;
 
 			$audit->user_impersonated_id = session('impersonation-id');
