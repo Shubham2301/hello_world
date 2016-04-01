@@ -108,11 +108,11 @@ class UserController extends Controller {
 
 			// TODO
 			// Auto generate password
-			if($request->input('password') != '')
+			if ($request->input('password') != '') {
 				$user->password = bcrypt($request->input('password'));
-
-			else
+			} else {
 				$user->password = bcrypt(str_random(12));
+			}
 
 			$user->email = $request->input('email');
 			$user->npi = $request->input('npi');
@@ -132,12 +132,11 @@ class UserController extends Controller {
 
 			if ($request->input('landing_page') != '') {
 				$user->menu_id = $request->input('landing_page', null);
-			}
-
-			else if(in_array("Care Coordinator", $roles))
+			} else if (in_array("Care Coordinator", $roles)) {
 				$user->menu_id = 6;
-			else
+			} else {
 				$user->menu_id = 4;
+			}
 
 			$user->save();
 
@@ -198,14 +197,19 @@ class UserController extends Controller {
 
 		$data['user'] = $user;
 		$data['usertype'] = '';
-		if($user->usertype)
+		if ($user->usertype) {
 			$data['usertype'] = $user->usertype->name;
+		}
+
 		$data['network'] = ' ';
-		if(User::getNetwork($userID))
+		if (User::getNetwork($userID)) {
 			$data['network'] = User::getNetwork($userID)->name;
+		}
+
 		$data['Practice'] = '';
-		if(User::getPractice($userID))
+		if (User::getPractice($userID)) {
 			$data['Practice'] = User::getPractice($userID);
+		}
 
 		$data['Roles'] = $user->roles;
 
@@ -303,21 +307,21 @@ class UserController extends Controller {
 		$user->usertype_id = $request->input('usertype');
 		$user->level = $request->input('userlevel');
 		$menuID = $request->input('landing_page');
-		if($menuID != '')
+		if ($menuID != '') {
 			$user->menu_id = $menuID;
-
+		}
 
 		$password = $request->input('password');
 		$confirmPassword = $request->input('password_confirmation');
 
-		if($password != '' && $password != $confirmPassword )
-		{
+		if ($password != '' && $password != $confirmPassword) {
 			$request->session()->flash('error', 'Passwords do not match');
 			return redirect()->back();
 		}
 
-		if($password != '' && $password === $confirmPassword )
+		if ($password != '' && $password === $confirmPassword) {
 			$user->password = bcrypt($request->input('password'));
+		}
 
 		$user->save();
 
@@ -353,24 +357,22 @@ class UserController extends Controller {
 			}
 		}
 
-			if ($user->level > 2 && $request->input('user_practice') !== '' && $request->input('user_practice')) {
-				$userData = [];
-				$userData['practice_id'] = $request->input('user_practice');
-				$userData['user_id'] = $user->id;
-				$practice_user = PracticeUser::firstOrCreate($userData);
+		if ($user->level > 2 && $request->input('user_practice') !== '' && $request->input('user_practice')) {
+			$userData = [];
+			$userData['practice_id'] = $request->input('user_practice');
+			$userData['user_id'] = $user->id;
+			$practice_user = PracticeUser::firstOrCreate($userData);
+		} else {
+			$practiceUser = PracticeUser::where('user_id', $user->id)->delete();
+			$userData = [];
+			$userData['user_id'] = $user->id;
+			if (session('user-level') == '1') {
+				$userData['network_id'] = $request->input('user_network');
+			} else {
+				$userData['network_id'] = session('network-id');
 			}
-			else
-			{
-				$practiceUser = PracticeUser::where('user_id', $user->id)->delete();
-				$userData = [];
-				$userData['user_id'] = $user->id;
-				if (session('user-level') == '1') {
-					$userData['network_id'] = $request->input('user_network');
-				} else {
-					$userData['network_id'] = session('network-id');
-				}
-				$network_user = NetworkUser::firstOrCreate($userData);
-			}
+			$network_user = NetworkUser::firstOrCreate($userData);
+		}
 
 		$action = 'update user of id =' . $id;
 		$description = '';
@@ -445,17 +447,11 @@ class UserController extends Controller {
 		$tosearchdata = json_decode($request->input('data'), true);
 		if (session('user-level') == '1') {
 			$search_val = $tosearchdata['value'];
-			$users = User::where(function ($query) use ($search_val) {
-				$query->where('firstname', 'LIKE', '%' . $search_val . '%')
-					->where('active', '=', '1');
-			})
-				->orWhere(function ($query) use ($search_val) {
-					$query->where('middlename', 'LIKE', '%' . $search_val . '%')
-						->where('active', '=', '1');
-				})
-				->orWhere(function ($query) use ($search_val) {
-					$query->where('lastname', 'LIKE', '%' . $search_val . '%')
-						->where('active', '=', '1');
+			$users = User::where('active', '=', '1')
+				->where(function ($query) use ($search_val) {
+					$query->where('firstname', 'LIKE', '%' . $search_val . '%')
+					->orWhere('middlename', 'LIKE', '%' . $search_val . '%')
+					->orWhere('lastname', 'LIKE', '%' . $search_val . '%');
 				})
 				->paginate(5);
 		} elseif (session('user-level') == '2') {
@@ -468,19 +464,13 @@ class UserController extends Controller {
 				->where('practice_user.practice_id', User::getPractice($userID)->id)
 				->where(function ($query) use ($search_val) {
 					$query->where('firstname', 'LIKE', '%' . $search_val . '%')
-						->where('active', '=', '1');
+					->orWhere('middlename', 'LIKE', '%' . $search_val . '%')
+					->orWhere('lastname', 'LIKE', '%' . $search_val . '%');
 				})
-				->orWhere(function ($query) use ($search_val) {
-					$query->where('middlename', 'LIKE', '%' . $search_val . '%')
-						->where('active', '=', '1');
-				})
-				->orWhere(function ($query) use ($search_val) {
-					$query->where('lastname', 'LIKE', '%' . $search_val . '%')
-						->where('active', '=', '1');
-				})
+				->where('active', '=', '1')
 				->whereNotNull('practice_id')
 				->where('practice_user.practice_id', User::getPractice($userID)->id)
-				->paginate();
+				->paginate(5);
 		}
 
 		$data = [];
@@ -497,6 +487,8 @@ class UserController extends Controller {
 			} else {
 				$id = $user->user_id;
 			}
+
+			$user = User::find($id);
 
 			$data[$i]['id'] = $id;
 			$data[$i]['name'] = $user->lastname . ', ' . $user->firstname;
@@ -535,14 +527,14 @@ class UserController extends Controller {
 
 	public function updateProfile(Request $request) {
 
-		if($request->ajax()){
-			if($request->hasFile('profile_img')){
+		if ($request->ajax()) {
+			if ($request->hasFile('profile_img')) {
 				$file = $request->file('profile_img');
 				$destinationPath = 'images/temp';
 				$extension = $file->getClientOriginalExtension();
 				$pictureName = str_random(9) . ".jpg";
 				$upload_success = $file->move(public_path() . '/' . $destinationPath, $pictureName);
-				return \URL::asset('/images/temp/'.$pictureName);
+				return \URL::asset('/images/temp/' . $pictureName);
 			}
 		}
 
@@ -553,11 +545,11 @@ class UserController extends Controller {
 		$password = $request->password;
 		$confirmation = $request->password_confirmation;
 
-		if($request->hasFile('profile_img')){
+		if ($request->hasFile('profile_img')) {
 			$file = $request->file('profile_img');
 			$destinationPath = 'images/users/';
 			$extension = $file->getClientOriginalExtension();
-			$pictureName = 'user_'. Auth::user()->id .'.jpg';
+			$pictureName = 'user_' . Auth::user()->id . '.jpg';
 			$upload_success = $file->move(public_path() . '/' . $destinationPath, $pictureName);
 		}
 		if ($password !== '' && $confirmation !== '') {
