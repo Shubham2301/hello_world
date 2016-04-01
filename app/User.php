@@ -145,7 +145,15 @@ CanResetPasswordContract {
 			->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
 			->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
 			->where('practice_id', $practice_id)
-			->get();
+			->get(['*', 'users.*']);
+
+	}
+    public static function networkUserById($network_id) {
+		return self::query()
+			->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
+			->leftjoin('networks', 'network_user.network_id', '=', 'networks.id')
+			->where('network_id', $network_id)
+			->get(['users.id', 'users.name']);
 
 	}
 	public static function getNetwork($userID) {

@@ -4,7 +4,7 @@ namespace myocuhub\Console\Commands;
 
 use DateTime;
 use Illuminate\Console\Command;
-use myocuhub\Facades\WriteBack4PC;
+use myocuhub\Facades\Writeback4PC;
 use myocuhub\User;
 
 class WriteBack extends Command {
