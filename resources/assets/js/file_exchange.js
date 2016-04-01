@@ -93,6 +93,16 @@ $(document).ready(function () {
 		$('#delete_files_folders').submit();
 
     });
+	$('#share_in_network').on('change',function(){
+		if($(this).prop('checked')){
+			$('#share_practices').prop('disabled', 'disabled');
+			$('#share_users').prop('disabled', 'disabled');
+		}
+		else{
+			$('#share_practices').prop('disabled', false);
+			$('#share_users').prop('disabled', false);
+		}
+	});
 });
 
 function showInfo(id, name) {

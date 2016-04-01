@@ -16,6 +16,7 @@ use myocuhub\Models\FolderShare;
 use myocuhub\Network;
 use myocuhub\User;
 use Storage;
+use myocuhub\Models\NetworkUser;
 
 class FileExchangeController extends Controller {
 	/**
@@ -323,6 +324,7 @@ class FileExchangeController extends Controller {
 			$folders = explode(',', $request->delete_folders);
 		if($request->delete_files != '')
 			$files = explode(',', $request->delete_files);
+
 		foreach ($folders as $folderID) {
 			$folder = Folder::find($folderID);
 			if($folder){
@@ -404,12 +406,23 @@ class FileExchangeController extends Controller {
 	public function shareFilesFolders(Request $request) {
 
 		$editable = ($request->share_writable === 'on') ? 1 : 0;
+
+		$toAllUsers = ($request->share_with_network === 'on') ? true : false;
+
 		$folders =[];
 		$files = [];
 		if($request->share_folders != '')
 			$folders = explode(',', $request->share_folders);
 		if($request->share_files != '')
 			$files = explode(',', $request->share_files);
+
+		if($toAllUsers){
+			$this->shareWithNetwork($files , $folders, $editable );
+			return redirect()
+				->back()
+				->withSuccess("Successfully Shared!");
+
+		}
 
 		$userId = $request->share_users;
 		foreach ($folders as $folder) {
@@ -538,5 +551,48 @@ class FileExchangeController extends Controller {
 			$fileHistory->save();
 		}
 		return $data;
+	}
+
+	public function shareWithNetwork($files , $folders, $editable ) {
+
+		$networkUsers = NetworkUser::where('network_id', session('network-id'))->get();
+
+		foreach ($folders as $folder) {
+			$data = [];
+			$data['folder_id'] = $folder;
+
+			foreach($networkUsers as $user)
+			{
+				$data['user_id'] = $user->user_id;
+				$folderShare = FolderShare::where($data)->first();
+				if(!$folderShare){
+					$data['editable'] = $editable;
+					$folderShare = FolderShare::create($data);
+				}
+				else{
+					$folderShare->editable = $editable;
+					$folderShare->save();
+				}
+				echo $folderShare;
+			}
+		}
+		foreach ($files as $file) {
+			$data = [];
+			$data['file_id'] = $file;
+			foreach($networkUsers as $user)
+			{
+				$data['user_id'] = $user->user_id;
+				$fileShare = FileShare::where($data)->first();
+				if(!$fileShare){
+					$data['editable'] = $editable;
+					$fileShare = FileShare::create($data);
+				}
+				else{
+					$fileShare->editable = $editable;
+					$fileShare->save();
+				}
+				echo $fileShare;
+			}
+		}
 	}
 }
