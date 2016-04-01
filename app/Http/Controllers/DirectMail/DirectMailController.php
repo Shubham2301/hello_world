@@ -3,11 +3,11 @@
 namespace myocuhub\Http\Controllers\DirectMail;
 
 use Auth;
-use myocuhub\User;
-use myocuhub\Models\ImpersonationAudit;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Models\ImpersonationAudit;
 use myocuhub\Services\SES\SESConnect;
+use myocuhub\User;
 
 class DirectMailController extends Controller {
 	private $sesConnect;
@@ -22,6 +22,20 @@ class DirectMailController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request) {
+
+		if (session('impersonation-logged-in') != '' && session('impersonation-logged-in') != Auth::user()->id) {
+			$audit = new ImpersonationAudit;
+
+			$audit->user_impersonated_id = session('impersonation-id');
+			$audit->logged_in_user_id = Auth::user()->id;
+			$audit->action = 'END IMPERSONATION';
+
+			session(['impersonation-logged-in' => '']);
+			session(['impersonation-id' => '']);
+			session(['impersonation-name' => '']);
+
+			$audit->save();
+		}
 
 		$ses = $this->sesConnect->getDirectMail();
 
@@ -42,17 +56,17 @@ class DirectMailController extends Controller {
 		if (!$this->sesConnect->checkScope($request->impersonateuser)) {
 			$request->session()->flash('no_direct_mail', 'You do not have access rights to impersonate this user.');
 		} else {
-            $audit = new ImpersonationAudit;
+			$audit = new ImpersonationAudit;
 
 			session(['impersonation-id' => $request->impersonateuser]);
-            session(['impersonation-name' => User::find($request->impersonateuser)->name]);
+			session(['impersonation-logged-in' => Auth::user()->id]);
+			session(['impersonation-name' => User::find($request->impersonateuser)->name]);
 
-            $audit->user_impersonated_id = $request->impersonateuser;
-            $audit->logged_in_user_id = Auth::user()->id;
-            $audit->action = 'BEGIN IMPERSONATION';
+			$audit->user_impersonated_id = $request->impersonateuser;
+			$audit->logged_in_user_id = Auth::user()->id;
+			$audit->action = 'BEGIN IMPERSONATION';
 
-            $audit->save();
-
+			$audit->save();
 		}
 
 		return redirect('directmail');
@@ -60,17 +74,17 @@ class DirectMailController extends Controller {
 	}
 
 	public function endImpersonate() {
+		$audit = new ImpersonationAudit;
 
-        $audit = new ImpersonationAudit;
+		$audit->user_impersonated_id = session('impersonation-id');
+		$audit->logged_in_user_id = Auth::user()->id;
+		$audit->action = 'END IMPERSONATION';
 
-        $audit->user_impersonated_id = session('impersonation-id');
-        $audit->logged_in_user_id = Auth::user()->id;
-        $audit->action = 'END IMPERSONATION';
-
+		session(['impersonation-logged-in' => '']);
 		session(['impersonation-id' => '']);
-        session(['impersonation-name' => '']);
+		session(['impersonation-name' => '']);
 
-        $audit->save();
+		$audit->save();
 
 		return redirect('directmail');
 	}
