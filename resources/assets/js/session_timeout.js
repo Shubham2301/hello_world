@@ -38,7 +38,7 @@ function warningTimer(sessionReset) {
 
 // action when session has reached its length
 function expireSession() {
-    window.location = "auth/logout";
+	window.location = '/auth/logout';
 }
 
 //action for warning
