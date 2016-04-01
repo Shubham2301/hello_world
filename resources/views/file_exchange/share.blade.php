@@ -27,7 +27,8 @@
                     </span>
                 </span>
 			<span class="modal_content_row">
-				<span class="left"><input type="checkbox" name='share_with_network' id='share_in_network'>&nbsp;&nbsp;Share with all network users </span>
+				<span class="left ">&nbsp;</span>
+				<span class="right"><span class="btn primary-btn"><input type="checkbox" name='share_with_network' id='share_in_network'></span>&nbsp;<p class="share_text">Share with all network users </p></span>
 			</span>
 
                 <span class="modal_content_row">
