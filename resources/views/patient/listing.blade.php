@@ -1,27 +1,7 @@
 <!-- TODO: Add pagination to patient list to avoid scrolling of elements -->
-<div class="row content-row-margin patient_list">
+<div class="row content-row-margin patient_list no_top_margin  auto_scroll side_padding">
 
-    <p id="search_results" class="search_result"><strong></strong></p>
-    <div class="row search_header">
-        <div class="col-xs-3 search_name_header">
-            <div>
-                <input id="checked_all_patients" type="checkbox">&nbsp;&nbsp;</div>
-            <div class="">
-                <p style="color:black"><strong>Name</strong></p>
-            </div>
-        </div>
-        <div class="col-xs-4">
-            <p style="color:black"><strong>Address</strong></p>
-        </div>
-        <div class="col-xs-3">
-            <p style="color:black"><strong>Email</strong></p>
-        </div>
-        <div class="col-xs-2">
-            <input type="hidden" id="delete_practice_img" value="{{asset('images/delete-active-01.png')}}">
-            <input type="hidden" id="schedule_patient_img" value="{{asset('images/schedule-icon-01.png')}}">
-            <p class="" style="color:black"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong></strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
-        </div>
-    </div>
+
         <form action="">
             <input type="hidden" id="assign_role_image_path" value="{{URL::asset('images/assign-role-icon-01.png')}}">
             <input type="hidden" id="assign_user_image_path" value="{{URL::asset('images/assign-user-icon-01.png')}}">

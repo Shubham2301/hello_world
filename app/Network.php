@@ -19,7 +19,7 @@ class Network extends Model {
 		return self::where('networks.id', session('network-id'))
 			->leftJoin('practice_network', 'networks.id', '=', 'practice_network.network_id')
 			->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
-			->where('practices.name', 'like', '%' . $search . '%')->paginate(5);
+			->where('practices.name', 'like', '%' . $search . '%')->get();
 	}
 
 	/**

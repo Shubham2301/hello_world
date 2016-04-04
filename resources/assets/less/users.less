@@ -3,11 +3,7 @@
 @import 'media.less';
 @import 'helper.less';
 .user_admin_search {
-    display: none;
-	&.active{
-		display: flex;
-	}
-
+    display: flex;
 }
 #button_active {
     background-color: #d2d3d5;
@@ -56,12 +52,14 @@
 }
 #row_action_dropdown {
     background-color: #ebeced;
-    margin-top: -9px;
     box-shadow: 0px 0px 3px #82888f;
     border-radius: 5px;
     text-align: center;
-    width: 10em;
-    color: black;
+    margin-left: -4em;
+    color: #4d4d4d;
+    &>li>a{
+        padding: 0 .7em;
+    }
 }
 .removeuser_img {
     width: 25px;
@@ -167,7 +165,6 @@
     }
 }
 .search_header {
-    margin: 0 1em;
     border-bottom: 2px solid #f2f2f2;
 }
 .action_dropdown {
@@ -384,6 +381,7 @@ input[type=checkbox]{
     &>div{
         &>input[type=checkbox]{
             margin: auto 0;
+            margin-right: 1em;
         }
         &>p{
             margin: 0;

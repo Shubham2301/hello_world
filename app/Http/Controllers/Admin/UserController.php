@@ -436,9 +436,9 @@ class UserController extends Controller {
 						->orWhere('middlename', 'LIKE', '%' . $search_val . '%')
 						->orWhere('lastname', 'LIKE', '%' . $search_val . '%');
 				})
-				->paginate(5);
+				->get();
 		} elseif (session('user-level') == '2') {
-			$users = User::getUsersByName($tosearchdata['value'])->paginate(5);
+			$users = User::getUsersByName($tosearchdata['value'])->get();
 		} else {
 			$search_val = $tosearchdata['value'];
 			$users = User::query()
@@ -453,13 +453,13 @@ class UserController extends Controller {
 				->where('active', '=', '1')
 				->whereNotNull('practice_id')
 				->where('practice_user.practice_id', User::getPractice($userID)->id)
-				->paginate(5);
+				->get();
 		}
 
 		$data = [];
-		$data[0]['total'] = $users->total();
-		$data[0]['lastpage'] = $users->lastPage();
-		$data[0]['currentPage'] = $users->currentPage();
+//		$data[0]['total'] = $users->total();
+//		$data[0]['lastpage'] = $users->lastPage();
+//		$data[0]['currentPage'] = $users->currentPage();
 		$i = 0;
 		foreach ($users as $user) {
 			if ((session('user-level') == '3' || session('user-level') == '4') && $user->practice_id != User::getPractice($userID)->id) {

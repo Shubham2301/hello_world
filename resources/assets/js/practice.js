@@ -30,7 +30,7 @@ $(document).ready(function() {
     });
     $('#back').on('click', function() {
         $('.practice_info').removeClass('active');
-        $('.practice_action').addClass('active');
+        $('.practice_action_header').removeClass('hide');
         $('.practice_list').addClass('active');
     });
     $('#savepractice').on('click', function() {
@@ -189,20 +189,6 @@ $(document).ready(function() {
             }
         });
     });
-    $('.p_left').on('click', function() {
-        var formData = {
-            'value': ''
-        };
-        if (currentpage > 1)
-            getPractices(formData, currentpage - 1);
-    });
-    $('.p_right').on('click', function() {
-        var formData = {
-            'value': ''
-        };
-        if (currentpage < lastpage)
-            getPractices(formData, currentpage + 1);
-    });
     $('#refresh_practices').on('click', function() {
         $('#search_practice_input').val('');
         loadAllPractices();
@@ -213,19 +199,19 @@ $(document).ready(function() {
     $('#open_practice_form').on('click', function() {
         window.location = '/practices/create';
     });
-    $('.practice_list').on('change', '#checked_all_practice', function() {
+    $('#checked_all_practice').on('change', function() {
         if ($(this).is(":checked")) {
             $('.practice_search_content').each(function() {
                 $(this).find('input').prop('checked', true);
             });
             $('.admin_delete').addClass('active');
-            $('.delete_from_row_dropdown').addClass('hide');
+            $('.delete_from_row_dropdown').addClass('invisible');
         } else {
             $('.practice_search_content').each(function() {
                 $(this).find('input').prop('checked', false);
             });
             $('.admin_delete').removeClass('active');
-            $('.delete_from_row_dropdown').removeClass('hide');
+            $('.delete_from_row_dropdown').removeClass('invisible');
         }
     });
     $('#new_location').on('click', function() {
@@ -255,10 +241,10 @@ $(document).ready(function() {
     $('.practice_search_content').on('change', '.admin_checkbox_row', function() {
         if ($("input[name='checkbox']:checked").length > 0) {
             $('.admin_delete').addClass('active');
-            $('.delete_from_row_dropdown').addClass('hide');
+            $('.delete_from_row_dropdown').addClass('invisible');
         } else {
             $('.admin_delete').removeClass('active');
-            $('.delete_from_row_dropdown').removeClass('hide');
+            $('.delete_from_row_dropdown').removeClass('invisible');
         }
     });
     $('.admin_delete').on('click', function() {
@@ -302,8 +288,8 @@ $(document).ready(function() {
 var locations = [];
 var currentPractice = [];
 var showinfo = true;
-var currentpage = 0;
-var lastpage = 0;
+//var currentpage = 0;
+//var lastpage = 0;
 var locationAddress = [];
 
 function showModalConfirmDialogTotal(msg, handler) {
@@ -392,7 +378,7 @@ function getPractices(formData, page) {
     var scheduleimg = $('#schedule_practice_img').val();
     var deleteimage = $('#delete_practice_img').val();
     $('.practice_info').removeClass('active');
-    $('.practice_action').addClass('active');
+    $('.practice_action_header').removeClass('hide');
     var assign_role_image = $('#assign_role_image_path').val();
     var assign_user_image = $('#assign_user_image_path').val();
     $.ajax({
@@ -409,21 +395,22 @@ function getPractices(formData, page) {
             var content = '';
             var i = 0;
             $('#search_results').text('');
-            if (practices.length > 0 && practices[0]['total'] > 0) {
+//            if (practices.length > 0 && practices[0]['total'] > 0) {
+            if (practices.length > 0) {
                 practices.forEach(function(practice) {
                     locationAddress.push(practice.locations);
                     var totalLocation = practice.locations.length - 1;
-		content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3" style="display:inline-flex;"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + practice.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + practice.name + '</p></div></div><div class="col-xs-3 location_address">' + practice.locations[totalLocation].addressline1 + '<br>' + practice.locations[totalLocation].city + ','+practice.locations[totalLocation].state+' '+practice.locations[totalLocation].zip+'</div><div class="col-xs-1" data-index = "' + i + '"><span class="glyphicon glyphicon-chevron-up glyph_design location_address_next"></span><span><p class="location_address_counter">' + totalLocation + '</p></span><span class="glyphicon glyphicon-chevron-down glyph_design location_address_previous"></span></div><div class="col-xs-3"><p>' + practice.email + '</p></div> <div class="col-xs-2 search_edit"><p><div class="dropdown hide"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editpractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepractice_from_row"><img src="' + deleteimage + '" alt="" class="removepractice_img" data-toggle="tooltip" title="Delete Practice" data-placement="top"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+		content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3" style="display:inline-flex;"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + practice.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + practice.name + '</p></div></div><div class="col-xs-3 location_address">' + practice.locations[totalLocation].addressline1 + '<br>' + practice.locations[totalLocation].city + ','+practice.locations[totalLocation].state+' '+practice.locations[totalLocation].zip+'</div><div class="col-xs-1" data-index = "' + i + '"><span class="glyphicon glyphicon-chevron-up glyph_design location_address_next"></span><span><p class="location_address_counter">' + totalLocation + '</p></span><span class="glyphicon glyphicon-chevron-down glyph_design location_address_previous"></span></div><div class="col-xs-3"><p>' + practice.email + '</p></div> <div class="col-xs-2 search_edit"><p><div class="dropdown hide"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editpractice_from_row arial_bold" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepractice_from_row"><img src="' + deleteimage + '" alt="" class="removepractice_img" data-toggle="tooltip" title="Delete Practice" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     //<img class="delete_practice_im" src="' + deleteimage + '">
                     //<img class="schedule_practice_img" src="' + scheduleimg + '">
                     i++;
                 });
-                currentpage = practices[0]['currentPage'];
-                lastpage = practices[0]['lastpage'];
-                var result = currentpage * 5;
-                if (result > practices[0]['total'])
-                    result = practices[0]['total'];
-                $('.page_info').text(result + ' of ' + practices[0]['total']);
+//                currentpage = practices[0]['currentPage'];
+//                lastpage = practices[0]['lastpage'];
+//                var result = currentpage * 5;
+//                if (result > practices[0]['total'])
+//                    result = practices[0]['total'];
+//                $('.page_info').text(result + ' of ' + practices[0]['total']);
 
 
                 $('.practice_list').addClass('active');
@@ -543,7 +530,7 @@ function showPracticeInfo(info) {
         $('.practice_location_item_list').html(content);
         $('.practice_list').removeClass('active');
         $('.practice_info').addClass('active');
-        $('.practice_action').removeClass('active');
+        $('.practice_action_header').addClass('hide');
 
 
     }

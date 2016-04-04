@@ -172,11 +172,14 @@ p.error {
     //    box-shadow: inset 0 30px 60px -10px #d1d1d1, inset 0 -12px 20px -8px #d1d1d1;
 }
 .content-right {
+    display: flex;
+    flex-direction: column;
     .content-padding;
     overflow-y: scroll;
     //    box-shadow: inset 0 30px 60px -10px #0193d7, inset 0 -12px 20px -8px #0193d7;
     color: @font-color-1;
     background: @primary-blue;
+        padding: 1em 0;
 }
 .ocuhub_logo_blue {
     background: @primary-blue url(../../images/signin_logo_bg_blue.png) no-repeat left bottom;
@@ -193,7 +196,7 @@ p.error {
 }
 .content-section,
 .admin-console-section {
-    margin-bottom: 2em;
+//    margin-bottom: 2em;
     display: none;
     &.active {
         display: block;
@@ -852,4 +855,8 @@ Section : Admin
 }
 .search_item > div {
     word-wrap: break-word;
+}
+.auto_scroll{
+    overflow-y: scroll;
+    margin-bottom: 1em;
 }

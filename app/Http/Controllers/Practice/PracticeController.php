@@ -185,15 +185,15 @@ class PracticeController extends Controller {
 		$tosearchdata = json_decode($request->input('data'), true);
 
 		if (session('user-level') == 1) {
-			$practices = Practice::where('name', 'like', '%' . $tosearchdata['value'] . '%')->paginate(5);
+			$practices = Practice::where('name', 'like', '%' . $tosearchdata['value'] . '%')->get();
 		} else {
 			$practices = Network::practicesByName($tosearchdata['value']);
 		}
 
 		$data = [];
-		$data[0]['total'] = $practices->total();
-		$data[0]['lastpage'] = $practices->lastPage();
-		$data[0]['currentPage'] = $practices->currentPage();
+//		$data[0]['total'] = $practices->total();
+//		$data[0]['lastpage'] = $practices->lastPage();
+//		$data[0]['currentPage'] = $practices->currentPage();
 		$i = 0;
 		foreach ($practices as $practice) {
 			$data[$i]['id'] = $practice->id;

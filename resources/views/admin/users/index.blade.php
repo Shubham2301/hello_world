@@ -18,11 +18,11 @@
 </div>
 @endif
 
-<div class="content-section active">
+<div class="content-section active side_padding">
 	@include('admin.users.search')
 </div>
 
-<div class="practice_section active" id="practice_listing">
+<div class="practice_section active auto_scroll side_padding" id="practice_listing">
 	@include('admin.users.listing')
 </div>
 

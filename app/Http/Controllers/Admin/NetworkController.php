@@ -135,11 +135,8 @@ class NetworkController extends Controller {
 
 	public function search(Request $request) {
         $tosearchdata = json_decode($request->input('data'), true);
-		$networks = Network::where('name', 'like', '%' . $tosearchdata['value'] . '%')->paginate(5);
+		$networks = Network::where('name', 'like', '%' . $tosearchdata['value'] . '%')->get();
 		$data = [];
-		$data[0]['total'] = $networks->total();
-		$data[0]['lastpage'] = $networks->lastPage();
-		$data[0]['currentPage'] = $networks->currentPage();
 		$i = 0;
 		foreach ($networks as $network) {
 			$data[$i]['id'] = $network->id;
