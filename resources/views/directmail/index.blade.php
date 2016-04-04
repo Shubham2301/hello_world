@@ -33,11 +33,11 @@
         @endif
     </div>
     @if (Session::has('no_direct_mail'))
-    <div class="alert alert-danger">
+    <!-- <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong><i class="fa fa-check-circle fa-lg fa-fw"></i> Failure. &nbsp;</strong>
         {{ Session::pull('no_direct_mail') }}
-    </div>
+    </div> -->
     @else
     <div class="content-section active" id="directmail-console">
 
