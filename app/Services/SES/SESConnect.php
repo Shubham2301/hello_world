@@ -76,9 +76,10 @@ class SESConnect extends SES {
 				$users = User::networkUserById($networkId);
 
 				foreach ($users as $user) {
-					if ($user->sesemail) {
-						$scope[] = ['id' => $user->id, 'name' => $user->name];
+					if (!$user->sesemail || $user->sesemail == '') {
+						continue;
 					}
+					$scope[] = ['id' => $user->id, 'name' => $user->name];
 				}
 
 			} elseif ($level === 3) {
@@ -86,8 +87,8 @@ class SESConnect extends SES {
 				$users = User::practiceUserById($practiceId);
 
 				foreach ($users as $user) {
-					if ($user->sesemail) {
-						$scope[] = ['id' => $user->id, 'name' => $user->name];
+					if (!$user->sesemail || $user->sesemail == '') {
+						continue;
 					}
 					$scope[] = ['id' => $user->id, 'name' => $user->name];
 				}
