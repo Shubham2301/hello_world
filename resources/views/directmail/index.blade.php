@@ -210,7 +210,7 @@
         }
 
         if (!window.location.search) {
-           document.getElementById("getCodeBtn").click();
+           //document.getElementById("getCodeBtn").click();
         }
     </script>
 

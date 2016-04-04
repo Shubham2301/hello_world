@@ -31,40 +31,38 @@ class SESConnect extends SES {
 	}
 
 	public function checkScope($userId) {
-        
-        $user = Auth::user();
+
+		$user = Auth::user();
 		$usertype = intval($user->usertype_id);
 		$level = intval($user->level);
-        
-        if ($usertype === 2) {
+
+		if ($usertype === 2) {
 			if ($level === 2) {
 				$networkId = User::getNetwork($user->id)->id;
 				$user_networkId = User::getNetwork($userId)->id;
-                
-                if($networkId != $user_networkId){
-                    return false;
-                }
-                else{
-                    return true;
-                }
-                
+
+				if ($networkId != $user_networkId) {
+					return false;
+				} else {
+					return true;
+				}
+
 			} elseif ($level === 3) {
 				$practiceId = User::getPractice($user->id)->id;
-                $user_practiceId = User::getPractice($userId)->id;
-                
-                if($practiceId != $user_practiceId){
-                    return false;
-                }
-                else{
-                    return true;
-                }
+				$user_practiceId = User::getPractice($userId)->id;
+
+				if ($practiceId != $user_practiceId) {
+					return false;
+				} else {
+					return true;
+				}
 			}
 		} else {
 			return false;
 		}
-        
-        return false;
-        
+
+		return false;
+
 	}
 	public function getImpersonationScope() {
 		$user = Auth::user();
@@ -77,17 +75,23 @@ class SESConnect extends SES {
 				$networkId = User::getNetwork($user->id)->id;
 				$users = User::networkUserById($networkId);
 
-                foreach($users as $user){
-                    $scope[] = ['id' => $user->id, 'name' => $user->name];
-                }
-                
+				foreach ($users as $user) {
+					if (!$user->sesemail || $user->sesemail == '') {
+                        continue;
+					}
+					$scope[] = ['id' => $user->id, 'name' => $user->name];
+				}
+
 			} elseif ($level === 3) {
 				$practiceId = User::getPractice($user->id)->id;
-                $users = User::practiceUserById($practiceId);
-                
-                foreach($users as $user){
-                    $scope[] = ['id' => $user->id, 'name' => $user->name];
-                }
+				$users = User::practiceUserById($practiceId);
+
+				foreach ($users as $user) {
+					if (!$user->sesemail || $user->sesemail == '') {
+						continue;
+					}
+					$scope[] = ['id' => $user->id, 'name' => $user->name];
+				}
 			}
 		} else {
 			return $scope;

@@ -23,13 +23,14 @@ class DirectMailController extends Controller {
 	 */
 	public function index(Request $request) {
 
-		if (session('impersonation-logged-in') != '' && session('impersonation-logged-in') != Auth::user()->id) {
+		if (session('impersonation-logged-in') != '' && session('impersonation-logged-in') != Auth::user()->id && session('impersonation-logged-in-time') != '' && session('impersonation-logged-in-time') != Auth::user()->last_login_time) {
 			$audit = new ImpersonationAudit;
 
 			$audit->user_impersonated_id = session('impersonation-id');
 			$audit->logged_in_user_id = Auth::user()->id;
 			$audit->action = 'END IMPERSONATION';
 
+			session(['impersonation-logged-in-time' => '']);
 			session(['impersonation-logged-in' => '']);
 			session(['impersonation-id' => '']);
 			session(['impersonation-name' => '']);
@@ -60,6 +61,7 @@ class DirectMailController extends Controller {
 			$audit = new ImpersonationAudit;
 
 			session(['impersonation-id' => $request->impersonateuser]);
+			session(['impersonation-logged-in-time' => Auth::user()->last_login_time]);
 			session(['impersonation-logged-in' => Auth::user()->id]);
 			session(['impersonation-name' => User::find($request->impersonateuser)->name]);
 
@@ -83,6 +85,7 @@ class DirectMailController extends Controller {
 		$audit->logged_in_user_id = Auth::user()->id;
 		$audit->action = 'END IMPERSONATION';
 
+		session(['impersonation-logged-in-time' => '']);
 		session(['impersonation-logged-in' => '']);
 		session(['impersonation-id' => '']);
 		session(['impersonation-name' => '']);

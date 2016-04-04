@@ -29,5 +29,6 @@ class Kernel extends HttpKernel {
 		'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
 		'guest' => \myocuhub\Http\Middleware\RedirectIfAuthenticated::class,
 		'role' => \myocuhub\Http\Middleware\RoleMiddleware::class,
+		'session.flush' => \myocuhub\Http\Middleware\SessionMiddleware::class,
 	];
 }
