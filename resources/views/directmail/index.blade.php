@@ -12,7 +12,16 @@
 
 @section('content')
 
-    <div class="content-section active">
+    @if (Session::has('no_direct_mail'))
+    <!-- <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong><i class="fa fa-check-circle fa-lg fa-fw"></i> Failure. &nbsp;</strong>
+        {{ Session::pull('no_direct_mail') }}
+    </div> -->
+    @else
+    <div class="content-section active" id="directmail-console">
+
+
         @if(session('impersonation-id') != '' )
         <div style="position:absolute">
             <div style="background-color:#d3eefa;padding:0.25em;border-radius:100%;width:2.5em;display:inline-block">
@@ -31,15 +40,6 @@
             <div id="impersonateBtn">Impersonate User</div>
             @endif
         @endif
-    </div>
-    @if (Session::has('no_direct_mail'))
-    <!-- <div class="alert alert-danger">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong><i class="fa fa-check-circle fa-lg fa-fw"></i> Failure. &nbsp;</strong>
-        {{ Session::pull('no_direct_mail') }}
-    </div> -->
-    @else
-    <div class="content-section active" id="directmail-console">
 
         <img id="loadingImg" alt="Loading..."   src="{{ asset('/images/ajax-loader.gif') }}" style="width:1em;display: none;">
         <div id="refreshBtn" onclick="refreshPage()"><img src="{{ asset('/images/refresh-icon-01.png') }}" alt=""></div>
