@@ -62,7 +62,9 @@ $(document).ready(function () {
 		if ($('.folder-check.checkbox:checkbox:checked').length > 0) {
 			$('.download-button').hide();
 		}
-
+		if($('#current_view').val() === 'trash'){
+			$('.trash-button').hide();
+		}
 
     });
     $('.share-button').on('click', function(){
