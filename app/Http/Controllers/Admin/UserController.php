@@ -555,7 +555,7 @@ class UserController extends Controller {
 
 	public function validationRules($data, $userID){
 		$validationRules = [
-			'title' => 'required|max:255',
+			'title' => 'sometimes|max:255',
 			'body' => 'sometimes|required',
 			'password' => 'sometimes|same:password_confirmation',
 			'email' => 'sometimes|email|unique:users,email,'.$userID,
