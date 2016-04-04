@@ -20,8 +20,8 @@
     </div>
     @else
     <div class="content-section active" id="directmail-console">
-        
-        
+
+
         @if(session('impersonation-id') != '' )
         <div style="position:absolute">
             <div style="background-color:#d3eefa;padding:0.25em;border-radius:100%;width:2.5em;display:inline-block">
@@ -33,14 +33,14 @@
                 <div onclick="endImpersonation()" style="display:inline-block">
                     <img src="{{ asset('/images/close-white.png') }}" style="margin-top: -0.2em;width: 0.7em;" alt="">
                 </div>
-            </form>    
+            </form>
         </div>
         @else
             @if(sizeof($impersonation) > 0)
-            <div id="impersonateBtn">Impersonate User</div> 
+            <div id="impersonateBtn">Impersonate User</div>
             @endif
         @endif
-        
+
         <img id="loadingImg" alt="Loading..."   src="{{ asset('/images/ajax-loader.gif') }}" style="width:1em;display: none;">
         <div id="refreshBtn" onclick="refreshPage()"><img src="{{ asset('/images/refresh-icon-01.png') }}" alt=""></div>
         <button id="getCodeBtn" class="btn dismiss_button" style="width:20%;display: none;">Get Code</button>
@@ -58,7 +58,7 @@
             <input id="id_token" type='hidden' name='token' value="" />
         </form>
         <iframe id="ocuhubSESiframeId" name="ocuhubSESiframe" src="" frameborder="0" style="display:none;width: 100%;flex: 1 1 auto;margin-top: 3em;"></iframe>
-        
+
         <div>
             <form id="end-impersonation-form" target="end-impersonation-iframe" action="https://direct.ocuhub.com/sesidpserver/connect/endsession" method="GET"></form>
             <iframe id="end-impersonation-iframe" name="end-impersonation-iframe" src="" frameborder="0" style="display:none;"></iframe>
@@ -66,11 +66,11 @@
     </div>
 
     <script>
-        
+
         $('#impersonateBtn').on('click', function(){
             $('#impersonateModal').modal('show');
         });
-        
+
         $("#end-impersonation-form").submit(function () {
             @if(session('impersonation-id') != '')
                 $("#reload-active-direct").submit();
@@ -78,15 +78,15 @@
                 $('#impersonation-form').submit();
             @endif
         });
-        
+
         function beginImpersonation() {
              $("#end-impersonation-form").submit();
-        }    
-            
+        }
+
         function endImpersonation () {
             $("#end-impersonation-form").submit();
         }
-        
+
         var timerCount = '{{ $ses['display_count_timer'] }}';
 
         function refreshPage() {
@@ -210,7 +210,7 @@
         }
 
         if (!window.location.search) {
-           //document.getElementById("getCodeBtn").click();
+           document.getElementById("getCodeBtn").click();
         }
     </script>
 
