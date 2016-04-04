@@ -77,7 +77,7 @@ class SESConnect extends SES {
 
 				foreach ($users as $user) {
 					if (!$user->sesemail || $user->sesemail == '') {
-						continue;
+                        continue;
 					}
 					$scope[] = ['id' => $user->id, 'name' => $user->name];
 				}
