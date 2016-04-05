@@ -56,7 +56,7 @@ class UserController extends Controller {
 		$user['practice_id'] = '';
 		$networkData = [];
 		$networks = Network::all();
-		if (session('user-level') == '1') {
+		if (session('user-level') == 1) {
 			foreach ($networks as $network) {
 				$networkData[$network->id] = $network->name;
 			}
@@ -72,7 +72,7 @@ class UserController extends Controller {
 
 		$networkPractices = [];
 
-		if (session('user-level') === '1') {
+		if (session('user-level') == 1) {
 			$networkPractices = Practice::all();
 		} else {
 			$networkPractices = Network::find(session('network-id'))->practices;
@@ -161,7 +161,7 @@ class UserController extends Controller {
 		$networkUser = new NetworkUser;
 		$networkUser->user_id = $user->id;
 		$networkUser->network_id = session('network-id');
-		if (session('user-level') == '1')
+		if (session('user-level') == 1)
 			$networkUser->network_id = $request->input('user_network');
 			$networkUser->save();
 
@@ -249,8 +249,10 @@ class UserController extends Controller {
 				}
 
 			}
+			$user['network_id'] = '';
 			$user_network = NetworkUser::where('user_id', '=', $id)->first();
-			$user['network_id'] = $user_network->network_id;
+			if($user_network)
+				$user['network_id'] = $user_network->network_id;
 			$user['practice_id'] = ($practice = User::getPractice($id)) ? $practice->id : '';
 			$data['user_active'] = true;
 			$data['url'] = '/administration/users/update/' . $id;
@@ -361,7 +363,7 @@ class UserController extends Controller {
 			$practiceUser = PracticeUser::where('user_id', $user->id)->delete();
 			$userData = [];
 			$userData['user_id'] = $user->id;
-			if (session('user-level') == '1') {
+			if (session('user-level') == 1) {
 				$userData['network_id'] = $request->input('user_network');
 			} else {
 				$userData['network_id'] = session('network-id');
@@ -431,7 +433,7 @@ class UserController extends Controller {
 		$userID = Auth::user()->id;
 
 		$tosearchdata = json_decode($request->input('data'), true);
-		if (session('user-level') == '1') {
+		if (session('user-level') == 1) {
 			$search_val = $tosearchdata['value'];
 			$users = User::where('active', '=', '1')
 				->where(function ($query) use ($search_val) {
@@ -440,7 +442,7 @@ class UserController extends Controller {
 						->orWhere('lastname', 'LIKE', '%' . $search_val . '%');
 				})
 				->paginate(5);
-		} elseif (session('user-level') == '2') {
+		} elseif (session('user-level') == 2) {
 			$users = User::getUsersByName($tosearchdata['value'])->paginate(5);
 		} else {
 			$search_val = $tosearchdata['value'];
@@ -465,10 +467,10 @@ class UserController extends Controller {
 		$data[0]['currentPage'] = $users->currentPage();
 		$i = 0;
 		foreach ($users as $user) {
-			if ((session('user-level') == '3' || session('user-level') == '4') && $user->practice_id != User::getPractice($userID)->id) {
+			if ((session('user-level') == 3 || session('user-level') == 4) && $user->practice_id != User::getPractice($userID)->id) {
 				continue;
 			}
-			if (session('user-level') == '1') {
+			if (session('user-level') == 1) {
 				$id = $user->id;
 			} else {
 				$id = $user->user_id;
