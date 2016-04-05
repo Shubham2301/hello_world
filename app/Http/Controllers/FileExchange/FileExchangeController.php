@@ -17,6 +17,7 @@ use myocuhub\Network;
 use myocuhub\User;
 use Storage;
 use myocuhub\Models\NetworkUser;
+use myocuhub\Models\Practice;
 
 class FileExchangeController extends Controller {
 	/**
@@ -68,7 +69,7 @@ class FileExchangeController extends Controller {
 
 
 		if (session('user-level') === 1) {
-			$networkPractices = Practices::all();
+			$networkPractices = Practice::all();
 		} else {
 			$networkPractices = Network::find(session('network-id'))->practices;
 		}
@@ -292,7 +293,7 @@ class FileExchangeController extends Controller {
 		}
 
 		if (session('user-level') === 1) {
-			$networkPractices = Practices::all();
+			$networkPractices = Practice::all();
 		} else {
 			$networkPractices = Network::find(session('network-id'))->practices;
 		}
@@ -386,7 +387,7 @@ class FileExchangeController extends Controller {
 			$empty = 'false';
 
 		if (session('user-level') === 1) {
-			$networkPractices = Practices::all();
+			$networkPractices = Practice::all();
 		} else {
 			$networkPractices = Network::find(session('network-id'))->practices;
 		}
