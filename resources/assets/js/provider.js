@@ -8,9 +8,7 @@ $(document).ready(function () {
         minDate: new Date(),
     });
     $('#subscriber_dob').datetimepicker({
-        defaultDate: false,
         format: 'MM/DD/YYYY',
-        minDate: new Date(),
     });
     $(document).on('click', '.dropdown_ins_list>li', function (){
         //console.log($(this).attr('data-name'));
