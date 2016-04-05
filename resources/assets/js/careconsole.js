@@ -3,6 +3,8 @@ $(document).ready(function() {
     $('#datetimepicker_action_date').datetimepicker({
         format: 'YYYY-MM-DD',
     });
+    $('#manual_appointment_date').datetimepicker();
+
     $('#search_bar_open').on('click', function() {
         if (($('#search_bar_open').hasClass('active'))) {
             $('#search_bar_open').removeClass('active');
@@ -199,6 +201,14 @@ $(document).ready(function() {
             case 'annual-exam':
                 $('#form_recall_date').show();
                 showDate = true;
+                showActionModel(data);
+                break;
+            case 'manually-schedule':
+                $('#form_manual_appointment_date').show();
+                showActionModel(data);
+                break;
+            case 'manually-reschedule':
+                $('#form_manual_appointment_date').show();
                 showActionModel(data);
                 break;
             default:
@@ -443,6 +453,7 @@ function action() {
         'stage_id': $('#action_stage_id').val(),
         'action_id': $('#action_id').val(),
         'recall_date': $('#recall_date').val(),
+        'manual_appointment_date': $('#manual_appointment_date').val(),
         'action_result_id': $('#action_result_id').val(),
         'notes': $('#action_notes').val()
     };
