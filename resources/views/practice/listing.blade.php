@@ -3,6 +3,8 @@
     <form action="">
             <input type="hidden" id="assign_role_image_path" value="{{URL::asset('images/assign-role-icon-01.png')}}">
             <input type="hidden" id="assign_user_image_path" value="{{URL::asset('images/assign-user-icon-01.png')}}">
+            <input type="hidden" id="location_previous_icon" value="{{URL::asset('images/triangle-down.png')}}">
+            <input type="hidden" id="location_next_icon" value="{{URL::asset('images/triangle-up.png')}}">
         </form>
     <div class="practice_search_content">
         <!--

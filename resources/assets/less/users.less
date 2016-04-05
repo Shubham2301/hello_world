@@ -31,10 +31,12 @@
         margin: 0;
         &.edituser_from_row{
             margin: 0 1em;
+            cursor: pointer;
         }
     }
     &>div{
         word-wrap: break-word;
+        cursor: default;
     }
 }
 .search_name,
@@ -337,10 +339,16 @@ input[type=checkbox]{
 }
 
 #user_name {
-	text-decoration: underline;
 	font-size:1.2em;
 }
-
+.user_underline{
+    margin-bottom: 20px;
+    border: 0;
+    width: 2em;
+    margin-top: 0;
+    border-top: 2px solid #eee;
+    margin-left: 0;
+}
 .user_detail_info {
 	font-size: .9em;
 }
@@ -367,7 +375,7 @@ input[type=checkbox]{
 }
 
 .section-break {
-	border-top: 1px solid #f2f2f2;
+	border-top: 2px solid #f2f2f2;
 }
 .section_header {
 	margin-top:1em;
@@ -387,4 +395,7 @@ input[type=checkbox]{
             margin: 0;
         }
     }
+}
+p.subsection_header {
+    margin: 0;
 }

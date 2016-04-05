@@ -349,6 +349,10 @@ p.patient_dropdown_data {
     padding: .8em 0;
     border-bottom: 1px solid #f2f2f2;
     color: #f2f2f2;
+    &>div{
+        cursor: default;
+        word-wrap: break-word;
+    }
     &:hover {
         color: #fff;
     }
@@ -359,6 +363,7 @@ p.patient_dropdown_data {
     display: inline-flex;
 }
 .search_name{
+    cursor: pointer;
     padding: 0;
     &>p{
         margin: 0;
@@ -371,6 +376,7 @@ p.patient_dropdown_data {
     justify-content: flex-end;
     &>p.editPatient_from_row {
         margin: 0 1em;
+        cursor: pointer;
     }
 }
 .action_dropdown_img {

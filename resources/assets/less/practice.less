@@ -86,6 +86,7 @@
     justify-content: flex-end;
     &>p.editpractice_from_row {
         margin: 0 1em;
+        cursor: pointer;
     }
 }
 .search_item {
@@ -95,6 +96,13 @@
     color: #f2f2f2;
     &:hover {
         color: #fff;
+    }
+    &>div{
+        word-wrap: break-word;
+        cursor: default;
+        &>.search_name{
+            cursor: pointer;
+        }
     }
 }
 p.search_result {
@@ -130,7 +138,9 @@ p.pagination {
     margin-top: -1px;
 }
 .change_location {
-    margin-left: 30px;
+    margin: 0 1em;
+    width: 1em;
+    text-align: center;
 }
 .delete_practice_img {
     content: url('images/delete.png');
@@ -247,8 +257,6 @@ p.table_header {
 .location_counter {
     margin: 0px;
     padding: 0px;
-    padding-left: 3px;
-    margin-top: -16px;
     font-size: 1.1em;
 }
 .modal-header {
@@ -350,6 +358,7 @@ p.table_header {
     display: flex;
     padding-left: 40px;
     color: #fff;
+    align-items: center;
 }
 .save_practice_button {
     color: #4d4d4d;
@@ -385,7 +394,6 @@ p.table_header {
     background: transparent;
     padding-left: 11px;
     padding-right: 10px;
-    margin-left: 1em;
     font-size: 0.8em;
     color: #fff;
     &:hover {
@@ -545,24 +553,23 @@ p.add_title {
     margin: auto 1em;
 }
 
-.location_address_next {
-	margin-top: 1px;
-    color: #715B2F;
+.location_address_next,
+.location_address_previous,
+.create_location_toggle{
     cursor: pointer;
-}
-
-.location_address_previous {
-	margin-top: 1px;
-    color: #715B2F;
-    cursor: pointer;
+    width: .7em;
+    margin: auto;
 }
 
 .location_address_counter{
 	margin: 0px;
 	padding: 0px;
-	padding-left: 3px;
-	margin-top: -16px;
 	font-size: 1.1em;
+}
+.location_counter_toggle{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 .search_header{
     &>div{

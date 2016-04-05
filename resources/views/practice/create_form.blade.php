@@ -46,11 +46,13 @@
                 <div class="row content-row-margin">
                     <div class="col-xs-12 col-sm-12 add_location_header">
                         <br>
-                        <p style="color:#fff;font-size:1.2em;margin-top: 4px">Location Details</p>
+                        <p style="color:#fff;font-size:1.2em;margin:0">Location Details</p>
                         <div class="change_location">
-                            <span class="glyphicon glyphicon-chevron-up glyph_design" id="location_next"></span>
+<!--                            <span class="glyphicon glyphicon-chevron-up glyph_design" id="location_next"></span>-->
+                           <img class="create_location_toggle" id="location_next" src="{{URL::asset('images/triangle-up.png')}}">
                             <span><p class="location_counter">0</p></span>
-                            <span class="glyphicon glyphicon-chevron-down glyph_design" id="location_previous"></span>
+                            <img class="create_location_toggle" id="location_previous" src="{{URL::asset('images/triangle-down.png')}}">
+<!--                            <span class="glyphicon glyphicon-chevron-down glyph_design" id="location_previous"></span>-->
 
                         </div>
                         <div>
