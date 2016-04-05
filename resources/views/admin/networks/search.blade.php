@@ -4,7 +4,7 @@
         <a href="/administration/networks/create"><button type="button" class="btn add-btn">Add New</button></a>
     <span class="search_input_box">
         <input type="text" class="arial_italic" id="search_network_input" placeholder="search">
-        <span class="glyphicon glyphicon-search glyp" id="search_network_button" aria-hidden="true"></span>
+        <img src="{{asset('images/search-icon.png')}}" class="admin_seacrh_icon" id="search_network_button">
     </span>
         <span class="glyphicon glyphicon-remove" id="refresh_networks" area-hidden="true"></span>
     </div>

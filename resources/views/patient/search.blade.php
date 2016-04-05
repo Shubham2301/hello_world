@@ -38,7 +38,7 @@
             <button id="open_patient_form" type="button" class="btn add-btn" >Add New</button>
             <span class="search_input_box">
                 <input type="text" class="arial_italic" id="search_patient_input" placeholder="search">
-                <span class="glyphicon glyphicon-search glyp" id="search_patient_button" aria-hidden="true"></span>
+                <img src="{{asset('images/search-icon.png')}}" class="admin_seacrh_icon" id="search_patient_button">
             </span>
             <span class="glyphicon glyphicon-remove" id="refresh_patients" area-hidden="true"></span>
             <span class="admin_delete" data-toggle="tooltip" title="Delete Patients" data-placement="top">
