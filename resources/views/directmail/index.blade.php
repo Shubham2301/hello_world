@@ -58,10 +58,8 @@
             <input id="id_token" type='hidden' name='token' value="" />
         </form>
         <iframe id="ocuhubSESiframeId" name="ocuhubSESiframe" src="" frameborder="0" style="display:none;width: 100%;flex: 1 1 auto;margin-top: 3em;"></iframe>
-<<<<<<< HEAD
-=======
 
->>>>>>> ac93b4f5e4adeb05360c5a5a9264227f3e3dd118
+
         <div>
             <form id="end-impersonation-form" target="end-impersonation-iframe" action="https://direct.ocuhub.com/sesidpserver/connect/endsession" method="GET"></form>
             <iframe id="end-impersonation-iframe" name="end-impersonation-iframe" src="" frameborder="0" style="display:none;"></iframe>
