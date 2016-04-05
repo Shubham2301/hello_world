@@ -9,6 +9,7 @@
 @if (Session::has('success'))
 <div class="alert alert-success">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
+
     <strong>
     <i class="fa fa-check-circle fa-lg fa-fw"></i> Success. &nbsp;
     </strong> {{ Session::pull('success') }}
@@ -17,6 +18,7 @@
 <div class="content-section active" style="min-height: 40vh;">
     <div class="row">
         <div class="col-xs-offset-1">
+			<input type="hidden" value = "{{$openView}}" id='current_view'>
             <div class="file_exchange_navbar">
                 <span class="file_exchange_navbar_content_left">
                     <button id="" type="button" class="btn add-btn" data-toggle="modal" data-target="#newfolderModal">Add Folder</button>&nbsp;

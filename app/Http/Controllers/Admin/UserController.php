@@ -20,6 +20,9 @@ use myocuhub\Usertype;
 use Validator;
 
 class UserController extends Controller {
+	public function __construct() {
+		$this->middleware('role:user-admin, 2');
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -254,7 +257,7 @@ class UserController extends Controller {
 
 			$networkPractices = [];
 
-			if (session('user-level') === '1') {
+			if (session('user-level') == 1) {
 				$networkPractices = Practice::all();
 
 			} else {
@@ -555,7 +558,7 @@ class UserController extends Controller {
 
 	public function validationRules($data, $userID){
 		$validationRules = [
-			'title' => 'required|max:255',
+			'title' => 'sometimes|max:255',
 			'body' => 'sometimes|required',
 			'password' => 'sometimes|same:password_confirmation',
 			'email' => 'sometimes|email|unique:users,email,'.$userID,
