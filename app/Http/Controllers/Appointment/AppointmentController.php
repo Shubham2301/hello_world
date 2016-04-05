@@ -57,25 +57,24 @@ class AppointmentController extends Controller {
 		$patient = Patient::find($patient_id);
 		$data['patient_name'] = $patient->firstname . ' ' . $patient->lastname;
 		$data['schedule-patient'] = true;
-		$patientInsurance = PatientInsurance::where('patient_id', $data['patient_id'])->first();
 
-		if (sizeof($patientInsurance) > 0) {
-			$insurance['insurance_carrier'] = $patientInsurance->insurance_carrier;
-			$insurance['subscriber_name'] = $patientInsurance->subscriber_name;
-			$insurance['subscriber_id'] = $patientInsurance->subscriber_id;
-			$insurance['subscriber_birthdate'] = $patientInsurance->subscriber_birthdate;
-			$insurance['subscriber_relation'] = $patientInsurance->subscriber_relation;
-			$insurance['insurance_group_no'] = $patientInsurance->insurance_group_no;
+		$patientInsurance = PatientInsurance::where('patient_id', $patient_id)->first();
+		if (sizeof($patientInsurance) == 0) {
+			$patientInsurance = new PatientInsurance;
+			$patientInsurance->patient_id = $patient_id;
 		} else {
-			$insurance['insurance_carrier'] = '';
-			$insurance['subscriber_name'] = '';
-			$insurance['subscriber_id'] = '';
-			$insurance['subscriber_birthdate'] = '';
-			$insurance['subscriber_relation'] = '';
-			$insurance['insurance_group_no'] = '';
+			$patientInsurance = PatientInsurance::find($patientInsurance->id);
 		}
+		$patientInsurance->insurance_carrier = ($request->input('insurance_carrier') != '') ? $request->input('insurance_carrier') : $patientInsurance->insurance_carrier;
+		$patientInsurance->insurance_carrier_fpc_key = ($request->input('insurance_carrier_key') != '') ? $request->input('insurance_carrier_key') : $patientInsurance->insurance_carrier_fpc_key;
+		$patientInsurance->subscriber_name = ($request->input('subscriber_name') != '') ? $request->input('subscriber_name') : $patientInsurance->subscriber_name;
+		$patientInsurance->subscriber_birthdate = ($request->input('subscriber_dob') != '') ? $request->input('subscriber_dob') . ' 00:00:00' : $patientInsurance->subscriber_birthdate;
+		$patientInsurance->subscriber_id = ($request->input('subscriber_id') != '') ? $request->input('subscriber_id') : $patientInsurance->subscriber_id;
+		$patientInsurance->insurance_group_no = ($request->input('insurance_group') != '') ? $request->input('insurance_group') : $patientInsurance->insurance_group_no;
+		$patientInsurance->subscriber_relation = ($request->input('subscriber_relation') != '') ? $request->input('subscriber_relation') : $patientInsurance->subscriber_relation;
+		$patientInsurance->save();
 
-		return view('appointment.index')->with('data', $data)->with('insurance', $insurance);
+		return view('appointment.index')->with('data', $data);
 	}
 
 	/**
@@ -153,22 +152,6 @@ class AppointmentController extends Controller {
 		$appointmentTime = $request->input('appointment_time');
 		$patient = Patient::find($patientID);
 
-		$patientInsurance = PatientInsurance::where('patient_id', $patientID)->first();
-		//$patientInsurance = PatientInsurance::find($patientInsurance->id);
-		if (sizeof($patientInsurance) == 0) {
-			$patientInsurance = new PatientInsurance;
-			$patientInsurance->patient_id = $patientID;
-		} else {
-			$patientInsurance = PatientInsurance::find($patientInsurance->id);
-		}
-		$patientInsurance->insurance_carrier = ($request->input('insurance_carrier') != '') ? $request->input('insurance_carrier') : $patientInsurance->insurance_carrier;
-		$patientInsurance->subscriber_name = ($request->input('subscriber_name') != '') ? $request->input('subscriber_name') : $patientInsurance->subscriber_name;
-		$patientInsurance->subscriber_birthdate = ($request->input('subscriber_dob') != '') ? $request->input('subscriber_dob') . ' 00:00:00' : $patientInsurance->subscriber_birthdate;
-		$patientInsurance->subscriber_id = ($request->input('subscriber_id') != '') ? $request->input('subscriber_id') : $patientInsurance->subscriber_id;
-		$patientInsurance->insurance_group_no = ($request->input('insurance_group') != '') ? $request->input('insurance_group') : $patientInsurance->insurance_group_no;
-		$patientInsurance->subscriber_relation = ($request->input('subscriber_relation') != '') ? $request->input('subscriber_relation') : $patientInsurance->subscriber_relation;
-		$patientInsurance->save();
-
 		$apptInfo['LocKey'] = 3839;
 		$apptInfo['AcctKey'] = 8042;
 		$apptInfo['ApptTypeKey'] = $appointmentTypeKey;
@@ -193,8 +176,13 @@ class AppointmentController extends Controller {
 		$apptInfo['PatientData']['PreferredLanguage'] = $patient->preferredlanguage;
 		$apptInfo['PatientData']['Gender'] = $patient->gender;
 		$apptInfo['PatientData']['L4DSSN'] = $patient->lastfourssn;
-//        $apptInfo['PatientData']['InsuranceCarrier'] = $patient->insurancecarrier;
-		$apptInfo['PatientData']['InsuranceCarrier'] = 0;
+		$patientInsurance = PatientInsurance::where('patient_id', $data['patient_id'])->first();
+		if (sizeof($patientInsurance) > 0) {
+			$patientInsurance = new PatientInsurance;
+			$apptInfo['PatientData']['InsuranceCarrier'] = $patientInsurance;
+		} else {
+			$apptInfo['PatientData']['InsuranceCarrier'] = $patientInsurance->insurance_carrier_fpc_key;
+		}
 
 		$apptInfo['PatientData']['OtherInsurance'] = $patientInsurance->insurance_carrier;
 		$apptInfo['PatientData']['SubscriberName'] = $patientInsurance->subscriber_name;

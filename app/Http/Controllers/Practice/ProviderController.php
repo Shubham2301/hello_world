@@ -2,14 +2,15 @@
 
 namespace myocuhub\Http\Controllers\Practice;
 
+use Event;
 use Illuminate\Http\Request;
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Patient;
 use myocuhub\User;
-use Event;
-use myocuhub\Events\MakeAuditEntry;
 
 class ProviderController extends Controller {
 	/**
@@ -35,7 +36,27 @@ class ProviderController extends Controller {
 			$data['patient_id'] = $request->input('patient_id');
 		}
 
-		return view('provider.index')->with('data', $data);
+		$patientInsurance = PatientInsurance::where('patient_id', $data['patient_id'])->first();
+
+		if (sizeof($patientInsurance) > 0) {
+			$insurance['insurance_carrier'] = $patientInsurance->insurance_carrier;
+			$insurance['insurance_carrier_key'] = $patientInsurance->insurance_carrier_fpc_key;
+			$insurance['subscriber_name'] = $patientInsurance->subscriber_name;
+			$insurance['subscriber_id'] = $patientInsurance->subscriber_id;
+			$insurance['subscriber_birthdate'] = $patientInsurance->subscriber_birthdate;
+			$insurance['subscriber_relation'] = $patientInsurance->subscriber_relation;
+			$insurance['insurance_group_no'] = $patientInsurance->insurance_group_no;
+		} else {
+			$insurance['insurance_carrier'] = '';
+			$insurance['insurance_carrier_key'] = '';
+			$insurance['subscriber_name'] = '';
+			$insurance['subscriber_id'] = '';
+			$insurance['subscriber_birthdate'] = '';
+			$insurance['subscriber_relation'] = '';
+			$insurance['insurance_group_no'] = '';
+		}
+
+		return view('provider.index')->with('data', $data)->with('insurance', $insurance);
 	}
 
 	/**
@@ -145,13 +166,13 @@ class ProviderController extends Controller {
 
 		$apptTypes = WebScheduling4PC::getApptTypes($providerInfo);
 
-        if(!isset($apptTypes->GetApptTypesResult->ApptType)){
-            $action = 'No data received for Provider = ' . $providerKey.' Location = '.$locationKey;
-            $description = '';
-            $filename = basename(__FILE__);
-            $ip = $request->getClientIp();
-            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-        }
+		if (!isset($apptTypes->GetApptTypesResult->ApptType)) {
+			$action = 'No data received for Provider = ' . $providerKey . ' Location = ' . $locationKey;
+			$description = '';
+			$filename = basename(__FILE__);
+			$ip = $request->getClientIp();
+			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+		}
 		return json_encode($apptTypes);
 	}
 
@@ -159,7 +180,7 @@ class ProviderController extends Controller {
 		$providerInfo = array();
 
 		$providerKey = $request->input('provider_id');
-		$locationKey = $request->input('practice_id');
+		$locationKey = $request->input('location_id');
 
 		$providerInfo['LocKey'] = $locationKey;
 		$providerInfo['AcctKey'] = $providerKey;
