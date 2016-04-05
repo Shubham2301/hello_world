@@ -32,6 +32,7 @@
     {!! Form::hidden('location', '', array('id' => 'form_location')) !!}
     {!! Form::hidden('location_id', '', array('id' => 'form_location_id')) !!}
     {!! Form::hidden('location_code', '', array('id' => 'form_location_code')) !!}
+    @include('appointment.insurance-details')
     {!! Form::close() !!}
     <div class="practice_section active" id="select_practice">
         @if(array_key_exists('referraltype_id', $data) and array_key_exists('patient_id', $data))
@@ -54,7 +55,9 @@
         <span>2. Search for Provider</span>
     </div>
 </div>
-@endif @include('provider.search') @include('provider.preferences')
+@endif
+@include('provider.search')
+@include('provider.preferences')
 </div>
 <div class="practice_section active" id="practice_listing">
 @include('provider.listing')

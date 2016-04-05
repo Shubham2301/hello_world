@@ -15,6 +15,7 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <input type="text" class="form-control" name="insurance_carrier" id="insurance_carrier" value="{{ $insurance['insurance_carrier'] }}">
+                                <input type="hidden" name="insurance_carrier_key" id="insurance_carrier_key" value="{{ $insurance['insurance_carrier_key'] }}">
                             </div>
                             <div class="col-md-2"></div>
                         </div>

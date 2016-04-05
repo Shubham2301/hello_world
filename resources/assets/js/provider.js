@@ -1,8 +1,14 @@
 $(document).ready(function () {
+
+    var insurancePrompt = 0;
+
     $('#select_date').datetimepicker({
         defaultDate: false,
         format: 'MM/DD/YYYY',
         minDate: new Date(),
+    });
+    $('#subscriber_dob').datetimepicker({
+        format: 'MM/DD/YYYY',
     });
     $(document).on('click', '.dropdown_ins_list>li', function (){
         //console.log($(this).attr('data-name'));
@@ -131,7 +137,6 @@ $(document).ready(function () {
             'provider_id': provider_id,
             'practice_id': practice_id
         };
-
         getProviderInfo(formData);
     });
     $('#change_practice_button').on('click', function () {
@@ -168,6 +173,11 @@ $(document).ready(function () {
     });
 
     $('.schedule_button').on('click', function () {
+        if(insurancePrompt == 0 && $('#insurance_carrier_key').val() == ''){
+            $('#insuranceModal').modal('show');
+            insurancePrompt++;
+            return;
+        }
         scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
     });
 
@@ -193,6 +203,7 @@ $(document).ready(function () {
         $('#form_location_id').val($(this).attr('data-id'));
         $('#form_location_code').val($(this).attr('data-code'));
         getAppointmentTypes();
+        getInsuranceList();
     });
 
     $('.appointment_type_list').on('click', 'ul.appointment_dropdown>li', function () {
@@ -235,6 +246,12 @@ $(document).ready(function () {
             $('.provider_previous').removeClass('glyphicon-chevron-down');
             $('.provider_previous').addClass('glyphicon-chevron-right');
         }
+    });
+
+    $(document).on('click', '.dropdown_ins_list>li', function () {
+        $('#insurance_carrier_key').val($(this).val());
+        $('#insurance_carrier').val($(this).html());
+        $('#insuranceModal').modal('show');
     });
 
     $('.previous_provider_patient_list').on('click', '.previous_provider_item', function () {
@@ -423,13 +440,7 @@ function getProviderInfo(formData) {
         success: function (e) {
             var info = $.parseJSON(e);
             showProviderInfo(info);
-            //getInsuranceList(formData);
-            var content = '';
-            content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold custom_dropdown">Select Insurance List <img src="/images/dropdown-img.png" class="custom_dropdown_img"></span></a><ul class="dropdown-menu dropdown_ins_list" id="custom_dropdown">';
-            content += '<li  value="1" data-name="No Insurance">No Insurance</li>';
-            content += '<li  value="2" data-name="Other Insurance">Other Insurance</li>';
-            content += '</ul></div>';
-            $('#ins_list').html(content);
+            $('#ins_list').hide();
         },
         error: function () {
             $('p.alert_message').text('Error getting practice information');
@@ -441,38 +452,42 @@ function getProviderInfo(formData) {
 
 }
 
-function getInsuranceList(formData){
-        
-        return;
-    //     $('#ins_list').html('');
-    //     $.ajax({
-    //     url: '/providers/insurancelist',
-    //     type: 'GET',
-    //     data: $.param(formData),
-    //     contentType: 'text/html',
-    //     async: false,
-    //     success: function (e) {
-    //         e = $.parseJSON(e);            
-    //         var content = '';
-    //         content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold custom_dropdown">Select Insurance List <img src="/images/dropdown-img.png" class="custom_dropdown_img"></span></a><ul class="dropdown-menu dropdown_ins_list" id="custom_dropdown">';
-    //         if (e.GetInsListResult.length == 0) {
-    //             var insList = e.GetInsListResult;
-    //             insList.forEach(function (elem) {
-    //                 content += '<li  value="' + elem.InsKey + '" data-name=" ' + elem.InsName + ' ">' + elem.InsName + '</li>';
-    //             });
-    //         }
-    //         content += '<li  value="1" data-name="No Insurance">No Insurance</li>';
-    //         content += '<li  value="2" data-name="Other Insurance">Other Insurance</li>';
-    //         content += '</ul></div>';
-    //         $('#ins_list').html(content);
-    //     },
-    //     error: function () {
-    //         $('p.alert_message').text('Error getting Accepted Insurance List');
-    //         $('#alert').modal('show');
-    //     },
-    //     cache: false,
-    //     processData: false
-    // });
+function getInsuranceList(){
+        var provider_id = $('#form_provider_acc_key').val();
+        var location_id = $('#form_location_code').val();
+        var formData = {
+                'provider_id': provider_id,
+                'location_id': location_id,
+            };
+        $('#ins_list').html('');
+        $.ajax({
+        url: '/providers/insurancelist',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            e = $.parseJSON(e);
+            var content = '';
+            content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold custom_dropdown">Select Insurance List <img src="/images/dropdown-img.png" class="custom_dropdown_img"></span></a><ul class="dropdown-menu dropdown_ins_list" id="custom_dropdown">';
+            if (e.GetInsListResult.InsItem.length > 0) {
+                var insList = e.GetInsListResult.InsItem;
+                insList.forEach(function (elem) {
+                    content += '<li  value="' + elem.InsKey + '" data-name=" ' + elem.InsName + ' ">' + elem.InsName + '</li>';
+                });
+            }
+            content += '</ul></div>';
+            $('#ins_list').html(content);
+            $('#ins_list').show();
+
+        },
+        error: function () {
+            $('p.alert_message').text('Error getting Accepted Insurance List');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
 
 }
 
