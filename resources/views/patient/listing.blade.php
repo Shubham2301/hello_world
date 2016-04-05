@@ -117,36 +117,36 @@
         </div>
     </div>
     <div class="col-xs-12 patient_table_header">
-        <div class="col-xs-4 lastseenby">
+        <div class="col-xs-4 lastseenby no-padding">
             <div class="lastseenby_show arial">
                 <span><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></span>
             </div>
 
         </div>
 
-        <div class="col-xs-4 referredby">
+        <div class="col-xs-4 referredby no-padding">
             <div class="referredby_show arial">
                 <span> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></span>
             </div>
         </div>
 
-        <div class="col-xs-4 insurance_provider">
+        <div class="col-xs-4 insurance_provider no-padding">
             <div class="insurance_provider_show arial">
                 <span><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></span>
             </div>
         </div>
     </div>
 
-    <div class="col-xs-12">
-        <div class="col-xs-4">
+    <div class="col-xs-12 no-padding">
+        <div class="col-xs-4 no-padding">
             <div class="lastseen_content">
             </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 no-padding">
             <div class="referredby_content">
             </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 no-padding">
             <div class="insurance_provider_content">
             </div>
         </div>
