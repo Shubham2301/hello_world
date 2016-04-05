@@ -68,12 +68,12 @@ class AppointmentController extends Controller {
 		$patientInsurance->insurance_carrier = ($request->input('insurance_carrier') != '') ? $request->input('insurance_carrier') : $patientInsurance->insurance_carrier;
 		$patientInsurance->insurance_carrier_fpc_key = ($request->input('insurance_carrier_key') != '') ? $request->input('insurance_carrier_key') : $patientInsurance->insurance_carrier_fpc_key;
 		$patientInsurance->subscriber_name = ($request->input('subscriber_name') != '') ? $request->input('subscriber_name') : $patientInsurance->subscriber_name;
-		$patientInsurance->subscriber_birthdate = ($request->input('subscriber_dob') != '') ? $request->input('subscriber_dob') . ' 00:00:00' : $patientInsurance->subscriber_birthdate;
+		$subscriberDOB = new Datetime($request->input('subscriber_dob'));
+		$patientInsurance->subscriber_birthdate = ($request->input('subscriber_dob') != '') ? $subscriberDOB->format('Y-m-d') . ' 00:00:00' : $patientInsurance->subscriber_birthdate;
 		$patientInsurance->subscriber_id = ($request->input('subscriber_id') != '') ? $request->input('subscriber_id') : $patientInsurance->subscriber_id;
 		$patientInsurance->insurance_group_no = ($request->input('insurance_group') != '') ? $request->input('insurance_group') : $patientInsurance->insurance_group_no;
 		$patientInsurance->subscriber_relation = ($request->input('subscriber_relation') != '') ? $request->input('subscriber_relation') : $patientInsurance->subscriber_relation;
 		$patientInsurance->save();
-
 		return view('appointment.index')->with('data', $data);
 	}
 
@@ -176,13 +176,14 @@ class AppointmentController extends Controller {
 		$apptInfo['PatientData']['PreferredLanguage'] = $patient->preferredlanguage;
 		$apptInfo['PatientData']['Gender'] = $patient->gender;
 		$apptInfo['PatientData']['L4DSSN'] = $patient->lastfourssn;
-		$patientInsurance = PatientInsurance::where('patient_id', $data['patient_id'])->first();
-		if (sizeof($patientInsurance) > 0) {
+		$patientInsurance = PatientInsurance::where('patient_id', $patientID)->first();
+		if (sizeof($patientInsurance) == 0) {
 			$patientInsurance = new PatientInsurance;
-			$apptInfo['PatientData']['InsuranceCarrier'] = $patientInsurance;
+			$apptInfo['PatientData']['InsuranceCarrier'] = 0;
 		} else {
 			$apptInfo['PatientData']['InsuranceCarrier'] = $patientInsurance->insurance_carrier_fpc_key;
 		}
+		dd($patientInsurance);
 
 		$apptInfo['PatientData']['OtherInsurance'] = $patientInsurance->insurance_carrier;
 		$apptInfo['PatientData']['SubscriberName'] = $patientInsurance->subscriber_name;
