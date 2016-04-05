@@ -31,6 +31,15 @@
                             </div>
                             <div class="col-md-2"></div>
                         </div>
+                        <div class="row input_row" id="form_manual_appointment_date">
+                            <div class="col-md-3 form-group">
+                                <label for="manual_appointment_date"><strong style="color:black;padding-left:1em;">Date</strong></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                <input type="text" class="form-control" name="manual_appointment_date" id="manual_appointment_date">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
                         <div class="row input_row">
                             <div class="col-md-3 form-group">
                                 <label for="action_notes"><strong style="color:black;padding-left:1em;">Notes</strong></label>

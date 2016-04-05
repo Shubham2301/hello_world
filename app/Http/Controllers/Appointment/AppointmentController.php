@@ -183,7 +183,6 @@ class AppointmentController extends Controller {
 		} else {
 			$apptInfo['PatientData']['InsuranceCarrier'] = $patientInsurance->insurance_carrier_fpc_key;
 		}
-		dd($patientInsurance);
 
 		$apptInfo['PatientData']['OtherInsurance'] = $patientInsurance->insurance_carrier;
 		$apptInfo['PatientData']['SubscriberName'] = $patientInsurance->subscriber_name;
