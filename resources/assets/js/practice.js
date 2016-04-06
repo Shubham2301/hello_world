@@ -33,6 +33,14 @@ $(document).ready(function() {
         $('.practice_action_header').removeClass('hide');
         $('.practice_list').addClass('active');
     });
+
+    $('.practice_location_item_list').on('click', '.user_disable', function () {
+        var val = $(this).attr('data-id');
+        var id = [];
+        id.push(val);
+        removeUser(id);
+    });
+
     $('#savepractice').on('click', function() {
         showinfo = true;
         var formdata = [];
@@ -528,7 +536,7 @@ function showPracticeInfo(info) {
                 content += '<div id="collapse' + i + '" class="panel-collapse collapse"><div class="panel-body">';
 			content += '<div class="row practice_location_item" data-locationid = "' + location.id + '" data-index="' + i + '"><div class="col-xs-3 practice_info"><p>' + location.addressline1 + '<br>' + location.city + ','+location.state+'&nbsp;  '+location.zip+'<br>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p class="hide">Assign roles </p><p class="hide">Assign users</p><p class="edit_location_frominfo">Edit</p><br><center class=""><span class="remove_location_frominfo"><img src="'+deleteImg+'"/></span></center></div><div class="col-xs-5"><div class="row">';
             info.users.forEach(function (user) {
-                content += '<div class="col-xs-12 practice_users "><p style="width: 100%;"><input type="checkbox"><span>' + user.firstname + '</span><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background:#e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;float: right;margin-bottom: 5px;"></span></p></div>';
+                content += '<div class="col-xs-12 practice_users "><p style="width: 100%;"><span>' + user.firstname + ' ' + user.lastname + '</span><img src="'+deleteImg+'" class="user_disable" data-id="' + user.id + '"/></p></div>';
             });
             content += '</div></div></div>';
             content += '</div></div></div>';
@@ -657,5 +665,34 @@ function showModalConfirmDialog(msg, handler) {
     $('#practice_listing').on('click', '.confirm_no', function(evt) {
         handler(false);
     });
+
+}
+
+function removeUser(id) {
+    var removeId = {};
+    var i = 0;
+    id.forEach(function (item) {
+        removeId[i] = item;
+        i++;
+    });
+    $.ajax({
+        url: '/users/remove',
+        type: 'GET',
+        data: $.param(removeId),
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {},
+        error: function error() {
+            $('p.alert_message').text('Error:');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+    var formData = {
+        'practice_id': $('#edit_practice').attr('data-id')
+    };
+    $('.practice_location_item_list').html('');
+    getPracticeInfo(formData);
 
 }

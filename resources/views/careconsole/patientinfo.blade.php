@@ -1,6 +1,8 @@
 <div class="patient_records_info arial">
     <div class="close_patient_records_info">
-        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+       <img src="{{URL::asset('images/close-natural.png')}}" class="natural">
+       <img src="{{URL::asset('images/close-active.png')}}" class="active">
+<!--        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>-->
     </div>
     <div class="patient_demo_info">
         <p>
@@ -30,7 +32,7 @@
         <p class="contact_notes">
             Click on history status to see notes
         </p>
-        <div class="dropdown">
+        <div class="dropdown patient_info_action">
             <div id="dropdownMenuPatientInfo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" class="action_dropdown_patient_info dropdown-toggle">
                 <div style="cursor: pointer;">Take Action <span class="glyphicon glyphicon glyphicon-triangle-bottom"></span></div>
             </div>

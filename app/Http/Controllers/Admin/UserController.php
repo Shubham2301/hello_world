@@ -439,9 +439,9 @@ class UserController extends Controller {
 						->orWhere('middlename', 'LIKE', '%' . $search_val . '%')
 						->orWhere('lastname', 'LIKE', '%' . $search_val . '%');
 				})
-				->paginate(5);
+				->get();
 		} elseif (session('user-level') == 2) {
-			$users = User::getUsersByName($tosearchdata['value'])->paginate(5);
+			$users = User::getUsersByName($tosearchdata['value'])->get();
 		} else {
 			$search_val = $tosearchdata['value'];
 			$users = User::query()

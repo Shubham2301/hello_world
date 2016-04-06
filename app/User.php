@@ -145,6 +145,7 @@ CanResetPasswordContract {
 			->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
 			->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
 			->where('practice_id', $practice_id)
+            ->where('active', '1')
 			->get(['*', 'users.*']);
 
 	}
