@@ -159,8 +159,8 @@ class AppointmentController extends Controller {
 		$providerKey = $request->input('provider_acc_key');
 		$locationKey = $request->input('location_code');
 
-		$providerInfo['LocKey'] = $locationKey;
-		$providerInfo['AcctKey'] = $providerKey;
+		$apptInfo['LocKey'] = $locationKey;
+		$apptInfo['AcctKey'] = $providerKey;
 		$apptInfo['ApptTypeKey'] = $appointmentTypeKey;
 		$startime = new DateTime($appointmentTime);
 		$apptInfo['ApptStartDateTime'] = $startime->format('m/d/Y H:m');
