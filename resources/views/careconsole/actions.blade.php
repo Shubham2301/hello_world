@@ -14,40 +14,40 @@
                             <input type="hidden" value="" name="action_id" id="action_id">
                             <input type="hidden" value="" name="console_id" id="action_console_id">
                             <input type="hidden" value="" name="stage_id" id="action_stage_id">
-                            <div class="col-md-3 form-group">
+                            <div class="col-md-4 form-group">
                                 <lable for="action_result_id"><strong style="color:black;padding-left:1em;">Result</strong></lable>
                             </div>
                             <div class="col-md-7 form-group">
                                 <select class="form-control" name="action_result_id" id="action_result_id"></select>
                             </div>
-                            <div class="col-md-2"></div>
+                            <div class="col-md-1"></div>
                         </div>
                         <div class="row input_row" id="form_recall_date">
-                            <div class="col-md-3 form-group">
+                            <div class="col-md-4 form-group">
                                 <label for="recall_date"><strong style="color:black;padding-left:1em;">Recall date</strong></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <input type="text" class="form-control" name="recall_date" id="recall_date" rows="5">
                             </div>
-                            <div class="col-md-2"></div>
+                            <div class="col-md-1"></div>
                         </div>
-                        <div class="row input_row" id="form_manual_appointment_date">
-                            <div class="col-md-3 form-group">
-                                <label for="manual_appointment_date"><strong style="color:black;padding-left:1em;">Date</strong></label>
+                        <div class="row input_row" id="form_manual_appointment_date" style="display: none;">
+                            <div class="col-md-4 form-group">
+                                <label for="manual_appointment_date"><strong style="color:black;padding-left:1em;">Appointment Date</strong></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <input type="text" class="form-control" name="manual_appointment_date" id="manual_appointment_date">
                             </div>
-                            <div class="col-md-2"></div>
+                            <div class="col-md-1"></div>
                         </div>
                         <div class="row input_row">
-                            <div class="col-md-3 form-group">
+                            <div class="col-md-4 form-group">
                                 <label for="action_notes"><strong style="color:black;padding-left:1em;">Notes</strong></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <textarea class="form-control" name="action_notes" id="action_notes" rows="5"></textarea>
                             </div>
-                            <div class="col-md-2"></div>
+                            <div class="col-md-1"></div>
                         </div>
                     </div>
                 </div>

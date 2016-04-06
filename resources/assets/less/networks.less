@@ -62,32 +62,42 @@ p.search_result {
     margin: 1em;
 }
 .search_header {
-    margin: 1em;
-    border-bottom: 1px solid #fff;
+    border-bottom: 2px solid #f2f2f2;
 }
 .search_name,
 .search_edit {
     display: inline-flex;
 }
+.search_name{
+    padding: 0;
+    &>p{
+        margin: 0;
+    }
+}
 .search_edit {
     cursor: pointer;
-}
-p.pagination {
-    color: black;
-    display: inline-block;
-    margin: 0px;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+    &>p.editPatient_from_row {
+        margin: 0 1em;
+    }
 }
 .search_item {
-    margin: 1em;
-    border-bottom: 1px solid #fff;
+    margin: 0 1em;
+    padding: .8em 0;
+    border-bottom: 1px solid #f2f2f2;
     color: #f2f2f2;
     &:hover {
         color: #fff;
     }
-}
-.p_right,
-.p_left {
-    cursor: pointer;
+    &>div>p{
+        margin: 0;
+        &.editnetwork_from_row{
+            margin: 0 1em;
+            cursor: pointer;
+        }
+    }
 }
 
 /*
@@ -161,20 +171,16 @@ p.add_title {
         background-color: #cde8f4;
     }
 }
-.removenetwork_img {
-    width: 38px;
-    margin-top: -0.5em;
-    padding: 3px;
-    cursor: pointer;
-}
 #row_action_dropdown {
     background-color: #ebeced;
-    margin-top: -9px;
     box-shadow: 0px 0px 3px #82888f;
     border-radius: 5px;
     text-align: center;
-    width: 10em;
-    color: black;
+    margin-left: -4em;
+    color: #4d4d4d;
+    &>li>a{
+        padding: 0 .7em;
+    }
 }
 .confirm_text {
     margin-top: 8px;
@@ -240,14 +246,14 @@ p.add_title {
     }
 }
 .action_dropdown {
-    width: 38px;
-    margin-top: -0.6em;
+    width: 30px;
 }
 .network_listing {
     display: none;
     &.active {
         display: block
     }
+    margin-top: 0;
 }
 #button_active {
     background-color: #d2d3d5;
@@ -255,7 +261,7 @@ p.add_title {
     box-shadow: 0 1px 1px #d2d3d5;
     color: #5b5b5b;
     font-size: 1.2em;
-    font-weight: bold;
+    .arial_bold;
 }
 .popover {
     color: #4d4d4d;
@@ -263,4 +269,19 @@ p.add_title {
 .panel-title>span>a {
     text-decoration: none;
     font-size: 1.3em;
+}
+.search_header{
+    &>div{
+        &>input[type=checkbox]{
+            margin: auto 0;
+            margin-right: 1em;
+        }
+        &>p{
+            margin: 0;
+        }
+    }
+}
+.removenetwork_img {
+    width: 25px;
+    cursor: pointer;
 }

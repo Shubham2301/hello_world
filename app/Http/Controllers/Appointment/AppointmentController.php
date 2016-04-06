@@ -4,8 +4,10 @@ namespace myocuhub\Http\Controllers\Appointment;
 
 use Auth;
 use DateTime;
+use Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Appointment;
@@ -37,10 +39,14 @@ class AppointmentController extends Controller {
 		$appointment_type_id = $request->input('appointment_type_id');
 		$location = $request->input('location');
 		$locationID = $request->input('location_id');
+		$locationKey = $request->input('location_code');
+		$providerKey = $request->input('provider_acc_key');
 		$referraltype_id = $request->input('referraltype_id');
 		$action = $request->input('action');
 
 		$data = [];
+		$data['location_code'] = $locationKey;
+		$data['provider_acc_key'] = $providerKey;
 		$data['provider_name'] = User::find($provider_id)->name;
 		$data['practice_name'] = Practice::find($practice_id)->name;
 		$data['referraltype_id'] = $referraltype_id;
@@ -152,8 +158,11 @@ class AppointmentController extends Controller {
 		$appointmentTime = $request->input('appointment_time');
 		$patient = Patient::find($patientID);
 
-		$apptInfo['LocKey'] = 3839;
-		$apptInfo['AcctKey'] = 8042;
+		$providerKey = $request->input('provider_acc_key');
+		$locationKey = $request->input('location_code');
+
+		$apptInfo['LocKey'] = $locationKey;
+		$apptInfo['AcctKey'] = $providerKey;
 		$apptInfo['ApptTypeKey'] = $appointmentTypeKey;
 		$startime = new DateTime($appointmentTime);
 		$apptInfo['ApptStartDateTime'] = $startime->format('m/d/Y H:m');
@@ -179,18 +188,23 @@ class AppointmentController extends Controller {
 		$patientInsurance = PatientInsurance::where('patient_id', $patientID)->first();
 		if (sizeof($patientInsurance) == 0) {
 			$patientInsurance = new PatientInsurance;
-			$apptInfo['PatientData']['InsuranceCarrier'] = 0;
+			$apptInfo['PatientData']['InsuranceCarrier'] = 1;
 		} else {
-			$apptInfo['PatientData']['InsuranceCarrier'] = $patientInsurance->insurance_carrier_fpc_key;
+			if ($patientInsurance->insurance_carrier_fpc_key == null) {
+				$apptInfo['PatientData']['InsuranceCarrier'] = 2;
+			} else {
+				$apptInfo['PatientData']['InsuranceCarrier'] = $patientInsurance->insurance_carrier_fpc_key;
+			}
+
 		}
 
-		$apptInfo['PatientData']['OtherInsurance'] = $patientInsurance->insurance_carrier;
-		$apptInfo['PatientData']['SubscriberName'] = $patientInsurance->subscriber_name;
-		$subscriber_birthdate = new DateTime($patientInsurance->subscriber_birthdate);
+		$apptInfo['PatientData']['OtherInsurance'] = ($patientInsurance->insurance_carrier) ? $patientInsurance->insurance_carrier : '';
+		$apptInfo['PatientData']['SubscriberName'] = ($patientInsurance->subscriber_name) ? $patientInsurance->subscriber_name : '';
+		$subscriber_birthdate = new DateTime(($patientInsurance->subscriber_birthdate) ? $patientInsurance->subscriber_birthdate : $patient->birthdate);
 		$apptInfo['PatientData']['SubscriberDOB'] = $subscriber_birthdate->format('Y-m-d') . 'T00:00:00';
-		$apptInfo['PatientData']['SubscriberID'] = $patientInsurance->subscriber_id;
+		$apptInfo['PatientData']['SubscriberID'] = ($patientInsurance->subscriber_id) ? $patientInsurance->subscriber_id : '';
 		$apptInfo['PatientData']['GroupNum'] = '';
-		$apptInfo['PatientData']['RelationshipToPatient'] = $patientInsurance->subscriber_relation;
+		$apptInfo['PatientData']['RelationshipToPatient'] = ($patientInsurance->subscriber_relation) ? $patientInsurance->subscriber_relation : '';
 		$apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
 		$apptInfo['PatientData']['ReferredBy'] = '';
 		$apptInfo['PatientData']['NotesBox'] = '';
@@ -218,8 +232,15 @@ class AppointmentController extends Controller {
 		if ($apptResult->RequestApptInsertResult->ApptKey != -1) {
 			$appointment->fpc_id = $apptResult->RequestApptInsertResult->ApptKey;
 			$result = 'Appointment Scheduled Successfully';
+
+			$action = 'Appointment Scheduled for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
+			$description = '';
+			$filename = basename(__FILE__);
+			$ip = $request->getClientIp();
+			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		} else {
-			$result = 'Appointment could not be scheduled with 4PC at this moment. Please try again or contact our support team.';
+			$result = $apptResult->RequestApptInsertResult->Result;
 
 			$action = 'Attempt to shedule appointment failed for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
 			$description = '';

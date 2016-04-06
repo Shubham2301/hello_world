@@ -57,7 +57,6 @@ class DirectMailController extends Controller {
 		if (!$this->sesConnect->checkScope($request->impersonateuser)) {
 			$request->session()->flash('no_direct_mail', 'You do not have access rights to impersonate this user.');
 		} else {
-
 			$audit = new ImpersonationAudit;
 
 			session(['impersonation-id' => $request->impersonateuser]);
@@ -70,7 +69,6 @@ class DirectMailController extends Controller {
 			$audit->action = 'BEGIN IMPERSONATION';
 
 			$audit->save();
-
 		}
 
 		return redirect('directmail');
@@ -78,7 +76,6 @@ class DirectMailController extends Controller {
 	}
 
 	public function endImpersonate() {
-
 		$audit = new ImpersonationAudit;
 
 		$audit->user_impersonated_id = session('impersonation-id');
