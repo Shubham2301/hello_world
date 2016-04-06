@@ -181,7 +181,12 @@ class AppointmentController extends Controller {
 			$patientInsurance = new PatientInsurance;
 			$apptInfo['PatientData']['InsuranceCarrier'] = 0;
 		} else {
-			$apptInfo['PatientData']['InsuranceCarrier'] = $patientInsurance->insurance_carrier_fpc_key;
+			if ($patientInsurance->insurance_carrier_fpc_key == null) {
+				$apptInfo['PatientData']['InsuranceCarrier'] = 0;
+			} else {
+				$apptInfo['PatientData']['InsuranceCarrier'] = $patientInsurance->insurance_carrier_fpc_key;
+			}
+
 		}
 
 		$apptInfo['PatientData']['OtherInsurance'] = $patientInsurance->insurance_carrier;
