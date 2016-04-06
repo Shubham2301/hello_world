@@ -13,6 +13,10 @@ $(document).ready(function() {
         trigger: "manual"
     });
 
+    $('.dropdown-menu li').click(function(){
+        $('#search_patient_input_type').text($(this).text());
+        $('#search_patient_input_type').attr('value',$(this).attr('value'));
+    });
     $('.save_patient_button').on('click', function () {
         checkForm();
     });
@@ -87,7 +91,7 @@ $(document).ready(function() {
         selectProvider(id);
     });
     $('#add_search_option').on('click', function() {
-        var type = $('#search_patient_input_type').val();
+        var type = $('#search_patient_input_type').attr('value');
         var value = $('#search_patient_input').val();
         if (value != '') {
             var searchoption = getOptionContent(type, value);

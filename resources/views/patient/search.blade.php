@@ -3,12 +3,14 @@
    <div class="search_bar">
     <div class="col-xs-10 search_input">
         <input type="text" class="" id="search_patient_input">
-        <span class="glyphicon glyphicon-search" id="search_patient_button" aria-hidden="true"></span>
+<!--        <span class="glyphicon glyphicon-search" id="search_patient_button" aria-hidden="true"></span>-->
+       <img src="{{URL::asset('images/search-icon.png')}}" id="search_patient_button">
         <span class="glyphicon glyphicon-plus-sign add_search_option" id="add_search_option" aria-hidden="true"></span>
 
     </div>
     <div class="col-xs-2 search_dropdown">
         <!-- TODO: Create custom dropdown and write css in style.less and write js in main.js -->
+<!--
         <select type="text" class="" id="search_patient_input_type">
             <option value="all">All</option>
             <option value="name">Name</option>
@@ -17,6 +19,15 @@
             <option value="phone">Phone</option>
             <option value="address">Address</option>
         </select>
+-->
+   <div class="dropdown"><span  data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="custom_dropdown"><span id="search_patient_input_type" value="all">All</span><img src="/images/triangle-down.png" class="custom_dropdown_img_search"></span></span><ul class="dropdown-menu" id="custom_dropdown">
+                <li value="all">All</li>
+                <li value="name">Name</li>
+                <li value="ssn">SSN</li>
+                <li value="email">Email</li>
+                <li value="phone">Phone</li>
+                <li value="address">Address</li>
+        </ul></div>
     </div>
     </div >
     <div class="col-xs-12 search_filter">
