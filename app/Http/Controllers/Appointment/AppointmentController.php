@@ -152,8 +152,11 @@ class AppointmentController extends Controller {
 		$appointmentTime = $request->input('appointment_time');
 		$patient = Patient::find($patientID);
 
-		$apptInfo['LocKey'] = 3839;
-		$apptInfo['AcctKey'] = 8042;
+		$providerKey = $request->input('provider_acc_key');
+		$locationKey = $request->input('location_code');
+
+		$providerInfo['LocKey'] = $locationKey;
+		$providerInfo['AcctKey'] = $providerKey;
 		$apptInfo['ApptTypeKey'] = $appointmentTypeKey;
 		$startime = new DateTime($appointmentTime);
 		$apptInfo['ApptStartDateTime'] = $startime->format('m/d/Y H:m');
@@ -189,13 +192,13 @@ class AppointmentController extends Controller {
 
 		}
 
-		$apptInfo['PatientData']['OtherInsurance'] = $patientInsurance->insurance_carrier;
-		$apptInfo['PatientData']['SubscriberName'] = $patientInsurance->subscriber_name;
+		$apptInfo['PatientData']['OtherInsurance'] = ($patientInsurance->insurance_carrier) ? $patientInsurance->insurance_carrier : '';
+		$apptInfo['PatientData']['SubscriberName'] = ($patientInsurance->subscriber_name) ? $patientInsurance->subscriber_name : '';
 		$subscriber_birthdate = new DateTime($patientInsurance->subscriber_birthdate);
-		$apptInfo['PatientData']['SubscriberDOB'] = $subscriber_birthdate->format('Y-m-d') . 'T00:00:00';
-		$apptInfo['PatientData']['SubscriberID'] = $patientInsurance->subscriber_id;
+		$apptInfo['PatientData']['SubscriberDOB'] = ($patientInsurance->subscriber_birthdate) ? ($subscriber_birthdate->format('Y-m-d') . 'T00:00:00') : '0000-00-00T00:00:00';
+		$apptInfo['PatientData']['SubscriberID'] = ($patientInsurance->subscriber_id) ? $patientInsurance->subscriber_id : '';
 		$apptInfo['PatientData']['GroupNum'] = '';
-		$apptInfo['PatientData']['RelationshipToPatient'] = $patientInsurance->subscriber_relation;
+		$apptInfo['PatientData']['RelationshipToPatient'] = ($patientInsurance->subscriber_relation) ? $patientInsurance->subscriber_relation : '';
 		$apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
 		$apptInfo['PatientData']['ReferredBy'] = '';
 		$apptInfo['PatientData']['NotesBox'] = '';
