@@ -6,7 +6,7 @@ $(document).ready(function() {
     loadImportForm();
 
     $('#dob').datetimepicker({
-        format: 'YYYY/MM/DD'
+		format: 'MM/DD/YYYY'
     });
 
     $('.popover_text').popover({
