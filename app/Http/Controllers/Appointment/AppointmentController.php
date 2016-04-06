@@ -179,10 +179,10 @@ class AppointmentController extends Controller {
 		$patientInsurance = PatientInsurance::where('patient_id', $patientID)->first();
 		if (sizeof($patientInsurance) == 0) {
 			$patientInsurance = new PatientInsurance;
-			$apptInfo['PatientData']['InsuranceCarrier'] = 0;
+			$apptInfo['PatientData']['InsuranceCarrier'] = 1;
 		} else {
 			if ($patientInsurance->insurance_carrier_fpc_key == null) {
-				$apptInfo['PatientData']['InsuranceCarrier'] = 0;
+				$apptInfo['PatientData']['InsuranceCarrier'] = 2;
 			} else {
 				$apptInfo['PatientData']['InsuranceCarrier'] = $patientInsurance->insurance_carrier_fpc_key;
 			}
