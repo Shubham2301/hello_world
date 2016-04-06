@@ -579,12 +579,10 @@ p.no_of_patients {
 }
 
 .patient_records_info {
-    width: 30%;
+    width: 40%;
     background-color: #fff;
     display: none;
     opacity: 0;
-    right: 0;
-    top: 12%;
     color: #4d4d4d;
     padding: 1em 2em;
     border-top-left-radius: .5em;
@@ -595,6 +593,9 @@ p.no_of_patients {
     font-size: 0.9em;
 	right: 0%;
     font-weight: normal;
+    overflow-y: scroll;
+    top: 0;
+    height: 100%;
     .history_item_name {
         display: inline-block;
         left: 0;
@@ -612,7 +613,6 @@ p.no_of_patients {
         display: block;
         opacity: 0.95;
         transition: opacity .5s;
-		position: fixed;
     }
     .history_item {
         font-size: 0.9em;
@@ -800,4 +800,29 @@ p.info_header{
 }
 #drilldown_patients_listing{
     font-weight: normal;
+}
+.dropdown.patient_info_action {
+    margin-top: 1.5em;
+}
+.close_patient_records_info{
+    &>img {
+        cursor: pointer;
+        width: 1.4em;
+        &.natural {
+            display: block;
+        }
+        &.active {
+            display: none;
+        }
+    }
+    &:hover {
+        &>img {
+            &.natural {
+                display: none;
+            }
+            &.active {
+                display: block;
+            }
+        }
+    }
 }
