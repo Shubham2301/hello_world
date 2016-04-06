@@ -61,7 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('practices/remove', 'Practice\PracticeController@destroy');
 	Route::get('practices/users', 'Practice\PracticeController@practiceUsers');
 
-	Route::group(['middleware' => 'role:care-console, 2'], function () {
+	Route::group(['middleware' => 'role:care-console,0'], function () {
 		Route::get('careconsole/overview', 'CareConsole\CareConsoleController@getOverviewData');
 		Route::get('careconsole/drilldown', 'CareConsole\CareConsoleController@getDrilldownData');
 		Route::get('careconsole/action', 'CareConsole\CareConsoleController@action');
@@ -121,7 +121,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('investors', 'SupportController@investorsIndex');
 	Route::get('techsupport', 'SupportController@techSupportIndex');
 
-	Route::group(['middleware' => 'role:user-admin,2'], function () {
+	Route::group(['middleware' => 'role:user-admin,4, Administrator Staff'], function () {
 	Route::resource('administration/users', 'Admin\UserController');
 	Route::get('administration/users/edit/{id}', 'Admin\UserController@edit');
 	Route::post('administration/users/update/{id}', 'Admin\UserController@update');
@@ -140,7 +140,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('administration/networks', 'Admin\NetworkController');
 	Route::resource('administration/permissions', 'Admin\PermissionController');
 
-	Route::group(['middleware' => 'role:practice-admin,2'], function () {
+	Route::group(['middleware' => 'role:practice-admin,2,Administrator Staff'], function () {
 	Route::get('administration/practices', 'Practice\PracticeController@administration');
 	Route::get('administration/practices/create', 'Practice\PracticeController@create');
 	Route::get('administration/practices/edit/{id}/{location}', 'Practice\PracticeController@edit');
@@ -157,7 +157,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/announcements/update', 'AnnouncementController@update');
 	Route::get('/announcements/announcementbyuserlist', 'AnnouncementController@get_announcement_by_user');
 
-	Route::group(['middleware' => 'role:patient-admin'], function () {
+	Route::group(['middleware' => 'role:patient-admin,4,Administrator Staff'], function () {
 	Route::get('/administration/patients/create', 'Patient\PatientController@createByAdmin');
 	Route::get('administration/patients', 'Patient\PatientController@administration');
 	Route::post('administration/patients/add', 'Patient\PatientController@store');
@@ -172,5 +172,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('/patients/create', 'Patient\PatientController@create');
 	Route::get('/patient/destroy', 'Patient\PatientController@destroy');
-
+	Route::get('getlandingpages', 'Admin\UserController@getLandingPagebyRole');
 });

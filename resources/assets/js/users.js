@@ -1,6 +1,7 @@
 'use strict';
 $(document).ready(function () {
     loadAllUsers();
+	getLandingPageByRole();
 
     $('.profile_img_upload').on('change', function () {
         if ($(this).val() != '')
@@ -82,6 +83,17 @@ $(document).ready(function () {
             }
         });
     });
+	$('.user_roles').on('change', function(){
+
+		if($('#care-console').prop('checked')){
+			var content = '<option value="'+landingPage['care-console'][0]+'" id="care-console_page">'+landingPage['care-console'][1]+'</option>';
+			$('#landing_page').append(content);
+		}
+		else{
+			$('#landing_page').find('#care-console_page').remove();
+		}
+
+	});
     $(document).keypress(function (e) {
         if (e.which == 13) {
             $("#search_user_button").trigger("click");
@@ -124,7 +136,7 @@ $(document).ready(function () {
 
 
 });
-var flag = 0;
+
 $(document).click(function () {
     if (flag == 0) {
         $('.popover_text').popover("hide");
@@ -137,7 +149,8 @@ $(document).keypress(function (e) {
     }
     flag = 0;
 });
-
+var flag = 0;
+var landingPage = [];
 function getCheckedID() {
     var id = [];
     $.each($("input[name='checkbox']:checked"), function () {
@@ -307,5 +320,17 @@ function showUserInfo(id){
 			processData: false
 });
 
+}
 
+function getLandingPageByRole(){
+	$.ajax ({
+		url: '/getlandingpages',
+		cache: false,
+		processData: false,
+		contentType: false,
+		type: 'GET',
+		success: function (e) {
+		landingPage =$.parseJSON(e);
+		}
+	});
 }

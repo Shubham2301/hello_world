@@ -20,8 +20,9 @@ use myocuhub\Usertype;
 use Validator;
 
 class UserController extends Controller {
+
 	public function __construct() {
-		$this->middleware('role:user-admin, 2');
+		//$this->middleware('role:user-admin, 2');
 	}
 
 	/**
@@ -61,13 +62,13 @@ class UserController extends Controller {
 				$networkData[$network->id] = $network->name;
 			}
 		}
-		$menu_options = Menu::all();
+		$menu_options = Menu::find([1,2,3,4,5]);
 		$menuData = [];
 		foreach ($menu_options as $menu_option) {
-			if ($menu_option->id != 3 && $menu_option->id != 5) {
-				$menuData[$menu_option->id] = $menu_option->display_name;
-			}
-
+//			if ($menu_option->id != 3 && $menu_option->id != 5) {
+//				$menuData[$menu_option->id] = $menu_option->display_name;
+//			}
+			$menuData[$menu_option->id] = $menu_option->display_name;
 		}
 
 		$networkPractices = [];
@@ -241,13 +242,10 @@ class UserController extends Controller {
 					$networkData[$network->id] = $network->name;
 				}
 			}
-			$menu_options = Menu::all();
+			$menu_options = Menu::find([1,2,3,4,5]);
 			$menuData = [];
 			foreach ($menu_options as $menu_option) {
-				if ($menu_option->id != 3 && $menu_option->id != 5) {
 					$menuData[$menu_option->id] = $menu_option->display_name;
-				}
-
 			}
 			$user['network_id'] = '';
 			$user_network = NetworkUser::where('user_id', '=', $id)->first();
@@ -573,6 +571,15 @@ class UserController extends Controller {
 			'zip' => 'sometimes|numeric'
 		];
 		return $validationRules;
+	}
+
+	public function getLandingPagebyRole(Request $request){
+		$menuData = [];
+		$menuData['care-console'] = ['6' ,'Care Console'];
+		$menuData['administrator']      = ['7' ,'Administration'];
+
+		return json_encode($menuData);
+
 	}
 
 }
