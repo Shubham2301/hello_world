@@ -2,6 +2,10 @@ $(document).ready(function () {
 
     var insurancePrompt = 0;
 
+    $('.dropdown-menu li').click(function(){
+        $('#search_practice_input_type').text($(this).text());
+        $('#search_practice_input_type').attr('value',$(this).attr('value'));
+    });
     $('#select_date').datetimepicker({
         defaultDate: false,
         format: 'MM/DD/YYYY',
@@ -153,8 +157,8 @@ $(document).ready(function () {
     });
 
     $('#add_practice_search_option').on('click', function () {
-        var stype = $('#search_practice_input_type').val();
-        var type = $('#search_practice_input_type').find(":selected").text();
+        var stype = $('#search_practice_input_type').attr('value');
+        var type = $('#search_practice_input_type').text();
         var value = $('#search_practice_input').val();
         if (value != '') {
             if ($('.view_selected_patient').hasClass('remove')) {
@@ -247,7 +251,7 @@ $(document).ready(function () {
             $('.provider_previous').addClass('glyphicon-chevron-right');
         }
     });
-    
+
     $(document).on('click', '.dropdown_ins_list>li', function () {
         $('#insurance_carrier_key').val($(this).val());
         $('#insurance_carrier').val($(this).html());
@@ -467,7 +471,7 @@ function getInsuranceList(){
         contentType: 'text/html',
         async: false,
         success: function (e) {
-            e = $.parseJSON(e);            
+            e = $.parseJSON(e);
             var content = '';
             content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold custom_dropdown">Select Insurance List <img src="/images/dropdown-img.png" class="custom_dropdown_img"></span></a><ul class="dropdown-menu dropdown_ins_list" id="custom_dropdown">';
             if (e.GetInsListResult.InsItem.length > 0) {
@@ -506,7 +510,7 @@ function getProviders(formData) {
         async: false,
         success: function (e) {
             var practices = $.parseJSON(e);
-            var content = '<p><bold>' + practices.length + '<bold> results found</p><br>';
+            var content = '<p>' + practices.length + ' results found</p>';
             if (practices.length > 0) {
                 practices.forEach(function (practice) {
                     content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.provider_id + '"  practice-id="' + practice.practice_id + '" ><div class="row content-row-margin"><div class="col-xs-12 arial_bold provider_list_title">' + practice.provider_name + ' </div><div class="col-xs-6 provider_list_detail"> ' + practice.practice_name + ' </div><div class="col-xs-6 provider_list_detail">' + practice.practice_speciality + '' + '<br> ' + '' + ' </div></div></div>';

@@ -48,6 +48,7 @@ Content
     &>.announcement_row {
         display: flex;
         flex-direction: row;
+        margin-top: 1em;
         &>.left {
             flex-basis: 0;
             flex-grow: 1;
@@ -75,8 +76,7 @@ Content
                         cursor: pointer;
                     }
                     &>img {
-                        height: 1em;
-                        width: 1em;
+                        width: .7em;
                     }
                     .natural {
                         display: block;
@@ -191,7 +191,7 @@ Content
 .section_separator {
     border-bottom: 1px solid #cccccc;
     width: 100%;
-    margin: .3em 0;
+    margin: 1em 0;
 }
 .announcement_content {
     overflow-y: auto;
@@ -296,6 +296,7 @@ Make annoucement section
     flex-direction: row;
     justify-content: space-around;
     color: #4d4d4d;
+    margin-top: 1em;
     &>.item_left {
         flex-basis: 0;
         flex-grow: 1;
@@ -314,9 +315,10 @@ Make annoucement section
             justify-content: space-around;
             &.button_row {
                 justify-content: center;
+                margin: 1em 0;
                 &>button {
                     margin: 1em;
-                    padding: .5em .7em;
+                    padding: .4em .7em;
                 }
             }
             &>.left {
@@ -330,6 +332,7 @@ Make annoucement section
                 justify-content: space-between;
                 &>input {
                     width: 100%;
+                    border: 1px solid #0071bc;
                 }
                 &>span {
                     flex-basis: 0;
@@ -340,6 +343,7 @@ Make annoucement section
                 &>textarea {
                     height: 7em;
                     width: 100%;
+                    border: 1px solid #0071bc;
                 }
                 &>select {
                     width: 100%;
@@ -378,6 +382,12 @@ Make annoucement section
         }
     }
 }
+#schedule,
+#send_to{
+    padding: .3em;
+    background-color: #ebebeb;
+    border: none;
+}
 .make_row {
     display: flex;
     flex-direction: row;
@@ -385,9 +395,10 @@ Make annoucement section
     margin: 1em 0;
     &.button_row {
         justify-content: center;
+        margin: 1em 0;
         &>button {
             margin: 1em;
-            padding: .5em .7em;
+            padding: .4em .7em;
         }
     }
     &>#publish {

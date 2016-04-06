@@ -18,7 +18,7 @@ $(document).ready(function () {
         $('#form_patient_id').prop('disabled', true);
         $('#form_schedule_another_appointment').submit();
     });
-    $('#back').on('click', function(){
+    $('#back').on('click', function () {
         $('#form_schedule_another_appointment').attr('action', "/providers");
         $('#form_schedule_another_appointment').submit();
     });
@@ -32,10 +32,9 @@ function scheduleAppointment() {
     var location_id = $('#form_location_id').val();
     var appointment_type_key = $('#form_appointment_type_id').val();
     var appointment_time = $('#form_appointment_date').val() + ' ' + $('#form_appointment_time').val();
-     var appointment_type_name = $('#form_appointment_type_name').val();
-     var provider_acc_key = $('#form_provider_acc_key').val();
-     var location_code = $('#form_location_code').val();
-   
+    var appointment_type_name = $('#form_appointment_type_name').val();
+    var provider_acc_key = $('#form_provider_acc_key').val();
+    var location_code = $('#form_location_code').val();
 
     var formData = {
         'patient_id': patient_id,
@@ -56,13 +55,10 @@ function scheduleAppointment() {
         contentType: 'text/html',
         async: false,
         success: function (e) {
-            if($('#form_action').val() === 'careconsole')
-            {
+            if ($('#form_action').val() === 'careconsole') {
                 $('#back_to_console').show();
                 $('#schedule_new_patient').hide();
-            }
-            else
-            {
+            } else {
                 $('#back_to_console').hide();
                 $('#schedule_new_patient').show();
             }

@@ -207,15 +207,19 @@ Section : Imports
     }
 }
 #practice_listing {
-    width: 90%;
-    margin: 2em auto;
+    width: 85%;
+    margin: 1em auto;
 }
 .practice_list {
     overflow-y: scroll;
     display: none;
+    margin: 0;
     &.active {
         display: block;
         overflow-y: hidden;
+    }
+    &>p{
+        margin: 0;
     }
 }
 .practice_search_content {
@@ -245,6 +249,7 @@ Section : Imports
 }
 .dropdown {
     color: #000;
+    margin: auto;
 }
 .availability {
     display: none;
@@ -275,7 +280,7 @@ Section : Imports
                 text-align: center;
                 &>p.date {
                     font-size: 1.2em;
-                    font-weight: 600;
+                    .arial_bold;
                     text-decoration: underline;
                     padding: 0 .2em;
                 }
@@ -340,7 +345,7 @@ input {
     border-radius: 1em;
     padding: .5em 1em;
     text-align: left;
-    widows: auto;
+    min-width: 9em;
     color: black;
 }
 ul.time_selector {
@@ -378,6 +383,7 @@ p.patient_dropdown_data {
 }
 .provider_list_title {
     font-size: 1.1em;
+    padding-bottom: .3em;
 }
 .provider_list_detail {
     font-size: .9em;
@@ -386,7 +392,7 @@ p.patient_dropdown_data {
     font-size: .9em;
 }
 #practice_name {
-    text-decoration: underline;
+    margin: 0;
 }
 #button_active {
     background-color: #d2d3d5;
@@ -420,4 +426,43 @@ p.patient_dropdown_data {
     width: 1.5em;
     height: 1.5em;
     margin: auto .5em;
+}
+.custom_dropdown_img_search{
+    width: 1em;
+    height: 1em;
+    margin: auto .5em;
+}
+.practice_name_underline{
+    width: 2em;
+    margin-top: 0;
+    margin-left: 0;
+    border-top: 2px solid #eee;
+}
+.content-right {
+    padding: 15px;
+}
+.provider_info_row>div>p{
+    margin-bottom: 1.3em;
+    &.get_availability{
+        margin-bottom: 0;
+    }
+}
+.custom_dropdown{
+    cursor: pointer;
+}
+.dropdown-menu>ul>li{
+    color: #4d4d4d;
+    &:hover {
+        color: #000;
+    }
+}
+#custom_dropdown {
+    background-color: #ebeced;
+    box-shadow: 0px 0px 3px #82888f;
+    border-radius: 1em;
+    padding: .5em 1em;
+    text-align: left;
+    min-width: 9em;
+    color: black;
+    margin-top: .5em;
 }

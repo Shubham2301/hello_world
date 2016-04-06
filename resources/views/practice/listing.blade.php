@@ -1,29 +1,10 @@
 <div class="row content-row-margin practice_list">
 
-    <p id="search_results" class="search_result"><strong></strong></p>
-    <div class="row search_header">
-        <div class="col-xs-3 search_name_header">
-            <div>
-                <input id="checked_all_practice" type="checkbox">&nbsp;&nbsp;</div>
-            <div class="">
-                <p style="color:black"><strong>Name</strong></p>
-            </div>
-        </div>
-        <div class="col-xs-4">
-            <p style="color:black"><strong>Address</strong></p>
-        </div>
-        <div class="col-xs-3">
-            <p style="color:black"><strong>Email</strong></p>
-        </div>
-        <div class="col-xs-2">
-            <input type="hidden" id="schedule_practice_img" value="{{asset('images/schedule.png')}}">
-            <input type="hidden" id="delete_practice_img" value="{{asset('images/delete-active-01.png')}}">
-            <p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong>2 of 2</strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
-        </div>
-    </div>
     <form action="">
             <input type="hidden" id="assign_role_image_path" value="{{URL::asset('images/assign-role-icon-01.png')}}">
             <input type="hidden" id="assign_user_image_path" value="{{URL::asset('images/assign-user-icon-01.png')}}">
+            <input type="hidden" id="location_previous_icon" value="{{URL::asset('images/triangle-down.png')}}">
+            <input type="hidden" id="location_next_icon" value="{{URL::asset('images/triangle-up.png')}}">
         </form>
     <div class="practice_search_content">
         <!--

@@ -40,7 +40,6 @@ class SESConnect extends SES {
 			if ($level === 2) {
 				$networkId = User::getNetwork($user->id)->id;
 				$user_networkId = User::getNetwork($userId)->id;
-
 				if ($networkId != $user_networkId) {
 					return false;
 				} else {

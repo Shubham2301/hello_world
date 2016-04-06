@@ -49,14 +49,6 @@ $(document).ready(function () {
             loadAllUsers();
         }
     });
-    $('.p_left').on('click', function () {
-        if (currentpage > 1)
-            getUsers(null, currentpage - 1);
-    });
-    $('.p_right').on('click', function () {
-        if (currentpage < lastpage)
-            getUsers(null, currentpage + 1);
-    });
     $('#refresh_users').on('click', function () {
         $('#search_user_input').val('');
         loadAllUsers();
@@ -73,13 +65,13 @@ $(document).ready(function () {
                 $(this).find('input').prop('checked', true);
             });
             $('.admin_delete').addClass('active');
-            $('.delete_from_row_dropdown').addClass('hide');
+            $('.delete_from_row_dropdown').addClass('invisible');
         } else {
             $('.user_search_content').each(function () {
                 $(this).find('input').prop('checked', false);
             });
             $('.admin_delete').removeClass('active');
-            $('.delete_from_row_dropdown').removeClass('hide');
+            $('.delete_from_row_dropdown').removeClass('invisible');
         }
     });
     $('.admin_delete').on('click', function () {
@@ -102,10 +94,10 @@ $(document).ready(function () {
     $('.user_search_content').on('change', '.admin_checkbox_row', function () {
         if ($("input[name='checkbox']:checked").length > 0) {
             $('.admin_delete').addClass('active');
-            $('.delete_from_row_dropdown').addClass('hide');
+            $('.delete_from_row_dropdown').addClass('invisible');
         } else {
             $('.admin_delete').removeClass('active');
-            $('.delete_from_row_dropdown').removeClass('hide');
+            $('.delete_from_row_dropdown').removeClass('invisible');
         }
     });
     $('.user_listing').on('click', '.removeuser_from_row', function () {
@@ -124,7 +116,7 @@ $(document).ready(function () {
 		showUserInfo(id)
 	});
 	$('.user_info').on('click','.user_back',function(){
-		$('.user_admin_search').addClass('active');
+		$('.user_admin_index_header').removeClass('hide');
 		$('.user_listing').addClass('active');
 		$('.no_item_found').removeClass('active');
 		$('.user_info').removeClass('active');
@@ -145,8 +137,6 @@ $(document).keypress(function (e) {
     }
     flag = 0;
 });
-var currentpage = 1;
-var lastpage = 0;
 
 function getCheckedID() {
     var id = [];
@@ -192,7 +182,7 @@ function getUsers(formData, page) {
     var scheduleimg = $('#dropdown_natural_img').val();
     var assign_role_image = $('#assign_role_image_path').val();
     var assign_user_image = $('#assign_user_image_path').val();
-	$('.user_admin_search').addClass('active');
+	$('.user_admin_index_header').removeClass('hide');
     $.ajax({
         url: '/users/search?page=' + page,
         type: 'GET',
@@ -205,18 +195,12 @@ function getUsers(formData, page) {
             var users = $.parseJSON(e);
             var content = '';
             $('#search_results').text('');
-            if (users.length > 0 && users[0]['total'] > 0) {
+            if (users.length > 0) {
                 users.forEach(function (user) {
                     content += '<div class="row search_item" data-id="' + user.id + '"><div class="col-xs-3 search_name"><input type="checkbox" class="admin_checkbox_row" data-id="' + user.id + '" name="checkbox">&nbsp;&nbsp;<p class="user_row_name">' + user.name + '</p></div><div class="col-xs-3">' + user.email + '</div><div class="col-xs-2"><p>' + user.level + '</p></div><div class="col-xs-2"><p>' + user.practice + '</p></div><div class="col-xs-2 search_edit"><p><div class="dropdown dropdown_action"><span  area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown" src="' + scheduleimg + '" alt=""></span><ul class="dropdown-menu" id="row_action_dropdown">';
                     //                  content += '<li><a href="" style="margin-left: -5.1em;"><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px;">&nbsp;Roles</a></li>';
-                    content += '<li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">&nbsp;Impersonate User</a></li></ul></div></p><p class="edituser_from_row">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removeuser_from_row"><img src="' + activate_img + '" alt="" class="removeuser_img" data-toggle="tooltip" title="Deactivate User" data-placement="top"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to deactivate this person?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+                    content += '<li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">&nbsp;Impersonate User</a></li></ul></div></p><p class="edituser_from_row arial_bold">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removeuser_from_row"><img src="' + activate_img + '" alt="" class="removeuser_img" data-toggle="tooltip" title="Deactivate User" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to deactivate this person?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                 });
-                currentpage = users[0]['currentPage'];
-                lastpage = users[0]['lastpage'];
-                var result = currentpage * 5;
-                if (result > users[0]['total'])
-                    result = users[0]['total'];
-                $('.page_info').text(result + ' of ' + users[0]['total']);
                 $('.user_search_content').html(content);
                 $('.user_listing').addClass('active');
                 $('[data-toggle="tooltip"]').tooltip();
@@ -309,7 +293,7 @@ function showUserInfo(id){
 		contentType: 'text/html',
 		async: false,
 		success: function (e) {
-		$('.user_admin_search').removeClass('active');
+		$('.user_admin_index_header').addClass('hide');
 		$('.user_listing').removeClass('active');
 		$('.no_item_found').removeClass('active');
 		$('.user_info').addClass('active');
