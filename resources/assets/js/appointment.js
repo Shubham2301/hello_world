@@ -33,6 +33,8 @@ function scheduleAppointment() {
     var appointment_type_key = $('#form_appointment_type_id').val();
     var appointment_time = $('#form_appointment_date').val() + ' ' + $('#form_appointment_time').val();
      var appointment_type_name = $('#form_appointment_type_name').val();
+     var provider_acc_key = $('#form_provider_acc_key').val();
+     var location_code = $('#form_location_code').val();
    
 
     var formData = {
@@ -40,6 +42,8 @@ function scheduleAppointment() {
         'provider_id': provider_id,
         'practice_id': practice_id,
         'location_id': location_id,
+        'location_code': location_id,
+        'provider_acc_key': provider_acc_key,
         'appointment_type': appointment_type_name,
         'appointment_type_key': appointment_type_key,
         'appointment_time': appointment_time
