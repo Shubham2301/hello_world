@@ -365,8 +365,9 @@ class UserController extends Controller {
 				$userData['network_id'] = $request->input('user_network');
 			} else {
 				$userData['network_id'] = session('network-id');
+				$network_user = NetworkUser::firstOrCreate($userData);
 			}
-			$network_user = NetworkUser::firstOrCreate($userData);
+
 		}
 
 		$action = 'update user of id =' . $id;
