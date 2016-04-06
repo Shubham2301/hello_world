@@ -23,11 +23,13 @@
     {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
     {!! Form::hidden('provider_id', $data['provider_id'], array('id' => 'form_provider_id')) !!}
     {!! Form::hidden('practice_id', $data['practice_id'], array('id' => 'form_practice_id')) !!}
+    {!! Form::hidden('provider_acc_key', $data['provider_acc_key'], array('id' => 'form_provider_acc_key')) !!}
     {!! Form::hidden('appointment_date', $data['appointment_date'], array('id' => 'form_appointment_date')) !!}
     {!! Form::hidden('appointment_time', $data['appointment_time'], array('id' => 'form_appointment_time')) !!}
     {!! Form::hidden('appointment_type_name', $data['appointment_type_name'], array('id' => 'form_appointment_type_name')) !!}
     {!! Form::hidden('appointment_type_id', $data['appointment_type_id'], array('id' => 'form_appointment_type_id')) !!}
     {!! Form::hidden('location_id', $data['location_id'], array('id' => 'form_location_id')) !!}
+    {!! Form::hidden('location_code', $data['location_code'], array('id' => 'form_location_code')) !!}
     {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patient_id')) !!}
     {!! Form::close() !!}
     <div class="appointment_section active" id="confirm-appointment">
@@ -57,7 +59,6 @@
         </div>
         <div class="appointment_message arial">
             <p><span><input type="checkbox" disabled></span> Send patient C-CDA file to provider</p>
-            <p><span><input type="checkbox" id="add_insurance" @if( $insurance['insurance_carrier'] != '') checked @endif></span> Insurance</p>
         </div>
         <div class="appointment_confirm center-align arial">
             <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment" data-toggle="tooltip" title="You will loose all progress" data-placement="bottom">Abort</button></p>
@@ -70,5 +71,4 @@
         </div>
     </div>
 </div>
-@include('appointment.insurance-details')
 @endsection

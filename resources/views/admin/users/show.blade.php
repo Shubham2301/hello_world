@@ -12,11 +12,11 @@
                 <img src="{{asset('images/patient.png')}}" alt="">
             </div>
             <div class="col-xs-8">
-                <p class="bold arial_bold" id="user_name">{{ $data['user']['lastname'].','.$data['user']['firstname'] }}</p>
-
+                <p class="bold arial_bold subsection_header" id="user_name">{{ $data['user']['lastname'].','.$data['user']['firstname'] }}</p>
+                <hr class="user_underline">
 				<div class="row section_header">
                     <div class="col-xs-9 arial_bold">
-                        <p>General Information</p>
+                        <p class="subsection_header">General Information</p>
                         <p class="section-break"></p>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
 
 				<div class="row section_header">
 					<div class="col-xs-9 arial_bold">
-                        <p>Roles and User Access</p>
+                        <p class="subsection_header">Roles and User Access</p>
                         <p class="section-break"></p>
                     </div>
                 </div>

@@ -167,9 +167,10 @@ class CareConsoleController extends Controller {
 		$actionID = $request->action_id;
 		$actionResultID = $request->action_result_id;
 		$recallDate = $request->recall_date;
+		$manualAppointmentDate = $request->manual_appointment_date;
 		$notes = $request->notes;
 		$consoleID = $request->console_id;
-		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID);
+		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID, $manualAppointmentDate);
 		$stage = CareConsole::find($consoleID)->stage;
 		$patientStage['id'] = $stage->id;
 		$patientStage['name'] = $stage->display_name;

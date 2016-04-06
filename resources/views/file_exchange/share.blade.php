@@ -4,7 +4,8 @@
         <div class="modal-content">
                 {!! csrf_field() !!}
                 <span class="modal_title arial_bold">Share</span>
-                <span class="modal_content_row">
+
+                    <span class="modal_content_row">
                     <span class="left">Practice</span>
                     <span class="right">
                         <select name="share_practices" class="form-control" id="share_practices">
@@ -25,12 +26,16 @@
                         </select>
                     </span>
                 </span>
+			<span class="modal_content_row">
+				<span class="left ">&nbsp;</span>
+				<span class="right"><span class="btn primary-btn"><input type="checkbox" name='share_with_network' id='share_in_network'></span>&nbsp;<p class="share_text">Share with all network users </p></span>
+			</span>
 
                 <span class="modal_content_row">
-                    <span class="left">Writable</span>
+                    <span class="left ">Writable</span>
                     <span class="right">
-                        <span class="file-input">
-                            <span class="btn primary-btn"><input type="checkbox" name="share_writable" style=""></span>
+						<span class="file-input ">
+							<span class="btn primary-btn"><input type="checkbox" name="share_writable" style="margin-left: -10px;"></span>
                         </span>
                     </span>
                 </span>

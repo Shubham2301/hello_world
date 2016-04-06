@@ -244,6 +244,9 @@ class CareConsoleService {
 			case 'scheduled-to':
 				$appointment = Appointment::find($patient['appointment_id']);
 				$provider = User::find($appointment->provider_id);
+				if (!$provider) {
+					return '-';
+				}
 				$provider = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
 				$practice = Practice::find($appointment->practice_id);
 				$practice = $practice->name;
@@ -307,7 +310,7 @@ class CareConsoleService {
 			$console = Careconsole::find($patient['id']);
 
 			//moved patient back into console
-			$this->ActionService->userAction(34, '-1', null, 'moved to console', $console->id);
+			$this->ActionService->userAction(34, '-1', null, 'moved to console', $console->id, '');
 		}
 	}
 }

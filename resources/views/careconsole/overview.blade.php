@@ -9,7 +9,7 @@
                     <div class="info_section_title">{{ $stage['kpis'][$i]['display_name'] }}</div>
                     <div class="right">
                         <div class="circle" style="background-color:{{ $stage['kpis'][$i]['color_indicator'] }}"></div>
-                        <div class="info_section_number {{ $stage['kpis'][$i]['name'] }}">{{ $stage['kpis'][$i]['count'] }}</div>
+                        <div class="info_section_number {{ $stage['kpis'][$i]['name'] }} arial_bold">{{ $stage['kpis'][$i]['count'] }}</div>
                     </div>
                 </div>
                 @if($i < $stage['kpi_count'] - 1)
@@ -18,7 +18,7 @@
                 @endfor
                 @endif
             </div>
-            <div class="bottom stage" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}">
+            <div class="bottom stage arial_bold" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}">
                 <p>{{ $stage['display_name'] }}</p>
             </div>
         </div>

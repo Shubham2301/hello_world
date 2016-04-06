@@ -20,8 +20,8 @@
                                         <option value="{{ $user['id'] }}">{{ $user['name'] }}</option>
                                         @endforeach
                                     </select>
-                                
-                                
+
+
                             </div>
                             <div class="col-md-2"></div>
                         </div>

@@ -27,7 +27,7 @@ class Folder extends Model
     	if($parent_id == null){
     		return Folder::where('status', '=', $active)
     			->where('owner_id', '=', Auth::user()->id)
-                ->whereNull('parent_id')
+                //->whereNull('parent_id')
     			->orderBy('name', 'asc')->get();
     	}
 

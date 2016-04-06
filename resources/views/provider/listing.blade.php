@@ -15,7 +15,8 @@
         </div>
         <div class="col-xs-8">
             <p class="bold arial_bold" id="practice_name">Opthalmic Consultants of Long Island</p>
-            <div class="row">
+            <hr class="practice_name_underline">
+            <div class="row provider_info_row">
                 <div class="col-xs-6">
                     <p><span class="bold arial_bold">Doctor Name</span>
                         <br><span class="provider_detail_text arial" id="provider_name"></span></p>
