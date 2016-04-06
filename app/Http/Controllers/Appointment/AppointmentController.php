@@ -4,9 +4,10 @@ namespace myocuhub\Http\Controllers\Appointment;
 
 use Auth;
 use DateTime;
+use Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use myocuhub\Events\Event;
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Appointment;
@@ -232,14 +233,14 @@ class AppointmentController extends Controller {
 			$appointment->fpc_id = $apptResult->RequestApptInsertResult->ApptKey;
 			$result = 'Appointment Scheduled Successfully';
 
-			$action = 'Appointment scheduled for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
+			$action = 'Appointment Scheduled for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
 			$description = '';
 			$filename = basename(__FILE__);
 			$ip = $request->getClientIp();
 			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
 		} else {
-			$result = 'Appointment could not be scheduled with 4PC at this moment. Please try again or contact our support team.';
+			$result = $apptResult->RequestApptInsertResult->Result;
 
 			$action = 'Attempt to shedule appointment failed for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
 			$description = '';

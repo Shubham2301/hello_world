@@ -42,7 +42,7 @@ function scheduleAppointment() {
         'provider_id': provider_id,
         'practice_id': practice_id,
         'location_id': location_id,
-        'location_code': location_id,
+        'location_code': location_code,
         'provider_acc_key': provider_acc_key,
         'appointment_type': appointment_type_name,
         'appointment_type_key': appointment_type_key,
