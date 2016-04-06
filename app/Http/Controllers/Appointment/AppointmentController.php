@@ -6,6 +6,7 @@ use Auth;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use myocuhub\Events\Event;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Appointment;
@@ -198,8 +199,8 @@ class AppointmentController extends Controller {
 
 		$apptInfo['PatientData']['OtherInsurance'] = ($patientInsurance->insurance_carrier) ? $patientInsurance->insurance_carrier : '';
 		$apptInfo['PatientData']['SubscriberName'] = ($patientInsurance->subscriber_name) ? $patientInsurance->subscriber_name : '';
-		$subscriber_birthdate = new DateTime($patientInsurance->subscriber_birthdate);
-		$apptInfo['PatientData']['SubscriberDOB'] = ($patientInsurance->subscriber_birthdate) ? ($subscriber_birthdate->format('Y-m-d') . 'T00:00:00') : '0000-00-00T00:00:00';
+		$subscriber_birthdate = new DateTime(($patientInsurance->subscriber_birthdate) ? $patientInsurance->subscriber_birthdate : $patient->birthdate);
+		$apptInfo['PatientData']['SubscriberDOB'] = $subscriber_birthdate->format('Y-m-d') . 'T00:00:00';
 		$apptInfo['PatientData']['SubscriberID'] = ($patientInsurance->subscriber_id) ? $patientInsurance->subscriber_id : '';
 		$apptInfo['PatientData']['GroupNum'] = '';
 		$apptInfo['PatientData']['RelationshipToPatient'] = ($patientInsurance->subscriber_relation) ? $patientInsurance->subscriber_relation : '';
@@ -230,6 +231,13 @@ class AppointmentController extends Controller {
 		if ($apptResult->RequestApptInsertResult->ApptKey != -1) {
 			$appointment->fpc_id = $apptResult->RequestApptInsertResult->ApptKey;
 			$result = 'Appointment Scheduled Successfully';
+
+			$action = 'Appointment scheduled for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
+			$description = '';
+			$filename = basename(__FILE__);
+			$ip = $request->getClientIp();
+			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		} else {
 			$result = 'Appointment could not be scheduled with 4PC at this moment. Please try again or contact our support team.';
 
