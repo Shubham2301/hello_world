@@ -9,6 +9,11 @@ $(document).ready(function() {
 		format: 'MM/DD/YYYY'
     });
 
+    $('#dob').on('change', function(){
+        console.log($(this).val());
+
+    });
+
     $('.popover_text').popover({
         trigger: "manual"
     });
