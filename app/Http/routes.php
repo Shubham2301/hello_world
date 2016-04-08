@@ -121,7 +121,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('investors', 'SupportController@investorsIndex');
 	Route::get('techsupport', 'SupportController@techSupportIndex');
 
-	Route::group(['middleware' => 'role:user-admin,4, Administrator Staff'], function () {
+	Route::group(['middleware' => 'role:user-admin,2, Administrator Staff'], function () {
 	Route::resource('administration/users', 'Admin\UserController');
 	Route::get('administration/users/edit/{id}', 'Admin\UserController@edit');
 	Route::post('administration/users/update/{id}', 'Admin\UserController@update');
