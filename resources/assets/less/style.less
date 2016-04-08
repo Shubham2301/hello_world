@@ -168,15 +168,18 @@ p.error {
     .right-border;
     .content-padding;
     background: @light-gray;
-    overflow-y: auto;
+    overflow-y: scroll;
     //    box-shadow: inset 0 30px 60px -10px #d1d1d1, inset 0 -12px 20px -8px #d1d1d1;
 }
 .content-right {
+    display: flex;
+    flex-direction: column;
     .content-padding;
     overflow-y: scroll;
     //    box-shadow: inset 0 30px 60px -10px #0193d7, inset 0 -12px 20px -8px #0193d7;
     color: @font-color-1;
     background: @primary-blue;
+        padding: 1em 0;
 }
 .ocuhub_logo_blue {
     background: @primary-blue url(../../images/signin_logo_bg_blue.png) no-repeat left bottom;
@@ -193,7 +196,7 @@ p.error {
 }
 .content-section,
 .admin-console-section {
-    margin-bottom: 2em;
+//    margin-bottom: 2em;
     display: none;
     &.active {
         display: block;
@@ -225,8 +228,13 @@ p.error {
     &>span {
         color: #0071bc;
         position: absolute;
-        margin: .8em;
+        margin: .6em .5em;
+    }
+    &>img {
+        width: 1.7em;
+        position: absolute;
         right: 0;
+        margin: .4em .3em;
     }
 }
 .login_form_input {
@@ -241,25 +249,9 @@ p.error {
     background-color: rgb(236, 236, 236);
     height: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
-    &>select {
-        width: 100%;
-        background: none;
-        color: #4d4d4d;
-        border: none;
-        border-radius: 0;
-        font-size: 1.1em;
-        box-shadow: none;
-        outline: none;
-        cursor: pointer;
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        background-image: url('../../images/dropdown-triangle.png');
-        background-repeat: no-repeat;
-        background-position: right center;
-        background-size: 1em 1em;
-    }
+    padding: 0;
 }
 .select_provider_button {
     display: none;
@@ -357,11 +349,11 @@ Section : Sidebar
         &>p.view_selected_patient {
             margin-left: auto;
             cursor: pointer;
-            text-decoration: underline;
+            border-bottom: 1px solid #4d4d4d;
         }
         &>p.change_selected_patient {
             cursor: pointer;
-            text-decoration: underline;
+            border-bottom: 1px solid #4d4d4d;
         }
     }
 }
@@ -599,6 +591,18 @@ Section : Admin Sidebar
                 display: none;
             }
         }
+        &.patients:hover{
+            color: #de3c4b;
+        }
+        &.practices:hover{
+            color: #7e6551;
+        }
+        &.networks:hover{
+            color: #808080;
+        }
+        &.users:hover{
+            color: #6b31d7;
+        }
         &:active {
             background-color: #d2d3d5;
             .gradient(#d2d3d5,
@@ -612,6 +616,8 @@ Section : Admin Sidebar
             justify-content: center;
             &.add_text {
                 display: flex;
+                flex-direction: row;
+                align-items: center;
             }
             &.img_on_hover {
                 display: none;
@@ -695,6 +701,18 @@ File Exchange Sidebar
     &:focus {
         text-decoration: none;
         color: #4d4d4d;
+    }
+}
+/*
+-------------------------
+Section : Sidebar Updates
+-------------------------
+*/
+.row.sidebar_header{
+    display: flex;
+    justify-content: center;
+    &>div>.dropdown{
+        margin: 0 .5em;
     }
 }
 
@@ -819,5 +837,32 @@ Section : Admin
     margin-top: -5px;
     &>modal-body{
         
+    }
+}
+.content-right{
+    overflow-y: auto;
+}
+.search_item > div {
+    word-wrap: break-word;
+}
+.auto_scroll{
+    overflow-y: scroll;
+    margin-bottom: 1em;
+}
+img.admin_seacrh_icon{
+    width: 2em;
+    height: 2em;
+    margin: auto;
+    cursor: pointer;
+}
+.sidebar_user_img_dropdown{
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    &>img {
+        margin: auto;
+    }
+    &>span{
+        margin: 0.5em auto;
     }
 }

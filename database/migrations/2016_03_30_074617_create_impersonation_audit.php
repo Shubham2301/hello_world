@@ -19,7 +19,7 @@ class CreateImpersonationAudit extends Migration
             $table->string('action');
             $table->timestamps();
         });
-        
+
         Schema::table('impersonation_audit', function (Blueprint $table) {
             $table->foreign('logged_in_user_id')->references('id')->on('users')
 				->onUpdate('cascade');

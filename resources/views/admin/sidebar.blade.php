@@ -1,10 +1,10 @@
 <div class="no-padding">
     <div class="row sidebar_header center">
-        <div class="col-lg-2 col-md-2">
+        <div>
             <div class="dropdown">
-                <button class="dropdown-toggle admin_button" type="button" data-toggle="dropdown">
+                <span class="dropdown-toggle admin_button sidebar_user_img_dropdown" type="button" data-toggle="dropdown">
                 <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'">
-                <span class="caret"></span></button>
+                <span class="caret"></span></span>
                 <ul class="dropdown-menu sidebar">
                     <li class="hello">
                         <a href="/directmail" data-toggle="tooltip" title="Direct Mail" data-placement="right"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="drop_image"></a>
@@ -35,7 +35,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-lg-9 col-md-10">
+        <div>
         <h3 class="title"> Administration</h3></div>
     </div>
     <!--
@@ -79,9 +79,9 @@
                                         <a class="sidebar_button_subsection subsection_admin_add" href="/administration/patients/create">
                                             <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-patient-icon.png')}}" style="width:100%"></span>
                                             <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-patient-icon-hover.png')}}" style="width:100%"></span>
-                                            <span class="add_text">add+</span>
+                                            <span class="add_text">add<span class="arial_bold" style="color:#de3c4b;">+</span></span>
                                         </a>
-                                        <a class="sidebar_button_subsection subsection_admin_title" href="/administration/patients" id="{{ array_key_exists('patient_active', $data) ? 'button_active' : '' }}">
+                                        <a class="sidebar_button_subsection subsection_admin_title patients" href="/administration/patients" id="{{ array_key_exists('patient_active', $data) ? 'button_active' : '' }}">
                                             <span>Patients</span>
                                         </a>
                                     </li>
@@ -100,9 +100,9 @@
                                         <a class="sidebar_button_subsection subsection_admin_add" href="/administration/practices/create">
                                             <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-practice-icon.png')}}" style="width:100%"></span>
                                             <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-practice-icon-hover.png')}}" style="width:100%"></span>
-                                            <span class="add_text">add+</span>
+                                            <span class="add_text">add<span class="arial_bold" style="color:#7e6551;">+</span></span>
                                         </a>
-                                        <a class="sidebar_button_subsection subsection_admin_title" href="/administration/practices" id="{{ array_key_exists('practice_active', $data) ? 'button_active' : '' }}">
+                                        <a class="sidebar_button_subsection subsection_admin_title practices" href="/administration/practices" id="{{ array_key_exists('practice_active', $data) ? 'button_active' : '' }}">
                                             <span>Practices</span>
                                         </a>
                                     </li>
@@ -112,9 +112,9 @@
                                         <a class="sidebar_button_subsection subsection_admin_add" href="/administration/networks/create">
                                             <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-network-icon.png')}}" style="width:100%"></span>
                                             <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-network-icon-hover.png')}}" style="width:100%"></span>
-                                            <span class="add_text">add+</span>
+                                            <span class="add_text">add<span class="arial_bold" style="color:#808080;">+</span></span>
                                         </a>
-                                        <a class="sidebar_button_subsection subsection_admin_title" href="/administration/networks" id="{{ array_key_exists('network_active', $data) ? 'button_active' : '' }}">
+                                        <a class="sidebar_button_subsection subsection_admin_title networks" href="/administration/networks" id="{{ array_key_exists('network_active', $data) ? 'button_active' : '' }}">
                                             <span>Networks</span>
                                         </a>
                                     </li>
@@ -123,9 +123,9 @@
                                         <a class="sidebar_button_subsection subsection_admin_add" href="/administration/users/create">
                                             <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-user-icon.png')}}" style="width:100%"></span>
                                             <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-user-icon-hover.png')}}" style="width:100%"></span>
-                                            <span class="add_text">add+</span>
+                                            <span class="add_text">add<span class="arial_bold" style="color:#6b31d7;">+</span></span>
                                         </a>
-										<a class="sidebar_button_subsection subsection_admin_title" href="/administration/users" id="{{ array_key_exists('user_active', $data) ? 'button_active' : '' }}">
+										<a class="sidebar_button_subsection subsection_admin_title users" href="/administration/users" id="{{ array_key_exists('user_active', $data) ? 'button_active' : '' }}">
                                             <span>Users</span>
                                         </a>
                                     </li>

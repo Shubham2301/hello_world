@@ -22,11 +22,11 @@
 </div>
 @endif
 
-<div class="content-section active">
+<div class="content-section active side_padding">
     @include('admin.networks.search')
 </div>
 
-<div class="network_section active" id="network_listing">
+<div class="network_section active auto_scroll side_padding" id="network_listing">
     @include('admin.networks.listing')
 </div>
 

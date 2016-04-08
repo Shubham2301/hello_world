@@ -21,16 +21,23 @@ use myocuhub\User;
 class BulkImportController extends Controller {
 
 	public function index() {
-		$networks = Network::all()->lists('name', 'id');
+
+		if(session('user-level') == 1){
+			$super_admin = true;
+
+		$data['super_admin'] = $super_admin;
+		if($super_admin )
+			$data['networks'] = Network::all();
+		}
+		else{
+
 		$userID = Auth::user()->id;
 		$network = User::getNetwork($userID);
 		$data['id'] = $network->network_id;
 		$data['name'] = $network->name;
-		$super_admin =User::find($userID)->hasRole('administrator');
-		$data['super_admin'] = $super_admin;
-		if($super_admin)
-			$data['networks'] = Network::all();
+		$data['super_admin'] = false;
 
+		}
 
 		return view('layouts.import')->with('network', $data);
 	}

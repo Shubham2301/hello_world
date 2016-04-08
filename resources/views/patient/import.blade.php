@@ -36,9 +36,9 @@
                                 <label for="exampleInputFile"><strong style="padding-left:3em;" >File</strong></label>
                             </div>
                             <div class="col-md-7 ">
-                                <span class="file-input">Choose{!!Form::file('patient_xlsx')!!}
+                                <span class="file-input">Choose{!!Form::file('patient_xlsx', ['id'=>'import_patient_file'])!!}
                                 </span>
-                                <span class="filename"></span>
+                                <span class="filename arial_italic"></span>
 
                             </div>
                             <div class="col-md-2"></div>

@@ -1,10 +1,10 @@
 <div class="no-padding">
     <div class="row sidebar_header center">
-        <div class="col-lg-2 col-md-2">
+        <div>
             <div class="dropdown" >
-                <button class="dropdown-toggle admin_button" type="button" data-toggle="dropdown" >
+                <span class="dropdown-toggle admin_button sidebar_user_img_dropdown" type="button" data-toggle="dropdown" >
                 <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'">
-                <span class="caret"></span></button>
+                <span class="caret"></span></span>
                 <ul class="dropdown-menu sidebar" >
                     <li class="hello"><a href="/directmail" data-toggle="tooltip" title="Direct Mail" data-placement="right"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="drop_image"></a></li>
                     <li><a href="file_exchange" data-toggle="tooltip" title="File Exchange" data-placement="right"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="drop_image"></a></li>
@@ -21,9 +21,9 @@
                 </ul>
             </div>
         </div>
-        <div class="col-lg-9 col-md-10">
-            <h3 class="title">Care Console</h3>
-            <div class="c3_overview_link"><img src="{{URL::asset('images/overview_icon.png')}}"><p>Overview</p></div>
+        <div>
+            <h3 class="arial_bold title">Care Console</h3>
+            <div class="c3_overview_link arial_bold"><img src="{{URL::asset('images/overview_icon.png')}}"><p>Overview</p></div>
         </div>
     </div>
     <ul class="c3_sidebar_list sidebar_item_list">

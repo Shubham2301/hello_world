@@ -30,9 +30,17 @@ $(document).ready(function() {
     });
     $('#back').on('click', function() {
         $('.practice_info').removeClass('active');
-        $('.practice_action').addClass('active');
+        $('.practice_action_header').removeClass('hide');
         $('.practice_list').addClass('active');
     });
+
+    $('.practice_location_item_list').on('click', '.user_disable', function () {
+        var val = $(this).attr('data-id');
+        var id = [];
+        id.push(val);
+        removeUser(id);
+    });
+
     $('#savepractice').on('click', function() {
         showinfo = true;
         var formdata = [];
@@ -189,20 +197,6 @@ $(document).ready(function() {
             }
         });
     });
-    $('.p_left').on('click', function() {
-        var formData = {
-            'value': ''
-        };
-        if (currentpage > 1)
-            getPractices(formData, currentpage - 1);
-    });
-    $('.p_right').on('click', function() {
-        var formData = {
-            'value': ''
-        };
-        if (currentpage < lastpage)
-            getPractices(formData, currentpage + 1);
-    });
     $('#refresh_practices').on('click', function() {
         $('#search_practice_input').val('');
         loadAllPractices();
@@ -213,19 +207,19 @@ $(document).ready(function() {
     $('#open_practice_form').on('click', function() {
         window.location = '/practices/create';
     });
-    $('.practice_list').on('change', '#checked_all_practice', function() {
+    $('#checked_all_practice').on('change', function() {
         if ($(this).is(":checked")) {
             $('.practice_search_content').each(function() {
                 $(this).find('input').prop('checked', true);
             });
             $('.admin_delete').addClass('active');
-            $('.delete_from_row_dropdown').addClass('hide');
+            $('.delete_from_row_dropdown').addClass('invisible');
         } else {
             $('.practice_search_content').each(function() {
                 $(this).find('input').prop('checked', false);
             });
             $('.admin_delete').removeClass('active');
-            $('.delete_from_row_dropdown').removeClass('hide');
+            $('.delete_from_row_dropdown').removeClass('invisible');
         }
     });
     $('#new_location').on('click', function() {
@@ -255,10 +249,10 @@ $(document).ready(function() {
     $('.practice_search_content').on('change', '.admin_checkbox_row', function() {
         if ($("input[name='checkbox']:checked").length > 0) {
             $('.admin_delete').addClass('active');
-            $('.delete_from_row_dropdown').addClass('hide');
+            $('.delete_from_row_dropdown').addClass('invisible');
         } else {
             $('.admin_delete').removeClass('active');
-            $('.delete_from_row_dropdown').removeClass('hide');
+            $('.delete_from_row_dropdown').removeClass('invisible');
         }
     });
     $('.admin_delete').on('click', function() {
@@ -302,8 +296,8 @@ $(document).ready(function() {
 var locations = [];
 var currentPractice = [];
 var showinfo = true;
-var currentpage = 0;
-var lastpage = 0;
+//var currentpage = 0;
+//var lastpage = 0;
 var locationAddress = [];
 
 function showModalConfirmDialogTotal(msg, handler) {
@@ -392,9 +386,11 @@ function getPractices(formData, page) {
     var scheduleimg = $('#schedule_practice_img').val();
     var deleteimage = $('#delete_practice_img').val();
     $('.practice_info').removeClass('active');
-    $('.practice_action').addClass('active');
+    $('.practice_action_header').removeClass('hide');
     var assign_role_image = $('#assign_role_image_path').val();
     var assign_user_image = $('#assign_user_image_path').val();
+    var location_previous_icon = $('#location_previous_icon').val();
+    var location_next_icon = $('#location_next_icon').val();
     $.ajax({
         url: '/practices/search?page=' + page,
         type: 'GET',
@@ -409,21 +405,28 @@ function getPractices(formData, page) {
             var content = '';
             var i = 0;
             $('#search_results').text('');
-            if (practices.length > 0 && practices[0]['total'] > 0) {
+//            if (practices.length > 0 && practices[0]['total'] > 0) {
+            if (practices.length > 0) {
                 practices.forEach(function(practice) {
                     locationAddress.push(practice.locations);
                     var totalLocation = practice.locations.length - 1;
-		content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3" style="display:inline-flex;"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + practice.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + practice.name + '</p></div></div><div class="col-xs-3 location_address">' + practice.locations[totalLocation].addressline1 + '<br>' + practice.locations[totalLocation].city + ','+practice.locations[totalLocation].state+' '+practice.locations[totalLocation].zip+'</div><div class="col-xs-1" data-index = "' + i + '"><span class="glyphicon glyphicon-chevron-up glyph_design location_address_next"></span><span><p class="location_address_counter">' + totalLocation + '</p></span><span class="glyphicon glyphicon-chevron-down glyph_design location_address_previous"></span></div><div class="col-xs-3"><p>' + practice.email + '</p></div> <div class="col-xs-2 search_edit"><p><div class="dropdown"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editpractice_from_row" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepractice_from_row"><img src="' + deleteimage + '" alt="" class="removepractice_img" data-toggle="tooltip" title="Delete Practice" data-placement="top"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+		content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3" style="display:inline-flex;"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + practice.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + practice.name + '</p></div></div><div class="col-xs-3 location_address">' + practice.locations[totalLocation].addressline1 + '<br>' + practice.locations[totalLocation].city + ','+practice.locations[totalLocation].state+' '+practice.locations[totalLocation].zip+'</div><div class="col-xs-1 location_counter_toggle" data-index = "' + i + '">';
+        content += '<img class="location_address_next" src="' + location_next_icon + '">';
+//        content += '<span class="glyphicon glyphicon-chevron-up glyph_design location_address_next"></span>';
+        content += '<span><p class="location_address_counter">' + totalLocation + '</p></span>';
+        content += '<img class="location_address_previous" src="' + location_previous_icon + '">';
+//        content += '<span class="glyphicon glyphicon-chevron-down glyph_design location_address_previous"></span>';
+        content += '</div><div class="col-xs-3"><p>' + practice.email + '</p></div> <div class="col-xs-2 search_edit"><p><div class="dropdown hide"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editpractice_from_row arial_bold" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepractice_from_row"><img src="' + deleteimage + '" alt="" class="removepractice_img" data-toggle="tooltip" title="Delete Practice" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     //<img class="delete_practice_im" src="' + deleteimage + '">
                     //<img class="schedule_practice_img" src="' + scheduleimg + '">
                     i++;
                 });
-                currentpage = practices[0]['currentPage'];
-                lastpage = practices[0]['lastpage'];
-                var result = currentpage * 5;
-                if (result > practices[0]['total'])
-                    result = practices[0]['total'];
-                $('.page_info').text(result + ' of ' + practices[0]['total']);
+//                currentpage = practices[0]['currentPage'];
+//                lastpage = practices[0]['lastpage'];
+//                var result = currentpage * 5;
+//                if (result > practices[0]['total'])
+//                    result = practices[0]['total'];
+//                $('.page_info').text(result + ' of ' + practices[0]['total']);
 
 
                 $('.practice_list').addClass('active');
@@ -533,7 +536,7 @@ function showPracticeInfo(info) {
                 content += '<div id="collapse' + i + '" class="panel-collapse collapse"><div class="panel-body">';
 			content += '<div class="row practice_location_item" data-locationid = "' + location.id + '" data-index="' + i + '"><div class="col-xs-3 practice_info"><p>' + location.addressline1 + '<br>' + location.city + ','+location.state+'&nbsp;  '+location.zip+'<br>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p class="hide">Assign roles </p><p class="hide">Assign users</p><p class="edit_location_frominfo">Edit</p><br><center class=""><span class="remove_location_frominfo"><img src="'+deleteImg+'"/></span></center></div><div class="col-xs-5"><div class="row">';
             info.users.forEach(function (user) {
-                content += '<div class="col-xs-12 practice_users "><p style="width: 100%;"><input type="checkbox"><span>' + user.firstname + '</span><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" style="background:#e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;float: right;margin-bottom: 5px;"></span></p></div>';
+                content += '<div class="col-xs-12 practice_users "><p style="width: 100%;"><span>' + user.firstname + ' ' + user.lastname + '</span><img src="'+deleteImg+'" class="user_disable" data-id="' + user.id + '"/></p></div>';
             });
             content += '</div></div></div>';
             content += '</div></div></div>';
@@ -543,7 +546,7 @@ function showPracticeInfo(info) {
         $('.practice_location_item_list').html(content);
         $('.practice_list').removeClass('active');
         $('.practice_info').addClass('active');
-        $('.practice_action').removeClass('active');
+        $('.practice_action_header').addClass('hide');
 
 
     }
@@ -662,5 +665,34 @@ function showModalConfirmDialog(msg, handler) {
     $('#practice_listing').on('click', '.confirm_no', function(evt) {
         handler(false);
     });
+
+}
+
+function removeUser(id) {
+    var removeId = {};
+    var i = 0;
+    id.forEach(function (item) {
+        removeId[i] = item;
+        i++;
+    });
+    $.ajax({
+        url: '/users/remove',
+        type: 'GET',
+        data: $.param(removeId),
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {},
+        error: function error() {
+            $('p.alert_message').text('Error:');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+    var formData = {
+        'practice_id': $('#edit_practice').attr('data-id')
+    };
+    $('.practice_location_item_list').html('');
+    getPracticeInfo(formData);
 
 }

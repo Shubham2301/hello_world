@@ -22,7 +22,7 @@ class ActionService {
 	 * @param $stageID
 	 * @return mixed
 	 */
-	public function userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID) {
+	public function userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID, $manualAppointmentDate) {
 		$actionName = Action::find($actionID)->name;
 		if ($actionResultID == '-1') {
 			$actionResultID = 14;
@@ -47,6 +47,46 @@ class ActionService {
 			case 'contact-attempted-by-other':
 			case 'patient-notes':
 			case 'requested-data':
+				break;
+			case 'manually-schedule':
+				$console = Careconsole::find($consoleID);
+				$appointment_date = new DateTime($manualAppointmentDate);
+				$appointment = new Appointment;
+				$appointment->patient_id = $console->patient_id;
+				$appointment->network_id = session('network-id');
+				$appointment->start_datetime = $appointment_date->format('Y-m-d H:m:s');
+				$appointment->end_datetime = $appointment_date->format('Y-m-d H:m:s');
+				$appointment->notes = $notes;
+				$appointment->save();
+				if ($appointment) {
+					$console->appointment_id = $appointment->id;
+					$console->stage_id = 2;
+					$console->recall_date = null;
+					$console->archived_date = null;
+					$date = new DateTime();
+					$console->stage_updated_at = $date->format('Y-m-d H:m:s');
+					$console->update();
+				}
+				break;
+			case 'manually-reschedule':
+				$console = Careconsole::find($consoleID);
+				$appointment_date = new DateTime($manualAppointmentDate);
+				$appointment = Appointment::find($console->appointment_id);
+				$appointment->patient_id = $console->patient_id;
+				$appointment->network_id = session('network-id');
+				$appointment->start_datetime = $appointment_date->format('Y-m-d H:m:s');
+				$appointment->end_datetime = $appointment_date->format('Y-m-d H:m:s');
+				$appointment->notes = $notes;
+				$appointment->save();
+				if ($appointment) {
+					$console->appointment_id = $appointment->id;
+					$console->stage_id = 2;
+					$console->recall_date = null;
+					$console->archived_date = null;
+					$date = new DateTime();
+					$console->stage_updated_at = $date->format('Y-m-d H:m:s');
+					$console->update();
+				}
 				break;
 			case 'move-to-console':
 				$console = Careconsole::find($consoleID);
@@ -214,14 +254,16 @@ class ActionService {
 		$date = new \DateTime();
 		$i = 0;
 		foreach ($contactsData as $contact) {
-			if ($contact['contact_activity_date'] != 0)
+			if ($contact['contact_activity_date'] != 0) {
 				$date = new \DateTime($contact['contact_activity_date']);
+			}
 
 			$actions[$i]['date'] = $date->format('j F Y');
 			$actions[$i]['name'] = $contact['display_name'];
 
-			if ($contact['name'] == 'unarchive' || $contact['name'] == 'move-to-console')
+			if ($contact['name'] == 'unarchive' || $contact['name'] == 'move-to-console') {
 				$actions[$i]['name'] = 'entered into console';
+			}
 
 			$actions[$i]['notes'] = $contact['notes'];
 			$i++;

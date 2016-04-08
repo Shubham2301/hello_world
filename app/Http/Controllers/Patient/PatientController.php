@@ -95,7 +95,7 @@ class PatientController extends Controller {
 		unset($data['_token']);
 		$referraltypeID = 0;
 		$action = '';
-		if($request->has('referraltype_id')){
+		if ($request->has('referraltype_id')) {
 			$referraltypeID = $request->input('referraltype_id');
 			$action = $request->input('action');
 			unset($data['referraltype_id']);
@@ -103,7 +103,7 @@ class PatientController extends Controller {
 		}
 
 		$patient = Patient::where($data)->first();
-		if(!$patient){
+		if (!$patient) {
 			$patient = new Patient;
 			$patient->firstname = $request->input('firstname');
 			$patient->lastname = $request->input('lastname');
@@ -138,8 +138,7 @@ class PatientController extends Controller {
 			$filename = basename(__FILE__);
 			$ip = $request->getClientIp();
 			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-		}
-		else{
+		} else {
 			$request->session()->put('success', 'patient already exists');
 		}
 		if (!$request->has('action')) {
@@ -244,6 +243,8 @@ class PatientController extends Controller {
 	 */
 	public function update(Request $request, $id) {
 		$patient = Patient::find($id);
+		$dob = new DateTime($request->birthdate);
+		$request->birthdate = $dob->format('Y-m-d');
 		$patient->update($request->input());
 		$action = 'update patient of id =' . $id;
 		$description = '';
@@ -260,19 +261,20 @@ class PatientController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function destroy(Request $request) {
-        $i = 0;
-        while(1){
-            if($request->input($i)){
-                $patient = Patient::where('id', $request->input($i))->delete();
-                $action = 'delete patient of id =' . $request->input($i);
-                $description = '';
-                $filename = basename(__FILE__);
-                $ip = $request->getClientIp();
-                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-                $i++;   }
-            else
-                break;
-            }
+		$i = 0;
+		while (1) {
+			if ($request->input($i)) {
+				$patient = Patient::where('id', $request->input($i))->delete();
+				$action = 'delete patient of id =' . $request->input($i);
+				$description = '';
+				$filename = basename(__FILE__);
+				$ip = $request->getClientIp();
+				Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+				$i++;} else {
+				break;
+			}
+
+		}
 	}
 
 	public function search(Request $request) {
@@ -297,9 +299,9 @@ class PatientController extends Controller {
 			$data[$i]['birthdate'] = $birthdate->format('F j Y');
 			$i++;
 		}
-		$data[0]['total'] = $patients->total();
-		$data[0]['lastpage'] = $patients->lastPage();
-		$data[0]['currentPage'] = $patients->currentPage();
+//		$data[0]['total'] = $patients->total();
+		//		$data[0]['lastpage'] = $patients->lastPage();
+		//		$data[0]['currentPage'] = $patients->currentPage();
 
 		return json_encode($data);
 	}

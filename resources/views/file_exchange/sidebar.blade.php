@@ -1,22 +1,22 @@
 <div class="no-padding">
     <div class="row sidebar_header center">
-        <div class="col-lg-2 col-md-2">
+        <div>
             <div class="dropdown">
-                <button class="dropdown-toggle admin_button" type="button" data-toggle="dropdown">
+                <span class="dropdown-toggle admin_button sidebar_user_img_dropdown" type="button" data-toggle="dropdown">
                 <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'">
-                <span class="caret"></span></button>
+                <span class="caret"></span></span>
                 <ul class="dropdown-menu sidebar">
-                    <li class="hello">
+					<li class="hello" data-toggle="tooltip" title="Direct Mail" data-placement="right">
                         <a href="/directmail"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="drop_image"></a>
                     </li>
                     <li>
-                        <a href="/file_exchange"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="drop_image"></a>
+						<a href="/file_exchange" data-toggle="tooltip" title="File Exchange" data-placement="right"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="drop_image"></a>
                     </li>
                     <li>
-                        <a href="#" id="menu-announcements"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a>
+						<a href="#" id="menu-announcements" data-toggle="tooltip" title="Announcements" data-placement="right"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image"></a>
                     </li>
                     <li>
-                        <a href="/home"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a>
+						<a href="/referraltype" data-toggle="tooltip" title="Schedule Patients" data-placement="right"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a>
                     </li>
 <!--
                     <li>
@@ -25,19 +25,19 @@
 -->
                     @can('care-cordination')
                     <li>
-                        <a href="/careconsole"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="drop_image"></a>
+						<a href="/careconsole" data-toggle="tooltip" title="Care Console" data-placement="right"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="drop_image"></a>
                     </li>
                     @endcan
                     @if(2 == Auth::user()->usertype_id)
                     <li>
-                        <a href="/administration/patients"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a>
+						<a href="/administration/patients" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a>
                     </li>
                     @endif
                     <li><a href="/reports"><img src="{{URL::asset('images/sidebar/reports.png')}}" class="drop_image"></a></li>
                 </ul>
             </div>
         </div>
-        <div class="col-lg-9 col-md-10">
+        <div>
             <h3 class="title">Files Exchange</h3>
         </div>
     </div>

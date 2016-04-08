@@ -3,18 +3,16 @@ $(document).ready(function() {
     $('#datetimepicker_action_date').datetimepicker({
         format: 'YYYY-MM-DD',
     });
+    $('#manual_appointment_date').datetimepicker();
+
     $('#search_bar_open').on('click', function() {
         if (($('#search_bar_open').hasClass('active'))) {
             $('#search_bar_open').removeClass('active');
-            $('#search_bar_open').removeClass('glyphicon-chevron-left');
-            $('#search_bar_open').addClass('glyphicon-chevron-right');
             $('#search_do').addClass('active');
             $('.search').addClass('active');
             $('#search_data').addClass('active');
         } else {
             $('#search_bar_open').addClass('active');
-            $('#search_bar_open').removeClass('glyphicon-chevron-right');
-            $('#search_bar_open').addClass('glyphicon-chevron-left');
             $('#search_do').removeClass('active');
             $('.search').removeClass('active');
             $('#search_data').removeClass('active');
@@ -49,6 +47,7 @@ $(document).ready(function() {
                 getPatientData();
             }
         }
+        setSidebarButtonActive();
     });
     $(document).on('click', '.console_buckets', function() {
         if ($(this).hasClass('active')) {
@@ -69,10 +68,18 @@ $(document).ready(function() {
             $('ul.c3_sidebar_list').addClass('active');
             $('.before_drilldown').hide();
             $('.drilldown').addClass('active');
-            $('.drilldown>.section-header').html($(this).find('p').html());
             $('.drilldown>.subsection-header>p').html('');
             $('.circle drilldown_kpi_indicator').css('background-color', 'transparent');
             bucketName = $(this).attr('data-name');
+            var bucketTitle = $(this).find('p').html();
+            if(bucketName == 'recall'){
+                bucketTitle += '<img src="http://ocuhub.dev/images/recall-icon.png" alt="" style="width: 1.2em;margin: auto .3em;">';
+            } else if(bucketName == 'archived') {
+                bucketTitle += '<img src="http://ocuhub.dev/images/archive-icon.png" alt="" style="width: 1.2em;margin: auto .3em;">';
+            } else if(bucketName == 'priority') {
+                bucketTitle += '<img src="http://ocuhub.dev/images/priority-icon.png" alt="" style="width: 1.2em;margin: auto .3em;">';
+            }
+            $('.drilldown>.section-header').html(bucketTitle);
             bucketData(bucketName);
         }
     });
@@ -87,15 +94,18 @@ $(document).ready(function() {
         $('.console_buckets').removeClass('active');
         refreshOverview();
         $('.c3_overview_link').removeClass('active');
+        $('.console_bucket_row').removeClass('hide');
         $('.control_section').removeClass('active');
         $('ul.c3_sidebar_list').removeClass('active');
         $('.before_drilldown').show();
         $('.drilldown').removeClass('active');
         $('.stage').removeClass('sidebar_items_active');
         $('#current_stage').val('-1');
+        setSidebarButtonActive();
     });
     $('.info_section').on('click', function() {
         $('.c3_overview_link').addClass('active');
+        $('.console_bucket_row').addClass('hide');
         $('.control_section').addClass('active');
         $('ul.c3_sidebar_list').addClass('active');
         $('.before_drilldown').hide();
@@ -112,6 +122,7 @@ $(document).ready(function() {
     });
     $('.stage').on('click', function() {
         $('.c3_overview_link').addClass('active');
+        $('.console_bucket_row').addClass('hide');
         $('.control_section').addClass('active');
         $('ul.c3_sidebar_list').addClass('active');
         $('.before_drilldown').hide();
@@ -143,6 +154,7 @@ $(document).ready(function() {
         }
         show_patient = true;
         $('#form_recall_date').hide();
+        $('#form_manual_appointment_date').hide();
         showDate = false;
 
         switch ($(this).attr('data-name')) {
@@ -160,7 +172,14 @@ $(document).ready(function() {
                 showDate = true;
                 showActionModel(data);
                 break;
-
+            case 'manually-schedule':
+                $('#form_manual_appointment_date').show();
+                showActionModel(data);
+                break;
+            case 'manually-reschedule':
+                $('#form_manual_appointment_date').show();
+                showActionModel(data);
+                break;
             default:
                 showActionModel(data);
         }
@@ -175,6 +194,7 @@ $(document).ready(function() {
 
         show_patient = true;
         $('#form_recall_date').hide();
+        $('#form_manual_appointment_date').hide();
         showDate = false;
 
         switch ($(this).attr('data-name')) {
@@ -190,6 +210,14 @@ $(document).ready(function() {
             case 'annual-exam':
                 $('#form_recall_date').show();
                 showDate = true;
+                showActionModel(data);
+                break;
+            case 'manually-schedule':
+                $('#form_manual_appointment_date').show();
+                showActionModel(data);
+                break;
+            case 'manually-reschedule':
+                $('#form_manual_appointment_date').show();
                 showActionModel(data);
                 break;
             default:
@@ -205,6 +233,7 @@ $(document).ready(function() {
         data['action_header'] = $(this).attr('data-displayname');
 
         $('#form_recall_date').hide();
+        $('#form_manual_appointment_date').hide();
         showDate = false;
         show_patient = false;
         switch ($(this).attr('data-name')) {
@@ -220,6 +249,14 @@ $(document).ready(function() {
             case 'annual-exam':
                 $('#form_recall_date').show();
                 showDate = true;
+                showActionModel(data);
+                break;
+            case 'manually-schedule':
+                $('#form_manual_appointment_date').show();
+                showActionModel(data);
+                break;
+            case 'manually-reschedule':
+                $('#form_manual_appointment_date').show();
                 showActionModel(data);
                 break;
             default:
@@ -312,7 +349,7 @@ function searchc3() {
                     var content = '';
                     var index = 0;
                     patientdata.forEach(function(patient) {
-                        content += '<div class="search_result_row row" data-index= "' + index + '"><div class="col-xs-1"><div class="circle" id="" style="background-color:' + patient.stage_color + '"></div></div><div class="col-xs-11 search_result_row_text"><p class="result_title result_name">' + patient.name + '</p><p class="result_title scheduled_name"><strong>' + patient.stage_name + '</strong></p></div></div>';
+                        content += '<div class="search_result_row row" data-index= "' + index + '"><div class="col-xs-1 search_color_col"><div class="circle" id="" style="background-color:' + patient.stage_color + '"></div></div><div class="col-xs-11 search_result_row_text"><p class="result_title arial_bold result_name">' + patient.name + '</p><p class="result_title arial_bold scheduled_name">' + patient.stage_name + '</p></div></div>';
 
                         index++;
                     });
@@ -343,6 +380,7 @@ function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator) {
     $('.drilldown_kpi_indicator').css('background-color', kpi_indicator);
     $('#current_stage').val(stage_id);
     $('#current_kpi').val(kpi_id);
+    setSidebarButtonActive();
 
     getPatientData();
 }
@@ -351,6 +389,7 @@ function showStageData(stage_id, stage_name) {
     $('#sidebar_' + stage_id).addClass('sidebar_items_active');
     $('.drilldown>.section-header').html(stage_name);
     $('#current_stage').val(stage_id);
+    setSidebarButtonActive();
     $('#current_kpi').val('0');
     bucketName = '';
     if (stage_id < 6)
@@ -432,6 +471,7 @@ function action() {
         'stage_id': $('#action_stage_id').val(),
         'action_id': $('#action_id').val(),
         'recall_date': $('#recall_date').val(),
+        'manual_appointment_date': $('#manual_appointment_date').val(),
         'action_result_id': $('#action_result_id').val(),
         'notes': $('#action_notes').val()
     };
@@ -706,4 +746,10 @@ function showActionModel(data) {
     }
     $('#action_notes').val('');
     $('#actionModal').modal('show');
+}
+
+function setSidebarButtonActive(){
+    var stageID = $('#current_stage').val();
+    $(".stage.box").parent('.sidebar_menu_item').removeClass('active');
+    $(".stage.box[data-id="+ stageID +"]").parent('.sidebar_menu_item').addClass('active');
 }

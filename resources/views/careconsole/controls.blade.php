@@ -7,7 +7,7 @@
 	@if($control['type'] == 1)
 	@foreach($control['options'] as $option)
 	<div class="C3_day_box low" style="color:{{ $option['color_indicator'] }}" data-name="{{ $option['display_name'] }}">
-		<h4>{{ $option['description'] }}</h4>
+		<h4 class="arial_bold">{{ $option['description'] }}</h4>
 		<p>{{ $option['display_name'] }}</p>
 	</div>
 	@endforeach
@@ -16,7 +16,7 @@
 	@foreach($control['options'] as $option)
 	<div class="C3_day_box show" data-name = "{{$option['kpi_name']}}">
 		<div class="show_bar" style="background-color:{{ $option['color_indicator']}}"></div>
-		<p>{{ $option['count'] }}</p>
+		<p class="arial_bold">{{ $option['count'] }}</p>
 		<p>{{ $option['display_name'] }}</p>
 	</div>
 	@endforeach

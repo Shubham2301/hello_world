@@ -32,6 +32,7 @@
     {!! Form::hidden('location', '', array('id' => 'form_location')) !!}
     {!! Form::hidden('location_id', '', array('id' => 'form_location_id')) !!}
     {!! Form::hidden('location_code', '', array('id' => 'form_location_code')) !!}
+    @include('appointment.insurance-details')
     {!! Form::close() !!}
     <div class="practice_section active" id="select_practice">
         @if(array_key_exists('referraltype_id', $data) and array_key_exists('patient_id', $data))
@@ -44,7 +45,8 @@
     </div>
     <div class="row content-row-margin-scheduling">
         <div class="col-xs-12 subsection-header-previous-stage arial">
-            <span>1. Search for Patient&nbsp;<span class="glyphicon glyphicon-ok-circle" style="color:green;"></span></span>
+            <span>1. Search for Patient&nbsp;<img src="{{URL::asset('images/tick-icon.png')}}" style="width:1.5em;margin-top:-.3em;">
+            </span>
             <span class="selected_patient arial_bold"><p>Patient Selected:</p>&nbsp;&nbsp;<p class="selected_patient_name"></p>
             <p class="view_selected_patient view">View</p>&nbsp;&nbsp;
             <p class="change_selected_patient view" id="change_patient_button">Change</p>
@@ -54,7 +56,9 @@
         <span>2. Search for Provider</span>
     </div>
 </div>
-@endif @include('provider.search') @include('provider.preferences')
+@endif
+@include('provider.search')
+@include('provider.preferences')
 </div>
 <div class="practice_section active" id="practice_listing">
 @include('provider.listing')

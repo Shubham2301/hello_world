@@ -1,25 +1,4 @@
 <div class="row content-row-margin network_listing">
-
-    <p id="search_results" class="search_result"><strong></strong></p>
-    <div class="row search_header">
-        <div class="col-xs-3 search_name">
-            <input type="checkbox" id="checked_all_networks">&nbsp;&nbsp;
-            <p style="color:black"><strong>Name</strong></p>
-        </div>
-        <div class="col-xs-4">
-            <p style="color:black"><strong>Contact</strong></p>
-        </div>
-        <div class="col-xs-3">
-            <p style="color:black"><strong>Address</strong></p>
-        </div>
-        <div class="col-xs-2">
-            <input type="hidden" id="dropdown_natural_img" value="{{asset('images/dropdown-natural-01.png')}}">
-            <input type="hidden" id="dropdown_onhover_img" value="{{asset('images/dropdown-hover-01.png')}}">
-            <input type="hidden" id="dropdown_active_img" value="{{asset('images/dropdown-active-01.png')}}">
-            <input type="hidden" id="delete_network_img" value="{{asset('images/delete-active-01.png')}}">
-            <p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"><strong>2 of 2</strong></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>
-        </div>
-    </div>
     <form action="">
         <input type="hidden" id="assign_role_image_path" value="{{URL::asset('images/assign-role-icon-01.png')}}">
         <input type="hidden" id="assign_user_image_path" value="{{URL::asset('images/assign-user-icon-01.png')}}">
@@ -61,7 +40,7 @@
                 </span>
                 <ul class="dropdown-menu" id="row_remove_dropdown">
                     <li class="confirm_text">
-                        <p><strong>Do you really want to delete this?</strong></p>
+                        <p>Do you really want to delete this?</p>
                     </li>
                     <li class="confirm_buttons">
                         <button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button>

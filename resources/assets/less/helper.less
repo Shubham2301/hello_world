@@ -88,12 +88,19 @@ a:focus {
     text-align: center;
 }
 .add-btn,
-.add-btn:hover,
 .add-btn:focus {
     float: right;
     color: #fff;
-    background-color: #0086fb;
-    border-color: #0086fb;
+    background-color: #0071bc;
+    box-shadow: 0 0 2px rgba(0,0,0,.5);
+    border: none;
+    &:hover{
+        background-color: #0071d8;
+        color: #fff;
+    }
+    &:active{
+        box-shadow: none;
+    }
 }
 .add-doc-btn,
 .add-doc-btn:hover,
@@ -214,4 +221,28 @@ Accordian
 }
 .panel-group {
     margin: 2em;
+}
+/*
+---------------------------
+General Rules
+---------------------------
+*/
+.no_side_padding {
+    padding: 1em 0;
+}
+.side_padding {
+    padding: 0 1.5em;
+}
+.top_margin {
+    margin: 1em 0 0 0;
+}
+.top_margin_large{
+    margin: 0 1em;
+    margin-top: 3em;
+}
+.invisible{
+    visibility: hidden;
+}
+.no_top_margin{
+    margin-top: 0;
 }
