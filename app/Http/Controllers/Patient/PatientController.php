@@ -18,6 +18,13 @@ use myocuhub\Patient;
 use myocuhub\User;
 
 class PatientController extends Controller {
+
+	public function __construct() {
+		$this->middleware('role:patient-admin,1,Administrator');
+	}
+
+
+
 	/**
 	 * Display a listing of the resource.
 	 *

@@ -14,58 +14,25 @@ class RoleMiddleware {
 	 * @param  \Closure  $next
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next, $role, $userLevel = 4, $userType = '') {
+	public function handle($request, Closure $next, $role, $userLevel = 1, $userType = '') {
 
-		if($request->user()->hasRole($role) )
+		if(session('user-level') == 1 && $role != 'care-console')
 			return $next($request);
 
-		$userTypeData = Usertype::find(Auth::user()->usertype_id);
-
-		$userTypeName = 'User';
-
-		if($userTypeData)
-			$userTypeName = $userTypeData->name;
-
-		//dd($userType.' ', $userTypeName);
-		$canAccess = str_contains($userType, $userTypeName);
-
-		$isStaff = str_contains($userTypeName, 'Staff');
-		$isAdmin = str_contains($userTypeName, 'Administrator');
-
-
-		if(!$canAccess && $userType != '' ){
-
-			if(!$this->redirectToLandingPage($isStaff, $isAdmin))
-				return redirect('/file_exchange');
+		if (!$request->user()->hasRole($role) && session('user-level') > $userLevel  ) {
+			$request->session()->flash('failure', 'Unauthorized Access!');
+			if(!$this->redirectToLandingPage())
+				return redirect('/referraltype');
 
 			return redirect('/home');
+
 		}
-
-		if(session('user-level') <= $userLevel )
-			return $next($request);
-
-		if($isAdmin && $role != 'care-console')
-			return $next($request);
-
-		if(session('user-level') == 1 && $role == 'network-admin')
-			return $next($request);
-
-		$request->session()->flash('failure', 'Unauthorized Access!');
-		if(!$this->redirectToLandingPage($isStaff, $isAdmin))
-			return redirect('/file_exchange');
-
-		return redirect('/home');
-
-
+		return $next($request);
 	}
 
 
-	public function redirectToLandingPage($isStaff, $isAdmin ){
-		if(!$isStaff && $isAdmin )
-		{
-			if(Auth::user()->menu_id == 7)
-				return false;
-		}
+	public function redirectToLandingPage(){
+
 		if(Auth::user()->menu_id == 6 && !Auth::user()->hasRole('care-console') )
 			return false;
 
