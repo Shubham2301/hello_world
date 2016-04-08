@@ -114,7 +114,8 @@ class PatientController extends Controller {
 			$patient->addressline2 = $request->input('addressline2');
 			$patient->city = $request->input('city');
 			$patient->zip = $request->input('zip');
-			$patient->birthdate = $request->input('birthdate');
+			$birthdate = new DateTime($request->input('birthdate'));
+            $patient->birthdate = $birthdate->format('Y-m-d');
 			$patient->preferredlanguage = $request->input('preferredlanguage');
 			$patient->cellphone = $request->input('cellphone');
 			$patient->state = $request->input('state');
@@ -223,6 +224,8 @@ class PatientController extends Controller {
 		$language['French'] = 'French';
 		$data = array();
 		$data = Patient::find($id);
+        $birthdate = new DateTime($data['birthdate']);
+		$data['birthdate'] = $birthdate->format('m/d/Y');
 		if (!$data) {
 			$data['url'] = '/administration/patients/add';
 			$data = Patient::getColumnNames();
@@ -245,6 +248,9 @@ class PatientController extends Controller {
 	public function update(Request $request, $id) {
 		$patient = Patient::find($id);
 		$patient->update($request->input());
+		$birthdate = new DateTime($request->input('birthdate'));
+        $patient->birthdate = $birthdate->format('Y-m-d');
+		$patient->save();
 		$action = 'update patient of id =' . $id;
 		$description = '';
 		$filename = basename(__FILE__);
