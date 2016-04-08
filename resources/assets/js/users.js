@@ -83,14 +83,15 @@ $(document).ready(function () {
             }
         });
     });
-	$('.user_roles').on('change', function(){
+	$('#care-console').on('change', function(){
 
 		if($('#care-console').prop('checked')){
 			var content = '<option value="'+landingPage['care-console'][0]+'" id="care-console_page">'+landingPage['care-console'][1]+'</option>';
 			$('#landing_page').append(content);
 		}
 		else{
-			$('#landing_page').find('#care-console_page').remove();
+
+			$("#landing_page>option[value='"+6+"']").remove();
 		}
 
 	});

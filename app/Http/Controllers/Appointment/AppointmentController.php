@@ -285,15 +285,19 @@ class AppointmentController extends Controller {
 		$appt['insurance_group_no'] = $patientInsurance->insurance_group_no;
 		$appt['subscriber_relation'] = $patientInsurance->subscriber_relation;
 
-		$mailToPatient = Mail::send('emails.appt-confirmation-patient', ['appt' => $appt], function ($m) use ($patient) {
-			$m->from('support@ocuhub.com', 'Ocuhub');
-			$m->to($patient->email, $patient->lastname . ', ' . $patient->firstname)->subject('Appointment has been scheduled');
-		});
+		if (!$patient->email && $patient->email != '') {
+			$mailToPatient = Mail::send('emails.appt-confirmation-patient', ['appt' => $appt], function ($m) use ($patient) {
+				$m->from('support@ocuhub.com', 'Ocuhub');
+				$m->to($patient->email, $patient->lastname . ', ' . $patient->firstname)->subject('Appointment has been scheduled');
+			});
+		}
 
-		$mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($practice) {
-			$m->from('support@ocuhub.com', 'Ocuhub');
-			$m->to($practice->email, $practice->name)->subject('Request for Appointment');
-		});
+		if (!$practice->email && $practice->email != '') {
+			$mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($practice) {
+				$m->from('support@ocuhub.com', 'Ocuhub');
+				$m->to($practice->email, $practice->name)->subject('Request for Appointment');
+			});
+		}
 
 		$careconsole = Careconsole::where('patient_id', $patientID)
 			->orderBy('created_at', 'desc')
