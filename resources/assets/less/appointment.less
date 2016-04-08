@@ -16,16 +16,16 @@
 }
 .appointment_info_box {
     margin: 1em 2px;
+    width: 100%;
     border: solid 1px #fff;
     order: 1;
-    flex: 0 1 auto;
-    flex-grow: 1;
     &.patient,
     &.provider,
     &.schedule {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        word-break: keep-all;
     }
 }
 .appointment_message {
@@ -88,4 +88,7 @@ h4.schedule_place {
 
 #cancel_appointment {
     font-size: 1.1em;
+}
+.content-right {
+    padding: 15px;
 }
