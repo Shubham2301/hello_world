@@ -292,6 +292,9 @@ class PatientController extends Controller {
 		$data = [];
 		$i = 0;
 		foreach ($patients as $patient) {
+			if(!$patient)
+				continue;
+
 			$data[$i]['id'] = $patient->patient_id;
 			$data[$i]['fname'] = $patient->firstname;
 			$data[$i]['lname'] = $patient->lastname;
