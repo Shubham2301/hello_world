@@ -9,6 +9,7 @@ use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
+use myocuhub\Models\referralHistory;
 
 class ActionService {
 
@@ -90,6 +91,9 @@ class ActionService {
 				break;
 			case 'move-to-console':
 				$console = Careconsole::find($consoleID);
+				$referralHistory = new ReferralHistory;
+				$referralHistory->save();
+				$console->referral_id = $referralHistory->id;
 				$console->recall_date = null;
 				$console->archived_date = null;
 				$date = new DateTime();
@@ -127,6 +131,10 @@ class ActionService {
 				$console->appointment_id = null;
 				$console->referral_id = null;
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
+				$console->save();
+				$referralHistory = new ReferralHistory;
+				$referralHistory->save();
+				$console->referral_id = $referralHistory->id;
 				$console->save();
 				break;
 			case 'archive':

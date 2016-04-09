@@ -16,6 +16,7 @@ use myocuhub\Models\ContactHistory;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
+use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
 
@@ -324,6 +325,19 @@ class AppointmentController extends Controller {
 			$contactHistory->console_id = $careconsole->id;
 			$contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:m:s');
 			$contactHistory->save();
+
+			if ($console->referral_id) {
+				$referralHistory = ReferralHistory::find($console->referral_id);
+			} else {
+				$referralHistory = new ReferralHistory;
+				$console->referral_id = $referralHistory->id;
+				$console->update();
+			}
+			$referralHistory->referred_to_practice_id = $appointment->practice_id;
+			$referralHistory->referred_to_location_id = $appointment->location_id;
+			$referralHistory->referred_to_practice_user_id = $appointment->provider_id;
+
+			$referralHistory->save();
 		}
 
 		return $result;

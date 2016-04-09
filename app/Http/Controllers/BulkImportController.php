@@ -9,11 +9,13 @@ use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ImportHistory;
+use myocuhub\Models\NetworkUser;
+use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
-use myocuhub\Models\PracticeUser;
-use myocuhub\Models\NetworkUser;
 use myocuhub\Models\PracticeNetwork;
+use myocuhub\Models\PracticeUser;
+use myocuhub\Models\referralHistory;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\User;
@@ -22,20 +24,21 @@ class BulkImportController extends Controller {
 
 	public function index() {
 
-		if(session('user-level') == 1){
+		if (session('user-level') == 1) {
 			$super_admin = true;
 
-		$data['super_admin'] = $super_admin;
-		if($super_admin )
-			$data['networks'] = Network::all();
-		}
-		else{
+			$data['super_admin'] = $super_admin;
+			if ($super_admin) {
+				$data['networks'] = Network::all();
+			}
 
-		$userID = Auth::user()->id;
-		$network = User::getNetwork($userID);
-		$data['id'] = $network->network_id;
-		$data['name'] = $network->name;
-		$data['super_admin'] = false;
+		} else {
+
+			$userID = Auth::user()->id;
+			$network = User::getNetwork($userID);
+			$data['id'] = $network->network_id;
+			$data['name'] = $network->name;
+			$data['super_admin'] = false;
 
 		}
 
@@ -80,12 +83,14 @@ class BulkImportController extends Controller {
 								$users['name'] = $data['name'];
 								$users['firstname'] = $data['name'];
 								$users['email'] = $data['contact_email'];
-								$users['cellphone'] = (int)$data['phone_number'];
-								$users['cellphone'] = (int)$data['cell_number'];
+								$users['cellphone'] = (int) $data['phone_number'];
+								$users['cellphone'] = (int) $data['cell_number'];
 								//npi cannot be null
 								$users['npi'] = '1234';
-								if($data['npi'])
-									$users['npi'] =(int) $data['npi'];
+								if ($data['npi']) {
+									$users['npi'] = (int) $data['npi'];
+								}
+
 								$users['state'] = $data['state'];
 								$users['address1'] = $data['address_1'];
 								$users['address2'] = $data['address_2'];
@@ -93,23 +98,22 @@ class BulkImportController extends Controller {
 								$users['zip'] = (int) $data['zip_code'];
 								$users['level'] = 3;
 
-
-								$user =  User::where($users)->first();
-								$checkemail =User::where('email','LIKE','%'.$users['email'].'%')->first();
-								if(!$user){
+								$user = User::where($users)->first();
+								$checkemail = User::where('email', 'LIKE', '%' . $users['email'] . '%')->first();
+								if (!$user) {
 
 									$users['password'] = \Hash::make('ocuhub');
-									if($checkemail)
+									if ($checkemail) {
 										$user = $checkemail;
-									else
+									} else {
 										$user = User::create($users);
+									}
 
 								}
 								//map user with organization
-								if($data['practice_name'])
-								{
-									$practice_id = Practice::where('name', 'LIKE','%'.$data['practice_name'].'%' )->first()->id;
-									if($practice_id ){
+								if ($data['practice_name']) {
+									$practice_id = Practice::where('name', 'LIKE', '%' . $data['practice_name'] . '%')->first()->id;
+									if ($practice_id) {
 										$userdata = [];
 										$userdata['practice_id'] = $practice_id;
 										$userdata['user_id'] = $user->id;
@@ -131,20 +135,24 @@ class BulkImportController extends Controller {
 								//$practices['email']           = '';
 
 								$practice = Practice::where($practices)->first();
-								if(!$practice)
+								if (!$practice) {
 									$practice = Practice::create($practices);
+								}
+
 								$locations['practice_id'] = $practice->id;
 								$locations['locationname'] = $data['location_name'];
-								$locations['phone'] = (int)$data['phone_number'];
+								$locations['phone'] = (int) $data['phone_number'];
 								$locations['addressline1'] = $data['address_1'];
 								$locations['addressline2'] = $data['address_2'];
 								$locations['city'] = $data['city'];
 								$locations['state'] = $data['state'];
-								$locations['zip'] = (int)$data['zip'];
+								$locations['zip'] = (int) $data['zip'];
 
 								$location = PracticeLocation::where($locations);
-								if(!$location)
+								if (!$location) {
 									$location = PracticeLocation::create($locations);
+								}
+
 								$practicedata = [];
 								$practicedata['network_id'] = $networkID;
 								$practicedata['practice_id'] = $practice->id;
@@ -159,28 +167,42 @@ class BulkImportController extends Controller {
 							$patients = [];
 							if (array_filter($data->toArray())) {
 								$name = explode(' ', $data['patient_name']);
-								$patients['title'] = 'Mr';
 								$patients['firstname'] = $name[0];
 								$patients['lastname'] = $name[1];
-								$patients['cellphone'] = (int)$data['phone_number'];
+								$patients['cellphone'] = (int) $data['phone_number'];
 								$patients['email'] = $data['email'];
 								$patients['addressline1'] = $data['address_1'];
 								$patients['addressline2'] = $data['address_2'];
 								$patients['city'] = $data['city'];
-								$patients['zip'] = (int)$data['zip'];
-								$patients['lastfourssn'] =(int) $data['ssn_last_digits'];
-								$patients['birthdate'] = date('Y-m-d',strtotime($data['birthdate']));
+								$patients['zip'] = (int) $data['zip'];
+								$patients['lastfourssn'] = (int) $data['ssn_last_digits'];
+								$patients['birthdate'] = date('Y-m-d', strtotime($data['birthdate']));
 								$patients['gender'] = $data['gender'];
-								//$patients['insurancecarrier'] = $data['insurance_type'];
+
+								$referralHistory = new ReferralHistory;
+								$referralHistory->referred_by_provider = $data['referred_by'];
+								$referralHistory->referred_by_practice = $data['source'];
+								$referralHistory->disease_type = $data['disease_type'];
+								$referralHistory->severity = $data['severity'];
+								$referralHistory->save();
+
+								$insuranceCarrier = new PatientInsurance;
+								$insuranceCarrier->insurance_carrier = $data['insurance_type'];
+
 								$patient = Patient::where($patients)->first();
 
-								if(!$patient){
+								if (!$patient) {
 									$patient = Patient::create($patients);
-									$new_patients = $new_patients+1;
+									$new_patients = $new_patients + 1;
 									$careconsole = new Careconsole;
 									$careconsole->import_id = $importHistory->id;
 									$careconsole->patient_id = $patient->id;
 									$careconsole->stage_id = 1;
+									if (!$referralHistory) {
+										$careconsole->referral_id = $referralHistory->id;
+									}
+									$insuranceCarrier->patient_id = $patient->id;
+									$insurancecarrier->save();
 									$date = new \DateTime();
 									$careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
 									$careconsole->entered_console_at = $date->format('Y-m-d H:m:s');
@@ -190,9 +212,9 @@ class BulkImportController extends Controller {
 									$filename = basename(__FILE__);
 									$ip = $request->getClientIp();
 									Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+								} else {
+									$old_patients = $old_patients + 1;
 								}
-								else
-									$old_patients = $old_patients+1;
 								$i++;
 							}
 
