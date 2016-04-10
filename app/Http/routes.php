@@ -86,7 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('appointments', 'Appointment\AppointmentController');
     Route::resource('home', 'HomeController');
 
-    Route::group(['middleware' => 'role:bulk-import, 1'], function () {
+    Route::group(['middleware' => 'role:bulk-import, 9'], function () {
         Route::get('import/location', 'BulkImportController@getLocations');
         Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
         Route::resource('bulkimport', 'BulkImportController');
@@ -174,5 +174,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/patients/create', 'Patient\PatientController@create');
     Route::get('/patient/destroy', 'Patient\PatientController@destroy');
+
+    Route::resource('reports', 'ReportingController');
+    Route::get('reports/generate', 'ReportingController@generateReports');
+
     Route::get('getlandingpages', 'Admin\UserController@getLandingPagebyRole');
 });
