@@ -22,7 +22,7 @@ use Validator;
 class UserController extends Controller {
 
 	public function __construct() {
-		//$this->middleware('role:user-admin, 2');
+		$this->middleware('role:user-admin,1');
 	}
 
 	/**
@@ -242,7 +242,13 @@ class UserController extends Controller {
 					$networkData[$network->id] = $network->name;
 				}
 			}
+
 			$menu_options = Menu::find([1,2,3,4,5]);
+
+			if(isset($user['Care Coordinator']))
+			$menu_options = Menu::find([1,2,3,4,5,6]);
+
+
 			$menuData = [];
 			foreach ($menu_options as $menu_option) {
 					$menuData[$menu_option->id] = $menu_option->display_name;

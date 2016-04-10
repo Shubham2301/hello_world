@@ -30,6 +30,7 @@ class CareConsoleController extends Controller {
 		$this->KPIService = $KPIService;
 		$this->ActionService = $ActionService;
 		$this->CareConsoleService = $CareConsoleService;
+		$this->middleware('role:care-console,0');
 	}
 
 	public function index() {

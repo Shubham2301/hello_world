@@ -2,56 +2,45 @@
 
 namespace myocuhub\Http\Middleware;
 
+use Auth;
 use Closure;
-use  Auth;
-use  myocuhub\Usertype;
 
-class RoleMiddleware {
-	/**
-	 * Handle an incoming request.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \Closure  $next
-	 * @return mixed
-	 */
-	public function handle($request, Closure $next, $role, $userLevel = 4, $userType = '') {
+class RoleMiddleware
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next, $role, $userLevel = 1, $userType = '')
+    {
 
-		$userTypeData = Usertype::find(Auth::user()->usertype_id);
+        if (session('user-level') == 1) {
+            return $next($request);
+        }
 
-		$userTypeName = 'User';
+        if (!$request->user()->hasRole($role) && session('user-level') >= $userLevel) {
+            $request->session()->flash('failure', 'Unauthorized Access!');
+            if (!$this->redirectToLandingPage()) {
+                return redirect('/referraltype');
+            }
 
-		if($userTypeData)
-			$userTypeName = $userTypeData->name;
+            return redirect('/home');
 
-		//dd($userType.' ', $userTypeName);
-		$canAccess = str_contains($userType, $userTypeName);
+        }
+        return $next($request);
+    }
 
-		$isStaff = str_contains($userType, 'Staff');
-		$isAdmin = str_contains($userType, 'Administrator');
+    public function redirectToLandingPage()
+    {
 
+        if (Auth::user()->menu_id == 6 && !Auth::user()->hasRole('care-console')) {
+            return false;
+        }
 
-		if(!$canAccess && $userType != '' )
-			return redirect('/home');
+        return true;
 
-		if(session('user-level') <= $userLevel )
-			return $next($request);
-
-		if($isStaff && $request->user()->hasRole($role) )
-			return $next($request);
-
-		if($request->user()->hasRole($role))
-			return $next($request);
-
-		if($isAdmin && $request->user()->hasRole($role))
-			return $next($request);
-
-		if(session('user-level') == 1 && $role == 'network-admin')
-			return $next($request);
-
-
-			$request->session()->flash('failure', 'Unauthorized Access!');
-			return redirect('/home');
-
-
-	}
+    }
 }
