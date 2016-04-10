@@ -246,6 +246,8 @@ class BulkImportController extends Controller
     public function fakeExport()
     {
 
+        ini_set('max_execution_time', 300);
+
         $faker = Faker::create();
         $patient = [];
         for ($i = 0; $i < 10000; $i++) {

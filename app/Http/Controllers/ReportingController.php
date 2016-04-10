@@ -3,12 +3,18 @@
 namespace myocuhub\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Services\Reports\Reports;
 
 class ReportingController extends Controller
 {
+    private $Reports;
+
+    public function __construct(Reports $Reports)
+    {
+        $this->Reports = $Reports;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -47,9 +53,18 @@ class ReportingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        return 1;
+        $this->Reports->setStartDate($request->start_date);
+        $this->Reports->setEndDate($request->end_date);
+
+        $data['total_referred'] = $this->Reports->getTotalReferred();
+        $data['to_be_called'] = $this->Reports->getPendingToBeCalled();
+        $data['scheduled'] = $this->Reports->getReferredTo();
+        $data['referred_by'] = $this->Reports->getReferredBy();
+        $data['appointment_status'] = $this->Reports->getAppointmentStatus();
+
+        return json_encode($data);
     }
 
     /**

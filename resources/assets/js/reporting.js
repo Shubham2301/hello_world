@@ -11,6 +11,12 @@ $(document).ready(function () {
         format: 'MM/DD/YYYY',
         maxDate: cur_date,
     });
+    $('#end_date').on('change', function(){
+        getReport();
+    });
+    $('#start_date').on('change', function(){
+        getReport();
+    });
     getReport();
     var old_start_date = $('#start_date').val();
     var old_end_date = $('#end_date').val();
@@ -37,14 +43,39 @@ function getReport() {
         'end_date': $('#end_date').val()
     };
     $.ajax({
-        url: '/reports/show',
+        url: '/reports/updatereports',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
         success: function (e) {
             var info = $.parseJSON(e);
+            $('#total_referred').html(info.total_referred);
+            $('#to_be_called').html(info.to_be_called);
+            
+            var content = '';
+            for (var key in info.scheduled.practices) {
+              if (info.scheduled.practices.hasOwnProperty(key)) {
+                content += '<span class="info_row"><span>'+key+'</span><span style="float: right;">'+info.scheduled.practices[key]+'</span></span><br>';
+              }
+            }
+            $('#scheduled').html(content);
 
+            var content = '';
+            for (var key in info.referred_by.practices) {
+              if (info.referred_by.practices.hasOwnProperty(key)) {
+                content += '<span class="info_row"><span>'+key+'</span><span style="float: right;">'+info.referred_by.practices[key]+'</span></span><br>';
+              }
+            }
+            $('#referred_by').html(content);
+            
+            for (var key in info.appointment_status) {
+              if (info.appointment_status.hasOwnProperty(key)) {
+                $('#'+key).html(info.appointment_status[key]);
+              }
+            }
+
+            
         },
         error: function () {
             $('p.alert_message').text('Error generating report');
