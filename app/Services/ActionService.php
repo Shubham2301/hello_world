@@ -9,7 +9,7 @@ use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
-use myocuhub\Models\referralHistory;
+use myocuhub\Models\ReferralHistory;
 
 class ActionService
 {
