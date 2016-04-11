@@ -76,12 +76,77 @@ class BulkImportController extends Controller
 
         if ($request->hasFile('patient_xlsx')) {
             $i = 0;
-            $excels = Excel::load($request->file('patient_xlsx'))->get();
             $importHistory = new ImportHistory;
             $importHistory->network_id = $networkID;
             $importHistory->save();
+
+            // $excels = Excel::load($request->file('patient_xlsx'))->get();
+            $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'))->chunk(1000, function($results) use (&$old_patients, &$i, &$new_patients, $importHistory, $request){
+                foreach ($results as $data) { 
+                    $patients = [];
+                    if (array_filter($data->toArray())) {
+                        $name = explode(' ', $data['patient_name']);
+                        $patients['firstname'] = $name[0];
+                        $patients['lastname'] = $name[1];
+                        $patients['cellphone'] = (int) $data['phone_number'];
+                        $patients['email'] = $data['email'];
+                        $patients['addressline1'] = $data['address_1'];
+                        $patients['addressline2'] = $data['address_2'];
+                        $patients['city'] = $data['city'];
+                        $patients['zip'] = (int) $data['zip'];
+                        $patients['lastfourssn'] = (int) $data['ssn_last_digits'];
+                        $patients['birthdate'] = date('Y-m-d', strtotime($data['birthdate']));
+                        $patients['gender'] = $data['gender'];
+
+                        $referralHistory = new ReferralHistory;
+                        $referralHistory->referred_by_provider = $data['referred_by'];
+                        $referralHistory->referred_by_practice = $data['source'];
+                        $referralHistory->disease_type = $data['disease_type'];
+                        $referralHistory->severity = $data['severity'];
+                        $referralHistory->save();
+
+                        $insuranceCarrier = new PatientInsurance;
+                        $insuranceCarrier->insurance_carrier = $data['insurance_type'];
+
+                        $patient = Patient::where($patients)->first();
+
+                        if (!$patient) {
+                            $patient = Patient::create($patients);
+                            $new_patients = $new_patients + 1;
+                            $careconsole = new Careconsole;
+                            $careconsole->import_id = $importHistory->id;
+                            $careconsole->patient_id = $patient->id;
+                            $careconsole->stage_id = 1;
+                            if (!$referralHistory) {
+                                $careconsole->referral_id = $referralHistory->id;
+                            }
+                            $insuranceCarrier->patient_id = $patient->id;
+                            $insuranceCarrier->save();
+                            $date = new \DateTime();
+                            $careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
+                            $careconsole->entered_console_at = $date->format('Y-m-d H:m:s');
+                            $careconsole->save();
+                            $action = "new patient ($patient->id) created and added to console ($careconsole->id) ";
+                            $description = '';
+                            $filename = basename(__FILE__);
+                            $ip = $request->getClientIp();
+                            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+                        } else {
+                            $old_patients = $old_patients + 1;
+                        }
+                        $i++;
+                    }
+                }
+
+            });
+            
+/*
+           
+            echo "start here----";
             foreach ($excels as $sheet) {
+                // dd($sheet);
                 $title = $sheet->getTitle();
+                echo "Title - ". $title;
                 switch ($title) {
                     case 'Users':
                         foreach ($sheet as $data) {
@@ -169,6 +234,7 @@ class BulkImportController extends Controller
                         }
                         break;
                     case 'Patients':
+                        echo "Inside the loop";
 
                         foreach ($sheet as $data) {
                             $patients = [];
@@ -199,6 +265,7 @@ class BulkImportController extends Controller
                                 $patient = Patient::where($patients)->first();
 
                                 if (!$patient) {
+                                    echo "--New Patient";
                                     $patient = Patient::create($patients);
                                     $new_patients = $new_patients + 1;
                                     $careconsole = new Careconsole;
@@ -231,7 +298,7 @@ class BulkImportController extends Controller
                         break;
                 }
             }
-
+*/
             $action = 'Bulk import Patients';
             $description = '';
             $filename = basename(__FILE__);
