@@ -213,10 +213,10 @@ class AppointmentController extends Controller
             $contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:m:s');
             $contactHistory->save();
 
-            if ($careconsole->referral_id) {
-                $referralHistory = ReferralHistory::find($careconsole->referral_id);
-            } else {
+            $referralHistory = ReferralHistory::find($careconsole->referral_id);
+            if ($referralHistory == null) {
                 $referralHistory = new ReferralHistory;
+                $referralHistory->save();
                 $careconsole->referral_id = $referralHistory->id;
                 $careconsole->save();
             }
