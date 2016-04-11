@@ -119,26 +119,24 @@ class AppointmentController extends Controller
 
         $result = '';
 
-        if ($apptResult->RequestApptInsertResult->ApptKey != -1) {
-            $appointment->fpc_id = $apptResult->RequestApptInsertResult->ApptKey;
-            $result = 'Appointment Scheduled Successfully';
-
-            $action = 'Appointment Scheduled for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
-            $description = '';
-            $filename = basename(__FILE__);
-            $ip = $request->getClientIp();
-            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
-        } else {
-            $result = $apptResult->RequestApptInsertResult->Result;
-
-            $action = 'Attempt to shedule appointment failed for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
-            $description = '';
-            $filename = basename(__FILE__);
-            $ip = $request->getClientIp();
-            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
-            return $result;
+        if ($apptResult != null) {
+            if ($apptResult->RequestApptInsertResult->ApptKey != -1) {
+                $appointment->fpc_id = $apptResult->RequestApptInsertResult->ApptKey;
+                $result = 'Appointment Scheduled Successfully';
+                $action = 'Appointment Scheduled for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
+                $description = '';
+                $filename = basename(__FILE__);
+                $ip = $request->getClientIp();
+                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+            } else {
+                $result = $apptResult->RequestApptInsertResult->Result;
+                $action = 'Attempt to shedule appointment failed for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
+                $description = '';
+                $filename = basename(__FILE__);
+                $ip = $request->getClientIp();
+                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+                return $result;
+            }
         }
 
         $appointment->save();

@@ -2,6 +2,8 @@
 
 namespace myocuhub\Http\Controllers;
 
+ini_set('max_execution_time', 600);
+
 use Auth;
 use Event;
 use Faker\Factory as Faker;
@@ -207,7 +209,7 @@ class BulkImportController extends Controller
                                         $careconsole->referral_id = $referralHistory->id;
                                     }
                                     $insuranceCarrier->patient_id = $patient->id;
-                                    $insurancecarrier->save();
+                                    $insuranceCarrier->save();
                                     $date = new \DateTime();
                                     $careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
                                     $careconsole->entered_console_at = $date->format('Y-m-d H:m:s');
@@ -224,6 +226,8 @@ class BulkImportController extends Controller
                             }
 
                         }
+                        break;
+                    default:
                         break;
                 }
             }
@@ -246,8 +250,6 @@ class BulkImportController extends Controller
     public function fakeExport()
     {
 
-        ini_set('max_execution_time', 300);
-
         $faker = Faker::create();
         $patient = [];
         for ($i = 0; $i < 10000; $i++) {
@@ -259,10 +261,11 @@ class BulkImportController extends Controller
             $patient[$i]['Address 2'] = '';
             $patient[$i]['City'] = '';
             $patient[$i]['State'] = '';
-            $patient[$i]['zip'] = '';
+            $patient[$i]['Zip'] = '';
             $patient[$i]['Phone Number'] = '';
             $patient[$i]['Gender'] = 'M';
             $patient[$i]['Referred By'] = '';
+            $patient[$i]['Source'] = '';
             $patient[$i]['Disease Type'] = '';
             $patient[$i]['Severity'] = '';
             $patient[$i]['Insurance Type'] = '';
