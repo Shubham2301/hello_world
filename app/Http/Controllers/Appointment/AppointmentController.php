@@ -218,7 +218,7 @@ class AppointmentController extends Controller
             } else {
                 $referralHistory = new ReferralHistory;
                 $careconsole->referral_id = $referralHistory->id;
-                $careconsole->update();
+                $careconsole->save();
             }
             $referralHistory->referred_to_practice_id = $appointment->practice_id;
             $referralHistory->referred_to_location_id = $appointment->location_id;
