@@ -16,7 +16,7 @@
 </div>
 @endif
 <div class="content-section active" style="min-height: 40vh;">
-    <div class="row">
+    <div class="row no-margin">
         <div class="col-xs-offset-1">
 			<input type="hidden" value = "{{$openView}}" id='current_view'>
             <div class="file_exchange_navbar">
@@ -48,7 +48,7 @@
             <div class="col-xs-2 no-padding">Date Modified</div>
         </div>
         <hr class="main"> @foreach($folderlist as $folder)
-        <div class="row arial col_content">
+        <div class="row arial col_content no-margin">
             <div class="col-xs-1" style="text-align: center;">
                 <input type="checkbox" class="checkbox file-exchange folder-check" style="display: inline;" data-id="{{ $folder['id'] }}" data-name="folder">
             </div>
@@ -71,7 +71,7 @@
             </div>
         </div>
         <hr> @endforeach @foreach($filelist as $file)
-        <div class="row arial col_content">
+        <div class="row arial col_content no-margin">
             <div class="col-xs-1" style="text-align: center;">
                 <input type="checkbox" class="checkbox file-exchange file-check" name="checkbox" style="display: inline;" data-id="{{ $file['id'] }}" data-name="file">
             </div>

@@ -5,6 +5,10 @@ $(document).ready(function() {
     });
     $('#manual_appointment_date').datetimepicker();
 
+    var recall_icon_path = $('#recall_icon_path').val();
+    var archive_icon_path = $('#archive_icon_path').val();
+    var priority_icon_path = $('#priority_icon_path').val();
+
     $('#search_bar_open').on('click', function() {
         if (($('#search_bar_open').hasClass('active'))) {
             $('#search_bar_open').removeClass('active');
@@ -73,11 +77,11 @@ $(document).ready(function() {
             bucketName = $(this).attr('data-name');
             var bucketTitle = $(this).find('p').html();
             if(bucketName == 'recall'){
-                bucketTitle += '<img src="http://ocuhub.dev/images/recall-icon.png" alt="" style="width: 1.2em;margin: auto .3em;">';
+                bucketTitle += '<img src="' + recall_icon_path + '" alt="" class="bucket_icon_style">';
             } else if(bucketName == 'archived') {
-                bucketTitle += '<img src="http://ocuhub.dev/images/archive-icon.png" alt="" style="width: 1.2em;margin: auto .3em;">';
+                bucketTitle += '<img src="' + archive_icon_path + '" alt="" class="bucket_icon_style">';
             } else if(bucketName == 'priority') {
-                bucketTitle += '<img src="http://ocuhub.dev/images/priority-icon.png" alt="" style="width: 1.2em;margin: auto .3em;">';
+                bucketTitle += '<img src="' + priority_icon_path + '" alt="" class="bucket_icon_style">';
             }
             $('.drilldown>.section-header').html(bucketTitle);
             bucketData(bucketName);
