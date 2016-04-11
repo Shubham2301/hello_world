@@ -22,7 +22,7 @@ use Validator;
 class UserController extends Controller {
 
 	public function __construct() {
-		//$this->middleware('role:user-admin, 2');
+		$this->middleware('role:user-admin,1');
 	}
 
 	/**

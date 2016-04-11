@@ -24,6 +24,7 @@ elixir(function (mix) {
     mix.less(['networks.less'],'public/css/networks.css');
     mix.less(['file_exchange.less'],'public/css/file_exchange.css');
 	mix.less(['users.less'],'public/css/users.css');
+	mix.less(['reporting.less'],'public/css/reporting.css');
 
     mix.babel(['main.js','announcements.js'],'public/js/main.js');
     mix.babel(['sesconnect.js'],'public/js/sesconnect.js');
@@ -39,6 +40,7 @@ elixir(function (mix) {
     mix.babel(['toxml.js'],'public/js/toxml.js');
     mix.babel(['file_exchange.js'],'public/js/file_exchange.js');
 	mix.babel(['users.js'],'public/js/users.js');
+	mix.babel(['reporting.js'],'public/js/reporting.js');
 	mix.babel(['session_timeout.js'],'public/js/session_timeout.js');
 
     mix.version(['css/style.css',
@@ -53,6 +55,7 @@ elixir(function (mix) {
                 'css/file_exchange.css',
                 'css/announcements.css',
 				'css/users.css',
+				'css/reporting.css',
                 'js/main.js',
                 'js/sesconnect.js',
                 'js/referraltype.js',
@@ -64,8 +67,9 @@ elixir(function (mix) {
                 'js/careconsole.js',
                 'js/networks.js',
                 'js/file_exchange.js',
-				 'js/users.js',
-				 'js/session_timeout.js'
+				'js/users.js',
+				'js/reporting.js',
+				'js/session_timeout.js'
                 ]);
 
 });

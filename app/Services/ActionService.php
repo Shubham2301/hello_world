@@ -9,20 +9,24 @@ use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
+use myocuhub\Models\ReferralHistory;
 
-class ActionService {
+class ActionService
+{
 
-	public function __construct() {
+	public function __construct()
+	{
 
 	}
 
 	/**
-	 * @param $kpiName
-	 * @param $networkID
-	 * @param $stageID
-	 * @return mixed
-	 */
-	public function userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID, $manualAppointmentDate) {
+     * @param $kpiName
+     * @param $networkID
+     * @param $stageID
+     * @return mixed
+     */
+	public function userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID, $manualAppointmentDate)
+	{
 		$actionName = Action::find($actionID)->name;
 		if ($actionResultID == '-1') {
 			$actionResultID = 14;
@@ -90,19 +94,16 @@ class ActionService {
 				break;
 			case 'move-to-console':
 				$console = Careconsole::find($consoleID);
+				$referralHistory = new ReferralHistory;
+				$referralHistory->save();
+				$console->referral_id = $referralHistory->id;
 				$console->recall_date = null;
 				$console->archived_date = null;
 				$date = new DateTime();
 				$console->stage_id = 1;
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
-				if ($contactHistory) {
-					foreach ($contactHistory as $history) {
-						$history->archived = 1;
-						$history->save();
-					}
-				}
+				$this->archiveContactHistory($consoleID);
 				break;
 			case 'recall-later':
 				$console = Careconsole::find($consoleID);
@@ -111,13 +112,7 @@ class ActionService {
 				$date = new DateTime();
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
-				if ($contactHistory) {
-					foreach ($contactHistory as $history) {
-						$history->archived = 1;
-						$history->save();
-					}
-				}
+				$this->archiveContactHistory($consoleID);
 				break;
 			case 'unarchive':
 				$console = Careconsole::find($consoleID);
@@ -128,6 +123,11 @@ class ActionService {
 				$console->referral_id = null;
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
+				$referralHistory = new ReferralHistory;
+				$referralHistory->save();
+				$console->referral_id = $referralHistory->id;
+				$console->save();
+				$this->archiveContactHistory($consoleID);
 				break;
 			case 'archive':
 				$console = Careconsole::find($consoleID);
@@ -135,13 +135,7 @@ class ActionService {
 				$console->archived_date = $date->format('Y-m-d H:m:s');
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
-				if ($contactHistory) {
-					foreach ($contactHistory as $history) {
-						$history->archived = 1;
-						$history->save();
-					}
-				}
+				$this->archiveContactHistory($consoleID);
 				break;
 			case 'kept-appointment':
 				$console = Careconsole::find($consoleID);
@@ -204,13 +198,7 @@ class ActionService {
 				$date = new DateTime();
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
-				if ($contactHistory) {
-					foreach ($contactHistory as $history) {
-						$history->archived = 1;
-						$history->save();
-					}
-				}
+				$this->archiveContactHistory($consoleID);
 				break;
 			case 'refer-to-specialist':
 			case 'highrisk-contact-pcp':
@@ -233,13 +221,7 @@ class ActionService {
 				$console->archived_date = $date->format('Y-m-d H:m:s');
 				$console->stage_updated_at = $date->format('Y-m-d H:m:s');
 				$console->save();
-				$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
-				if ($contactHistory) {
-					foreach ($contactHistory as $history) {
-						$history->archived = 1;
-						$history->save();
-					}
-				}
+				$this->archiveContactHistory($consoleID);
 				break;
 			default:
 				break;
@@ -247,7 +229,8 @@ class ActionService {
 		return $contact->id;
 	}
 
-	public function getContactActions($consoleID) {
+	public function getContactActions($consoleID)
+	{
 		$contactsData = ContactHistory::getContactHistory($consoleID);
 		$console = Careconsole::find($consoleID);
 		$actions = [];
@@ -278,6 +261,17 @@ class ActionService {
 		$actions[$i]['name'] = 'entered into console';
 		$actions[$i]['notes'] = '-';
 		return $actions;
+	}
+
+	public function archiveContactHistory($consoleID){
+
+		$contactHistory = ContactHistory::where('console_id', $consoleID)->get();
+
+		foreach ($contactHistory as $history) {
+			$history->archived = 1;
+			$history->save();
+		}
+
 	}
 
 }

@@ -2,96 +2,145 @@
 
 namespace myocuhub\Services\PatientCare;
 
+use Event;
+use myocuhub\Events\MakeAuditEntry;
 use SoapClient;
+use SoapFault;
 
-class WebScheduling4PC extends PatientCare {
+class WebScheduling4PC extends PatientCare
+{
 
-	public function __construct() {
+    public function __construct()
+    {
 
-		self::$url = 'http://www.4patientcare.ws/v5dn/partnerwebscheduling.asmx';
-		self::$wsdl = 'http://www.4patientcare.ws/v5dn/partnerwebscheduling.asmx?WSDL';
-		self::$getApptTypesAction = 'http://WebScheduling.4PatientCare.Com/GetApptTypes';
-		self::$getOpenApptSlotsAction = 'http://WebScheduling.4PatientCare.Com/GetOpenApptSlots';
-		self::$requestApptInsertAction = 'http://WebScheduling.4PatientCare.Com/RequestApptInsert';
-		self::$getInsListAction = 'http://WebScheduling.4PatientCare.Com/GetInsList';
-		self::$host = 'www.4patientcare.ws';
+        self::$url = 'http://www.4patientcare.ws/v5dn/partnerwebscheduling.asmx';
+        self::$wsdl = 'http://www.4patientcare.ws/v5dn/partnerwebscheduling.asmx?WSDL';
+        self::$getApptTypesAction = 'http://WebScheduling.4PatientCare.Com/GetApptTypes';
+        self::$getOpenApptSlotsAction = 'http://WebScheduling.4PatientCare.Com/GetOpenApptSlots';
+        self::$requestApptInsertAction = 'http://WebScheduling.4PatientCare.Com/RequestApptInsert';
+        self::$getInsListAction = 'http://WebScheduling.4PatientCare.Com/GetInsList';
+        self::$host = 'www.4patientcare.ws';
 
-	}
+    }
 
-	/**
-	 *
-	 * getApptTypes() retrieves a list of appointment types for a specific provider at a specific location.
-	 *
-	 * @param $input
-	 * @return mixed
-	 */
-	public static function getApptTypes($input) {
+    /**
+     *
+     * getApptTypes() retrieves a list of appointment types for a specific provider at a specific location.
+     *
+     * @param $input
+     * @return mixed
+     */
+    public static function getApptTypes($input)
+    {
 
-		$input['AccessID'] = self::getAccessID();
-		$input['SecurityCode'] = self::getSecurityCode();
+        $input['AccessID'] = self::getAccessID();
+        $input['SecurityCode'] = self::getSecurityCode();
 
-		$client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
-		$response = $client->__soapCall("GetApptTypes", array($input), array('soapaction' => self::$getApptTypesAction, 'uri' => self::$host));
+        $client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
 
-		return $response;
-	}
+        try {
+            $response = $client->__soapCall("GetApptTypes", array($input), array('soapaction' => self::$getApptTypesAction, 'uri' => self::$host));
+        } catch (SoapFault $e) {
+            $result = $e->faultstring;
+            $action = 'Attempt to getApptTypes with 4PC failed : SoapFault ';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = '';
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+            return;
+        }
 
-	/**
-	 *
-	 * getInsList() retrieves a list of accepted insurance types for a specific provider at a specific location.
-	 *
-	 * @param $input
-	 * @return mixed
-	 */
-	public static function getInsList($input) {
+        return $response;
+    }
 
-		$input['AccessID'] = self::getAccessID();
-		$input['SecurityCode'] = self::getSecurityCode();
+    /**
+     *
+     * getInsList() retrieves a list of accepted insurance types for a specific provider at a specific location.
+     *
+     * @param $input
+     * @return mixed
+     */
+    public static function getInsList($input)
+    {
 
-		$client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
-		$response = $client->__soapCall("GetInsList", array($input), array('soapaction' => self::$getInsListAction, 'uri' => self::$host));
+        $input['AccessID'] = self::getAccessID();
+        $input['SecurityCode'] = self::getSecurityCode();
 
-		return $response;
-	}
+        $client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
+        try {
+            $response = $client->__soapCall("GetInsList", array($input), array('soapaction' => self::$getInsListAction, 'uri' => self::$host));
+        } catch (SoapFault $e) {
+            $result = $e->faultstring;
+            $action = 'Attempt to getInsList with 4PC failed : SoapFault ';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = '';
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+            return;
+        }
 
-	/**
-	 *
-	 * getOpenApptSlots() retrieves a list of available time slots on a given day for a specific provider at a specific location.
-	 *
-	 * @param $input
-	 * @return mixed
-	 */
-	public static function getOpenApptSlots($input) {
+        return $response;
+    }
 
-		$input['AccessID'] = self::getAccessID();
-		$input['SecurityCode'] = self::getSecurityCode();
+    /**
+     *
+     * getOpenApptSlots() retrieves a list of available time slots on a given day for a specific provider at a specific location.
+     *
+     * @param $input
+     * @return mixed
+     */
+    public static function getOpenApptSlots($input)
+    {
 
-		$client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
-		$response = $client->__soapCall("GetOpenApptSlots", array($input), array('soapaction' => self::$getOpenApptSlotsAction, 'uri' => self::$host));
+        $input['AccessID'] = self::getAccessID();
+        $input['SecurityCode'] = self::getSecurityCode();
 
-		return $response->GetOpenApptSlotsResult;
-	}
+        $client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
+        try {
+            $response = $client->__soapCall("GetOpenApptSlots", array($input), array('soapaction' => self::$getOpenApptSlotsAction, 'uri' => self::$host));
+        } catch (SoapFault $e) {
+            $result = $e->faultstring;
+            $action = 'Attempt to getOpenApptSlots with 4PC failed : SoapFault ';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = '';
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+            return;
+        }
 
-	/**
-	 *
-	 * requestApptInsert() schedules an appointment with a 4PC register practice and provider
-	 *
-	 * In case of successfull scheduling 4PC returns the 4PC appointment ID and a status message.
-	 * Sends a -1 instead.
-	 *
-	 * @param $input
-	 */
-	public static function requestApptInsert($input) {
+        return $response->GetOpenApptSlotsResult;
+    }
 
-		$input['AccessID'] = self::getAccessID();
-		$input['SecurityCode'] = self::getSecurityCode();
-		//dd($input);
-		//MM/DD/YYYY HH:MM 24 Hr military format
-		$client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
-		$response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => self::$requestApptInsertAction, 'uri' => self::$host));
+    /**
+     *
+     * requestApptInsert() schedules an appointment with a 4PC register practice and provider
+     *
+     * In case of successfull scheduling 4PC returns the 4PC appointment ID and a status message.
+     * Sends a -1 instead.
+     *
+     * @param $input
+     */
+    public static function requestApptInsert($input)
+    {
 
-		return $response;
+        $input['AccessID'] = self::getAccessID();
+        $input['SecurityCode'] = self::getSecurityCode();
+        $client = new SoapClient(self::$wsdl, array('trace' => 1, 'exceptions' => 1, 'encoding' => 'UTF-8', 'soap_version' => SOAP_1_1));
 
-	}
+        try {
+            $response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => self::$requestApptInsertAction, 'uri' => self::$host));
+        } catch (SoapFault $e) {
+            $result = $e->faultstring;
+            $action = 'Attempt to requestApptInsert with 4PC failed : SoapFault ';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = '';
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+            return;
+        }
+
+        return $response;
+
+    }
 
 }
