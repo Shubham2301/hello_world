@@ -100,7 +100,9 @@
 			</div>
 		</div>
 	</div>
-
+    <input type="hidden" id="recall_icon_path" value="{{URL::asset('/images/recall-icon.png')}}">
+    <input type="hidden" id="archive_icon_path" value="{{URL::asset('/images/archive-icon.png')}}">
+    <input type="hidden" id="priority_icon_path" value="{{URL::asset('/images/priority-icon.png')}}">
 	@include('careconsole.patientinfo')
 	@include('careconsole.overview')
 	@include('careconsole.drilldown')
