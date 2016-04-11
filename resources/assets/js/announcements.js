@@ -196,7 +196,7 @@ function makeAnnouncementForm() {
             $('.announcement_content').html(content);
             var date = new Date();
             $('#schedule').datetimepicker({
-                format: 'YYYY/MM/DD',
+                format: 'MM/DD/YYYY',
                 minDate: date,
                 defaultDate: date
             });

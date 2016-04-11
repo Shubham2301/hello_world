@@ -3,6 +3,7 @@
 namespace myocuhub\Http\Controllers;
 
 use Auth;
+use DateTime;
 use Illuminate\Http\Request;
 
 use myocuhub\Http\Requests;
@@ -81,7 +82,8 @@ class AnnouncementController extends Controller
         $announcement->message = $request->input('message');
         $announcement->priority = $request->input('priority');
         $announcement->type = $request->input('type');
-        $announcement->scheduled_date = $request->input('schedule');
+        $schedule = new DateTime($request->input('schedule'));
+        $announcement->scheduled_date = $schedule->format('Y-m-d 00:00:00');
         $announcement->role_id = $request->input('send_to');
         $announcement->created_by_user = Auth::user()->id;
         $announcement->save();
