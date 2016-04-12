@@ -178,5 +178,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('reports', 'ReportingController');
     Route::get('reports/generate', 'ReportingController@generateReports');
 
+    Route::resource('careconsole_reports', 'ReportsController');
+    Route::get('careconsole_reports/show', 'ReportsController@show');
+
     Route::get('getlandingpages', 'Admin\UserController@getLandingPagebyRole');
 });
