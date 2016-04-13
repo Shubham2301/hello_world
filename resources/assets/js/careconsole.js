@@ -831,9 +831,9 @@ function clearActionFields(){
 	$('#form_manual_appointment_appointment_type').hide();
 	$('#form_recall_date').val('');
 	$('#manual_appointment_date').val('');
-	$('#form_manual_appointment_practice').val('');
-	$('#form_manual_appointment_provider').val('');
-	$('#form_manual_appointment_location').val('');
+	$('#manual_appointment_practice').val('0');
+	$('#manual_appointment_provider').val('0');
+	$('#manual_appointment_location').val('0');
 	$('#manual_appointment_appointment_type').val('');
 
 }

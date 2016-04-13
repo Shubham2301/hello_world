@@ -48,7 +48,7 @@
                             <div class="col-md-7 form-group">
 
                                 <select class="form-control" name="manual_appointment_practice" id="manual_appointment_practice">
-                                    <option value="">Select Practice</option>
+                                    <option value="0">Select Practice</option>
                                     @foreach($overview['network_practices'] as $practice)
                                     <option value="{{ $practice['id'] }}">{{ $practice['name'] }}</option>
                                     @endforeach
