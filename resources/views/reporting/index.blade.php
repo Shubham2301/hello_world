@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'My Ocuhub - Select Patients')
+@section('title', 'My Ocuhub - Reports')
 
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/reporting.css')}}">
