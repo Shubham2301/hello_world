@@ -1,0 +1,298 @@
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
+
+
+.select_dropdown {
+    background-color: #ffffff;
+    border: none;
+    color: #4d4d4d;
+    background-image: none;
+}
+
+.report_header{
+    font-size: 1em;
+    &>.title{
+        font-size: 1.4em;
+        margin: 1em 1em 0 3em;
+    }
+    &>span{
+        &.input_field{
+            margin-left: 1em;
+        }
+        &>input{
+            color: #4d4d4d;
+            border: none;
+            width: 8em;
+            margin: 0 .5em;
+            padding: .2em 0.4em;
+            background-color: #ebebeb;
+        }
+}
+}
+.content-right {
+    padding: 15px;
+}
+
+
+
+.align-left{
+    text-align: left;
+}
+.align-center{
+    text-align: center;
+}
+.align-right{
+    text-align: right;
+}
+.remove-padding{
+    padding:0!important;
+}
+.flex-col{
+    display:flex;
+}
+.custom_container{
+    width:100%;
+    padding:0;
+}
+.remove_margin{
+    margin:0!important;
+}
+.remove-left-padding{
+    padding-left: 0;
+}
+.report_section {}
+@primary-color: #00b5eb;
+@background-color-1: #ffffff;
+@background-color-2: @primary-color;
+@background-color-3: #f2f2f2;
+@background-color-4: #cde8f4;
+@border-color-1: #0071bc;
+@border-color-2: #dddddd;
+@border-color-3: #ffffff;
+@font-color-1: #000000;
+@font-color-2: #00a99d;
+@font-color-3: @primary-color;
+@font-color-4: #4d4d4d;
+@font-color-5: #333333;
+@font-color-6: #ffffff;
+@font-size: 12px;
+
+.dashboard_body_row {
+    margin: 0;
+    display: flex;
+    flex: 1 1 auto;
+}
+
+.drilldown {
+    font-size: 1em;
+    color: @font-color-5;
+}
+
+.report_header {
+    font-size: 1.8em;
+    color: @font-color-1;
+    .arial_bold;
+    margin: 0.5em 0;
+    display: inline-block;
+}
+
+.report_time_type {
+    border-radius: 0.7em;
+    font-size: 1.14em;
+    color: @font-color-1;
+}
+
+.report_time_badge {
+    .report_time_type;
+    background-color: @background-color-4;
+    padding: 0.25em 0.5em;
+}
+
+.report_sub_header {
+    font-size: 1.3em;
+    color: @font-color-5;
+    .arial_bold;
+    margin: 0 0 5px;
+}
+
+.report_section_header {
+    color: @font-color-2;
+    font-size: 1.6em;
+    .align-center;
+}
+
+.report_content_label {
+    color: @font-color-4;
+    font-size: 1em;
+}
+
+.report_content_value {
+    color: @font-color-3;
+    font-size: 1em;
+    margin-right: 1em;
+    .align-right;
+}
+
+.dashboard_container {
+    background-color: @background-color-2;
+    width: 100%;
+    font-size: 13px;
+}
+
+.dashboard_inner {
+    background-color: @background-color-1;
+    padding: 1em 2em;
+}
+
+.separator {
+    border-bottom: 2px solid @border-color-1;
+    display: block;
+    margin-bottom: 1em;
+}
+
+.separator-2 {
+    border-bottom: 2px solid @border-color-2;
+    display: block;
+    margin: 1em 0;
+}
+
+.report_sub_section {
+    padding: 1em;
+    border: 1px solid @border-color-2;
+}
+
+.report_sub_section_header {
+    .report_section_header;
+    padding: 0.25em;
+    border: 1px solid @border-color-2;
+    border-bottom: 0;
+    margin: 0;
+}
+
+.section_separator {
+    margin: 1em 0;
+    display: block;
+}
+
+.sidebar_separator {
+    margin: 2em 0;
+    display: block;
+}
+
+.report_section_inner {
+    .report_section;
+    background-color: @background-color-3;
+    padding: 1em;
+}
+
+.sidebar_header {
+    font-size: 1.3em;
+    color: @font-color-1;
+    margin: 0;
+    &.active
+    {
+        color: @font-color-3;
+    }
+}
+
+.sidebar_sub_header {
+    font-size: 1em;
+    color: @font-color-1;
+    &.active
+    {
+        color: @font-color-3;
+    }
+}
+
+
+
+.sidebar_container {
+    background-color: @background-color-3;
+    width: 100%;
+    border-right: 3px solid @border-color-3;
+    box-shadow: inset 0 20px 40px -20px #b7b9bb, inset 0 -8px 8px -8px #b7b9bb;
+}
+
+.sidebar_icon {
+    width: 80%;
+    margin-top: 5px;
+}
+
+.sidebar_item {
+    color: @font-color-5;
+    font-size: 1.14em;
+    padding-top: 1em;
+}
+.sidebar_item_historical
+{
+    color: @font-color-5;
+    font-size: 1.14em;
+    padding-top: 1em;
+    border-bottom: 2px solid #fff;
+    margin-bottom: 15px;
+}
+
+.sidebar_item .active {
+    .arial_bold;
+}
+
+.header_body_row {
+    .dashboard_body_row;
+}
+
+.drilldown_item {
+    cursor: pointer;
+}
+
+.filter_name {
+    display: inline-block;
+    padding: 0.25em 0 0.25em 0.5em;
+}
+
+.filter {
+    display: inline-block;
+    border: 1px solid @border-color-2;
+    margin: 0.5em;
+    border-radius: 0.5em;
+}
+
+.filter_remove {
+    padding: 0.25em 0.5em;
+    color: @font-color-3;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.select_dropdown {
+    background-color: @background-color-1;
+    border: none
+}
+
+.disable_drilldown {
+    opacity: 0.7;
+}
+
+.menu {
+    height: 10vh;
+}
+
+.ocuhub-logo {
+    height: 10vh;
+    margin-left: 2em;
+}
+
+.company {
+    height: 4vh;
+    margin: 3vh auto;
+}
+
+.dashboard {
+    min-height: 90vh;
+    display: flex;
+}
+
+.extend {
+    flex: 1 1 auto;
+}
