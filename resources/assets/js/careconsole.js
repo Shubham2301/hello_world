@@ -180,6 +180,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_practice').show();
                 $('#form_manual_appointment_provider').show();
                 $('#form_manual_appointment_location').show();
+				$('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -187,6 +188,7 @@ $(document).ready(function() {
 				$('#form_manual_appointment_practice').show();
 				$('#form_manual_appointment_provider').show();
 				$('#form_manual_appointment_location').show();
+				$('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             default:
@@ -225,6 +227,7 @@ $(document).ready(function() {
 				$('#form_manual_appointment_practice').show();
 				$('#form_manual_appointment_provider').show();
 				$('#form_manual_appointment_location').show();
+				$('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -232,6 +235,7 @@ $(document).ready(function() {
 				$('#form_manual_appointment_practice').show();
 				$('#form_manual_appointment_provider').show();
 				$('#form_manual_appointment_location').show();
+				$('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             default:
@@ -268,6 +272,7 @@ $(document).ready(function() {
 				$('#form_manual_appointment_practice').show();
 				$('#form_manual_appointment_provider').show();
 				$('#form_manual_appointment_location').show();
+				$('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -275,6 +280,7 @@ $(document).ready(function() {
 				$('#form_manual_appointment_provider').show();
 				$('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_date').show();
+				$('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             default:
@@ -499,7 +505,8 @@ function action() {
         'notes': $('#action_notes').val(),
 		'manual_appointment_practice': $('#manual_appointment_practice').val(),
 		'manual_appointment_location': $('#manual_appointment_location').val(),
-		'manual_appointment_provider': $('#manual_appointment_provider').val()
+		'manual_appointment_provider': $('#manual_appointment_provider').val(),
+		'manual_appointment_appointment_type': $('#manual_appointment_appointment_type').val()
     };
 
     $.ajax({
@@ -821,10 +828,12 @@ function clearActionFields(){
 	$('#form_manual_appointment_practice').hide();
 	$('#form_manual_appointment_provider').hide();
 	$('#form_manual_appointment_location').hide();
+	$('#form_manual_appointment_appointment_type').hide();
 	$('#form_recall_date').val('');
 	$('#manual_appointment_date').val('');
 	$('#form_manual_appointment_practice').val('');
 	$('#form_manual_appointment_provider').val('');
 	$('#form_manual_appointment_location').val('');
+	$('#manual_appointment_appointment_type').val('');
 
 }

@@ -176,6 +176,7 @@ class CareConsoleController extends Controller {
 		$manualAppointmentData['practice_id'] = $request->manual_appointment_practice;
 		$manualAppointmentData['location_id'] = $request->manual_appointment_location;
 		$manualAppointmentData['provider_id'] = $request->manual_appointment_provider;
+		$manualAppointmentData['appointment_type'] = $request->manual_appointment_appointment_type;
 		$notes = $request->notes;
 		$consoleID = $request->console_id;
 		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID, $manualAppointmentData);

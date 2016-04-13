@@ -62,12 +62,13 @@ class ActionService
 				$appointment->end_datetime = $appointment_date->format('Y-m-d H:m:s');
 				$appointment->notes = $notes;
 				if($manualAppointmentData['practice_id'] != '0' && $manualAppointmentData['practice_id'] !='' )
-				$appointment->practice_id = $manualAppointmentData['practice_id'];
+					$appointment->practice_id = $manualAppointmentData['practice_id'];
 				if($manualAppointmentData['provider_id'] != '0' && $manualAppointmentData['provider_id'] !='')
-				$appointment->provider_id = $manualAppointmentData['provider_id'];
+					$appointment->provider_id = $manualAppointmentData['provider_id'];
 				if($manualAppointmentData['location_id'] != '0' && $manualAppointmentData['location_id'] !='')
-				$appointment->location_id = $manualAppointmentData['location_id'];
-				$appointment->appointmenttype = 'Annual Eye Exam';
+					$appointment->location_id = $manualAppointmentData['location_id'];
+				if($manualAppointmentData['appointment_type'] !='')
+					$appointment->appointmenttype = $manualAppointmentData['appointment_type'];
 
 				$appointment->save();
 				if ($appointment) {
@@ -94,7 +95,8 @@ class ActionService
 					$appointment->provider_id = $manualAppointmentData['provider_id'];
 				if($manualAppointmentData['location_id'] != '0' && $manualAppointmentData['location_id'] !='')
 					$appointment->location_id = $manualAppointmentData['location_id'];
-				$appointment->appointmenttype = 'Annual Eye Exam';
+				if($manualAppointmentData['appointment_type'] !='')
+					$appointment->appointmenttype = $manualAppointmentData['appointment_type'];
 				$appointment->notes = $notes;
 				$appointment->save();
 				if ($appointment) {
