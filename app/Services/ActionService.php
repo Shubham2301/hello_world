@@ -25,7 +25,7 @@ class ActionService
      * @param $stageID
      * @return mixed
      */
-	public function userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID, $manualAppointmentDate)
+	public function userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID, $manualAppointmentData)
 	{
 		$actionName = Action::find($actionID)->name;
 		if ($actionResultID == '-1') {
@@ -54,13 +54,21 @@ class ActionService
 				break;
 			case 'manually-schedule':
 				$console = Careconsole::find($consoleID);
-				$appointment_date = new DateTime($manualAppointmentDate);
+				$appointment_date = new DateTime($manualAppointmentData['appointment_date']);
 				$appointment = new Appointment;
 				$appointment->patient_id = $console->patient_id;
 				$appointment->network_id = session('network-id');
 				$appointment->start_datetime = $appointment_date->format('Y-m-d H:m:s');
 				$appointment->end_datetime = $appointment_date->format('Y-m-d H:m:s');
 				$appointment->notes = $notes;
+				if($manualAppointmentData['practice_id'] != '0' && $manualAppointmentData['practice_id'] !='' )
+				$appointment->practice_id = $manualAppointmentData['practice_id'];
+				if($manualAppointmentData['provider_id'] != '0' && $manualAppointmentData['provider_id'] !='')
+				$appointment->provider_id = $manualAppointmentData['provider_id'];
+				if($manualAppointmentData['location_id'] != '0' && $manualAppointmentData['location_id'] !='')
+				$appointment->location_id = $manualAppointmentData['location_id'];
+				$appointment->appointmenttype = 'Annual Eye Exam';
+
 				$appointment->save();
 				if ($appointment) {
 					$console->appointment_id = $appointment->id;
@@ -74,12 +82,19 @@ class ActionService
 				break;
 			case 'manually-reschedule':
 				$console = Careconsole::find($consoleID);
-				$appointment_date = new DateTime($manualAppointmentDate);
+				$appointment_date = new DateTime($manualAppointmentData['appointment_date']);
 				$appointment = Appointment::find($console->appointment_id);
 				$appointment->patient_id = $console->patient_id;
 				$appointment->network_id = session('network-id');
 				$appointment->start_datetime = $appointment_date->format('Y-m-d H:m:s');
 				$appointment->end_datetime = $appointment_date->format('Y-m-d H:m:s');
+				if($manualAppointmentData['practice_id'] != '0' && $manualAppointmentData['practice_id'] !='' )
+					$appointment->practice_id = $manualAppointmentData['practice_id'];
+				if($manualAppointmentData['provider_id'] != '0' && $manualAppointmentData['provider_id'] !='')
+					$appointment->provider_id = $manualAppointmentData['provider_id'];
+				if($manualAppointmentData['location_id'] != '0' && $manualAppointmentData['location_id'] !='')
+					$appointment->location_id = $manualAppointmentData['location_id'];
+				$appointment->appointmenttype = 'Annual Eye Exam';
 				$appointment->notes = $notes;
 				$appointment->save();
 				if ($appointment) {
