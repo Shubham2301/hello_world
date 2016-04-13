@@ -51,7 +51,8 @@ class ReportsController extends Controller
     {
         $reportData = array();
 
-        $reportData['appointment_type'] = [["name" => "Type 1", "count" => 3], ["name" => "Type 2", "count" => 1]];
+        $reportData['appointment_type'][0] = ["name" => "Type 1", "count" => 3];
+        $reportData['appointment_type'][1] = ["name" => "Type 2", "count" => 1];
 
         $reportData['age_demographics']['category1'] = ["count" => 2, "name" => "<35"];
         $reportData['age_demographics']['category2'] = ["count" => 3, "name" => "35-44"];
@@ -59,10 +60,12 @@ class ReportsController extends Controller
 
         $reportData['gender_demographics'] = ["male" => 75, "female" => 25];
 
-        $reportData['insurance_demographics'] = [["name" => "Medicare", "count" => 3], ["name" => "Medicade", "count" => 1]];
+        $reportData['insurance_demographics'][0] = ["name" => "Medicare", "count" => 3];
+        $reportData['insurance_demographics'][1] = ["name" => "Medicade", "count" => 1];
 
-        $reportData['disease_type'][0] = ["name" => "Dental", "severity" => [["type" => "Severe", "count" => 1]]];
-        $reportData['disease_type'][1] = ["name" => "Glaucoma", "severity" => [["type" => "Moderate", "count" => 2], ["type" => "Severe", "count" => 1]]];
+        $reportData['disease_type'][0] = ["name" => "Dental"];
+        $reportData['disease_type'][0]['severity'][0] = ["type" => "Severe", "count" => 1];
+//        $reportData['disease_type'][1] = ["name" => "Glaucoma", "severity" => [["type" => "Moderate", "count" => 2], ["type" => "Severe", "count" => 1]]];
 
         $reportData['referred_by']['type'] = "practice";
         $reportData['referred_by']['total'] = 4;
@@ -72,7 +75,12 @@ class ReportsController extends Controller
         $reportData['referred_to']['total'] = 4;
         $reportData['referred_to']['data'] = [["name" => "Test practice 1", "count" => 3, "id" => "23049"], ["name" => "Practice 2", "count" => 1, "id "=> "23067"]];
 
-        $reportData['status_of_patient'] = [["name" => "Pending Contact", "count" => 3, "id" => "pending_contact", "percent" => 50], ["name" => "Contact Attempted", "count" => 0, "id" => "contact_attempted", "percent" => 0]];
+        $reportData['status_of_patients'][0] = ["name" => "Pending Contact", "count" => 3, "id" => "pending_contact", "percent" => 50];
+        $reportData['status_of_patients'][1] = ["name" => "Contact Attempted", "count" => 0, "id" => "contact_attempted", "percent" => 0];
+        $reportData['status_of_patients'][2] = ["name" => "Pending Contact", "count" => 3, "id" => "pending_contact", "percent" => 50];
+        $reportData['status_of_patients'][3] = ["name" => "Contact Attempted", "count" => 0, "id" => "contact_attempted", "percent" => 0];
+        $reportData['status_of_patients'][4] = ["name" => "Pending Contact", "count" => 3, "id" => "pending_contact", "percent" => 50];
+        $reportData['status_of_patients'][5] = ["name" => "Contact Attempted", "count" => 0, "id" => "contact_attempted", "percent" => 0];
 
         return json_encode($reportData);
     }
