@@ -27,6 +27,7 @@ class Reports
     public function setEndDate($endDate)
     {
         $date = new Datetime($endDate);
+        $date->modify("+1 days");
         $this->endDate = $date->format('Y-m-d 00:00:00');
     }
 
