@@ -12,13 +12,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ImportHistory;
-use myocuhub\Models\NetworkUser;
 use myocuhub\Models\PatientInsurance;
-use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
-use myocuhub\Models\PracticeNetwork;
-use myocuhub\Models\PracticeUser;
-use myocuhub\Models\referralHistory;
+use myocuhub\Models\ReferralHistory;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\User;
@@ -67,7 +63,7 @@ class BulkImportController extends Controller
     }
 
     public function importPatientsXlsx(Request $request)
-    {        
+    {
         $networkID = $request->network_id;
         $new_patients = 0;
         $old_patients = 0;
@@ -79,8 +75,8 @@ class BulkImportController extends Controller
             $importHistory->save();
 
             // $excels = Excel::load($request->file('patient_xlsx'))->get();
-            $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'))->chunk(250, function($results) use (&$old_patients, &$i, &$new_patients, $importHistory, $request){
-                foreach ($results as $data) { 
+            $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'))->chunk(250, function ($results) use (&$old_patients, &$i, &$new_patients, $importHistory, $request) {
+                foreach ($results as $data) {
                     $patients = [];
                     if (array_filter($data->toArray())) {
                         $name = explode(' ', $data['patient_name']);
@@ -92,7 +88,7 @@ class BulkImportController extends Controller
                         // Based upon above four fields verify duplicate
                         $patient = Patient::where($patients)->first();
 
-                        if($patient){
+                        if ($patient) {
                             $old_patients = $old_patients + 1;
                             continue;
                         }
@@ -102,19 +98,19 @@ class BulkImportController extends Controller
                         $patients['addressline1'] = $data['address_1'];
                         $patients['addressline2'] = $data['address_2'];
                         $patients['city'] = $data['city'];
-                        $patients['zip'] = $data['zip'];                        
+                        $patients['zip'] = $data['zip'];
                         $patients['gender'] = $data['gender'];
 
                         $referralHistory = null;
 
-                        if($data['referred_by'] !='' || $data['source'] != '' || $data['disease_type'] !='' || $data['severity'] != '') {
+                        if ($data['referred_by'] != '' || $data['source'] != '' || $data['disease_type'] != '' || $data['severity'] != '') {
                             $referralHistory = new ReferralHistory;
                             $referralHistory->referred_by_provider = $data['referred_by'];
                             $referralHistory->referred_by_practice = $data['source'];
                             $referralHistory->disease_type = $data['disease_type'];
                             $referralHistory->severity = $data['severity'];
                             $referralHistory->save();
-                        }            
+                        }
 
                         if (!$patient) {
                             $patient = Patient::create($patients);
@@ -124,7 +120,7 @@ class BulkImportController extends Controller
                             $careconsole->patient_id = $patient->id;
                             $careconsole->stage_id = 1;
 
-                            if ($referralHistory !=null) {
+                            if ($referralHistory != null) {
                                 $careconsole->referral_id = $referralHistory->id;
                             }
 
@@ -132,7 +128,7 @@ class BulkImportController extends Controller
                             $insuranceCarrier->insurance_carrier = $data['insurance_type'];
                             $insuranceCarrier->patient_id = $patient->id;
                             $insuranceCarrier->save();
-                            
+
                             $date = new \DateTime();
                             $careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
                             $careconsole->entered_console_at = $date->format('Y-m-d H:m:s');
@@ -142,13 +138,12 @@ class BulkImportController extends Controller
                             $filename = basename(__FILE__);
                             $ip = $request->getClientIp();
                             Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-                        } 
+                        }
                         $i++;
                     }
                 }
 
             });
-            
 
             $action = 'Bulk import Patients';
             $description = '';
@@ -161,7 +156,6 @@ class BulkImportController extends Controller
             $patients['patients_added'] = $new_patients;
             $patients['already_exist'] = $old_patients;
 
-            
             return json_encode($patients);
         }
         return "try again";
