@@ -3,6 +3,7 @@
 namespace myocuhub\Services\Reports;
 
 use Datetime;
+use Illuminate\Support\Facades\DB;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 
@@ -216,8 +217,9 @@ class Reports
         return $result;
     }
 
-    public function buildReportsQuery($query)
+    public function buildReportsQuery($filters)
     {
+        $queryFilters = $this->buildQueryFilters($filters);
         $query = "Select
                     `careconsole`.`created_at` as careconsole_created_at,
                     `careconsole`.`stage_id`,
@@ -237,7 +239,7 @@ class Reports
                     `practices`.`name` as `referred_to_practice`,
                     `practices`.`id` as `referred_to_practice_id`,
                     `contact_attempts`.`count` as contact_attempts,
-                    `users`.`name` as `referred_to_provider`
+                    `users`.`name` as `referred_to_provider`,
                     `users`.`id` as `referred_to_provider_id`
                     from `careconsole`
                     left join `import_history` on `careconsole`.`import_id` = `import_history`.`id`
@@ -250,20 +252,21 @@ class Reports
                     left join `patient_insurance` on `patient_insurance`.`patient_id` = `careconsole`.`patient_id`
                     $queryFilters";
 
+        return $query;
     }
 
     public function buildQueryFilters($filters)
     {
 
         $networkID = session('network-id');
-        $startDate = getStartDate();
-        $endDate = getEndDate();
+        $startDate = $this->getStartDate();
+        $endDate = $this->getEndDate();
 
-        $queryFilters = "where `import_history`.network_id = $networkID";
+        $queryFilters = " where `import_history`.`network_id` = $networkID ";
 
-        if ($filter['type'] == 'real-time') {
-            $queryFilters .= " and `careconsole`.`archived_date` != null  ";
-        } elseif ($filter['type'] == 'historical') {
+        if ($filters['type'] == 'real-time') {
+            $queryFilters .= " and `careconsole`.`archived_date` IS NULL ";
+        } elseif ($filters['type'] == 'historical') {
             $queryFilters .= " and `careconsole`.`created_at` >= $startDate careconsole_created_at <= $endDate ";
         }
 
@@ -293,8 +296,8 @@ class Reports
             }
         }
 
-        if ($filters['patient_demographics'][0]['gender'] != 'none') {
-            switch ($filters['patient_demographics'][0]['gender']) {
+        if ($filters['patient_demographics']['gender'] != 'none') {
+            switch ($filters['patient_demographics']['gender']) {
                 case 'male':
                     $queryFilters .= " and (`patients`.`gender` = 'M' or `patients`.`gender` = 'Male') ";
                     break;
@@ -303,34 +306,34 @@ class Reports
             }
         }
 
-        if ($filters['referred_to'][0]['type'] != 'none') {
-            switch ($filters['referred_to'][0]['type']) {
+        if ($filters['referred_to']['type'] != 'none') {
+            switch ($filters['referred_to']['type']) {
                 case 'practice':
-                    $queryFilters .= ' and `practices`.`id` = ' . $filters['referred_to'][0]['id'];
+                    $queryFilters .= ' and `practices`.`id` = ' . $filters['referred_to']['id'];
                     break;
                 case 'practice_user':
-                    $queryFilters .= ' and `users`.`id` = ' . $filters['referred_to'][0]['id'];
+                    $queryFilters .= ' and `users`.`id` = ' . $filters['referred_to']['id'];
                     break;
             }
         }
 
-        if ($filters['incomming_referrals'][0]['referred_by'][0]['type'] != 'none') {
-            switch ($filters['incomming_referrals'][0]['referred_by'][0]['type']) {
+        if ($filters['incomming_referrals']['referred_by']['type'] != 'none') {
+            switch ($filters['incomming_referrals']['referred_by']['type']) {
                 case 'practice':
-                    $queryFilters .= ' and `referral_history`.`referred_by_practice` = "' . $filters['incomming_referrals'][0]['referred_by'][0]['name'] . '"';
+                    $queryFilters .= ' and `referral_history`.`referred_by_practice` = "' . $filters['incomming_referrals']['referred_by']['name'] . '"';
                     break;
                 case 'practice_user':
-                    $queryFilters .= ' and `referral_history`.`referred_by_provider` = "' . $filters['incomming_referrals'][0]['referred_by'][0]['name'] . '"';
+                    $queryFilters .= ' and `referral_history`.`referred_by_provider` = "' . $filters['incomming_referrals']['referred_by']['name'] . '"';
                     break;
             }
         }
 
-        if ($filters['incomming_referrals'][0]['appointment_type'] != 'none') {
-            $queryFilters .= ' and `appointments`.`appointmenttype` = "' . $filters['incomming_referrals'][0]['appointment_type'] . '"';
+        if ($filters['incomming_referrals']['appointment_type'] != 'none') {
+            $queryFilters .= ' and `appointments`.`appointmenttype` = "' . $filters['incomming_referrals']['appointment_type'] . '"';
         }
 
-        if ($filters['patient_demographics'][0]['insurance_type'] != 'none') {
-            $queryFilters .= ' and `patient_insurance`.`insurance_carrier` = "' . $filters['patient_demographics'][0]['insurance_type'] . '"';
+        if ($filters['patient_demographics']['insurance_type'] != 'none') {
+            $queryFilters .= ' and `patient_insurance`.`insurance_carrier` = "' . $filters['patient_demographics']['insurance_type'] . '"';
         }
 
         if ($filters['disease_type'] != 'none') {
@@ -345,7 +348,17 @@ class Reports
 
     public function execReportsQuery($query)
     {
+        if ($query && $query != '') {
+            $result = DB::select(DB::raw($query));
+        }
+        return $result;
+    }
 
+    public function getReportingData($filters)
+    {
+        $query = $this->buildReportsQuery($filters);
+        $results = $this->execReportsQuery($query);
+        return $results;
     }
 
 }

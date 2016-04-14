@@ -3,12 +3,18 @@
 namespace myocuhub\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Services\Reports\Reports;
 
 class ReportsController extends Controller
 {
+    private $Reports;
+
+    public function __construct(Reports $Reports)
+    {
+        $this->Reports = $Reports;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -47,9 +53,36 @@ class ReportsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
         $reportData = array();
+        $this->Reports->setStartDate($request->start_date);
+        $this->Reports->setEndDate($request->end_date);
+
+        $filters = [
+            "type" => "real-time",
+            "status_of_patients" => "none",
+            "disease_type" => "none",
+            "severity_scale" => "none",
+            "incomming_referrals" => [
+                "appointment_type" => "none",
+                "referred_by" => [
+                    "type" => "none",
+                    "name" => "none",
+                ],
+            ],
+            "patient_demographics" => [
+                "age" => "none",
+                "gender" => "none",
+                "insurance_type" => "none",
+            ],
+            "referred_to" => [
+                "type" => "none",
+                "name" => "none",
+            ],
+        ];
+
+        $data = $this->Reports->getReportingData($filters);
 
         $reportData['appointment_type'][0] = ["name" => "Type 1", "count" => 3];
         $reportData['appointment_type'][1] = ["name" => "Type 2", "count" => 1];
@@ -73,7 +106,7 @@ class ReportsController extends Controller
 
         $reportData['referred_to']['type'] = "practice";
         $reportData['referred_to']['total'] = 4;
-        $reportData['referred_to']['data'] = [["name" => "Test practice 1", "count" => 3, "id" => "23049"], ["name" => "Practice 2", "count" => 1, "id "=> "23067"]];
+        $reportData['referred_to']['data'] = [["name" => "Test practice 1", "count" => 3, "id" => "23049"], ["name" => "Practice 2", "count" => 1, "id " => "23067"]];
 
         $reportData['status_of_patients'][0] = ["name" => "Pending Contact", "count" => 3, "id" => "pending_contact", "percent" => 50];
         $reportData['status_of_patients'][1] = ["name" => "Contact Attempted", "count" => 0, "id" => "contact_attempted", "percent" => 0];
