@@ -61,7 +61,7 @@
             <p><span><input type="checkbox" disabled></span> Send patient C-CDA file to provider</p>
         </div>
         <div class="appointment_confirm center-align arial">
-            <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment" data-toggle="tooltip" title="You will loose all progress" data-placement="bottom">Abort</button></p>
+            <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment" data-toggle="tooltip" title="You will lose all progress" data-placement="bottom">Abort</button></p>
         </div>
         <div class="appointment_confirmed center-align">
             <button class="confirmed" disabled>Confirmed</button>
