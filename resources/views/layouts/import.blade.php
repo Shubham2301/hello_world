@@ -6,6 +6,7 @@
         <div class="modal-content ">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="loader-container" style="top: 1.5em;left: 36%;"></div>
                 <h4 class="modal-title" style="color:black;margin-left:39%;">Import Patients</h4>
             </div>
             <div class="modal-body">
@@ -40,10 +41,14 @@
 								<span class="xlsx_file-input ">Select{!!Form::file('patient_xlsx')!!}
                                 </span>
                                 <span class="filename"></span>
+                                <input type='hidden' id='clear_image_path' value="{{asset('images/close-natural.png')}}">
 
                             </div>
                             <div class="col-md-2"></div>
                         </div>
+
+                        <div style="color:#FF7777; padding-left:3em;">* Max upload limit 5,000 patients.</div>
+
                     </div>
                     {!! Form::close()!!}
                     <p class="success_message"></p>
