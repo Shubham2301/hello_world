@@ -93,6 +93,7 @@ class BulkImportController extends Controller
                         $patient = Patient::where($patients)->first();
 
                         if($patient){
+                            $old_patients = $old_patients + 1;
                             continue;
                         }
 
@@ -141,9 +142,7 @@ class BulkImportController extends Controller
                             $filename = basename(__FILE__);
                             $ip = $request->getClientIp();
                             Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-                        } else {
-                            $old_patients = $old_patients + 1;
-                        }
+                        } 
                         $i++;
                     }
                 }
