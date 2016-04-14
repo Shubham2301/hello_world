@@ -58,16 +58,16 @@
                           </div>
 
                              <div class="historical_subsection header_margin">
-                                <p class="date_selector"><input type="text align-center" class="date_selector" id="datepicker_start" style="width:80px;">
-                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                                <p class="date_selector"><input type="text align-center" class="date_selector" id="start_date" style="width:80px;">
+<!--                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>-->
                                 </p>
                              </div>
                              <div class="historical_subsection header_margin align-center">
                                 <span class="report_time_type align-center">to&nbsp;</span>
                               </div>
                              <div class="historical_subsection header_margin">
-                                <p class="date_selector"><input type="text" class="date_selector align-center" id="datepicker_end" style="width:80px;">
-                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                                <p class="date_selector"><input type="text" class="date_selector align-center" id="end_date" style="width:80px;">
+<!--                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>-->
                                 </p>
                              </div>
                             </div>

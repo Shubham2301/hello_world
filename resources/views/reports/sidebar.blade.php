@@ -36,7 +36,7 @@
             </div>
         </div>
         <div>
-        <h3 class="title">Reports</h3></div>
+        <h3 class="title">Reporting</h3></div>
     </div>
 </div>
 
