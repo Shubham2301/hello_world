@@ -2,7 +2,7 @@
 
 namespace myocuhub\Http\Controllers;
 
-ini_set('max_execution_time', 600);
+ini_set('max_execution_time', 3600);
 
 use Auth;
 use Event;
@@ -67,9 +67,7 @@ class BulkImportController extends Controller
     }
 
     public function importPatientsXlsx(Request $request)
-    {
-        //        $userID = Auth::user()->id;
-        //        $network = User::getNetwork($userID);
+    {        
         $networkID = $request->network_id;
         $new_patients = 0;
         $old_patients = 0;
@@ -81,34 +79,41 @@ class BulkImportController extends Controller
             $importHistory->save();
 
             // $excels = Excel::load($request->file('patient_xlsx'))->get();
-            $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'))->chunk(1000, function($results) use (&$old_patients, &$i, &$new_patients, $importHistory, $request){
+            $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'))->chunk(250, function($results) use (&$old_patients, &$i, &$new_patients, $importHistory, $request){
                 foreach ($results as $data) { 
                     $patients = [];
                     if (array_filter($data->toArray())) {
                         $name = explode(' ', $data['patient_name']);
                         $patients['firstname'] = $name[0];
                         $patients['lastname'] = $name[1];
-                        $patients['cellphone'] = (int) $data['phone_number'];
+                        $patients['lastfourssn'] = $data['ssn_last_digits'];
+                        $patients['birthdate'] = date('Y-m-d', strtotime($data['birthdate']));
+
+                        // Based upon above four fields verify duplicate
+                        $patient = Patient::where($patients)->first();
+
+                        if($patient){
+                            continue;
+                        }
+
+                        $patients['cellphone'] = $data['phone_number'];
                         $patients['email'] = $data['email'];
                         $patients['addressline1'] = $data['address_1'];
                         $patients['addressline2'] = $data['address_2'];
                         $patients['city'] = $data['city'];
-                        $patients['zip'] = (int) $data['zip'];
-                        $patients['lastfourssn'] = (int) $data['ssn_last_digits'];
-                        $patients['birthdate'] = date('Y-m-d', strtotime($data['birthdate']));
+                        $patients['zip'] = $data['zip'];                        
                         $patients['gender'] = $data['gender'];
 
-                        $referralHistory = new ReferralHistory;
-                        $referralHistory->referred_by_provider = $data['referred_by'];
-                        $referralHistory->referred_by_practice = $data['source'];
-                        $referralHistory->disease_type = $data['disease_type'];
-                        $referralHistory->severity = $data['severity'];
-                        $referralHistory->save();
+                        $referralHistory = null;
 
-                        $insuranceCarrier = new PatientInsurance;
-                        $insuranceCarrier->insurance_carrier = $data['insurance_type'];
-
-                        $patient = Patient::where($patients)->first();
+                        if($data['referred_by'] !='' || $data['source'] != '' || $data['disease_type'] !='' || $data['severity'] != '') {
+                            $referralHistory = new ReferralHistory;
+                            $referralHistory->referred_by_provider = $data['referred_by'];
+                            $referralHistory->referred_by_practice = $data['source'];
+                            $referralHistory->disease_type = $data['disease_type'];
+                            $referralHistory->severity = $data['severity'];
+                            $referralHistory->save();
+                        }            
 
                         if (!$patient) {
                             $patient = Patient::create($patients);
@@ -117,11 +122,16 @@ class BulkImportController extends Controller
                             $careconsole->import_id = $importHistory->id;
                             $careconsole->patient_id = $patient->id;
                             $careconsole->stage_id = 1;
-                            if (!$referralHistory) {
+
+                            if ($referralHistory !=null) {
                                 $careconsole->referral_id = $referralHistory->id;
                             }
+
+                            $insuranceCarrier = new PatientInsurance;
+                            $insuranceCarrier->insurance_carrier = $data['insurance_type'];
                             $insuranceCarrier->patient_id = $patient->id;
                             $insuranceCarrier->save();
+                            
                             $date = new \DateTime();
                             $careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
                             $careconsole->entered_console_at = $date->format('Y-m-d H:m:s');
@@ -140,165 +150,7 @@ class BulkImportController extends Controller
 
             });
             
-/*
-           
-            echo "start here----";
-            foreach ($excels as $sheet) {
-                // dd($sheet);
-                $title = $sheet->getTitle();
-                echo "Title - ". $title;
-                switch ($title) {
-                    case 'Users':
-                        foreach ($sheet as $data) {
-                            $users = [];
-                            if (array_filter($data->toArray())) {
-                                $users['name'] = $data['name'];
-                                $users['firstname'] = $data['name'];
-                                $users['email'] = $data['contact_email'];
-                                $users['cellphone'] = (int) $data['phone_number'];
-                                $users['cellphone'] = (int) $data['cell_number'];
-                                //npi cannot be null
-                                $users['npi'] = '1234';
-                                if ($data['npi']) {
-                                    $users['npi'] = (int) $data['npi'];
-                                }
 
-                                $users['state'] = $data['state'];
-                                $users['address1'] = $data['address_1'];
-                                $users['address2'] = $data['address_2'];
-                                $users['city'] = $data['city'];
-                                $users['zip'] = (int) $data['zip_code'];
-                                $users['level'] = 3;
-
-                                $user = User::where($users)->first();
-                                $checkemail = User::where('email', 'LIKE', '%' . $users['email'] . '%')->first();
-                                if (!$user) {
-
-                                    $users['password'] = \Hash::make('ocuhub');
-                                    if ($checkemail) {
-                                        $user = $checkemail;
-                                    } else {
-                                        $user = User::create($users);
-                                    }
-
-                                }
-                                //map user with organization
-                                if ($data['practice_name']) {
-                                    $practice_id = Practice::where('name', 'LIKE', '%' . $data['practice_name'] . '%')->first()->id;
-                                    if ($practice_id) {
-                                        $userdata = [];
-                                        $userdata['practice_id'] = $practice_id;
-                                        $userdata['user_id'] = $user->id;
-                                        $practice_user = PracticeUser::firstOrCreate($userdata);
-                                        unset($userdata['practice_id']);
-                                        $userdata['network_id'] = $networkID;
-                                        $network_user = NetworkUser::firstOrCreate($userdata);
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case 'Accounts':
-                        foreach ($sheet as $data) {
-                            $practices = [];
-                            $locations = [];
-                            if (array_filter($data->toArray())) {
-                                $practices['name'] = $data['practice_name'];
-                                //$practices['email']           = '';
-
-                                $practice = Practice::where($practices)->first();
-                                if (!$practice) {
-                                    $practice = Practice::create($practices);
-                                }
-
-                                $locations['practice_id'] = $practice->id;
-                                $locations['locationname'] = $data['location_name'];
-                                $locations['phone'] = (int) $data['phone_number'];
-                                $locations['addressline1'] = $data['address_1'];
-                                $locations['addressline2'] = $data['address_2'];
-                                $locations['city'] = $data['city'];
-                                $locations['state'] = $data['state'];
-                                $locations['zip'] = (int) $data['zip'];
-
-                                $location = PracticeLocation::where($locations);
-                                if (!$location) {
-                                    $location = PracticeLocation::create($locations);
-                                }
-
-                                $practicedata = [];
-                                $practicedata['network_id'] = $networkID;
-                                $practicedata['practice_id'] = $practice->id;
-                                $practice_network = PracticeNetwork::firstOrCreate($practicedata);
-                            }
-
-                        }
-                        break;
-                    case 'Patients':
-                        echo "Inside the loop";
-
-                        foreach ($sheet as $data) {
-                            $patients = [];
-                            if (array_filter($data->toArray())) {
-                                $name = explode(' ', $data['patient_name']);
-                                $patients['firstname'] = $name[0];
-                                $patients['lastname'] = $name[1];
-                                $patients['cellphone'] = (int) $data['phone_number'];
-                                $patients['email'] = $data['email'];
-                                $patients['addressline1'] = $data['address_1'];
-                                $patients['addressline2'] = $data['address_2'];
-                                $patients['city'] = $data['city'];
-                                $patients['zip'] = (int) $data['zip'];
-                                $patients['lastfourssn'] = (int) $data['ssn_last_digits'];
-                                $patients['birthdate'] = date('Y-m-d', strtotime($data['birthdate']));
-                                $patients['gender'] = $data['gender'];
-
-                                $referralHistory = new ReferralHistory;
-                                $referralHistory->referred_by_provider = $data['referred_by'];
-                                $referralHistory->referred_by_practice = $data['source'];
-                                $referralHistory->disease_type = $data['disease_type'];
-                                $referralHistory->severity = $data['severity'];
-                                $referralHistory->save();
-
-                                $insuranceCarrier = new PatientInsurance;
-                                $insuranceCarrier->insurance_carrier = $data['insurance_type'];
-
-                                $patient = Patient::where($patients)->first();
-
-                                if (!$patient) {
-                                    echo "--New Patient";
-                                    $patient = Patient::create($patients);
-                                    $new_patients = $new_patients + 1;
-                                    $careconsole = new Careconsole;
-                                    $careconsole->import_id = $importHistory->id;
-                                    $careconsole->patient_id = $patient->id;
-                                    $careconsole->stage_id = 1;
-                                    if (!$referralHistory) {
-                                        $careconsole->referral_id = $referralHistory->id;
-                                    }
-                                    $insuranceCarrier->patient_id = $patient->id;
-                                    $insuranceCarrier->save();
-                                    $date = new \DateTime();
-                                    $careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
-                                    $careconsole->entered_console_at = $date->format('Y-m-d H:m:s');
-                                    $careconsole->save();
-                                    $action = "new patient ($patient->id) created and added to console ($careconsole->id) ";
-                                    $description = '';
-                                    $filename = basename(__FILE__);
-                                    $ip = $request->getClientIp();
-                                    Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-                                } else {
-                                    $old_patients = $old_patients + 1;
-                                }
-                                $i++;
-                            }
-
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-*/
             $action = 'Bulk import Patients';
             $description = '';
             $filename = basename(__FILE__);
@@ -309,6 +161,8 @@ class BulkImportController extends Controller
             $patients['total'] = $i;
             $patients['patients_added'] = $new_patients;
             $patients['already_exist'] = $old_patients;
+
+            
             return json_encode($patients);
         }
         return "try again";
