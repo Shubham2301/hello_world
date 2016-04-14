@@ -48,7 +48,7 @@ $(document).ready(function() {
 					$('#current_kpi').val(kpi_name);
 				}
 				showcontrolls = false;
-				currentPage = 0;
+				currentPage = 1;
 				getPatientData();
 			}
 		}
@@ -85,7 +85,7 @@ $(document).ready(function() {
 				bucketTitle += '<img src="' + priority_icon_path + '" alt="" class="bucket_icon_style">';
 			}
 			$('.drilldown>.section-header').html(bucketTitle);
-			currentPage = 0;
+			currentPage = 1;
 			bucketData(bucketName);
 		}
 	});
@@ -326,7 +326,7 @@ $(document).ready(function() {
 		field.css('display', 'inline-block');
 		$('#current_sort_field').val(field.attr('data-name'));
 		$('#current_sort_order').val(field.attr('data-order'));
-		currentPage = 0;
+		currentPage = 1;
 		getPatientData();
 	});
 	$(document).on('click', '.drilldown_item>div', function() {
@@ -370,7 +370,7 @@ var contact_notes = [];
 var showDate = false;
 var showcontrolls = true;
 var bucketName = '';
-var currentPage = 0;
+var currentPage = 1;
 
 function searchc3() {
 	$('.search_result_info').removeClass('active');
@@ -423,7 +423,7 @@ function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator) {
 	$('#current_stage').val(stage_id);
 	$('#current_kpi').val(kpi_id);
 	setSidebarButtonActive();
-	currentPage = 0;
+	currentPage = 1;
 	$('#drilldown_patients_listing').html();
 	getPatientData();
 }
@@ -437,7 +437,7 @@ function showStageData(stage_id, stage_name) {
 	bucketName = '';
 	if (stage_id < 6)
 		$('.console_buckets').removeClass('active');
-	currentPage = 0;
+	currentPage = 1;
 	getPatientData();
 }
 
@@ -546,7 +546,7 @@ function action() {
 		if (show_patient && bucketName == '') {
 		showStageData(stage.id, stage.name);
 	} else if (show_patient && bucketName != ''){
-		currentPage = 0;
+		currentPage = 1;
 		bucketData(bucketName);
 	}
 	show_patient = true;
