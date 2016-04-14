@@ -216,4 +216,136 @@ class Reports
         return $result;
     }
 
+    public function buildReportsQuery($query)
+    {
+        $query = "Select
+                    `careconsole`.`created_at` as careconsole_created_at,
+                    `careconsole`.`stage_id`,
+                    `careconsole`.`stage_updated_at`,
+                    `careconsole`.`archived_date`,
+                    `careconsole`.`recall_date`,
+                    `appointments`.`start_datetime` as appointment_starttime,
+                    `appointments`.`appointment_status`,
+                    `appointments`.`appointmenttype`,
+                    `referral_history`.`referred_by_practice`,
+                    `referral_history`.`referred_by_provider`,
+                    `referral_history`.`disease_type`,
+                    `referral_history`.`severity`,
+                    `patients`.`gender`,
+                    `patient_insurance`.`insurance_carrier`,
+                    TIMESTAMPDIFF(YEAR, `patients`.`birthdate`, CURDATE()) as patient_age,
+                    `practices`.`name` as `referred_to_practice`,
+                    `practices`.`id` as `referred_to_practice_id`,
+                    `contact_attempts`.`count` as contact_attempts,
+                    `users`.`name` as `referred_to_provider`
+                    `users`.`id` as `referred_to_provider_id`
+                    from `careconsole`
+                    left join `import_history` on `careconsole`.`import_id` = `import_history`.`id`
+                    left join `appointments` on `careconsole`.`appointment_id` = `appointments`.`id`
+                    left join `referral_history` on `careconsole`.`referral_id` = `referral_history`.`id`
+                    left join `patients` on `careconsole`.`patient_id` = `patients`.`id`
+                    left join `practices` on `appointments`.`practice_id` = `practices`.`id`
+                    left join `users` on `appointments`.`provider_id` = `users`.`id`
+                    left join (select console_id ,COUNT(*) as count from contact_history group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
+                    left join `patient_insurance` on `patient_insurance`.`patient_id` = `careconsole`.`patient_id`
+                    $queryFilters";
+
+    }
+
+    public function buildQueryFilters($filters)
+    {
+
+        $networkID = session('network-id');
+        $startDate = getStartDate();
+        $endDate = getEndDate();
+
+        $queryFilters = "where `import_history`.network_id = $networkID";
+
+        if ($filter['type'] == 'real-time') {
+            $queryFilters .= " and `careconsole`.`archived_date` != null  ";
+        } elseif ($filter['type'] == 'historical') {
+            $queryFilters .= " and `careconsole`.`created_at` >= $startDate careconsole_created_at <= $endDate ";
+        }
+
+        if ($filters['status_of_patients'] != 'none') {
+            switch ($filters['status_of_patients']) {
+                case 'pending_contact':
+                    $queryFilters .= " and `careconsole`.`stage_id` = 1 and (`contact_attempts`.`count` = 0 or `contact_attempts`.`count` = null) ";
+                    break;
+                case 'contact_attempted':
+                    $queryFilters .= " and `careconsole`.`stage_id` = 1 and not (`contact_attempts`.`count` = 0 or `contact_attempts`.`count` = null) ";
+                    break;
+                case 'appointment_scheduled':
+                    $queryFilters .= " and `careconsole`.`stage_id` = 2 ";
+                    break;
+                case 'kept_appointment':
+                    $queryFilters .= " and `careconsole`.`stage_id` = 4 ";
+                    break;
+                case 'cancelled':
+                    $queryFilters .= " and `careconsole`.`stage_id` = 3 and h.`postAction` = 21";
+                    break;
+                case 'no_show':
+                    $queryFilters .= " and `careconsole`.`stage_id`` = 3 and h.`postAction` = 18";
+                    break;
+                case 'finalization':
+                    $queryFilters .= " and `careconsole`.`stage_id`` = 5 ";
+                    break;
+            }
+        }
+
+        if ($filters['patient_demographics'][0]['gender'] != 'none') {
+            switch ($filters['patient_demographics'][0]['gender']) {
+                case 'male':
+                    $queryFilters .= " and (`patients`.`gender` = 'M' or `patients`.`gender` = 'Male') ";
+                    break;
+                case 'female':
+                    $queryFilters .= " and (`patients`.`gender` = 'F' or `patients`.`gender` = 'Female') ";
+            }
+        }
+
+        if ($filters['referred_to'][0]['type'] != 'none') {
+            switch ($filters['referred_to'][0]['type']) {
+                case 'practice':
+                    $queryFilters .= ' and `practices`.`id` = ' . $filters['referred_to'][0]['id'];
+                    break;
+                case 'practice_user':
+                    $queryFilters .= ' and `users`.`id` = ' . $filters['referred_to'][0]['id'];
+                    break;
+            }
+        }
+
+        if ($filters['incomming_referrals'][0]['referred_by'][0]['type'] != 'none') {
+            switch ($filters['incomming_referrals'][0]['referred_by'][0]['type']) {
+                case 'practice':
+                    $queryFilters .= ' and `referral_history`.`referred_by_practice` = "' . $filters['incomming_referrals'][0]['referred_by'][0]['name'] . '"';
+                    break;
+                case 'practice_user':
+                    $queryFilters .= ' and `referral_history`.`referred_by_provider` = "' . $filters['incomming_referrals'][0]['referred_by'][0]['name'] . '"';
+                    break;
+            }
+        }
+
+        if ($filters['incomming_referrals'][0]['appointment_type'] != 'none') {
+            $queryFilters .= ' and `appointments`.`appointmenttype` = "' . $filters['incomming_referrals'][0]['appointment_type'] . '"';
+        }
+
+        if ($filters['patient_demographics'][0]['insurance_type'] != 'none') {
+            $queryFilters .= ' and `patient_insurance`.`insurance_carrier` = "' . $filters['patient_demographics'][0]['insurance_type'] . '"';
+        }
+
+        if ($filters['disease_type'] != 'none') {
+            $queryFilters .= ' and `referral_history`.`disease_type` = "' . $filters['disease_type'] . '"';
+            if ($filters['severity_scale'] != 'none') {
+                $queryFilters .= ' and `referral_history`.`severity` = "' . $filters['severity_scale'] . '"';
+            }
+        }
+
+        return $queryFilters;
+    }
+
+    public function execReportsQuery($query)
+    {
+
+    }
+
 }
