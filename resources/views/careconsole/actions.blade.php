@@ -40,6 +40,61 @@
                             </div>
                             <div class="col-md-1"></div>
                         </div>
+
+                        <div class="row input_row" id="form_manual_appointment_practice" style="display:none">
+                            <div class="col-md-4 form-group">
+                                <label for="manual_appointment_date"><strong style="color:black;padding-left:1em;">Practice</strong></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+
+                                <select class="form-control" name="manual_appointment_practice" id="manual_appointment_practice">
+                                    <option value="0">Select Practice</option>
+                                    @foreach($overview['network_practices'] as $practice)
+                                    <option value="{{ $practice['id'] }}">{{ $practice['name'] }}</option>
+                                    @endforeach
+                                    <option value="0">Not listed</option>
+
+                                </select>
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+
+                        <div class="row input_row" id="form_manual_appointment_provider" style="display:none">
+                            <div class="col-md-4 form-group">
+                                <label for="manual_appointment_provider"><strong style="color:black;padding-left:1em;">Provider</strong></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                <select class="form-control" name="manual_appointment_provider" id="manual_appointment_provider"></select>
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+
+                        <div class="row input_row" id="form_manual_appointment_location" style="display:none">
+                            <div class="col-md-4 form-group">
+                                <label for="manual_appointment_location"><strong style="color:black;padding-left:1em;">Location</strong></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+
+                                <select class="form-control" name="manual_appointment_location" id="manual_appointment_location"></select>
+
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+
+						<div class="row input_row" id="form_manual_appointment_appointment_type" style="display:none">
+							<div class="col-md-4 form-group">
+								<label for="manual_appointment_location"><strong style="color:black;padding-left:1em;">Appointment Type</strong></label>
+							</div>
+							<div class="col-md-7 form-group">
+
+								<input type="text" class="form-control" name="manual_appointment_appointment_type" id="manual_appointment_appointment_type">
+
+							</div>
+							<div class="col-md-1"></div>
+						</div>
+
+
+
                         <div class="row input_row">
                             <div class="col-md-4 form-group">
                                 <label for="action_notes"><strong style="color:black;padding-left:1em;">Notes</strong></label>

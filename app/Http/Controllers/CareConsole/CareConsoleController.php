@@ -15,6 +15,7 @@ use myocuhub\Services\ActionService;
 use myocuhub\Services\CareConsoleService;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
+use myocuhub\Models\Practice;
 
 class CareConsoleController extends Controller {
 	/**
@@ -132,6 +133,8 @@ class CareConsoleController extends Controller {
 			$overview['stages'][$i]['kpi_count'] = $j;
 			$i++;
 		}
+
+		$overview['network_practices'] = Network::find(session('network-id'))->practices;
 		return $overview;
 	}
 
@@ -168,10 +171,15 @@ class CareConsoleController extends Controller {
 		$actionID = $request->action_id;
 		$actionResultID = $request->action_result_id;
 		$recallDate = $request->recall_date;
-		$manualAppointmentDate = $request->manual_appointment_date;
+		$manualAppointmentData = [];
+		$manualAppointmentData['appointment_date'] = $request->manual_appointment_date;
+		$manualAppointmentData['practice_id'] = $request->manual_appointment_practice;
+		$manualAppointmentData['location_id'] = $request->manual_appointment_location;
+		$manualAppointmentData['provider_id'] = $request->manual_appointment_provider;
+		$manualAppointmentData['appointment_type'] = $request->manual_appointment_appointment_type;
 		$notes = $request->notes;
 		$consoleID = $request->console_id;
-		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID, $manualAppointmentDate);
+		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID, $manualAppointmentData);
 		$stage = CareConsole::find($consoleID)->stage;
 		$patientStage['id'] = $stage->id;
 		$patientStage['name'] = $stage->display_name;
@@ -280,5 +288,22 @@ class CareConsoleController extends Controller {
 		$data['contacts_attempt'] = $this->ActionService->getContactActions($consoleID);
 
 		return json_encode($data);
+	}
+
+	public function practiceProviders(Request $request) {
+		$practiceID = $request->practiceID;
+		$practiceUsers = User::practiceProvidersById($practiceID);
+		$i = 0;
+		$practiceData = [];
+		foreach ($practiceUsers as $user) {
+			$practiceData['provider'][$i]['id'] = $user->user_id;
+			$practiceData['provider'][$i]['name'] = $user->lastname . ', ' . $user->firstname;
+			$i++;
+		}
+		$practiceData['locations'] = [];
+
+		if(Practice::find($practiceID))
+		$practiceData['locations'] = Practice::find($practiceID)->locations;
+		return json_encode($practiceData);
 	}
 }

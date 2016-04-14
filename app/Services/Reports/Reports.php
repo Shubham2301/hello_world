@@ -27,6 +27,7 @@ class Reports
     public function setEndDate($endDate)
     {
         $date = new Datetime($endDate);
+        $date->modify("+1 days");
         $this->endDate = $date->format('Y-m-d 00:00:00');
     }
 
@@ -110,7 +111,8 @@ class Reports
         $history = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
-            ->leftjoin('referral_history', 'careconsole.referral_id', '=', 'referral_history.referred_to_practice_id')
+            ->whereNotNull('careconsole.referral_id')
+            ->leftjoin('referral_history', 'careconsole.referral_id', '=', 'referral_history.id')
             ->whereNotNull('referral_history.referred_to_practice_id')
             ->where('careconsole.created_at', '>=', $this->getStartDate())
             ->where('careconsole.created_at', '<=', $this->getEndDate())
@@ -190,7 +192,7 @@ class Reports
         $history = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
-            ->leftjoin('referral_history', 'careconsole.referral_id', '=', 'referral_history.referred_to_practice_id')
+            ->leftjoin('referral_history', 'careconsole.referral_id', '=', 'referral_history.id')
             ->whereNotNull('referral_history.referred_by_practice')
             ->where('careconsole.created_at', '>=', $this->getStartDate())
             ->where('careconsole.created_at', '<=', $this->getEndDate())

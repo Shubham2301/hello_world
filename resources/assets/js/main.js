@@ -6,10 +6,12 @@ $.ajaxSetup({
 
 $(document).ajaxStart(function(){
     $("#loader-container").css("display", "block");
+    $(".loader-container").css("display", "inline-block");
 });
 
 $(document).ajaxComplete(function(){
     $("#loader-container").css("display", "none");
+    $(".loader-container").css("display", "none");
 });
 
 $(document).ready(function () {

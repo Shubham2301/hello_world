@@ -12,7 +12,7 @@ $(document).ready(function() {
     $(document).on('change', '.xlsx_file-input input[type="file"]', function() {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         var clear_image_path = $('#clear_image_path').val();
-        filename += '&nbsp;&nbsp;<img src="'+ clear_image_path +'" class="clear_image_path" data-toggle="tooltip" title="Remove File" data-placement="top">';
+        filename += '&nbsp;&nbsp;<img src="'+ clear_image_path +'" class="clear_image_path" style="position:absolute;" data-toggle="tooltip" title="Remove File" data-placement="top">';
         $('.filename').html(filename);
         $('[data-toggle="tooltip"]').tooltip();
     });
@@ -21,7 +21,7 @@ $(document).ready(function() {
         if ($('.xlsx_file-input input[type="file"]').val())
             importPatients();
         else {
-            $('p.alert_message').text('please select a valid xlsx file');
+            $('p.alert_message').text('Please select a valid xlsx file');
             $('#alert').modal('show');
 			$('#alert').css("z-index", "1500");
         }
@@ -112,7 +112,7 @@ function getCcdaFile(url) {
                 $('.success_message').text("No File Found!");
                 $('.success_message').addClass('active');
                 $('.compare_ccda_button').removeClass('active');
-                $('.dismiss_button').text('Ok');
+                $('.dismiss_button').text('OK');
 
 
             }
@@ -176,7 +176,7 @@ function importPatients() {
             var content = '<span class="total_import">You have imported ' + patients.total + ' patients </span> </br><span style="color:#4d4d4d;"> New patients </span><span class="new_patient">' + patients.patients_added + '</span></br><span style="color:#4d4d4d;"> Already existing patients </span><span class="old_patient">' + patients.already_exist + '</span>';
 
             $('.success_message').html(content);
-            $('.dismiss_button').text('Ok');
+            $('.dismiss_button').text('OK');
             $('.dismiss_button').removeClass('hide');
             if (typeof refreshOverview == 'function') {
                 refreshOverview();
@@ -292,7 +292,7 @@ function showCCDA(url) {
                 $('.compare_ccda_button').removeClass('active');
                 $('.view_patient_ccda').addClass('active');
                 $('.view_patient_ccda').html(e);
-                $('.dismiss_button').text('Ok');
+                $('.dismiss_button').text('OK');
             } else {
 
                 $('#compare_ccda_button').trigger('click');
@@ -301,7 +301,7 @@ function showCCDA(url) {
                 $('.success_message').text("No File Found!");
                 $('.success_message').removeClass('active');
                 $('.compare_ccda_button').removeClass('active');
-                $('.dismiss_button').text('Ok');
+                $('.dismiss_button').text('OK');
 
             }
         },
