@@ -10,7 +10,7 @@
 @endsection
 
 @section('sidebar')
-    @include('layouts.sidebar')
+    @include('reports.sidebar')
 @endsection
 
 @section('content')
