@@ -7,7 +7,55 @@ google.load("visualization", "1.1", {
 
 
 $(document).ready(function () {
+
     $('.historical_section').hide();
+    $('.sidebar_historical').on('click', function () {
+        $('.expandable_sidebar').removeClass('active');
+        $('.expandable_sidebar_historical').addClass('active');
+        $('.historical_header').addClass('active');
+        $('.historical_sub_header').addClass('active');
+        $('.realtime_header').removeClass('active');
+        $('.realtime_sub_header').removeClass('active');
+        $('.realtime_section').hide();
+        $('.historical_section').show();
+        $('.filter_remove').parent().remove();
+//        resetFilter();
+        clearHtml();
+//        loadDatepicker();
+//        loadHistoricalDefaultReport();
+        getReport();
+    });
+    $('.sidebar_realtime').on('click', function () {
+        $('.expandable_sidebar').addClass('active');
+        $('.expandable_sidebar_historical').removeClass('active');
+        $('.realtime_header').addClass('active');
+        $('.realtime_sub_header').addClass('active');
+        $('.historical_header').removeClass('active');
+        $('.historical_sub_header').removeClass('active');
+        $('.historical_section').hide();
+        $('.realtime_section').show();
+        $('.filter_remove').parent().remove();
+//        resetFilter();
+        clearHtml();
+//        loadReports();
+        getReport();
+    });
+    $("li").click(function () {
+        $(this.parentNode).children("li").removeClass("active");
+        $(this).addClass("active");
+
+        if ($('li.active').hasClass('referred_by')) {
+            $('.chart').addClass('referred_by');
+            $('.chart').removeClass('referred_to');
+        } else if($('li.active').hasClass('referred_to')) {
+            $('.chart').addClass('referred_to');
+            $('.chart').removeClass('referred_by');
+        }
+//        loadHistoricalDefaultReport();
+        getReport();
+    });
+
+
     var cur_date = new Date();
     var set_start_date = new Date(cur_date.getTime());
     $('#start_date').datetimepicker({
@@ -305,4 +353,142 @@ function formatAgeData(data) {
     }
 
     return ageData;
+}
+function clearHtml() {
+    $('#status_of_patients').html("");
+    $('#population_report_options').html("");
+    $('#male_percent').html("");
+    $('#female_percent').html("");
+    $('#referred_to').html("");
+    $('#referred_by').html("");
+    $('#insurance_type').html("");
+    $('#appointment_type').html("");
+    $('#disease_type').html("");
+    $('#piechart').html("");
+    $('#most_referral_to').html("");
+    $('#most_referral_by').html("");
+    $('#most_appointment_type').html("");
+    $('#linechart_material').html("");
+
+}
+function drawReferredByChart(data) {
+    var data_hospital = new google.visualization.DataTable();
+    data_hospital.addColumn('string', 'Hospital Name');
+    data_hospital.addColumn('number', 'Referals');
+
+    var type = 'referred_by_' + data.type;
+    $('.chart').attr('data-type', type);
+    data = data.data;
+    if (!data) {
+
+    } else {
+        for (var i = 0; i < data.length; i++) {
+            data_hospital.addRow([data[i].name, data[i].count]);
+        }
+    }
+
+    var options = {
+        legend: {
+            position: 'none'
+        },
+        chartArea: {
+            width: '90%',
+            height: '75%'
+        },
+        hAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        vAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        colors: ['#00a99d'],
+        fontName: 'Montserrat',
+        pointSize: 10,
+        pointShape: 'circle',
+        axes: {
+            x: {
+                0: {
+                    side: 'bottom',
+                    label: ""
+                }
+            }
+        },
+    };
+    var chart_hospital = new google.visualization.LineChart(document.getElementById('linechart_material'));
+    chart_hospital.draw(data_hospital, options);
+
+    google.visualization.events.addListener(chart_hospital, 'select', showdoctor);
+
+    function showdoctor(e) {
+        var selection = chart_hospital.getSelection();
+        var item = selection[0];
+        var type = $('.chart').attr('data-type');
+        var meta = data_hospital.getValue(item.row, 0);
+        var id = data_hospital.getValue(item.row, 0);
+//        addFilter(type, id, meta);
+//        loadHistoricalDefaultReport();
+    }
+}
+
+function drawReferredToChart(data) {
+    var data_hospital = new google.visualization.DataTable();
+    data_hospital.addColumn('string', 'Hospital Name');
+    data_hospital.addColumn('number', 'Referals');
+    var type = 'referred_to_' + data.type;
+    $('.chart').attr('data-type', type);
+    data = data.data;
+    if (!data) {
+
+    } else {
+        for (var i = 0; i < data.length; i++) {
+            data_hospital.addRow([data[i].name, data[i].count]);
+        }
+    }
+    var options = {
+        legend: {
+            position: 'none'
+        },
+        chartArea: {
+            width: '90%',
+            height: '75%'
+        },
+        hAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        vAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        colors: ['#00a99d'],
+        fontName: 'Montserrat',
+        pointSize: 10,
+        axes: {
+            x: {
+                0: {
+                    side: 'bottom',
+                    label: ""
+                }
+            }
+        },
+    };
+    var chart_hospital = new google.visualization.LineChart(document.getElementById('linechart_material'));
+    chart_hospital.draw(data_hospital, options);
+    google.visualization.events.addListener(chart_hospital, 'select', showdoctor);
+
+    function showdoctor(e) {
+        var selection = chart_hospital.getSelection();
+        var item = selection[0];
+        var id = data[item.row].id;
+        var type = $('.chart').attr('data-type');
+        var meta = data_hospital.getValue(item.row, 0);
+//        addFilter(type, id, meta);
+//        loadHistoricalDefaultReport();
+    }
 }
