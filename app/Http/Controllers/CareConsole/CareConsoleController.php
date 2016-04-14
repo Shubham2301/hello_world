@@ -143,6 +143,8 @@ class CareConsoleController extends Controller {
 	 */
 	public function getDrilldownData(Request $request) {
 		$stageID = $request->stage;
+		if($stageID == '-1')
+			$stageID = 1;
 		$kpiName = $request->kpi;
 		$sortParams = [];
 		$sortField = $request->sort_field;
@@ -159,7 +161,8 @@ class CareConsoleController extends Controller {
 		$controls = $this->CareConsoleService->getControls($stageID);
 		$drilldown['controls'] = (sizeof($controls) === 0) ? '' : view('careconsole.controls')->with('controls', $controls)->render();
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
-		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->with('actions', $actions)->render();
+		$drilldown['listing_header'] = view('careconsole.listing_header')->with('listing', $listing)->render();
+		$drilldown['listing_content'] = view('careconsole.listing_patient')->with('listing', $listing)->with('actions', $actions)->render();
 
 		return json_encode($drilldown);
 	}
@@ -258,7 +261,8 @@ class CareConsoleController extends Controller {
 		$listing = $this->CareConsoleService->getBucketPatientsListing($bucketID);
 		$actions = $this->CareConsoleService->getActions($bucketID);
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
-		$drilldown['listing'] = view('careconsole.listing')->with('listing', $listing)->with('actions', $actions)->render();
+		$drilldown['listing_header'] = view('careconsole.listing_header')->with('listing', $listing)->render();
+		$drilldown['listing_content'] = view('careconsole.listing_patient')->with('listing', $listing)->with('actions', $actions)->render();
 		return json_encode($drilldown);
 	}
 	public function getPatientRecords(Request $request) {
@@ -303,7 +307,7 @@ class CareConsoleController extends Controller {
 		$practiceData['locations'] = [];
 
 		if(Practice::find($practiceID))
-		$practiceData['locations'] = Practice::find($practiceID)->locations;
+			$practiceData['locations'] = Practice::find($practiceID)->locations;
 		return json_encode($practiceData);
 	}
 }
