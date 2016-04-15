@@ -46,8 +46,8 @@ class CareConsoleRecallPatients extends Command
         //     $console->archived_date = null;
         //     $date = new DateTime();
         //     $console->stage_id = 1;
-        //     $console->stage_updated_at = $date->format('Y-m-d H:m:s');
-        //     $console->entered_console_at = $date->format('Y-m-d H:m:s');
+        //     $console->stage_updated_at = $date->format('Y-m-d H:i:s');
+        //     $console->entered_console_at = $date->format('Y-m-d H:i:s');
         //     $console->save();
         // }
     }
