@@ -56,6 +56,7 @@
     display: inline-block;
     vertical-align: top;
     font-style: italic;
+	margin-left: -10px;
 }
 
 .success_message {
@@ -270,9 +271,12 @@
 	position: relative;
     overflow: hidden;
     color: #4d4d4d;
-    display: inline-block;
+    display: none;
     font-weight: bold;
 	padding-right: 30px;
+	&.active{
+		display: inline-block;
+	}
 }
 .xlsx_file-input input[type="file"] {
 	position: absolute;

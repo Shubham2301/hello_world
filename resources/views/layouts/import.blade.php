@@ -38,7 +38,7 @@
                                 <label for="exampleInputFile"><strong style="padding-left:3em;" >File</strong></label>
                             </div>
                             <div class="col-md-7 ">
-								<span class="xlsx_file-input ">Select{!!Form::file('patient_xlsx')!!}
+								<span class="xlsx_file-input active ">Select{!!Form::file('patient_xlsx')!!}
                                 </span>
                                 <span class="filename"></span>
                                 <input type='hidden' id='clear_image_path' value="{{asset('images/close-natural.png')}}">

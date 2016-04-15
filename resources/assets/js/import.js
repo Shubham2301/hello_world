@@ -12,8 +12,11 @@ $(document).ready(function() {
     $(document).on('change', '.xlsx_file-input input[type="file"]', function() {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         var clear_image_path = $('#clear_image_path').val();
-        filename += '&nbsp;&nbsp;<img src="'+ clear_image_path +'" class="clear_image_path" style="position:absolute;" data-toggle="tooltip" title="Remove File" data-placement="top">';
+        filename += '&nbsp;&nbsp;<img src="'+ clear_image_path +'" class="clear_image_path" data-toggle="tooltip" title="Remove File" data-placement="top">';
         $('.filename').html(filename);
+		if(filename.length > 0)
+		$('.xlsx_file-input').removeClass('active');
+
         $('[data-toggle="tooltip"]').tooltip();
     });
 
@@ -30,11 +33,13 @@ $(document).ready(function() {
     $('.filename').on('click', '.clear_image_path', function() {
         $('.xlsx_file-input input[type="file"]').val('');
 		$('.filename').html('');
+		$('.xlsx_file-input').addClass('active');
     });
 
     $(document).on('click', '.open_import', function() {
         $('.xlsx_file-input input[type="file"]').val('');
 		$('.filename').html('');
+		$('.xlsx_file-input').addClass('active');
         $('.import_form').addClass('active');
         $('.success_message').text('');
         $('.success_message').removeClass('active');
