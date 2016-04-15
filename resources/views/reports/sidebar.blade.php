@@ -38,9 +38,55 @@
         <div>
         <h3 class="title">Reporting</h3></div>
     </div>
+
+    <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+              <span class="report_sidebar_button sidebar_realtime realtime_header">
+                  <span class="report_sidebar_image">
+                      <span><img src="{{URL::asset('images/real-time-icon.png')}}" style="width:80%;height:80%;"></span>
+                  </span>
+                  <span class="report_sidebar_text">
+                      <span class="text">Real Time</span>
+                  </span>
+              </span>
+          </a>
+        </h4>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <div class="expandable_sidebar active" id="population_report_options">
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+<!--              <span class="report_sidebar_button sidebar_historical historical_header">-->
+              <span class="report_sidebar_button">
+                  <span class="report_sidebar_image">
+                      <span><img src="{{URL::asset('images/historical-icon.png')}}" style="width:80%;height:80%;"></span>
+                  </span>
+                  <span class="report_sidebar_text">
+                      <span class="text">Historical</span>
+                  </span>
+              </span>
+          </a>
+        </h4>
+      </div>
+      <div id="collapse2" class="panel-collapse collapse">
+        <div class="panel-body"></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-
+<!--
    <div class="sidebar_container">
     <div class="sidebar_container_inner">
         <div class="row sidebar_section sidebar_realtime">
@@ -86,3 +132,4 @@
         </div>
     </div>
 </div>
+-->

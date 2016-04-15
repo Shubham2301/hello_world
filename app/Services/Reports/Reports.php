@@ -584,7 +584,7 @@ class Reports
         if ($filters['type'] == 'real-time') {
             $queryFilters .= " and `careconsole`.`archived_date` IS NULL ";
         } elseif ($filters['type'] == 'historical') {
-            $queryFilters .= " and `careconsole`.`created_at` >= $startDate careconsole_created_at <= $endDate ";
+            $queryFilters .= " and `careconsole`.`created_at` >= $startDate and careconsole_created_at <= $endDate ";
         }
 
         if ($filters['status_of_patients'] != 'none') {
@@ -626,10 +626,10 @@ class Reports
         if ($filters['referred_to']['type'] != 'none') {
             switch ($filters['referred_to']['type']) {
                 case 'practice':
-                    $queryFilters .= ' and `practices`.`id` = ' . $filters['referred_to']['id'];
+                    $queryFilters .= ' and `practices`.`id` = ' . $filters['referred_to']['name'];
                     break;
                 case 'practice_user':
-                    $queryFilters .= ' and `users`.`id` = ' . $filters['referred_to']['id'];
+                    $queryFilters .= ' and `users`.`id` = ' . $filters['referred_to']['name'];
                     break;
             }
         }
