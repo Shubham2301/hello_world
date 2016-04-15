@@ -56,8 +56,9 @@ class Patient extends Model {
 
 		if (session('user-level') == 1) {
 			return $query
+				->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
 				->orderBy('lastname', 'asc')
-				->paginate(50);
+				->paginate(200);
 				//->get();
 		} else {
 			return $query
@@ -65,7 +66,7 @@ class Patient extends Model {
 				->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
 				->where('import_history.network_id', session('network-id'))
 				->orderBy('lastname', 'asc')
-				->paginate(50);
+				->paginate(200);
 				//->get();
 		}
 

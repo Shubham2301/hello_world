@@ -191,7 +191,6 @@ class PatientController extends Controller
         } else {
             $patientData['insurance'] = '';
         }
-
         $patientData['firstname'] = $patient->firstname;
         $patientData['lastname'] = $patient->lastname;
         $patientData['email'] = $patient->email;
@@ -319,7 +318,6 @@ class PatientController extends Controller
         $filters = json_decode($request->input('data'), true);
 
         $patients = Patient::getPatients($filters);
-
         $data = [];
         $i = 0;
         foreach ($patients as $patient) {
@@ -336,8 +334,8 @@ class PatientController extends Controller
             $data[$i]['birthdate'] = $birthdate->format('F j Y');
             $i++;
         }
-//        $data[0]['total'] = $patients->total();
-        //        $data[0]['lastpage'] = $patients->lastPage();
+       		  $data[0]['total'] = $patients->total();
+              $data[0]['lastpage'] = $patients->lastPage();
         //        $data[0]['currentPage'] = $patients->currentPage();
 
         return json_encode($data);

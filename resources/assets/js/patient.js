@@ -38,6 +38,7 @@ $(document).ready(function() {
                     "type": 'name',
                     "value": val,
                 });
+				showpage = 1;
                 getPatients(searchdata, 0);
                 $('#refresh_patients').addClass('active');
             } else {
@@ -48,8 +49,11 @@ $(document).ready(function() {
             $("#add_search_option").trigger("click");
             $('#search_patient_input').val('');
             var searchdata = getsearchtype();
-            if (searchdata.length != 0)
+            if (searchdata.length != 0){
+				showpage =1;
                 getPatients(searchdata, 0);
+
+			}
             else {
                 $('#search_patient_input').focus();
                 $('.patient_list').removeClass('active');
@@ -230,6 +234,7 @@ $(document).ready(function() {
 				"type": 'all',
 				"value": '',
 			});
+			if(showpage < lastPage)
 			getPatients(searchdata, 0);
 		}
 	});
@@ -246,6 +251,7 @@ $(document).ready(function() {
 //var lastpage = 0;
 var flag = 0;
 var showpage = 1;
+var lastPage = 0;
 $(document).click(function () {
     if (flag == 0) {
         $('.popover_text').popover("hide");
@@ -273,10 +279,11 @@ function loadAllPatients() {
         "type": 'all',
         "value": '',
     });
+	showpage = 1;
     getPatients(searchdata, 0);
     $('#refresh_patients').removeClass('active');
     $('.no_item_found').removeClass('active');
-	showpage = 1;
+
 }
 
 function showPatientInfo(data) {
@@ -380,8 +387,9 @@ function getPatients(formData, page) {
             var patients = $.parseJSON(e);
             if ($('#from_admin').val()) {
                 var content = '';
-//                if (patients.length > 0 && patients[0]['total'] > 0) {
-                if (patients.length > 0) {
+				lastPage = patients[0]['lastpage'];
+               if (patients.length > 0 && patients[0]['total'] > 0) {
+               // if (patients.length > 0) {
                     patients.forEach(function(patient) {
                         content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3" style="display:inline-flex"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + patient.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + patient.lname + ', ' + patient.fname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p><div><a href="/providers?referraltype_id=6&action=schedule_appointment&patient_id=' + patient.id + '" data-toggle="tooltip" title="Schedule Patient" data-placement="bottom"><img class="action_dropdown_img" src="' + active_img + '" alt=""></a></div></p><p class="editPatient_from_row arial_bold" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepatient_from_row"><img src="' + delete_img + '" alt="" class="removepatient_img" data-toggle="tooltip" title="Delete Patient" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     });
@@ -413,8 +421,8 @@ function getPatients(formData, page) {
 
             } else {
                 var content = '<p><bold>' + 0 + '<bold> results found</p>';
-//                if (patients.length > 0 && patients[0]['total'] > 0) {
-                if (patients.length > 0) {
+                if (patients.length > 0 && patients[0]['total'] > 0) {
+                //if (patients.length > 0) {
                     content = '<p><bold>' + patients.length + '<bold> results found</p>';
                     patients.forEach(function(patient) {
                         content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin arial"><div class="col-xs-12 arial_bold patient_list_name">' + patient.lname + ', ' + patient.fname + '</div><div class="col-xs-6 patient_list_data"> ' + patient.birthdate + '<br>' + patient.phone + '</div><div class="col-xs-6 patient_list_data">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
@@ -424,9 +432,6 @@ function getPatients(formData, page) {
                 $('.patient_list').addClass('active');
 
             }
-
-
-
         },
         error: function() {
             $('p.alert_message').text('Error searching');
@@ -505,6 +510,7 @@ function removePatient(id) {
         async: false,
         success: function success(e) {
             var searchdata = [];
+		    showpage = 1;
             getPatients(searchdata, currentpage);
 
         },
