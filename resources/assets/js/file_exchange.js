@@ -1,4 +1,7 @@
 $(document).ready(function () {
+	if($('#current_view').val() === 'trash')
+		$('.file_exchange_navbar_content_left').hide();
+
     $('[data-toggle="tooltip"]').tooltip();
     $('#details').on('click', function () {
         var id = $("input[type='checkbox']:checked").attr('data-id');
@@ -64,6 +67,7 @@ $(document).ready(function () {
 		}
 		if($('#current_view').val() === 'trash'){
 			$('.trash-button').hide();
+			$('.share-button').hide();
 		}
 
     });
