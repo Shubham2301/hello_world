@@ -55,7 +55,7 @@ class AppointmentController extends Controller
         $apptInfo['AcctKey'] = $providerKey;
         $apptInfo['ApptTypeKey'] = $appointmentTypeKey;
         $startime = new DateTime($appointmentTime);
-        $apptInfo['ApptStartDateTime'] = $startime->format('m/d/Y H:m');
+        $apptInfo['ApptStartDateTime'] = $startime->format('m/d/Y H:i');
         $apptInfo['PatientData']['Title'] = $patient->title;
         $apptInfo['PatientData']['FirstName'] = $patient->firstname;
         $apptInfo['PatientData']['LastName'] = $patient->lastname;
@@ -113,7 +113,7 @@ class AppointmentController extends Controller
         $appointment->appointmenttype_key = $appointmentTypeKey;
         $appointment->appointmenttype = $appointmentType;
         $date = new DateTime($appointmentTime);
-        $appointment->start_datetime = $date->format('Y-m-d H:m:s');
+        $appointment->start_datetime = $date->format('Y-m-d H:i:s');
 
         $apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
 
@@ -157,7 +157,7 @@ class AppointmentController extends Controller
         $appt['practice_phone'] = $location->phone;
         $date = new DateTime($appointment->start_datetime);
         $appt['appt_startdate'] = $date->format('F d, Y');
-        $appt['appt_starttime'] = $date->format('h m A');
+        $appt['appt_starttime'] = $date->format('h i A');
         $appt['patient_name'] = $patient->title . ' ' . $patient->lastname . ', ' . $patient->firstname;
         $appt['patient_email'] = $patient->email;
         $appt['patient_phone'] = $patient->cellphone . ', ' . $patient->workphone . ', ' . $patient->homephone;
@@ -197,7 +197,7 @@ class AppointmentController extends Controller
             $careconsole->recall_date = null;
             $careconsole->archived_date = null;
             $date = new DateTime();
-            $careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
+            $careconsole->stage_updated_at = $date->format('Y-m-d H:i:s');
             $careconsole->update();
 
             $provider = User::find($providerID);
@@ -210,7 +210,7 @@ class AppointmentController extends Controller
             $contactHistory->action_result_id = 14;
             $contactHistory->notes = $notes;
             $contactHistory->console_id = $careconsole->id;
-            $contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:m:s');
+            $contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:i:s');
             $contactHistory->save();
 
             $referralHistory = ReferralHistory::find($careconsole->referral_id);
