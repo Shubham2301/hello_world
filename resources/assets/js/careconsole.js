@@ -813,7 +813,7 @@ function getProvidersAndLocations(practiceID) {
                 $('#manual_appointment_provider').html(content);
                 return;
             }
-            var content = '<option value="0">Select User</option>';
+	var content = '<option value="0">Select Provider</option>';
 
             $.each(providers, function(index, val) {
                 content += '<option value="' + val.id + '">' + val.name + '</option>';
