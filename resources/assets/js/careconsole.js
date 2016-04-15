@@ -68,7 +68,7 @@ $(document).ready(function() {
             $('.console_buckets').removeClass('active');
             $(this).addClass('active');
             $('.c3_overview_link').addClass('active');
-            $('.control_section').addClass('active');
+            $('.control_section').removeClass('active');
             $('ul.c3_sidebar_list').addClass('active');
             $('.before_drilldown').hide();
             $('.drilldown').addClass('active');
