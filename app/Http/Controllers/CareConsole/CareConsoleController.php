@@ -163,7 +163,7 @@ class CareConsoleController extends Controller {
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
 		$drilldown['listing_header'] = view('careconsole.listing_header')->with('listing', $listing)->render();
 		$drilldown['listing_content'] = view('careconsole.listing_patient')->with('listing', $listing)->with('actions', $actions)->render();
-
+		$drilldown['lastpage'] = $listing['lastpage'];
 		return json_encode($drilldown);
 	}
 
@@ -263,6 +263,7 @@ class CareConsoleController extends Controller {
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
 		$drilldown['listing_header'] = view('careconsole.listing_header')->with('listing', $listing)->render();
 		$drilldown['listing_content'] = view('careconsole.listing_patient')->with('listing', $listing)->with('actions', $actions)->render();
+		$drilldown['lastpage'] = $listing['lastpage'];
 		return json_encode($drilldown);
 	}
 	public function getPatientRecords(Request $request) {

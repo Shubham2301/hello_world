@@ -355,7 +355,11 @@ $(document).ready(function() {
 	$('.content-right').on('scroll', function() {
 		if ($(this).scrollTop() + $(this).innerHeight() + 10 >= $(this)[0].scrollHeight) {
 			currentPage++;
+
+			if(toCall == 1 && currentPage <= lastPage)
 			getPatientData();
+			if(toCall == 2 && currentPage <= lastPage)
+				bucketData(bucketName);
 		}
 	});
 
@@ -371,7 +375,8 @@ var showDate = false;
 var showcontrolls = true;
 var bucketName = '';
 var currentPage = 1;
-
+var toCall = 0;
+var lastPage = 1;
 function searchc3() {
 	$('.search_result_info').removeClass('active');
 	if (!($('#search_bar_open').hasClass('active'))) {
@@ -448,6 +453,7 @@ function clearHTML() {
 }
 
 function getPatientData() {
+	toCall = 1;
 	var stageID = $('#current_stage').val();
 	var kpiName = ($('#current_kpi').val() === '0' ? '' : $('#current_kpi').val());
 	var sortField = $('#current_sort_field').val();
@@ -479,6 +485,7 @@ function getPatientData() {
 		   var actions = data.actions;
 		   var controls = data.controls;
 		   listing = data.listing;
+		   lastPage = data.lastpage;
 		   if (actions.length > 0) {
 		actions.forEach(function(action) {
 			actionResults[action.id] = action.action_results;
@@ -564,6 +571,7 @@ function action() {
 }
 
 function refreshOverview() {
+	toCall = 0;
 	$.ajax({
 		url: '/careconsole/overview',
 		type: 'GET',
@@ -650,7 +658,7 @@ function setSearchFields(index) {
 }
 
 function bucketData(bucketName) {
-
+	toCall = 2;
 	var formData = {
 		'bucket': bucketName
 	};
@@ -671,6 +679,7 @@ function bucketData(bucketName) {
 		   var actionList = '';
 		   var actions = data.actions;
 		   listing = data.listing;
+		   lastPage = data.lastpage;
 		   if (actions.length > 0) {
 		actions.forEach(function(action) {
 			actionResults[action.id] = action.action_results;

@@ -150,6 +150,9 @@ class CareConsoleService {
 		}
 
 		$listing['headers'] = $headerData;
+		$listing['lastpage'] = 0;
+		if(method_exists( $patients, 'lastPage'))
+			$listing['lastpage'] = $patients->lastPage();
 
 		return $listing;
 	}
@@ -193,6 +196,10 @@ class CareConsoleService {
 
 		$listing['patients'] = $patientsData;
 		$listing['headers'] = $headerData;
+
+		$listing['lastpage'] = 0;
+		if(method_exists( $patients, 'lastPage'))
+			$listing['lastpage'] = $patients->lastPage();
 
 		return $listing;
 	}
