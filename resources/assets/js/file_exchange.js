@@ -154,7 +154,7 @@ function updateDescription(){
         async: false,
         success: function success(e) {
             var id = '#'+e.id+'_'+e.name;
-            $(id).html(e.description);
+            $(id+'>p').html(e.description);
         },
         error: function error() {
             $('p.alert_message').text('Error:');

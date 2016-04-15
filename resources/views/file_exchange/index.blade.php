@@ -1,12 +1,7 @@
-@extends('layouts.master')
-@section('title', 'My Ocuhub - File Exchange')
-@section('imports')
+@extends('layouts.master') @section('title', 'My Ocuhub - File Exchange') @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/file_exchange.css')}}">
 <script type="text/javascript" src="{{elixir('js/file_exchange.js')}}"></script>
-@endsection @section('sidebar')
-@include('file_exchange.sidebar')
-@endsection @section('content')
-@if (Session::has('success'))
+@endsection @section('sidebar') @include('file_exchange.sidebar') @endsection @section('content') @if (Session::has('success'))
 <div class="alert alert-success">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
 
@@ -18,7 +13,7 @@
 <div class="content-section active" style="min-height: 40vh;">
     <div class="row no-margin">
         <div class="col-xs-offset-1">
-			<input type="hidden" value = "{{$openView}}" id='current_view'>
+            <input type="hidden" value="{{$openView}}" id='current_view'>
             <div class="file_exchange_navbar">
                 <span class="file_exchange_navbar_content_left">
                     <button id="" type="button" class="btn add-btn" data-toggle="modal" data-target="#newfolderModal">Add Folder</button>&nbsp;
@@ -58,12 +53,12 @@
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
             <div class="row">
-				@if(strlen($folder['description']) > 90)
+                @if(strlen($folder['description']) > 90)
                 <div class="col-xs-7 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $folder['id'] }}_folder" style="cursor:pointer;" data-clickable="true">
                     <p style="margin-left: 8%;">{{ $folder['description'] }}</p>
                 </div>
 
-				@elseif(strlen($folder['description']) > 0)
+                @elseif(strlen($folder['description']) > 0)
                 <div class="col-xs-7 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $folder['id'] }}_folder">
                     <p style="margin-left: 8%;">{{ $folder['description'] }}</p>
                 </div>
@@ -80,10 +75,14 @@
             <div class="col-xs-2 no-padding">{{ $file['updated_at'] }}</div>
             <div class="row">
                 @if(strlen($file['description']) > 90)
-                <div class="col-xs-7 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $file['id'] }}_file" style="cursor:pointer;">{{ $file['description'] }}</div>
+				<div class="col-xs-7 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $file['id'] }}_file" style="cursor:pointer;" data-clickable="true">
+                    <p style="margin-left: 8%;">{{ $file['description'] }}</p>
+                </div>
 
-				@elseif(strlen($file['description'] ) > 0)
-                <div class="col-xs-7 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $file['id'] }}_file">{{ $file['description'] }}</div>
+                @elseif(strlen($file['description'] ) > 0)
+                <div class="col-xs-7 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $file['id'] }}_file">
+                    <p style="margin-left: 8%;">{{ $file['description'] }}</p>
+                </div>
                 @endif
             </div>
         </div>
@@ -92,17 +91,11 @@
     <div class="item_info" id="item_info">
     </div>
 </div>
-@include('file_exchange.addFolder')
-@include('file_exchange.addFile')
-@include('file_exchange.share')
-@if($empty == 'true')
+@include('file_exchange.addFolder') @include('file_exchange.addFile') @include('file_exchange.share') @if($empty == 'true')
 <div style="display: flex;flex-direction: row;justify-content: center;">
     <span>No files or folder found</span>
 </div>
 
-@endif
-{!! Form::open(array('url' => 'deleteFilesFolders', 'method' => 'POST', 'id'=>'delete_files_folders')) !!}
+@endif {!! Form::open(array('url' => 'deleteFilesFolders', 'method' => 'POST', 'id'=>'delete_files_folders')) !!}
 <input type="hidden" name="delete_folders" id="delete_folders" value="">
-<input type="hidden" name="delete_files" id="delete_files" value="">
-{!! Form::close()!!}
-@endsection
+<input type="hidden" name="delete_files" id="delete_files" value=""> {!! Form::close()!!} @endsection
