@@ -5,9 +5,239 @@ google.load("visualization", "1.1", {
     packages: ["corechart"]
 });
 
+var filterOptions;
+function resetFilter() {
+    filterOptions = {
+        "type": "none",
+        "status_of_patients": "none",
+        "disease_type": "none",
+        "severity_scale": "none",
+        "incomming_referrals":
+            {
+                "appointment_type": "none",
+                "referred_by":
+                    {
+                        "type": "none",
+                        "name": "none"
+                }
+
+        }
+    ,
+        "patient_demographics":
+            {
+                "age": "none",
+                "gender": "none",
+                "insurance_type": "none"
+        }
+    ,
+        "referred_to":
+            {
+                "type": "none",
+                "name": "none"
+        }
+
+    };
+    if ($('.historical_header').hasClass('active')) {
+        filterOptions.type = "historical";
+    }
+    else {
+        filterOptions.type = "real-time";
+    }
+
+}
+
+function addFilter(name, value, meta) {
+    switch (name) {
+        case 'status_of_patients':
+            if (filterOptions.status_of_patients != 'none') {
+                $('.filter[data-id="' + name + '"]').remove();
+            }
+            filterOptions.status_of_patients = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            break;
+        case 'disease_type':
+            if (filterOptions.disease_type != 'none')
+                $('.filter[data-id="disease_type"]').remove();
+            filterOptions.disease_type = value;
+            filterOptions.severity_scale = 'none';
+            $('#drilldown_filters').append('<div class="filter" data-id="disease_type"><div class="filter_name"><span class="item_value report_content_label">' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            break;
+        case 'severity_scale':
+            if (filterOptions.disease_type != 'none')
+                $('.filter[data-id="disease_type"]').remove();
+            filterOptions.disease_type = value;
+            filterOptions.severity_scale = meta;
+            $('#drilldown_filters').append('<div class="filter" data-id="disease_type"><div class="filter_name"><span class="item_value report_content_label">' + value + ' : ' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            break;
+        case 'appointment_type':
+            if (filterOptions.incomming_referrals.appointment_type != 'none') {
+                $('.filter[data-id="' + name + '"]').remove();
+            }
+            filterOptions.incomming_referrals.appointment_type = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            break;
+        case 'referred_by_practice':
+            if (filterOptions.incomming_referrals.referred_by.value != "none") {
+                $('.filter[data-id="referred_by_practice_user"]').remove();
+                $('.filter[data-id="referred_by_practice"]').remove();
+            }
+            filterOptions.incomming_referrals.referred_by.type = "practice";
+            filterOptions.incomming_referrals.referred_by.name = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">Referred By ' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            $('#referred_by_meta').html(meta);
+            break;
+        case 'referred_by_practice_user':
+            if (filterOptions.incomming_referrals.referred_by.value != "none") {
+                $('.filter[data-id="referred_by_practice_user"]').remove();
+                $('.filter[data-id="referred_by_practice"]').remove();
+            }
+            filterOptions.incomming_referrals.referred_by.type = "practice_user";
+            filterOptions.incomming_referrals.referred_by.name = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">Referred By ' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            $('#referred_by_meta').html(meta);
+            break;
+        case 'age':
+            if (filterOptions.patient_demographics.age != 'none') {
+                $('.filter[data-id="' + name + '"]').remove();
+            }
+            filterOptions.patient_demographics.age = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            break;
+        case 'gender':
+            if (filterOptions.patient_demographics.gender != 'none') {
+                $('.filter[data-id="' + name + '"]').remove();
+            }
+            filterOptions.patient_demographics.gender = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            break;
+        case 'insurance_type':
+            if (filterOptions.patient_demographics.insurance_type != 'none') {
+                $('.filter[data-id="' + name + '"]').remove();
+            }
+            filterOptions.patient_demographics.insurance_type = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            break;
+        case 'referred_to_practice':
+            if (filterOptions.referred_to.type != 'none') {
+                $('.filter[data-id="referred_to_practice_user"]').remove();
+                $('.filter[data-id="referred_to_practice"]').remove();
+            }
+            filterOptions.referred_to.type = "practice";
+            filterOptions.referred_to.name = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">Referred To ' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            $('#referred_to_meta').html(meta);
+            break;
+        case 'referred_to_practice_user':
+            if (filterOptions.referred_to.type != "none") {
+                $('.filter[data-id="referred_to_practice_user"]').remove();
+                $('.filter[data-id="referred_to_practice"]').remove();
+            }
+            filterOptions.referred_to.type = "practice_user";
+            filterOptions.referred_to.name = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">Referred To ' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            $('#referred_to_meta').html(meta);
+            break;
+    }
+}
+
+function removeFilter(name) {
+
+    switch (name) {
+        case 'status_of_patients':
+            filterOptions.status_of_patients = 'none';
+            break;
+        case 'disease_type':
+            filterOptions.disease_type = 'none';
+            filterOptions.severity_scale = 'none';
+            break;
+        case 'severity_scale':
+            filterOptions.disease_type = 'none';
+            filterOptions.severity_scale = 'none';
+            break;
+        case 'appointment_type':
+            filterOptions.incomming_referrals.appointment_type = 'none';
+            break;
+        case 'referred_by_practice':
+            filterOptions.incomming_referrals.referred_by.type = 'none';
+            filterOptions.incomming_referrals.referred_by.name = 'none';
+            $('#referred_by_meta').html('');
+            break;
+        case 'referred_by_practice_user':
+            filterOptions.incomming_referrals.referred_by.type = 'none';
+            filterOptions.incomming_referrals.referred_by.name = 'none';
+            $('#referred_by_meta').html('');
+            break;
+        case 'age':
+            filterOptions.patient_demographics.age = 'none';
+            break;
+        case 'gender':
+            filterOptions.patient_demographics.gender = 'none';
+            break;
+        case 'insurance_type':
+            filterOptions.patient_demographics.insurance_type = 'none';
+            break;
+        case 'referred_to_practice':
+            filterOptions.referred_to.type = 'none';
+            filterOptions.referred_to.name = 'none';
+            $('#referred_to_meta').html('');
+            break;
+        case 'referred_to_practice_user':
+            filterOptions.referred_to.type = 'none';
+            filterOptions.referred_to.name = 'none';
+            $('#referred_to_meta').html('');
+            break;
+    }
+}
+
+
+
 
 $(document).ready(function () {
+
     $('.historical_section').hide();
+    $('.sidebar_historical').on('click', function () {
+        $('.expandable_sidebar').removeClass('active');
+        $('.expandable_sidebar_historical').addClass('active');
+        $('.historical_header').addClass('active');
+        $('.historical_sub_header').addClass('active');
+        $('.realtime_header').removeClass('active');
+        $('.realtime_sub_header').removeClass('active');
+        $('.realtime_section').hide();
+        $('.historical_section').show();
+        $('.filter_remove').parent().remove();
+        resetFilter();
+        clearHtml();
+        getReport();
+    });
+    $('.sidebar_realtime').on('click', function () {
+        $('.expandable_sidebar').addClass('active');
+        $('.expandable_sidebar_historical').removeClass('active');
+        $('.realtime_header').addClass('active');
+        $('.realtime_sub_header').addClass('active');
+        $('.historical_header').removeClass('active');
+        $('.historical_sub_header').removeClass('active');
+        $('.historical_section').hide();
+        $('.realtime_section').show();
+        $('.filter_remove').parent().remove();
+        resetFilter();
+        clearHtml();
+        getReport();
+    });
+    $("li").click(function () {
+        $(this.parentNode).children("li").removeClass("active");
+        $(this).addClass("active");
+
+        if ($('li.active').hasClass('referred_by')) {
+            $('.chart').addClass('referred_by');
+            $('.chart').removeClass('referred_to');
+        } else if($('li.active').hasClass('referred_to')) {
+            $('.chart').addClass('referred_to');
+            $('.chart').removeClass('referred_by');
+        }
+        getReport();
+    });
+
+
     var cur_date = new Date();
     var set_start_date = new Date(cur_date.getTime());
     $('#start_date').datetimepicker({
@@ -26,6 +256,7 @@ $(document).ready(function () {
     $('#start_date').on('change', function(){
         getReport();
     });
+    resetFilter();
     getReport();
     var old_start_date = $('#start_date').val();
     var old_end_date = $('#end_date').val();
@@ -44,6 +275,28 @@ $(document).ready(function () {
             getReport();
         }
     });
+
+    $(document).on('click', '.drilldown_item', function () {
+
+        if ($(this).hasClass('disable_drilldown'))
+            return;
+
+        var type = $(this).attr('data-type');
+        var id = $(this).attr('data-id');
+        var meta = $(this).attr('data-meta');
+        addFilter(type, id, meta);
+        clearHtml();
+        getReport();
+    });
+
+    $(document).on('click', '.filter_remove', function () {
+
+        var type = $(this).parent().attr('data-id');
+        $(this).parent().remove();
+        removeFilter(type);
+        clearHtml();
+        getReport();
+    });
 });
 
 function getReport() {
@@ -53,8 +306,10 @@ function getReport() {
         "end_date": $('#end_date').val()
     };
 
+
     var formData = {
-        dates: dateFilter
+        dates: dateFilter,
+        filters: filterOptions
     };
 
     $.ajax({
@@ -105,7 +360,7 @@ function renderStatusOfPatients(data) {
 
     var rowContent = '';
     var disable = '';
-    var colContent = '<div class="row"><div class="col-xs-4"></div><div class="col-xs-7"><p class="sidebar_item active">Dashboard View</p></div></div>';
+    var colContent = '<div class="row"><div class="col-xs-12"><p class="sidebar_item active">Dashboard View</p></div></div>';
     for (var i = 0; i < data.length; i++) {
 
         if (data[i].count == 0) {
@@ -124,7 +379,7 @@ function renderStatusOfPatients(data) {
             rowContent += '</div>';
         }
 
-        colContent += '<div class="row"><div class="col-xs-4"></div><div class="col-xs-7 drilldown_item sidebar_drilldown ' + disable + '" data-type="status_of_patients" data-id="' + data[i].id + '" data-meta="' + data[i].name + '"><p class="sidebar_item">' + data[i].name + '</p></div></div>';
+        colContent += '<div class="row"><div class="col-xs-12 drilldown_item sidebar_drilldown ' + disable + '" data-type="status_of_patients" data-id="' + data[i].id + '" data-meta="' + data[i].name + '"><p class="sidebar_item">' + data[i].name + '</p></div></div>';
 
     }
     $('#status_of_patients').html(rowContent);
@@ -305,4 +560,142 @@ function formatAgeData(data) {
     }
 
     return ageData;
+}
+function clearHtml() {
+    $('#status_of_patients').html("");
+    $('#population_report_options').html("");
+    $('#male_percent').html("");
+    $('#female_percent').html("");
+    $('#referred_to').html("");
+    $('#referred_by').html("");
+    $('#insurance_type').html("");
+    $('#appointment_type').html("");
+    $('#disease_type').html("");
+    $('#piechart').html("");
+    $('#most_referral_to').html("");
+    $('#most_referral_by').html("");
+    $('#most_appointment_type').html("");
+    $('#linechart_material').html("");
+
+}
+function drawReferredByChart(data) {
+    var data_hospital = new google.visualization.DataTable();
+    data_hospital.addColumn('string', 'Hospital Name');
+    data_hospital.addColumn('number', 'Referals');
+
+    var type = 'referred_by_' + data.type;
+    $('.chart').attr('data-type', type);
+    data = data.data;
+    if (!data) {
+
+    } else {
+        for (var i = 0; i < data.length; i++) {
+            data_hospital.addRow([data[i].name, data[i].count]);
+        }
+    }
+
+    var options = {
+        legend: {
+            position: 'none'
+        },
+        chartArea: {
+            width: '90%',
+            height: '75%'
+        },
+        hAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        vAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        colors: ['#00a99d'],
+        fontName: 'Montserrat',
+        pointSize: 10,
+        pointShape: 'circle',
+        axes: {
+            x: {
+                0: {
+                    side: 'bottom',
+                    label: ""
+                }
+            }
+        },
+    };
+    var chart_hospital = new google.visualization.LineChart(document.getElementById('linechart_material'));
+    chart_hospital.draw(data_hospital, options);
+
+    google.visualization.events.addListener(chart_hospital, 'select', showdoctor);
+
+    function showdoctor(e) {
+        var selection = chart_hospital.getSelection();
+        var item = selection[0];
+        var type = $('.chart').attr('data-type');
+        var meta = data_hospital.getValue(item.row, 0);
+        var id = data_hospital.getValue(item.row, 0);
+//        addFilter(type, id, meta);
+//        loadHistoricalDefaultReport();
+    }
+}
+
+function drawReferredToChart(data) {
+    var data_hospital = new google.visualization.DataTable();
+    data_hospital.addColumn('string', 'Hospital Name');
+    data_hospital.addColumn('number', 'Referals');
+    var type = 'referred_to_' + data.type;
+    $('.chart').attr('data-type', type);
+    data = data.data;
+    if (!data) {
+
+    } else {
+        for (var i = 0; i < data.length; i++) {
+            data_hospital.addRow([data[i].name, data[i].count]);
+        }
+    }
+    var options = {
+        legend: {
+            position: 'none'
+        },
+        chartArea: {
+            width: '90%',
+            height: '75%'
+        },
+        hAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        vAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        colors: ['#00a99d'],
+        fontName: 'Montserrat',
+        pointSize: 10,
+        axes: {
+            x: {
+                0: {
+                    side: 'bottom',
+                    label: ""
+                }
+            }
+        },
+    };
+    var chart_hospital = new google.visualization.LineChart(document.getElementById('linechart_material'));
+    chart_hospital.draw(data_hospital, options);
+    google.visualization.events.addListener(chart_hospital, 'select', showdoctor);
+
+    function showdoctor(e) {
+        var selection = chart_hospital.getSelection();
+        var item = selection[0];
+        var id = data[item.row].id;
+        var type = $('.chart').attr('data-type');
+        var meta = data_hospital.getValue(item.row, 0);
+//        addFilter(type, id, meta);
+//        loadHistoricalDefaultReport();
+    }
 }
