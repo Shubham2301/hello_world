@@ -56,25 +56,26 @@ class AppointmentController extends Controller
         $apptInfo['ApptTypeKey'] = $appointmentTypeKey;
         $startime = new DateTime($appointmentTime);
         $apptInfo['ApptStartDateTime'] = $startime->format('m/d/Y H:i');
-        $apptInfo['PatientData']['Title'] = $patient->title;
-        $apptInfo['PatientData']['FirstName'] = $patient->firstname;
-        $apptInfo['PatientData']['LastName'] = $patient->lastname;
-        $apptInfo['PatientData']['Address1'] = $patient->addressline1;
-        $apptInfo['PatientData']['Address2'] = $patient->addressline2;
-        $apptInfo['PatientData']['City'] = $patient->city;
-        $apptInfo['PatientData']['State'] = $patient->state;
-        $apptInfo['PatientData']['Zip'] = $patient->zip;
-        $apptInfo['PatientData']['Country'] = $patient->country;
+
+        $apptInfo['PatientData']['Title'] = ($patient->title) ? $patient->title : '';
+        $apptInfo['PatientData']['FirstName'] = ($patient->firstname) ? $patient->firstname : '';
+        $apptInfo['PatientData']['LastName'] = ($patient->lastname) ? $patient->lastname : '';
+        $apptInfo['PatientData']['Address1'] = ($patient->addressline1) ? $patient->addressline1 : '';
+        $apptInfo['PatientData']['Address2'] = ($patient->addressline2) ? $patient->addressline2 : '';
+        $apptInfo['PatientData']['City'] = ($patient->city) ? $patient->city : '';
+        $apptInfo['PatientData']['State'] = ($patient->state) ? $patient->state : '';
+        $apptInfo['PatientData']['Zip'] = ($patient->zip) ? $patient->zip : '';
+        $apptInfo['PatientData']['Country'] = ($patient->country) ? $patient->country : '';
         $apptInfo['PatientData']['HomePhone'] = ($patient->homephone) ? $patient->homephone : '';
         $apptInfo['PatientData']['WorkPhone'] = ($patient->workphone) ? $patient->workphone : '';
-        $apptInfo['PatientData']['CellPhone'] = $patient->cellphone;
-        $apptInfo['PatientData']['Email'] = $patient->email;
+        $apptInfo['PatientData']['CellPhone'] = ($patient->cellphone) ? $patient->cellphone : '';
+        $apptInfo['PatientData']['Email'] = ($patient->email) ? $patient->email : '';
+
         $birthdate = new DateTime($patient->birthdate);
         $apptInfo['PatientData']['DOB'] = $birthdate->format('Y-m-d') . 'T00:00:00';
-
-        $apptInfo['PatientData']['PreferredLanguage'] = $patient->preferredlanguage;
-        $apptInfo['PatientData']['Gender'] = $patient->gender;
-        $apptInfo['PatientData']['L4DSSN'] = $patient->lastfourssn;
+        $apptInfo['PatientData']['PreferredLanguage'] = ($patient->preferredlanguage != 'English') ? 1 : 0;
+        $apptInfo['PatientData']['Gender'] = ($patient->gender == 'Male' || $patient->gender == 'M') ? 1 : 0;
+        $apptInfo['PatientData']['L4DSSN'] = ($patient->lastfourssn) ? $patient->lastfourssn : '';
         $patientInsurance = PatientInsurance::where('patient_id', $patientID)->first();
         if (sizeof($patientInsurance) == 0) {
             $patientInsurance = new PatientInsurance;
@@ -93,7 +94,7 @@ class AppointmentController extends Controller
         $subscriber_birthdate = new DateTime(($patientInsurance->subscriber_birthdate) ? $patientInsurance->subscriber_birthdate : $patient->birthdate);
         $apptInfo['PatientData']['SubscriberDOB'] = $subscriber_birthdate->format('Y-m-d') . 'T00:00:00';
         $apptInfo['PatientData']['SubscriberID'] = ($patientInsurance->subscriber_id) ? $patientInsurance->subscriber_id : '';
-        $apptInfo['PatientData']['GroupNum'] = '';
+        $apptInfo['PatientData']['GroupNum'] = ($patientInsurance->insurance_group_no) ? $patientInsurance->insurance_group_no : '';
         $apptInfo['PatientData']['RelationshipToPatient'] = ($patientInsurance->subscriber_relation) ? $patientInsurance->subscriber_relation : '';
         $apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
         $apptInfo['PatientData']['ReferredBy'] = '';
