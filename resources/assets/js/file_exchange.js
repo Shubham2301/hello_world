@@ -1,4 +1,7 @@
 $(document).ready(function () {
+	if($('#current_view').val() === 'trash')
+		$('.file_exchange_navbar_content_left').hide();
+
     $('[data-toggle="tooltip"]').tooltip();
     $('#details').on('click', function () {
         var id = $("input[type='checkbox']:checked").attr('data-id');
@@ -64,6 +67,7 @@ $(document).ready(function () {
 		}
 		if($('#current_view').val() === 'trash'){
 			$('.trash-button').hide();
+			$('.share-button').hide();
 		}
 
     });
@@ -154,7 +158,7 @@ function updateDescription(){
         async: false,
         success: function success(e) {
             var id = '#'+e.id+'_'+e.name;
-            $(id).html(e.description);
+            $(id+'>p').html(e.description);
         },
         error: function error() {
             $('p.alert_message').text('Error:');

@@ -63,17 +63,17 @@ $(document).ready(function() {
             $('.drilldown').removeClass('active');
             $('.drilldown>.section-header').html('');
             $('.drilldown>.subsection-header>p').html('');
-            $('.circle drilldown_kpi_indicator').css('background-color', 'transparent');
+            $('.circle.drilldown_kpi_indicator').css('background-color', 'transparent');
         } else {
             $('.console_buckets').removeClass('active');
             $(this).addClass('active');
             $('.c3_overview_link').addClass('active');
-            $('.control_section').addClass('active');
+            $('.control_section').removeClass('active');
             $('ul.c3_sidebar_list').addClass('active');
             $('.before_drilldown').hide();
             $('.drilldown').addClass('active');
             $('.drilldown>.subsection-header>p').html('');
-            $('.circle drilldown_kpi_indicator').css('background-color', 'transparent');
+            $('.circle.drilldown_kpi_indicator').css('background-color', 'transparent');
             bucketName = $(this).attr('data-name');
             var bucketTitle = $(this).find('p').html();
             if (bucketName == 'recall') {
@@ -697,6 +697,7 @@ function setPatientRecords(consoleID) {
                     i++;
                 });
                 $('.contact_attempts').html(content);
+				$('.patient_contact_info').find('.contact_notes').html(contact_notes[0]);
             } else {
                 $('.contact_attempts').text('-');
             }
@@ -812,7 +813,7 @@ function getProvidersAndLocations(practiceID) {
                 $('#manual_appointment_provider').html(content);
                 return;
             }
-            var content = '<option value="0">Select User</option>';
+	var content = '<option value="0">Select Provider</option>';
 
             $.each(providers, function(index, val) {
                 content += '<option value="' + val.id + '">' + val.name + '</option>';

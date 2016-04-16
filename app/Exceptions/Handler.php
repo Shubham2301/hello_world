@@ -3,10 +3,12 @@
 namespace myocuhub\Exceptions;
 
 use Exception;
+use Mail;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+
 
 class Handler extends ExceptionHandler
 {
@@ -30,6 +32,13 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        $maillogs = env('MAIL_ERRORLOG', false);
+        if($maillogs) {
+            Mail::raw($e, function ($m) {
+                    $m->from('support@ocuhub.com', 'Ocuhub');
+                    $m->to(env('MAIL_ERRORLOG_TO', 'applicationerror@ocuhub.com'), 'Application Error')->subject('Exception generated in the system');
+            });
+        }
         return parent::report($e);
     }
 
