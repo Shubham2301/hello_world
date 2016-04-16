@@ -134,8 +134,8 @@ class PatientController extends Controller
             $careconsole->patient_id = $patient->id;
             $careconsole->stage_id = 1;
             $date = new DateTime();
-            $careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
-            $careconsole->entered_console_at = $date->format('Y-m-d H:m:s');
+            $careconsole->stage_updated_at = $date->format('Y-m-d H:i:s');
+            $careconsole->entered_console_at = $date->format('Y-m-d H:i:s');
             $careconsole->save();
 
             $action = "new patient ($patient->id) created and added to console ($careconsole->id) ";
@@ -254,7 +254,6 @@ class PatientController extends Controller
         $patient = Patient::find($id);
         if ($patient) {
 
-            
             $patient->firstname = $request->firstname;
             $patient->lastname = $request->lastname;
             $patient->cellphone = $request->cellphone;

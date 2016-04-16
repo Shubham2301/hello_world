@@ -130,8 +130,8 @@ class BulkImportController extends Controller
                             $insuranceCarrier->save();
 
                             $date = new \DateTime();
-                            $careconsole->stage_updated_at = $date->format('Y-m-d H:m:s');
-                            $careconsole->entered_console_at = $date->format('Y-m-d H:m:s');
+                            $careconsole->stage_updated_at = $date->format('Y-m-d H:i:s');
+                            $careconsole->entered_console_at = $date->format('Y-m-d H:i:s');
                             $careconsole->save();
                             $action = "new patient ($patient->id) created and added to console ($careconsole->id) ";
                             $description = '';
