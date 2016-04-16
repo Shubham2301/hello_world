@@ -301,14 +301,9 @@ $(document).ready(function () {
 
 function getReport() {
 
-    var dateFilter = {
-        "start_date": $('#start_date').val(),
-        "end_date": $('#end_date').val()
-    };
-
-
     var formData = {
-        dates: dateFilter,
+        start_date: $('#start_date').val(),
+        end_date: $('#end_date').val(),
         filters: filterOptions
     };
 
