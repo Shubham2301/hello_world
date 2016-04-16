@@ -66,8 +66,8 @@
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-<!--              <span class="report_sidebar_button sidebar_historical historical_header">-->
-              <span class="report_sidebar_button">
+              <span class="report_sidebar_button sidebar_historical historical_header">
+<!--              <span class="report_sidebar_button">-->
                   <span class="report_sidebar_image">
                       <span><img src="{{URL::asset('images/historical-icon.png')}}" style="width:80%;height:80%;"></span>
                   </span>

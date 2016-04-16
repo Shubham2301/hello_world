@@ -320,9 +320,9 @@ function getReport() {
         async: false,
         success: function (e) {
             var data = $.parseJSON(e);
-//            if (data.length === 0) {
-//                return;
-//            }
+            if (data.length === 0) {
+                return;
+            }
             if (data.status_of_patients.length !== 0) {
                 renderStatusOfPatients(data.status_of_patients);
             }

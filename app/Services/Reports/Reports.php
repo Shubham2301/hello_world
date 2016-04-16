@@ -308,9 +308,9 @@ class Reports
                     $statusOfPatients['appointment_scheduled']++;
                     break;
                 case 3:
-                    if ($result->appointment_status == 18) {
+                    if ($result->appointment_status == 8) {
                         $statusOfPatients['no_show']++;
-                    } elseif ($result->appointment_status == 21) {
+                    } elseif ($result->appointment_status == 7) {
                         $statusOfPatients['cancelled']++;
                     }
                     break;
@@ -584,7 +584,7 @@ class Reports
         if ($filters['type'] == 'real-time') {
             $queryFilters .= " and `careconsole`.`archived_date` IS NULL ";
         } elseif ($filters['type'] == 'historical') {
-            $queryFilters .= " and `careconsole`.`created_at` >= $startDate and careconsole_created_at <= $endDate ";
+            $queryFilters .= " and `careconsole`.`created_at` >= '$startDate' and `careconsole`.`created_at` <= '$endDate' ";
         }
 
         if ($filters['status_of_patients'] != 'none') {
@@ -602,13 +602,13 @@ class Reports
                     $queryFilters .= " and `careconsole`.`stage_id` = 4 ";
                     break;
                 case 'cancelled':
-                    $queryFilters .= " and `careconsole`.`stage_id` = 3 and `appointments`.`appointment_status` = 21";
+                    $queryFilters .= " and `careconsole`.`stage_id` = 3 and `appointments`.`appointment_status` = 7";
                     break;
                 case 'no_show':
-                    $queryFilters .= " and `careconsole`.`stage_id`` = 3 and `appointments`.`appointment_status` = 18";
+                    $queryFilters .= " and `careconsole`.`stage_id` = 3 and `appointments`.`appointment_status` = 8";
                     break;
                 case 'finalization':
-                    $queryFilters .= " and `careconsole`.`stage_id`` = 5 ";
+                    $queryFilters .= " and `careconsole`.`stage_id` = 5 ";
                     break;
             }
         }
