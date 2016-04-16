@@ -64,7 +64,7 @@ $(document).ready(function() {
             $('.drilldown').removeClass('active');
             $('.drilldown>.section-header').html('');
             $('.drilldown>.subsection-header>p').html('');
-            $('.circle drilldown_kpi_indicator').css('background-color', 'transparent');
+            $('.circle.drilldown_kpi_indicator').css('background-color', 'transparent');
         } else {
             $('.console_buckets').removeClass('active');
             $(this).addClass('active');
@@ -74,7 +74,7 @@ $(document).ready(function() {
             $('.before_drilldown').hide();
             $('.drilldown').addClass('active');
             $('.drilldown>.subsection-header>p').html('');
-            $('.circle drilldown_kpi_indicator').css('background-color', 'transparent');
+            $('.circle.drilldown_kpi_indicator').css('background-color', 'transparent');
             bucketName = $(this).attr('data-name');
             var bucketTitle = $(this).find('p').html();
             if (bucketName == 'recall') {
