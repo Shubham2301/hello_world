@@ -329,17 +329,24 @@ class FileExchangeController extends Controller {
 		foreach ($folders as $folderID) {
 			$folder = Folder::find($folderID);
 			if($folder){
-				$folder->status = 0;
-				$folder->save();
+				if($folder->status == 0)
+					$folder->delete();
+				else{
+					$folder->status = 0;
+					$folder->save();
+				}
 			}
 		}
 
 		foreach ($files as $fileID) {
-
 			$file = File::find($fileID);
 			if($file){
-				$file->status = 0;
-				$file->save();
+				if($file->status == 0)//check if deleted from the trash
+					$file->delete();
+				else{
+					$file->status = 0;
+					$file->save();
+				}
 			}
 		}
 		return redirect()

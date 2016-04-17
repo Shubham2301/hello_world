@@ -301,14 +301,9 @@ $(document).ready(function () {
 
 function getReport() {
 
-    var dateFilter = {
-        "start_date": $('#start_date').val(),
-        "end_date": $('#end_date').val()
-    };
-
-
     var formData = {
-        dates: dateFilter,
+        start_date: $('#start_date').val(),
+        end_date: $('#end_date').val(),
         filters: filterOptions
     };
 
@@ -320,9 +315,9 @@ function getReport() {
         async: false,
         success: function (e) {
             var data = $.parseJSON(e);
-//            if (data.length === 0) {
-//                return;
-//            }
+            if (data.length === 0) {
+                return;
+            }
             if (data.status_of_patients.length !== 0) {
                 renderStatusOfPatients(data.status_of_patients);
             }
