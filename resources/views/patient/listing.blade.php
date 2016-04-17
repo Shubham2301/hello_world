@@ -64,6 +64,7 @@
         <div class="col-xs-4 center-align">
             <img src="{{asset('images/patient.png')}}" alt="">
             <br>
+            <p class = "edit_patient_button">Edit Patient</p>
             <p class="button_type_1" id="change_patient_button">Change Patient</p>
             <br>
 
