@@ -40,7 +40,7 @@
                             <div class="col-md-7 ">
 								<span class="xlsx_file-input active ">Select{!!Form::file('patient_xlsx')!!}
                                 </span>
-                                <span class="filename"></span>
+								<span class="xlsx_file_filename filename"></span>
                                 <input type='hidden' id='clear_image_path' value="{{asset('images/close-natural.png')}}">
 
                             </div>

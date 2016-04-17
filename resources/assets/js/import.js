@@ -13,7 +13,7 @@ $(document).ready(function() {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         var clear_image_path = $('#clear_image_path').val();
         filename += '&nbsp;&nbsp;<img src="'+ clear_image_path +'" class="clear_image_path" data-toggle="tooltip" title="Remove File" data-placement="top">';
-        $('.filename').html(filename);
+		$('.xlsx_file_filename').html(filename);
 		if(filename.length > 0)
 		$('.xlsx_file-input').removeClass('active');
 
