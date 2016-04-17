@@ -3,6 +3,7 @@
 namespace myocuhub\Services\PatientCare;
 
 use Event;
+use Log;
 use myocuhub\Events\MakeAuditEntry;
 use SoapClient;
 use SoapFault;
@@ -131,6 +132,9 @@ class WebScheduling4PC extends PatientCare
             $response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => self::$requestApptInsertAction, 'uri' => self::$host));
         } catch (SoapFault $e) {
             $result = $e->faultstring;
+
+            Log::error("WebScheduling4PC->requestApptInsert() method generated error: " . $result);
+            
             $action = 'Attempt to requestApptInsert with 4PC failed : SoapFault ';
             $description = '';
             $filename = basename(__FILE__);

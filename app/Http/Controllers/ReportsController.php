@@ -56,8 +56,8 @@ class ReportsController extends Controller
     {
         $reportData = array();
 //        $dates = $request->dateFilter;
-        $this->Reports->setStartDate($request->dateFilter['start_date']);
-        $this->Reports->setEndDate($request->dateFilter['end_date']);
+        $this->Reports->setStartDate($request->start_date);
+        $this->Reports->setEndDate($request->end_date);
         $this->Reports->setFilters($request->filters);
 //        dd($request->end_date);
 //        $filters = [
