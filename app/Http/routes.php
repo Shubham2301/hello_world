@@ -175,6 +175,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/patients/create', 'Patient\PatientController@create');
     Route::get('/patient/destroy', 'Patient\PatientController@destroy');
+	Route::get('/patient/editfromreferral', 'Patient\PatientController@editFromReferral');
 
     Route::resource('reports', 'ReportingController');
     Route::get('reports/generate', 'ReportingController@generateReports');

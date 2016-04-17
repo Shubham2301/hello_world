@@ -2,8 +2,15 @@ $(document).ready(function() {
 
     if ($('#from_admin').val())
         loadAllPatients();
-
     loadImportForm();
+
+	var patientID = location.search.split('patient_id=')[1];
+	if(patientID){
+		var formData = {
+			'id': patientID
+		};
+		getPatientInfo(formData);
+	}
 
     $('#dob').datetimepicker({
 		format: 'MM/DD/YYYY'
@@ -66,7 +73,7 @@ $(document).ready(function() {
     });
     $('#add_patient_btn').on('click', function() {
         $('#form_patient_id').prop('disabled', true);
-        $('#form_select_provider').attr('action', "/patients/create");
+		$('#form_select_provider').attr('action', "/patients/create");
         $('#form_select_provider').submit();
     });
     $('.patient_list').on('click', '.patient_list_item', function() {
@@ -222,6 +229,13 @@ $(document).ready(function() {
     $('.patient_admin_back').on('click', 'button', function() {
         $('#change_patient_button').trigger('click');
     });
+	$('.edit_patient_button').on('click', function(){
+		var patientID = $('.patient_info').attr('data-id');
+		$('#form_patient_id').val(patientID);
+		$('#form_select_provider').attr('action', "/patient/editfromreferral");
+		$('#form_select_provider').submit();
+	});
+
 
 
     $(document).keypress(function(e) {
@@ -271,6 +285,7 @@ function showPatientInfo(data) {
     $('.patient_list').removeClass('active');
     $('.patient_table_header').addClass('hide');
     $('.patient_info').addClass('active');
+	$('.patient_info').attr('data-id', data.id);
 	$('#patient_name').text(data.lastname + ', '+ data.firstname);
     $('#patient_email').text(data.email);
     $('#patient_dob').text(data.birthdate);
