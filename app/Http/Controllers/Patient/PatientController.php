@@ -325,8 +325,8 @@ class PatientController extends Controller
 			$data[$i]['birthdate'] = $birthdate->format('F j Y');
 			$i++;
 		}
-		//        $data[0]['total'] = $patients->total();
-		//        $data[0]['lastpage'] = $patients->lastPage();
+		      $data[0]['total'] = $patients->total();
+		      $data[0]['lastpage'] = $patients->lastPage();
 		//        $data[0]['currentPage'] = $patients->currentPage();
 
 		return json_encode($data);
