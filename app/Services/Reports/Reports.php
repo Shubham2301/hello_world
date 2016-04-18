@@ -574,7 +574,7 @@ class Reports
                     left join `patients` on `careconsole`.`patient_id` = `patients`.`id`
                     left join `practices` on `appointments`.`practice_id` = `practices`.`id`
                     left join `users` on `appointments`.`provider_id` = `users`.`id`
-                    left join (select console_id ,COUNT(*) as count from contact_history group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
+                    left join (select console_id, archived ,COUNT(*) as count from contact_history group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
                     left join `patient_insurance` on `patient_insurance`.`patient_id` = `careconsole`.`patient_id`
                     $queryFilters";
 
@@ -591,7 +591,7 @@ class Reports
         $queryFilters = " where `import_history`.`network_id` = $networkID ";
 
         if ($filters['type'] == 'real-time') {
-            $queryFilters .= " and `careconsole`.`archived_date` IS NULL ";
+            $queryFilters .= " and `careconsole`.`archived_date` IS NULL and `contact_attempts`.`archived` IS NULL";
         } elseif ($filters['type'] == 'historical') {
             $queryFilters .= " and `careconsole`.`created_at` >= '$startDate' and `careconsole`.`created_at` <= '$endDate' ";
         }
