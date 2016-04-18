@@ -66,8 +66,8 @@ $(document).ready(function () {
 			$('.download-button').hide();
 		}
 		if($('#current_view').val() === 'trash'){
-			$('.trash-button').hide();
 			$('.share-button').hide();
+			$('.trash-button').attr('data-original-title', 'Delete Permanently');
 		}
 
     });

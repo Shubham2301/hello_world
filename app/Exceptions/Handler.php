@@ -32,12 +32,14 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        $maillogs = env('MAIL_ERRORLOG', false);
-        if($maillogs) {
-            Mail::raw($e, function ($m) {
-                    $m->from('support@ocuhub.com', 'Ocuhub');
-                    $m->to(env('MAIL_ERRORLOG_TO', 'applicationerror@ocuhub.com'), 'Application Error')->subject('Exception generated in the system');
-            });
+        if(!$e instanceof NotFoundHttpException) {
+            $maillogs = env('MAIL_ERRORLOG', false);
+            if($maillogs) {
+                Mail::raw($e, function ($m) {
+                        $m->from('support@ocuhub.com', 'Ocuhub');
+                        $m->to(env('MAIL_ERRORLOG_TO', 'applicationerror@ocuhub.com'), 'Application Error')->subject('Exception generated in the system');
+                });
+            }
         }
         return parent::report($e);
     }

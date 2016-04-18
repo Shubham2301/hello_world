@@ -48,6 +48,7 @@ $(document).ready(function() {
                     $('#current_kpi').val(kpi_name);
                 }
                 showcontrolls = false;
+                currentPage = 1;
                 getPatientData();
             }
         }
@@ -68,7 +69,7 @@ $(document).ready(function() {
             $('.console_buckets').removeClass('active');
             $(this).addClass('active');
             $('.c3_overview_link').addClass('active');
-            $('.control_section').removeClass('active');
+            $('.control_section').addClass('active');
             $('ul.c3_sidebar_list').addClass('active');
             $('.before_drilldown').hide();
             $('.drilldown').addClass('active');
@@ -84,6 +85,7 @@ $(document).ready(function() {
                 bucketTitle += '<img src="' + priority_icon_path + '" alt="" class="bucket_icon_style">';
             }
             $('.drilldown>.section-header').html(bucketTitle);
+            currentPage = 1;
             bucketData(bucketName);
         }
     });
@@ -157,7 +159,7 @@ $(document).ready(function() {
             return;
         }
         show_patient = true;
-		clearActionFields();
+        clearActionFields();
         showDate = false;
 
         switch ($(this).attr('data-name')) {
@@ -180,15 +182,15 @@ $(document).ready(function() {
                 $('#form_manual_appointment_practice').show();
                 $('#form_manual_appointment_provider').show();
                 $('#form_manual_appointment_location').show();
-				$('#form_manual_appointment_appointment_type').show();
+                $('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
                 $('#form_manual_appointment_date').show();
-				$('#form_manual_appointment_practice').show();
-				$('#form_manual_appointment_provider').show();
-				$('#form_manual_appointment_location').show();
-				$('#form_manual_appointment_appointment_type').show();
+                $('#form_manual_appointment_practice').show();
+                $('#form_manual_appointment_provider').show();
+                $('#form_manual_appointment_location').show();
+                $('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             default:
@@ -204,7 +206,7 @@ $(document).ready(function() {
         data['action_header'] = $(this).attr('data-displayname');
 
         show_patient = true;
-		clearActionFields();
+        clearActionFields();
         showDate = false;
 
         switch ($(this).attr('data-name')) {
@@ -224,18 +226,18 @@ $(document).ready(function() {
                 break;
             case 'manually-schedule':
                 $('#form_manual_appointment_date').show();
-				$('#form_manual_appointment_practice').show();
-				$('#form_manual_appointment_provider').show();
-				$('#form_manual_appointment_location').show();
-				$('#form_manual_appointment_appointment_type').show();
+                $('#form_manual_appointment_practice').show();
+                $('#form_manual_appointment_provider').show();
+                $('#form_manual_appointment_location').show();
+                $('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
                 $('#form_manual_appointment_date').show();
-				$('#form_manual_appointment_practice').show();
-				$('#form_manual_appointment_provider').show();
-				$('#form_manual_appointment_location').show();
-				$('#form_manual_appointment_appointment_type').show();
+                $('#form_manual_appointment_practice').show();
+                $('#form_manual_appointment_provider').show();
+                $('#form_manual_appointment_location').show();
+                $('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             default:
@@ -249,7 +251,7 @@ $(document).ready(function() {
         data['console_id'] = $(this).attr('data-consoleid');
         data['stage_id'] = $(this).attr('data-stageid');
         data['action_header'] = $(this).attr('data-displayname');
-		clearActionFields();
+        clearActionFields();
         showDate = false;
         show_patient = false;
         switch ($(this).attr('data-name')) {
@@ -269,18 +271,18 @@ $(document).ready(function() {
                 break;
             case 'manually-schedule':
                 $('#form_manual_appointment_date').show();
-				$('#form_manual_appointment_practice').show();
-				$('#form_manual_appointment_provider').show();
-				$('#form_manual_appointment_location').show();
-				$('#form_manual_appointment_appointment_type').show();
+                $('#form_manual_appointment_practice').show();
+                $('#form_manual_appointment_provider').show();
+                $('#form_manual_appointment_location').show();
+                $('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
-				$('#form_manual_appointment_practice').show();
-				$('#form_manual_appointment_provider').show();
-				$('#form_manual_appointment_location').show();
+                $('#form_manual_appointment_practice').show();
+                $('#form_manual_appointment_provider').show();
+                $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_date').show();
-				$('#form_manual_appointment_appointment_type').show();
+                $('#form_manual_appointment_appointment_type').show();
                 showActionModel(data);
                 break;
             default:
@@ -324,6 +326,7 @@ $(document).ready(function() {
         field.css('display', 'inline-block');
         $('#current_sort_field').val(field.attr('data-name'));
         $('#current_sort_order').val(field.attr('data-order'));
+        currentPage = 1;
         getPatientData();
     });
     $(document).on('click', '.drilldown_item>div', function() {
@@ -347,6 +350,19 @@ $(document).ready(function() {
         getProvidersAndLocations($(this).val());
 
     });
+
+
+    $('.content-right').on('scroll', function() {
+        if ($(this).scrollTop() + $(this).innerHeight() + 10 >= $(this)[0].scrollHeight) {
+            currentPage++;
+
+            if (toCall == 1 && currentPage <= lastPage)
+                getPatientData();
+            if (toCall == 2 && currentPage <= lastPage)
+                bucketData(bucketName);
+        }
+    });
+
 });
 
 var actionResults = {};
@@ -358,6 +374,9 @@ var contact_notes = [];
 var showDate = false;
 var showcontrolls = true;
 var bucketName = '';
+var currentPage = 1;
+var toCall = 0;
+var lastPage = 1;
 
 function searchc3() {
     $('.search_result_info').removeClass('active');
@@ -410,7 +429,8 @@ function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator) {
     $('#current_stage').val(stage_id);
     $('#current_kpi').val(kpi_id);
     setSidebarButtonActive();
-
+    currentPage = 1;
+    $('#drilldown_patients_listing').html();
     getPatientData();
 }
 
@@ -423,6 +443,7 @@ function showStageData(stage_id, stage_name) {
     bucketName = '';
     if (stage_id < 6)
         $('.console_buckets').removeClass('active');
+    currentPage = 1;
     getPatientData();
 }
 
@@ -433,6 +454,7 @@ function clearHTML() {
 }
 
 function getPatientData() {
+    toCall = 1;
     var stageID = $('#current_stage').val();
     var kpiName = ($('#current_kpi').val() === '0' ? '' : $('#current_kpi').val());
     var sortField = $('#current_sort_field').val();
@@ -445,9 +467,9 @@ function getPatientData() {
         'lower_limit': llimit,
         'upper_limit': ulimit,
     };
-    $('.drilldown_content').html('');
+    //$('.drilldown_content').html('');
     $.ajax({
-        url: '/careconsole/drilldown',
+        url: '/careconsole/drilldown?page=' + currentPage,
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',
@@ -464,13 +486,23 @@ function getPatientData() {
             var actions = data.actions;
             var controls = data.controls;
             listing = data.listing;
+            lastPage = data.lastpage;
             if (actions.length > 0) {
                 actions.forEach(function(action) {
                     actionResults[action.id] = action.action_results;
                     actionList += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '"><a href="#">' + action.display_name + '</a></li>';
                 });
             }
-            $('#drilldown_patients_listing').html(listing);
+
+            //$('#drilldown_patients_listing').html(listing);
+            if (currentPage > 1)
+                $('#listing_content').append(data.listing_content);
+            else {
+                $('#listing_header').html(data.listing_header);
+                $('#listing_content').html(data.listing_content);
+
+            }
+
             if (showcontrolls)
                 $('.control_section').html(controls);
             //$('.dropdown-menu.action_dropdownmenu').html(actionList);
@@ -503,10 +535,10 @@ function action() {
         'manual_appointment_date': $('#manual_appointment_date').val(),
         'action_result_id': $('#action_result_id').val(),
         'notes': $('#action_notes').val(),
-		'manual_appointment_practice': $('#manual_appointment_practice').val(),
-		'manual_appointment_location': $('#manual_appointment_location').val(),
-		'manual_appointment_provider': $('#manual_appointment_provider').val(),
-		'manual_appointment_appointment_type': $('#manual_appointment_appointment_type').val()
+        'manual_appointment_practice': $('#manual_appointment_practice').val(),
+        'manual_appointment_location': $('#manual_appointment_location').val(),
+        'manual_appointment_provider': $('#manual_appointment_provider').val(),
+        'manual_appointment_appointment_type': $('#manual_appointment_appointment_type').val()
     };
 
     $.ajax({
@@ -521,8 +553,10 @@ function action() {
             $('#actionModal').modal('hide');
             if (show_patient && bucketName == '') {
                 showStageData(stage.id, stage.name);
-            } else if (show_patient && bucketName != '')
+            } else if (show_patient && bucketName != '') {
+                currentPage = 1;
                 bucketData(bucketName);
+            }
             show_patient = true;
             $('#action_notes').html('');
             $('#action_notes').val('');
@@ -538,6 +572,7 @@ function action() {
 }
 
 function refreshOverview() {
+    toCall = 0;
     $.ajax({
         url: '/careconsole/overview',
         type: 'GET',
@@ -624,13 +659,13 @@ function setSearchFields(index) {
 }
 
 function bucketData(bucketName) {
-
+    toCall = 2;
     var formData = {
         'bucket': bucketName
     };
 
     $.ajax({
-        url: '/careconsole/bucketpatients',
+        url: '/careconsole/bucketpatients?page=' + currentPage,
         type: 'GET',
         contentType: 'text/html',
         data: $.param(formData),
@@ -645,13 +680,20 @@ function bucketData(bucketName) {
             var actionList = '';
             var actions = data.actions;
             listing = data.listing;
+            lastPage = data.lastpage;
             if (actions.length > 0) {
                 actions.forEach(function(action) {
                     actionResults[action.id] = action.action_results;
                     actionList += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '"><a href="#">' + action.display_name + '</a></li>';
                 });
             }
-            $('#drilldown_patients_listing').html(listing);
+
+            if (currentPage > 1)
+                $('#listing_content').append(data.listing_content);
+            else {
+                $('#listing_header').html(data.listing_header);
+                $('#listing_content').html(data.listing_content);
+            }
             $('.dropdown-menu.action_dropdownmenu').html(actionList);
         },
         error: function error() {
@@ -662,7 +704,8 @@ function bucketData(bucketName) {
     });
 }
 
-function setPatientRecords(consoleID) {
+function setPatientRecords(consoleID)
+{
     var formData = {
         'consoleID': consoleID
     };
@@ -697,7 +740,6 @@ function setPatientRecords(consoleID) {
                     i++;
                 });
                 $('.contact_attempts').html(content);
-				$('.patient_contact_info').find('.contact_notes').html(contact_notes[0]);
             } else {
                 $('.contact_attempts').text('-');
             }
@@ -787,7 +829,8 @@ function setSidebarButtonActive() {
     $(".stage.box[data-id=" + stageID + "]").parent('.sidebar_menu_item').addClass('active');
 }
 
-function getProvidersAndLocations(practiceID) {
+function getProvidersAndLocations(practiceID)
+{
     var formData = {
         'practiceID': practiceID
     };
@@ -813,7 +856,7 @@ function getProvidersAndLocations(practiceID) {
                 $('#manual_appointment_provider').html(content);
                 return;
             }
-	var content = '<option value="0">Select Provider</option>';
+            var content = '<option value="0">Select User</option>';
 
             $.each(providers, function(index, val) {
                 content += '<option value="' + val.id + '">' + val.name + '</option>';
@@ -823,18 +866,18 @@ function getProvidersAndLocations(practiceID) {
     });
 }
 
-function clearActionFields(){
-	$('#form_recall_date').hide();
-	$('#form_manual_appointment_date').hide();
-	$('#form_manual_appointment_practice').hide();
-	$('#form_manual_appointment_provider').hide();
-	$('#form_manual_appointment_location').hide();
-	$('#form_manual_appointment_appointment_type').hide();
-	$('#form_recall_date').val('');
-	$('#manual_appointment_date').val('');
-	$('#manual_appointment_practice').val('0');
-	$('#manual_appointment_provider').val('0');
-	$('#manual_appointment_location').val('0');
-	$('#manual_appointment_appointment_type').val('');
+function clearActionFields() {
+    $('#form_recall_date').hide();
+    $('#form_manual_appointment_date').hide();
+    $('#form_manual_appointment_practice').hide();
+    $('#form_manual_appointment_provider').hide();
+    $('#form_manual_appointment_location').hide();
+    $('#form_manual_appointment_appointment_type').hide();
+    $('#form_recall_date').val('');
+    $('#manual_appointment_date').val('');
+    $('#manual_appointment_practice').val('0');
+    $('#manual_appointment_provider').val('0');
+    $('#manual_appointment_location').val('0');
+    $('#manual_appointment_appointment_type').val('');
 
 }
