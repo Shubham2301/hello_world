@@ -134,7 +134,7 @@ class Reports
     public function getAppointmentStatus()
     {
         $result = [];
-        $result['scheduled_seen'] = Careconsole::query()
+        $result['scheduled_seen'][0] = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
             ->where('careconsole.created_at', '>=', $this->getStartDate())
@@ -145,15 +145,18 @@ class Reports
                 ->orWhere('stage_id', 5);
             })
             ->count();
-        $result['scheduled_not_seen'] = Careconsole::query()
+        $result['scheduled_seen'][1] = 'Seen by IEG doctor';
+
+        $result['scheduled_not_seen'][0] = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
             ->where('careconsole.created_at', '>=', $this->getStartDate())
             ->where('careconsole.created_at', '<=', $this->getEndDate())
             ->where('stage_id', 2)
             ->count();
+        $result['scheduled_not_seen'][1] = 'Scheduled but not seen yet';
 
-        $result['appointment_not_needed'] = Careconsole::query()
+        $result['appointment_not_needed'][0] = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
             ->where('careconsole.created_at', '>=', $this->getStartDate())
@@ -164,7 +167,9 @@ class Reports
                 ->orWhere('action_result_id', 15);
             })
             ->count();
-        $result['appointment_declined'] = Careconsole::query()
+        $result['appointment_not_needed'][1] = 'Appointment not needed';
+
+        $result['appointment_declined'][0] = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
             ->where('careconsole.created_at', '>=', $this->getStartDate())
@@ -175,7 +180,9 @@ class Reports
                 ->orWhere('action_result_id', 9);
             })
             ->count();
-        $result['patients_ran_through'] = Careconsole::query()
+        $result['appointment_declined'][1] = 'Declined Appointment';
+
+        $result['patients_ran_through'][0] = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
             ->where('careconsole.created_at', '>=', $this->getStartDate())
@@ -183,6 +190,7 @@ class Reports
             ->where('stage_id', 5)
             ->whereNotNull('careconsole.archived_date')
             ->count();
+        $result['patients_ran_through'][1] = 'Established patient ran through';
 
         return $result;
     }
@@ -389,6 +397,7 @@ class Reports
         $networkData['insurance_demographics'] = $this->formatInsuranceType($insuranceTypes);
         $networkData['gender_demographics']['male'] = round($gender['male'] * 100 / sizeof($results), 2);
         $networkData['gender_demographics']['female'] = round($gender['female'] * 100 / sizeof($results), 2);
+        $networkData['appointment_status'] = $this->getAppointmentStatus();
 
         return json_encode($networkData);
     }
