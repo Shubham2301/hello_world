@@ -86,9 +86,12 @@
 								<label for="manual_appointment_location"><strong style="color:black;padding-left:1em;">Appointment Type</strong></label>
 							</div>
 							<div class="col-md-7 form-group">
-
-								<input type="text" class="form-control" name="manual_appointment_appointment_type" id="manual_appointment_appointment_type">
-
+								<select class="form-control" name="manual_appointment_appointment_type" id="manual_appointment_appointment_type">
+									<option value="">Appointment Type</option>
+									@foreach($overview['appointment_types'] as $types)
+									<option value="{{ $types }}">{{ $types }}</option>
+									@endforeach
+								</select>
 							</div>
 							<div class="col-md-1"></div>
 						</div>
