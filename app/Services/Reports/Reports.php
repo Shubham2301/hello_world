@@ -77,7 +77,7 @@ class Reports
             ->where('import_history.network_id', session('network-id'))
             ->where(function ($query) {
                 $query->whereNull('console_id')
-                ->orWhere('archived', 1);
+                    ->orWhere('archived', 1);
             })
             ->groupBy('patient_id')
             ->get()->count();
@@ -142,7 +142,7 @@ class Reports
             ->whereNotNull('careconsole.archived_date')
             ->where(function ($query) {
                 $query->where('stage_id', 4)
-                ->orWhere('stage_id', 5);
+                    ->orWhere('stage_id', 5);
             })
             ->count();
         $result['scheduled_seen'][1] = 'Seen by IEG doctor';
@@ -164,7 +164,7 @@ class Reports
             ->leftjoin('contact_history', 'careconsole.id', '=', 'contact_history.console_id')
             ->where(function ($query) {
                 $query->where('action_result_id', 16)
-                ->orWhere('action_result_id', 15);
+                    ->orWhere('action_result_id', 15);
             })
             ->count();
         $result['appointment_not_needed'][1] = 'Appointment not needed';
@@ -177,7 +177,7 @@ class Reports
             ->leftjoin('contact_history', 'careconsole.id', '=', 'contact_history.console_id')
             ->where(function ($query) {
                 $query->where('action_result_id', 10)
-                ->orWhere('action_result_id', 9);
+                    ->orWhere('action_result_id', 9);
             })
             ->count();
         $result['appointment_declined'][1] = 'Declined Appointment';
@@ -292,6 +292,8 @@ class Reports
         $statusOfPatients = $this->initStatusOfPatients();
         $referredToPractice = [];
         $referredToPracticeUser = [];
+        $referredToPracticeName = [];
+        $referredToPracticeUserName = [];
         $appointmentType = [];
         $referredByDoctor = [];
         $referredByHospital = [];
@@ -599,10 +601,10 @@ class Reports
         if ($filters['status_of_patients'] != 'none') {
             switch ($filters['status_of_patients']) {
                 case 'pending_contact':
-                    $queryFilters .= " and `careconsole`.`stage_id` = 1 and (`contact_attempts`.`count` = 0 or `contact_attempts`.`count` = null) ";
+                    $queryFilters .= " and `careconsole`.`stage_id` = 1 and (`contact_attempts`.`count` = 0 or `contact_attempts`.`count` is null) ";
                     break;
                 case 'contact_attempted':
-                    $queryFilters .= " and `careconsole`.`stage_id` = 1 and not (`contact_attempts`.`count` = 0 or `contact_attempts`.`count` = null) ";
+                    $queryFilters .= " and `careconsole`.`stage_id` = 1 and not (`contact_attempts`.`count` = 0 or `contact_attempts`.`count` is null) ";
                     break;
                 case 'appointment_scheduled':
                     $queryFilters .= " and `careconsole`.`stage_id` = 2 ";
@@ -674,6 +676,7 @@ class Reports
 
     public function execReportsQuery($query)
     {
+        //dd($query);
         if ($query && $query != '') {
             $result = DB::select(DB::raw($query));
         }
