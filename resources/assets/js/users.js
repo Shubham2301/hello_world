@@ -291,10 +291,6 @@ function checkForm() {
                 $($(this).parents('.panel-default').find('.popover_text')).popover("show");
                 flag = 1;
                 return false;
-            } else if ($('input[name="role[]"]:checked').length == 0) {
-                $($('input[name="role[]"]').parents('.panel-default').find('.popover_text')).popover("show");
-                flag = 1;
-                return false;
             }
         }
     });
