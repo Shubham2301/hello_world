@@ -118,9 +118,9 @@ class UserController extends Controller {
 		$user->password = bcrypt(str_random(12));
 		// TODO
 		// Auto generate password
-		if($request->input('password') != '')
+		if($request->input('password') != ''){
 			$user->password = bcrypt($request->input('password'));
-
+		}
 		$user->email = $request->input('email');
 		$user->npi = $request->input('npi');
 		$user->cellphone = $request->input('cellphone');
@@ -245,9 +245,9 @@ class UserController extends Controller {
 
 			$menu_options = Menu::find([1,2,3,4,5]);
 
-			if(isset($user['Care Coordinator']))
+			if(isset($user['Care Coordinator'])){
 			$menu_options = Menu::find([1,2,3,4,5,6]);
-
+			}
 
 			$menuData = [];
 			foreach ($menu_options as $menu_option) {
@@ -255,8 +255,9 @@ class UserController extends Controller {
 			}
 			$user['network_id'] = '';
 			$user_network = NetworkUser::where('user_id', '=', $id)->first();
-			if($user_network)
+			if($user_network){
 				$user['network_id'] = $user_network->network_id;
+			}
 			$user['practice_id'] = ($practice = User::getPractice($id)) ? $practice->id : '';
 			$data['user_active'] = true;
 			$data['url'] = '/administration/users/update/' . $id;
@@ -316,14 +317,15 @@ class UserController extends Controller {
 		$user->usertype_id = $request->input('usertype');
 		$user->level = $request->input('userlevel');
 		$menuID = $request->input('landing_page');
-		if ($menuID != '')
+		if ($menuID != ''){
 			$user->menu_id = $menuID;
-
+		}
 		$password = $request->input('password');
 		$confirmPassword = $request->input('password_confirmation');
 
-		if($password != '')
+		if($password != ''){
 			$user->password = bcrypt($request->input('password'));
+		}
 		$user->save();
 
 		$previous_roles = Role_user::where('user_id', '=', $user->id)->get();

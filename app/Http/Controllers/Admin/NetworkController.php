@@ -50,8 +50,9 @@ class NetworkController extends Controller {
 		$network->country = $request->input('country');
 		$network->zip = $request->input('zip');
 		$network->enable_console = 0;
-		if($request->has('enable_console'))
+		if($request->has('enable_console')){
 			$network->enable_console =1;
+		}
 		$network->save();
 
 		$action = 'New network created';
@@ -111,8 +112,9 @@ class NetworkController extends Controller {
         $network = Network::find($id);
         $network->update($request->input());
 		$network->enable_console =0;
-		if($request->has('enable_console'))
+		if($request->has('enable_console')){
 			$network->enable_console =1;
+		}
 		$network->save();
 		$action = 'update network of id =' . $id;
 		$description = '';
