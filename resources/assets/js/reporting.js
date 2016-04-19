@@ -71,7 +71,7 @@ function getReport() {
             
             for (var key in info.appointment_status) {
               if (info.appointment_status.hasOwnProperty(key)) {
-                $('#'+key).html(info.appointment_status[key]);
+                $('#'+key).html(info.appointment_status[key][0]);
               }
             }
 
