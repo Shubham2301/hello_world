@@ -364,7 +364,7 @@ class PatientController extends Controller
 		$data['url'] = '/administration/patients/update/' . $id;
 		$data['referraltype_id'] = $request->input('referraltype_id');
 		$data['action'] = $request->input('action');
-
+		$data['patient_id'] = $id;
 		return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
 	}
 }
