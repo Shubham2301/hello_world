@@ -169,6 +169,7 @@ class Careconsole extends Model
             ->whereNull('archived_date')
             ->whereNull('recall_date')
             ->groupBy('patient_id')
+            ->get()
             ->count();
     }
 
