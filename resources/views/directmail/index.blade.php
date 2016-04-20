@@ -157,7 +157,7 @@
                 "response_type=" + encodeURI(response_type) + "&" +
                 "scope=" + encodeURI(scope) + "&" +
                 "state=" + encodeURI(state);
-           // window.location = url;
+           	window.location = url;
         }
 
         function processCodeCallback() {
