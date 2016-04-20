@@ -81,7 +81,13 @@
         });
 
         function beginImpersonation() {
+			if($('#impersonateuser').val() == '0'){
+				$('p.alert_message').text('please select a user');
+				$('#alert').modal('show');
+				return;
+			}
              $("#end-impersonation-form").submit();
+
         }
 
         function endImpersonation () {
@@ -151,7 +157,7 @@
                 "response_type=" + encodeURI(response_type) + "&" +
                 "scope=" + encodeURI(scope) + "&" +
                 "state=" + encodeURI(state);
-            window.location = url;
+           	window.location = url;
         }
 
         function processCodeCallback() {
