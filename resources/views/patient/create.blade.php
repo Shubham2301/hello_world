@@ -1,4 +1,12 @@
-@if(!$data['admin']) {!! Form::open(array('url' => '/patients', 'method' => 'GET', 'id' => 'back_to_select_patient')) !!} {!! Form::hidden('referraltype_id', $data['referraltype_id'], array('id' => 'form_referraltype_id')) !!} {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!} {!! Form::close() !!} @endif
+@if(!$data['admin'])
+{!! Form::open(array('url' => '/patients', 'method' => 'GET', 'id' => 'back_to_select_patient')) !!}
+{!! Form::hidden('referraltype_id', $data['referraltype_id'], array('id' => 'form_referraltype_id')) !!}
+{!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
+
+@if(isset($data['patient_id']))
+{!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patientid')) !!}
+@endif
+{!! Form::close() !!} @endif
 <div class="row content-row-margin add_header">
     <div>
         <button type="button" id="{{$data['back_btn']}}" class="btn back patient_back">Back</button>
