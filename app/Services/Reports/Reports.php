@@ -593,7 +593,7 @@ class Reports
         $queryFilters = " where `import_history`.`network_id` = $networkID ";
 
         if ($filters['type'] == 'real-time') {
-            $queryFilters .= " and `careconsole`.`archived_date` IS NULL and `contact_attempts`.`archived` IS NULL";
+            $queryFilters .= " and `careconsole`.`archived_date` IS NULL and `careconsole`.`recall_date` IS NULL ";
         } elseif ($filters['type'] == 'historical') {
             $queryFilters .= " and `careconsole`.`created_at` >= '$startDate' and `careconsole`.`created_at` <= '$endDate' ";
         }
