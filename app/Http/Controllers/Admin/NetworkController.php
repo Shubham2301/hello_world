@@ -147,10 +147,26 @@ class NetworkController extends Controller {
 		foreach ($networks as $network) {
 			$data[$i]['id'] = $network->id;
 			$data[$i]['name'] = $network->name;
-			$data[$i]['email'] = $network->email;
-			$data[$i]['phone'] = $network->phone;
-			$data[$i]['addressline1'] = $network->addressline1;
-			$data[$i]['addressline2'] = $network->addressline2;
+
+            if($network->email !== null)
+                $data[$i]['email'] = $network->email;
+            else
+                $data[$i]['email'] = '-';
+
+            if($network->phone !== null)
+                $data[$i]['phone'] = $network->phone;
+            else
+                $data[$i]['phone'] = '-';
+
+            if($network->addressline1 !== null)
+                $data[$i]['addressline1'] = $network->addressline1;
+            else
+                $data[$i]['addressline1'] = '-';
+
+            if($network->addressline2 !== null)
+                $data[$i]['addressline2'] = $network->addressline2;
+            else
+                $data[$i]['addressline2'] = '-';
 			$i++;
 		}
 		return json_encode($data);
