@@ -576,7 +576,7 @@ class Reports
                     left join `patients` on `careconsole`.`patient_id` = `patients`.`id`
                     left join `practices` on `appointments`.`practice_id` = `practices`.`id`
                     left join `users` on `appointments`.`provider_id` = `users`.`id`
-                    left join (select console_id, archived ,COUNT(*) as count from contact_history group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
+                    left join (select console_id, archived, COUNT(*) as count from contact_history where archived is null group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
                     left join `patient_insurance` on `patient_insurance`.`patient_id` = `careconsole`.`patient_id`
                     $queryFilters";
 
