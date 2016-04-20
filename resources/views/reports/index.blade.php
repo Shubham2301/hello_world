@@ -58,7 +58,7 @@
                           </div>
 
                              <div class="historical_subsection header_margin">
-                                <p class="date_selector"><input type="text align-center" class="date_selector" id="start_date" style="width:80px;">
+                                <p class="date_selector"><input type="text align-center" class="date_selector" id="start_date">
 <!--                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>-->
                                 </p>
                              </div>
@@ -66,7 +66,7 @@
                                 <span class="report_time_type align-center">to&nbsp;</span>
                               </div>
                              <div class="historical_subsection header_margin">
-                                <p class="date_selector"><input type="text" class="date_selector align-center" id="end_date" style="width:80px;">
+                                <p class="date_selector"><input type="text" class="date_selector align-center" id="end_date">
 <!--                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>-->
                                 </p>
                              </div>
@@ -160,6 +160,12 @@
                     <div class="row" id="referred_by"></div>
                 </div>
             </div>
+               <div class="section_separator"></div>
+                <div class="historical_section">
+                    <p class="report_sub_header">Appointment Status</p>
+                    <div class="separator"></div>
+                    <div class="row" id="appointment_status"></div>
+                </div>
                 <div class="section_separator"></div>
                 <div class="report_section">
                     <p class="report_sub_header">Appointment Type</p>

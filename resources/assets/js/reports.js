@@ -342,6 +342,7 @@ function getReport() {
             if (data.age_demographics.length !== 0) {
                 renderAgeDemographics(data.age_demographics);
             }
+            renderAppointmentStatusDemographics(data.appointment_status);
         },
         error: function () {
             alert('Error Refreshing');
@@ -482,6 +483,19 @@ function renderAppointmentTypeDemographics(data) {
     $('#appointment_type').html(content);
 }
 
+function renderAppointmentStatusDemographics(info) {
+
+    var content = '';
+
+    for (var key in info) {
+        if (info.hasOwnProperty(key)) {
+            content += '<div class="col-xs-12 remove-padding" data-type="appointment_status"><div class="col-xs-8"><p class="report_content_label">' + info[key][1] + '</p></div><div class="col-xs-4"><p class="report_content_value">' + info[key][0] + '</p></div></div>';
+        }
+    }
+
+    $('#appointment_status').html(content);
+}
+
 function renderDiseaseType(data) {
 
     var content = '';
@@ -503,7 +517,6 @@ function renderDiseaseType(data) {
 
         content += '</select></div><div class="col-xs-2 drilldown_item ' + disable + '" id="disease_type_' + id + '" data-type="severity_scale" data-id="' + data[i].name + '" data-meta="' + data[i].severity[0].type + '"><p class="report_content_value">' + data[i].severity[0].count + '</p></div></div>';
     }
-
 
     $('#disease_type').html(content);
 
@@ -631,8 +644,8 @@ function drawReferredByChart(data) {
         var type = $('.chart').attr('data-type');
         var meta = data_hospital.getValue(item.row, 0);
         var id = data_hospital.getValue(item.row, 0);
-//        addFilter(type, id, meta);
-//        loadHistoricalDefaultReport();
+        addFilter(type, id, meta);
+        getReport();
     }
 }
 
@@ -690,7 +703,7 @@ function drawReferredToChart(data) {
         var id = data[item.row].id;
         var type = $('.chart').attr('data-type');
         var meta = data_hospital.getValue(item.row, 0);
-//        addFilter(type, id, meta);
-//        loadHistoricalDefaultReport();
+        addFilter(type, id, meta);
+        getReport();
     }
 }

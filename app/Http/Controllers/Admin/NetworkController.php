@@ -50,8 +50,9 @@ class NetworkController extends Controller {
 		$network->country = $request->input('country');
 		$network->zip = $request->input('zip');
 		$network->enable_console = 0;
-		if($request->has('enable_console'))
+		if($request->has('enable_console')){
 			$network->enable_console =1;
+		}
 		$network->save();
 
 		$action = 'New network created';
@@ -111,8 +112,9 @@ class NetworkController extends Controller {
         $network = Network::find($id);
         $network->update($request->input());
 		$network->enable_console =0;
-		if($request->has('enable_console'))
+		if($request->has('enable_console')){
 			$network->enable_console =1;
+		}
 		$network->save();
 		$action = 'update network of id =' . $id;
 		$description = '';
@@ -145,10 +147,26 @@ class NetworkController extends Controller {
 		foreach ($networks as $network) {
 			$data[$i]['id'] = $network->id;
 			$data[$i]['name'] = $network->name;
-			$data[$i]['email'] = $network->email;
-			$data[$i]['phone'] = $network->phone;
-			$data[$i]['addressline1'] = $network->addressline1;
-			$data[$i]['addressline2'] = $network->addressline2;
+
+            if($network->email !== null)
+                $data[$i]['email'] = $network->email;
+            else
+                $data[$i]['email'] = '-';
+
+            if($network->phone !== null)
+                $data[$i]['phone'] = $network->phone;
+            else
+                $data[$i]['phone'] = '-';
+
+            if($network->addressline1 !== null)
+                $data[$i]['addressline1'] = $network->addressline1;
+            else
+                $data[$i]['addressline1'] = '-';
+
+            if($network->addressline2 !== null)
+                $data[$i]['addressline2'] = $network->addressline2;
+            else
+                $data[$i]['addressline2'] = '-';
 			$i++;
 		}
 		return json_encode($data);

@@ -14,7 +14,7 @@ use myocuhub\User;
 class PracticeController extends Controller {
 
 	public function __construct() {
-		$this->middleware('role:practice-admin,1,Administrator');
+		//$this->middleware('role:practice-admin,1,Administrator');
 	}
 
 	/**
