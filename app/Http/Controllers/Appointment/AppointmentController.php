@@ -34,6 +34,13 @@ class AppointmentController extends Controller
 
     public function schedule(Request $request)
     {
+        $apptStatus = [
+            'practice_email_sent' => false,
+            'patient_email_sent' => false,
+            'appointment_saved' => false,
+            '4PC_scheduled' => false,
+        ];
+
         $apptInfo = array();
 
         $userID = Auth::user()->id;
@@ -116,31 +123,19 @@ class AppointmentController extends Controller
         $date = new DateTime($appointmentTime);
         $appointment->start_datetime = $date->format('Y-m-d H:i:s');
 
-        $apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
-
-        $result = '';
-
-        if ($apptResult != null) {
-            if ($apptResult->RequestApptInsertResult->ApptKey != -1) {
-                $appointment->fpc_id = $apptResult->RequestApptInsertResult->ApptKey;
-                $result = 'Appointment Scheduled Successfully';
-                $action = 'Appointment Scheduled for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
-                $description = '';
-                $filename = basename(__FILE__);
-                $ip = $request->getClientIp();
-                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-            } else {
-                $result = $apptResult->RequestApptInsertResult->Result;
-                $action = 'Attempt to shedule appointment failed for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime;
-                $description = '';
-                $filename = basename(__FILE__);
-                $ip = $request->getClientIp();
-                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-                return $result;
-            }
+        if (!$appointment->save()) {
+            return $apptStatus;
         }
 
-        $appointment->save();
+        $apptStatus['appointment_saved'] = true;
+
+        $partnerWebScheduleResult = $this->partnerWebSchedule($apptInfo);
+
+        if ($partnerWebScheduleResult) {
+            $apptStatus['4PC_scheduled'] = true;
+            $appointment->fpc_id = $partnerWebScheduleResult;
+            $appointment->save();
+        }
 
         $practice = Practice::find($appointment->practice_id);
         $appt['practice_name'] = $practice->name;
@@ -174,25 +169,36 @@ class AppointmentController extends Controller
         $appt['insurance_group_no'] = $patientInsurance->insurance_group_no;
         $appt['subscriber_relation'] = $patientInsurance->subscriber_relation;
 
-        if (!$patient->email && $patient->email != '') {
-            $mailToPatient = Mail::send('emails.appt-confirmation-patient', ['appt' => $appt], function ($m) use ($patient) {
-                $m->from('support@ocuhub.com', 'Ocuhub');
-                $m->to($patient->email, $patient->lastname . ', ' . $patient->firstname)->subject('Appointment has been scheduled');
-            });
-        }
-
-        if (!$practice->email && $practice->email != '') {
+        if ($practice->email && $practice->email != '') {
             $mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($practice) {
                 $m->from('support@ocuhub.com', 'Ocuhub');
                 $m->to($practice->email, $practice->name)->subject('Request for Appointment');
             });
+
+            $apptStatus['practice_email_sent'] = true;
+        }
+
+        if ($patient->email && $patient->email != '') {
+            $mailToPatient = Mail::send('emails.appt-confirmation-patient', ['appt' => $appt], function ($m) use ($patient) {
+                $m->from('support@ocuhub.com', 'Ocuhub');
+                $m->to($patient->email, $patient->lastname . ', ' . $patient->firstname)->subject('Appointment has been scheduled');
+            });
+
+            $apptStatus['patient_email_sent'] = true;
+
         }
 
         $careconsole = Careconsole::where('patient_id', $patientID)
             ->orderBy('created_at', 'desc')
             ->first();
 
+        /**
+         * Consider not having all patients in the Console and
+         * only managing those patients who pay for the service.
+         */
+
         if ($careconsole != null) {
+
             $careconsole->appointment_id = $appointment->id;
             $careconsole->stage_id = 2;
             $careconsole->recall_date = null;
@@ -221,6 +227,7 @@ class AppointmentController extends Controller
                 $careconsole->referral_id = $referralHistory->id;
                 $careconsole->save();
             }
+
             $referralHistory->referred_to_practice_id = $appointment->practice_id;
             $referralHistory->referred_to_location_id = $appointment->location_id;
             $referralHistory->referred_to_practice_user_id = $appointment->provider_id;
@@ -228,7 +235,42 @@ class AppointmentController extends Controller
             $referralHistory->save();
         }
 
-        return $result;
+        return $apptStatus;
+    }
+
+    public function partnerWebSchedule($apptInfo)
+    {
+
+        $apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
+
+        $result = '';
+
+        if ($apptResult != null) {
+            if ($apptResult->RequestApptInsertResult->ApptKey != -1) {
+
+                $result = 'Appointment Scheduled Successfully';
+                $action = 'Appointment Scheduled for Provider = ' . $apptInfo['AcctKey'] . ' Location = ' . $apptInfo['LocKey'] . ' on Date ' . $apptInfo['ApptStartDateTime'] . 'for Patient = ' . $apptInfo['PatientData']['FirstName'] . ' ' . $apptInfo['PatientData']['FirstName'];
+                $description = '';
+                $filename = basename(__FILE__);
+                $ip = '';
+
+                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+                return $apptResult->RequestApptInsertResult->ApptKey;
+
+            } else {
+                $result = $apptResult->RequestApptInsertResult->Result;
+                $action = 'Attempt to Request Appointment with 4PC failed for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime . ' ';
+                $description = '';
+                $filename = basename(__FILE__);
+                $ip = '';
+                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+                return false;
+            }
+        }
+
+        return false;
     }
 
     public function index(Request $request)
