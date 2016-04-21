@@ -633,7 +633,7 @@ function drawReferredByChart(data) {
             }
         },
     };
-    var chart_hospital = new google.visualization.LineChart(document.getElementById('linechart_material'));
+    var chart_hospital = new google.visualization.ColumnChart(document.getElementById('linechart_material'));
     chart_hospital.draw(data_hospital, options);
 
     google.visualization.events.addListener(chart_hospital, 'select', showdoctor);
@@ -693,7 +693,7 @@ function drawReferredToChart(data) {
             }
         },
     };
-    var chart_hospital = new google.visualization.LineChart(document.getElementById('linechart_material'));
+    var chart_hospital = new google.visualization.ColumnChart(document.getElementById('linechart_material'));
     chart_hospital.draw(data_hospital, options);
     google.visualization.events.addListener(chart_hospital, 'select', showdoctor);
 
