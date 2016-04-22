@@ -297,6 +297,7 @@ class Reports
         $appointmentType = [];
         $referredByDoctor = [];
         $referredByHospital = [];
+        $insuranceTypes = [];
         $severities = [];
         $diseases = [];
 
