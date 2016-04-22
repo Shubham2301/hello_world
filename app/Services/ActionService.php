@@ -10,6 +10,7 @@ use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
 use myocuhub\Models\ReferralHistory;
+use myocuhub\User;
 
 class ActionService
 {
@@ -60,7 +61,7 @@ class ActionService
                 $appointment->network_id = session('network-id');
                 $appointment->start_datetime = $appointment_date->format('Y-m-d H:i:s');
                 $appointment->end_datetime = $appointment_date->format('Y-m-d H:i:s');
-                $appointment->notes = $notes;
+
                 if ($manualAppointmentData['practice_id'] != '0' && $manualAppointmentData['practice_id'] != '') {
                     $appointment->practice_id = $manualAppointmentData['practice_id'];
                 }
@@ -77,6 +78,14 @@ class ActionService
                     $appointment->appointmenttype = $manualAppointmentData['appointment_type'];
                 }
 
+				$provider = User::find($appointment->provider_id);
+				$scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+				$newNote = $scheduledTo . '</br>' . $appointment->start_datetime . '</br>' . $appointment->appointmenttype;
+				$updatedNote = $newNote.'</br>'. $notes;
+				$appointment->notes = $updatedNote;
+
+				$contact->notes = $updatedNote;
+				$contact->save();
                 $appointment->save();
                 if ($appointment) {
                     $console->appointment_id = $appointment->id;
@@ -112,7 +121,14 @@ class ActionService
                     $appointment->appointmenttype = $manualAppointmentData['appointment_type'];
                 }
 
-                $appointment->notes = $notes;
+				$provider = User::find($appointment->provider_id);
+				$scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+				$newNote = $scheduledTo . '</br>' . $appointment->start_datetime . '</br>' . $appointment->appointmenttype;
+				$updatedNote = $newNote.'</br>'. $notes;
+				$appointment->notes = $updatedNote;
+
+				$contact->notes = $updatedNote;
+				$contact->save();
                 $appointment->save();
                 if ($appointment) {
                     $console->appointment_id = $appointment->id;

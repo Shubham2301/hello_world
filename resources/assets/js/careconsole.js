@@ -740,6 +740,7 @@ function setPatientRecords(consoleID)
                     i++;
                 });
                 $('.contact_attempts').html(content);
+				$('.patient_contact_info').find('.contact_notes').html(contact_notes[0]);
             } else {
                 $('.contact_attempts').text('-');
             }
