@@ -158,16 +158,18 @@ class Careconsole extends Model
         return self::where('stage_id', $stageID)
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', $networkID)
-            ->join('contact_history', 'careconsole.id', '=', 'contact_history.console_id', 'left outer')
-            ->whereNull('archived_date')
-            ->whereNull('recall_date')
+            ->leftjoin('contact_history', 'careconsole.id', '=', 'contact_history.console_id')
             ->whereNotExists(function ($query) {
                 $query->select(DB::raw(1))
                     ->from('contact_history')
                     ->whereRaw('contact_history.console_id = careconsole.id')
                     ->whereNull('contact_history.archived');
             })
+            ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+            ->whereNull('archived_date')
+            ->whereNull('recall_date')
             ->groupBy('patient_id')
+            ->get()
             ->count();
     }
 

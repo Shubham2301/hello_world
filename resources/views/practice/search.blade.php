@@ -28,6 +28,7 @@
         <div class="col-xs-2">
             <input type="hidden" id="schedule_practice_img" value="{{asset('images/schedule.png')}}">
             <input type="hidden" id="delete_practice_img" value="{{asset('images/delete-natural-hover.png')}}">
+            <input type="hidden" id="deactivate_user_img" value="{{asset('images/deactivate-icon.png')}}">
         </div>
     </div>
 </div>

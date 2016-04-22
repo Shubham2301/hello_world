@@ -135,6 +135,7 @@ class CareConsoleController extends Controller {
 		}
 
 		$overview['network_practices'] = Network::find(session('network-id'))->practices;
+		$overview['appointment_types'] = $this->getAppointmentTypes();
 		return $overview;
 	}
 
@@ -143,8 +144,9 @@ class CareConsoleController extends Controller {
 	 */
 	public function getDrilldownData(Request $request) {
 		$stageID = $request->stage;
-		if($stageID == '-1')
+		if($stageID == '-1') {
 			$stageID = 1;
+		}
 		$kpiName = $request->kpi;
 		$sortParams = [];
 		$sortField = $request->sort_field;
@@ -307,8 +309,20 @@ class CareConsoleController extends Controller {
 		}
 		$practiceData['locations'] = [];
 
-		if(Practice::find($practiceID))
+		if(Practice::find($practiceID)){
 			$practiceData['locations'] = Practice::find($practiceID)->locations;
+		}
 		return json_encode($practiceData);
+	}
+
+	public function getAppointmentTypes(){
+		$types = [];
+		$types['Annual Eye Exam'] 			= 'Annual Eye Exam';
+		$types['Comprehensive Eye Exam'] 	= 'Comprehensive Eye Exam';
+		$types['Diabetic Eye Exam'] 		= 'Diabetic Eye Exam';
+		$types['General Eye Exam'] 			= 'General Eye Exam';
+		$types['ABIorVTeval'] 				= 'ABIorVTeval';
+		$types['UnknownEncounterReschedule']= 'UnknownEncounterReschedule';
+		return $types;
 	}
 }
