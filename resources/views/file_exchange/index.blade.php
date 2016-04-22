@@ -24,6 +24,7 @@
                 <span class="file_exchange_button trash-button" data-toggle="tooltip" title="Trash" data-placement="bottom"><img src="{{URL::asset('images/sidebar/trash-icon.png')}}" style="width:30px;"></span>
                 <span class="file_exchange_button download-button" data-toggle="tooltip" title="Download" data-placement="bottom"><img src="{{URL::asset('images/sidebar/download-icon.png')}}" style="width:30px;"></span>
                 <span class="file_exchange_button info-button" data-toggle="tooltip" title="Details" data-placement="bottom" id="details"><img src="{{URL::asset('images/sidebar/details-icon.png')}}" style="width:30px;"></span>
+					<span class="file_exchange_button restore-button" data-toggle="tooltip" title="Restore" data-placement="bottom" id="restore"><img src="{{URL::asset('images/sidebar/restore-icon.png')}}" style="width:30px;"></span>
                 </span>
             </div>
             <div class="folder_path active">
@@ -48,7 +49,11 @@
                 <input type="checkbox" class="checkbox file-exchange folder-check" style="display: inline;" data-id="{{ $folder['id'] }}" data-name="folder">
             </div>
             <div class="col-xs-7 no-padding">
+				@if($openView != 'trash')
                 <a href="file_exchange?id={{$folder['id']}}"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $folder['name'] }}</a>
+                @else
+				<a href="#" data-id="{{$folder['id']}}" class="restore_item"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $folder['name'] }}</a>
+                @endif
             </div>
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
@@ -96,6 +101,14 @@
     <span>No files or folder found</span>
 </div>
 
-@endif {!! Form::open(array('url' => 'deleteFilesFolders', 'method' => 'POST', 'id'=>'delete_files_folders')) !!}
+@endif
+{!! Form::open(array('url' => 'deleteFilesFolders', 'method' => 'POST', 'id'=>'delete_files_folders')) !!}
 <input type="hidden" name="delete_folders" id="delete_folders" value="">
-<input type="hidden" name="delete_files" id="delete_files" value=""> {!! Form::close()!!} @endsection
+<input type="hidden" name="delete_files" id="delete_files" value="">
+{!! Form::close()!!}
+
+{!! Form::open(array('url' => 'restoreFilesFolders', 'method' => 'POST', 'id'=>'restore_files_folders')) !!}
+<input type="hidden" name="restore_folders" id="restore_folders" value="">
+<input type="hidden" name="restore_files" id="restore_files" value="">
+{!! Form::close()!!}
+@endsection

@@ -329,24 +329,16 @@ class FileExchangeController extends Controller {
 		foreach ($folders as $folderID) {
 			$folder = Folder::find($folderID);
 			if($folder){
-				if($folder->status == 0)
-					$folder->delete();
-				else{
 					$folder->status = 0;
 					$folder->save();
-				}
 			}
 		}
 
 		foreach ($files as $fileID) {
 			$file = File::find($fileID);
 			if($file){
-				if($file->status == 0)//check if deleted from the trash
-					$file->delete();
-				else{
 					$file->status = 0;
 					$file->save();
-				}
 			}
 		}
 		return redirect()
@@ -360,8 +352,9 @@ class FileExchangeController extends Controller {
 		$folderlist = array();
 
 		$i = 0;
-
 		foreach ($folders as $folder) {
+			if(!$this->checkParentStatus($folder->id))
+				continue;
 			$folderlist[$i]['id'] = $folder->id;
 			$folderlist[$i]['parent_id'] = $folder->parent_id;
 			$folderlist[$i]['name'] = $folder->name;
@@ -602,5 +595,46 @@ class FileExchangeController extends Controller {
 				echo $fileShare;
 			}
 		}
+	}
+
+	public function checkParentStatus($folderID){
+		$parentID = explode('/', Folder::find($folderID)->treepath);
+		array_shift($parentID);
+		array_pop($parentID);
+		array_pop($parentID);
+		foreach($parentID as $id){
+			$status = Folder::find($id)->status;
+			if($status == 0)
+				return false;
+		}
+		return true;
+
+	}
+
+	public function restoreFilesFolders(Request $request){
+		$folders =[];
+		$files = [];
+		if($request->restore_folders != '')
+			$folders = explode(',', $request->restore_folders);
+		if($request->restore_files != '')
+			$files = explode(',', $request->restore_files);
+
+		foreach ($folders as $folderID) {
+			$folder = Folder::find($folderID);
+			if($folder){
+				$folder->status = 1;
+				$folder->save();
+			}
+		}
+		foreach ($files as $fileID) {
+			$file = File::find($fileID);
+			if($file){
+				$file->status = 1;
+				$file->save();
+			}
+		}
+		return redirect()
+			->back()
+			->withSuccess("Successfully Restored!");
 	}
 }

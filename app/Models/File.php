@@ -21,7 +21,7 @@ class File extends Model {
 		if ($folder_id == null) {
 			return File::where('status', '=', $active)
 				->where('creator_id', '=', Auth::user()->id)
-				//->whereNull('folder_id')
+				->whereNull('folder_id')
 				->orderBy('title', 'asc')->get();
 		}
 
