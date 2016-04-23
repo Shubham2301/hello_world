@@ -229,14 +229,19 @@ class Reports
         $appointmentTypeResult = [];
         $appointmentTypeResult['scheduled_seen'][0] = 0;
         $appointmentTypeResult['scheduled_seen'][1] = 'Seen by IEG doctor';
+        $appointmentTypeResult['scheduled_seen'][2] = 'scheduled_seen';
         $appointmentTypeResult['scheduled_not_seen'][0] = 0;
         $appointmentTypeResult['scheduled_not_seen'][1] = 'Scheduled but not seen yet';
+        $appointmentTypeResult['scheduled_not_seen'][2] = 'scheduled_not_seen';
         $appointmentTypeResult['appointment_not_needed'][0] = 0;
         $appointmentTypeResult['appointment_not_needed'][1] = 'Appointment not needed';
+        $appointmentTypeResult['appointment_not_needed'][2] = 'appointment_not_needed';
         $appointmentTypeResult['appointment_declined'][0] = 0;
         $appointmentTypeResult['appointment_declined'][1] = 'Declined Appointment';
+        $appointmentTypeResult['appointment_declined'][2] = 'appointment_declined';
         $appointmentTypeResult['patients_ran_through'][0] = 0;
         $appointmentTypeResult['patients_ran_through'][1] = 'Established patient ran through';
+        $appointmentTypeResult['patients_ran_through'][2] = 'patients_ran_through';
 
         foreach ($results as $result) {
             switch ($result->stage_id) {
@@ -257,10 +262,10 @@ class Reports
                 default:
                     break;
             }
-            if ($result->action_result_id == '9' || $result->action_result_id == '10') {
+            if ($result->action_result_id == 9 || $result->action_result_id == 10) {
                 $appointmentTypeResult['appointment_declined'][0]++;
             }
-            if ($result->action_result_id == '15' || $result->action_result_id == '16') {
+            if ($result->action_result_id == 15 || $result->action_result_id == 16) {
                 $appointmentTypeResult['appointment_not_needed'][0]++;
             }
         }
@@ -610,7 +615,7 @@ class Reports
                     `practices`.`name` as `referred_to_practice`,
                     `practices`.`id` as `referred_to_practice_id`,
                     `contact_attempts`.`count` as contact_attempts,
-                    `action_result_id`.`action_result_id` as action_result_id,
+                    `action_result_id`.`action_result_id` as `action_result_id`,
                     `users`.`name` as `referred_to_provider`,
                     `users`.`id` as `referred_to_provider_id`
                     from `careconsole`
@@ -665,6 +670,26 @@ class Reports
                     break;
                 case 'finalization':
                     $queryFilters .= " and `careconsole`.`stage_id` = 5 ";
+                    break;
+            }
+        }
+
+        if ($filters['appointment_status'] != 'none') {
+            switch ($filters['appointment_status']) {
+                case 'scheduled_seen':
+                    $queryFilters .= " and (`careconsole`.`stage_id` = 4 OR `careconsole`.`stage_id` = 5) and `careconsole`.`archived_date` is not null ";
+                    break;
+                case 'scheduled_not_seen':
+                    $queryFilters .= " and `careconsole`.`stage_id` = 2 and `careconsole`.`archived_date` is not null ";
+                    break;
+                case 'appointment_not_needed':
+                    $queryFilters .= " and ( `action_result_id` = 15 or `action_result_id` = 16 ) ";
+                    break;
+                case 'appointment_declined':
+                    $queryFilters .= " and ( `action_result_id` = 9 or `action_result_id` = 10 ) ";
+                    break;
+                case 'patients_ran_through':
+                    $queryFilters .= " and `careconsole`.`stage_id` = 5 and `careconsole`.`archived_date` is not null ";
                     break;
             }
         }

@@ -10,6 +10,7 @@ function resetFilter() {
     filterOptions = {
         "type": "none",
         "status_of_patients": "none",
+        "appointment_status": "none",
         "disease_type": "none",
         "severity_scale": "none",
         "incomming_referrals":
@@ -53,6 +54,13 @@ function addFilter(name, value, meta) {
                 $('.filter[data-id="' + name + '"]').remove();
             }
             filterOptions.status_of_patients = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            break;
+        case 'appointment_status':
+            if (filterOptions.appointment_status != 'none') {
+                $('.filter[data-id="' + name + '"]').remove();
+            }
+            filterOptions.appointment_status = value;
             $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">' + meta + '</span></div><span class="filter_remove ">x</span></div>');
             break;
         case 'disease_type':
@@ -145,6 +153,9 @@ function removeFilter(name) {
     switch (name) {
         case 'status_of_patients':
             filterOptions.status_of_patients = 'none';
+            break;
+        case 'appointment_status':
+            filterOptions.appointment_status = 'none';
             break;
         case 'disease_type':
             filterOptions.disease_type = 'none';
@@ -488,10 +499,15 @@ function renderAppointmentTypeDemographics(data) {
 function renderAppointmentStatusDemographics(info) {
 
     var content = '';
-
+    var disable = '';
     for (var key in info) {
         if (info.hasOwnProperty(key)) {
-            content += '<div class="col-xs-12 remove-padding" data-type="appointment_status"><div class="col-xs-8"><p class="report_content_label">' + info[key][1] + '</p></div><div class="col-xs-4"><p class="report_content_value">' + info[key][0] + '</p></div></div>';
+            if (info[key][0] === 0) {
+                disable = 'disable_drilldown';
+            } else {
+                disable = '';
+            }
+            content += '<div class="col-xs-12 remove-padding drilldown_item ' + disable + '" data-type="appointment_status" data-id="' + info[key][2] + '" data-meta="' + info[key][1] + '"><div class="col-xs-8"><p class="report_content_label">' + info[key][1] + '</p></div><div class="col-xs-4"><p class="report_content_value">' + info[key][0] + '</p></div></div>';
         }
     }
 
