@@ -224,6 +224,48 @@ class Reports
         return $result;
     }
 
+    public function getHistoricalAppointmentStatus($results)
+    {
+        $appointmentTypeResult = [];
+        $appointmentTypeResult['scheduled_seen'][0] = 0;
+        $appointmentTypeResult['scheduled_seen'][1] = 'Seen by IEG doctor';
+        $appointmentTypeResult['scheduled_not_seen'][0] = 0;
+        $appointmentTypeResult['scheduled_not_seen'][1] = 'Scheduled but not seen yet';
+        $appointmentTypeResult['appointment_not_needed'][0] = 0;
+        $appointmentTypeResult['appointment_not_needed'][1] = 'Appointment not needed';
+        $appointmentTypeResult['appointment_declined'][0] = 0;
+        $appointmentTypeResult['appointment_declined'][1] = 'Declined Appointment';
+        $appointmentTypeResult['patients_ran_through'][0] = 0;
+        $appointmentTypeResult['patients_ran_through'][1] = 'Established patient ran through';
+
+        foreach ($results as $result) {
+            switch ($result->stage_id) {
+                case 2:
+                    if($result->archived_date != null)
+                        $appointmentTypeResult['scheduled_not_seen'][0]++;
+                    break;
+                case 4:
+                    if($result->archived_date != null)
+                        $appointmentTypeResult['scheduled_seen'][0]++;
+                    break;
+                case 5:
+                    if($result->archived_date != null) {
+                        $appointmentTypeResult['scheduled_seen'][0]++;
+                        $appointmentTypeResult['patients_ran_through'][0]++;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if ($result->action_result_id == '9' || $result->action_result_id == '10') {
+                $appointmentTypeResult['appointment_declined'][0]++;
+            }
+            if ($result->action_result_id == '15' || $result->action_result_id == '16') {
+                $appointmentTypeResult['appointment_not_needed'][0]++;
+            }
+        }
+        return $appointmentTypeResult;
+    }
     public function initStatusOfPatients()
     {
         $statuses = [];
@@ -400,7 +442,7 @@ class Reports
         $networkData['insurance_demographics'] = $this->formatInsuranceType($insuranceTypes);
         $networkData['gender_demographics']['male'] = round($gender['male'] * 100 / sizeof($results), 2);
         $networkData['gender_demographics']['female'] = round($gender['female'] * 100 / sizeof($results), 2);
-        $networkData['appointment_status'] = $this->getAppointmentStatus();
+        $networkData['appointment_status'] = $this->getHistoricalAppointmentStatus($results);
 
         return json_encode($networkData);
     }
@@ -568,6 +610,7 @@ class Reports
                     `practices`.`name` as `referred_to_practice`,
                     `practices`.`id` as `referred_to_practice_id`,
                     `contact_attempts`.`count` as contact_attempts,
+                    `action_result_id`.`action_result_id` as action_result_id,
                     `users`.`name` as `referred_to_provider`,
                     `users`.`id` as `referred_to_provider_id`
                     from `careconsole`
@@ -578,6 +621,7 @@ class Reports
                     left join `practices` on `appointments`.`practice_id` = `practices`.`id`
                     left join `users` on `appointments`.`provider_id` = `users`.`id`
                     left join (select console_id, archived, COUNT(*) as count from contact_history where archived is null group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
+                    left join (select console_id, action_result_id as action_result_id from contact_history where action_result_id = '15' OR action_result_id = '16' OR action_result_id = '9' OR action_result_id = '10') as `action_result_id` on `action_result_id`.`console_id` = `careconsole`.`id`
                     left join `patient_insurance` on `patient_insurance`.`patient_id` = `careconsole`.`patient_id`
                     $queryFilters";
 
@@ -594,7 +638,7 @@ class Reports
         $queryFilters = " where `import_history`.`network_id` = $networkID ";
 
         if ($filters['type'] == 'real-time') {
-            $queryFilters .= " and `careconsole`.`archived_date` IS NULL and `careconsole`.`recall_date` IS NULL ";
+            $queryFilters .= " and `careconsole`.`archived_date` IS NULL and `careconsole`.`recall_date` IS NULL";
         } elseif ($filters['type'] == 'historical') {
             $queryFilters .= " and `careconsole`.`created_at` >= '$startDate' and `careconsole`.`created_at` <= '$endDate' ";
         }
