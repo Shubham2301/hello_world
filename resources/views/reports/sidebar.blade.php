@@ -39,6 +39,7 @@
         <h3 class="title">Reporting</h3></div>
     </div>
 
+<!--
     <div class="panel-group" id="accordion">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -67,7 +68,6 @@
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
               <span class="report_sidebar_button sidebar_historical historical_header">
-<!--              <span class="report_sidebar_button">-->
                   <span class="report_sidebar_image">
                       <span><img src="{{URL::asset('images/historical-icon.png')}}" style="width:80%;height:80%;"></span>
                   </span>
@@ -83,7 +83,27 @@
       </div>
     </div>
   </div>
-
+-->
+<div class="sidebar_item_list">
+<span class="report_sidebar_button sidebar_realtime realtime_header">
+                  <span class="report_sidebar_image">
+                      <span><img src="{{URL::asset('images/real-time-icon.png')}}" style="width:80%;height:80%;"></span>
+                  </span>
+                  <span class="report_sidebar_text">
+                      <span class="text">Real Time</span>
+                  </span>
+              </span>
+<div class="expandable_sidebar active" id="population_report_options">
+            </div>
+<span class="report_sidebar_button sidebar_historical historical_header">
+                  <span class="report_sidebar_image">
+                      <span><img src="{{URL::asset('images/historical-icon.png')}}" style="width:80%;height:80%;"></span>
+                  </span>
+                  <span class="report_sidebar_text">
+                      <span class="text">Historical</span>
+                  </span>
+              </span>
+    </div>
 </div>
 
 <!--

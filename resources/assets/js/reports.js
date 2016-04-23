@@ -196,6 +196,7 @@ $(document).ready(function () {
 
     $('.historical_section').hide();
     $('.sidebar_historical').on('click', function () {
+        $("#population_report_options").collapse('hide');
         $('.expandable_sidebar').removeClass('active');
         $('.expandable_sidebar_historical').addClass('active');
         $('.historical_header').addClass('active');
@@ -222,6 +223,7 @@ $(document).ready(function () {
         resetFilter();
         clearHtml();
         getReport();
+        $("#population_report_options").collapse('show');
     });
     $("li").click(function () {
         $(this.parentNode).children("li").removeClass("active");
@@ -258,6 +260,7 @@ $(document).ready(function () {
     });
     resetFilter();
     getReport();
+    $("#population_report_options").collapse('show');
     var old_start_date = $('#start_date').val();
     var old_end_date = $('#end_date').val();
     $('#start_date').datetimepicker().on('dp.hide', function (ev) {
@@ -333,12 +336,11 @@ function getReport() {
             if (data.gender_demographics.length !== 0) {
                 renderGenderDemographics(data.gender_demographics);
             }
-            if (data.referred_to.total !== 0) {
-                renderReferredTo(data.referred_to);
-            }
-            if (data.referred_by.total !== 0) {
-                renderReferredBy(data.referred_by);
-            }
+
+            renderReferredTo(data.referred_to);
+
+            renderReferredBy(data.referred_by);
+
             if (data.age_demographics.length !== 0) {
                 renderAgeDemographics(data.age_demographics);
             }
@@ -356,7 +358,7 @@ function renderStatusOfPatients(data) {
 
     var rowContent = '';
     var disable = '';
-    var colContent = '<div class="row"><div class="col-xs-12"><p class="sidebar_item active">Dashboard View</p></div></div>';
+    var colContent = '';
     for (var i = 0; i < data.length; i++) {
 
         if (data[i].count == 0) {
@@ -407,7 +409,7 @@ function renderReferredTo(data) {
                 drawReferredToChart(data);
             }
         }
-    } else {
+    } else if(data.total !== 0) {
         var type = data.type;
         data = data.data;
         var content = '';
@@ -433,7 +435,7 @@ function renderReferredBy(data) {
         if ($('.chart').hasClass('referred_by')) {
             drawReferredByChart(data);
         }
-    } else {
+    } else if(data.total !== 0) {
         var type = data.type;
         data = data.data;
         var content = '';

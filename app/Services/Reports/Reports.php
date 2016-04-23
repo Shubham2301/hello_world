@@ -666,9 +666,17 @@ class Reports
         }
 
         if ($filters['disease_type'] != 'none') {
-            $queryFilters .= ' and `referral_history`.`disease_type` = "' . $filters['disease_type'] . '"';
+            if ($filters['disease_type'] != 'NA'){
+                $queryFilters .= ' and `referral_history`.`disease_type` = "' . $filters['disease_type'] . '"';
+            } else {
+                $queryFilters .= ' and `referral_history`.`disease_type` IS NULL';
+            }
             if ($filters['severity_scale'] != 'none') {
+                if ($filters['severity_scale'] != 'NA') {
                 $queryFilters .= ' and `referral_history`.`severity` = "' . $filters['severity_scale'] . '"';
+                } else {
+                $queryFilters .= ' and `referral_history`.`severity` IS NULL';
+                }
             }
         }
 
