@@ -237,6 +237,9 @@
 
 .drilldown_item {
     cursor: pointer;
+    &.disable_drilldown {
+        cursor: default;
+    }
 }
 
 .filter_name {
@@ -358,6 +361,7 @@ text[style] {
 
 .expandable_sidebar
 {
+    margin-left: 1em;
 display: none;
     &.active
     {
@@ -409,6 +413,8 @@ margin: 0;
     overflow-x: hidden;
     color: #4d4d4d;
     background-color: #f0f2f5;
+    margin-top: 1em;
+    cursor: pointer;
     background-image: linear-gradient(#f0f2f5 10%, #e0e3e6 90%);
     &:hover {
         background-color: #f0f2f5;

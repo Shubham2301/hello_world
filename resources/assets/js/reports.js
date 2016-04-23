@@ -10,6 +10,7 @@ function resetFilter() {
     filterOptions = {
         "type": "none",
         "status_of_patients": "none",
+        "appointment_status": "none",
         "disease_type": "none",
         "severity_scale": "none",
         "incomming_referrals":
@@ -53,6 +54,13 @@ function addFilter(name, value, meta) {
                 $('.filter[data-id="' + name + '"]').remove();
             }
             filterOptions.status_of_patients = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            break;
+        case 'appointment_status':
+            if (filterOptions.appointment_status != 'none') {
+                $('.filter[data-id="' + name + '"]').remove();
+            }
+            filterOptions.appointment_status = value;
             $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">' + meta + '</span></div><span class="filter_remove ">x</span></div>');
             break;
         case 'disease_type':
@@ -146,6 +154,9 @@ function removeFilter(name) {
         case 'status_of_patients':
             filterOptions.status_of_patients = 'none';
             break;
+        case 'appointment_status':
+            filterOptions.appointment_status = 'none';
+            break;
         case 'disease_type':
             filterOptions.disease_type = 'none';
             filterOptions.severity_scale = 'none';
@@ -196,6 +207,7 @@ $(document).ready(function () {
 
     $('.historical_section').hide();
     $('.sidebar_historical').on('click', function () {
+        $("#population_report_options").collapse('hide');
         $('.expandable_sidebar').removeClass('active');
         $('.expandable_sidebar_historical').addClass('active');
         $('.historical_header').addClass('active');
@@ -222,6 +234,7 @@ $(document).ready(function () {
         resetFilter();
         clearHtml();
         getReport();
+        $("#population_report_options").collapse('show');
     });
     $("li").click(function () {
         $(this.parentNode).children("li").removeClass("active");
@@ -258,6 +271,7 @@ $(document).ready(function () {
     });
     resetFilter();
     getReport();
+    $("#population_report_options").collapse('show');
     var old_start_date = $('#start_date').val();
     var old_end_date = $('#end_date').val();
     $('#start_date').datetimepicker().on('dp.hide', function (ev) {
@@ -333,12 +347,11 @@ function getReport() {
             if (data.gender_demographics.length !== 0) {
                 renderGenderDemographics(data.gender_demographics);
             }
-            if (data.referred_to.total !== 0) {
-                renderReferredTo(data.referred_to);
-            }
-            if (data.referred_by.total !== 0) {
-                renderReferredBy(data.referred_by);
-            }
+
+            renderReferredTo(data.referred_to);
+
+            renderReferredBy(data.referred_by);
+
             if (data.age_demographics.length !== 0) {
                 renderAgeDemographics(data.age_demographics);
             }
@@ -356,7 +369,7 @@ function renderStatusOfPatients(data) {
 
     var rowContent = '';
     var disable = '';
-    var colContent = '<div class="row"><div class="col-xs-12"><p class="sidebar_item active">Dashboard View</p></div></div>';
+    var colContent = '';
     for (var i = 0; i < data.length; i++) {
 
         if (data[i].count == 0) {
@@ -407,7 +420,7 @@ function renderReferredTo(data) {
                 drawReferredToChart(data);
             }
         }
-    } else {
+    } else if(data.total !== 0) {
         var type = data.type;
         data = data.data;
         var content = '';
@@ -433,7 +446,7 @@ function renderReferredBy(data) {
         if ($('.chart').hasClass('referred_by')) {
             drawReferredByChart(data);
         }
-    } else {
+    } else if(data.total !== 0) {
         var type = data.type;
         data = data.data;
         var content = '';
@@ -486,10 +499,15 @@ function renderAppointmentTypeDemographics(data) {
 function renderAppointmentStatusDemographics(info) {
 
     var content = '';
-
+    var disable = '';
     for (var key in info) {
         if (info.hasOwnProperty(key)) {
-            content += '<div class="col-xs-12 remove-padding" data-type="appointment_status"><div class="col-xs-8"><p class="report_content_label">' + info[key][1] + '</p></div><div class="col-xs-4"><p class="report_content_value">' + info[key][0] + '</p></div></div>';
+            if (info[key][0] === 0) {
+                disable = 'disable_drilldown';
+            } else {
+                disable = '';
+            }
+            content += '<div class="col-xs-12 remove-padding drilldown_item ' + disable + '" data-type="appointment_status" data-id="' + info[key][2] + '" data-meta="' + info[key][1] + '"><div class="col-xs-8"><p class="report_content_label">' + info[key][1] + '</p></div><div class="col-xs-4"><p class="report_content_value">' + info[key][0] + '</p></div></div>';
         }
     }
 
@@ -633,7 +651,7 @@ function drawReferredByChart(data) {
             }
         },
     };
-    var chart_hospital = new google.visualization.LineChart(document.getElementById('linechart_material'));
+    var chart_hospital = new google.visualization.ColumnChart(document.getElementById('linechart_material'));
     chart_hospital.draw(data_hospital, options);
 
     google.visualization.events.addListener(chart_hospital, 'select', showdoctor);
@@ -693,7 +711,7 @@ function drawReferredToChart(data) {
             }
         },
     };
-    var chart_hospital = new google.visualization.LineChart(document.getElementById('linechart_material'));
+    var chart_hospital = new google.visualization.ColumnChart(document.getElementById('linechart_material'));
     chart_hospital.draw(data_hospital, options);
     google.visualization.events.addListener(chart_hospital, 'select', showdoctor);
 
