@@ -266,7 +266,7 @@ class ProviderController extends Controller
                 continue;
             }
             $data[$i]['id'] = $provider->provider_id;
-            $data[$i]['name'] = $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname;
+			$data[$i]['name'] = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
             $data[$i]['practice_id'] = $provider->practice_id;
             $data[$i]['practice_name'] = $provider->name;
             $data[$i]['speciality'] = $provider->speciality;
@@ -277,4 +277,29 @@ class ProviderController extends Controller
         return json_encode($data);
     }
 
+	public function getNearByProviders(Request $request){
+		$patientID = $request->patient_id;
+		$patientLocation = Patient::find($patientID)->getLocation();
+		$lat = $patientLocation['latitude'];
+		$lng = $patientLocation['longitude'];
+		$providers = [];
+		if($lat !='')
+			$providers = User::getNearByProviders($lat, $lng, 100);
+		$data = [];
+		$i =0;
+		foreach($providers as $provider){
+			if (!$provider->user_id || !$provider->practice_id) {
+				continue;
+			}
+			$data[$i]['id'] = $provider->user_id;
+			$data[$i]['name'] = $provider->title . ' ' . $provider->lastname . ' ,' . $provider->firstname;
+			$data[$i]['practice_id'] = $provider->practice_id;
+			$data[$i]['practice_name'] = $provider->name;
+			$data[$i]['speciality'] = $provider->speciality;
+			$data[$i]['location_address'] = $provider->addressline1.' '.$provider->state;
+			$data[$i]['distance'] = ceil($provider->distance).' km ';
+			$i++;
+		}
+		return json_encode($data);
+	}
 }

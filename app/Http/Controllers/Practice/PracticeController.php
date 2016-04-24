@@ -64,6 +64,17 @@ class PracticeController extends Controller {
 			$practicelocation->state = $location['state'];
 			$practicelocation->zip = $location['zip'];
 			$practicelocation->location_code = $location['location_code'];
+
+			$address = urlencode($practicelocation->addressline1.' '.$practicelocation->addressline1.' '.$practicelocation->city.' '.$practicelocation->zip.' '.$practicelocation->state);
+
+			try{
+				$json = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')),true);
+			}catch(Exception $e){}
+			if(isset($json['results'][0]['geometry']['location']['lat'])){
+				$practicelocation->latitude = $json['results'][0]['geometry']['location']['lat'];
+				$practicelocation->longitude = $json['results'][0]['geometry']['location']['lng'];
+			}
+
 			$practicelocation->save();
 		}
 		$practiceNetwork = new PracticeNetwork;
@@ -147,6 +158,15 @@ class PracticeController extends Controller {
 			$practicelocation->location_code = $location['location_code'];
 			$practicelocation->save();
 
+			$address = urlencode($practicelocation->addressline1.' '.$practicelocation->addressline1.' '.$practicelocation->city.' '.$practicelocation->zip.' '.$practicelocation->state);
+
+			try{
+				$json = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')),true);
+			}catch(Exception $e){}
+			if(isset($json['results'][0]['geometry']['location']['lat'])){
+				$practicelocation->latitude = $json['results'][0]['geometry']['location']['lat'];
+				$practicelocation->longitude = $json['results'][0]['geometry']['location']['lng'];
+			}
 		}
 
 		$action = 'Edit practice';
