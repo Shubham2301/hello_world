@@ -659,7 +659,7 @@ class Reports
                 case 'appointment_scheduled':
                     $queryFilters .= " and `careconsole`.`stage_id` = 2 ";
                     break;
-                case 'kept_appointment':
+                case 'exam_report':
                     $queryFilters .= " and `careconsole`.`stage_id` = 4 ";
                     break;
                 case 'cancelled':
