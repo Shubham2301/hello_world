@@ -69,7 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('careconsole/bucketpatients', 'CareConsole\CareConsoleController@getBucketPatients');
         Route::get('/careconsole/patient/records', 'CareConsole\CareConsoleController@getPatientRecords');
         Route::resource('careconsole', 'CareConsole\CareConsoleController');
-		Route::get('/careconsole/action/practiceproviders', 'CareConsole\CareConsoleController@practiceProviders');
+        Route::get('/careconsole/action/practiceproviders', 'CareConsole\CareConsoleController@practiceProviders');
     });
 
     Route::get('appointments/schedule', 'Appointment\AppointmentController@schedule');
@@ -81,6 +81,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('directmail/beginimpersonate', 'DirectMail\DirectMailController@beginImpersonate');
     Route::post('directmail/endimpersonate', 'DirectMail\DirectMailController@endImpersonate');
 
+    Route::get('getauditreports', 'AuditReportController@getReports');
+    Route::get('auditreports', 'AuditReportController@index');
     Route::resource('directmail', 'DirectMail\DirectMailController@index');
     Route::resource('patients', 'Patient\PatientController');
     Route::resource('providers', 'Practice\ProviderController');
@@ -107,7 +109,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('deleteFilesFolders', 'FileExchange\FileExchangeController@deleteFile');
     Route::get('trash', 'FileExchange\FileExchangeController@showtrash');
     Route::post('shareFilesFolders', 'FileExchange\FileExchangeController@shareFilesFolders');
-	Route::post('restoreFilesFolders', 'FileExchange\FileExchangeController@restoreFilesFolders');
+    Route::post('restoreFilesFolders', 'FileExchange\FileExchangeController@restoreFilesFolders');
 
     //Ccda routes
     Route::post('/import/ccda', 'CcdaController@saveCcda');
@@ -177,7 +179,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/patients/create', 'Patient\PatientController@create');
     Route::get('/patient/destroy', 'Patient\PatientController@destroy');
-	Route::get('/patient/editfromreferral', 'Patient\PatientController@editFromReferral');
+    Route::get('/patient/editfromreferral', 'Patient\PatientController@editFromReferral');
 
     Route::resource('reports', 'ReportingController');
     Route::get('reports/generate', 'ReportingController@generateReports');

@@ -79,9 +79,12 @@ class ActionService
 				}
 
 				$provider = User::find($appointment->provider_id);
+				$scheduledTo = ' ';
+				if($provider){
 				$scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+				}
 				$newNote = $scheduledTo . '</br>' . $appointment->start_datetime . '</br>' . $appointment->appointmenttype;
-				$updatedNote = $newNote.'</br>'. $notes;
+				$updatedNote = $newNote.'</br></br>'. $notes;
 				$appointment->notes = $updatedNote;
 
 				$contact->notes = $updatedNote;
