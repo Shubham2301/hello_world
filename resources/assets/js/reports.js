@@ -6,6 +6,7 @@ google.load("visualization", "1.1", {
 });
 
 var filterOptions;
+
 function resetFilter() {
     filterOptions = {
         "type": "none",
@@ -13,35 +14,28 @@ function resetFilter() {
         "appointment_status": "none",
         "disease_type": "none",
         "severity_scale": "none",
-        "incomming_referrals":
-            {
-                "appointment_type": "none",
-                "referred_by":
-                    {
-                        "type": "none",
-                        "name": "none"
-                }
-
-        }
-    ,
-        "patient_demographics":
-            {
-                "age": "none",
-                "gender": "none",
-                "insurance_type": "none"
-        }
-    ,
-        "referred_to":
-            {
+        "incomming_referrals": {
+            "appointment_type": "none",
+            "referred_by": {
                 "type": "none",
                 "name": "none"
+            }
+
+        },
+        "patient_demographics": {
+            "age": "none",
+            "gender": "none",
+            "insurance_type": "none"
+        },
+        "referred_to": {
+            "type": "none",
+            "name": "none"
         }
 
     };
     if ($('.historical_header').hasClass('active')) {
         filterOptions.type = "historical";
-    }
-    else {
+    } else {
         filterOptions.type = "real-time";
     }
 
@@ -243,7 +237,7 @@ $(document).ready(function () {
         if ($('li.active').hasClass('referred_by')) {
             $('.chart').addClass('referred_by');
             $('.chart').removeClass('referred_to');
-        } else if($('li.active').hasClass('referred_to')) {
+        } else if ($('li.active').hasClass('referred_to')) {
             $('.chart').addClass('referred_to');
             $('.chart').removeClass('referred_by');
         }
@@ -263,10 +257,10 @@ $(document).ready(function () {
         format: 'MM/DD/YYYY',
         maxDate: cur_date,
     });
-    $('#end_date').on('change', function(){
+    $('#end_date').on('change', function () {
         getReport();
     });
-    $('#start_date').on('change', function(){
+    $('#start_date').on('change', function () {
         getReport();
     });
     resetFilter();
@@ -414,13 +408,17 @@ function renderAgeDemographics(data) {
 
 function renderReferredTo(data) {
 
+
+    $('.historical_graph_print').removeClass('hide_without_print');
+    drawPrintReferredToChart(data);
+    $('.historical_graph_print').addClass('hide_without_print');
     if ($('.historical_header').hasClass('active')) {
         if ($('.chart').hasClass('referred_to')) {
             {
                 drawReferredToChart(data);
             }
         }
-    } else if(data.total !== 0) {
+    } else if (data.total !== 0) {
         var type = data.type;
         data = data.data;
         var content = '';
@@ -442,11 +440,15 @@ function renderReferredTo(data) {
 
 function renderReferredBy(data) {
 
+
+    $('.historical_graph_print').removeClass('hide_without_print');
+    drawPrintReferredByChart(data);
+    $('.historical_graph_print').addClass('hide_without_print');
     if ($('.historical_header').hasClass('active')) {
         if ($('.chart').hasClass('referred_by')) {
             drawReferredByChart(data);
         }
-    } else if(data.total !== 0) {
+    } else if (data.total !== 0) {
         var type = data.type;
         data = data.data;
         var content = '';
@@ -577,6 +579,7 @@ function drawAgeChart(dataArray) {
 
     chart.draw(data, options);
 }
+
 function formatAgeData(data) {
     var ageData = [[]];
     ageData[0] = ['Range', 'No. of Patients'];
@@ -587,6 +590,7 @@ function formatAgeData(data) {
 
     return ageData;
 }
+
 function clearHtml() {
     $('#status_of_patients').html("");
     $('#population_report_options').html("");
@@ -604,6 +608,7 @@ function clearHtml() {
     $('#linechart_material').html("");
 
 }
+
 function drawReferredByChart(data) {
     var data_hospital = new google.visualization.DataTable();
     data_hospital.addColumn('string', 'Hospital Name');
@@ -724,4 +729,104 @@ function drawReferredToChart(data) {
         addFilter(type, id, meta);
         getReport();
     }
+}
+
+function drawPrintReferredByChart(data) {
+    var data_hospital = new google.visualization.DataTable();
+    data_hospital.addColumn('string', 'Hospital Name');
+    data_hospital.addColumn('number', 'Referals');
+
+    var type = 'referred_by_' + data.type;
+    $('.print_chart_referred_by').attr('data-type', type);
+    data = data.data;
+    if (!data) {
+
+    } else {
+        for (var i = 0; i < data.length; i++) {
+            data_hospital.addRow([data[i].name, data[i].count]);
+        }
+    }
+
+    var options = {
+        legend: {
+            position: 'none'
+        },
+        chartArea: {
+            width: '90%',
+            height: '75%'
+        },
+        hAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        vAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        colors: ['#00a99d'],
+        fontName: 'Montserrat',
+        pointSize: 10,
+        pointShape: 'circle',
+        axes: {
+            x: {
+                0: {
+                    side: 'bottom',
+                    label: ""
+                }
+            }
+        },
+    };
+    var chart_hospital = new google.visualization.ColumnChart(document.getElementById('linechart_material_referred_by'));
+    chart_hospital.draw(data_hospital, options);
+
+}
+
+function drawPrintReferredToChart(data) {
+    var data_hospital = new google.visualization.DataTable();
+    data_hospital.addColumn('string', 'Hospital Name');
+    data_hospital.addColumn('number', 'Referals');
+    var type = 'referred_to_' + data.type;
+    $('.print_chart_referred_to').attr('data-type', type);
+    data = data.data;
+    if (!data) {
+
+    } else {
+        for (var i = 0; i < data.length; i++) {
+            data_hospital.addRow([data[i].name, data[i].count]);
+        }
+    }
+    var options = {
+        legend: {
+            position: 'none'
+        },
+        chartArea: {
+            width: '90%',
+            height: '75%'
+        },
+        hAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        vAxis: {
+            textStyle: {
+                color: '#4d4d4d'
+            },
+        },
+        colors: ['#00a99d'],
+        fontName: 'Montserrat',
+        pointSize: 10,
+        axes: {
+            x: {
+                0: {
+                    side: 'bottom',
+                    label: ""
+                }
+            }
+        },
+    };
+    var chart_hospital = new google.visualization.ColumnChart(document.getElementById('linechart_material_referred_to'));
+    chart_hospital.draw(data_hospital, options);
 }
