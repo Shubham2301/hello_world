@@ -1,4 +1,4 @@
-<div class="row height header">
+<div class="row height header no_print">
     <div class="col-xs-3 hidden-xs header-left">
         <div class="col-xs-8 col-xs-offset-2 network_logo">
             @if( Auth::check()  && session('user-level') > 1 )

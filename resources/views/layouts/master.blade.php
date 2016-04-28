@@ -30,17 +30,17 @@
             @include('layouts.header')
             @show
             <div class="row height content @if(!Auth::check()) @endif">
-                <div class="hidden-xs col-sm-3 content-left @if(!Auth::check()) {{'ocuhub_logo_grey'}} @endif">
+                <div class="hidden-xs col-sm-3 content-left @if(!Auth::check()) {{'ocuhub_logo_grey'}} @endif no_print">
                     @yield('sidebar')
                 </div>
-                <div class="col-xs-12 col-sm-9 content-right @if(!Auth::check()) {{'ocuhub_logo_blue'}} @endif">
+                <div class="col-xs-12 col-sm-9 content-right @if(!Auth::check()) {{'ocuhub_logo_blue'}} @endif print_col_width">
                     @yield('content')
                     @include('announcements')
                 </div>
                 @include('layouts.alert')
                 @include('layouts.timeout')
             </div>
-            <div class="row height footer">
+            <div class="row height footer no_print">
                 @section('footer')
                 @include('layouts.footer')
                 @show

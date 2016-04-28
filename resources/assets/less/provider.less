@@ -52,15 +52,17 @@ Section : Imports
     padding-top: 4px;
 }
 .search_filter_item {
-    background: #f5f5f5;
+    background: transparent;
     padding: 2px 5px 2px 5px;
-    border: dashed 2px;
+    border: solid 1px #f2f2f2;
+    color: #f2f2f2;
     border-radius: 5px;
     margin: 2px;
     &>.remove_option {
-        color: red;
+        color: #f2f2f2;
         cursor: pointer;
         margin: 1px;
+        margin-left: 2px;
     }
 }
 .add_search_option {
@@ -209,6 +211,7 @@ Section : Imports
 #practice_listing {
     width: 85%;
     margin: 1em auto;
+    overflow-y: auto;
 }
 .practice_list {
     overflow-y: scroll;

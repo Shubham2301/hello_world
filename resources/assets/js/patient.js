@@ -98,7 +98,6 @@ $(document).ready(function() {
         $('#select_provider_button').removeClass('active');
         $('#select_provider_button').attr('data-id', 0);
         $('#import_patients').show();
-        //        $('.patient_admin_search').addClass('active');
         $('.patient_admin_index_header').removeClass('hide');
         $('.patient_admin_back').removeClass('active');
     });
@@ -156,16 +155,6 @@ $(document).ready(function() {
         $('#search_patient_input').val('');
         loadAllPatients();
     });
-    //    $('.p_left').on('click', function() {
-    //        var searchdata = [];
-    //        if (currentpage > 1)
-    //            getPatients(searchdata, currentpage - 1);
-    //    });
-    //    $('.p_right').on('click', function() {
-    //        var searchdata = [];
-    //        if (currentpage < lastpage)
-    //            getPatients(searchdata, currentpage + 1);
-    //    });
     $('#checked_all_patients').on('change', function() {
         if ($(this).is(":checked")) {
             $('.patient_search_content').each(function() {
@@ -277,14 +266,18 @@ $(document).ready(function() {
 
 	$('.edit_patient_button').on('click', function(){
 		var patientID = $('.patient_info').attr('data-id');
-		$('#form_patient_id').val(patientID);
-		$('#form_select_provider').attr('action', "/patient/editfromreferral");
-		$('#form_select_provider').submit();
+		if ($('#from_admin').val())
+		{
+			window.location = '/administration/patients/edit/' + patientID + '';
+		}
+		else{
+			$('#form_patient_id').val(patientID);
+			$('#form_select_provider').attr('action', "/patient/editfromreferral");
+			$('#form_select_provider').submit();
+		}
 	});
 
 });
-//var currentpage = 1;
-//var lastpage = 0;
 var flag = 0;
 var showpage = 1;
 var lastPage = 0;
@@ -438,14 +431,7 @@ function getPatients(formData, page) {
                     patients.forEach(function(patient) {
                         content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3" style="display:inline-flex"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + patient.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + patient.lname + ', ' + patient.fname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p><div><a href="/providers?referraltype_id=6&action=schedule_appointment&patient_id=' + patient.id + '" data-toggle="tooltip" title="Schedule Patient" data-placement="bottom"><img class="action_dropdown_img" src="' + active_img + '" alt=""></a></div></p><p class="editPatient_from_row arial_bold" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepatient_from_row"><img src="' + delete_img + '" alt="" class="removepatient_img" data-toggle="tooltip" title="Delete Patient" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     });
-
-                    //                    currentpage = patients[0]['currentPage'];
-                    //                    lastpage = patients[0]['lastpage'];
-                    //                    var result = currentpage * 5;
-                    //                    if (result > patients[0]['total'])
-                    //                        result = patients[0]['total'];
                     $('.patient_list').addClass('active');
-                    //                    $('.page_info').text(result + ' of ' + patients[0]['total']);
                     if (showpage > 1)
                         $('.patient_search_content').append(content);
                     else
