@@ -188,24 +188,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('careconsole_reports/show', 'ReportsController@show');
 
     Route::get('getlandingpages', 'Admin\UserController@getLandingPagebyRole');
-
-	Route::get('/getpracticelocations', function(){
-		$locations = myocuhub\Models\PracticeLocation::all();
-
-		foreach($locations as $location){
-			$address = urlencode($location->addressline1.' '.$location->addressline2.' '.$location->city.' '.$location->zip.' '.$location->state);
-			try{
-				$json = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')),true);
-			}catch(Exception $e){
-				dd($e->getMessage());
-			}
-			if(isset($json['results'][0]['geometry']['location']['lat'])){
-				$location->latitude = $json['results'][0]['geometry']['location']['lat'];
-				$location->longitude = $json['results'][0]['geometry']['location']['lng'];
-			}
-			$location->save();
-		}
-
-		return 'successful';
-	});
 });
