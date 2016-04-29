@@ -11,10 +11,6 @@ use DateTime;
 
 class AuditReportController extends Controller
 {
-    public function __construct()
-    {
-
-    }
 
     public function index()
     {
@@ -31,8 +27,12 @@ class AuditReportController extends Controller
 
     public function getReports(Request $request)
     {
+
         $networkId = $request->input('network_id') ?: null;
-        $logs = AuditLog::reports($networkId);
+
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+        $logs = AuditLog::reports($networkId, $startDate, $endDate);
 
         $audit = [];
 
