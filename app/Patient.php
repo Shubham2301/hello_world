@@ -2,12 +2,32 @@
 
 namespace myocuhub;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
+use myocuhub\Models\PracticeUser;
 
 class Patient extends Model {
 
-	protected $fillable = ['title', 'firstname', 'lastname', 'workphone', 'homephone', 'cellphone', 'email', 'addressline1', 'addressline2', 'city',
-		'zip', 'lastfourssn', 'birthdate', 'gender', 'insurancecarrier', 'country', 'preferredlanguage', 'state'];
+	protected $fillable = [
+	'title', 
+	'firstname', 
+	'lastname', 
+	'workphone', 
+	'homephone', 
+	'cellphone', 
+	'email', 
+	'addressline1', 
+	'addressline2', 
+	'city',
+	'zip', 
+	'lastfourssn',
+	'birthdate',
+	'gender',
+	'insurancecarrier',
+	'country',
+	'preferredlanguage',
+	'state'
+	];
 	public static function getPatients($filters) {
 
 		$query = self::where(function ($query) use ($filters) {
@@ -60,7 +80,8 @@ class Patient extends Model {
 				->orderBy('lastname', 'asc')
 				->paginate(200);
 				//->get();
-		} else {
+		}
+		elseif (session('user-level') == 2) {
 			return $query
 				->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
 				->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
@@ -69,6 +90,17 @@ class Patient extends Model {
 				->paginate(200);
 				//->get();
 		}
+		else {
+			$practiceUser= PracticeUser::where('user_id', Auth::user()->id)->first();
+			return $query
+				->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
+				->leftjoin('practice_patient', 'patients.id', '=', 'practice_patient.patient_id')
+				->where('practice_patient.practice_id', $practiceUser['practice_id'])
+				->orderBy('lastname', 'asc')
+				->paginate(200);
+				//->get();
+		}
+		
 
 	}
 
