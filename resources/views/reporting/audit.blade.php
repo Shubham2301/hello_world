@@ -27,7 +27,7 @@
     <span class="input_field">Start Date<input type="text" id="start_date"></span>
     <span class="input_field">End Date<input type="text" id="end_date"></span>
     <span class="input_field">Select Network
-    <select class="network_dropdown" id="select_network">
+    <select class="network_dropdown audit_report_network" id="select_network">
         <option value="">All</option>
         @foreach($data['networks'] as $network)
         <option value="{{ $network['id'] }}">{{ $network['name'] }}</option>
