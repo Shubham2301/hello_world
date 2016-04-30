@@ -77,6 +77,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('providers/insurancelist', 'Practice\ProviderController@getInsuranceList');
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
     Route::get('providers/previous', 'Practice\ProviderController@getPreviousProviders');
+	Route::get('providers/nearby', 'Practice\ProviderController@getNearByProviders');
     Route::get('directmail/beginimpersonate', 'DirectMail\DirectMailController@beginImpersonate');
     Route::post('directmail/endimpersonate', 'DirectMail\DirectMailController@endImpersonate');
 
