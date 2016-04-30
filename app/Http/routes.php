@@ -83,6 +83,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('getauditreports', 'AuditReportController@getReports');
     Route::get('auditreports', 'AuditReportController@index');
+    Route::get('group/guest/direct-mail', 'DirectMail\DirectMailController@index');
     Route::resource('directmail', 'DirectMail\DirectMailController@index');
     Route::resource('patients', 'Patient\PatientController');
     Route::resource('providers', 'Practice\ProviderController');

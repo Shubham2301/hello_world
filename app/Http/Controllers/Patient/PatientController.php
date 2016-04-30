@@ -13,6 +13,8 @@ use myocuhub\Models\Ccda;
 use myocuhub\Models\ImportHistory;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
+use myocuhub\Models\PracticePatient;
+use myocuhub\Models\PracticeUser;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
@@ -137,6 +139,17 @@ class PatientController extends Controller
 			$careconsole->stage_updated_at = $date->format('Y-m-d H:i:s');
 			$careconsole->entered_console_at = $date->format('Y-m-d H:i:s');
 			$careconsole->save();
+
+			if( session('user-level') == 3 ) {
+				$practiceUser= PracticeUser::where('user_id', $userID)->first();
+				if($practiceUser){
+					$practicePatient = new PracticePatient;
+					$practicePatient->patient_id = $patient->id;
+					$practicePatient->practice_id = $practiceUser['practice_id'];
+                    $practicePatient->save();
+				}
+			}
+
 
 			$action = "new patient ($patient->id) created and added to console ($careconsole->id) ";
 			$description = '';

@@ -19,11 +19,16 @@ class MakeAuditEntry extends Event
      *
      * @return void
      */
-    public function __construct($action, $description = NULL, $filename = NULL, $ip = NULL)
+    public function __construct($action, $description = NULL, $filename = NULL, $ip = NULL, $userId = NULL)
     {
         $audit = new AuditLog;
 
-        $audit->user_id = Auth::user()->id;
+         if($user = Auth::user()){
+            $audit->user_id = $user->id;
+         }
+         else{
+            $audit->user_id = $userId;
+         }
         $audit->action = $action;
         $audit->description = $description;
         $audit->filename = $filename;
