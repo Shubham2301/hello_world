@@ -33,6 +33,7 @@ class Patient extends Model {
 		$query = self::where(function ($query) use ($filters) {
 			foreach ($filters as $filter) {
 				$query->where(function ($query) use ($filter) {
+
 					switch ($filter['type']) {
 						case 'name':
 							$query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
@@ -142,4 +143,20 @@ class Patient extends Model {
 			->get();
 	}
 
+	public function getLocation(){
+		$address = urlencode($this->addressline1.' '.$this->addressline2.' '.$this->city.' '.$this->state.' '.$this->zip.' '.$this->country);
+		$data = [];
+		$data['latitude'] = '';
+		$data['longitude'] = '';
+		try{
+			$patientLocation = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')),true);
+		}catch(\Exception $e){
+			$data['error'] = $e->getMessage();
+		}
+		if(isset($patientLocation['results'][0]['geometry']['location']['lat'])){
+			$data['latitude'] = $patientLocation['results'][0]['geometry']['location']['lat'];
+			$data['longitude'] = $patientLocation['results'][0]['geometry']['location']['lng'];
+		}
+		return $data;
+	}
 }

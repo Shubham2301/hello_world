@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use myocuhub\Models\UserLevel;
 use myocuhub\User;
-
+use Illuminate\Support\Facades\DB;
 class User extends Model implements AuthenticatableContract,
 AuthorizableContract,
 CanResetPasswordContract
@@ -155,7 +155,6 @@ CanResetPasswordContract
             ->where('practice_id', $practice_id)
             ->where('active', '1')
             ->get(['*', 'users.*']);
-
     }
     public static function networkUserById($network_id)
     {
@@ -237,4 +236,25 @@ CanResetPasswordContract
             ->get(['users.id', 'users.name', 'users.sesemail']);
     }
 
+	public static function getNearByProviders($lat, $lng, $range=10){
+	$query =  self::query()
+		->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
+		->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
+		->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
+		->where('usertype_id', 1)
+		->select(DB::raw('*, ( 6371 * acos( cos( radians('.$lat.') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$lng.') ) + sin( radians('.$lat.') ) * sin( radians( latitude ) ) ) ) AS distance'))
+		->having('distance', '<=', $range)
+		->orderBy('distance','ASC');
+	if (session('user-level') == 1) {
+		return $query
+			->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
+			->get();
+	} else {
+		return $query
+			->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
+			->where('practice_network.network_id', session('network-id'))
+			->get();
+	}
+
+ }
 }
