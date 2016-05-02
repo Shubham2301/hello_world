@@ -21,75 +21,38 @@
                     <!-- <li>
                         <a href="#" data-toggle="tooltip" title="Patients Records" data-placement="right"><img src="{{URL::asset('images/sidebar/records.png')}}" class="drop_image"></a>
                     </li>
- -->                    @can('care-cordination')
+ -->@can('care-cordination')
                     <li>
                         <a href="/careconsole" data-toggle="tooltip" title="Care Console" data-placement="right"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="drop_image"></a>
                     </li>
-                    @endcan
-                    @if(2 == Auth::user()->usertype_id)
+                    @endcan @if(2 == Auth::user()->usertype_id)
                     <li>
                         <a href="/administration/patients" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a>
                     </li>
-                    @endif
-                    @can('view-reports')
+                    @endif @can('view-reports')
                     <li>
-                        <a href="/careconsole_reports"  data-toggle="tooltip" title="Reports" data-placement="right"><img src="{{URL::asset('images/sidebar/reports.png')}}" class="drop_image"></a>
+                        <a href="/careconsole_reports" data-toggle="tooltip" title="Reports" data-placement="right"><img src="{{URL::asset('images/sidebar/reports.png')}}" class="drop_image"></a>
                     </li>
                     @endcan
                 </ul>
             </div>
         </div>
         <div>
-        <h3 class="title"> Administration</h3></div>
+            <h3 class="title"> Administration</h3></div>
     </div>
-    <!--
-    <div class="row admin @yield('patients-active')">
-        <a class="sidebar-item" href="/administration/patients">
-            <div class="col-lg-6 col-md-6 patients font_change">Patients</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/patient.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/patient_add.png')}}" class="image"></span></div></a>
-        </div>
-        <div class="row admin @yield('practices-active')">
-            <a class="sidebar-item" href="/administration/practices">
-                <div class="col-lg-6 col-md-6 users font_change">Practices</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/users.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/users_add.png')}}" class="image"></span></div></a>
-            </div>
-            <div class="row admin @yield('providers-active')">
-                <a class="sidebar-item" href="/administration/providers">
-                    <div class="col-lg-6 col-md-6 users font_change">Providers</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/users.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/users_add.png')}}" class="image"></span></div></a>
-                </div>
-                <div class="row admin @yield('users-active')">
-                    <a class="sidebar-item" href="/administration/users">
-                        <div class="col-lg-6 col-md-6 practice font_change">Users</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/practice.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/practice_add.png')}}" class="image"></span></div></a>
-                    </div>
-                    -->
-                    <!--
-                    <div class="row admin @yield('roles-active')">
-                        <a class="sidebar-item" href="/administration/roles">
-                            <div class="col-lg-6 col-md-6 files font_change">Roles</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/files.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/files_add.png')}}" class="image"></span></div></a>
-                        </div>
-                        -->
-                        <!--
-                        <div class="row admin @yield('roles-active')">
-                            <a class="sidebar-item" href="/administration/networks">
-                                <div class="col-lg-6 col-md-6 files font_change">Networks</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/files.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/files_add.png')}}" class="image"></span></div></a>
-                            </div>
-                            -->
-                            <!--
-                            <div class="row admin @yield('permissions-active')">
-                                <a class="sidebar-item" href="/administration/permissions">
-                                    <div class="col-lg-6 col-md-6 files font_change">Permissions</div><div class="col-lg-6 col-md-6 sidebar-item-left"><span><img src="{{URL::asset('images/sidebar/files.png')}}" class="patient"></span>&nbsp;add<span><img src="{{URL::asset('images/sidebar/files_add.png')}}" class="image"></span></div></a>
-                                </div>
-                                -->
-                                <ul class="sidebar_item_list">
-                                    <li class="admin_sidebar_menu_item">
-                                        <a class="sidebar_button_subsection subsection_admin_add" href="/administration/patients/create">
-                                            <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-patient-icon.png')}}" style="width:100%"></span>
-                                            <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-patient-icon-hover.png')}}" style="width:100%"></span>
-                                            <span class="add_text">add<span class="arial_bold" style="color:#de3c4b;">+</span></span>
-                                        </a>
-                                        <a class="sidebar_button_subsection subsection_admin_title patients" href="/administration/patients" id="{{ array_key_exists('patient_active', $data) ? 'button_active' : '' }}">
-                                            <span>Patients</span>
-                                        </a>
-                                    </li>
-                                        <!-- <li class="admin_sidebar_menu_item">
+
+    <ul class="sidebar_item_list">
+        <li class="admin_sidebar_menu_item">
+            <a class="sidebar_button_subsection subsection_admin_add" href="/administration/patients/create">
+                <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-patient-icon.png')}}" style="width:100%"></span>
+                <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-patient-icon-hover.png')}}" style="width:100%"></span>
+                <span class="add_text">add<span class="arial_bold" style="color:#de3c4b;">+</span></span>
+            </a>
+            <a class="sidebar_button_subsection subsection_admin_title patients" href="/administration/patients" id="{{ array_key_exists('patient_active', $data) ? 'button_active' : '' }}">
+                <span>Patients</span>
+            </a>
+        </li>
+        <!-- <li class="admin_sidebar_menu_item">
                                             <a class="sidebar_button_subsection subsection_admin_add" href="/administration/providers">
                                                 <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-provider-icon.png')}}" style="width:100%"></span>
                                                 <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-provider-icon-hover.png')}}" style="width:100%"></span>
@@ -99,39 +62,46 @@
                                                 <span>Providers</span>
                                             </a>
                                         </li> -->
-                                    @if(2 >= Auth::user()->level)
-                                    <li class="admin_sidebar_menu_item">
-                                        <a class="sidebar_button_subsection subsection_admin_add" href="/administration/practices/create">
-                                            <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-practice-icon.png')}}" style="width:100%"></span>
-                                            <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-practice-icon-hover.png')}}" style="width:100%"></span>
-                                            <span class="add_text">add<span class="arial_bold" style="color:#7e6551;">+</span></span>
-                                        </a>
-                                        <a class="sidebar_button_subsection subsection_admin_title practices" href="/administration/practices" id="{{ array_key_exists('practice_active', $data) ? 'button_active' : '' }}">
-                                            <span>Practices</span>
-                                        </a>
-                                    </li>
-                                    @endif
-                                    @if(1 >= Auth::user()->level)
-                                    <li class="admin_sidebar_menu_item">
-                                        <a class="sidebar_button_subsection subsection_admin_add" href="/administration/networks/create">
-                                            <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-network-icon.png')}}" style="width:100%"></span>
-                                            <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-network-icon-hover.png')}}" style="width:100%"></span>
-                                            <span class="add_text">add<span class="arial_bold" style="color:#808080;">+</span></span>
-                                        </a>
-                                        <a class="sidebar_button_subsection subsection_admin_title networks" href="/administration/networks" id="{{ array_key_exists('network_active', $data) ? 'button_active' : '' }}">
-                                            <span>Networks</span>
-                                        </a>
-                                    </li>
-                                    @endif
-                                    <li class="admin_sidebar_menu_item">
-                                        <a class="sidebar_button_subsection subsection_admin_add" href="/administration/users/create">
-                                            <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-user-icon.png')}}" style="width:100%"></span>
-                                            <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-user-icon-hover.png')}}" style="width:100%"></span>
-                                            <span class="add_text">add<span class="arial_bold" style="color:#6b31d7;">+</span></span>
-                                        </a>
-										<a class="sidebar_button_subsection subsection_admin_title users" href="/administration/users" id="{{ array_key_exists('user_active', $data) ? 'button_active' : '' }}">
-                                            <span>Users</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+        @if(2 >= Auth::user()->level)
+        <li class="admin_sidebar_menu_item">
+            <a class="sidebar_button_subsection subsection_admin_add" href="/administration/practices/create">
+                <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-practice-icon.png')}}" style="width:100%"></span>
+                <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-practice-icon-hover.png')}}" style="width:100%"></span>
+                <span class="add_text">add<span class="arial_bold" style="color:#7e6551;">+</span></span>
+            </a>
+            <a class="sidebar_button_subsection subsection_admin_title practices" href="/administration/practices" id="{{ array_key_exists('practice_active', $data) ? 'button_active' : '' }}">
+                <span>Practices</span>
+            </a>
+        </li>
+        @endif @if(1 >= Auth::user()->level)
+        <li class="admin_sidebar_menu_item">
+            <a class="sidebar_button_subsection subsection_admin_add" href="/administration/networks/create">
+                <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-network-icon.png')}}" style="width:100%"></span>
+                <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-network-icon-hover.png')}}" style="width:100%"></span>
+                <span class="add_text">add<span class="arial_bold" style="color:#808080;">+</span></span>
+            </a>
+            <a class="sidebar_button_subsection subsection_admin_title networks" href="/administration/networks" id="{{ array_key_exists('network_active', $data) ? 'button_active' : '' }}">
+                <span>Networks</span>
+            </a>
+        </li>
+        @endif
+        <li class="admin_sidebar_menu_item">
+            <a class="sidebar_button_subsection subsection_admin_add" href="/administration/users/create">
+                <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-user-icon.png')}}" style="width:100%"></span>
+                <span class="img_on_hover"><img src="{{URL::asset('images/sidebar/admin-user-icon-hover.png')}}" style="width:100%"></span>
+                <span class="add_text">add<span class="arial_bold" style="color:#6b31d7;">+</span></span>
+            </a>
+            <a class="sidebar_button_subsection subsection_admin_title users" href="/administration/users" id="{{ array_key_exists('user_active', $data) ? 'button_active' : '' }}">
+                <span>Users</span>
+            </a>
+        </li>
+        @if(1 >= Auth::user()->level)
+        <li class="admin_sidebar_menu_item">
+            <a class="files_sidebar_menu_item" href="/auditreports">
+                <span class="sidebar_img"><img src="{{URL::asset('images/sidebar/reports.png')}}" style="width:90%;height:90%;"></span>
+                <span class="sidebar_title">Admin Reports</span>
+            </a>
+        </li>
+        @endif
+    </ul>
+</div>

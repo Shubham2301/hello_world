@@ -21,6 +21,15 @@ class RoleMiddleware
             return $next($request);
         }
 
+        if ($role == 'admin_report') {
+            if (session('user-level') == 1) {
+                return $next($request);
+            }
+            else {
+                return redirect('/home');
+            }
+        }
+
         if (!$request->user()->hasRole($role) && session('user-level') >= $userLevel) {
             $request->session()->flash('failure', 'Unauthorized Access!');
             if (!$this->redirectToLandingPage()) {
