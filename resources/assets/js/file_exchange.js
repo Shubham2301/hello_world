@@ -1,6 +1,7 @@
 $(document).ready(function() {
-    if ($('#current_view').val() === 'trash')
-        $('.file_exchange_navbar_content_left').hide();
+	if ($('#current_view').val() != 'index'){
+		$('.file_exchange_navbar_content_left').hide();
+	}
 
     $('[data-toggle="tooltip"]').tooltip();
     $('#details').on('click', function() {
@@ -51,6 +52,11 @@ $(document).ready(function() {
         } else if ($('.checkbox:checkbox:checked').length !== 0 && !$('.file_exchange_navbar_content_right').hasClass('active')) {
             $('.file_exchange_navbar_content_right').addClass('active');
         }
+
+		if ($('#current_view').val() === 'sharedWithMe') {
+			$('.share-button').show();
+			$('.trash-button').hide();
+		}
         if ($('.checkbox:checkbox:checked').length > 1) {
             $('.download-button').hide();
             $('.info-button').hide();
@@ -68,6 +74,8 @@ $(document).ready(function() {
             $('.restore-button').show();
             //$('.trash-button').attr('data-original-title', 'Delete Permanently');
         }
+
+
 
     });
     $('.share-button').on('click', function() {
@@ -108,10 +116,10 @@ $(document).ready(function() {
         }
     });
     $('.restore_item').on('click', function() {
-		$('p.alert_message').text('You have to restore first');
-		$('#alert').modal('show');
+        $('p.alert_message').text('You have to restore first');
+        $('#alert').modal('show');
     });
-	$('.restore-button').on('click', function() {
+    $('.restore-button').on('click', function() {
         var files = [];
         var folders = [];
         $.each($('.folder-check.checkbox:checkbox:checked'), function(index, val) {
@@ -120,12 +128,13 @@ $(document).ready(function() {
         $.each($('.file-check.checkbox:checkbox:checked'), function(index, val) {
             files.push($(this).attr('data-id'));
         });
-		$('#restore_files').val(files);
-		$('#restore_folders').val(folders);
-		$('#restore_files_folders').submit();
+        $('#restore_files').val(files);
+        $('#restore_folders').val(folders);
+        $('#restore_files_folders').submit();
 
     });
 });
+
 
 function showInfo(id, name) {
     var formData = {

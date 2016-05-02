@@ -83,8 +83,9 @@ class FileExchangeController extends Controller {
 		}
 
 		$breadcrumbs = $this->getBreadcrumbs($request);
+		$accessLink = '/file_exchange';
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'index']);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'index', 'accessLink' => $accessLink]);
 	}
 
 	public function folderDetails($folder_id = 0) {
@@ -228,18 +229,14 @@ class FileExchangeController extends Controller {
 
 		$userId = Auth::user()->id;
 
-		if ($request->id && Folder::find($request->id)->sharedWithUser($userId)) {
-			return $this->index($request);
-		}
-
-		$sharedfolders = FolderShare::getSharedFoldersForUser($userId); //, $request->id);
+		$sharedfolders = FolderShare::getSharedFoldersForUser($userId, $request->id);
 
 		$folderlist = array();
 
 		$i = 0;
 
 		foreach ($sharedfolders as $sharedfolder) {
-			$folder = Folder::find($sharedfolder->folder_id);
+			$folder = Folder::find($sharedfolder['folder_id']);
 			if (!$folder->status) {
 				continue;
 			}
@@ -257,14 +254,14 @@ class FileExchangeController extends Controller {
 			return $value['name'];
 		}));
 
-		$sharedfiles = FileShare::getSharedFilesForUser($userId); //, $request->id);
+		$sharedfiles = FileShare::getSharedFilesForUser($userId, $request->id);
 
 		$filelist = array();
 
 		$j = 0;
 
 		foreach ($sharedfiles as $sharedfile) {
-			$file = File::find($sharedfile->file_id);
+			$file = File::find($sharedfile['file_id']);
 			if (!$file->status) {
 				continue;
 			}
@@ -310,7 +307,8 @@ class FileExchangeController extends Controller {
 
 		$breadcrumbs = $this->getBreadcrumbs($request);
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'sharedWithMe']);
+		$accessLink = '/sharedWithMe';
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'sharedWithMe', 'accessLink' => $accessLink]);
 	}
 
 	public function recentShareChanges(Request $request) {
@@ -401,8 +399,8 @@ class FileExchangeController extends Controller {
 		}
 
 		$breadcrumbs = $this->getBreadcrumbs($request);
-
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty, 'openView' => 'trash']);
+		$accessLink = '#';
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty, 'openView' => 'trash', 'accessLink' => $accessLink ]);
 	}
 	public function shareFilesFolders(Request $request) {
 

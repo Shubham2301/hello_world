@@ -30,9 +30,9 @@
             <div class="folder_path active">
                 <!-- Folder 2 > Subfolder 1 -->
                 @if(sizeof($breadcrumbs)>0)
-                <a href="/file_exchange"> {{ 'All' }}</a> @endif @for($i = 0; $i
+                <a href="{{$accessLink}}"> {{ 'All' }}</a> @endif @for($i = 0; $i
                 < sizeof($breadcrumbs); $i++) <span>&nbsp;>&nbsp;</span>
-                    <a href="/file_exchange?id={{ $breadcrumbs[$i]['id'] }}"> {{ $breadcrumbs[$i]['name'] }}</a> @endfor
+			<a href="{{$accessLink}}?id={{ $breadcrumbs[$i]['id'] }}"> {{ $breadcrumbs[$i]['name'] }}</a> @endfor
             </div>
         </div>
     </div>
@@ -50,10 +50,10 @@
             </div>
             <div class="col-xs-7 no-padding">
 				@if($openView != 'trash')
-                <a href="file_exchange?id={{$folder['id']}}"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $folder['name'] }}</a>
-                @else
+				<a href="{{$accessLink}}?id={{$folder['id']}}"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $folder['name'] }}</a>
+				@else
 				<a href="#" data-id="{{$folder['id']}}" class="restore_item"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $folder['name'] }}</a>
-                @endif
+				@endif
             </div>
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
