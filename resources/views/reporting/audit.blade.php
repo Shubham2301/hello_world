@@ -8,7 +8,7 @@
 @endsection
 
 @section('sidebar')
-    @include('layouts.sidebar')
+   @include('admin.sidebar')
 @endsection
 
 @section('content')
@@ -23,7 +23,13 @@
     </div>
     @endif
 <span class="report_header">
-    <span class="arial_bold title">Audit Reports</span>
+    <span class="arial_bold title">Admin Reports</span>
+    <span class="input_field">
+    <select class="network_dropdown audit_report_network" id="select_report_type">
+        <option value="audit_report">Audit Report</option>
+        <option value="impersonation_report">Impersonation Report</option>
+    </select>
+    </span><br>
     <span class="input_field">Start Date<input type="text" id="start_date"></span>
     <span class="input_field">End Date<input type="text" id="end_date"></span>
     <span class="input_field">Select Network
@@ -36,7 +42,7 @@
     </span>
 </span>
 <div class="row reporting_content">
-    <div class="row arial_bold">
+    <div class="row arial_bold no-margin">
         <div class="col-xs-3 info_col">
             <p>Date</p>
         </div>

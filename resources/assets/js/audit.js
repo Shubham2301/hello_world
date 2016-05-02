@@ -42,13 +42,17 @@ $(document).ready(function () {
     $('#select_network').on('change', function () {
         refreshReports();
     });
+    $('#select_report_type').on('change', function () {
+        refreshReports();
+    });
 });
 
 function refreshReports() {
     var formData = {
         start_date: $('#start_date').val(),
         end_date: $('#end_date').val(),
-        'network_id': $('#select_network').val(),
+        network_id: $('#select_network').val(),
+        report_type: $('#select_report_type').val(),
     };
 
     $.ajax({
@@ -65,7 +69,7 @@ function refreshReports() {
             
             if (auditLogs.length > 1) {
                 auditLogs.forEach(function (audit) {
-                    content += '<div class="row"><div class="col-xs-3 info_col"><p>' + audit.date + '</p></div><div class="col-xs-2 info_col"><p>' + audit.user_name + '</p></div><div class="col-xs-2 info_col"><p>' + audit.network_name + '</p></div><div class="col-xs-5 info_col"><p>' + audit.action + '</p></div></div>';
+                    content += '<div class="row no-margin"><div class="col-xs-3 info_col"><p>' + audit.date + '</p></div><div class="col-xs-2 info_col"><p>' + audit.user_name + '</p></div><div class="col-xs-2 info_col"><p>' + audit.network_name + '</p></div><div class="col-xs-5 info_col"><p>' + audit.action + '</p></div></div>';
                 });
             }
             
