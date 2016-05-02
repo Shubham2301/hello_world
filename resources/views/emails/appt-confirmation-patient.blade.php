@@ -2,7 +2,7 @@
 	<div style="max-width:80%;width: 98%;display: inline-block;padding: 1%;font-family: arial, sans-serif;border: solid 1px transparent;border-radius: 2px;margin: 1% 10%;background-color: white;box-shadow: 0 0 5px #ddd;">
 		<div>
 			<div style="width: 50%;display: inline-block;margin-bottom:1em;">
-				<img src="https://access.myocuhub.com/images/ocuhub-logo.png" style="width:10em" alt="">
+				<img src="{{ url('images/ocuhub-logo.png') }}" style="width:10em" alt="">
 			</div>
 			<div style="width: 49%;display: inline-block;margin-bottom:1em;">
 				<p style="display: inline-block;margin:0;font-weight: bold;float: right;font-size: 130%;colo:#333">{{ $appt['practice_name'] }}</p>
@@ -22,7 +22,7 @@
 				<p style="font-size: 120%;color:#4d4d4d"> To cancel or reschedule this appointment please call <br> <span style="font-weight:bold">{{ $appt['user_name'] }}</span> or email at <span style="font-weight:bold">{{ $appt['user_email'] }}</span>. </p>
 				<div style="display: inline-block;margin:0.5em 0;text-align:center;border-radius:2px;padding: 1em 2em;border:solid 2px #ddd">
 					<p style="font-size: 120%;font-weight:bold;color:#333">PROVIDER</p>
-					<img src="https://access.myocuhub.com/images/emails/email-provider-icon.png" style="width:50%" alt="">
+					<img src="{{ url('images/emails/email-provider-icon.png') }}" style="width:50%" alt="">
 					<p style="color:#4d4d4d;">{{ $appt['provider_name'] }}</p>
 				</div>
 			</div>
@@ -55,7 +55,7 @@
 
 			</div>
 			<div style="width: 30%;display: inline-block;margin:3em 0;text-align:center">
-				<img src="https://access.myocuhub.com/images/ocuhub-logo.png" style="width:10em" alt="">
+				<img src="{{ url('images/ocuhub-logo.png') }}" style="width:10em" alt="">
 				<hr style="border: solid 1px #ddd;">
 				<p><a href="http://www.ocuhub.com/contact">www.ocuhub.com/contact</a><br>Email - support@ocuhub.com<br>Call - 844-605-8843</p>
 			</div>

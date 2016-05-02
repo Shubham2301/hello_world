@@ -419,7 +419,7 @@ function showProviderNear(providers) {
     var content = '';
     if (providers.length > 0) {
         providers.forEach(function(provider) {
-			content += '<div class="col-xs-12 list_seperator nearby_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '"><div class="row"><div class="col-xs-12 arial_bold">' + provider.practice_name + '</div><div class="col-xs-6 arial">' + provider.name+ '<br>' + provider.speciality + '</div><div class="col-xs-6 arial">' + provider.location_address + '<p>Distance - '+provider.distance+'</p></div></div></div>';
+			content += '<div class="col-xs-12 list_seperator nearby_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '"><div class="row"><div class="col-xs-6 arial_bold">' + provider.practice_name + '<br>'+ provider.name+ '<br>' + provider.speciality + '</div><div class="col-xs-6 arial">' + provider.location_address + '<br> <span style ="color:black;">Distance - '+provider.distance+'</span></div></div></div>';
         });
         $('.provider_near_patient_list').html(content);
     } else {
