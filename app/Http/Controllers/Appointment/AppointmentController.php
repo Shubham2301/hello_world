@@ -169,10 +169,10 @@ class AppointmentController extends Controller
         $appt['insurance_group_no'] = $patientInsurance->insurance_group_no;
         $appt['subscriber_relation'] = $patientInsurance->subscriber_relation;
 
-        if ($practice->email && $practice->email != '') {
-            $mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($practice) {
+        if ($location->email && $location->email != '') {
+            $mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($location) {
                 $m->from('support@ocuhub.com', 'Ocuhub');
-                $m->to($practice->email, $practice->name)->subject('Request for Appointment');
+                $m->to($location->email, $location->name)->subject('Request for Appointment');
             });
 
             $apptStatus['practice_email_sent'] = true;

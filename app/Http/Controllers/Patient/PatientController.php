@@ -188,10 +188,10 @@ class PatientController extends Controller
             $patientData['referred_to_practice_user'] = $previousProvider['title'] . ' ' . $previousProvider['lastname'] . ', ' . $previousProvider['firstname'];
             $patientData['referred_to_practice'] = $previousProvider['name'];
         }
-        if (isset($careconsole->referral_id)) {
-            $referral_history = ReferralHistory::find($careconsole->referral_id);
-        }
-        if (isset($referral_history)) {
+
+        $referral_history = (isset($careconsole->referral_id)) ? ReferralHistory::find($careconsole->referral_id) : null; 
+        
+        if ($referral_history) {
             $referred_to_practice = Practice::find($referral_history->referred_to_practice_id);
             $patientData['referred_by_practice'] = $referral_history->referred_by_practice;
             $patientData['referred_by_provider'] = $referral_history->referred_by_provider;

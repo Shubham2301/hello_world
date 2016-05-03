@@ -19,25 +19,11 @@ Route::get('/', function () {
     }
 });
 
-Route::resource('roletest', 'TestroleController');
-Route::get('testmail', 'TestMailController@testMail');
-
-Route::get('/start', 'TestroleController@start');
-
-Route::get('/show', 'TestroleController@show');
-
-Route::get('/menuTest', 'TestroleController@menuTest');
-
 // Authentication routes...
 Route::group(['middleware' => 'session.flush'], function () {
-    Route::get('auth/login', 'Auth\AuthController@getLogin');
     Route::post('auth/login', 'Auth\AuthController@postLogin');
     Route::get('auth/logout', 'Auth\AuthController@getLogout');
 });
-
-// Registration routes...
-Route::get('auth/register', 'Auth\AuthController@getRegister');
-Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 // Password reset link request routes...
 Route::get('password/email', 'Auth\PasswordController@getEmail');
@@ -97,9 +83,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('bulkimport', 'BulkImportController');
     });
 
-    Route::resource('export/fake', 'BulkImportController@fakeExport');
+    // Route::resource('export/fake', 'BulkImportController@fakeExport');
 
     Route::get('file_exchange/update_description', 'FileExchange\FileExchangeController@changeDescription');
+	Route::get('file_exchange/update_filename', 'FileExchange\FileExchangeController@changeItemName');
     Route::get('file_exchange/showinfo', 'FileExchange\FileExchangeController@show');
     Route::resource('file_exchange', 'FileExchange\FileExchangeController');
     Route::post('createFolder', 'FileExchange\FileExchangeController@createFolder');

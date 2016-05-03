@@ -241,7 +241,7 @@ class CareConsoleController extends Controller {
 				if ($patient['appointment_id']) {
 					$appointment = Appointment::find($patient['appointment_id']);
 					$provider = User::find($appointment->provider_id);
-					$results[$i]['scheduled_to'] = $provider->lastname . ', ' . $provider->firstname;
+					$results[$i]['scheduled_to'] = ($provider) ? $provider->lastname . ', ' . $provider->firstname : '-';
 					$results[$i]['appointment_date'] = $this->CareConsoleService->getPatientFieldValue($patient, 'appointment-date');
 				}
 				$results[$i]['days_pending'] = $this->CareConsoleService->getPatientFieldValue($console, 'days-pending');

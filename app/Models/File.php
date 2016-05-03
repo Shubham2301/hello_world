@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Database\Eloquent\Model;
 use myocuhub\Models\FileHistory;
 use myocuhub\Models\FileShare;
+use myocuhub\Models\Folder;
 
 class File extends Model {
 	public function history() {
@@ -29,5 +30,24 @@ class File extends Model {
 			->where('creator_id', '=', Auth::user()->id)
 			->where('folder_id', '=', $folder_id)
 			->orderBy('title', 'asc')->get();
+	}
+
+	public function sharedWithUser($userId){
+		return $this->sharedwith()->where('user_id', '=', $userId)->orderBy('created_at', 'desc')->first();
+	}
+
+	public function isEditable(){
+		$userId = \Auth::user()->id;
+			$directShare =  $this->sharedWithUser($userId);
+		if($directShare){
+			if($directShare->editable)
+				return true;
+		}
+
+		if($this->folder_id){
+			return Folder::find($this->folder_id)->isEditable();
+		}
+
+		return false;
 	}
 }

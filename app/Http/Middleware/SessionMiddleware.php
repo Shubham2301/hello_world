@@ -26,7 +26,7 @@ class SessionMiddleware
         
         Session::flush();
 
-        $reponse = $next($request);
+        $response = $next($request);
 
         if ($route == 'auth/login') {
             if(($user = Auth::user()) == null){
@@ -50,6 +50,6 @@ class SessionMiddleware
             Event::fire(new MakeAuditEntry($action, $description, $filename, $ip, $user->id));
         }
 
-        return $reponse;
+        return $response;
     }
 }
