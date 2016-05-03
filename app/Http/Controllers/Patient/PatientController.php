@@ -176,52 +176,75 @@ class PatientController extends Controller
     public function show(Request $request)
     {
         $id = $request->input('id');
+        
         $patientData = [];
-        $patient = Patient::find($id);
-        //        $patient->birthdate = date("d F Y", strtotime($patient->birthdate));
+
+        $response = [
+        	'result' => false,
+        	'patient_data' => $patientData
+        ];
+
+        try {
+        	$patient = Patient::findOrFail($id);
+        } catch (Exception $e) {
+ 			return json_encode($response);
+        }
+        
         $careconsole = Careconsole::where('patient_id', '=', $id)->first();
         $insurance = PatientInsurance::where('patient_id', '=', $id)->first(['insurance_carrier']);
         $previousProvider = Patient::getPreviousProvider($id);
+
         $patientData['referred_to_practice_user'] = '';
         $patientData['referred_to_practice'] = '';
+
         if ($previousProvider['id'] !== null) {
             $patientData['referred_to_practice_user'] = $previousProvider['title'] . ' ' . $previousProvider['lastname'] . ', ' . $previousProvider['firstname'];
             $patientData['referred_to_practice'] = $previousProvider['name'];
         }
-        if (isset($careconsole->referral_id)) {
-            $referral_history = ReferralHistory::find($careconsole->referral_id);
-        }
-        if (isset($referral_history)) {
-            $referred_to_practice = Practice::find($referral_history->referred_to_practice_id);
-            $patientData['referred_by_practice'] = $referral_history->referred_by_practice;
-            $patientData['referred_by_provider'] = $referral_history->referred_by_provider;
-        } else {
-            $patientData['referred_by_practice'] = '';
-            $patientData['referred_by_provider'] = '';
-        }
+
+        $referral_history = (isset($careconsole->referral_id)) ? ReferralHistory::find($careconsole->referral_id) : null; 
+        
+        $patientData['referred_by_practice'] = '';
+        $patientData['referred_by_provider'] = '';
+
+        if ($referral_history) {
+        	try {
+        		$referred_to_practice = Practice::findOrFail($referral_history->referred_to_practice_id);
+        		$patientData['referred_by_practice'] = $referral_history->referred_by_practice;
+            	$patientData['referred_by_provider'] = $referral_history->referred_by_provider;
+        	} catch (Exception $e) {
+
+        	}
+        } 
+
         if (isset($insurance)) {
-            $patientData['insurance'] = $insurance->insurance_carrier;
-        } else {
-            $patientData['insurance'] = '';
-        }
-        $patientData['firstname'] = $patient->firstname;
-        $patientData['lastname'] = $patient->lastname;
-        $patientData['email'] = $patient->email;
-        $patientData['lastfourssn'] = $patient->lastfourssn;
-        $patientData['addressline1'] = $patient->addressline1;
-        $patientData['addressline2'] = $patient->addressline2;
-        $patientData['city'] = $patient->city;
-        $patientData['id'] = $patient->id;
-        $patientData['cellphone'] = $patient->cellphone;
+            $patientData['insurance'] = $insurance->insurance_carrier  ?: '';
+        } 
+
+        $patientData['firstname'] = $patient->firstname ?: '';
+        $patientData['lastname'] = $patient->lastname  ?: '';
+        $patientData['email'] = $patient->email  ?: '-';
+        $patientData['lastfourssn'] = $patient->lastfourssn  ?: '-';
+        $patientData['addressline1'] = $patient->addressline1  ?: '';
+        $patientData['addressline2'] = $patient->addressline2  ?: '';
+        $patientData['city'] = $patient->city ?: '';
+        $patientData['id'] = $patient->id ?: '';
+        $patientData['cellphone'] = $patient->cellphone ?: '-';
         $birthdate = new DateTime($patient->birthdate);
-        $patientData['birthdate'] = $birthdate->format('F j Y');
+        $patientData['birthdate'] = $patient->birthdate ? $birthdate->format('F j Y') : '-';
 
         $ccda = Ccda::where('patient_id', $id)->first();
+
         if (!($ccda)) {
             $patientData['ccda'] = '0';
         }
 
-        return json_encode($patientData);
+        $response = [
+        	'result' => true,
+        	'patient_data' => $patientData
+        ];
+
+        return json_encode($response);
     }
 
     /**
@@ -325,7 +348,7 @@ class PatientController extends Controller
 		$data = [];
 		$i = 0;
 		foreach ($patients as $patient) {
-			$data[$i]['id'] = $patient->patient_id;
+			$data[$i]['id'] = $patient->id;
 			$data[$i]['fname'] = $patient->firstname;
 			$data[$i]['lname'] = $patient->lastname;
 			$data[$i]['email'] = $patient->email;
