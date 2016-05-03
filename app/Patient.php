@@ -30,6 +30,19 @@ class Patient extends Model {
 	];
 	public static function getPatients($filters) {
 
+		$columns = [
+			'patients.id',
+			'patients.firstname',
+			'patients.lastname',
+			'patients.email',
+			'patients.cellphone',
+			'patients.lastfourssn',
+			'patients.addressline1',
+			'patients.addressline2',
+			'patients.city',
+			'patients.birthdate'
+		];
+
 		$query = self::where(function ($query) use ($filters) {
 			foreach ($filters as $filter) {
 				$query->where(function ($query) use ($filter) {
@@ -79,30 +92,24 @@ class Patient extends Model {
 			return $query
 				->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
 				->orderBy('lastname', 'asc')
-				->paginate(200);
-				//->get();
-		}
-		elseif (session('user-level') == 2) {
+				->paginate(200, $columns);
+		} elseif (session('user-level') == 2) {
 			return $query
 				->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
 				->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
 				->where('import_history.network_id', session('network-id'))
 				->orderBy('lastname', 'asc')
-				->paginate(200);
-				//->get();
-		}
-		else {
+				->paginate(200, $columns);
+		} else {
 			$practiceUser= PracticeUser::where('user_id', Auth::user()->id)->first();
 			return $query
 				->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
 				->leftjoin('practice_patient', 'patients.id', '=', 'practice_patient.patient_id')
 				->where('practice_patient.practice_id', $practiceUser['practice_id'])
 				->orderBy('lastname', 'asc')
-				->paginate(200);
-				//->get();
+				->paginate(200, $columns);
 		}
 		
-
 	}
 
 	public static function getPatientsByName($name) {

@@ -230,7 +230,7 @@ class Careconsole extends Model
             	`stage_id` = $stageID and
             	`careconsole`.`archived_date` is null and
             	`careconsole`.`recall_date` is null and
-            	datediff(`start_datetime`, CURRENT_TIMESTAMP) < 0");
+            	datediff(`start_datetime`, CURRENT_TIMESTAMP) <= 0");
 
         return $sqlResult[0]->count;
     }
@@ -427,7 +427,7 @@ class Careconsole extends Model
             	`stage_id` = $stageID and
             	`careconsole`.`archived_date` is null and
             	`careconsole`.`recall_date` is null and
-            	datediff(`start_datetime`, CURRENT_TIMESTAMP) < 0");
+            	datediff(`start_datetime`, CURRENT_TIMESTAMP) <= 0");
 
         $results = array();
         $i = 0;

@@ -2,7 +2,6 @@
 
 namespace myocuhub\Http\Middleware;
 
-use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 
 class VerifyCsrfToken extends BaseVerifier
@@ -13,11 +12,7 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        //
+       '/auth/login',
     ];
 
-    public function handle($request, Closure $next)
-	{
-	    return $this->addCookieToResponse($request, $next($request));
-	}
 }
