@@ -30,9 +30,9 @@
             <div class="folder_path active">
                 <!-- Folder 2 > Subfolder 1 -->
                 @if(sizeof($breadcrumbs)>0)
-                <a href="/file_exchange"> {{ 'All' }}</a> @endif @for($i = 0; $i
+                <a href="{{$accessLink}}"> {{ 'All' }}</a> @endif @for($i = 0; $i
                 < sizeof($breadcrumbs); $i++) <span>&nbsp;>&nbsp;</span>
-                    <a href="/file_exchange?id={{ $breadcrumbs[$i]['id'] }}"> {{ $breadcrumbs[$i]['name'] }}</a> @endfor
+			<a href="{{$accessLink}}?id={{ $breadcrumbs[$i]['id'] }}"> {{ $breadcrumbs[$i]['name'] }}</a> @endfor
             </div>
         </div>
     </div>
@@ -50,10 +50,10 @@
             </div>
             <div class="col-xs-7 no-padding">
 				@if($openView != 'trash')
-                <a href="file_exchange?id={{$folder['id']}}"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $folder['name'] }}</a>
-                @else
-				<a href="#" data-id="{{$folder['id']}}" class="restore_item"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $folder['name'] }}</a>
-                @endif
+				<a href="{{$accessLink}}?id={{$folder['id']}}"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em"><span id="{{ $folder['id'] }}_folder_name">{{ $folder['name'] }}</span></a>
+				@else
+				<a href="#" data-id="{{$folder['id']}}" class="restore_item"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em"><span id="{{$folder['id'] }}_folder_name">{{ $folder['name'] }}</span></a>
+				@endif
             </div>
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
@@ -75,7 +75,7 @@
             <div class="col-xs-1" style="text-align: center;">
                 <input type="checkbox" class="checkbox file-exchange file-check" name="checkbox" style="display: inline;" data-id="{{ $file['id'] }}" data-name="file">
             </div>
-            <div class="col-xs-7 no-padding"><img src="{{URL::asset('images/files-white.png')}}" style="width: 2em;margin:0 0.5em 0.25em 0.25em">{{ $file['name'] }}</div>
+			<div class="col-xs-7 no-padding"><img src="{{URL::asset('images/files-white.png')}}" style="width: 2em;margin:0 0.5em 0.25em 0.25em"><span id="{{ $file['id'] }}_file_name">{{ $file['name'] }}</span></div>
             <div class="col-xs-2 no-padding">{{ $file['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $file['updated_at'] }}</div>
             <div class="row">
