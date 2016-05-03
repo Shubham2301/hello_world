@@ -352,7 +352,9 @@ function getPatientInfo(formData) {
         async: false,
         success: function(e) {
             var info = $.parseJSON(e);
-            fillPatientInfo(info);
+            if(info.result === 'true'){
+                fillPatientInfo(info.patient_data);
+            }
         },
         error: function() {
             $('p.alert_message').text('Error getting patient information');
