@@ -19,6 +19,13 @@ $(document).ready(function() {
         if (new_description != old_description)
             updateDescription();
     });
+	$('#item_info').on('focusout', '#new_item_name', function() {
+		var new_itemname = $('#new_item_name').val();
+		var old_itemname = $('#old_item_name').val();
+		if (new_itemname != old_itemname)
+			updateItemName();
+	});
+
     $('#add_document').on('change', function() {
         var path = $('#add_document').val();
         $('#new_filename').html('');
@@ -139,7 +146,8 @@ $(document).ready(function() {
 function showInfo(id, name) {
     var formData = {
         'id': id,
-        'name': name
+        'name': name,
+		'fromView':$('#current_view').val(),
     };
     $.ajax({
         url: '/file_exchange/showinfo',
@@ -149,11 +157,11 @@ function showInfo(id, name) {
         async: false,
         success: function success(data) {
             var content = '';
-            content += '<span class="title arial_bold"><span>' + data.name + '</span><span class="glyphicon glyphicon-remove" id="close_item_info"></span></span><br><span class="modifications arial_bold">Modifications</span><br>';
+		content += '<span class="title arial_bold"><span><input value = "' + data.name + '" id="new_item_name" '+data.can_edit+'></span><span class="glyphicon glyphicon-remove" id="close_item_info"></span></span><br><span class="modifications arial_bold">Modifications</span><br>';
             var i;
             for (i = 0; i < data.modified_by.length; i++)
                 content += '<span class="modification_history"><span>' + data.modified_by[0] + '</span><span>' + data.updated_at[0] + '</span></span>';
-            content += '<br><span class="modifications arial_bold">Edit Description</span><br><textarea name="textarea" id="description" class="description arial_italic"></textarea><input type="hidden" id="old_description" value="' + data.description + '"><input type="hidden" id="description_id" value="' + id + '"><input type="hidden" id="name" value="' + name + '">';
+		content += '<br><span class="modifications arial_bold">Edit Description</span><br><textarea '+data.can_edit+' name="textarea" id="description" class="description arial_italic"></textarea><input type="hidden" id="old_description" value="' + data.description + '"><input type="hidden" id="description_id" value="' + id + '"><input type="hidden" id="name" value="' + name + '"><input type="hidden" id="old_item_name" value="' + data.name + '">';
             $('#item_info').html(content);
             $('#description').val(data.description);
         },
@@ -222,4 +230,32 @@ function practiceUsers(id) {
         cache: false,
         processData: false
     });
+}
+
+function updateItemName(){
+	var itemName = $('#new_item_name').val();
+	var id = $('#description_id').val();
+	var name = $('#name').val();
+	var formData = {
+		'id': id,
+		'itemName': itemName,
+		'name': name
+	};
+	$.ajax({
+		url: '/file_exchange/update_filename',
+		type: 'GET',
+		data: $.param(formData),
+		contentType: 'text/html',
+		async: false,
+		success: function success(e) {
+		var id = '#' + e.id + '_' + e.name + '_name';
+		$(id).html(e.itemName);
+	},
+		   error: function error() {
+		$('p.alert_message').text('Error:');
+		$('#alert').modal('show');
+	},
+		cache: false,
+			processData: false
+});
 }

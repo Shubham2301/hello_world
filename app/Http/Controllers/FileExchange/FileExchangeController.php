@@ -486,10 +486,11 @@ class FileExchangeController extends Controller {
 	public function show(Request $request) {
 		$type = $request->name;
 		$id = $request->id;
+		$fromView = $request->fromView;
 		if($type == 'folder') {
 
 			$folderInfo = array();
-
+			$folderInfo['can_edit'] = '';
 			$folder = Folder::find($id);
 			$folderInfo['name'][0] = $folder->name;
 			$folderInfo['description'][0] = $folder->description;
@@ -501,13 +502,18 @@ class FileExchangeController extends Controller {
 				$folderInfo['updated_at'][$i] = $updateDate->format('j F Y');
 				$i++;
 			}
+
+			if($fromView == 'sharedWithMe' && !$folder->isEditable()) {
+				$folderInfo['can_edit'] = 'disabled';
+			}
+
 			return($folderInfo);
 
 		}
 		else {
 
 			$fileInfo = array();
-
+			$fileInfo['can_edit'] = '';
 			$file = File::find($id);
 			$fileInfo['name'][0] = $file->title;
 			$fileInfo['description'][0] = $file->description;
@@ -518,6 +524,11 @@ class FileExchangeController extends Controller {
 				$updateDate = new DateTime($history->updated_at);
 				$fileInfo['updated_at'][$i] = $updateDate->format('j F Y');
 				$i++;
+			}
+
+
+			if($fromView == 'sharedWithMe' && !$file->isEditable()) {
+				$fileInfo['can_edit'] = 'disabled';
 			}
 			return($fileInfo);
 		}
@@ -562,6 +573,10 @@ class FileExchangeController extends Controller {
 
 			foreach($networkUsers as $user)
 			{
+				if($user->user_id == Auth::user()->id){
+					continue;
+				}
+
 				$data['user_id'] = $user->user_id;
 				$folderShare = FolderShare::where($data)->first();
 				if(!$folderShare){
@@ -580,6 +595,9 @@ class FileExchangeController extends Controller {
 			$data['file_id'] = $file;
 			foreach($networkUsers as $user)
 			{
+				if($user->user_id == Auth::user()->id){
+					continue;
+				}
 				$data['user_id'] = $user->user_id;
 				$fileShare = FileShare::where($data)->first();
 				if(!$fileShare){
@@ -634,5 +652,34 @@ class FileExchangeController extends Controller {
 		return redirect()
 			->back()
 			->withSuccess("Successfully Restored!");
+	}
+
+	public function changeItemName(Request $request){
+		$id = $request->id;
+		$itemName = $request->itemName;
+		$type = $request->name;
+		$data = array();
+		$data['id'] = $id;
+		$data['name'] = $type;
+		$data['itemName'] = $itemName;
+		if($type == 'folder') {
+			$folder = Folder::find($id);
+			$folder->name = $itemName;
+			$folder->save();
+			$folderHistory = new FolderHistory();
+			$folderHistory->folder_id = $id;
+			$folderHistory->modified_by = Auth::user()->id;
+			$folderHistory->save();
+		}
+		else {
+			$file = File::find($id);
+			$file->title = $itemName;
+			$file->save();
+			$fileHistory = new FileHistory();
+			$fileHistory->file_id = $id;
+			$fileHistory->modified_by = Auth::user()->id;
+			$fileHistory->save();
+		}
+		return $data;
 	}
 }
