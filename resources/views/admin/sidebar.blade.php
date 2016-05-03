@@ -98,7 +98,7 @@
         @if(1 >= Auth::user()->level)
         <li class="admin_sidebar_menu_item">
             <a class="files_sidebar_menu_item" href="/auditreports">
-                <span class="sidebar_img"><img src="{{URL::asset('images/sidebar/reports.png')}}" style="width:90%;height:90%;"></span>
+                <span class="sidebar_img"><img src="{{URL::asset('images/sidebar/audit_icon.png')}}" style="width:90%;height:90%;"></span>
                 <span class="sidebar_title">Admin Reports</span>
             </a>
         </li>
