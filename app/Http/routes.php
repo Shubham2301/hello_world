@@ -100,6 +100,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('export/fake', 'BulkImportController@fakeExport');
 
     Route::get('file_exchange/update_description', 'FileExchange\FileExchangeController@changeDescription');
+	Route::get('file_exchange/update_filename', 'FileExchange\FileExchangeController@changeItemName');
     Route::get('file_exchange/showinfo', 'FileExchange\FileExchangeController@show');
     Route::resource('file_exchange', 'FileExchange\FileExchangeController');
     Route::post('createFolder', 'FileExchange\FileExchangeController@createFolder');
