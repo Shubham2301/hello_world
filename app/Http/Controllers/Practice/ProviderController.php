@@ -310,7 +310,7 @@ class ProviderController extends Controller
 			$data[$i]['practice_name'] = $provider->name;
 			$data[$i]['speciality'] = $provider->speciality;
 			$data[$i]['location_address'] = $provider->addressline1.' '.$provider->state;
-			$data[$i]['distance'] = ceil($provider->distance).' km ';
+			$data[$i]['distance'] = number_format((float)$provider->distance, 2, '.', '').' Miles';
 			$i++;
 		}
 		return json_encode($data);

@@ -81,6 +81,7 @@ $(document).ready(function() {
         $('#form_appointment_time').prop('disabled', true);
         $('#form_appointment_date').prop('disabled', true);
         $('#form_location').prop('disabled', true);
+        $('#form_patient_id').attr('name', 'null');
         $('#form_select_provider').submit();
     });
     $('#search_practice_button').on('click', function() {
@@ -419,7 +420,7 @@ function showProviderNear(providers) {
     var content = '';
     if (providers.length > 0) {
         providers.forEach(function(provider) {
-			content += '<div class="col-xs-12 list_seperator nearby_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '"><div class="row"><div class="col-xs-6 arial_bold">' + provider.practice_name + '<br>'+ provider.name+ '<br>' + provider.speciality + '</div><div class="col-xs-6 arial">' + provider.location_address + '<br> <span style ="color:black;">Distance - '+provider.distance+'</span></div></div></div>';
+			content += '<div class="col-xs-12 list_seperator nearby_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '"><div class="row"><div class="col-xs-6 "><span class="arial_bold">' + provider.name + '</span><br><span class="arial">'+ provider.practice_name+ '<br>' + provider.speciality + '</span></div><div class="col-xs-3 arial">' + provider.location_address + '</div><div class="col-xs-3 arial"><span style ="color:black;">Distance - '+provider.distance+'</span></div></div></div>';
         });
         $('.provider_near_patient_list').html(content);
     } else {
