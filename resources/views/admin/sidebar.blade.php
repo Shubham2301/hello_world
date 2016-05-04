@@ -27,7 +27,7 @@
                     </li>
                     @endcan @if(2 == Auth::user()->usertype_id)
                     <li>
-                        <a href="/administration/patients" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a>
+                        <a href="/administration" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a>
                     </li>
                     @endif @can('view-reports')
                     <li>
@@ -42,6 +42,7 @@
     </div>
 
     <ul class="sidebar_item_list">
+    @if(1 >= Auth::user()->level || Auth::user()->hasRole('patient-admin'))
         <li class="admin_sidebar_menu_item">
             <a class="sidebar_button_subsection subsection_admin_add" href="/administration/patients/create">
                 <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-patient-icon.png')}}" style="width:100%"></span>
@@ -52,6 +53,7 @@
                 <span>Patients</span>
             </a>
         </li>
+        @endif
         <!-- <li class="admin_sidebar_menu_item">
                                             <a class="sidebar_button_subsection subsection_admin_add" href="/administration/providers">
                                                 <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-provider-icon.png')}}" style="width:100%"></span>
@@ -62,7 +64,7 @@
                                                 <span>Providers</span>
                                             </a>
                                         </li> -->
-		@if(2 >= Auth::user()->level || Auth::user()->hasRole('practice-admin'))
+		@if(1 >= Auth::user()->level || Auth::user()->hasRole('practice-admin'))
         <li class="admin_sidebar_menu_item">
             <a class="sidebar_button_subsection subsection_admin_add" href="/administration/practices/create">
                 <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-practice-icon.png')}}" style="width:100%"></span>
