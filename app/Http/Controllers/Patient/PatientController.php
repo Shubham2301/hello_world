@@ -231,7 +231,7 @@ class PatientController extends Controller
         $patientData['id'] = $patient->id ?: '';
         $patientData['cellphone'] = $patient->cellphone ?: '-';
         $birthdate = new DateTime($patient->birthdate);
-        $patientData['birthdate'] = $patient->birthdate ? $birthdate->format('F j Y') : '-';
+        $patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
 
         $ccda = Ccda::where('patient_id', $id)->first();
 
@@ -358,12 +358,11 @@ class PatientController extends Controller
 			$data[$i]['addressline2'] = $patient->addressline2;
 			$data[$i]['city'] = $patient->city;
 			$birthdate = new DateTime($patient->birthdate);
-			$data[$i]['birthdate'] = $birthdate->format('F j Y');
+			$data[$i]['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
 			$i++;
 		}
 		      $data[0]['total'] = $patients->total();
 		      $data[0]['lastpage'] = $patients->lastPage();
-		//        $data[0]['currentPage'] = $patients->currentPage();
 
 		return json_encode($data);
 	}
