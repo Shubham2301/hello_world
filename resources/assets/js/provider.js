@@ -426,7 +426,11 @@ function showProviderNear(providers) {
         });
         $('.provider_near_patient_list').html(content);
     } else {
+<<<<<<< HEAD
 		$('.provider_near_patient_list').html('No provider found within 50 Miles');
+=======
+		$('.provider_near_patient_list').html('No provider found within 100 km');
+>>>>>>> 101e299e3a42d76a03017c21343f6cb6b504ccf8
     }
     $('.provider_near').removeClass('glyphicon-chevron-right');
     $('.provider_near').addClass('glyphicon-chevron-down');
