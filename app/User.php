@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use myocuhub\Models\UserLevel;
 use myocuhub\User;
 use Illuminate\Support\Facades\DB;
+
 class User extends Model implements AuthenticatableContract,
 AuthorizableContract,
 CanResetPasswordContract
@@ -60,7 +61,6 @@ CanResetPasswordContract
         //         }
         //     }
         //     return false;
-
     }
 
     public function assign($role)
@@ -85,7 +85,6 @@ CanResetPasswordContract
 
     public static function providers($filters)
     {
-
         $query = self::query()
             ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
             ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
@@ -163,7 +162,6 @@ CanResetPasswordContract
             ->leftjoin('networks', 'network_user.network_id', '=', 'networks.id')
             ->where('network_id', $network_id)
             ->get(['users.id', 'users.name', 'users.sesemail']);
-
     }
     public static function getNetwork($userID)
     {
@@ -185,7 +183,6 @@ CanResetPasswordContract
 
     public static function getUsersByName($search_val)
     {
-
         return self::query()
             ->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
             ->where('network_user.network_id', session('network-id'))
@@ -207,7 +204,6 @@ CanResetPasswordContract
 
     public static function get4PCProviderNPIs()
     {
-
         return self::whereNotNull('npi')
             ->whereNotNull('acc_key')
             ->where('usertype_id', 1)
@@ -236,25 +232,25 @@ CanResetPasswordContract
             ->get(['users.id', 'users.name', 'users.sesemail']);
     }
 
-	public static function getNearByProviders($lat, $lng, $range=10){
-	$query =  self::query()
-		->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
-		->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
-		->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
-		->where('usertype_id', 1)
-		->select(DB::raw('*, ( 6371 * acos( cos( radians('.$lat.') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$lng.') ) + sin( radians('.$lat.') ) * sin( radians( latitude ) ) ) ) AS distance'))
-		->having('distance', '<=', $range)
-		->orderBy('distance','ASC');
-	if (session('user-level') == 1) {
-		return $query
-			->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
-			->get();
-	} else {
-		return $query
-			->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
-			->where('practice_network.network_id', session('network-id'))
-			->get();
-	}
-
- }
+    public static function getNearByProviders($lat, $lng, $range=10)
+    {
+        $query =  self::query()
+        ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
+        ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
+        ->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
+        ->where('usertype_id', 1)
+        ->select(DB::raw('*, ( 3959 * acos( cos( radians('.$lat.') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$lng.') ) + sin( radians('.$lat.') ) * sin( radians( latitude ) ) ) ) AS distance'))
+        ->having('distance', '<=', $range)
+        ->orderBy('distance', 'ASC');
+        if (session('user-level') == 1) {
+            return $query
+            ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
+            ->get();
+        } else {
+            return $query
+            ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
+            ->where('practice_network.network_id', session('network-id'))
+            ->get();
+        }
+    }
 }

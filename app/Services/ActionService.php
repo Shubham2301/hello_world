@@ -81,7 +81,7 @@ class ActionService
 				$provider = User::find($appointment->provider_id);
 				$scheduledTo = ' ';
 				if($provider){
-				$scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+					$scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
 				}
 				$newNote = $scheduledTo . '</br>' . $appointment->start_datetime . '</br>' . $appointment->appointmenttype;
 				$updatedNote = $newNote.'</br></br>'. $notes;
@@ -124,8 +124,12 @@ class ActionService
 					$appointment->appointmenttype = $manualAppointmentData['appointment_type'];
 				}
 
-				$provider = User::find($appointment->provider_id);
-				$scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+				$provider = User::find($manualAppointmentData['provider_id']);
+				$scheduledTo = ' ';
+				if($provider){
+					$scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+				}
+				
 				$newNote = $scheduledTo . '</br>' . $appointment->start_datetime . '</br>' . $appointment->appointmenttype;
 				$updatedNote = $newNote.'</br>'. $notes;
 				$appointment->notes = $updatedNote;
