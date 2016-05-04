@@ -343,19 +343,31 @@ p.date_selector {
     flex-direction: row;
     border-radius: 5px;
     padding: 0;
-    box-shadow: 0 1px 1px #898989;
     overflow-x: hidden;
     color: #4d4d4d;
-    background-color: #f0f2f5;
     margin-top: 1em;
     cursor: pointer;
-    background-image: linear-gradient(#f0f2f5 10%, #e0e3e6 90%);
+    box-shadow: 0 1px 1px #898989;
+    .gradient(#f0f2f5,
+    #e0e3e6);
+    &.active,
+    &.active:hover {
+        background-color: #d2d3d5;
+        .gradient(#d2d3d5,
+        #d2d3d5);
+        box-shadow: 0 1px 1px #d2d3d5;
+        cursor: auto;
+    }
     &:hover {
         background-color: #f0f2f5;
+        .gradient(#f0f2f5,
+        #f0f2f5);
         box-shadow: 0 1px 1px #898989;
     }
     &:active {
         background-color: #d2d3d5;
+        .gradient(#d2d3d5,
+        #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
     }
     &>.report_sidebar_image {

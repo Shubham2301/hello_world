@@ -578,6 +578,42 @@ function drawAgeChart(dataArray) {
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
     chart.draw(data, options);
+
+    var options = {
+        pieSliceTextStyle: {
+            color: 'white',
+        },
+        legend: {position: 'bottom', alignment: 'center', textStyle: {color: '#4d4d4d', fontSize: 12}},
+        chartArea: {
+            width: '90%',
+            left: '0',
+        },
+        pieHole: 0.3,
+        pieSliceText: 'label',
+        slices: {
+            0: {
+                color: '#7acfa9'
+            },
+            1: {
+                color: '#006837'
+            },
+            2: {
+                color: '#009245'
+            },
+            3: {
+                color: '#346639'
+            },
+            4: {
+                color: '#08a172'
+            }
+        }
+    };
+
+    var print_chart = new google.visualization.PieChart(document.getElementById('print_piechart'));
+
+    print_chart.draw(data, options);
+
+    $('#print_piechart').addClass('hide_without_print');
 }
 
 function formatAgeData(data) {
