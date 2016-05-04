@@ -62,7 +62,7 @@
                                                 <span>Providers</span>
                                             </a>
                                         </li> -->
-        @if(2 >= Auth::user()->level)
+		@if(2 >= Auth::user()->level || Auth::user()->hasRole('practice-admin'))
         <li class="admin_sidebar_menu_item">
             <a class="sidebar_button_subsection subsection_admin_add" href="/administration/practices/create">
                 <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-practice-icon.png')}}" style="width:100%"></span>
@@ -85,6 +85,7 @@
             </a>
         </li>
         @endif
+		@if(1 >= Auth::user()->level ||  Auth::user()->hasRole('user-admin') )
         <li class="admin_sidebar_menu_item">
             <a class="sidebar_button_subsection subsection_admin_add" href="/administration/users/create">
                 <span class="img_not_hover"><img src="{{URL::asset('images/sidebar/admin-user-icon.png')}}" style="width:100%"></span>
@@ -95,6 +96,7 @@
                 <span>Users</span>
             </a>
         </li>
+        @endif
         @if(1 >= Auth::user()->level)
         <li class="admin_sidebar_menu_item">
             <a class="files_sidebar_menu_item" href="/auditreports">
