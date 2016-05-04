@@ -426,7 +426,7 @@ function showProviderNear(providers) {
         });
         $('.provider_near_patient_list').html(content);
     } else {
-        $('.provider_near_patient_list').html('NO provider found under 100 km');
+		$('.provider_near_patient_list').html('No provider found within 50 Miles');
     }
     $('.provider_near').removeClass('glyphicon-chevron-right');
     $('.provider_near').addClass('glyphicon-chevron-down');
