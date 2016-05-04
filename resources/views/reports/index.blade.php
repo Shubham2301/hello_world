@@ -138,7 +138,8 @@
                         </div>
                         <div class="col-xs-6">
                             <p class="report_sub_header align-center">Age Breakdown</p>
-                            <div id="piechart"></div>
+                            <div id="piechart" class="no_print"></div>
+                            <div id="print_piechart" class=""></div>
                         </div>
                     </div>
                 </div>
