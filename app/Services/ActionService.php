@@ -124,7 +124,7 @@ class ActionService
 					$appointment->appointmenttype = $manualAppointmentData['appointment_type'];
 				}
 
-				$provider = User::find($appointment->provider_id);
+				$provider = User::find($manualAppointmentData['provider_id']);
 				$scheduledTo = ' ';
 				if($provider){
 					$scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
