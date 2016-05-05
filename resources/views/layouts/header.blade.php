@@ -2,7 +2,7 @@
     <div class="col-xs-3 hidden-xs header-left">
         <div class="col-xs-8 col-xs-offset-2 network_logo">
             @if( Auth::check()  && session('user-level') > 1 )
-            <img src="{{URL::asset('images/networks/network_'. Auth::user()->getNetwork(Auth::user()->id)->id .'.png')}}" onerror="this.src = '{{URL::asset('images/networks/default_network_logo.png').'?time='.time()}}'">
+            <img src="{{URL::asset('images/networks/network_'. Auth::user()->getNetwork(Auth::user()->id)->id .'.png')}}" onerror="this.src = '{{URL::asset('images/networks/default_network_logo.png').'?v=1'}}'">
             @endif
         </div>
     </div>
