@@ -371,15 +371,16 @@ class UserController extends Controller
             $practice_user = PracticeUser::firstOrCreate($userData);
         } else {
             $practiceUser = PracticeUser::where('user_id', $user->id)->delete();
-            $userData = [];
-            $userData['user_id'] = $user->id;
-            if (session('user-level') == 1) {
-                $userData['network_id'] = $request->input('user_network');
-            } else {
-                $userData['network_id'] = session('network-id');
-                $network_user = NetworkUser::firstOrCreate($userData);
-            }
+
         }
+
+		$userData = [];
+		if (session('user-level') == 1) {
+			$userData['network_id'] = $request->input('user_network');
+		} else {
+			$userData['network_id'] = session('network-id');
+		}
+		$network_user = NetworkUser::where('user_id', $id)->update($userData);
 
         $action = 'update user of id =' . $id;
         $description = '';
