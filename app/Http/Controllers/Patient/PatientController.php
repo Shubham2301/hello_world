@@ -209,9 +209,11 @@ class PatientController extends Controller
 
         if ($referral_history) {
         	try {
-        		$referred_to_practice = Practice::findOrFail($referral_history->referred_to_practice_id);
-        		$patientData['referred_by_practice'] = $referral_history->referred_by_practice;
-            	$patientData['referred_by_provider'] = $referral_history->referred_by_provider;
+        		$referred_to_practice = Practice::find($referral_history->referred_to_practice_id);
+        		if($referred_to_practice){
+        			$patientData['referred_by_practice'] = $referral_history->referred_by_practice;
+            		$patientData['referred_by_provider'] = $referral_history->referred_by_provider;
+            	}
         	} catch (Exception $e) {
 
         	}

@@ -596,7 +596,7 @@ class Reports
     public function buildReportsQuery($filters)
     {
         $queryFilters = $this->buildQueryFilters($filters);
-        $query = "Select
+        $query = "Select distinct
                     `careconsole`.`created_at` as careconsole_created_at,
                     `careconsole`.`stage_id`,
                     `careconsole`.`stage_updated_at`,
@@ -754,7 +754,6 @@ class Reports
 
     public function execReportsQuery($query)
     {
-        //dd($query);
         if ($query && $query != '') {
             $result = DB::select(DB::raw($query));
         }
