@@ -176,4 +176,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('careconsole_reports/show', 'ReportsController@show');
 
     Route::get('getlandingpages', 'Admin\UserController@getLandingPagebyRole');
+    Route::get('/administration', 'HomeController@administration');
 });

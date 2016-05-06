@@ -304,7 +304,7 @@ class ProviderController extends Controller
                 continue;
             }
             $data[$i]['id'] = $provider->user_id;
-            $data[$i]['name'] = $provider->title . ' ' . $provider->lastname . ' ,' . $provider->firstname;
+            $data[$i]['name'] = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
             $data[$i]['practice_id'] = $provider->practice_id;
             $data[$i]['practice_name'] = $provider->name;
             $data[$i]['speciality'] = $provider->speciality;

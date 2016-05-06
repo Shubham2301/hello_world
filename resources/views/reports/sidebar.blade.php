@@ -43,7 +43,7 @@
         <h3 class="title">Reporting</h3></div>
     </div>
 <div class="sidebar_item_list">
-<span class="report_sidebar_button sidebar_realtime realtime_header">
+<span class="report_sidebar_button sidebar_realtime realtime_header active">
                   <span class="report_sidebar_image">
                       <span><img src="{{URL::asset('images/real-time-icon.png')}}" style="width:80%;height:80%;"></span>
                   </span>
