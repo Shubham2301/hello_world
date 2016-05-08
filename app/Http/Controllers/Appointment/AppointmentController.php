@@ -171,7 +171,7 @@ class AppointmentController extends Controller
 
         if ($location->email && $location->email != '') {
             $mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($location) {
-                $m->from('support@ocuhub.com', 'Ocuhub');
+                $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
                 $m->to($location->email, $location->name)->subject('Request for Appointment');
             });
 
@@ -180,7 +180,7 @@ class AppointmentController extends Controller
 
         if ($patient->email && $patient->email != '') {
             $mailToPatient = Mail::send('emails.appt-confirmation-patient', ['appt' => $appt], function ($m) use ($patient) {
-                $m->from('support@ocuhub.com', 'Ocuhub');
+                $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
                 $m->to($patient->email, $patient->lastname . ', ' . $patient->firstname)->subject('Appointment has been scheduled');
             });
 
