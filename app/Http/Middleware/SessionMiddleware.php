@@ -27,17 +27,6 @@ class SessionMiddleware
         Session::flush();
 
         $response = $next($request);
-
-        if ($route == 'auth/login') {
-            if(($user = Auth::user()) == null){
-                return $response;
-            }
-            $action = 'User Logged In';
-            $description = '';
-            $filename = basename(__FILE__);
-            $ip = $request->getClientIp();
-            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-        }
         
         if ($route == 'auth/logout' && $user != null) {
             if (($state = Auth::user()) != null) {
