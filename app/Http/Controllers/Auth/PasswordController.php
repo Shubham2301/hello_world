@@ -2,8 +2,13 @@
 
 namespace myocuhub\Http\Controllers\Auth;
 
+use Event;
+use Auth;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
+
 
 class PasswordController extends Controller {
 	/*
@@ -27,5 +32,35 @@ class PasswordController extends Controller {
 	public function __construct() {
 		$this->middleware('guest');
 	}
+
+	protected function getResetFailureResponse(Request $request, $response)
+    {
+
+    	$action = 'Password Reset Invalid';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+        return redirect()->back()
+            ->withInput($request->only('email'))
+            ->withErrors(['email' => trans($response)]);
+    }
+
+    protected function getResetSuccessResponse($response)
+    {
+    	$action = 'Password Reset Successfull';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = '';
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        if(Auth::user()){
+        	$action = 'User Logged In after Password Reset';
+        	Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        }
+        
+
+        return redirect($this->redirectPath())->with('status', trans($response));
+    }
 
 }
