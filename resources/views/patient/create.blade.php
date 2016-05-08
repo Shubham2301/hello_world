@@ -37,7 +37,22 @@
             <div class="panel-body">
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
-						{!! Form::text('FirstName', $data['firstname'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'firstname', 'placeholder' => 'First Name*', 'id' => 'first_name')) !!} {!! Form::text('LastName', $data['lastname'], array('class' => 'add_patient_input', 'name' => 'lastname', 'placeholder' => 'Last Name*', 'id' => 'last_name','required' => 'required')) !!} {!! Form::email('email', $data['email'], array('class' => 'add_patient_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email')) !!} {!! Form::text('phone', $data['cellphone'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'cellphone', 'placeholder' => 'Phone*', 'id' => 'phone')) !!}
+                        {!! Form::text('FirstName', $data['firstname'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'firstname', 'placeholder' => 'First Name*', 'id' => 'first_name')) !!} {!! Form::text('LastName', $data['lastname'], array('class' => 'add_patient_input', 'name' => 'lastname', 'placeholder' => 'Last Name*', 'id' => 'last_name','required' => 'required')) !!} {!! Form::email('email', $data['email'], array('class' => 'add_patient_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email')) !!} <span class="patient_phone_input">{!! Form::text('cellphone', $data['cellphone'], array('class' => 'add_patient_input phone_visible', 'required' => 'required', 'name' => 'cellphone', 'placeholder' => 'Cellphone*', 'id' => 'phone')) !!}
+            @if($data['workphone'] == '' || $data['homephone'] == '')<span class="glyphicon glyphicon-plus-sign add_another_phone" data-toggle="tooltip" title="Add another phone number" data-placement="right"></span>
+            @endif
+                       </span>
+                        @if($data['workphone'] == '')
+                            <span class="workphone_span hide_phone_field">
+                        @else
+                            <span class="workphone_span">
+                        @endif
+                        {!! Form::text('workphone', $data['workphone'], array('class' => 'add_patient_input', 'name' => 'workphone', 'placeholder' => 'Workphone', 'id' => 'workphone')) !!}</span>
+                        @if($data['homephone'] == '')
+                            <span class="homephone_span hide_phone_field">
+                        @else
+                            <span class="homephone_span">
+                        @endif
+                        {!! Form::text('homephone', $data['homephone'], array('class' => 'add_patient_input', 'name' => 'homephone', 'placeholder' => 'Homephone', 'id' => 'homephone')) !!}</span>
                     </div>
                     <div class="col-sm-6 col-xs-12">
 <!--

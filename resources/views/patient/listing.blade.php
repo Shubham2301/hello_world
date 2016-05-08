@@ -117,6 +117,7 @@
 
         </div>
     </div>
+    <div>
     <div class="col-xs-12 patient_table_header">
         <div class="col-xs-4 lastseenby no-padding">
             <div class="lastseenby_show arial">
@@ -152,5 +153,5 @@
             </div>
         </div>
     </div>
-
+    </div>
 </div>

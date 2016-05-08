@@ -124,6 +124,8 @@ class PatientController extends Controller
 			$patient->birthdate = $request->input('birthdate');
 			$patient->preferredlanguage = $request->input('preferredlanguage');
 			$patient->cellphone = $request->input('cellphone');
+			$patient->homephone = $request->input('homephone');
+			$patient->workphone = $request->input('workphone');
 			$patient->state = $request->input('state');
 			$patient->save();
 
@@ -231,7 +233,9 @@ class PatientController extends Controller
         $patientData['addressline2'] = $patient->addressline2  ?: '';
         $patientData['city'] = $patient->city ?: '';
         $patientData['id'] = $patient->id ?: '';
-        $patientData['cellphone'] = $patient->cellphone ?: '-';
+        $patientData['cellphone'] = $patient->cellphone ?: '';
+        $patientData['workphone'] = $patient->workphone ?: '';
+        $patientData['homephone'] = $patient->homephone ?: '';
         $birthdate = new DateTime($patient->birthdate);
         $patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
 
@@ -295,6 +299,8 @@ class PatientController extends Controller
             $patient->firstname = $request->firstname;
             $patient->lastname = $request->lastname;
             $patient->cellphone = $request->cellphone;
+            $patient->homephone = $request->homephone;
+            $patient->workphone = $request->workphone;
             $patient->email = $request->email;
             $patient->preferredlanguage = $request->preferredlanguage;
             $patient->gender = $request->gender;

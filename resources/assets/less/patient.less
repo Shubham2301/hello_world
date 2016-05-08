@@ -34,12 +34,15 @@ Section : Imports
 .patient_info {
     display: none;
     margin-top: 2em;
-    &>.patient_table_header {
-        border-bottom: 2px solid #fff;
-        border-top: 1px solid #fff;
-        color: #333;
-        padding: .7em 0 .5em 0;
-        margin: 1em 0;
+    &>div{
+        padding: 0 15px;
+            &>.patient_table_header {
+            border-bottom: 2px solid #fff;
+            border-top: 1px solid #fff;
+            color: #333;
+            padding: .7em 0 .5em 0;
+            margin: 1em 0;
+        }
     }
     &.active {
         display: block;
@@ -548,4 +551,25 @@ p.patient_dropdown_data {
 }
 #patient_listing {
     overflow-y: auto;
+}
+.phone_visible {
+    margin: 0 0 0 1em;
+    padding-right: 2em;
+}
+.patient_phone_input {
+    display: flex;
+}
+.add_another_phone {
+    margin: auto 0;
+    margin-left: -2em;
+    cursor: pointer;
+    color: #f2f2f2;
+    font-size: 1em;
+}
+.hide_phone_field {
+    display: none;
+}
+.workphone_span,
+.homephone_span {
+    margin-top: 1em;
 }
