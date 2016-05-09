@@ -46,7 +46,9 @@
     <div class="row content-row-margin top_margin patient_admin_index_header active">
         <div class="patient_admin_search">
             <p class="page_title arial_bold">Patients</p>
-            <button id="open_patient_form" type="button" class="btn add-btn" >Add New</button>
+            @can('add-patient')
+                <button id="open_patient_form" type="button" class="btn add-btn" >Add New</button>
+            @endcan
             <span class="search_input_box">
                 <input type="text" class="arial_italic" id="search_patient_input" placeholder="search">
                 <img src="{{asset('images/search-icon.png')}}" class="admin_seacrh_icon" id="search_patient_button">
