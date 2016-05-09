@@ -14,10 +14,16 @@
         <span class="right announcement_navbar arial">
             <span class="announcement_navbar_left">
                 <span class="announcement_tabs view" id="show_announcements">View</span>
-                <span class="announcement_tabs make" id="make_announcements">Make</span>
+                @can('add-announcement')
+                    <span class="announcement_tabs make" id="make_announcements">Make</span>
+                @endcan
             </span>
             <span class="announcement_navbar_right">
-                <span class="sent_by_me" id="sent_by_me"><span>Sent to me</span><img src="{{URL::asset('images/toggle-icon.png')}}"></span>
+                <span class="sent_by_me" @can('add-announcement') id="sent_by_me" @endcan ><span>Sent to me</span>
+                @can('add-announcement')
+                <img src="{{URL::asset('images/toggle-icon.png')}}">
+                @endcan
+                </span>
                 <button class="back-button" >Back</button>
                 <button class="mark_as_read" >Mark as read</button>
                 <span class="delete" data-toggle="tooltip" title="Delete" data-placement="bottom">

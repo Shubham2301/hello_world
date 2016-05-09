@@ -3,7 +3,7 @@
 @if (count($errors) > 0)
     <div class="row content-row-margin alert alert-danger" style="margin: 1em 15px;">
             <p>{{ $errors->first() }}</p>
-            <p>If you need help please contact us via email: <span class="arial_bold">support@ocuhub.com</span> or telephone:  <span class="arial_bold">844-605-8843</span></p>
+            <p>If you need help please contact us via email: <span class="arial_bold">{{ config('constants.support.email_id') }}</span> or telephone:  <span class="arial_bold">{{ config('constants.support.phone') }}</span></p>
     </div>
 @endif
 

@@ -64,7 +64,9 @@
         <div class="col-xs-4 center-align">
             <img src="{{asset('images/patient.png')}}" alt="">
             <br>
+            @can('edit-patient')
             <p class = "edit_patient_button">Edit Patient</p>
+            @endcan
             <p class="button_type_1" id="change_patient_button">Change Patient</p>
             <br>
 
@@ -117,6 +119,7 @@
 
         </div>
     </div>
+    <div>
     <div class="col-xs-12 patient_table_header">
         <div class="col-xs-4 lastseenby no-padding">
             <div class="lastseenby_show arial">
@@ -152,5 +155,5 @@
             </div>
         </div>
     </div>
-
+    </div>
 </div>

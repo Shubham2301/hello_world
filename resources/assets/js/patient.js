@@ -277,6 +277,11 @@ $(document).ready(function() {
 		}
 	});
 
+    $('.add_another_phone').on('click', function(){
+        $('.workphone_span').removeClass('hide_phone_field');
+        $('.homephone_span').removeClass('hide_phone_field');
+        $(this).addClass('hide');
+    });
 });
 var flag = 0;
 var showpage = 1;
@@ -335,7 +340,16 @@ function showPatientInfo(data) {
     if (data.addressline2 != '')
         $('#patient_add2').text(data.addressline2 + '');
     $('#patient_add3').text(data.city);
-    $('#patient_phone').text(data.cellphone);
+    var phone = '';
+    if (data.cellphone != '')
+        phone += '<span>Cellphone: ' + data.cellphone + '</span><br>';
+    if (data.workphone != '')
+        phone += '<span>Workphone: ' + data.workphone + '</span><br>';
+    if (data.homephone != '')
+        phone += '<span>Homephone: ' + data.homephone + '</span>';
+    if(phone == '')
+        phone += '<span>-</span>'
+    $('#patient_phone').html(phone);
     $('#patient_ssn').text(data.lastfourssn);
     $('#select_provider_button').attr('data-id', data.id);
     $('#select_provider_button').addClass('active');
