@@ -20,9 +20,6 @@ class HomeController extends Controller
     public function index()
     {
         $this->cleanUpPhoneNumbers();
-        $menu = Menu::where('name', 'administration')->first();
-        $menu->url = '/administration';
-        $menu->save();
         $userID = Auth::user()->id;
         $user = User::find($userID);
         if (isset($user->menu_id)) {
