@@ -111,7 +111,7 @@ class ActionService
 				if ($manualAppointmentData['practice_id'] != '0' && $manualAppointmentData['practice_id'] != '') {
 					$appointment->practice_id = $manualAppointmentData['practice_id'];
 				}
-
+				$appointment->provider_id = null;
 				if ($manualAppointmentData['provider_id'] != '0' && $manualAppointmentData['provider_id'] != '') {
 					$appointment->provider_id = $manualAppointmentData['provider_id'];
 				}
@@ -131,7 +131,7 @@ class ActionService
 				}
 				
 				$newNote = $scheduledTo . '</br>' . $appointment->start_datetime . '</br>' . $appointment->appointmenttype;
-				$updatedNote = $newNote.'</br>'. $notes;
+				$updatedNote = $newNote.'</br></br>'. $notes;
 				$appointment->notes = $updatedNote;
 
 				$contact->notes = $updatedNote;
