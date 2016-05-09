@@ -45,8 +45,12 @@
                 <div class="col-xs-12 subsection-header arial">
                     <span>1. Search for a patient</span>
                     <sapn class="action-btns active">
+                    @can('edit-patient')
                     <a id="add_patient_btn">Add New</a>
+                    @endcan
+                    @can('bulk-import')
                     <a data-toggle="modal" data-target="#importModal" id="import_patients">Import</a></sapn>
+                    @endcan
                 </div>
             </div>
             @endif
