@@ -614,6 +614,8 @@ class FileExchangeController extends Controller {
 	public function checkParentStatus($folderID){
 		$parentID = explode('/', Folder::find($folderID)->treepath);
 		array_shift($parentID);
+		array_shift($parentID);
+		array_shift($parentID);
 		array_pop($parentID);
 		array_pop($parentID);
 		foreach($parentID as $id){
