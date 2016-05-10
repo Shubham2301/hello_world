@@ -98,6 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('trash', 'FileExchange\FileExchangeController@showtrash');
     Route::post('shareFilesFolders', 'FileExchange\FileExchangeController@shareFilesFolders');
     Route::post('restoreFilesFolders', 'FileExchange\FileExchangeController@restoreFilesFolders');
+    Route::get('uploadDocumentToS3', 'FileExchange\FileExchangeController@uploadDocumentToS3');
 
     //Ccda routes
     Route::post('/import/ccda', 'CcdaController@saveCcda');
