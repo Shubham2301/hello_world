@@ -10,9 +10,10 @@ use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
+use myocuhub\Models\PracticeLocation;
+use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
-use myocuhub\Models\PracticeLocation;
 
 class ProviderController extends Controller
 {
@@ -307,6 +308,21 @@ class ProviderController extends Controller
             $data[$i]['speciality'] = $provider->speciality;
             $data[$i]['location_address'] = $provider->addressline1.' '.$provider->state;
             $data[$i]['distance'] = number_format((float)$provider->distance, 2, '.', '').' Miles';
+            $i++;
+        }
+        return json_encode($data);
+    }
+
+    public function getReferringProviderSuggestions(Request $request)
+    {
+        $searchString = $request->provider;
+        $providers = User::getUsersByName($searchString)->where('usertype_id', 1)->pluck('name')->toArray();
+        $fromReferring = ReferralHistory::where('referred_by_provider', 'LIKE', '%'.$searchString.'%')->pluck('referred_by_provider')->toArray();
+        $suggestions = array_unique(array_merge($providers, $fromReferring));
+        $data = [];
+        $i = 0;
+        foreach ($suggestions as $key => $value) {
+            $data[$i]= $value;
             $i++;
         }
         return json_encode($data);

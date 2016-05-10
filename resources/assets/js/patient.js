@@ -4,13 +4,13 @@ $(document).ready(function() {
         loadAllPatients();
     loadImportForm();
 
-	var patientID = location.search.split('patient_id=')[1];
-	if(patientID){
-		var formData = {
-			'id': patientID
-		};
-		getPatientInfo(formData);
-	}
+    var patientID = location.search.split('patient_id=')[1];
+    if (patientID) {
+        var formData = {
+            'id': patientID
+        };
+        getPatientInfo(formData);
+    }
 
     $('#dob').datetimepicker({
         format: 'MM/DD/YYYY'
@@ -77,7 +77,7 @@ $(document).ready(function() {
     });
     $('#add_patient_btn').on('click', function() {
         $('#form_patient_id').prop('disabled', true);
-		$('#form_select_provider').attr('action', "/patients/create");
+        $('#form_select_provider').attr('action', "/patients/create");
         $('#form_select_provider').submit();
     });
     $('.patient_list').on('click', '.patient_list_item', function() {
@@ -264,24 +264,35 @@ $(document).ready(function() {
         }
     });
 
-	$('.edit_patient_button').on('click', function(){
-		var patientID = $('.patient_info').attr('data-id');
-		if ($('#from_admin').val())
-		{
-			window.location = '/administration/patients/edit/' + patientID + '';
-		}
-		else{
-			$('#form_patient_id').val(patientID);
-			$('#form_select_provider').attr('action', "/patient/editfromreferral");
-			$('#form_select_provider').submit();
-		}
-	});
+    $('.edit_patient_button').on('click', function() {
+        var patientID = $('.patient_info').attr('data-id');
+        if ($('#from_admin').val()) {
+            window.location = '/administration/patients/edit/' + patientID + '';
+        } else {
+            $('#form_patient_id').val(patientID);
+            $('#form_select_provider').attr('action', "/patient/editfromreferral");
+            $('#form_select_provider').submit();
+        }
+    });
 
-    $('.add_another_phone').on('click', function(){
+    $('.add_another_phone').on('click', function() {
         $('.workphone_span').removeClass('hide_phone_field');
         $('.homephone_span').removeClass('hide_phone_field');
         $(this).addClass('hide');
     });
+
+	$('.suggestion_list').on('click', '.practice_suggestion_item', function(){
+		var selectedValue = $(this).text();
+		$('.referredby_practice').val(selectedValue);
+		$(this).closest('.suggestion_list').removeClass('active');
+	});
+
+	$('.suggestion_list').on('click', '.provider_suggestion_item', function(){
+		var selectedValue = $(this).text();
+		$('.referredby_provider').val(selectedValue);
+		$(this).closest('.suggestion_list').removeClass('active');
+	});
+
 });
 var flag = 0;
 var showpage = 1;
@@ -331,8 +342,8 @@ function showPatientInfo(data) {
     $('.patient_list').removeClass('active');
     $('.patient_table_header').addClass('hide');
     $('.patient_info').addClass('active');
-	$('.patient_info').attr('data-id', data.id);
-	$('#patient_name').text(data.lastname + ', '+ data.firstname);
+    $('.patient_info').attr('data-id', data.id);
+    $('#patient_name').text(data.lastname + ', ' + data.firstname);
     $('#patient_email').text(data.email);
     $('#patient_dob').text(data.birthdate);
     if (data.addressline1 != '')
@@ -347,7 +358,7 @@ function showPatientInfo(data) {
         phone += '<span>Workphone: ' + data.workphone + '</span><br>';
     if (data.homephone != '')
         phone += '<span>Homephone: ' + data.homephone + '</span>';
-    if(phone == '')
+    if (phone == '')
         phone += '<span>-</span>'
     $('#patient_phone').html(phone);
     $('#patient_ssn').text(data.lastfourssn);
@@ -402,7 +413,7 @@ function getPatientInfo(formData) {
         async: false,
         success: function(e) {
             var info = $.parseJSON(e);
-            if(info.result === true){
+            if (info.result === true) {
                 showPatientInfo(info.patient_data);
             }
         },
@@ -600,4 +611,79 @@ function checkForm() {
             }
         }
     });
+}
+
+function referredByProviderSuggestions(searchValue) {
+    if (searchValue != '') {
+        $.ajax({
+            url: '/referredbyproviders',
+            type: 'GET',
+            data: $.param({
+                'provider': searchValue,
+            }),
+            contentType: 'text/html',
+            async: false,
+            success: function success(e) {
+                var data = $.parseJSON(e);
+                var content = '';
+                data.forEach(function(providerName) {
+					content += '<p class="provider_suggestion_item">' + providerName + '</p>';
+                });
+                if (content != '') {
+                    $('.provider_suggestions').addClass('active');
+                    $('.provider_suggestions').html(content);
+                } else {
+                    $('.provider_suggestions').removeClass('active');
+                }
+
+            },
+            error: function error() {
+                $('p.alert_message').text('Error searching');
+                $('#alert').modal('show');
+            },
+            cache: false,
+            processData: false
+        });
+    }
+	else{
+		$('.provider_suggestions').removeClass('active');
+	}
+}
+
+function referredByPracticeSuggestions(searchValue) {
+    if (searchValue != '') {
+        $.ajax({
+			url: '/referredbypractice',
+            type: 'GET',
+            data: $.param({
+                'practice': searchValue,
+            }),
+            contentType: 'text/html',
+            async: false,
+            success: function success(e) {
+			    var data = [];
+                data = $.parseJSON(e);
+                var content = '';
+                data.forEach(function(practiceName) {
+					content += '<p class="practice_suggestion_item">' + practiceName + '</p>';
+                });
+                if (content != '') {
+                    $('.practice_suggestions').addClass('active');
+					$('.practice_suggestions').html(content);
+                } else {
+					$('.practice_suggestions').removeClass('active');
+                }
+
+            },
+            error: function error() {
+                $('p.alert_message').text('Error searching');
+                $('#alert').modal('show');
+            },
+            cache: false,
+            processData: false
+        });
+    }
+	else{
+		$('.practice_suggestions').removeClass('active');
+	}
 }

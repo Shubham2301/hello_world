@@ -60,6 +60,8 @@ class PatientController extends Controller
 		$data['admin'] = true;
 		$data['back_btn'] = 'back_to_select_patient_btn';
 		$data['url'] = '/administration/patients/add';
+		$data['referred_by_provider'] = null;
+		$data['referred_by_practice'] = null;
 		if ($request->has('referraltype_id')) {
 			$data['referraltype_id'] = $request->input('referraltype_id');
 			$data['admin'] = false;
@@ -84,6 +86,8 @@ class PatientController extends Controller
 		$data['back_btn'] = 'back_to_admin_patient_btn';
 		$data['url'] = '/administration/patients/add';
 		$data['referraltype_id'] = -1;
+		$data['referred_by_provider'] = null;
+		$data['referred_by_practice'] = null;
 		return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
 	}
 
@@ -108,7 +112,8 @@ class PatientController extends Controller
 			unset($data['referraltype_id']);
 			unset($data['action']);
 		}
-
+		unset($data['referred_by_provider']);
+		unset($data['referred_by_practice']);
 		$patient = Patient::where($data)->first();
 		if (!$patient) {
 			$patient = new Patient;
@@ -133,6 +138,11 @@ class PatientController extends Controller
 			$importHistory->network_id = $networkID;
 			$importHistory->save();
 
+			$referralHistory = new ReferralHistory;
+			$referralHistory->referred_by_provider = $request->input('referred_by_provider');
+			$referralHistory->referred_by_practice = $request->input('referred_by_practice');
+			$referralHistory->save();
+
 			$careconsole = new Careconsole;
 			$careconsole->import_id = $importHistory->id;
 			$careconsole->patient_id = $patient->id;
@@ -140,6 +150,9 @@ class PatientController extends Controller
 			$date = new DateTime();
 			$careconsole->stage_updated_at = $date->format('Y-m-d H:i:s');
 			$careconsole->entered_console_at = $date->format('Y-m-d H:i:s');
+			if ($referralHistory != null) {
+				$careconsole->referral_id = $referralHistory->id;
+			}
 			$careconsole->save();
 
 			if( session('user-level') == 3 ) {
@@ -148,7 +161,7 @@ class PatientController extends Controller
 					$practicePatient = new PracticePatient;
 					$practicePatient->patient_id = $patient->id;
 					$practicePatient->practice_id = $practiceUser['practice_id'];
-                    $practicePatient->save();
+          			$practicePatient->save();
 				}
 			}
 
@@ -204,18 +217,17 @@ class PatientController extends Controller
             $patientData['referred_to_practice'] = $previousProvider['name'];
         }
 
-        $referral_history = (isset($careconsole->referral_id)) ? ReferralHistory::find($careconsole->referral_id) : null; 
-        
+        $referral_history = (isset($careconsole->referral_id)) ? ReferralHistory::find($careconsole->referral_id) : null;
         $patientData['referred_by_practice'] = '';
         $patientData['referred_by_provider'] = '';
 
         if ($referral_history) {
         	try {
-        		$referred_to_practice = Practice::find($referral_history->referred_to_practice_id);
-        		if($referred_to_practice){
+        		//$referred_to_practice = Practice::find($referral_history->referred_to_practice_id);
+        		//if($referred_to_practice){
         			$patientData['referred_by_practice'] = $referral_history->referred_by_practice;
             		$patientData['referred_by_provider'] = $referral_history->referred_by_provider;
-            	}
+            	//}
         	} catch (Exception $e) {
 
         	}
@@ -249,7 +261,6 @@ class PatientController extends Controller
         	'result' => true,
         	'patient_data' => $patientData
         ];
-
         return json_encode($response);
     }
 
@@ -280,6 +291,19 @@ class PatientController extends Controller
 		$data['back_btn'] = 'back_to_admin_patient_btn';
 		$data['url'] = '/administration/patients/update/' . $id;
 		$data['referraltype_id'] = -1;
+		$data['referred_by_provider'] = null;
+		$data['referred_by_practice'] = null;
+
+		$careconsole = Careconsole::where('patient_id', '=', $id)->first();
+		if($careconsole)
+		{
+			$referralHistory = ReferralHistory::find($careconsole->referral_id);
+			if($referralHistory)
+			{
+				$data['referred_by_provider'] = $referralHistory->referred_by_provider;
+				$data['referred_by_practice'] = $referralHistory->referred_by_practice;
+			}
+		}
 
 		return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
 	}
@@ -315,6 +339,18 @@ class PatientController extends Controller
             $patient->birthdate = $dob->format('Y-m-d 00:00:00');
 
             $patient->save();
+
+			$careconsole = Careconsole::where('patient_id', '=', $id)->first();
+			if($careconsole)
+			{
+				$referralHistory = ReferralHistory::find($careconsole->referral_id);
+				if($referralHistory)
+				{
+					$referralHistory->referred_by_provider = $request->referred_by_provider;
+					$referralHistory->referred_by_practice = $request->referred_by_practice;
+					$referralHistory->save();
+				}
+			}
 
             $action = 'update patient of id =' . $id;
             $description = '';
@@ -408,6 +444,16 @@ class PatientController extends Controller
 		$data['referraltype_id'] = $request->input('referraltype_id');
 		$data['action'] = $request->input('action');
 		$data['patient_id'] = $id;
+		$careconsole = Careconsole::where('patient_id', '=', $id)->first();
+		if($careconsole)
+		{
+			$referralHistory = ReferralHistory::find($careconsole->referral_id);
+			if($referralHistory)
+			{
+				$data['referred_by_provider'] = $referralHistory->referred_by_provider;
+				$data['referred_by_practice'] = $referralHistory->referred_by_practice;
+			}
+		}
 		return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
 	}
 }

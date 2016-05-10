@@ -573,3 +573,26 @@ p.patient_dropdown_data {
 .homephone_span {
     margin-top: 1em;
 }
+
+.suggestion_list {
+	display: none;
+	z-index: 1;
+    margin-top: -15px;
+    background: #f2f2f2;
+    width: 64%;
+    border-radius: 4px;
+	margin-left:1%;
+    padding-left: 9px;
+    padding-right: 9px;
+	>p{
+		color:black;
+		&:hover{
+			cursor: pointer;
+			background-color:#00B6F1;
+		}
+	}
+	&.active{
+		display: block;
+	}
+}
+
