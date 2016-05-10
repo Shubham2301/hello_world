@@ -278,9 +278,6 @@ class ProviderController extends Controller
 
     public function getNearByProviders(Request $request)
     {
-        if (PracticeLocation::where('latitude', null)->first()) {
-            $this->getCoordinatesOFLocations();
-        }
         $patientID = $request->patient_id;
         $patientLocation = Patient::find($patientID)->getLocation();
 
@@ -313,26 +310,5 @@ class ProviderController extends Controller
             $i++;
         }
         return json_encode($data);
-    }
-
-    public function getCoordinatesOFLocations()
-    {
-        $locations = PracticeLocation::all();
-        foreach ($locations as $location) {
-            if ($location->latitude != null) {
-                continue;
-            }
-            $address = urlencode($location->addressline1.' '.$location->addressline2.' '.$location->city.' '.$location->zip.' '.$location->state);
-            try {
-                $json = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')), true);
-            } catch (Exception $e) {
-                dd($e->getMessage());
-            }
-            if (isset($json['results'][0]['geometry']['location']['lat'])) {
-                $location->latitude = $json['results'][0]['geometry']['location']['lat'];
-                $location->longitude = $json['results'][0]['geometry']['location']['lng'];
-            }
-            $location->save();
-        }
     }
 }

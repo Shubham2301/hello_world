@@ -177,4 +177,5 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('getlandingpages', 'Admin\UserController@getLandingPagebyRole');
     Route::get('/administration', 'HomeController@administration');
+    Route::get('/cleanupphones', 'ScriptsController@cleanUpPhoneNumbers');
 });

@@ -19,7 +19,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $this->cleanUpPhoneNumbers();
         $userID = Auth::user()->id;
         $user = User::find($userID);
         if (isset($user->menu_id)) {
@@ -134,29 +133,5 @@ class HomeController extends Controller
 
         $request->session()->flash('failure', 'You do not have any administrative roles assigned. Please contact your admin for support');
         return redirect($redirectURL);
-    }
-
-    public function cleanUpPhoneNumbers()
-    {
-        $patients = Patient::all();
-        foreach ($patients as $patient) {
-            $workphone = $patient->workphone;
-            $homephone = $patient->homephone;
-            $cellphone = $patient->cellphone;
-            try {
-                if ($workphone) {
-                    $patient->workphone = (float)$workphone;
-                }
-                if ($homephone) {
-                    $patient->homephone = (float)$homephone;
-                }
-
-                if ($cellphone) {
-                    $patient->cellphone = (float)$cellphone;
-                }
-            } catch (\Exception $e) {
-            }
-            $patient->save();
-        }
     }
 }
