@@ -31,7 +31,7 @@ class CcdaController extends Controller
             $upload_success = $file->move(base_path() . '/' . $destinationPath, $xmlfilename);
             $xmlfile = base_path() . '/' . $destinationPath . '/' . $xmlfilename;
             $jsonfile = base_path() . '/' . $destinationPath . '/temp_json/' . $jsonfilename;
-            $xml_to_json = exec($_ENV['NODE_PATH'] ." " . public_path() . "/js/tojson.js " . $xmlfile . " " . $jsonfile);
+            $xml_to_json = exec(env('NODE_PATH', '/usr/local/bin/node') ." " . public_path() . "/js/tojson.js " . $xmlfile . " " . $jsonfile);
             $jsonstring = file_get_contents($jsonfile, true);
             $validator = \Validator::make(array('jsson' => $jsonstring), array('jsson' => 'Required|json'));
             unlink($xmlfile);
