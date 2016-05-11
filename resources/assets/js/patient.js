@@ -383,7 +383,7 @@ function showPatientInfo(data) {
     $('.referredby_content').addClass('active');
 
     if (data.referred_by_provider == '' && data.referred_by_practice == '') {
-		$('.referredby_content').html('<div><button data-toggle="modal" data-target="#referredby_details" id="referred_by_details_btn" class="button_type_1"> Add Details</button></div>');
+		$('.referredby_content').html('<div><a data-toggle="modal" data-target="#referredby_details" id="referred_by_details_btn" class="button_type_1"> Add Details</a></div>');
     } else {
         $('.referredby_content').html('<p class="patient_dropdown_data">' + data.referred_by_provider + '</p><p class="patient_dropdown_data">' + data.referred_by_practice + '</p>');
         $('.patient_table_header').removeClass('hide');
