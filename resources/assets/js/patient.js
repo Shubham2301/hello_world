@@ -290,7 +290,6 @@ $(document).ready(function() {
             'patient_id': $('#select_provider_button').attr('data-id'),
         };
         saveReferredByDetails(formData);
-        console.log(formData);
     });
 
     $(document).on('click', function() {

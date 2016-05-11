@@ -99,6 +99,17 @@ class ActionService
 					$console->stage_updated_at = $date->format('Y-m-d H:i:s');
 					$console->update();
 				}
+					$referralHistory = new ReferralHistory;
+					$referralHistory->referred_to_practice_id 		= $appointment->practice_id;
+					$referralHistory->referred_to_practice_user_id  = $appointment->provider_id;
+					$referralHistory->referred_to_location_id 		= $appointment->location_id;
+					$referralHistory->referred_by_provider          = $manualAppointmentData['referredby_provider'];
+					$referralHistory->referred_by_practice          = $manualAppointmentData['referredby_practice'];
+					$referralHistory->save();
+
+					$console->referral_id = $referralHistory->id;
+					$console->save();
+
 				break;
 			case 'manually-reschedule':
 				$console = Careconsole::find($consoleID);
@@ -146,6 +157,18 @@ class ActionService
 					$console->stage_updated_at = $date->format('Y-m-d H:i:s');
 					$console->update();
 				}
+
+				$referralHistory = new ReferralHistory;
+				$referralHistory->referred_to_practice_id 		= $appointment->practice_id;
+				$referralHistory->referred_to_practice_user_id  = $appointment->provider_id;
+				$referralHistory->referred_to_location_id 		= $appointment->location_id;
+				$referralHistory->referred_by_provider          = $manualAppointmentData['referredby_provider'];
+				$referralHistory->referred_by_practice          = $manualAppointmentData['referredby_practice'];
+				$referralHistory->save();
+
+				$console->referral_id = $referralHistory->id;
+				$console->save();
+
 				break;
 			case 'move-to-console':
 				$console = Careconsole::find($consoleID);

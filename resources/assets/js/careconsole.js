@@ -183,6 +183,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_provider').show();
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
+				$('#form_manual_referredby_details').show();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -191,6 +192,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_provider').show();
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
+				$('#form_manual_referredby_details').show();
                 showActionModel(data);
                 break;
             default:
@@ -230,6 +232,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_provider').show();
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
+				$('#form_manual_referredby_details').show();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -238,6 +241,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_provider').show();
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
+				$('#form_manual_referredby_details').show();
                 showActionModel(data);
                 break;
             default:
@@ -275,6 +279,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_provider').show();
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
+				$('#form_manual_referredby_details').show();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -283,6 +288,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_date').show();
                 $('#form_manual_appointment_appointment_type').show();
+				$('#form_manual_referredby_details').show();
                 showActionModel(data);
                 break;
             default:
@@ -362,6 +368,22 @@ $(document).ready(function() {
                 bucketData(bucketName);
         }
     });
+
+	$('.suggestion_list').on('click', '.practice_suggestion_item', function() {
+		var selectedValue = $(this).text();
+		$('#manual_referredby_practice').val(selectedValue);
+		$(this).closest('.suggestion_list').removeClass('active');
+	});
+
+	$('.suggestion_list').on('click', '.provider_suggestion_item', function() {
+		var selectedValue = $(this).text();
+		$('#manual_referredby_provider').val(selectedValue);
+		$(this).closest('.suggestion_list').removeClass('active');
+	});
+
+	$(document).on('click', function(){
+		$('.suggestion_list').removeClass('active');
+	});
 
 });
 
@@ -538,7 +560,9 @@ function action() {
         'manual_appointment_practice': $('#manual_appointment_practice').val(),
         'manual_appointment_location': $('#manual_appointment_location').val(),
         'manual_appointment_provider': $('#manual_appointment_provider').val(),
-        'manual_appointment_appointment_type': $('#manual_appointment_appointment_type').val()
+        'manual_appointment_appointment_type': $('#manual_appointment_appointment_type').val(),
+		'manual_referredby_practice': $('#manual_referredby_practice').val(),
+		'manual_referredby_provider': $('#manual_referredby_provider').val(),
     };
 
     $.ajax({
@@ -873,6 +897,7 @@ function clearActionFields() {
     $('#form_manual_appointment_practice').hide();
     $('#form_manual_appointment_provider').hide();
     $('#form_manual_appointment_location').hide();
+	$('#form_manual_referredby_details').hide();
     $('#form_manual_appointment_appointment_type').hide();
     $('#form_recall_date').val('');
     $('#manual_appointment_date').val('');
@@ -880,5 +905,79 @@ function clearActionFields() {
     $('#manual_appointment_provider').val('0');
     $('#manual_appointment_location').val('0');
     $('#manual_appointment_appointment_type').val('');
+	$('#manual_referredby_practice').val('');
+	$('#manual_referredby_provider').val('');
+}
 
+function referredByProviderSuggestions(searchValue) {
+	if (searchValue != '') {
+		$.ajax({
+			url: '/referredbyproviders',
+			type: 'GET',
+			data: $.param({
+				'provider': searchValue,
+			}),
+			contentType: 'text/html',
+			async: false,
+			success: function success(e) {
+			var data = $.parseJSON(e);
+			var content = '';
+			data.forEach(function(providerName) {
+			content += '<p class="provider_suggestion_item">' + providerName + '</p>';
+		});
+		if (content != '') {
+			$('.provider_suggestions').addClass('active');
+			$('.provider_suggestions').html(content);
+		} else {
+			$('.provider_suggestions').removeClass('active');
+		}
+
+	},
+		error: function error() {
+			$('p.alert_message').text('Error searching');
+			$('#alert').modal('show');
+		},
+			cache: false,
+				processData: false
+});
+} else {
+	$('.provider_suggestions').removeClass('active');
+}
+}
+
+function referredByPracticeSuggestions(searchValue) {
+	if (searchValue != '') {
+		$.ajax({
+			url: '/referredbypractice',
+			type: 'GET',
+			data: $.param({
+				'practice': searchValue,
+			}),
+			contentType: 'text/html',
+			async: false,
+			success: function success(e) {
+			var data = [];
+			data = $.parseJSON(e);
+			var content = '';
+			data.forEach(function(practiceName) {
+			content += '<p class="practice_suggestion_item">' + practiceName + '</p>';
+		});
+		if (content != '') {
+			$('.practice_suggestions').addClass('active');
+			$('.practice_suggestions').html(content);
+		} else {
+			$('.practice_suggestions').removeClass('active');
+		}
+
+	},
+		error: function error() {
+			$('p.alert_message').text('Error searching');
+			$('#alert').modal('show');
+		},
+			cache: false,
+				processData: false
+});
+} else {
+	$('.practice_suggestions').removeClass('active');
+}
 }
