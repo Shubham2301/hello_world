@@ -37,6 +37,7 @@ class ScriptsController extends Controller
             } catch (\Exception $e) {
             }
             $patient->save();
+			echo 'clean phones for patient '.$patient->firstname.'<br>';
         }
     }
 
