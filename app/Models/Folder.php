@@ -75,6 +75,8 @@ class Folder extends Model
 	public function getParents(){
 		$parentIDs = explode('/', $this->treepath);
 		array_shift($parentIDs);
+		array_shift($parentIDs);
+		array_shift($parentIDs);
 		array_pop($parentIDs);
 		array_pop($parentIDs);
 

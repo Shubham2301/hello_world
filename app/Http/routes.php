@@ -177,4 +177,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('getlandingpages', 'Admin\UserController@getLandingPagebyRole');
     Route::get('/administration', 'HomeController@administration');
+    Route::get('/referredbyproviders', 'Practice\ProviderController@getReferringProviderSuggestions');
+    Route::get('/referredbypractice', 'Practice\PracticeController@getReferringPracticeSuggestions');
 });

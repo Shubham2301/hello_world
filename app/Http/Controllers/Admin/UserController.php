@@ -178,12 +178,14 @@ class UserController extends Controller
             $practiceUser->save();
         }
 
-        $action = 'new user created';
+        $action = 'New user created';
         $description = '';
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        
         return redirect('administration/users');
+
     }
 
     /**
@@ -382,7 +384,11 @@ class UserController extends Controller
 		}
 		$network_user = NetworkUser::where('user_id', $id)->update($userData);
 
-        $action = 'update user of id =' . $id;
+        $action = 'updated user profile ';
+        if ($password != ''){
+            $action .= 'and reset password ';
+        }
+        $action .= 'of id ' . $id;
         $description = '';
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();
