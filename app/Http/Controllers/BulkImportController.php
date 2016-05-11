@@ -93,7 +93,7 @@ class BulkImportController extends Controller
                             continue;
                         }
 
-                        $patients['cellphone'] = $data['phone_number'];
+                        $patients['cellphone'] = (float)$data['phone_number'];
                         $patients['email'] = $data['email'];
                         $patients['addressline1'] = $data['address_1'];
                         $patients['addressline2'] = $data['address_2'];
