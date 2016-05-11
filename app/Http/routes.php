@@ -180,4 +180,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/administration', 'HomeController@administration');
     Route::get('/referredbyproviders', 'Practice\ProviderController@getReferringProviderSuggestions');
     Route::get('/referredbypractice', 'Practice\PracticeController@getReferringPracticeSuggestions');
+	Route::get('/savereferredby', 'Patient\PatientController@saveReferredbyDetails');
 });

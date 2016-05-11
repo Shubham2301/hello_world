@@ -223,11 +223,12 @@ class PatientController extends Controller
 
         if ($referral_history) {
         	try {
-        		//$referred_to_practice = Practice::find($referral_history->referred_to_practice_id);
-        		//if($referred_to_practice){
+				if($referral_history->referred_by_practice){
         			$patientData['referred_by_practice'] = $referral_history->referred_by_practice;
+				}
+				if($referral_history->referred_by_provider){
             		$patientData['referred_by_provider'] = $referral_history->referred_by_provider;
-            	//}
+				}
         	} catch (Exception $e) {
 
         	}
@@ -455,5 +456,25 @@ class PatientController extends Controller
 			}
 		}
 		return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
+	}
+
+	public function saveReferredbyDetails(Request $request){
+		$referredByPractice = $request->referred_by_practice;
+		$referredByProvider = $request->referred_by_provider;
+		$patientID = $request->patient_id;
+
+		$referralHistory = new ReferralHistory;
+		$referralHistory->referred_by_provider = $referredByProvider;
+		$referralHistory->referred_by_practice = $referredByPractice;
+		$referralHistory->save();
+
+		$careconsole = Careconsole::where('patient_id', '=', $patientID)->first();
+
+		if($careconsole && $referralHistory != null){
+			$careconsole->referral_id = $referralHistory->id;
+			$careconsole->save();
+
+		}
+		return $patientID;
 	}
 }

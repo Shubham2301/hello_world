@@ -130,7 +130,7 @@
 
         <div class="col-xs-4 referredby no-padding">
             <div class="referredby_show arial">
-                <span> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></span>
+                <span> <span>Last referred by</span>&nbsp;<span class="referredby_icon "></span></span>
             </div>
         </div>
 
@@ -148,6 +148,9 @@
         </div>
         <div class="col-xs-4 no-padding">
             <div class="referredby_content">
+            <div>
+				<button data-toggle="modal" data-target="#referredby_details" id="referred_by_details_btn"> Add Details</button>
+            </div>
             </div>
         </div>
         <div class="col-xs-4 no-padding">
