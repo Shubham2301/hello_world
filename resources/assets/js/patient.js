@@ -287,7 +287,7 @@ $(document).ready(function() {
         var formData = {
             'referred_by_practice': $('#referred_by_practice').val(),
             'referred_by_provider': $('#referred_by_provider').val(),
-            'patient_id': $('#select_provider_button').attr('data-id'),
+			'patient_id': $('.patient_info').attr('data-id'),
         };
         saveReferredByDetails(formData);
     });
