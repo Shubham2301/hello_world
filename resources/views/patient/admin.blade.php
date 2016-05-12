@@ -29,7 +29,7 @@
 @else
 @include('patient.search')
 @include('patient.listing')
-
+@include('patient.referredby_details')
 @endif
 
 

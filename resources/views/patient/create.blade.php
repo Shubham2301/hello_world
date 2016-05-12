@@ -94,7 +94,7 @@
             <div class="panel-body">
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
-						{!! Form::text('referred_by_practice', $data['referred_by_practice'], array('class' => 'add_patient_input referredby_practice', 'name' => 'referred_by_practice', 'placeholder' => 'ReferredBy Practice', 'id' => 'referred_by_practice', 'onkeyup'=>'referredByPracticeSuggestions(this.value)')) !!}
+						{!! Form::text('referred_by_practice', $data['referred_by_practice'], array('class' => 'add_patient_input referredby_practice', 'name' => 'referred_by_practice', 'placeholder' => 'ReferredBy Practice', 'id' => 'referred_by_practice', 'onkeyup'=>'referredByPracticeSuggestions(this.value)', 'autocomplete'=>'off')) !!}
 						<ul class="suggestion_list practice_suggestions">
 							<p class="suggestion_item">Practice 1</p>
 							<p class="suggestion_item">Practice 2</p>
@@ -103,7 +103,7 @@
 						</ul>
                     </div>
                     <div class="col-sm-6 col-xs-12">
-						{!! Form::text('referred_by_provider', $data['referred_by_provider'], array('class' => 'add_patient_input referredby_provider', 'name' => 'referred_by_provider', 'placeholder' => 'ReferredBy Provider', 'id' => 'referred_by_provider', 'onkeyup'=>'referredByProviderSuggestions(this.value)')) !!}
+						{!! Form::text('referred_by_provider', $data['referred_by_provider'], array('class' => 'add_patient_input referredby_provider', 'name' => 'referred_by_provider', 'placeholder' => 'ReferredBy Provider', 'id' => 'referred_by_provider', 'onkeyup'=>'referredByProviderSuggestions(this.value)','autocomplete'=>'off')) !!}
 						<ul class="suggestion_list provider_suggestions">
 							<p class="suggestion_item">Provider 1</p>
 							<p class="suggestion_item">Provider 2</p>
