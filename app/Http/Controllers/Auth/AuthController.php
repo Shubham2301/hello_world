@@ -82,7 +82,7 @@ class AuthController extends Controller
         $description = '';
         $filename = basename(__FILE__);
         $ip = '';
-        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        // Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
         return redirect()->back()
             ->withInput($request->only($this->loginUsername(), 'remember'))

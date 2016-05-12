@@ -3,7 +3,7 @@
     <h4>{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</h4>
 </div>
 <div class="sidebar_menu center">
-    <a href="/editprofile"><img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'"></a>
+    <a href="/editprofile"><img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg?q='.str_random(3))}}" class="profile_img_sidebar" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'"></a>
 </div>
 <ul class="sidebar_item_list arial">
     <?php $menus = \myocuhub\Models\Menu::renderForUser(Auth::user())?>

@@ -37,8 +37,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('writeback', 'Appointment\WriteBackController@index');
 
-    Route::get('editprofile', 'Admin\UserController@editProfile');
-    Route::post('updateprofile', 'Admin\UserController@updateProfile');
+    Route::get('editprofile', 'HomeController@editProfile');
+    Route::post('updateprofile', 'HomeController@updateProfile');
+
     Route::get('patients/search', 'Patient\PatientController@search');
     Route::get('providers/search', 'Practice\ProviderController@search');
     Route::get('practices/search', 'Practice\PracticeController@search');
