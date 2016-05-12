@@ -46,7 +46,9 @@
     <div class="row content-row-margin top_margin patient_admin_index_header active">
         <div class="patient_admin_search">
             <p class="page_title arial_bold">Patients</p>
+            @can('add-patient')
             <button id="open_patient_form" type="button" class="btn add-btn" >Add New</button>
+            @endcan
             <span class="search_input_box">
                 <input type="text" class="arial_italic" id="search_patient_input" placeholder="search">
                 <img src="{{asset('images/search-icon.png')}}" class="admin_seacrh_icon" id="search_patient_button">
@@ -56,7 +58,9 @@
                 <img class="cancel_image" src="{{URL::asset('images/delete-natural.png')}}">
                 <img class="cancel_image-hover" src="{{URL::asset('images/delete-natural-hover.png')}}">
             </span>
+            @can('bulk-import')
             <button type="button" data-toggle="modal" data-target="#importModal"  class="btn import-btn open_import">Import</button>
+            @endcan
             <input type="hidden" id="clear_image_path" value="{{URL::asset('images/close-active.png')}}">
         </div>
         <p id="search_results" class="search_result"></p>

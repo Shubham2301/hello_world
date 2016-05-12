@@ -45,8 +45,8 @@ class Handler extends ExceptionHandler
             
             if($maillogs) {
                 Mail::raw($message, function ($m) {
-                        $m->from('support@ocuhub.com', 'Ocuhub');
-                        $m->to(env('MAIL_ERRORLOG_TO', 'applicationerror@ocuhub.com'), 'Application Error')->subject('Exception generated in the system');
+                        $m->from( config('constants.support.email_id'), config('constants.support.email_name'));
+                        $m->to(env('MAIL_ERRORLOG_TO', config('constants.support.application_error')), 'Application Error')->subject('Exception generated in the system');
                 });
             }
         }

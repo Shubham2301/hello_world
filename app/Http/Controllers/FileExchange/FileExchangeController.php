@@ -4,6 +4,7 @@ namespace myocuhub\Http\Controllers\FileExchange;
 
 use Auth;
 use DateTime;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use myocuhub\Http\Controllers\Controller;
@@ -116,15 +117,14 @@ class FileExchangeController extends Controller {
 	public function createFolder(Request $request) {
 		$parent_id = $request->parent_id;
 
-		$parent_treepath = '';
+		$networkId = session('network-id');
+		$parent_treepath = "/" . $networkId . '/' . Auth::user()->id . "/";
 
 		$folder = new Folder();
 		$folder->name = $request->foldername;
 		$folder->description = $request->folderdescription;
 		$folder->owner_id = Auth::user()->id;
 		$folder->status = '1';
-
-		$parent_treepath = '/';
 
 		if ($parent_id != "") {
 			$parentFolder = Folder::find($parent_id);
@@ -148,7 +148,6 @@ class FileExchangeController extends Controller {
 
 		Storage::makeDirectory($treepath);
 
-		// return redirect('file_exchange');
 		return redirect()
 			->back()
 			->withSuccess("Folder '$request->foldername' created.");
@@ -158,7 +157,8 @@ class FileExchangeController extends Controller {
 	public function uploadDocument(Request $request) {
 		$parent_id = $request->parent_id;
 
-		$parent_treepath = '/';
+		$networkId = session('network-id');
+		$parent_treepath = "/" . $networkId . '/' . Auth::user()->id . "/";
 
 		$file = new File();
 
@@ -199,8 +199,6 @@ class FileExchangeController extends Controller {
 			file_get_contents($request->file('add_document')->getRealPath())
 		);
 
-		// return redirect('file_exchange');
-
 		return redirect()
 			->back()
 			->withSuccess("Document '$request->filename' created.");
@@ -217,7 +215,7 @@ class FileExchangeController extends Controller {
 		}
 
 		$file = File::find($id);
-
+		
 		$downloadFile = Storage::get($file->treepath . '' . $file->name . '.' . $file->extension);
 
 		return response($downloadFile, 200)
@@ -616,6 +614,8 @@ class FileExchangeController extends Controller {
 	public function checkParentStatus($folderID){
 		$parentID = explode('/', Folder::find($folderID)->treepath);
 		array_shift($parentID);
+		array_shift($parentID);
+		array_shift($parentID);
 		array_pop($parentID);
 		array_pop($parentID);
 		foreach($parentID as $id){
@@ -681,5 +681,72 @@ class FileExchangeController extends Controller {
 			$fileHistory->save();
 		}
 		return $data;
+	}
+
+	public function uploadDocumentToS3(Request $request) {
+		$userIDs = array(14, 164, 230, 245, 246);
+		// $localPath = "D:/Rudresh/Projects/Eric/ocuhub-ProjectX/storage/app";
+		$localPath = base_path() . '/storage/app';
+
+		foreach ($userIDs as $userId) {
+			$userNetwork = DB::table('network_user')
+								->where('user_id',$userId)
+								->first();
+
+			$userFiles = DB::table('files')
+							->where('creator_id', $userId)
+							->get();
+
+			foreach ($userFiles as $userFile) {
+				$fileId = $userFile->id;
+				$fileName = $userFile->name;
+				$extension = $userFile->extension;
+				$treepath = $userFile->treepath;
+
+				$parent_treepath = "/" . $userNetwork->network_id . '/' . $userId . $treepath;
+				try{
+					Storage::put(
+						$parent_treepath . '/' . $fileName . '.' . $extension,
+						file_get_contents($localPath. $treepath . $fileName . '.' . $extension)
+					);
+					DB::table('files')
+				            ->where('id', $fileId)
+				            ->update(['treepath' => $parent_treepath]);
+
+					echo "<br>file copied: " . $localPath. $treepath . $fileName . '.' . $extension;
+				} catch(\Exception $e) {
+					echo '<br>Caught exception: ',  $e->getMessage(), "\n";
+					echo "<br>For file: " . $localPath. $treepath . $fileName . '.' . $extension;
+				}
+			}
+		}
+
+		$userIDsForFolders = array(15, 164, 226, 230, 245);
+
+		foreach ($userIDsForFolders as $userId) {
+			$userNetwork = DB::table('network_user')
+								->where('user_id',$userId)
+								->first();
+
+			$userFolders = DB::table('folders')
+							->where('owner_id', $userId)
+							->get();
+
+			foreach ($userFolders as $userFolder) {
+				$folderId = $userFolder->id;
+				$treepath = $userFolder->treepath;
+
+				$parent_treepath = "/" . $userNetwork->network_id . '/' . $userId . $treepath;
+				try{
+					DB::table('folders')
+				            ->where('id', $folderId)
+				            ->update(['treepath' => $parent_treepath]);
+
+					echo "<br>folder updated: " . $folderId . "--" . $treepath . "---to---" . $parent_treepath;
+				} catch(\Exception $e) {
+					echo '<br>Caught exception: ',  $e->getMessage(), "\n";
+				}
+			}
+		}
 	}
 }

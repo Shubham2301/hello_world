@@ -16,7 +16,7 @@
             <br>
         </div>
         <p style="text-align: left;">Atlanta-based OcuHub connects eyecare providers, building tightly integrated networks of referral sources and enabling secure, seamless communication with other members of the health care delivery team, to drive better outcomes and practice growth. OcuHub is a health IT subsidiary of TearLab Corporation, a premier innovator in diagnostic eyecare technology.</p>
-        <p style="text-align: left;">If you would like to receive more information, please contact us at support@ocuhub.com.</p>
+        <p style="text-align: left;">If you would like to receive more information, please contact us at {{ config('constants.support.email_id') }}.</p>
     </div>
 
 </div>

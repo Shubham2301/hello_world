@@ -27,8 +27,8 @@
                 <br>
                 <br>
                 <span class="arial_bold">Support Options</span><br>
-                Email- support@ocuhub.com<br>
-                Call- 844-605-8243
+                Email- {{ config('constants.support.email_id') }}<br>
+                Call- {{ config('constants.support.phone') }}
                 </p>
             </span>
         </div>

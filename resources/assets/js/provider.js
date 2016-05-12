@@ -376,7 +376,16 @@ function fillPatientInfo(data) {
     $('#patient_add1').text(data.addressline1 + ',');
     $('#patient_add2').text(data.addressline2 + ',');
     $('#patient_add3').text(data.city);
-    $('#patient_phone').text(data.cellphone);
+    var phone = '';
+    if (data.cellphone != '')
+        phone += '<span>Cellphone: ' + data.cellphone + '</span><br>';
+    if (data.workphone != '')
+        phone += '<span>Workphone: ' + data.workphone + '</span><br>';
+    if (data.homephone != '')
+        phone += '<span>Homephone: ' + data.homephone + '</span>';
+    if(phone == '')
+        phone += '<span>-</span>'
+    $('#patient_phone').html(phone);
     $('#patient_ssn').text(data.lastfourssn);
     $('.patient_table_header').addClass('hide');
     $('.lastseen_content').html('<p class="patient_dropdown_data">' + data.referred_to_practice_user + '</p><p class="patient_dropdown_data">' + data.referred_to_practice + '</p>');

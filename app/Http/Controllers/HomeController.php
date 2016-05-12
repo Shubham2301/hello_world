@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Menu;
+use myocuhub\Patient;
 use myocuhub\Role_user;
 use myocuhub\User;
 
@@ -18,9 +19,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $menu = Menu::where('name', 'administration')->first();
-        $menu->url = '/administration';
-        $menu->save();
         $userID = Auth::user()->id;
         $user = User::find($userID);
         if (isset($user->menu_id)) {

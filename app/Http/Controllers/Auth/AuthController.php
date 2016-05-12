@@ -2,10 +2,14 @@
 
 namespace myocuhub\Http\Controllers\Auth;
 
-use Validator;
-use myocuhub\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Event;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Http\Request;
+use Auth;
+use Validator;
+use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
@@ -69,6 +73,42 @@ class AuthController extends Controller
         } else {
             return redirect('/auth/logout');
         }
+    }
+
+    protected function sendFailedLoginResponse(Request $request)
+    {   
+        $action = 'Failed Login for' . $request->input('email');
+
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = '';
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+        return redirect()->back()
+            ->withInput($request->only($this->loginUsername(), 'remember'))
+            ->withErrors([
+                $this->loginUsername() => $this->getFailedLoginMessage(),
+            ]);
+    }
+
+    protected function handleUserWasAuthenticated(Request $request, $throttles)
+    {
+
+        $action = 'User Logged In';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = '';
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+        if ($throttles) {
+            $this->clearLoginAttempts($request);
+        }
+
+        if (method_exists($this, 'authenticated')) {
+            return $this->authenticated($request, Auth::guard($this->getGuard())->user());
+        }
+
+        return redirect()->intended($this->redirectPath());
     }
 
 }

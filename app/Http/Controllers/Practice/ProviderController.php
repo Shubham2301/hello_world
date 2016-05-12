@@ -10,9 +10,10 @@ use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
+use myocuhub\Models\PracticeLocation;
+use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
-use myocuhub\Models\PracticeLocation;
 
 class ProviderController extends Controller
 {
@@ -278,9 +279,6 @@ class ProviderController extends Controller
 
     public function getNearByProviders(Request $request)
     {
-        if (PracticeLocation::where('latitude', null)->first()) {
-            $this->getCoordinatesOFLocations();
-        }
         $patientID = $request->patient_id;
         $patientLocation = Patient::find($patientID)->getLocation();
 
@@ -315,24 +313,21 @@ class ProviderController extends Controller
         return json_encode($data);
     }
 
-    public function getCoordinatesOFLocations()
+    public function getReferringProviderSuggestions(Request $request)
     {
-        $locations = PracticeLocation::all();
-        foreach ($locations as $location) {
-            if ($location->latitude != null) {
-                continue;
+        $searchString = $request->provider;
+        $providers = User::getUsersByName($searchString)->where('usertype_id', 1)->pluck('name')->toArray();
+        $fromReferring = ReferralHistory::where('referred_by_provider', 'LIKE', '%'.$searchString.'%')->pluck('referred_by_provider')->toArray();
+        $suggestions = array_unique(array_merge($providers, $fromReferring));
+        $data = [];
+        $i = 0;
+        foreach ($suggestions as $key => $value) {
+            $data[$i]= $value;
+            $i++;
+            if ($i > 5) {
+                break;
             }
-            $address = urlencode($location->addressline1.' '.$location->addressline2.' '.$location->city.' '.$location->zip.' '.$location->state);
-            try {
-                $json = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')), true);
-            } catch (Exception $e) {
-                dd($e->getMessage());
-            }
-            if (isset($json['results'][0]['geometry']['location']['lat'])) {
-                $location->latitude = $json['results'][0]['geometry']['location']['lat'];
-                $location->longitude = $json['results'][0]['geometry']['location']['lng'];
-            }
-            $location->save();
         }
+        return json_encode($data);
     }
 }

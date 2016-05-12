@@ -64,7 +64,9 @@
         <div class="col-xs-4 center-align">
             <img src="{{asset('images/patient.png')}}" alt="">
             <br>
+            @can('edit-patient')
             <p class = "edit_patient_button">Edit Patient</p>
+            @endcan
             <p class="button_type_1" id="change_patient_button">Change Patient</p>
             <br>
 
@@ -117,6 +119,7 @@
 
         </div>
     </div>
+    <div>
     <div class="col-xs-12 patient_table_header">
         <div class="col-xs-4 lastseenby no-padding">
             <div class="lastseenby_show arial">
@@ -127,7 +130,7 @@
 
         <div class="col-xs-4 referredby no-padding">
             <div class="referredby_show arial">
-                <span> <span>Last referred by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right referredby_icon "></span></span>
+                <span> <span>Last referred by</span>&nbsp;<span class="referredby_icon "></span></span>
             </div>
         </div>
 
@@ -145,6 +148,9 @@
         </div>
         <div class="col-xs-4 no-padding">
             <div class="referredby_content">
+            <div>
+				<button data-toggle="modal" data-target="#referredby_details" id="referred_by_details_btn"> Add Details</button>
+            </div>
             </div>
         </div>
         <div class="col-xs-4 no-padding">
@@ -152,5 +158,5 @@
             </div>
         </div>
     </div>
-
+    </div>
 </div>
