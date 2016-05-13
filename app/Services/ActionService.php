@@ -76,7 +76,9 @@ class ActionService
                 if ($manualAppointmentData['appointment_type'] != '') {
                     $appointment->appointmenttype = $manualAppointmentData['appointment_type'];
                 }
-
+                if ($manualAppointmentData['appointment_type'] ===  '-1') {
+                    $appointment->appointmenttype = $manualAppointmentData['custom_appointment_type'];
+                }
                 $provider = User::find($appointment->provider_id);
                 $scheduledTo = ' ';
                 if ($provider) {
@@ -133,7 +135,9 @@ class ActionService
                 if ($manualAppointmentData['appointment_type'] != '') {
                     $appointment->appointmenttype = $manualAppointmentData['appointment_type'];
                 }
-
+                if ($manualAppointmentData['appointment_type'] ===  '-1') {
+                    $appointment->appointmenttype = $manualAppointmentData['custom_appointment_type'];
+                }
                 $provider = User::find($manualAppointmentData['provider_id']);
                 $scheduledTo = ' ';
                 if ($provider) {
