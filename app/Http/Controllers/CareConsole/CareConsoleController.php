@@ -199,6 +199,14 @@ class CareConsoleController extends Controller {
 		$patientStage['id'] = $stage->id;
 		$patientStage['name'] = $stage->display_name;
 
+		
+		$actionName = Action::find($actionID)->display_name;
+		$action = "Performed Action : '$actionName' on Console Entry : $consoleID in the Careconsole";
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		return json_encode($patientStage);
 	}
 
