@@ -5,6 +5,7 @@ namespace myocuhub\Http\Controllers;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Services\Reports\Reports;
+use myocuhub\Network;
 
 class ReportingController extends Controller
 {
@@ -58,11 +59,14 @@ class ReportingController extends Controller
         $this->Reports->setStartDate($request->start_date);
         $this->Reports->setEndDate($request->end_date);
 
+        $networkID = session('network-id');
+
         $data['total_referred'] = $this->Reports->getTotalReferred();
         $data['to_be_called'] = $this->Reports->getPendingToBeCalled();
         $data['scheduled'] = $this->Reports->getReferredTo();
         $data['referred_by'] = $this->Reports->getReferredBy();
         $data['appointment_status'] = $this->Reports->getAppointmentStatus();
+        $data['network_name'] = Network::find($networkID)->name;
 
         return json_encode($data);
     }

@@ -8,6 +8,8 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\ImpersonationAudit;
 use myocuhub\Services\SES\SESConnect;
 use myocuhub\User;
+use Event;
+use myocuhub\Events\MakeAuditEntry;
 
 class DirectMailController extends Controller {
 	private $sesConnect;
@@ -36,6 +38,12 @@ class DirectMailController extends Controller {
 			session(['impersonation-name' => '']);
 
 			$audit->save();
+		} else {
+			$action = 'Accessed Directmail';
+	        $description = '';
+	        $filename = basename(__FILE__);
+	        $ip = $request->getClientIp();
+	        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 		}
 
 		$ses = $this->sesConnect->getDirectMail();

@@ -2,10 +2,13 @@
 
 namespace myocuhub\Services\Reports;
 
+use Auth;
 use Datetime;
 use Illuminate\Support\Facades\DB;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
+use myocuhub\Network;
+use myocuhub\User;
 
 class Reports
 {
@@ -133,6 +136,8 @@ class Reports
 
     public function getAppointmentStatus()
     {
+        $networkID = session('network-id');
+        $network_name = Network::find($networkID)->name;
         $result = [];
         $result['scheduled_seen'][0] = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
@@ -145,7 +150,7 @@ class Reports
                     ->orWhere('stage_id', 5);
             })
             ->count();
-        $result['scheduled_seen'][1] = 'Seen by IEG doctor';
+        $result['scheduled_seen'][1] = 'Seen by '. $network_name .' doctor';
 
         $result['scheduled_not_seen'][0] = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
@@ -226,9 +231,11 @@ class Reports
 
     public function getHistoricalAppointmentStatus($results)
     {
+        $networkID = session('network-id');
+        $network_name = Network::find($networkID)->name;
         $appointmentTypeResult = [];
         $appointmentTypeResult['scheduled_seen'][0] = 0;
-        $appointmentTypeResult['scheduled_seen'][1] = 'Seen by IEG doctor';
+        $appointmentTypeResult['scheduled_seen'][1] = 'Seen by '. $network_name .' doctor';
         $appointmentTypeResult['scheduled_seen'][2] = 'scheduled_seen';
         $appointmentTypeResult['scheduled_not_seen'][0] = 0;
         $appointmentTypeResult['scheduled_not_seen'][1] = 'Scheduled but not seen yet';
@@ -624,6 +631,7 @@ class Reports
                     left join `referral_history` on `careconsole`.`referral_id` = `referral_history`.`id`
                     left join `patients` on `careconsole`.`patient_id` = `patients`.`id`
                     left join `practices` on `appointments`.`practice_id` = `practices`.`id`
+                    left join `practice_patient` on `careconsole`.`patient_id` = `practice_patient`.`patient_id`
                     left join `users` on `appointments`.`provider_id` = `users`.`id`
                     left join (select console_id, archived, COUNT(*) as count from contact_history where archived is null group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
                     left join (select console_id, action_result_id as action_result_id from contact_history where action_result_id = '15' OR action_result_id = '16' OR action_result_id = '9' OR action_result_id = '10') as `action_result_id` on `action_result_id`.`console_id` = `careconsole`.`id`
@@ -637,10 +645,16 @@ class Reports
     {
 
         $networkID = session('network-id');
+        $userId = Auth::user()->id;
         $startDate = $this->getStartDate();
         $endDate = $this->getEndDate();
 
         $queryFilters = " where `import_history`.`network_id` = $networkID ";
+
+        if(session('user-level') == 3 || session('user-level') == 4){
+            $practice = User::getPractice($userId);
+            $queryFilters .= $practice ? " and `practice_patient`.`practice_id` = $practice->id " : '';
+        }
 
         if ($filters['type'] == 'real-time') {
             $queryFilters .= " and `careconsole`.`archived_date` IS NULL and `careconsole`.`recall_date` IS NULL";

@@ -2,7 +2,9 @@
 
 namespace myocuhub\Http\Controllers;
 
+use Event;
 use Illuminate\Http\Request;
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Services\Reports\Reports;
 
@@ -19,9 +21,16 @@ class ReportsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $data['reports'] = true;
+
+        $action = 'Patients Reports Accessed';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
         return view('reports.index')->with('data', $data);
     }
 

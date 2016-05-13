@@ -60,7 +60,7 @@ class UserController extends Controller
         $user['network_id'] = '';
         $user['practice_id'] = '';
         $networkData = [];
-        $networks = Network::all();
+        $networks = Network::all()->sortBy("name");
         if (session('user-level') == 1) {
             foreach ($networks as $network) {
                 $networkData[$network->id] = $network->name;
@@ -78,7 +78,7 @@ class UserController extends Controller
         $networkPractices = [];
 
         if (session('user-level') == 1) {
-            $networkPractices = Practice::all();
+            $networkPractices = Practice::all()->sortBy('name');
         } else {
             $networkPractices = Network::find(session('network-id'))->practices;
         }
@@ -243,7 +243,8 @@ class UserController extends Controller
             $roles = $this->getRoles();
             $userLevels = $this->getUserLevels();
             $networkData = [];
-            $networks = Network::all();
+            $networks = Network::all()->sortBy("name");
+
             if (session('user-level') == 1) {
                 foreach ($networks as $network) {
                     $networkData[$network->id] = $network->name;
@@ -272,7 +273,7 @@ class UserController extends Controller
             $networkPractices = [];
 
             if (session('user-level') == 1) {
-                $networkPractices = Practice::all();
+                $networkPractices = Practice::all()->sortBy('name');
             } else {
                 $networkPractices = Network::find(session('network-id'))->practices;
             }

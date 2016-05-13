@@ -19,6 +19,8 @@ use myocuhub\User;
 use Storage;
 use myocuhub\Models\NetworkUser;
 use myocuhub\Models\Practice;
+use Event;
+use myocuhub\Events\MakeAuditEntry;
 
 class FileExchangeController extends Controller {
 	/**
@@ -27,6 +29,12 @@ class FileExchangeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request) {
+
+		$action = 'Accessed File Exchange';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
 		$folders = Folder::getFolders($request->id);
 
@@ -148,6 +156,12 @@ class FileExchangeController extends Controller {
 
 		Storage::makeDirectory($treepath);
 
+		$action = "Folder $request->foldername created.";
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		return redirect()
 			->back()
 			->withSuccess("Folder '$request->foldername' created.");
@@ -199,6 +213,12 @@ class FileExchangeController extends Controller {
 			file_get_contents($request->file('add_document')->getRealPath())
 		);
 
+		$action = 'Document ' . $request->filename . ' created.';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		return redirect()
 			->back()
 			->withSuccess("Document '$request->filename' created.");
@@ -217,6 +237,12 @@ class FileExchangeController extends Controller {
 		$file = File::find($id);
 		
 		$downloadFile = Storage::get($file->treepath . '' . $file->name . '.' . $file->extension);
+
+		$action = 'File Downloaded ' . $file->title;
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
 		return response($downloadFile, 200)
 			->header('Content-Type', $file->mimetype)
@@ -306,6 +332,17 @@ class FileExchangeController extends Controller {
 		$breadcrumbs = $this->getBreadcrumbs($request);
 
 		$accessLink = '/sharedWithMe';
+
+		if($sortOnRecent == 'true'){
+			$action = 'Accessed Recent Shared Changes in File Exchange';
+		} elseif ($sortOnRecent == '' || $sortOnRecent == 'false') {
+			$action = 'Accessed Shared With Me in File Exchange';
+		}
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'sharedWithMe', 'accessLink' => $accessLink]);
 	}
 
@@ -317,26 +354,37 @@ class FileExchangeController extends Controller {
 
 		$folders =[];
 		$files = [];
-		if($request->delete_folders != '')
+		if($request->delete_folders != ''){
 			$folders = explode(',', $request->delete_folders);
-		if($request->delete_files != '')
+		}
+		if($request->delete_files != ''){
 			$files = explode(',', $request->delete_files);
-
+		}
+		$foldersAudit = '';
 		foreach ($folders as $folderID) {
 			$folder = Folder::find($folderID);
 			if($folder){
 					$folder->status = 0;
 					$folder->save();
+					$foldersAudit .= $folderID. ', ';
 			}
 		}
-
+		$filesAudit = '';
 		foreach ($files as $fileID) {
 			$file = File::find($fileID);
 			if($file){
 					$file->status = 0;
 					$file->save();
+					$filesAudit .= $fileID. ', ';
 			}
 		}
+
+		$action = "Files Delete : $filesAudit ; FolderDeleted : $foldersAudit";
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		return redirect()
 			->back()
 			->withSuccess("Successfully Deleted!");
@@ -398,6 +446,13 @@ class FileExchangeController extends Controller {
 
 		$breadcrumbs = $this->getBreadcrumbs($request);
 		$accessLink = '#';
+
+		$action = 'Accessed Trash in File Exchange';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty, 'openView' => 'trash', 'accessLink' => $accessLink ]);
 	}
 	public function shareFilesFolders(Request $request) {
@@ -412,6 +467,12 @@ class FileExchangeController extends Controller {
 			$folders = explode(',', $request->share_folders);
 		if($request->share_files != '')
 			$files = explode(',', $request->share_files);
+
+		$action = "Shared Files : $files ; Shared Folders : $folders";
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
 		if($toAllUsers){
 			$this->shareWithNetwork($files , $folders, $editable );
@@ -558,6 +619,13 @@ class FileExchangeController extends Controller {
 			$fileHistory->modified_by = Auth::user()->id;
 			$fileHistory->save();
 		}
+
+		$action = "Changed Description of $type of id $id";
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		return $data;
 	}
 
@@ -635,20 +703,33 @@ class FileExchangeController extends Controller {
 		if($request->restore_files != '')
 			$files = explode(',', $request->restore_files);
 
+		$foldersAudit = '';
 		foreach ($folders as $folderID) {
 			$folder = Folder::find($folderID);
 			if($folder){
 				$folder->status = 1;
 				$folder->save();
+				$foldersAudit .= $folderID. ', ';
 			}
 		}
+		$filesAudit = '';
 		foreach ($files as $fileID) {
 			$file = File::find($fileID);
 			if($file){
 				$file->status = 1;
 				$file->save();
+				$filesAudit .= $fileID. ', ';
 			}
 		}
+
+		
+
+		$action = "Restored Files : $filesAudit ; Restored Folders : $foldersAudit";
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		return redirect()
 			->back()
 			->withSuccess("Successfully Restored!");
@@ -680,6 +761,13 @@ class FileExchangeController extends Controller {
 			$fileHistory->modified_by = Auth::user()->id;
 			$fileHistory->save();
 		}
+		
+		$action = "Changed name of $type of id $id to $itemName";
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		return $data;
 	}
 

@@ -50,7 +50,10 @@ function getReport() {
         async: false,
         success: function (e) {
             var info = $.parseJSON(e);
-            $('#total_referred').html(info.total_referred);
+
+            var content = '';
+            content +='<span>Total referred to ' + info.network_name + '</span><span>' + info.total_referred + '</span>';
+            $('#total_referred').html(content);
             $('#to_be_called').html(info.to_be_called);
             
             var content = '';
@@ -69,9 +72,12 @@ function getReport() {
             }
             $('#referred_by').html(content);
             
+            var content = '';
             for (var key in info.appointment_status) {
               if (info.appointment_status.hasOwnProperty(key)) {
-                $('#'+key).html(info.appointment_status[key][0]);
+                  content = '';
+                content += '<span>' + info.appointment_status[key][1] + '</span><span>' + info.appointment_status[key][0] + '</span>'
+                $('#'+key).html(content);
               }
             }
 
