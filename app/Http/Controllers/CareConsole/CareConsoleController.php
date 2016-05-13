@@ -38,7 +38,7 @@ class CareConsoleController extends Controller {
 
 	public function index(Request $request) {
 		
-		$action = 'Careconsole Accessed';
+		$action = 'Accessed Careconsole';
         $description = '';
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();
