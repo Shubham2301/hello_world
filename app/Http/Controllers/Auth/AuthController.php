@@ -77,7 +77,7 @@ class AuthController extends Controller
 
     protected function sendFailedLoginResponse(Request $request)
     {   
-        $action = 'Failed Login for' . $request->input('email');
+        $action = 'Failed Login for ' . $request->input('email');
 
         $description = '';
         $filename = basename(__FILE__);
