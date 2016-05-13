@@ -37,7 +37,7 @@ class DirectMailController extends Controller {
 
 			$audit->save();
 		} else {
-			$action = 'Direct Mail Accessed';
+			$action = 'Directmail Accessed';
 	        $description = '';
 	        $filename = basename(__FILE__);
 	        $ip = $request->getClientIp();
