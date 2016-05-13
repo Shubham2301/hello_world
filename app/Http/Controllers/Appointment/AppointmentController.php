@@ -129,7 +129,7 @@ class AppointmentController extends Controller
 
         $apptStatus['appointment_saved'] = true;
 
-        $partnerWebScheduleResult = $this->partnerWebSchedule($apptInfo);
+		$partnerWebScheduleResult = $this->partnerWebSchedule($apptInfo, $request);
 
         if ($partnerWebScheduleResult) {
             $apptStatus['4PC_scheduled'] = true;
@@ -238,7 +238,7 @@ class AppointmentController extends Controller
         return $apptStatus;
     }
 
-    public function partnerWebSchedule($apptInfo)
+	public function partnerWebSchedule($apptInfo, $request)
     {
 
         $apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
@@ -260,7 +260,7 @@ class AppointmentController extends Controller
 
             } else {
                 $result = $apptResult->RequestApptInsertResult->Result;
-                $action = 'Attempt to Request Appointment with 4PC failed for Provider = ' . $providerID . ' Location = ' . $locationID . ' for Date ' . $appointmentTime . ' ';
+				$action = 'Attempt to Request Appointment with 4PC failed for Provider = ' . $request->input('provider_id') . ' Location = ' . $request->input('location_id') . ' for Date ' . $request->input('appointment_time') . ' ';
                 $description = '';
                 $filename = basename(__FILE__);
                 $ip = '';
