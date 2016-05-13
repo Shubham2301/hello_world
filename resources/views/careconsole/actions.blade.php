@@ -38,22 +38,14 @@
                             <div class="col-md-7 form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-										<input type="text" class="form-control" name="manual_referredby_practice" id="manual_referredby_practice" placeholder="Practice" onkeyup="referredByPracticeSuggestions(this.value)">
-										<ul class="suggestion_list practice_suggestions">
-											<p class="suggestion_item">Practice 1</p>
-											<p class="suggestion_item">Practice 2</p>
-											<p class="suggestion_item">Practice 3</p>
-											<p class="suggestion_item">Practice 4</p>
-										</ul>
+                                        <input type="text" class="form-control" name="manual_referredby_practice" id="manual_referredby_practice" placeholder="Practice" onkeyup="referredByPracticeSuggestions(this.value)">
+                                        <ul class="suggestion_list practice_suggestions">
+                                        </ul>
                                     </div>
                                     <div class="col-md-6">
-										<input type="text" class="form-control" name="manual_referredby_provider" id="manual_referredby_provider" placeholder="Provider" onkeyup="referredByProviderSuggestions(this.value)">
-										<ul class="suggestion_list provider_suggestions">
-											<p class="suggestion_item">Provider 1</p>
-											<p class="suggestion_item">Provider 2</p>
-											<p class="suggestion_item">Provider 3</p>
-											<p class="suggestion_item">Provider 4</p>
-										</ul>
+                                        <input type="text" class="form-control" name="manual_referredby_provider" id="manual_referredby_provider" placeholder="Provider" onkeyup="referredByProviderSuggestions(this.value)">
+                                        <ul class="suggestion_list provider_suggestions">
+                                        </ul>
                                     </div>
                                 </div>
 
@@ -120,11 +112,20 @@
                                     @foreach($overview['appointment_types'] as $types)
                                     <option value="{{ $types }}">{{ $types }}</option>
                                     @endforeach
+                                    <option value="-1">Not listed</option>
                                 </select>
                             </div>
                             <div class="col-md-1"></div>
                         </div>
-
+                        <div class="row input_row" id="form_manual_custom_appointment_appointment_type" style="display:none">
+                            <div class="col-md-4 form-group">
+                                <label for="manual_appointment_location"><strong style="color:black;padding-left:1em;">&nbsp;</strong></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                <input type="text" class="form-control" name="manual_custom_appointment_appointment_type" id="manual_custom_appointment_appointment_type" placeholder="Custom Appointment Type">
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
 
 
                         <div class="row input_row">
