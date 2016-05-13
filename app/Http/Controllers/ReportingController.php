@@ -2,10 +2,13 @@
 
 namespace myocuhub\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Services\Reports\Reports;
 use myocuhub\Network;
+use myocuhub\Models\PracticeUser;
+use myocuhub\Models\Practice;
 
 class ReportingController extends Controller
 {
@@ -59,14 +62,23 @@ class ReportingController extends Controller
         $this->Reports->setStartDate($request->start_date);
         $this->Reports->setEndDate($request->end_date);
 
-        $networkID = session('network-id');
-
         $data['total_referred'] = $this->Reports->getTotalReferred();
         $data['to_be_called'] = $this->Reports->getPendingToBeCalled();
         $data['scheduled'] = $this->Reports->getReferredTo();
         $data['referred_by'] = $this->Reports->getReferredBy();
         $data['appointment_status'] = $this->Reports->getAppointmentStatus();
-        $data['network_name'] = Network::find($networkID)->name;
+        if (session('user-level') == 2) {
+            $data['network_name'] = Network::find(session('network-id'))->name;
+        }
+        elseif (session('user-level') == 3) {
+            $practiceID = PracticeUser::where('user_id', '=', Auth::user()->id)->first();
+            $practice = Practice::find($practiceID->practice_id);
+            $data['network_name'] = $practice->name;
+
+        }
+        else {
+            $data['network_name'] = '';
+        }
 
         return json_encode($data);
     }
