@@ -2,7 +2,9 @@
 	<div style="max-width:80%;width: 98%;display: inline-block;padding: 1%;font-family: arial, sans-serif;border: solid 1px transparent;border-radius: 2px;margin: 1% 10%;background-color: white;box-shadow: 0 0 5px #ddd;">
 		<div>
 			<div style="width: 50%;display: inline-block;margin-bottom:1em;">
-				<img src="{{ url('images/ocuhub-logo.png') }}" style="width:10em" alt="">
+				@if( Auth::check()  && session('user-level') == 2 )
+            	<img src="{{ url('images/networks/network_'. Auth::user()->getNetwork(Auth::user()->id)->id .'.png')}}" style="width:10em" alt="">
+            	@endif
 			</div>
 			<div style="width: 49%;display: inline-block;margin-bottom:1em;">
 				<p style="display: inline-block;margin:0;font-weight: bold;float: right;font-size: 130%;colo:#333">{{ $appt['practice_name'] }}</p>
