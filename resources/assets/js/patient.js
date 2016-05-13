@@ -296,6 +296,17 @@ $(document).ready(function() {
         $('.suggestion_list').removeClass('active');
     });
 
+	$('.patient_files_show').on('click', function() {
+		$('.patient_files_content').toggleClass('active');
+		if ($('.patient_files_content').hasClass('active')) {
+			$('.patient_files_icon').removeClass('glyphicon-chevron-right');
+			$('.patient_files_icon').addClass('glyphicon-chevron-down');
+		} else {
+			$('.patient_files_icon').removeClass('glyphicon-chevron-down');
+			$('.patient_files_icon').addClass('glyphicon-chevron-right');
+		}
+	});
+
 });
 var flag = 0;
 var showpage = 1;
@@ -394,17 +405,20 @@ function showPatientInfo(data) {
         $('.insurance_provider_icon').removeClass('hide');
         $('.patient_table_header').removeClass('hide');
     }
-    if (data.ccda == 0)
-        $('.ccda_present').addClass('hide');
-    else
-        $('.ccda_present').removeClass('hide');
 
     //    $('.patient_admin_search').removeClass('active');
     $('.patient_admin_index_header').addClass('hide');
     $('.patient_admin_back').addClass('active');
-    if ($('#from_admin').val())
+    if ($('#from_admin').val()){
         $('#change_patient_button').hide();
+	}
 
+	if (data.ccda){
+		$('.patient_files_content').html(' <div class="patient_file_item row"><div class="col-xs-7"><p class="file_name" >CCDA '+data.ccda_date+'</p></div><div class="col-xs-2"><a href="/show/ccda/'+data.id+'" class="view_file" target="_blank" >View</a></div><div class="col-xs-3"><a href="/download/ccda/'+data.id+'" class="download_file">Get</a></div></div>');
+	}
+	else {
+		$('.patient_files_content').html('No CCDA');
+	}
 }
 
 function getPatientInfo(formData) {
