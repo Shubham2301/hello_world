@@ -9,6 +9,8 @@ use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Network;
 use myocuhub\User;
+use myocuhub\Models\PracticeUser;
+use myocuhub\Models\Practice;
 
 class Reports
 {
@@ -136,8 +138,6 @@ class Reports
 
     public function getAppointmentStatus()
     {
-        $networkID = session('network-id');
-        $network_name = Network::find($networkID)->name;
         $result = [];
         $result['scheduled_seen'][0] = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
@@ -150,7 +150,19 @@ class Reports
                     ->orWhere('stage_id', 5);
             })
             ->count();
-        $result['scheduled_seen'][1] = 'Seen by '. $network_name .' doctor';
+        if (session('user-level') == 2) {
+            $network_name = Network::find(session('network-id'))->name;
+            $result['scheduled_seen'][1] = 'Seen by '. $network_name .' doctor';
+        }
+        elseif (session('user-level') == 3) {
+            $practiceID = PracticeUser::where('user_id', '=', Auth::user()->id)->first();
+            $practice = Practice::find($practiceID->practice_id);
+            $result['scheduled_seen'][1] = 'Seen by '. $practice->name .' doctor';
+        }
+        else {
+            $result['scheduled_seen'][1] = 'Seen by doctor';
+        }
+
 
         $result['scheduled_not_seen'][0] = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
@@ -231,11 +243,20 @@ class Reports
 
     public function getHistoricalAppointmentStatus($results)
     {
-        $networkID = session('network-id');
-        $network_name = Network::find($networkID)->name;
         $appointmentTypeResult = [];
         $appointmentTypeResult['scheduled_seen'][0] = 0;
-        $appointmentTypeResult['scheduled_seen'][1] = 'Seen by '. $network_name .' doctor';
+        if (session('user-level') == 2) {
+            $network_name = Network::find(session('network-id'))->name;
+            $appointmentTypeResult['scheduled_seen'][1] = 'Seen by '. $network_name .' doctor';
+        }
+        elseif (session('user-level') == 3) {
+            $practiceID = PracticeUser::where('user_id', '=', Auth::user()->id)->first();
+            $practice = Practice::find($practiceID->practice_id);
+            $appointmentTypeResult['scheduled_seen'][1] = 'Seen by '. $practice->name .' doctor';
+        }
+        else {
+            $appointmentTypeResult['scheduled_seen'][1] = 'Seen by doctor';
+        }
         $appointmentTypeResult['scheduled_seen'][2] = 'scheduled_seen';
         $appointmentTypeResult['scheduled_not_seen'][0] = 0;
         $appointmentTypeResult['scheduled_not_seen'][1] = 'Scheduled but not seen yet';
