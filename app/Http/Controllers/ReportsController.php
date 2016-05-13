@@ -25,7 +25,7 @@ class ReportsController extends Controller
     {
         $data['reports'] = true;
 
-        $action = 'Accessed Reports';
+        $action = 'Patients Reports Accessed';
         $description = '';
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();

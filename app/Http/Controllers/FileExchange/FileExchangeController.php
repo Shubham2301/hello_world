@@ -19,6 +19,8 @@ use myocuhub\User;
 use Storage;
 use myocuhub\Models\NetworkUser;
 use myocuhub\Models\Practice;
+use Event;
+use myocuhub\Events\MakeAuditEntry;
 
 class FileExchangeController extends Controller {
 	/**

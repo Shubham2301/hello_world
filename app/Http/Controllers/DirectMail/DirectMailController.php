@@ -8,6 +8,8 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\ImpersonationAudit;
 use myocuhub\Services\SES\SESConnect;
 use myocuhub\User;
+use Event;
+use myocuhub\Events\MakeAuditEntry;
 
 class DirectMailController extends Controller {
 	private $sesConnect;

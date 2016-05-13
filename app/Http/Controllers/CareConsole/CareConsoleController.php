@@ -16,6 +16,8 @@ use myocuhub\Services\CareConsoleService;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
 use myocuhub\Models\Practice;
+use Event;
+use myocuhub\Events\MakeAuditEntry;
 
 class CareConsoleController extends Controller {
 	/**
@@ -34,8 +36,14 @@ class CareConsoleController extends Controller {
 		$this->middleware('role:care-console,0');
 	}
 
-	public function index() {
-		// TODO: add task moveRecallPatientsToConsoleAsPending() on nightly CRON
+	public function index(Request $request) {
+		
+		$action = 'Careconsole Accessed';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		$this->CareConsoleService->moveRecallPatientsToConsoleAsPending();
 		$overview = $this->getOverviewData();
 		return view('careconsole.index')->with('overview', $overview);
