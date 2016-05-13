@@ -36,6 +36,12 @@ class DirectMailController extends Controller {
 			session(['impersonation-name' => '']);
 
 			$audit->save();
+		} else {
+			$action = 'Direct Mail Accessed';
+	        $description = '';
+	        $filename = basename(__FILE__);
+	        $ip = $request->getClientIp();
+	        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 		}
 
 		$ses = $this->sesConnect->getDirectMail();
