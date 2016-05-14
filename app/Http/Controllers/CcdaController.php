@@ -118,7 +118,7 @@ class CcdaController extends Controller
         $ss = fwrite($myfile, $jsonobject);
         $xmlfilename = str_random(9) . ".xml";
         $xmlfile = base_path() . '/temp_ccda/' . $xmlfilename;
-        $a = exec("/usr/local/bin/node " . public_path() . "/js/toxml.js " . $jsonfile . " " . $xmlfile);
+		$a = exec(env('NODE_PATH', '/usr/local/bin/node').' ' . public_path() . "/js/toxml.js " . $jsonfile . " " . $xmlfile);
         fclose($myfile);
         unlink($jsonfile);
         return $xmlfile;
