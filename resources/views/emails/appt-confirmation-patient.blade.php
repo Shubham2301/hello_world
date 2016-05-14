@@ -3,7 +3,7 @@
 		<div>
 			<div style="width: 50%;display: inline-block;margin-bottom:1em;">
 				@if( Auth::check()  && session('user-level') == 2 )
-            	<img src="{{ config('production_url').'/images/networks/network_'. Auth::user()->getNetwork(Auth::user()->id)->id .'.png' }}" style="width:10em" alt="">
+            	<img src="{{ config('constants.production_url').'/images/networks/network_'. Auth::user()->getNetwork(Auth::user()->id)->id .'.png' }}" style="width:10em" alt="">
             	@endif
 			</div>
 			<div style="width: 49%;display: inline-block;margin-bottom:1em;">
@@ -24,7 +24,7 @@
 				<p style="font-size: 120%;color:#4d4d4d"> To cancel or reschedule this appointment please call <br> <span style="font-weight:bold">{{ ($appt['user_phone'] == null || $appt['user_phone'] == '' ) ? $appt['practice_phone'] : $appt['user_phone'] }}</span> or email at <span style="font-weight:bold">{{ $appt['user_email'] }}</span>. </p>
 				<div style="display: inline-block;margin:0.5em 0;text-align:center;border-radius:2px;padding: 1em 2em;border:solid 2px #ddd">
 					<p style="font-size: 120%;font-weight:bold;color:#333">PROVIDER</p>
-					<img src="{{ config('production_url').'/images/emails/email-provider-icon.png' }}" style="width:50%" alt="">
+					<img src="{{ config('constants.production_url').'/images/emails/email-provider-icon.png' }}" style="width:50%" alt="">
 					<p style="color:#4d4d4d;">{{ $appt['provider_name'] }}</p>
 				</div>
 			</div>
@@ -57,7 +57,7 @@
 
 			</div>
 			<div style="width: 30%;display: inline-block;margin:3em 0;text-align:center">
-				<img src="{{ config('production_url').'/images/ocuhub-logo.png' }}" style="width:10em" alt="">
+				<img src="{{ config('constants.production_url').'/images/ocuhub-logo.png' }}" style="width:10em" alt="">
 				<hr style="border: solid 1px #ddd;">
 				<p><a href="{{ config('constants.support.contact_form') }}">{{ config('constants.support.contact_form') }}</a><br>Email - {{ config('constants.support.email_id') }}<br>Call - {{ config('constants.support.phone') }}</p>
 			</div>
