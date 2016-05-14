@@ -144,7 +144,7 @@ class AppointmentController extends Controller
         $appt['user_name'] = $loggedInUser->name;
         $appt['user_network'] = $network->name;
         $appt['user_email'] = $loggedInUser->email;
-        $appt['user_email'] = $loggedInUser->cellphone;
+        $appt['user_phone'] = $loggedInUser->cellphone;
         $appt['appt_type'] = $appointmentType;
         $provider = User::find($appointment->provider_id);
         $appt['provider_name'] = $provider->firstname;
@@ -171,18 +171,20 @@ class AppointmentController extends Controller
         $appt['subscriber_relation'] = $patientInsurance->subscriber_relation;
 
         if ($location->email && $location->email != '') {
+
             $mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($location) {
                 $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to('kd@coloredcow.in', $location->name)->subject('Request for Appointment');
+                $m->to($location->email, $location->name)->subject('Request for Appointment');
             });
 
             $apptStatus['practice_email_sent'] = true;
         }
 
         if ($patient->email && $patient->email != '') {
+
             $mailToPatient = Mail::send('emails.appt-confirmation-patient', ['appt' => $appt], function ($m) use ($patient) {
                 $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to('kd@coloredcow.in', $patient->lastname . ', ' . $patient->firstname)->subject('Appointment has been scheduled');
+                $m->to($patient->email, $patient->lastname . ', ' . $patient->firstname)->subject('Appointment has been scheduled');
             });
 
             $apptStatus['patient_email_sent'] = true;
