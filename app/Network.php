@@ -13,13 +13,16 @@ class Network extends Model {
 	public function practices() {
 		// TODO : optimize
 		return $this->hasMany('myocuhub\Models\PracticeNetwork')
-		            ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id');
+		            ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
+		            ->orderBy('practices.name');
 	}
 	public static function practicesByName($search) {
 		return self::where('networks.id', session('network-id'))
 			->leftJoin('practice_network', 'networks.id', '=', 'practice_network.network_id')
 			->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
-			->where('practices.name', 'like', '%' . $search . '%')->get();
+			->where('practices.name', 'like', '%' . $search . '%')
+			->orderBy('practices.name')
+			->get();
 	}
 
 	/**

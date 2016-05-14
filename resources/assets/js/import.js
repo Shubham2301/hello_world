@@ -12,10 +12,10 @@ $(document).ready(function() {
     $(document).on('change', '.xlsx_file-input input[type="file"]', function() {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         var clear_image_path = $('#clear_image_path').val();
-        filename += '&nbsp;&nbsp;<img src="'+ clear_image_path +'" class="clear_image_path" data-toggle="tooltip" title="Remove File" data-placement="top">';
-		$('.xlsx_file_filename').html(filename);
-		if(filename.length > 0)
-		$('.xlsx_file-input').removeClass('active');
+        filename += '&nbsp;&nbsp;<img src="' + clear_image_path + '" class="clear_image_path" data-toggle="tooltip" title="Remove File" data-placement="top">';
+        $('.xlsx_file_filename').html(filename);
+        if (filename.length > 0)
+            $('.xlsx_file-input').removeClass('active');
 
         $('[data-toggle="tooltip"]').tooltip();
     });
@@ -26,20 +26,20 @@ $(document).ready(function() {
         else {
             $('p.alert_message').text('Please select a valid xlsx file');
             $('#alert').modal('show');
-			$('#alert').css("z-index", "1500");
+            $('#alert').css("z-index", "1500");
         }
     });
 
     $('.filename').on('click', '.clear_image_path', function() {
         $('.xlsx_file-input input[type="file"]').val('');
-		$('.filename').html('');
-		$('.xlsx_file-input').addClass('active');
+        $('.filename').html('');
+        $('.xlsx_file-input').addClass('active');
     });
 
     $(document).on('click', '.open_import', function() {
         $('.xlsx_file-input input[type="file"]').val('');
-		$('.filename').html('');
-		$('.xlsx_file-input').addClass('active');
+        $('.filename').html('');
+        $('.xlsx_file-input').addClass('active');
         $('.import_form').addClass('active');
         $('.success_message').text('');
         $('.success_message').removeClass('active');
@@ -202,7 +202,10 @@ function saveCcdafile() {
         type: 'POST',
         success: function(e) {
             var data = $.parseJSON(e);
-            if (data != 'unsuccessful') {
+            if (data.error) {
+				$('p.alert_message').text('Error: Please provide a valid CCDA file.');
+				$('#alert').modal('show');
+            } else {
                 $('.dismiss_button').trigger('click');
                 showComparisionData(data);
                 $('#compare_ccda_button').trigger('click');

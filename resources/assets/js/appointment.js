@@ -24,7 +24,24 @@ $(document).ready(function () {
     });
 });
 
+function disableConfirmApptBttn() {
+    $('.appointment_confirm>p>button').addClass('disable');
+}
+function enableConfirmApptBttn() {
+    $('.appointment_confirm>p>button').removeClass('disable');
+}
+
+function checkApptBttn() {
+    return $('.appointment_confirm>p>button').hasClass('disable');
+}
+
 function scheduleAppointment() {
+
+    if(checkApptBttn()){
+        return;
+    }
+
+    disableConfirmApptBttn();
 
     var patient_id = $('#form_patient_id').val();
     var provider_id = $('#form_provider_id').val();
@@ -34,6 +51,7 @@ function scheduleAppointment() {
     var appointment_time = $('#form_appointment_date').val() + ' ' + $('#form_appointment_time').val();
     var appointment_type_name = $('#form_appointment_type_name').val();
     var provider_acc_key = $('#form_provider_acc_key').val();
+    var location_code = $('#form_location_code').val();
     var location_code = $('#form_location_code').val();
 
     var formData = {
@@ -55,6 +73,7 @@ function scheduleAppointment() {
         contentType: 'text/html',
         async: false,
         success: function (e) {
+            
             if ($('#form_action').val() === 'careconsole') {
                 $('#back_to_console').show();
                 $('#schedule_new_patient').hide();
@@ -62,10 +81,11 @@ function scheduleAppointment() {
                 $('#back_to_console').hide();
                 $('#schedule_new_patient').show();
             }
+
             $('.appointment_confirm').hide();
+
             $('.appointment_confirmed').show();
             $('#back').addClass('hide');
-
         },
         error: function () {},
         cache: false,

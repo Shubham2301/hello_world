@@ -16,6 +16,8 @@ use myocuhub\Services\CareConsoleService;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
 use myocuhub\Models\Practice;
+use Event;
+use myocuhub\Events\MakeAuditEntry;
 
 class CareConsoleController extends Controller {
 	/**
@@ -34,8 +36,14 @@ class CareConsoleController extends Controller {
 		$this->middleware('role:care-console,0');
 	}
 
-	public function index() {
-		// TODO: add task moveRecallPatientsToConsoleAsPending() on nightly CRON
+	public function index(Request $request) {
+		
+		$action = 'Accessed Careconsole';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
 		$this->CareConsoleService->moveRecallPatientsToConsoleAsPending();
 		$overview = $this->getOverviewData();
 		return view('careconsole.index')->with('overview', $overview);
@@ -182,6 +190,7 @@ class CareConsoleController extends Controller {
 		$manualAppointmentData['location_id'] = $request->manual_appointment_location;
 		$manualAppointmentData['provider_id'] = $request->manual_appointment_provider;
 		$manualAppointmentData['appointment_type'] = $request->manual_appointment_appointment_type;
+		$manualAppointmentData['custom_appointment_type'] = $request->custom_appointment_type;
 		$manualAppointmentData['referredby_practice'] = $request->manual_referredby_practice;
 		$manualAppointmentData['referredby_provider'] = $request->manual_referredby_provider;
 		$notes = $request->notes;
@@ -190,6 +199,14 @@ class CareConsoleController extends Controller {
 		$stage = CareConsole::find($consoleID)->stage;
 		$patientStage['id'] = $stage->id;
 		$patientStage['name'] = $stage->display_name;
+
+		
+		$actionName = Action::find($actionID)->display_name;
+		$action = "Performed Action : '$actionName' on Console Entry : $consoleID in the Careconsole";
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
 		return json_encode($patientStage);
 	}

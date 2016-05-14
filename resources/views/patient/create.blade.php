@@ -26,7 +26,7 @@
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
                         {!! Form::text('FirstName', $data['firstname'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'firstname', 'placeholder' => 'First Name*', 'id' => 'first_name')) !!} {!! Form::text('LastName', $data['lastname'], array('class' => 'add_patient_input', 'name' => 'lastname', 'placeholder' => 'Last Name*', 'id' => 'last_name','required' => 'required')) !!} {!! Form::email('email', $data['email'], array('class' => 'add_patient_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email')) !!} <span class="patient_phone_input">{!! Form::text('cellphone', $data['cellphone'], array('class' => 'add_patient_input phone_visible', 'name' => 'cellphone', 'placeholder' => 'Cellphone', 'id' => 'phone')) !!}
-            @if($data['workphone'] == '' || $data['homephone'] == '')<span class="glyphicon glyphicon-plus-sign add_another_phone" data-toggle="tooltip" title="Add another phone number" data-placement="right"></span> @endif
+            @if($data['workphone'] == '' || $data['homephone'] == '')<span class="add_another_phone" data-toggle="tooltip" title="Add another phone number" data-placement="right"><img src="{{URL::asset('images/plus_icon.png')}}"></span> @endif
                         </span>
                         @if($data['workphone'] == '')
                         <span class="workphone_span hide_phone_field">
@@ -94,7 +94,7 @@
             <div class="panel-body">
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
-						{!! Form::text('referred_by_practice', $data['referred_by_practice'], array('class' => 'add_patient_input referredby_practice', 'name' => 'referred_by_practice', 'placeholder' => 'ReferredBy Practice', 'id' => 'referred_by_practice', 'onkeyup'=>'referredByPracticeSuggestions(this.value)')) !!}
+						{!! Form::text('referred_by_practice', $data['referred_by_practice'], array('class' => 'add_patient_input referredby_practice', 'name' => 'referred_by_practice', 'placeholder' => 'ReferredBy Practice', 'id' => 'referred_by_practice', 'onkeyup'=>'referredByPracticeSuggestions(this.value)', 'autocomplete'=>'off')) !!}
 						<ul class="suggestion_list practice_suggestions">
 							<p class="suggestion_item">Practice 1</p>
 							<p class="suggestion_item">Practice 2</p>
@@ -103,7 +103,7 @@
 						</ul>
                     </div>
                     <div class="col-sm-6 col-xs-12">
-						{!! Form::text('referred_by_provider', $data['referred_by_provider'], array('class' => 'add_patient_input referredby_provider', 'name' => 'referred_by_provider', 'placeholder' => 'ReferredBy Provider', 'id' => 'referred_by_provider', 'onkeyup'=>'referredByProviderSuggestions(this.value)')) !!}
+						{!! Form::text('referred_by_provider', $data['referred_by_provider'], array('class' => 'add_patient_input referredby_provider', 'name' => 'referred_by_provider', 'placeholder' => 'ReferredBy Provider', 'id' => 'referred_by_provider', 'onkeyup'=>'referredByProviderSuggestions(this.value)','autocomplete'=>'off')) !!}
 						<ul class="suggestion_list provider_suggestions">
 							<p class="suggestion_item">Provider 1</p>
 							<p class="suggestion_item">Provider 2</p>

@@ -10,6 +10,8 @@ use myocuhub\Network;
 use myocuhub\User;
 use myocuhub\Services\Reports\Reports;
 use DateTime;
+use Event;
+use myocuhub\Events\MakeAuditEntry;
 
 class AuditReportController extends Controller
 {
@@ -19,7 +21,7 @@ class AuditReportController extends Controller
 	}
 
 
-    public function index()
+    public function index(Request $request)
     {
 
         $networks = Network::all();
@@ -28,6 +30,12 @@ class AuditReportController extends Controller
         foreach ($networks as $network) {
             $data['networks'][] = ['id' => $network->id, 'name' => $network->name];
         }
+
+        $action = 'Audit Reports Accessed';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
         return view('reporting.audit')->with('data', $data);
     }

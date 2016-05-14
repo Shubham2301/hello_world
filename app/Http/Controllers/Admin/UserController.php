@@ -60,7 +60,7 @@ class UserController extends Controller
         $user['network_id'] = '';
         $user['practice_id'] = '';
         $networkData = [];
-        $networks = Network::all();
+        $networks = Network::all()->sortBy("name");
         if (session('user-level') == 1) {
             foreach ($networks as $network) {
                 $networkData[$network->id] = $network->name;
@@ -78,7 +78,7 @@ class UserController extends Controller
         $networkPractices = [];
 
         if (session('user-level') == 1) {
-            $networkPractices = Practice::all();
+            $networkPractices = Practice::all()->sortBy('name');
         } else {
             $networkPractices = Network::find(session('network-id'))->practices;
         }
@@ -243,7 +243,8 @@ class UserController extends Controller
             $roles = $this->getRoles();
             $userLevels = $this->getUserLevels();
             $networkData = [];
-            $networks = Network::all();
+            $networks = Network::all()->sortBy("name");
+
             if (session('user-level') == 1) {
                 foreach ($networks as $network) {
                     $networkData[$network->id] = $network->name;
@@ -272,7 +273,7 @@ class UserController extends Controller
             $networkPractices = [];
 
             if (session('user-level') == 1) {
-                $networkPractices = Practice::all();
+                $networkPractices = Practice::all()->sortBy('name');
             } else {
                 $networkPractices = Network::find(session('network-id'))->practices;
             }
@@ -519,59 +520,6 @@ class UserController extends Controller
             $i++;
         }
         return json_encode($data);
-    }
-
-    public function editProfile()
-    {
-        $user = Auth::user();
-
-        $profile['id'] = $user->id;
-        $profile['name'] = $user->lastname . ', ' . $user->firstname;
-        $profile['lastname'] = $user->lastname;
-        $profile['firstname'] = $user->firstname;
-        $profile['title'] = $user->title;
-        $profile['cellphone'] = $user->title;
-
-        return view('layouts.edit-profile')->with('profile', $profile);
-    }
-
-    public function updateProfile(Request $request)
-    {
-        if ($request->ajax()) {
-            if ($request->hasFile('profile_img')) {
-                $file = $request->file('profile_img');
-                $destinationPath = 'images/temp';
-                $extension = $file->getClientOriginalExtension();
-                $pictureName = str_random(9) . ".jpg";
-                $upload_success = $file->move(public_path() . '/' . $destinationPath, $pictureName);
-                return \URL::asset('/images/temp/' . $pictureName);
-            }
-        }
-
-        $user = Auth::user();
-        $user->title = $request->title;
-        $user->lastname = $request->lastname;
-        $user->firstname = $request->firstname;
-        $password = $request->password;
-        $confirmation = $request->password_confirmation;
-
-        if ($request->hasFile('profile_img')) {
-            $file = $request->file('profile_img');
-            $destinationPath = 'images/users/';
-            $extension = $file->getClientOriginalExtension();
-            $pictureName = 'user_' . Auth::user()->id . '.jpg';
-            $upload_success = $file->move(public_path() . '/' . $destinationPath, $pictureName);
-        }
-        if ($password !== '' && $confirmation !== '') {
-            if ($password != $confirmation) {
-                $request->session()->flash('error', 'Passwords do not match');
-                return redirect()->back();
-            }
-            $user->password = bcrypt($password);
-        }
-        $user->save();
-        $request->session()->flash('success', 'User Information Updated');
-        return redirect()->back();
     }
 
     public function validateData($data, $userID = 0)

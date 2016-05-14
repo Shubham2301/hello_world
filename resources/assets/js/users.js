@@ -1,7 +1,9 @@
 'use strict';
 $(document).ready(function () {
-    loadAllUsers();
-	getLandingPageByRole();
+    if(window.location.pathname != '/editprofile') {
+        loadAllUsers();
+        getLandingPageByRole();
+    }
 
     $('.profile_img_upload').on('change', function () {
         if ($(this).val() != '')

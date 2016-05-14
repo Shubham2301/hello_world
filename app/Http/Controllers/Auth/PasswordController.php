@@ -36,7 +36,7 @@ class PasswordController extends Controller {
 	protected function getResetFailureResponse(Request $request, $response)
     {
 
-    	$action = 'Password Reset Invalid';
+    	$action = 'Password Reset Invalid for '. $request->email;
         $description = '';
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();

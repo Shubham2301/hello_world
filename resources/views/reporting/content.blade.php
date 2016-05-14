@@ -1,9 +1,6 @@
 <div class="col-xs-6 info_col">
     <div class="info_col">
-        <span class="info_row arial_bold title">
-            <span>Total referred to IEG</span>
-            <span id="total_referred"></span>
-        </span>
+        <span class="info_row arial_bold title" id="total_referred"></span>
         <span class="section_separator"></span>
         <span class="info_row arial_bold">
             <span>To be called</span>
@@ -41,25 +38,15 @@
         <span class="info_row arial_bold title">
             <span>Appointment Status</span>
         </span>
-        <span class="info_row">
-            <span>Seen by IEG doctor</span>
-            <span id="scheduled_seen"></span>
+        <span class="info_row" id="scheduled_seen">
         </span>
-        <span class="info_row">
-            <span>Scheduled but not seen yet</span>
-            <span id="scheduled_not_seen"></span>
+        <span class="info_row" id="scheduled_not_seen">
         </span>
-        <span class="info_row">
-            <span>Appointment not needed</span>
-            <span id="appointment_not_needed"></span>
+        <span class="info_row" id="appointment_not_needed">
         </span>
-        <span class="info_row">
-            <span>Declined Appointment</span>
-            <span id="appointment_declined"></span>
+        <span class="info_row" id="appointment_declined">
         </span>
-        <span class="info_row">
-            <span>Established patient ran through</span>
-            <span id="patients_ran_through"></span>
+        <span class="info_row" id="patients_ran_through">
         </span>
     <span class="section_separator"></span>
         <span class="info_row arial_bold title">
