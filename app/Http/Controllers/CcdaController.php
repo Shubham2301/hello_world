@@ -22,6 +22,7 @@ class CcdaController extends Controller
 
     public function saveCcda(Request $request)
     {
+        $data = [];
         if ($request->hasFile('patient_ccda')) {
             $file = $request->file('patient_ccda');
             $destinationPath = 'temp_ccda';
@@ -36,16 +37,16 @@ class CcdaController extends Controller
             $validator = \Validator::make(array('jsson' => $jsonstring), array('jsson' => 'Required|json'));
             unlink($xmlfile);
             unlink($jsonfile);
+
             if ($validator->fails()) {
-                //$request->session()->flash('error','please provide a valid ccda file');
-                //return back()->withInput();
-                return 'unsuccessful';
+                $data['error'] = true;
+                return json_encode($data);
             }
             $ccda = new Ccda;
             $ccda->ccdablob = $jsonstring;
             $ccda->patient_id = $request->patient_id;
             if ($ccda->save()) {
-                $data = [];
+                $data['error'] = false;
                 $data['patient'] = $this->getPatientData($ccda->patient_id);
                 $data['ccda'] = $this->getCCDAData(json_decode($ccda->ccdablob, true));
 
@@ -59,7 +60,9 @@ class CcdaController extends Controller
                 //return redirect()->route('showvitals',$ccda->id );
             }
         }
-        return 'unsuccessful';
+        $data['error'] = true;
+        return json_encode($data);
+        ;
     }
 
     public function getxml($patient_id)
@@ -172,7 +175,6 @@ class CcdaController extends Controller
             $data['gender'] = $patient_data['gender'];
             $data['preferredlanguage'] = $patient_data['preferredlanguage'];
             return $data;
-
         }
     }
 
@@ -220,4 +222,3 @@ class CcdaController extends Controller
         return $transformed_xml;
     }
 }
-?>
