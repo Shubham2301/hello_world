@@ -103,38 +103,6 @@ $(document).ready(function() {
             $('#search_practice_input').focus();
     });
 
-    $('.lastseenby_show').on('click', function() {
-        $('.lastseen_content').toggleClass('active');
-        if ($('.lastseen_content').hasClass('active')) {
-            $('.lastseenby_icon').removeClass('glyphicon-chevron-right');
-            $('.lastseenby_icon').addClass('glyphicon-chevron-down');
-        } else {
-            $('.lastseenby_icon').removeClass('glyphicon-chevron-down');
-            $('.lastseenby_icon').addClass('glyphicon-chevron-right');
-        }
-    });
-
-    $('.referredby_show').on('click', function() {
-        $('.referredby_content').toggleClass('active');
-        if ($('.referredby_content').hasClass('active')) {
-            $('.referredby_icon').removeClass('glyphicon-chevron-right');
-            $('.referredby_icon').addClass('glyphicon-chevron-down');
-        } else {
-            $('.referredby_icon').removeClass('glyphicon-chevron-down');
-            $('.referredby_icon').addClass('glyphicon-chevron-right');
-        }
-    });
-    $('.insurance_provider_show').on('click', function() {
-        $('.insurance_provider_content').toggleClass('active');
-        if ($('.insurance_provider_content').hasClass('active')) {
-            $('.insurance_provider_icon').removeClass('glyphicon-chevron-right');
-            $('.insurance_provider_icon').addClass('glyphicon-chevron-down');
-        } else {
-            $('.insurance_provider_icon').removeClass('glyphicon-chevron-down');
-            $('.insurance_provider_icon').addClass('glyphicon-chevron-right');
-        }
-    });
-
     $('.practice_list').on('click', '.practice_list_item', function() {
         var provider_id = $(this).attr('data-id');
         var practice_id = $(this).attr('practice-id');
@@ -369,42 +337,9 @@ function getPatientInfo(formData) {
 
 //function that is used to fill the information about the patient
 function fillPatientInfo(data) {
-
-    $('#patient_name').text(data.lastname + ', ' + data.firstname);
-    $('#patient_email').text(data.email);
-    $('#patient_dob').text(data.birthdate);
-    $('#patient_add1').text(data.addressline1 + ',');
-    $('#patient_add2').text(data.addressline2 + ',');
-    $('#patient_add3').text(data.city);
-    var phone = '';
-    if (data.cellphone != '')
-        phone += '<span>Cellphone: ' + data.cellphone + '</span><br>';
-    if (data.workphone != '')
-        phone += '<span>Workphone: ' + data.workphone + '</span><br>';
-    if (data.homephone != '')
-        phone += '<span>Homephone: ' + data.homephone + '</span>';
-    if(phone == '')
-        phone += '<span>-</span>'
-    $('#patient_phone').html(phone);
-    $('#patient_ssn').text(data.lastfourssn);
-    $('.patient_table_header').addClass('hide');
-    $('.lastseen_content').html('<p class="patient_dropdown_data">' + data.referred_to_practice_user + '</p><p class="patient_dropdown_data">' + data.referred_to_practice + '</p>');
-    $('.referredby_content').html('<p class="patient_dropdown_data">' + data.referred_by_provider + '</p><p class="patient_dropdown_data">' + data.referred_by_practice + '</p>');
-    $('.insurance_provider_content').html('<p class="patient_dropdown_data">' + data.insurance + '</p>');
-    if (data.referred_to_practice_user == '' && data.referred_to_practice == '')
-        $('.lastseenby_icon').addClass('hide');
-    else
-        $('.patient_table_header').removeClass('hide');
-    if (data.referred_by_provider == '' && data.referred_by_practice == '')
-        $('.referredby_icon').addClass('hide');
-    else
-        $('.patient_table_header').removeClass('hide');
-    if (data.insurance == '')
-        $('.insurance_provider_icon').addClass('hide');
-    else
-        $('.patient_table_header').removeClass('hide');
-    $('.selected_patient_name').text(data.lastname + ', ' + data.firstname);
-
+	$('.selected_patient_name').text(data.lastname + ', ' + data.firstname);
+	$('.provider_section').show();
+	fillPatientData(data);
 }
 
 
