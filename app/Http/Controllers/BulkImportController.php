@@ -106,7 +106,7 @@ class BulkImportController extends Controller
                     if (array_filter($data->toArray())) {
 
                         if($i == 0){
-                            if(!(count(array_intersect_key(array_flip($format), $data)) === count($format))){
+                            if(!(count(array_intersect_key(array_flip($format), $data->toArray())) === count($format))){
                                 $import_result['exception'] = 'Incorrect .xlsx format';
                                 return json_encode($import_result);
                             }
