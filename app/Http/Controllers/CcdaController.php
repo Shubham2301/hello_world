@@ -75,7 +75,7 @@ class CcdaController extends Controller
         $headers = array(
             'Content-Type: application/xml',
         );
-        return Response()->download($ccdafile, 'ccdafile.xml', $headers)->deleteFileAfterSend(true);
+		return Response()->download($ccdafile, 'Patient-'.$patient_id.'.xml', $headers)->deleteFileAfterSend(true);
     }
 
     public function updateDemographics($patient_id)
