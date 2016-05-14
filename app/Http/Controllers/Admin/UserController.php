@@ -354,7 +354,10 @@ class UserController extends Controller
         if (isset($roles_diff)) {
             $remove_roles = array_diff($previous_roles_id, $new_roles_id);
             foreach ($remove_roles as $remove_role) {
-                $delete_role = Role_user::where('role_id', '=', $remove_role)->delete();
+                $delete_role = Role_user::where('user_id', '=', $user->id)
+                                    ->where('role_id', '=', $remove_role)
+                                    ->delete();
+                                    
                 $key = array_search($remove_role, $remove_roles);
                 unset($remove_roles[$key]);
             }
