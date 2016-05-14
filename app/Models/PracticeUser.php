@@ -13,5 +13,5 @@ class PracticeUser extends Model
     {
         return $this->hasOne(Practice::class, 'id', 'practice_id');
     }
-
 }
+

@@ -190,6 +190,7 @@ class CareConsoleController extends Controller {
 		$manualAppointmentData['location_id'] = $request->manual_appointment_location;
 		$manualAppointmentData['provider_id'] = $request->manual_appointment_provider;
 		$manualAppointmentData['appointment_type'] = $request->manual_appointment_appointment_type;
+		$manualAppointmentData['custom_appointment_type'] = $request->custom_appointment_type;
 		$manualAppointmentData['referredby_practice'] = $request->manual_referredby_practice;
 		$manualAppointmentData['referredby_provider'] = $request->manual_referredby_provider;
 		$notes = $request->notes;
