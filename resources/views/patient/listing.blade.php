@@ -117,38 +117,58 @@
     </div>
     <div>
         <div class="col-xs-12 patient_table_header">
-            <div class="col-xs-4 lastseenby no-padding">
+            <div class="col-xs-3 lastseenby no-padding">
                 <div class="lastseenby_show arial">
                     <span><span>Last seen by</span>&nbsp;<span class="glyphicon glyphicon-chevron-right lastseenby_icon"></span></span>
                 </div>
 
             </div>
 
-            <div class="col-xs-4 referredby no-padding">
+            <div class="col-xs-3 referredby no-padding">
                 <div class="referredby_show arial">
                     <span> <span>Last referred by</span>&nbsp;<span class="referredby_icon "></span></span>
                 </div>
             </div>
 
-            <div class="col-xs-4 insurance_provider no-padding">
+            <div class="col-xs-3 insurance_provider no-padding">
                 <div class="insurance_provider_show arial">
                     <span><span>Insurance provider</span>&nbsp;<span class="glyphicon glyphicon-chevron-right insurance_provider_icon"></span></span>
+                </div>
+            </div>
+            <div class="col-xs-3 patient_files no-padding">
+                <div class="patient_files_show arial">
+                    <span><span>Files and Images</span>&nbsp;<span class="glyphicon glyphicon-chevron-right patient_files_icon"></span></span>
                 </div>
             </div>
         </div>
 
         <div class="col-xs-12 no-padding">
-            <div class="col-xs-4 no-padding">
+            <div class="col-xs-3 no-padding">
                 <div class="lastseen_content">
                 </div>
             </div>
-            <div class="col-xs-4 no-padding">
+            <div class="col-xs-3 no-padding">
                 <div class="referredby_content">
                     <div><a data-toggle="modal" data-target="#referredby_details" id="referred_by_details_btn" class="button_type_1"> Add Details</a></div>
                 </div>
             </div>
-            <div class="col-xs-4 no-padding">
+            <div class="col-xs-3 no-padding">
                 <div class="insurance_provider_content">
+                </div>
+            </div>
+            <div class="col-xs-3 no-padding">
+                <div class="patient_files_content">
+                   <!--
+                    <div class="patient_file_item row">
+                        <div class="col-xs-6">
+                            <p class="file_name" style="font-size:11px; margin-top:3px;">CCDA-24-12-2016</p>
+                        </div>
+                        <div class="col-xs-2">
+							<a href="" class="view_file" >View</a></div>
+                        <div class="col-xs-4">
+							<a href="" class="download_file">Download</a></div>
+                    </div>
+                    -->
                 </div>
             </div>
         </div>

@@ -105,7 +105,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('ccdaform', 'CcdaController@index');
     Route::get('/addvital/{id}', 'CcdaController@addVital');
     Route::post('/savevitals', 'CcdaController@saveVitals');
-    Route::get('/download/{id}', 'CcdaController@getxml');
+    Route::get('/download/ccda/{id}', 'CcdaController@getxml');
     Route::get('/showvitals/{id}', array('uses' => 'CcdaController@showVitals', 'as' => 'showvitals'));
     Route::post('update/ccda', 'CcdaController@updatePatientDemographics');
     Route::get('show/ccda/{id}', 'CcdaController@showCCDA');
@@ -172,7 +172,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('reports', 'ReportingController');
     Route::get('reports/generate', 'ReportingController@generateReports');
-	Route::get('uploadDocumentToS3', 'FileExchange\FileExchangeController@uploadDocumentToS3');
 
     Route::resource('careconsole_reports', 'ReportsController');
     Route::get('careconsole_reports/show', 'ReportsController@show');
