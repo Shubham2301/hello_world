@@ -137,7 +137,7 @@
             </div>
             <div class="col-xs-3 patient_files no-padding">
                 <div class="patient_files_show arial">
-                    <span><span>Patient Files</span>&nbsp;<span class="glyphicon glyphicon-chevron-right patient_files_icon"></span></span>
+                    <span><span>Files and Images</span>&nbsp;<span class="glyphicon glyphicon-chevron-right patient_files_icon"></span></span>
                 </div>
             </div>
         </div>
