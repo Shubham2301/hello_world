@@ -422,7 +422,7 @@ function fillPatientData(data){
 		$('.patient_files_content').html(' <div class="patient_file_item row"><div class="col-xs-7"><p class="file_name" >CCDA '+data.ccda_date+'</p></div><div class="col-xs-2"><a href="/show/ccda/'+data.id+'" class="view_file" target="_blank" >View</a></div><div class="col-xs-3"><a href="/download/ccda/'+data.id+'" class="download_file">Get</a></div></div>');
 	}
 	else {
-		$('.patient_files_content').html('No CCDA');
+		$('.patient_files_content').html('No Files');
 	}
 }
 
