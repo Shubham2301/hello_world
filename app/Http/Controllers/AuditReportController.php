@@ -21,7 +21,7 @@ class AuditReportController extends Controller
 	}
 
 
-    public function index()
+    public function index(Request $request)
     {
 
         $networks = Network::all();
