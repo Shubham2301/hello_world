@@ -1,7 +1,8 @@
 /public/js/
 /public/build/
 /public/css/
-/public/images/users
+/public/images/users/
+/public/images/temp/
 /vendor
 /node_modules
 Homestead.yaml

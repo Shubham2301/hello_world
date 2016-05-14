@@ -9,5 +9,6 @@
 		'contact_form' => 'www.ocuhub.com/contact',
 		'application_error' => 'applicationerror@ocuhub.com',
 	],
+	'production_url' => 'https://myocuhub.com',
 
 	];
