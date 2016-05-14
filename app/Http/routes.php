@@ -172,7 +172,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('reports', 'ReportingController');
     Route::get('reports/generate', 'ReportingController@generateReports');
-	Route::get('uploadDocumentToS3', 'FileExchange\FileExchangeController@uploadDocumentToS3');
 
     Route::resource('careconsole_reports', 'ReportsController');
     Route::get('careconsole_reports/show', 'ReportsController@show');
