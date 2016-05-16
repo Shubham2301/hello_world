@@ -97,6 +97,37 @@ $(document).ready(function() {
         $('.view_patient_ccda').html(' ');
     });
 
+	$('.lastseenby_show').on('click', function() {
+		$('.lastseen_content').toggleClass('active');
+		if ($('.lastseen_content').hasClass('active')) {
+			$('.lastseenby_icon').removeClass('glyphicon-chevron-right');
+			$('.lastseenby_icon').addClass('glyphicon-chevron-down');
+		} else {
+			$('.lastseenby_icon').removeClass('glyphicon-chevron-down');
+			$('.lastseenby_icon').addClass('glyphicon-chevron-right');
+		}
+	});
+	$('.insurance_provider_show').on('click', function() {
+		$('.insurance_provider_content').toggleClass('active');
+		if ($('.insurance_provider_content').hasClass('active')) {
+			$('.insurance_provider_icon').removeClass('glyphicon-chevron-right');
+			$('.insurance_provider_icon').addClass('glyphicon-chevron-down');
+		} else {
+			$('.insurance_provider_icon').removeClass('glyphicon-chevron-down');
+			$('.insurance_provider_icon').addClass('glyphicon-chevron-right');
+		}
+	});
+	$('.patient_files_show').on('click', function() {
+		$('.patient_files_content').toggleClass('active');
+		if ($('.patient_files_content').hasClass('active')) {
+			$('.patient_files_icon').removeClass('glyphicon-chevron-right');
+			$('.patient_files_icon').addClass('glyphicon-chevron-down');
+		} else {
+			$('.patient_files_icon').removeClass('glyphicon-chevron-down');
+			$('.patient_files_icon').addClass('glyphicon-chevron-right');
+		}
+	});
+
 });
 
 
@@ -129,7 +160,6 @@ function getCcdaFile(url) {
         processData: false
     });
 }
-
 
 function getLocation(id) {
     var formData = {
@@ -340,3 +370,59 @@ function loadImportForm() {
         processData: false
     });
 }
+
+function fillPatientData(data){
+	$('#patient_name').text(data.lastname + ', ' + data.firstname);
+	$('#patient_email').text(data.email);
+	$('#patient_dob').text(data.birthdate);
+	$('#patient_add1').text(data.addressline1 + ',');
+	$('#patient_add2').text(data.addressline2 + '');
+	$('#patient_add3').text(data.city);
+	var phone = '';
+	if (data.cellphone != '')
+		phone += '<span>Cellphone: ' + data.cellphone + '</span><br>';
+	if (data.workphone != '')
+		phone += '<span>Workphone: ' + data.workphone + '</span><br>';
+	if (data.homephone != '')
+		phone += '<span>Homephone: ' + data.homephone + '</span>';
+	if (phone == '')
+		phone += '<span>-</span>'
+		$('#patient_phone').html(phone);
+	$('#patient_ssn').text(data.lastfourssn);
+	$('#select_provider_button').attr('data-id', data.id);
+	$('#select_provider_button').addClass('active');
+	$('.action-btns').removeClass('active');
+	$('#import_patients').hide();
+
+	$('.lastseen_content').html('<p class="patient_dropdown_data">' + data.referred_to_practice_user + '</p><p class="patient_dropdown_data">' + data.referred_to_practice + '</p>');
+
+	$('.insurance_provider_content').html('<p class="patient_dropdown_data">' + data.insurance + '</p>');
+	if (data.referred_to_practice_user == '' && data.referred_to_practice == '')
+		$('.lastseenby_icon').addClass('hide');
+	else {
+		$('.lastseenby_icon').removeClass('hide');
+		$('.patient_table_header').removeClass('hide');
+	}
+	$('.referredby_content').addClass('active');
+
+	if (data.referred_by_provider == '' && data.referred_by_practice == '') {
+		$('.referredby_content').html('<div><a data-toggle="modal" data-target="#referredby_details" id="referred_by_details_btn" class="button_type_1"> Add Details</a></div>');
+	} else {
+		$('.referredby_content').html('<p class="patient_dropdown_data">' + data.referred_by_provider + '</p><p class="patient_dropdown_data">' + data.referred_by_practice + '</p>');
+		$('.patient_table_header').removeClass('hide');
+	}
+	if (data.insurance == '')
+		$('.insurance_provider_icon').addClass('hide');
+	else {
+		$('.insurance_provider_icon').removeClass('hide');
+		$('.patient_table_header').removeClass('hide');
+	}
+
+	if (data.ccda){
+		$('.patient_files_content').html(' <div class="patient_file_item row"><div class="col-xs-7"><p class="file_name" >CCDA '+data.ccda_date+'</p></div><div class="col-xs-2"><a href="/show/ccda/'+data.id+'" class="view_file" target="_blank" >View</a></div><div class="col-xs-3"><a href="/download/ccda/'+data.id+'" class="download_file">Get</a></div></div>');
+	}
+	else {
+		$('.patient_files_content').html('No Files');
+	}
+}
+

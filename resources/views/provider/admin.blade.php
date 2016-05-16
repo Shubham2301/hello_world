@@ -5,6 +5,7 @@
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/provider.css')}}">
 <script type="text/javascript" src="{{elixir('js/provider.js')}}"></script>
+<script type="text/javascript" src="{{elixir('js/import.js')}}"></script>
 @endsection
 
 @section('sidebar')
