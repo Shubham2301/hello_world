@@ -133,6 +133,7 @@ class UserController extends Controller
         $user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
         $user->usertype_id = $request->input('usertype');
         $user->level = $request->input('userlevel');
+        $user->acc_key = $request->input('acc_key');
         $roles = array();
         $roles = $request->input('role', []);
 
@@ -318,6 +319,7 @@ class UserController extends Controller
         $user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
         $user->usertype_id = $request->input('usertype');
         $user->level = $request->input('userlevel');
+        $user->acc_key = $request->input('acc_key');
         $menuID = $request->input('landing_page');
         if ($menuID != '') {
             $user->menu_id = $menuID;
@@ -349,7 +351,10 @@ class UserController extends Controller
         if (isset($roles_diff)) {
             $remove_roles = array_diff($previous_roles_id, $new_roles_id);
             foreach ($remove_roles as $remove_role) {
-                $delete_role = Role_user::where('role_id', '=', $remove_role)->delete();
+                $delete_role = Role_user::where('user_id', '=', $user->id)
+                                    ->where('role_id', '=', $remove_role)
+                                    ->delete();
+                                    
                 $key = array_search($remove_role, $remove_roles);
                 unset($remove_roles[$key]);
             }
