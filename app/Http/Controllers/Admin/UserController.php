@@ -133,6 +133,7 @@ class UserController extends Controller
         $user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
         $user->usertype_id = $request->input('usertype');
         $user->level = $request->input('userlevel');
+        $user->acc_key = $request->input('acc_key');
         $roles = array();
         $roles = $request->input('role', []);
 
@@ -318,6 +319,7 @@ class UserController extends Controller
         $user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
         $user->usertype_id = $request->input('usertype');
         $user->level = $request->input('userlevel');
+        $user->acc_key = $request->input('acc_key');
         $menuID = $request->input('landing_page');
         if ($menuID != '') {
             $user->menu_id = $menuID;
