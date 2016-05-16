@@ -734,8 +734,6 @@ Section : Footer
     width: 100%;
     flex: 0 1 auto;
     opacity: 0;
-    min-height: 2.1em;
-    margin-bottom: -2em;
     &:hover {
         opacity: .9;
         margin-bottom: 0;
@@ -870,5 +868,50 @@ img.admin_seacrh_icon{
     }
     &>span{
         margin: 0.5em auto;
+    }
+}
+
+
+/*
+----------------------
+Mobile Styling
+----------------------
+*/
+@media only screen and (max-width: 767px) {
+    .main_collapsible_sidebar>li {
+        margin: 0.5em 0 0 0;
+    }
+    .header-logo>.mobile_icons {
+        display: flex;
+        flex-direction: row;
+        &>img {
+         padding: 0 .5em 0 0;
+            &.open_main_sidebar_mobile,
+            &.close_main_sidebar_mobile{
+                cursor: pointer;
+            }
+        }
+    }
+    .main_content.mobile_sidebar_active {
+        display: none;
+    }
+    .mobile_sidebar_content{
+        display: none;
+        &.mobile_sidebar_active {
+            display: block;
+        }
+    }
+
+    .content-right.mobile_sidebar_active {
+        background: #ebeced;
+        color: #333;
+    }
+}
+@media only screen and (min-width: 767px) {
+    .header-logo>.mobile_icons {
+        display: none;
+    }
+    .mobile_sidebar_content {
+        display: none;
     }
 }

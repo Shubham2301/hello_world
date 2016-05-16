@@ -112,3 +112,6 @@
 <input type="hidden" name="restore_files" id="restore_files" value="">
 {!! Form::close()!!}
 @endsection
+@section('mobile_sidebar_content')
+@include('file_exchange.sidebar')
+@endsection

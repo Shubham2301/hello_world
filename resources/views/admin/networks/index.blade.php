@@ -31,3 +31,6 @@
 </div>
 
 @endsection
+@section('mobile_sidebar_content')
+@include('admin.sidebar')
+@endsection
