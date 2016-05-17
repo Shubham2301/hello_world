@@ -485,7 +485,6 @@ class FileExchangeController extends Controller {
 					$folderShare->editable = $editable;
 					$folderShare->save();
 				}
-				echo $folderShare;
 			}
 			foreach ($files as $file) {
 				$data = [];
@@ -500,7 +499,6 @@ class FileExchangeController extends Controller {
 					$fileShare->editable = $editable;
 					$fileShare->save();
 				}
-				echo $fileShare;
 			}
 		}
 
@@ -638,7 +636,6 @@ class FileExchangeController extends Controller {
 				if($user->user_id == Auth::user()->id){
 					continue;
 				}
-
 				$data['user_id'] = $user->user_id;
 				$folderShare = FolderShare::where($data)->first();
 				if(!$folderShare){
@@ -649,7 +646,6 @@ class FileExchangeController extends Controller {
 					$folderShare->editable = $editable;
 					$folderShare->save();
 				}
-				echo $folderShare;
 			}
 		}
 		foreach ($files as $file) {
@@ -670,7 +666,7 @@ class FileExchangeController extends Controller {
 					$fileShare->editable = $editable;
 					$fileShare->save();
 				}
-				echo $fileShare;
+				
 			}
 		}
 	}
