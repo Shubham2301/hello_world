@@ -107,6 +107,7 @@
                                         {!! Form::text('middlename', $user['middlename'], array('class' => ' add_user_input', 'placeholder' => 'Middle Name', 'id' => 'middle_name')) !!}
                                         {!! Form::text('lastname', $user['lastname'], array('class' => ' add_user_input', 'placeholder' => 'Last Name*', 'id' => 'last_name', 'required' => 'required')) !!}
                                         {!! Form::text('npi', $user['npi'], array('class' => ' add_user_input', 'placeholder' => 'NPI', 'id' => 'npi')) !!}
+                                        {!! Form::text('acc_key', $user['acc_key'], array('class' => ' add_user_input', 'placeholder' => '4PC Account Key', 'id' => 'acc_key')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         {!! Form::text('cellphone', $user['cellphone'], array('class' => ' add_user_input', 'placeholder' => 'Phone Number', 'id' => 'cell_phone')) !!}

@@ -109,3 +109,6 @@
 	@include('careconsole.actions')
 </div>
 @endsection
+@section('mobile_sidebar_content')
+@include('careconsole.sidebar')
+@endsection

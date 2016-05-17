@@ -1,6 +1,7 @@
 @extends('layouts.master') @section('title', 'My Ocuhub - Select Provider') @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/provider.css')}}">
 <script type="text/javascript" src="{{elixir('js/provider.js')}}"></script>
+<script type="text/javascript" src="{{elixir('js/import.js')}}"></script>
 @endsection @section('sidebar') @include('layouts.sidebar') @endsection @section('content') @if (Session::has('success'))
 <div class="alert alert-success">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -81,4 +82,7 @@
     </div>
 </div>
 </div>
+@endsection
+@section('mobile_sidebar_content')
+@include('layouts.sidebar')
 @endsection

@@ -31,3 +31,6 @@
     @include('reporting.content')
 </div>
 @endsection
+@section('mobile_sidebar_content')
+@include('layouts.sidebar')
+@endsection

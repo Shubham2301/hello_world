@@ -226,3 +226,6 @@
 @include('directmail.impersonation')
 
 @endsection
+@section('mobile_sidebar_content')
+@include('layouts.sidebar')
+@endsection

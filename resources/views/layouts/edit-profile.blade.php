@@ -30,7 +30,7 @@
                     <br>
                     <div class="fileUpload btn btn-primary add-btn" style="margin: 0 auto;" id="change_practice_button file_button">
                        <span>Change Profile Image</span>
-                        <input type="file" class="upload profile_img_upload" name="profile_img" id="add_document" required/>
+                        <input type="file" class="upload profile_img_upload" name="profile_img" id="add_document"/>
                    </div>
                 </div>
                 <div class="col-xs-7">

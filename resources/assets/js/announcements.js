@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     countUnreadAnnouncements();
 
-    $('#menu-announcements').on('click', function () {
+    $('.menu-announcements').on('click', function () {
         $('.announcement_box').addClass('visible');
         $('#show_announcements').addClass('active');
         $('.content-left').addClass('sidebar_border_color');

@@ -192,3 +192,6 @@
 </div>
 
 @endsection
+@section('mobile_sidebar_content')
+@include('reports.sidebar')
+@endsection

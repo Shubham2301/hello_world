@@ -468,51 +468,47 @@ class FileExchangeController extends Controller {
 		if($request->share_files != '')
 			$files = explode(',', $request->share_files);
 
-		$action = "Shared Files : $files ; Shared Folders : $folders";
+		if($toAllUsers){
+			$this->shareWithNetwork($files , $folders, $editable );
+		} else {
+			$userId = $request->share_users;
+			foreach ($folders as $folder) {
+				$data = [];
+				$data['folder_id'] = $folder;
+				$data['user_id'] = $userId;
+				$folderShare = FolderShare::where($data)->first();
+				if(!$folderShare){
+					$data['editable'] = $editable;
+					$folderShare = FolderShare::create($data);
+				}
+				else{
+					$folderShare->editable = $editable;
+					$folderShare->save();
+				}
+				echo $folderShare;
+			}
+			foreach ($files as $file) {
+				$data = [];
+				$data['file_id'] = $file;
+				$data['user_id'] = $userId;
+				$fileShare = FileShare::where($data)->first();
+				if(!$fileShare){
+					$data['editable'] = $editable;
+					$fileShare = FileShare::create($data);
+				}
+				else{
+					$fileShare->editable = $editable;
+					$fileShare->save();
+				}
+				echo $fileShare;
+			}
+		}
+
+		$action = "Shared Files : $request->share_files ; Shared Folders : $request->share_folders";
         $description = '';
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
-		if($toAllUsers){
-			$this->shareWithNetwork($files , $folders, $editable );
-			return redirect()
-				->back()
-				->withSuccess("Successfully Shared!");
-
-		}
-
-		$userId = $request->share_users;
-		foreach ($folders as $folder) {
-			$data = [];
-			$data['folder_id'] = $folder;
-			$data['user_id'] = $userId;
-			$folderShare = FolderShare::where($data)->first();
-			if(!$folderShare){
-				$data['editable'] = $editable;
-				$folderShare = FolderShare::create($data);
-			}
-			else{
-				$folderShare->editable = $editable;
-				$folderShare->save();
-			}
-			echo $folderShare;
-		}
-		foreach ($files as $file) {
-			$data = [];
-			$data['file_id'] = $file;
-			$data['user_id'] = $userId;
-			$fileShare = FileShare::where($data)->first();
-			if(!$fileShare){
-				$data['editable'] = $editable;
-				$fileShare = FileShare::create($data);
-			}
-			else{
-				$fileShare->editable = $editable;
-				$fileShare->save();
-			}
-			echo $fileShare;
-		}
 
 		return redirect()
 			->back()

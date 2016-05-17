@@ -22,11 +22,6 @@ use Validator;
 class UserController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('role:user-admin,1');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -138,6 +133,7 @@ class UserController extends Controller
         $user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
         $user->usertype_id = $request->input('usertype');
         $user->level = $request->input('userlevel');
+        $user->acc_key = $request->input('acc_key');
         $roles = array();
         $roles = $request->input('role', []);
 
@@ -323,6 +319,7 @@ class UserController extends Controller
         $user->name = $request->input('firstname') . ' ' . $request->input('middlename') . ' ' . $request->input('lastname');
         $user->usertype_id = $request->input('usertype');
         $user->level = $request->input('userlevel');
+        $user->acc_key = $request->input('acc_key');
         $menuID = $request->input('landing_page');
         if ($menuID != '') {
             $user->menu_id = $menuID;
@@ -557,5 +554,58 @@ class UserController extends Controller
         $menuData['administrator']      = ['7' ,'Administration'];
 
         return json_encode($menuData);
+    }
+
+    public function editProfile()
+    {
+        $user = Auth::user();
+
+        $profile['id'] = $user->id;
+        $profile['name'] = $user->lastname . ', ' . $user->firstname;
+        $profile['lastname'] = $user->lastname;
+        $profile['firstname'] = $user->firstname;
+        $profile['title'] = $user->title;
+        $profile['cellphone'] = $user->title;
+
+        return view('layouts.edit-profile')->with('profile', $profile);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        if ($request->ajax()) {
+            if ($request->hasFile('profile_img')) {
+                $file = $request->file('profile_img');
+                $destinationPath = 'images/temp';
+                $extension = $file->getClientOriginalExtension();
+                $pictureName = str_random(9) . ".jpg";
+                $upload_success = $file->move(public_path() . '/' . $destinationPath, $pictureName);
+                return \URL::asset('/images/temp/' . $pictureName);
+            }
+        }
+
+        $user = Auth::user();
+        $user->title = $request->title;
+        $user->lastname = $request->lastname;
+        $user->firstname = $request->firstname;
+        $password = $request->password;
+        $confirmation = $request->password_confirmation;
+
+        if ($request->hasFile('profile_img')) {
+            $file = $request->file('profile_img');
+            $destinationPath = 'images/users/';
+            $extension = $file->getClientOriginalExtension();
+            $pictureName = 'user_' . Auth::user()->id . '.jpg';
+            $upload_success = $file->move(public_path() . '/' . $destinationPath, $pictureName);
+        }
+        if ($password !== '' && $confirmation !== '') {
+            if ($password != $confirmation) {
+                $request->session()->flash('error', 'Passwords do not match');
+                return redirect()->back();
+            }
+            $user->password = bcrypt($password);
+        }
+        $user->save();
+        $request->session()->flash('success', 'User Information Updated');
+        return redirect()->back();
     }
 }
