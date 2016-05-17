@@ -62,7 +62,7 @@
     </div>
 </div>
 <div class="modal fade" id="availabilityModal" role="dialog">
-    <div class="modal-dialog form_model center" data-value="0">
+    <div class="modal-dialog center" data-value="0">
         <div class="modal-content availability">
         </div>
     </div>
