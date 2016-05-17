@@ -11,7 +11,7 @@
     @if($menu->name == "administration" && 2 != Auth::user()->usertype_id)
         <?php continue;?>
     @endif
-    <li id="menu-{{ $menu->name }}" class="sidebar_menu_item @if(isset($data)){{ array_key_exists($menu->name, $data) ? 'active' : '' }}@endif" onclick="location.href = '{{$menu->url}}'">
+    <li id="menu-{{ $menu->name }}" class="sidebar_menu_item @if(isset($data)){{ array_key_exists($menu->name, $data) ? 'active' : '' }}@endif menu-{{ $menu->name }}" onclick="location.href = '{{$menu->url}}'">
         <a class="main_sidebar_menu_item" href="{{ $menu->url }}">
             <span class="sidebar_img"><img src="{{URL::asset($menu->icon_path.'.png')}}" class="image"></span>
             <span class="sidebar_title">

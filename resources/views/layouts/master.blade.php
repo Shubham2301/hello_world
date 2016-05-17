@@ -34,7 +34,12 @@
                     @yield('sidebar')
                 </div>
                 <div class="col-xs-12 col-sm-9 content-right @if(!Auth::check()) {{'ocuhub_logo_blue'}} @endif print_col_width">
-                    @yield('content')
+                    <span class="main_content">
+                        @yield('content')
+                    </span>
+                    <span class="mobile_sidebar_content">
+                        @yield('mobile_sidebar_content')
+                    </span>
                     @include('announcements')
                 </div>
                 @include('layouts.alert')

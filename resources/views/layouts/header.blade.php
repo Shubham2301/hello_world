@@ -8,11 +8,18 @@
     </div>
     <div class="col-xs-12 col-sm-9 header-right">
         <div class="col-xs-3 header-logo">
-            <img src="{{URL::asset('images/ocuhub-logo.png')}}" class="img-responsive">
-            <div id="loader-container">
+            <img src="{{URL::asset('images/ocuhub-logo.png')}}" class="img-responsive hidden-xs">
+            <div id="loader-container" class="hidden-xs">
                 {{--
                 <p id="loadingText">Loading</p> --}}
             </div>
+            <span class="mobile_icons">
+            <img src="{{URL::asset('images/ocuhub-watermark.png')}}" class="img-responsive" style="height:2em;">
+            @if( Auth::check())
+            <img src="{{URL::asset('images/sidebar/sidebar_collapse_button.png')}}" class="img-responsive open_main_sidebar_mobile" style="height:2em;">
+            <img src="{{URL::asset('images/sidebar/sidebar_collapse_button_active.png')}}" class="img-responsive close_main_sidebar_mobile hide" style="height:2em;">
+            @endif
+            </span>
         </div>
         <div class="col-xs-9 header-menu">
             @if(Auth::check())
@@ -26,7 +33,7 @@
                     </button>
                 </div>
                 <div class="collapse navbar-collapse" id="ocuhub-navbar-collapse">
-                    <ul class="nav navbar-nav arial_bold header_navbar_items">
+                    <ul class="nav navbar-nav arial_bold header_navbar_items main_collapsible_sidebar">
                         <li class="menu-item"><a href="/home">HOME </a></li>
                         <li class="menu-item"><a href="/techsupport">TECH SUPPORT</a></li>
                         <li class="menu-item"><span class="ocuhub_sso_logoff logout_btn"><span onclick="singleSignOff()">LOGOUT</span></span>
