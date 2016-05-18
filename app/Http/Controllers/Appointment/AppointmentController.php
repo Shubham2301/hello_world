@@ -7,6 +7,7 @@ use DateTime;
 use Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use myocuhub\Events\AppointmentScheduled;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
@@ -35,165 +36,31 @@ class AppointmentController extends Controller
     public function schedule(Request $request)
     {
         $apptStatus = [
-            'practice_email_sent' => false,
-            'patient_email_sent' => false,
-            'appointment_saved' => false,
-            '4PC_scheduled' => false,
+            'result' => false,
         ];
-
-        $apptInfo = array();
-
-        $userID = Auth::user()->id;
-        $network = User::getNetwork($userID);
-        $networkID = $network->id;
-        $patientID = $request->input('patient_id');
-        $providerID = $request->input('provider_id');
-        $locationID = $request->input('location_id');
-        $practiceID = $request->input('practice_id');
-        $appointmentType = $request->input('appointment_type');
-        $appointmentTypeKey = $request->input('appointment_type_key');
-        $appointmentTime = $request->input('appointment_time');
-        $patient = Patient::find($patientID);
-
-        $providerKey = $request->input('provider_acc_key');
-        $locationKey = $request->input('location_code');
-
-        $apptInfo['LocKey'] = $locationKey;
-        $apptInfo['AcctKey'] = $providerKey;
-        $apptInfo['ApptTypeKey'] = $appointmentTypeKey;
-        $startime = new DateTime($appointmentTime);
-        $apptInfo['ApptStartDateTime'] = $startime->format('m/d/Y H:i');
-
-        $apptInfo['PatientData']['Title'] = ($patient->title) ? $patient->title : '';
-        $apptInfo['PatientData']['FirstName'] = ($patient->firstname) ? $patient->firstname : '';
-        $apptInfo['PatientData']['LastName'] = ($patient->lastname) ? $patient->lastname : '';
-        $apptInfo['PatientData']['Address1'] = ($patient->addressline1) ? $patient->addressline1 : '';
-        $apptInfo['PatientData']['Address2'] = ($patient->addressline2) ? $patient->addressline2 : '';
-        $apptInfo['PatientData']['City'] = ($patient->city) ? $patient->city : '';
-        $apptInfo['PatientData']['State'] = ($patient->state) ? $patient->state : '';
-        $apptInfo['PatientData']['Zip'] = ($patient->zip) ? $patient->zip : '';
-        $apptInfo['PatientData']['Country'] = ($patient->country) ? $patient->country : '';
-        $apptInfo['PatientData']['HomePhone'] = ($patient->homephone) ? $patient->homephone : '';
-        $apptInfo['PatientData']['WorkPhone'] = ($patient->workphone) ? $patient->workphone : '';
-        $apptInfo['PatientData']['CellPhone'] = ($patient->cellphone) ? $patient->cellphone : '';
-        $apptInfo['PatientData']['Email'] = ($patient->email) ? $patient->email : '';
-
-        $birthdate = new DateTime($patient->birthdate);
-        $apptInfo['PatientData']['DOB'] = $birthdate->format('Y-m-d') . 'T00:00:00';
-        $apptInfo['PatientData']['PreferredLanguage'] = ($patient->preferredlanguage != 'English') ? 1 : 0;
-        $apptInfo['PatientData']['Gender'] = ($patient->gender == 'Male' || $patient->gender == 'M') ? 1 : 0;
-        $apptInfo['PatientData']['L4DSSN'] = ($patient->lastfourssn) ? $patient->lastfourssn : '';
-        $patientInsurance = PatientInsurance::where('patient_id', $patientID)->first();
-        if (sizeof($patientInsurance) == 0) {
-            $patientInsurance = new PatientInsurance;
-            $apptInfo['PatientData']['InsuranceCarrier'] = 1;
-        } else {
-            if ($patientInsurance->insurance_carrier_fpc_key == null) {
-                $apptInfo['PatientData']['InsuranceCarrier'] = 2;
-            } else {
-                $apptInfo['PatientData']['InsuranceCarrier'] = $patientInsurance->insurance_carrier_fpc_key;
-            }
-
-        }
-
-        $apptInfo['PatientData']['OtherInsurance'] = ($patientInsurance->insurance_carrier) ? $patientInsurance->insurance_carrier : '';
-        $apptInfo['PatientData']['SubscriberName'] = ($patientInsurance->subscriber_name) ? $patientInsurance->subscriber_name : '';
-        $subscriber_birthdate = new DateTime(($patientInsurance->subscriber_birthdate) ? $patientInsurance->subscriber_birthdate : $patient->birthdate);
-        $apptInfo['PatientData']['SubscriberDOB'] = $subscriber_birthdate->format('Y-m-d') . 'T00:00:00';
-        $apptInfo['PatientData']['SubscriberID'] = ($patientInsurance->subscriber_id) ? $patientInsurance->subscriber_id : '';
-        $apptInfo['PatientData']['GroupNum'] = ($patientInsurance->insurance_group_no) ? $patientInsurance->insurance_group_no : '';
-        $apptInfo['PatientData']['RelationshipToPatient'] = ($patientInsurance->subscriber_relation) ? $patientInsurance->subscriber_relation : '';
-        $apptInfo['PatientData']['CustomerServiceNumForInsCarrier'] = '';
-        $apptInfo['PatientData']['ReferredBy'] = '';
-        $apptInfo['PatientData']['NotesBox'] = '';
-        $apptInfo['PatientData']['ReferredBy2'] = '';
-        $apptInfo['PatientData']['ReferredBy3'] = '';
-        $apptInfo['PatientData']['ReferredBy4'] = '';
-        $apptInfo['PatientData']['ReferredBy5'] = '';
-        $apptInfo['PatientData']['IsPatKnown'] = ($patient->fpc_id) ? '1' : '0';
-
-        $appointment = new Appointment;
-        $appointment->provider_id = $providerID;
-        $appointment->practice_id = $practiceID;
-        $appointment->location_id = $locationID;
-        $appointment->patient_id = $patientID;
-        $appointment->network_id = $networkID;
-        $appointment->appointmenttype_key = $appointmentTypeKey;
-        $appointment->appointmenttype = $appointmentType;
+        
         $date = new DateTime($appointmentTime);
-        $appointment->start_datetime = $date->format('Y-m-d H:i:s');
+    
+        $appointment = Appointment::schedule([
+            'provider_id' => $providerID,
+            'practice_id' => $practiceID,
+            'location_id' => $locationID,
+            'patient_id' => $patientID,
+            'network_id' => $networkID,
+            'appointmenttype_key' => $appointmentTypeKey,
+            'appointmenttype' => $appointmentType,
+            'start_datetime' => $date->format('Y-m-d H:i:s')
+        ]);
 
-        if (!$appointment->save()) {
+        if (!$appointment) {
             return $apptStatus;
+        } else {
+           $status = event(new AppointmentScheduled($request, $appointment));
         }
 
-        $apptStatus['appointment_saved'] = true;
+        $apptStatus['result'] = true;
 
-		$partnerWebScheduleResult = $this->partnerWebSchedule($apptInfo, $request);
-
-        if ($partnerWebScheduleResult) {
-            $apptStatus['4PC_scheduled'] = true;
-            $appointment->fpc_id = $partnerWebScheduleResult;
-            $appointment->save();
-        }
-
-        $practice = Practice::find($appointment->practice_id);
-        $appt['practice_name'] = $practice->name;
-        $loggedInUser = Auth::user();
-        $network = User::getNetwork($loggedInUser->id);
-        $appt['user_name'] = $loggedInUser->name;
-        $appt['user_network'] = $network->name;
-        $appt['user_email'] = $loggedInUser->email;
-        $appt['user_phone'] = $loggedInUser->cellphone;
-        $appt['appt_type'] = $appointmentType;
-        $provider = User::find($appointment->provider_id);
-        $appt['provider_name'] = $provider->firstname;
-        $location = PracticeLocation::find($appointment->location_id);
-        $appt['location_name'] = $location->locationname;
-        $appt['location_address'] = $location->addressline1 . ', ' . $location->addressline2 . ', ' . $location->city . ', ' . $location->state . ', ' . $location->zip;
-        $appt['practice_phone'] = $location->phone;
-        $date = new DateTime($appointment->start_datetime);
-        $appt['appt_startdate'] = $date->format('F d, Y');
-        $appt['appt_starttime'] = $date->format('h i A');
-        $appt['patient_name'] = $patient->firstname;
-        $appt['patient_email'] = $patient->email;
-        $appt['patient_phone'] = $patient->cellphone . ', ' . $patient->workphone . ', ' . $patient->homephone;
-        $appt['patient_ssn'] = $patient->lastfourssn;
-        $appt['patient_address'] = $patient->addressline1 . ', ' . $patient->addressline2 . ', ' . $patient->city . ', ' . $patient->state . ', ' . $patient->zip;
-        $appt['patient_dob'] = $date->format('F d, Y');
-
-        $appt['insurance_carrier'] = $patientInsurance->insurance_carrier;
-        $appt['subscriber_name'] = $patientInsurance->subscriber_name;
-        $appt['subscriber_id'] = $patientInsurance->subscriber_id;
-        $date = new DateTime($patientInsurance->subscriber_birthdate);
-        $appt['subscriber_birthdate'] = $date->format('F d, Y');
-        $appt['insurance_group_no'] = $patientInsurance->insurance_group_no;
-        $appt['subscriber_relation'] = $patientInsurance->subscriber_relation;
-
-        if ($location->email && $location->email != '') {
-
-            $mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($location) {
-                $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to($location->email, $location->name)->subject('Request for Appointment');
-            });
-
-            $apptStatus['practice_email_sent'] = true;
-        }
-
-        if ($patient->email && $patient->email != '') {
-
-            $mailToPatient = Mail::send('emails.appt-confirmation-patient', ['appt' => $appt], function ($m) use ($patient) {
-                $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to($patient->email, $patient->lastname . ', ' . $patient->firstname)->subject('Appointment has been scheduled');
-            });
-
-            $apptStatus['patient_email_sent'] = true;
-
-        }
-
-        $careconsole = Careconsole::where('patient_id', $patientID)
-            ->orderBy('created_at', 'desc')
-            ->first();
+        $careconsole = Careconsole::where('patient_id', $patientID)->first();
 
         /**
          * Consider not having all patients in the Console and

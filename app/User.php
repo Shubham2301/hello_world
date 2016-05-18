@@ -33,7 +33,7 @@ CanResetPasswordContract
      */
     protected $fillable = ['name', 'email', 'sesemail',
         'password', 'firstname', 'lastname', 'npi', 'cellphone', 'state',
-        'address1', 'address2', 'city', 'zip'];
+        'address1', 'address2', 'city', 'zip', 'usertype_id', 'level', 'acc_key', 'menu_id', 'active'];
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -53,14 +53,6 @@ CanResetPasswordContract
         }
 
         return !!$role->intersect($this->roles)->count();
-
-        //     foreach ($role as $r) {
-        //         if($this->hasRole($r->name))
-        //         {
-        //             return true;
-        //         }
-        //     }
-        //     return false;
     }
 
     public function assign($role)
@@ -155,6 +147,7 @@ CanResetPasswordContract
             ->where('active', '1')
             ->get(['*', 'users.*']);
     }
+    
     public static function networkUserById($network_id)
     {
         return self::query()
@@ -163,6 +156,7 @@ CanResetPasswordContract
             ->where('network_id', $network_id)
             ->get(['users.id', 'users.name', 'users.sesemail']);
     }
+
     public static function getNetwork($userID)
     {
         return self::query()
