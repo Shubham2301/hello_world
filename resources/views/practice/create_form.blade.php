@@ -69,6 +69,7 @@
                             <input class="add_practice_input" id="state" type="text" placeholder="State*">
                         </div>
                         <div class="col-sm-6 col-xs-12">
+                            <input class="add_practice_input" id="location_email" type="text" placeholder="Notification Email*">
                             <input class="add_practice_input" id="zip" type="text" placeholder="Zip*">
                             <input class="add_practice_input" id="phone" type="text" placeholder="Phone*">
                             <input class="add_practice_input" id="addressline2" type="text" placeholder="AddressLine2" style="display:none;">

@@ -65,6 +65,7 @@ class PracticeController extends Controller
             $practicelocation->locationname = $location['locationname'];
             $practicelocation->practice_id = $practiceid;
             $practicelocation->phone = $location['phone'];
+            $practicelocation->email = $location['email'];
             $practicelocation->addressline1 = $location['addressline1'];
             $practicelocation->addressline2 = $location['addressline2'];
             $practicelocation->city = $location['city'];
@@ -154,8 +155,9 @@ class PracticeController extends Controller
         $practice->name = $practicename;
         $practice->email = $practiceemail;
         $practice->save();
-        //$practicelocation = PracticeLocation::where('practice_id', $practiceid)->delete();
+
         foreach ($locations as $location) {
+
             if(isset($location['id'])){
                 $practicelocation = PracticeLocation::find($location['id']);
             } else {
@@ -165,6 +167,7 @@ class PracticeController extends Controller
             $practicelocation->locationname = $location['locationname'];
             $practicelocation->practice_id = $practiceid;
             $practicelocation->phone = $location['phone'];
+            $practicelocation->email = $location['email'];
             $practicelocation->addressline1 = $location['addressline1'];
             $practicelocation->addressline2 = $location['addressline2'];
             $practicelocation->city = $location['city'];
@@ -178,7 +181,7 @@ class PracticeController extends Controller
             try {
                 $json = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')), true);
             } catch (Exception $e) {
-                
+                Log::error($e);
             }
             if (isset($json['results'][0]['geometry']['location']['lat'])) {
                 $practicelocation->latitude = $json['results'][0]['geometry']['location']['lat'];
