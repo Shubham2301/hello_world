@@ -329,6 +329,7 @@ function getLocationData() {
         locations.push({
             "locationname": $('#locationname').val(),
             "location_code": $('#location_code').val(),
+            "location_email": $('#location_email').val(),
             "addressline1": $('#addressline1').val(),
             "addressline2": $('#addressline2').val(),
             "city": $('#city').val(),
@@ -344,6 +345,7 @@ function getLocationData() {
 
 function validateLocation() {
     if ($('#locationname').val() == "") return false;
+    else if ($('#location_email').val() == "") return false;
     else if ($('#location_code').val() == "") return false;
     else if ($('#addressline1').val() == "") return false;
     else if ($('#city').val() == "") return false;
@@ -355,6 +357,7 @@ function validateLocation() {
 
 function setNewLocationField() {
     $('#locationname').val('');
+    $('#location_email').val('');
     $('#location_code').val('');
     $('#addressline1').val('');
     $('#addressline2').val('');
@@ -481,6 +484,7 @@ function createPractice(formData) {
 function popupLocationFields(locationdata) {
     $('#locationname').val(locationdata['locationname']);
     $('#location_code').val(locationdata['location_code']);
+    $('#location_email').val(locationdata['email']);
     $('#addressline1').val(locationdata['addressline1']);
     $('#addressline2').val(locationdata['addressline2']);
     $('#city').val(locationdata['city']);
@@ -535,7 +539,8 @@ function showPracticeInfo(info) {
                 content += '<div id="collapse' + i + '" class="panel-collapse collapse in"><div class="panel-body location_accordian_body">';
             else
                 content += '<div id="collapse' + i + '" class="panel-collapse collapse"><div class="panel-body">';
-			content += '<div class="row practice_location_item" data-locationid = "' + location.id + '" data-index="' + i + '"><div class="col-xs-3 practice_info"><p>' + location.addressline1 + '<br>' + location.city + ','+location.state+'&nbsp;  '+location.zip+'<br>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p class="hide">Assign roles </p><p class="hide">Assign users</p><p class="edit_location_frominfo">Edit</p><br><center class=""><span class="remove_location_frominfo"><img src="'+deleteImg+'"/></span></center></div><div class="col-xs-5"><div class="row">';
+            var locationEmail = (location.email == null) ? 'Notification Email Not Set' : location.email;
+			content += '<div class="row practice_location_item" data-locationid = "' + location.id + '" data-index="' + i + '"><div class="col-xs-3 practice_info"><p>' + locationEmail + '</p><p>' + location.addressline1 + '<br>' + location.city + ','+location.state+'&nbsp;  '+location.zip+'<br>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p class="hide">Assign roles </p><p class="hide">Assign users</p><p class="edit_location_frominfo">Edit</p><br><center class=""><span class="remove_location_frominfo"><img src="'+deleteImg+'"/></span></center></div><div class="col-xs-5"><div class="row">';
             info.users.forEach(function (user) {
                 content += '<div class="col-xs-12 practice_users "><p style="width: 100%;"><span>' + user.firstname + ' ' + user.lastname + '</span><img src="' + deactivate_user_img + '" class="user_disable" data-id="' + user.id + '" data-toggle="tooltip" title="Disable User" data-placement="top"/></p></div>';
             });
@@ -633,6 +638,7 @@ function removePractice(id) {
 function updateLocationData(index) {
     locations[index]['locationname'] = $('#locationname').val();
     locations[index]['location_code'] = $('#location_code').val();
+    locations[index]['email'] = $('#location_email').val();
     locations[index]['addressline1'] = $('#addressline1').val();
     locations[index]['addressline2'] = $('#addressline2').val();
     locations[index]['city'] = $('#city').val();

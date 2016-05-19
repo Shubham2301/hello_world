@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="{{elixir('css/file_exchange.css')}}">
 <script type="text/javascript" src="{{elixir('js/file_exchange.js')}}"></script>
 @endsection @section('sidebar') @include('file_exchange.sidebar') @endsection @section('content') @if (Session::has('success'))
-<div class="alert alert-success">
+<div class="alert alert-success" id="flash-message">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
 
     <strong>

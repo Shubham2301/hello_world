@@ -19,6 +19,11 @@ $(document).ready(function () {
     $("a").tooltip({
         container: 'body'
     });
+    
+    setTimeout(function () {
+        $('#flash-message').hide();
+    }, 10000);
+
     //    $('.menu-item').on('click', function () {
     //        if ($(this).hasClass('active') || $(this).hasClass('dropdown-toggle'))
     //            return;
