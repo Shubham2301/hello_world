@@ -39,7 +39,16 @@ class AppointmentController extends Controller
             'result' => false,
         ];
         
-        $date = new DateTime($appointmentTime);
+        $userID = Auth::user()->id;
+        $network = User::getNetwork($userID);
+        $networkID = $network->id;
+        $patientID = $request->input('patient_id');
+        $providerID = $request->input('provider_id');
+        $locationID = $request->input('location_id');
+        $practiceID = $request->input('practice_id');
+        $appointmentType = $request->input('appointment_type');
+        $appointmentTypeKey = $request->input('appointment_type_key');
+        $appointmentDateTime = new DateTime($request->input('appointment_time'));
     
         $appointment = Appointment::schedule([
             'provider_id' => $providerID,
@@ -49,7 +58,7 @@ class AppointmentController extends Controller
             'network_id' => $networkID,
             'appointmenttype_key' => $appointmentTypeKey,
             'appointmenttype' => $appointmentType,
-            'start_datetime' => $date->format('Y-m-d H:i:s')
+            'start_datetime' => $appointmentDateTime->format('Y-m-d H:i:s')
         ]);
 
         if (!$appointment) {
