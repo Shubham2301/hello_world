@@ -54,7 +54,7 @@ class PatientController extends Controller
         $gender['Female'] = 'Female';
         $language = array();
         $language['English'] = 'English';
-        $language['French'] = 'French';
+        $language['Spanish'] = 'Spanish';
         $data = Patient::getColumnNames();
         $data['admin'] = true;
         $data['back_btn'] = 'back_to_select_patient_btn';
@@ -78,7 +78,7 @@ class PatientController extends Controller
         $gender['Female'] = 'Female';
         $language = array();
         $language['English'] = 'English';
-        $language['French'] = 'French';
+        $language['Spanish'] = 'Spanish';
         $data = array();
         $data = Patient::getColumnNames();
         $data['admin'] = true;
@@ -125,7 +125,8 @@ class PatientController extends Controller
             $patient->addressline2 = $request->input('addressline2');
             $patient->city = $request->input('city');
             $patient->zip = $request->input('zip');
-            $patient->birthdate = $request->input('birthdate');
+            $patientDob = new Datetime($request->input('birthdate'));
+            $patient->birthdate = ($request->input('birthdate') == '')? null : $patientDob->format('Y-m-d H:i:s');
             $patient->preferredlanguage = $request->input('preferredlanguage');
             $patient->cellphone = $request->input('cellphone');
             $patient->homephone = $request->input('homephone');
@@ -281,7 +282,7 @@ class PatientController extends Controller
         $gender['Female'] = 'Female';
         $language = array();
         $language['English'] = 'English';
-        $language['French'] = 'French';
+        $language['Spanish'] = 'Spanish';
         $data = array();
         $data = Patient::find($id);
         if (!$data) {
@@ -427,7 +428,7 @@ class PatientController extends Controller
         $gender['Female'] = 'Female';
         $language = array();
         $language['English'] = 'English';
-        $language['French'] = 'French';
+        $language['Spanish'] = 'Spanish';
         $data = array();
         $data = Patient::find($id);
         if (!$data) {
