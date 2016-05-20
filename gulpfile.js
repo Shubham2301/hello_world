@@ -30,12 +30,12 @@ elixir(function (mix) {
     mix.babel(['main.js', 'announcements.js'], 'public/js/main.js');
     mix.babel(['sesconnect.js'], 'public/js/sesconnect.js');
     mix.babel(['referraltype.js'], 'public/js/referraltype.js');
-    mix.babel(['patient.js'], 'public/js/patient.js');
+    mix.babel(['patient.js', 'referred_by.js'], 'public/js/patient.js');
     mix.babel(['provider.js'], 'public/js/provider.js');
     mix.babel(['practice.js'], 'public/js/practice.js');
     mix.babel(['appointment.js'], 'public/js/appointment.js');
     mix.babel(['import.js'], 'public/js/import.js');
-    mix.babel(['careconsole.js'], 'public/js/careconsole.js');
+    mix.babel(['careconsole.js', 'referred_by.js'], 'public/js/careconsole.js');
     mix.babel(['networks.js'], 'public/js/networks.js');
     mix.babel(['audit.js'], 'public/js/audit.js');
     mix.babel(['tojson.js'], 'public/js/tojson.js');

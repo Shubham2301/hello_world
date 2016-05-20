@@ -4,7 +4,7 @@
 <form method="POST" action="/password/email">
     {!! csrf_field() !!}
     @if (count($errors) > 0)
-    <div class="row">
+    <div class="row" id="flash-message">
         @foreach ($errors->all() as $error)
         <div class="col-sm-12 left-padding top-margin">
             <p class="white-text">{{ $error }}</p>

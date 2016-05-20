@@ -13,6 +13,10 @@ class EventServiceProvider extends ServiceProvider {
 	 */
 	protected $listen = [
 		'myocuhub\Events\MakeAuditEntry' => [],
+		'myocuhub\Events\AppointmentScheduled' => [
+			'myocuhub\Listeners\RequestFPCAppointment',
+			'myocuhub\Listeners\SendAppointmentRequestEmail',
+		],
 	];
 
 	/**

@@ -316,7 +316,14 @@ class ProviderController extends Controller
     public function getReferringProviderSuggestions(Request $request)
     {
         $searchString = $request->provider;
-		$providers = User::where('name', 'LIKE', ''.$searchString.'%')->where('usertype_id', 1)->pluck('name')->toArray();
+		$providers = User::where('name', 'LIKE', ''.$searchString.'%')->where('usertype_id', 1);
+
+        if(session('user-level') > 1){
+            $providers = $providers->leftjoin('network_user', 'users.id', '=','network_user.user_id')
+                ->where('network_user.network_id', session('network-id'));
+        }
+
+        $providers = $providers->pluck('users.name')->toArray();
         $fromReferring = ReferralHistory::where('referred_by_provider', 'LIKE', ''.$searchString.'%')->pluck('referred_by_provider')->toArray();
         $suggestions = array_unique(array_merge($providers, $fromReferring));
         $data = [];

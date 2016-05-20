@@ -14,7 +14,7 @@
 @section('content')
 
     @if (Session::has('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success" id="flash-message">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>
                     <i class="fa fa-check-circle fa-lg fa-fw"></i> Success. &nbsp;
@@ -23,7 +23,7 @@
     @endif
 
     @if (Session::has('error'))
-        <div class="alert alert-danger">
+        <div class="alert alert-danger" id="flash-message">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>
                     <i class="fa fa-check-circle fa-lg fa-fw"></i> Error. &nbsp;

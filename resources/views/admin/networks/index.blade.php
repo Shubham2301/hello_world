@@ -14,7 +14,7 @@
 @section('content')
 
 @if (Session::has('success'))
-<div class="alert alert-success">
+<div class="alert alert-success" id="flash-message">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <strong>
             <i class="fa fa-check-circle fa-lg fa-fw"></i> Success. &nbsp;

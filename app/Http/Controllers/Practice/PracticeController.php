@@ -281,7 +281,15 @@ class PracticeController extends Controller
     public function getReferringPracticeSuggestions(Request $request)
     {
         $searchString = $request->practice;
-        $practices = Practice::where('name', 'LIKE', ''.$searchString.'%')->pluck('name')->toArray();
+        $practices = Practice::where('name', 'LIKE', ''.$searchString.'%');
+
+        if(session('user-level') > 1){
+            $practices = $practices->leftjoin('practice_network', 'practices.id', '=','practice_network.practice_id')
+                ->where('practice_network.network_id', session('network-id'));
+        }
+
+        $practices = $practices->pluck('practices.name')->toArray();
+
         $fromReferring = ReferralHistory::where('referred_by_practice', 'LIKE', ''.$searchString.'%')->pluck('referred_by_practice')->toArray();
         $data = [];
         $i = 0;
