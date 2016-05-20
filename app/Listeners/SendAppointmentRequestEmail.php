@@ -91,53 +91,65 @@ class SendAppointmentRequestEmail
             $appt['insurance_group_no'] = $patientInsurance->insurance_group_no ?: '';
             $appt['subscriber_relation'] = $patientInsurance->subscriber_relation ?: '';
         }
-        
-        if ($location->email && $location->email != '') {
-            $this->sendProviderMail($appt, $location);
-        }
 
-        if ($patient->email && $patient->email != '') {
-            $this->sendPatientMail($appt, $patient);
-        }
+        $event->_setProviderEmailStatus($this->sendProviderMail($appt, $location));
+
+        $event->_setPatientEmailStatus($this->sendPatientMail($appt, $patient));
+        
     }
 
     public function sendPatientMail($appt, $patient){
         if($patient->email == null || $patient->email == ''){
-            return ;
+            return false;
         }
         try {
+
             $mailToPatient = Mail::send('emails.appt-confirmation-patient', ['appt' => $appt], function ($m) use ($patient) {
                 $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
                 $m->to($patient->email, $patient->lastname . ', ' . $patient->firstname)->subject('Appointment has been scheduled');
             });
+
         } catch (Exception $e) {
+
             Log::error($e);
             $action = 'Application Exception in sending Appointment Request email not sent to patient '. $patient->email;
             $description = '';
             $filename = basename(__FILE__);
             $ip = '';
             Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+            return false;
         }
-        return ;
+
+        return true;
     }
 
     public function sendProviderMail($appt, $location){
+
         if($location->email == null || $location->email == ''){
-            return ;
+            return false;
         }
+
         try {
+            
             $mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($location) {
                 $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to('asd', $location->name)->subject('Request for Appointment');
+                $m->to($location->email, $location->name)->subject('Request for Appointment');
             });
+
         } catch (Exception $e) {
+
             Log::error($e);
             $action = 'Application Exception in sending Appointment Request email not sent to patient '. $location->email;
             $description = '';
             $filename = basename(__FILE__);
             $ip = '';
             Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+            return false;
         }
-        
+
+        return true;
+
     }
 }

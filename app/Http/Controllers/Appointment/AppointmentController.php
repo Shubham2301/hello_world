@@ -36,7 +36,10 @@ class AppointmentController extends Controller
     public function schedule(Request $request)
     {
         $apptStatus = [
-            'result' => false,
+            'appointment_saved' => false,
+            'provider_email' => false,
+            'patient_email' => false,
+            'fpc_request' => false,
         ];
         
         $userID = Auth::user()->id;
@@ -64,10 +67,11 @@ class AppointmentController extends Controller
         if (!$appointment) {
             return $apptStatus;
         } else {
-           $status = event(new AppointmentScheduled($request, $appointment));
+            $appointmentScheduled = new AppointmentScheduled($request, $appointment);
+            event($appointmentScheduled);
         }
 
-        $apptStatus['result'] = true;
+        $apptStatus['appointment_saved'] = true;
 
         $careconsole = Careconsole::where('patient_id', $patientID)->first();
 
@@ -113,6 +117,10 @@ class AppointmentController extends Controller
 
             $referralHistory->save();
         }
+        //dd($appointmentScheduled);
+        $apptStatus['provider_email'] = $appointmentScheduled->getProviderEmailStatus();
+        $apptStatus['patient_email'] = $appointmentScheduled->getPatientEmailStatus();
+        $apptStatus['fpc_request'] = $appointmentScheduled->getFPCRequestStatus();
 
         return $apptStatus;
     }

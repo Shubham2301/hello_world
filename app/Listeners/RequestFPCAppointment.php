@@ -5,6 +5,8 @@ namespace myocuhub\Listeners;
 use Auth;
 use Datetime;
 use Event;
+use Exception;
+use Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use myocuhub\Events\AppointmentScheduled;
@@ -37,37 +39,42 @@ class RequestFPCAppointment
         $request = $event->getRequest();
         $appointment = $event->getAppointment();
 
-        $apptInfo = $this->prepareApptRequest($request);
+        try {
+            $apptInfo = $this->prepareApptRequest($request);
+        } catch (Exception $e) {
+            Log::error($e);
+            $event->_setFPCRequestStatus(false);
+            return;
+        }
+        
 
         $apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
 
-        $result = '';
-
         if ($apptResult != null) {
             if ($apptResult->RequestApptInsertResult->ApptKey != -1) {
+                $appointment->setFPCID($apptResult->RequestApptInsertResult->ApptKey);
+                
 
-                $result = 'Appointment Scheduled Successfully';
-                $action = '4PC Appointment Request for Provider = ' . $apptInfo['AcctKey'] . ' Location = ' . $apptInfo['LocKey'] . ' on Date ' . $apptInfo['ApptStartDateTime'] . 'for Patient = ' . $apptInfo['PatientData']['FirstName'] . ' ' . $apptInfo['PatientData']['FirstName'];
+                $action = '4PC Appointment Request for Provider = ' . $apptInfo['AcctKey'] . ' Location = ' . $apptInfo['LocKey'] . ' on Date ' . $apptInfo['ApptStartDateTime'] . ' for Patient = ' . $apptInfo['PatientData']['FirstName'] . ' ' . $apptInfo['PatientData']['LastName'];
                 $description = '';
                 $filename = basename(__FILE__);
                 $ip = $request->getClientIp();
-
                 Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
-                $appointment->setFPCID($apptResult->RequestApptInsertResult->ApptKey);
-
+                
+                $event->_setFPCRequestStatus(true);
+                return;
             } else {
 
-                $result = $apptResult->RequestApptInsertResult->Result;
                 $action = 'Attempt to Request Appointment with 4PC failed for Provider = ' . $request->input('provider_id') . ' Location = ' . $request->input('location_id') . ' for Date ' . $request->input('appointment_time') . ' ';
-                $description = $result;
+                $description = $apptResult->RequestApptInsertResult->Result;
                 $filename = basename(__FILE__);
                 $ip = $request->getClientIp();
                 Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
             }
         }
 
+        $event->_setFPCRequestStatus(false);
+        return;
     }
 
     public function prepareApptRequest($request){
