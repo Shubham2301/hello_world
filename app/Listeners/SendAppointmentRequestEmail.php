@@ -4,11 +4,14 @@ namespace myocuhub\Listeners;
 
 use Auth;
 use DateTime;
-use Log;
+use Event;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
+use Log;
 use myocuhub\Events\AppointmentScheduled;
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
@@ -125,7 +128,7 @@ class SendAppointmentRequestEmail
         try {
             $mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($location) {
                 $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to($location->email, $location->name)->subject('Request for Appointment');
+                $m->to('asd', $location->name)->subject('Request for Appointment');
             });
         } catch (Exception $e) {
             Log::error($e);
