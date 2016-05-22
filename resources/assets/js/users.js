@@ -36,6 +36,10 @@ $(document).ready(function () {
         }
     });
 
+    $('#user_network').on('change', function () {
+        refreshPractices($(this).val());
+    });
+
     $('#search_user_button').on('click', function () {
         var searchvalue = $('#search_user_input').val();
         $('.no_item_found > p:eq(1)').text(searchvalue);
@@ -296,6 +300,32 @@ function checkForm() {
             }
         }
     });
+}
+
+function refreshPractices(networkID) {
+
+    $.ajax({
+        url: '/administration/practices/by-network/' + networkID,
+        type: 'GET',
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            var practices = $.parseJSON(e);
+            var practice_id;
+            var content = '<option value="">Select Practice</option>';
+            for ( practice_id in practices ) {
+                content += '<option value="' + practice_id + '">' + practices[practice_id] + '</option>';
+            }
+            $('#user_practice').html(content);
+        },
+        error: function error() {
+            $('p.alert_message').text('Error getting practice networks.');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+
 }
 
 function showUserInfo(id){

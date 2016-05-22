@@ -129,6 +129,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('users/remove', 'Admin\UserController@destroy');
         Route::get('users/show/{id}', 'Admin\UserController@show');
     });
+    
+    Route::get('/administration/practices/by-network/{networkId}', 'Practice\PracticeController@getPracticesByNetwork');
 
     Route::resource('referraltype', 'ReferralTypeController');
     Route::get('removereferral', 'ReferralTypeController@removeReferral');

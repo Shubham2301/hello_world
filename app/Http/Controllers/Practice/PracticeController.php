@@ -307,4 +307,16 @@ class PracticeController extends Controller
         }
         return json_encode($data);
     }
+
+    public function getPracticesByNetwork($networkID){
+
+        $networkPractices = Network::find($networkID)->practices()->get(['practices.id', 'practices.name']);
+
+        $practices = [];
+        foreach ($networkPractices as $practice) {
+            $practices[$practice->id] = $practice->name;
+        }
+
+        return json_encode($practices);
+    }
 }
