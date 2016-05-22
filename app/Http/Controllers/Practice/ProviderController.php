@@ -324,7 +324,11 @@ class ProviderController extends Controller
         }
 
         $providers = $providers->pluck('users.name')->toArray();
-        $fromReferring = ReferralHistory::where('referred_by_provider', 'LIKE', ''.$searchString.'%')->pluck('referred_by_provider')->toArray();
+        $fromReferring = ReferralHistory::where('referred_by_provider', 'LIKE', ''.$searchString.'%');
+        if(session('user-level') > 1){
+            $fromReferring = $fromReferring->where('network_id', session('network-id'));
+        }
+        $fromReferring = $fromReferring->pluck('referred_by_provider')->toArray();
         $suggestions = array_unique(array_merge($providers, $fromReferring));
         $data = [];
         $i = 0;

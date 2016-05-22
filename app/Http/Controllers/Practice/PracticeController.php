@@ -290,7 +290,11 @@ class PracticeController extends Controller
 
         $practices = $practices->pluck('practices.name')->toArray();
 
-        $fromReferring = ReferralHistory::where('referred_by_practice', 'LIKE', ''.$searchString.'%')->pluck('referred_by_practice')->toArray();
+        $fromReferring = ReferralHistory::where('referred_by_practice', 'LIKE', ''.$searchString.'%');
+        if(session('user-level') > 1){
+            $fromReferring = $fromReferring->where('network_id', session('network-id'));
+        }
+        $fromReferring = $fromReferring->pluck('referred_by_practice')->toArray();
         $data = [];
         $i = 0;
         $suggestions = array_unique(array_merge($practices, $fromReferring));
