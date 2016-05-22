@@ -290,7 +290,7 @@ class PatientController extends Controller
             $data = Patient::getColumnNames();
         }
         $dob = new DateTime($data['birthdate']);
-        $data['birthdate'] = $dob->format('m/d/Y');
+        $data['birthdate'] = ($data['birthdate'] && $data['birthdate'] != '0000-00-00 00:00:00') ? $dob->format('m/d/Y') : '';
         $data['admin'] = true;
         $data['back_btn'] = 'back_to_admin_patient_btn';
         $data['url'] = '/administration/patients/update/' . $id;
