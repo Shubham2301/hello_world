@@ -25,9 +25,11 @@ $(document).ready(function() {
         }
     });
     $(document).on('click', '.C3_day_box', function() {
+        var kpi_id = $(this).attr('data-id');
         var kpi_name = $(this).attr('data-name');
         var stageID = $(this).parent().attr('data-stageid');
         var stageName = $('.drilldown>.section-header').html();
+		var kpi_indicator = $(this).attr('data-indicator');
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             showcontrolls = true;
@@ -37,19 +39,20 @@ $(document).ready(function() {
         } else {
             $('.C3_day_box').removeClass('active');
             $(this).addClass('active');
-            if (kpi_name) {
+			showcontrolls = false;
+			currentPage = 1;
+			if (kpi_id) {
                 $('#current_stage').val(stageID);
                 $('#current_sort_field').val();
                 $('#current_sort_order').val();
                 if ($(this).hasClass('low')) {
                     $('#current_kpi').val('0');
-                    setPandingDayslimit(kpi_name, stageID);
+					setPandingDayslimit(kpi_id, stageID);
+					getPatientData();
                 } else {
-                    $('#current_kpi').val(kpi_name);
+					showKPIData(stageID, kpi_id, stageName, kpi_name, kpi_indicator);
                 }
-                showcontrolls = false;
-                currentPage = 1;
-                getPatientData();
+
             }
         }
         setSidebarButtonActive();
@@ -134,7 +137,6 @@ $(document).ready(function() {
         $('.before_drilldown').hide();
         $('.drilldown').addClass('active');
         $('.stage').removeClass('sidebar_items_active');
-        $('.subsection-header').removeClass('active');
         $('.console_buckets').removeClass('active');
         $('.patient_records_info').removeClass('active');
 
@@ -466,6 +468,7 @@ function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator) {
 function showStageData(stage_id, stage_name) {
     $('#sidebar_' + stage_id).addClass('sidebar_items_active');
     $('.drilldown>.section-header').html(stage_name);
+	$('.subsection-header').removeClass('active');
     $('#current_stage').val(stage_id);
     setSidebarButtonActive();
     $('#current_kpi').val('0');

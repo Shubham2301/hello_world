@@ -14,7 +14,7 @@
 	@endif
 	@if($control['type'] == 2)
 	@foreach($control['options'] as $option)
-	<div class="C3_day_box show" data-name = "{{$option['kpi_name']}}">
+	<div class="C3_day_box show" data-id = "{{$option['kpi_name']}}" data-indicator = "{{$option['color_indicator']}}" data-name = "{{$option['display_name']}}" >
 		<div class="show_bar" style="background-color:{{ $option['color_indicator']}}"></div>
 		<p class="arial_bold">{{ $option['count'] }}</p>
 		<p>{{ $option['display_name'] }}</p>
