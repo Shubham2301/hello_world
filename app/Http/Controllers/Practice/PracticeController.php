@@ -157,7 +157,6 @@ class PracticeController extends Controller
         $practice->save();
 
         foreach ($locations as $location) {
-
             if(isset($location['id'])){
                 $practicelocation = PracticeLocation::find($location['id']);
             } else {
