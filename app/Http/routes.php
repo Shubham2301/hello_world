@@ -65,13 +65,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
     Route::get('providers/previous', 'Practice\ProviderController@getPreviousProviders');
 	Route::get('providers/nearby', 'Practice\ProviderController@getNearByProviders');
-    Route::get('directmail/beginimpersonate', 'DirectMail\DirectMailController@beginImpersonate');
-    Route::post('directmail/endimpersonate', 'DirectMail\DirectMailController@endImpersonate');
+
+    Route::group(['middleware' => 'role:direct-mail'], function () {
+        Route::get('directmail/beginimpersonate', 'DirectMail\DirectMailController@beginImpersonate');
+        Route::post('directmail/endimpersonate', 'DirectMail\DirectMailController@endImpersonate');
+        Route::resource('directmail', 'DirectMail\DirectMailController@index');
+        Route::get('group/guest/direct-mail', 'DirectMail\DirectMailController@index');
+    });
 
     Route::get('getauditreports', 'AuditReportController@getReports');
     Route::get('auditreports', 'AuditReportController@index');
-    Route::get('group/guest/direct-mail', 'DirectMail\DirectMailController@index');
-    Route::resource('directmail', 'DirectMail\DirectMailController@index');
+    
     Route::resource('patients', 'Patient\PatientController');
     Route::resource('providers', 'Practice\ProviderController');
     Route::resource('practices', 'Practice\PracticeController');
@@ -125,6 +129,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('users/remove', 'Admin\UserController@destroy');
         Route::get('users/show/{id}', 'Admin\UserController@show');
     });
+    
+    Route::get('/administration/practices/by-network/{networkId}', 'Practice\PracticeController@getPracticesByNetwork');
 
     Route::resource('referraltype', 'ReferralTypeController');
     Route::get('removereferral', 'ReferralTypeController@removeReferral');

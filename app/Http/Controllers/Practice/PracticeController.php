@@ -65,6 +65,7 @@ class PracticeController extends Controller
             $practicelocation->locationname = $location['locationname'];
             $practicelocation->practice_id = $practiceid;
             $practicelocation->phone = $location['phone'];
+            $practicelocation->email = $location['email'];
             $practicelocation->addressline1 = $location['addressline1'];
             $practicelocation->addressline2 = $location['addressline2'];
             $practicelocation->city = $location['city'];
@@ -154,7 +155,7 @@ class PracticeController extends Controller
         $practice->name = $practicename;
         $practice->email = $practiceemail;
         $practice->save();
-        //$practicelocation = PracticeLocation::where('practice_id', $practiceid)->delete();
+
         foreach ($locations as $location) {
             if(isset($location['id'])){
                 $practicelocation = PracticeLocation::find($location['id']);
@@ -165,6 +166,7 @@ class PracticeController extends Controller
             $practicelocation->locationname = $location['locationname'];
             $practicelocation->practice_id = $practiceid;
             $practicelocation->phone = $location['phone'];
+            $practicelocation->email = $location['email'];
             $practicelocation->addressline1 = $location['addressline1'];
             $practicelocation->addressline2 = $location['addressline2'];
             $practicelocation->city = $location['city'];
@@ -178,7 +180,7 @@ class PracticeController extends Controller
             try {
                 $json = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')), true);
             } catch (Exception $e) {
-                
+                Log::error($e);
             }
             if (isset($json['results'][0]['geometry']['location']['lat'])) {
                 $practicelocation->latitude = $json['results'][0]['geometry']['location']['lat'];
@@ -278,8 +280,20 @@ class PracticeController extends Controller
     public function getReferringPracticeSuggestions(Request $request)
     {
         $searchString = $request->practice;
-        $practices = Practice::where('name', 'LIKE', ''.$searchString.'%')->pluck('name')->toArray();
-        $fromReferring = ReferralHistory::where('referred_by_practice', 'LIKE', ''.$searchString.'%')->pluck('referred_by_practice')->toArray();
+        $practices = Practice::where('name', 'LIKE', ''.$searchString.'%');
+
+        if(session('user-level') > 1){
+            $practices = $practices->leftjoin('practice_network', 'practices.id', '=','practice_network.practice_id')
+                ->where('practice_network.network_id', session('network-id'));
+        }
+
+        $practices = $practices->pluck('practices.name')->toArray();
+
+        $fromReferring = ReferralHistory::where('referred_by_practice', 'LIKE', ''.$searchString.'%');
+        if(session('user-level') > 1){
+            $fromReferring = $fromReferring->where('network_id', session('network-id'));
+        }
+        $fromReferring = $fromReferring->pluck('referred_by_practice')->toArray();
         $data = [];
         $i = 0;
         $suggestions = array_unique(array_merge($practices, $fromReferring));
@@ -291,5 +305,17 @@ class PracticeController extends Controller
             }
         }
         return json_encode($data);
+    }
+
+    public function getPracticesByNetwork($networkID){
+
+        $networkPractices = Network::find($networkID)->practices()->get(['practices.id', 'practices.name']);
+
+        $practices = [];
+        foreach ($networkPractices as $practice) {
+            $practices[$practice->id] = $practice->name;
+        }
+
+        return json_encode($practices);
     }
 }

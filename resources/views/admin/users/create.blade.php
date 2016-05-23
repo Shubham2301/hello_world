@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="{{elixir('css/users.css')}}">
 <script type="text/javascript" src="{{elixir('js/users.js')}}"></script>
 @endsection @section('sidebar') @include('admin.sidebar') @endsection @section('content') @if (Session::has('success'))
-<div class="alert alert-success">
+<div class="alert alert-success" id="flash-message">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <strong>
             <i class="fa fa-check-circle fa-lg fa-fw"></i> Success. &nbsp;
@@ -62,17 +62,18 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
+                                        
                                         {!! Form::select('usertype', $userTypes, $user['usertype_id'], array('class' => ' add_user_input', 'placeholder' => 'Select User Types*', 'id' => 'user_type', 'required' => 'required')) !!}
                                         {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => ' add_user_input', 'placeholder' => 'Select User Levels*', 'id' => 'user_level', 'required' => 'required')) !!}
+
                                         @if(session('user-level') == 1)
-                                        {!! Form::select('user_network', $networks, $user['network_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Network*', 'id' => 'user_network', 'style' => ($user['network_id'] == '') ? 'display:none' : "display:inline-block")) !!}
-                                        @endif
-                                        @if(session('user-level') == 1 || session('user-level') == 2)
-                                        {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
+                                            {!! Form::select('user_network', $networks, $user['network_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Network*', 'id' => 'user_network', 'style' => ($user['network_id'] == '') ? 'display:none' : "display:inline-block")) !!}
+                                            {!! Form::select('user_practice', [], $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
+                                        @elseif(session('user-level') == 2)
+                                            {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
                                         @else
                                         {!! Form::hidden('user_practice', $user['practice_id'], array('id' => 'user_practice')) !!}
                                         @endif
-
 
                                         {!! Form::select('landing_page', $menuoption, $user['menu_id'], array('class' => 'add_user_input', 'placeholder' => 'Select Landing Page', 'id' => 'landing_page')) !!}
 
