@@ -144,6 +144,11 @@ class CareConsoleController extends Controller {
 
 		$overview['network_practices'] = Network::find(session('network-id'))->practices;
 		$overview['appointment_types'] = $this->getAppointmentTypes();
+		
+		$overview['request_for_appointment']['email'] = Network::find($networkID)->messageTemplate('email', 'request_for_appointment')->message;
+		$overview['request_for_appointment']['phone'] = Network::find($networkID)->messageTemplate('phone', 'request_for_appointment')->message;
+		$overview['request_for_appointment']['sms'] = Network::find($networkID)->messageTemplate('sms', 'request_for_appointment')->message;
+
 		return $overview;
 	}
 

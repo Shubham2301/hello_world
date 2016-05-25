@@ -3,6 +3,7 @@
 namespace myocuhub;
 
 use Illuminate\Database\Eloquent\Model;
+use myocuhub\Models\MessageTemplate;
 
 class Network extends Model {
 	protected $fillable = ['id', 'name', 'email', 'phone', 'addressline1', 'addressline2', 'city', 'state', 'zip', 'country'];
@@ -15,6 +16,18 @@ class Network extends Model {
 		return $this->hasMany('myocuhub\Models\PracticeNetwork')
 		            ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
 		            ->orderBy('practices.name');
+	}
+	public function messageTemplate($type, $stage) {
+		$message = $this->hasMany('myocuhub\Models\MessageTemplate')
+					->where('type' , config('constants.message_type.'.$type))
+					->where('stage' , config('constants.message_stage.'.$stage))
+		            ->first(['message']);
+		            
+		if($message == null){
+			return MessageTemplate::defaultTemplate($type, $stage);
+		} else {
+			return $message;
+		}         
 	}
 	public static function practicesByName($search) {
 		return self::where('networks.id', session('network-id'))
