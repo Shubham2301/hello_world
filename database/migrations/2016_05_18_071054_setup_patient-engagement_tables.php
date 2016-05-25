@@ -16,15 +16,15 @@ class SetupPatientEngagementTables extends Migration
             $table->increments('id');
             $table->integer('type')->unsigned();
             $table->text('message');
-            $table->integer('network_id')->unsigned();
+            $table->integer('network_id')->unsigned()->nullable();
             $table->integer('mandrill_id')->unsigned()->nullable();
             $table->integer('stage')->unsigned()->nullable();
             $table->integer('language')->unsigned()->nullable();
-            $table->integer('referral_type_id')->unsigned();
+            $table->integer('referral_type_id')->unsigned()->nullable();
             $table->foreign('referral_type_id')->references('id')->on('referraltypes')
-                ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade');
             $table->foreign('network_id')->references('id')->on('networks')
-                ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade');
         });
         Schema::create('engagement_preferences', function (Blueprint $table) {
             $table->increments('id');
