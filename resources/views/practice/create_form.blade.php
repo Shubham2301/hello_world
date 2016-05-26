@@ -73,7 +73,7 @@
                         <div class="col-sm-6 col-xs-12">
                             <input class="add_practice_input" id="location_email" type="text" placeholder="Notification Email*" data-toggle="tooltip" title="Notification Email" data-placement="right">
                             <input class="add_practice_input" id="zip" type="text" placeholder="Zip*" data-toggle="tooltip" title="ZIP" data-placement="right">
-                            <input class="add_practice_input" id="phone" type="text" placeholder="Phone*"  data-toggle="tooltip" title="Phone" data-placement="right">
+							<input class="add_practice_input" id="phone" type="text" placeholder="Phone*"  data-toggle="tooltip" title="Phone" data-placement="right" pattern = "[^A-Za-z]+">
                             <input class="add_practice_input" id="addressline2" type="text" placeholder="AddressLine2" style="display:none;">
                         </div>
                     </div>
