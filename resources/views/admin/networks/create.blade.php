@@ -42,7 +42,9 @@
                 <div class="panel-body">
                     <div class="row content-row-margin">
                         <div class="col-sm-6 col-xs-12">
-                            {!! Form::text('Name', $data['name'] , array('class' => 'add_network_input', 'required' => 'required', 'name' => 'name', 'placeholder' => 'Network Name*', 'id' => 'name')) !!} {!! Form::email('email', $data['email'], array('class' => 'add_network_input', 'name' => 'email', 'required' => 'required', 'placeholder' => 'Email*', 'id' => 'email')) !!} {!! Form::text('Phone', $data['phone'], array('class' => 'add_network_input', 'name' => 'phone', 'placeholder' => 'Phone', 'id' => 'phone')) !!}
+                            {!! Form::text('Name', $data['name'] , array('class' => 'add_network_input', 'required' => 'required', 'name' => 'name', 'placeholder' => 'Network Name*', 'id' => 'name', 'data-toggle' => 'tooltip', 'title' => 'Network Name', 'data-placement' => 'right')) !!}
+                            {!! Form::email('email', $data['email'], array('class' => 'add_network_input', 'name' => 'email', 'required' => 'required', 'placeholder' => 'Email*', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
+                            {!! Form::text('Phone', $data['phone'], array('class' => 'add_network_input', 'name' => 'phone', 'placeholder' => 'Phone', 'id' => 'phone', 'data-toggle' => 'tooltip', 'title' => 'Phone', 'data-placement' => 'right')) !!}
                         </div>
 						<div class="col-sm-6 col-xs-12" style="color:#fff;">
 
@@ -70,10 +72,14 @@
                 <div class="panel-body">
                     <div class="row content-row-margin">
                         <div class="col-sm-6 col-xs-12">
-                            {!! Form::text('address_1', $data['addressline1'], array('class' => 'add_network_input', 'name' => 'addressline1', 'placeholder' => 'Address Line 1', 'id' => 'Address_1')) !!} {!! Form::text('address_2', $data['addressline2'], array('class' => 'add_network_input', 'name' => 'addressline2', 'placeholder' => 'Address Line 2', 'id' => 'Address_2')) !!} {!! Form::text('City', $data['city'], array('class' => 'add_network_input', 'name' => 'city', 'placeholder' => 'City', 'id' => 'city')) !!}
+                            {!! Form::text('address_1', $data['addressline1'], array('class' => 'add_network_input', 'name' => 'addressline1', 'placeholder' => 'Address Line 1', 'id' => 'Address_1', 'data-toggle' => 'tooltip', 'title' => 'Address Line 1', 'data-placement' => 'right')) !!}
+                            {!! Form::text('address_2', $data['addressline2'], array('class' => 'add_network_input', 'name' => 'addressline2', 'placeholder' => 'Address Line 2', 'id' => 'Address_2', 'data-toggle' => 'tooltip', 'title' => 'Address Line 2', 'data-placement' => 'right')) !!}
+                            {!! Form::text('City', $data['city'], array('class' => 'add_network_input', 'name' => 'city', 'placeholder' => 'City', 'id' => 'city', 'data-toggle' => 'tooltip', 'title' => 'City', 'data-placement' => 'right')) !!}
                         </div>
                         <div class="col-sm-6 col-xs-12">
-                            {!! Form::text('Zip', $data['zip'], array('class' => 'add_network_input', 'name' => 'zip', 'placeholder' => 'ZIP', 'id' => 'zip')) !!} {!! Form::text('state', $data['state'], array('class' => 'add_network_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state')) !!} {!! Form::text('country', $data['country'], array('class' => 'add_network_input', 'name' => 'country', 'placeholder' => 'Country', 'id' => 'country')) !!}
+                            {!! Form::text('Zip', $data['zip'], array('class' => 'add_network_input', 'name' => 'zip', 'placeholder' => 'ZIP', 'id' => 'zip', 'data-toggle' => 'tooltip', 'title' => 'ZIP', 'data-placement' => 'right')) !!}
+                            {!! Form::text('state', $data['state'], array('class' => 'add_network_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state', 'data-toggle' => 'tooltip', 'title' => 'State', 'data-placement' => 'right')) !!}
+                            {!! Form::text('country', $data['country'], array('class' => 'add_network_input', 'name' => 'country', 'placeholder' => 'Country', 'id' => 'country', 'data-toggle' => 'tooltip', 'title' => 'Country', 'data-placement' => 'right')) !!}
 
                         </div>
                     </div>
