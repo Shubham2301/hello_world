@@ -17,18 +17,7 @@ class Network extends Model {
 		            ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
 		            ->orderBy('practices.name');
 	}
-	public function messageTemplate($type, $stage) {
-		$message = $this->hasMany('myocuhub\Models\MessageTemplate')
-					->where('type' , config('constants.message_type.'.$type))
-					->where('stage' , config('constants.message_stage.'.$stage))
-		            ->first(['message']);
-		            
-		if($message == null){
-			return MessageTemplate::defaultTemplate($type, $stage);
-		} else {
-			return $message;
-		}         
-	}
+	
 	public static function practicesByName($search) {
 		return self::where('networks.id', session('network-id'))
 			->leftJoin('practice_network', 'networks.id', '=', 'practice_network.network_id')

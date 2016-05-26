@@ -45,6 +45,18 @@ class ActionService
         $contact->contact_activity_date = $contactDate->format('Y-m-d H:i:s');
         $contact->save();
         switch ($actionName) {
+            case 'request-patient-email':
+                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['email']);
+                event($requestPatientAppointment);
+                break;
+            case 'request-patient-phone':
+                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['phone']);
+                event($requestPatientAppointment);
+                break;
+            case 'request-patient-sms':
+                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['sms']);
+                event($requestPatientAppointment);
+                break;
             case 'contact-attempted-by-phone':
             case 'contact-attempted-by-email':
             case 'contact-attempted-by-mail':

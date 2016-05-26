@@ -3,21 +3,22 @@
 namespace myocuhub\Http\Controllers\CareConsole;
 
 use Auth;
+use Event;
 use Illuminate\Http\Request;
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Action;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
+use myocuhub\Models\MessageTemplate;
+use myocuhub\Models\Practice;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
 use myocuhub\Services\CareConsoleService;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
-use myocuhub\Models\Practice;
-use Event;
-use myocuhub\Events\MakeAuditEntry;
 
 class CareConsoleController extends Controller {
 	/**
@@ -85,9 +86,9 @@ class CareConsoleController extends Controller {
 		$overview['network_practices'] = Network::find(session('network-id'))->practices;
 		$overview['appointment_types'] = $this->getAppointmentTypes();
 		
-		$overview['request_for_appointment']['email'] = Network::find($networkID)->messageTemplate('email', 'request_for_appointment')->message;
-		$overview['request_for_appointment']['phone'] = Network::find($networkID)->messageTemplate('phone', 'request_for_appointment')->message;
-		$overview['request_for_appointment']['sms'] = Network::find($networkID)->messageTemplate('sms', 'request_for_appointment')->message;
+		$overview['request_for_appointment']['email'] = MessageTemplate::getTemplate('email', 'request_for_appointment', $networkID)->message;
+		$overview['request_for_appointment']['phone'] = MessageTemplate::getTemplate('phone', 'request_for_appointment', $networkID)->message;
+		$overview['request_for_appointment']['sms'] = MessageTemplate::getTemplate('sms', 'request_for_appointment', $networkID)->message;
 
 		return $overview;
 	}

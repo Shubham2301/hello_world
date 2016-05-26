@@ -14,4 +14,17 @@ class MessageTemplate extends Model
 			->where('stage' , config('constants.message_stage.'.$stage))
             ->first(['message']);
     }
+
+    public static function getTemplate($type, $stage, $networkID){
+    	$message = self::where('network_id', $networkID)
+    		->where('type' , config('constants.message_type.'.$type))
+			->where('stage' , config('constants.message_stage.'.$stage))
+            ->first(['message']);
+        
+        if ($message){
+        	return $message;
+        } 
+
+        return defaultTemplate($type, $stage);
+    }
 }

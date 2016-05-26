@@ -1,6 +1,6 @@
 <?php 
 
-	return [
+return [
 
 	'support' => [
 		'email_id' => 'support@ocuhub.com',
@@ -32,5 +32,4 @@
 		'ABIorVTeval',
 		'UnknownEncounterReschedule',
 	],
-
-	];
+];
