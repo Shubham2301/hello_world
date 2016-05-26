@@ -1,0 +1,50 @@
+<?php
+
+namespace myocuhub\Services\PatientCare;
+
+use Event;
+use Exception;
+use Log;
+use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Services\Twilio\Twilio;
+
+/**
+* Messaging Service Class for Twilio
+*/
+class TwilioMessaging extends Twilio
+{
+	function __construct(argument)
+	{
+		
+	}
+
+	public static function send($to, $message){
+
+		$accountSID = parent::getAccountSID();
+		$authToken = parent::getAuthToken();
+		$from = parent::getFrom();
+
+		try {
+
+			$client = new Services_Twilio($accountSID, $authToken);
+			$message = $client->account->messages->sendMessage($from, $to, $message);
+
+			return $message->sid;
+
+		} catch (Exception $e) {
+
+			Log::error(e);
+            $action = "Attempt to send SMS to $to failed";
+            $description = $e->faultstring;
+            $filename = basename(__FILE__);
+            $ip = '';
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+            return false;
+
+		}
+
+		return false;
+		
+	}
+}
