@@ -50,66 +50,6 @@ class CareConsoleController extends Controller {
 	}
 
 	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function create() {
-
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function store(Request $request) {
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show($id) {
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit($id) {
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function update(Request $request, $id) {
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function destroy($id) {
-		//
-	}
-
-	/**
 	 * @return mixed
 	 */
 	public function getOverviewData() {
@@ -340,13 +280,6 @@ class CareConsoleController extends Controller {
 	}
 
 	public function getAppointmentTypes(){
-		$types = [];
-		$types['Annual Eye Exam'] 			= 'Annual Eye Exam';
-		$types['Comprehensive Eye Exam'] 	= 'Comprehensive Eye Exam';
-		$types['Diabetic Eye Exam'] 		= 'Diabetic Eye Exam';
-		$types['General Eye Exam'] 			= 'General Eye Exam';
-		$types['ABIorVTeval'] 				= 'ABIorVTeval';
-		$types['UnknownEncounterReschedule']= 'UnknownEncounterReschedule';
-		return $types;
+		return config('constants.appointment_types');
 	}
 }

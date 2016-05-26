@@ -23,6 +23,14 @@
 	'language' => [
 		'english' => 1,
 		'spanish' => 2,
-	]
+	],
+	'appointment_types' => [
+		'Annual Eye Exam',
+		'Comprehensive Eye Exam',
+		'Diabetic Eye Exam',
+		'General Eye Exam',
+		'ABIorVTeval',
+		'UnknownEncounterReschedule',
+	],
 
 	];
