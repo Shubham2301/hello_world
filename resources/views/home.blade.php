@@ -8,7 +8,7 @@
 @section('content')
 <div class="content-section active" id="referral_types">
 	@if (Session::has('failure'))
-    <div class="alert alert-danger">
+    <div class="alert alert-danger" id="flash-message">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>
             <i class="fa fa-check-circle fa-lg fa-fw"></i> Failure. &nbsp;

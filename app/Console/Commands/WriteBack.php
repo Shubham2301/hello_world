@@ -57,7 +57,7 @@ class WriteBack extends Command {
 
 			$schedule = WriteBack4PC::ProviderApptSchedule($input);
 
-			if (sizeof($schedule->OcuHub_ApptScheduleResult) != 0) {
+			if (isset($schedule->OcuHub_ApptScheduleResult->ApptDetail) && sizeof($schedule->OcuHub_ApptScheduleResult) != 0) {
 				$schedules[] = [
 					'npi' => $provider->npi,
 					'schedule' => $schedule->OcuHub_ApptScheduleResult->ApptDetail,

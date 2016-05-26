@@ -42,6 +42,7 @@ class WebScheduling4PC extends PatientCare
         try {
             $response = $client->__soapCall("GetApptTypes", array($input), array('soapaction' => self::$getApptTypesAction, 'uri' => self::$host));
         } catch (SoapFault $e) {
+            Log::error($e);
             $result = $e->faultstring;
             $action = 'Attempt to getApptTypes with 4PC failed : SoapFault ';
             $description = '';
@@ -71,6 +72,7 @@ class WebScheduling4PC extends PatientCare
         try {
             $response = $client->__soapCall("GetInsList", array($input), array('soapaction' => self::$getInsListAction, 'uri' => self::$host));
         } catch (SoapFault $e) {
+            Log::error($e);
             $result = $e->faultstring;
             $action = 'Attempt to getInsList with 4PC failed : SoapFault ';
             $description = '';
@@ -100,6 +102,7 @@ class WebScheduling4PC extends PatientCare
         try {
             $response = $client->__soapCall("GetOpenApptSlots", array($input), array('soapaction' => self::$getOpenApptSlotsAction, 'uri' => self::$host));
         } catch (SoapFault $e) {
+            Log::error($e);
             $result = $e->faultstring;
             $action = 'Attempt to getOpenApptSlots with 4PC failed : SoapFault ';
             $description = '';
@@ -131,8 +134,8 @@ class WebScheduling4PC extends PatientCare
         try {
             $response = $client->__soapCall("RequestApptInsert", array($input), array('soapaction' => self::$requestApptInsertAction, 'uri' => self::$host));
         } catch (SoapFault $e) {
+            
             $result = $e->faultstring;
-
             Log::error("WebScheduling4PC->requestApptInsert() method generated error: " . $result);
             
             $action = 'Attempt to requestApptInsert with 4PC failed : SoapFault ';

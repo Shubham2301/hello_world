@@ -76,10 +76,10 @@
                 <p id="the_practice_name" class="the_practice_name">Wichita Optometry</p>
             </div>
             <div class="col-md-4 top_assign">
-                <p>Assign roles</p>
+                <!-- <p>Assign roles</p>
                 &nbsp;&nbsp;&nbsp;
                 <p>Assign User</p>
-                &nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp; -->
                 <p id="edit_practice" class="btn" data-toggle="modal" data-target="#create_practice" data-id="">Edit</p>
                 &nbsp;
                 <div class="dropdown pracice_remove_dropdown">
