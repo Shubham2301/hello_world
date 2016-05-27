@@ -14,11 +14,11 @@
                 <p id="loadingText">Loading</p> --}}
             </div>
             <span class="mobile_icons">
-            <img src="{{URL::asset('images/logo_main_mobile.png')}}" class="img-responsive" style="height:2em;">
             @if( Auth::check())
             <img src="{{URL::asset('images/sidebar/sidebar_collapse_button.png')}}" class="img-responsive open_main_sidebar_mobile" style="height:2em;">
             <img src="{{URL::asset('images/sidebar/sidebar_collapse_button_active.png')}}" class="img-responsive close_main_sidebar_mobile hide" style="height:2em;">
             @endif
+            <img src="{{URL::asset('images/logo_main_mobile.png')}}" class="img-responsive" style="height:2em;">
             </span>
         </div>
         <div class="col-xs-9 header-menu">
