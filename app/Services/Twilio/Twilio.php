@@ -33,8 +33,6 @@ class Twilio
     /**
      * Sets the value of accountSID.
      *
-     * @param mixed $accountSID the account
-     *
      * @return self
      */
     private function _setAccountSID()
@@ -56,8 +54,6 @@ class Twilio
 
     /**
      * Sets the value of authToken.
-     *
-     * @param mixed $authToken the auth token
      *
      * @return self
      */
@@ -82,8 +78,6 @@ class Twilio
     /**
      * Sets the value of from.
      *
-     * @param mixed $from the from
-     *
      * @return self
      */
     private function _setFrom()
@@ -92,4 +86,27 @@ class Twilio
 
         return $this;
     }
+
+    /**
+     * 
+     * @return Services_Twilio object
+     */
+    public static function getServiceClient(){
+
+		return new Services_Twilio(parent::getAccountSID(), parent::getAuthToken());
+
+	}
+
+	/**
+     * 
+     * @return Services_Twilio object
+     */
+	public static function generateTwiML($message = ''){
+
+		$response = new Services_Twilio_Twiml();
+
+		$response->say($message);
+
+		return $response;
+	}
 }

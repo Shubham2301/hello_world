@@ -20,13 +20,10 @@ class TwilioMessaging extends Twilio
 
 	public static function send($to, $message){
 
-		$accountSID = parent::getAccountSID();
-		$authToken = parent::getAuthToken();
-		$from = parent::getFrom();
-
 		try {
-
-			$client = new Services_Twilio($accountSID, $authToken);
+			
+			$from = parent::getFrom();
+			$client = parent::getServiceClient();
 			$message = $client->account->messages->sendMessage($from, $to, $message);
 
 			return $message->sid;

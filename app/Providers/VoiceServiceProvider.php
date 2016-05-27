@@ -2,6 +2,7 @@
 
 namespace myocuhub\Providers;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
 class VoiceServiceProvider extends ServiceProvider
