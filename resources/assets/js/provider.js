@@ -1,7 +1,9 @@
 $(document).ready(function() {
 
     var insurancePrompt = 0;
-
+    var old_ins_type = '';
+    var new_ins_type = '';
+	var ins_value = '';
     $('.dropdown-menu li').click(function() {
         $('#search_practice_input_type').text($(this).text());
         $('#search_practice_input_type').attr('value', $(this).attr('value'));
@@ -15,8 +17,9 @@ $(document).ready(function() {
         format: 'MM/DD/YYYY',
     });
     $(document).on('click', '.dropdown_ins_list>li', function() {
-        //console.log($(this).attr('data-name'));
-        $('#ins_selected').html($(this).attr('data-name'));
+        old_ins_type = $('#ins_selected').html();
+        new_ins_type = $(this).attr('data-name');
+        $('#ins_selected').html(old_ins_type);
     });
     $('#select_date').datetimepicker().on('dp.hide', function(ev) {
         var selected_date = $('#select_date').val();
@@ -226,9 +229,14 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.dropdown_ins_list>li', function() {
-        $('#insurance_carrier_key').val($(this).val());
-        $('#insurance_carrier').val($(this).html());
-        $('#insuranceModal').modal('show');
+		$('#insurance_carrier_key').val($(this).val());
+		$('#insurance_carrier').val($(this).html());
+		if ($(this).val() == '1') {
+			new_ins_type = $(this).attr('data-name');
+			$('#ins_selected').html(new_ins_type);
+        } else {
+            $('#insuranceModal').modal('show');
+        }
     });
 
     $('.previous_provider_patient_list').on('click', '.previous_provider_item', function() {
@@ -243,26 +251,29 @@ $(document).ready(function() {
 
     });
 
-	$('.provider_near_patient_list').on('click', '.nearby_provider_item', function() {
-		var provider_id = $(this).attr('data-id');
-		var practice_id = $(this).attr('data-practiceid');
-		var formData = {
-			'provider_id': provider_id,
-			'practice_id': practice_id
-		};
-		getProviderInfo(formData);
-	});
+    $('.provider_near_patient_list').on('click', '.nearby_provider_item', function() {
+        var provider_id = $(this).attr('data-id');
+        var practice_id = $(this).attr('data-practiceid');
+        var formData = {
+            'provider_id': provider_id,
+            'practice_id': practice_id
+        };
+        getProviderInfo(formData);
+    });
 
     $(document).keypress(function(e) {
         if (e.which == 13) {
             $("#search_practice_button").trigger("click");
         }
     });
-
+	$('.confirm_ins_btn').on('click', function(){
+		$('#ins_selected').html(new_ins_type);
+	});
 
 });
 
 var nearByProviders = [];
+
 function clearHTML() {
     $('#provider_name').html('');
     $('#speciality').html('');
@@ -321,7 +332,7 @@ function getPatientInfo(formData) {
         async: false,
         success: function(e) {
             var info = $.parseJSON(e);
-            if(info.result === true){
+            if (info.result === true) {
                 fillPatientInfo(info.patient_data);
             }
         },
@@ -337,9 +348,9 @@ function getPatientInfo(formData) {
 
 //function that is used to fill the information about the patient
 function fillPatientInfo(data) {
-	$('.selected_patient_name').text(data.lastname + ', ' + data.firstname);
-	$('.provider_section').show();
-	fillPatientData(data);
+    $('.selected_patient_name').text(data.lastname + ', ' + data.firstname);
+    $('.provider_section').show();
+    fillPatientData(data);
 }
 
 
@@ -366,11 +377,11 @@ function showProviderNear(providers) {
     var content = '';
     if (providers.length > 0) {
         providers.forEach(function(provider) {
-			content += '<div class="col-xs-12 list_seperator nearby_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '"><div class="row"><div class="col-xs-5 "><span class="arial_bold">' + provider.name + '</span><br><span class="arial">'+ provider.practice_name+ '<br>' + provider.speciality + '</span></div><div class="col-xs-4 arial">' + provider.location_address + '</div><div class="col-xs-3 arial"><span style ="color:black;">Distance - '+provider.distance+'</span></div></div></div>';
+            content += '<div class="col-xs-12 list_seperator nearby_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '"><div class="row"><div class="col-xs-5 "><span class="arial_bold">' + provider.name + '</span><br><span class="arial">' + provider.practice_name + '<br>' + provider.speciality + '</span></div><div class="col-xs-4 arial">' + provider.location_address + '</div><div class="col-xs-3 arial"><span style ="color:black;">Distance - ' + provider.distance + '</span></div></div></div>';
         });
         $('.provider_near_patient_list').html(content);
     } else {
-		$('.provider_near_patient_list').html('No provider found within 50 Miles');
+        $('.provider_near_patient_list').html('No provider found within 50 Miles');
     }
     $('.provider_near').removeClass('glyphicon-chevron-right');
     $('.provider_near').addClass('glyphicon-chevron-down');
@@ -670,10 +681,10 @@ function getPreviousProviders(formData) {
 }
 
 function getNearByProviders(formData) {
-	if(nearByProviders.length > 0){
-		showProviderNear(nearByProviders);
-		return;
-	}
+    if (nearByProviders.length > 0) {
+        showProviderNear(nearByProviders);
+        return;
+    }
     $.ajax({
         url: '/providers/nearby',
         type: 'GET',
@@ -682,7 +693,7 @@ function getNearByProviders(formData) {
         async: false,
         success: function(e) {
             var info = $.parseJSON(e);
-			nearByProviders = info;
+            nearByProviders = info;
             showProviderNear(info)
         },
         error: function() {

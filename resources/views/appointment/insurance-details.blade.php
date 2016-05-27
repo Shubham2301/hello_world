@@ -69,8 +69,8 @@
             </div>
             <div class="modal-footer">
                 <div style="margin-right:40%">
-                    <button type="button" onclick="$('#add_insurance').prop('checked', true);" class="btn btn-primary confirm_action active" data-dismiss="modal">Confirm</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" onclick="$('#add_insurance').prop('checked', true);" class="btn btn-primary confirm_action confirm_ins_btn active" data-dismiss="modal">Confirm</button>
+					<button type="button" class="btn btn-default cancel_ins_btn " data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
