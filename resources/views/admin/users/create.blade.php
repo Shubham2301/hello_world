@@ -111,7 +111,7 @@
                                         {!! Form::text('acc_key', $user['acc_key'], array('class' => ' add_user_input', 'placeholder' => '4PC Account Key', 'id' => 'acc_key', 'data-toggle' => 'tooltip', 'title' => '4PC Account Key', 'data-placement' => 'right')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::text('cellphone', $user['cellphone'], array('class' => ' add_user_input', 'placeholder' => 'Phone Number', 'id' => 'cell_phone', 'data-toggle' => 'tooltip', 'title' => 'Cellphone', 'data-placement' => 'right')) !!}
+										{!! Form::text('cellphone', $user['cellphone'], array('class' => ' add_user_input', 'placeholder' => 'Phone Number', 'id' => 'cell_phone', 'data-toggle' => 'tooltip', 'title' => 'Cellphone', 'data-placement' => 'right', 'pattern' => '[^A-Za-z]+')) !!}
                                         {!! Form::text('address1', $user['address1'], array('class' => ' add_user_input', 'placeholder' => 'Address 1', 'id' => 'address1', 'data-toggle' => 'tooltip', 'title' => 'Address Line 1', 'data-placement' => 'right')) !!}
                                         {!! Form::text('address2', $user['address2'], array('class' => ' add_user_input', 'placeholder' => 'Address 2', 'id' => 'address2', 'data-toggle' => 'tooltip', 'title' => 'Address Line 2', 'data-placement' => 'right')) !!}
                                         {!! Form::text('city', $user['city'], array('class' => ' add_user_input', 'placeholder' => 'City', 'id' => 'city', 'data-toggle' => 'tooltip', 'title' => 'City', 'data-placement' => 'right')) !!}
