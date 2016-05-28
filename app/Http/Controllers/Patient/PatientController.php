@@ -252,13 +252,12 @@ class PatientController extends Controller
         $patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
 
         $ccda = Ccda::where('patient_id', $id)->orderBy('created_at', 'desc')->first();
-
+		$patientData['ccda'] = true;
         if (!($ccda)) {
-            $patientData['ccda'] = false;
-            $patientData['ccda_date'] = '';
+
+			$patientData['ccda_date'] = (new DateTime())->format('F j Y');
         }
         else{
-           $patientData['ccda'] = true;
            $patientData['ccda_date'] = (new DateTime($ccda->created_at))->format('F j Y');
         }
 
