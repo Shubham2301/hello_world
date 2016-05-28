@@ -259,6 +259,21 @@ $(document).ready(function() {
         }
     });
 
+    $('.patient_table_header').on('click', function() {
+        if($(this).next('.patient_table_content').hasClass('active')) {
+            $(this).next('.patient_table_content').removeClass('active');
+            $(this).find('.glyphicon').removeClass('glyphicon-chevron-up');
+            $(this).find('.glyphicon').addClass('glyphicon-chevron-down');
+        }
+        else {
+            $('.patient_table_header>.glyphicon').removeClass('glyphicon-chevron-up');
+            $('.patient_table_header>.glyphicon').addClass('glyphicon-chevron-down');
+            $('.patient_table_content').removeClass('active');
+            $(this).next('.patient_table_content').addClass('active');
+            $(this).find('.glyphicon').removeClass('glyphicon-chevron-down');
+            $(this).find('.glyphicon').addClass('glyphicon-chevron-up');
+        }
+    });
 
 });
 
@@ -295,6 +310,7 @@ function showPatientInfo() {
         }
         $('.availability').addClass('hide');
         $('.patient_previous_information').addClass('hide');
+        $('.patient_table_content').removeClass('active');
     } else if ($('.view_selected_patient').hasClass('remove')) {
         $('.patient_info').removeClass('active')
         $('.view_selected_patient').text("View");

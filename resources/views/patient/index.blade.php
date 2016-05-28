@@ -38,7 +38,7 @@
             <div class="row content-row-margin">
                 <div class="col-xs-12 section-header">
                     <span class="arial_bold">Schedule an appointment</span>
-                    <p class="button_type_3 select_provider_button" id="select_provider_button" data-id="0" align="right">Select Provider<span class="glyphicon glyphicon-chevron-right"></span></p>
+                    <p class="button_type_3 select_provider_button" id="select_provider_button" data-id="0" align="right"><span class="hide_mobile">Select Provider</span><span class="glyphicon glyphicon-chevron-right"></span></p>
                 </div>
             </div>
             <div class="row content-row-margin-scheduling">
