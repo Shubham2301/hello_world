@@ -360,7 +360,7 @@ $(document).ready(function() {
     });
 
 
-    $('.content-right').on('scroll', function() {
+	$('#listing_content').on('scroll', function() {
         if ($(this).scrollTop() + $(this).innerHeight() + 10 >= $(this)[0].scrollHeight) {
             currentPage++;
 
