@@ -61,7 +61,6 @@
         </div>
         @include('patient.import_ccda')
         @include('patient.compare_ccda')
-        @include('patient.referredby_details')
     </div>
 
 

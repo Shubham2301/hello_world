@@ -118,6 +118,7 @@ class PatientController extends Controller
             $patient = new Patient;
             $patient->firstname = $request->input('firstname');
             $patient->lastname = $request->input('lastname');
+            $patient->middlename = $request->input('middlename');
             $patient->email = $request->input('email');
             $patient->gender = $request->input('gender');
             $patient->lastfourssn = $request->input('lastfourssn');
@@ -322,6 +323,7 @@ class PatientController extends Controller
         if ($patient) {
             $patient->firstname = $request->firstname;
             $patient->lastname = $request->lastname;
+            $patient->middlename = $request->middlename;
             $patient->cellphone = $request->cellphone;
             $patient->homephone = $request->homephone;
             $patient->workphone = $request->workphone;

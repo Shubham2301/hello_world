@@ -25,7 +25,14 @@
             <div class="panel-body">
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
-                        {!! Form::text('FirstName', $data['firstname'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'firstname', 'placeholder' => 'First Name*', 'id' => 'first_name', 'data-toggle' => 'tooltip', 'title' => 'First Name', 'data-placement' => 'right')) !!} {!! Form::text('LastName', $data['lastname'], array('class' => 'add_patient_input', 'name' => 'lastname', 'placeholder' => 'Last Name*', 'id' => 'last_name','required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Last Name', 'data-placement' => 'right')) !!} {!! Form::email('email', $data['email'], array('class' => 'add_patient_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
+                        {!! Form::text('FirstName', $data['firstname'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'firstname', 'placeholder' => 'First Name*', 'id' => 'first_name', 'data-toggle' => 'tooltip', 'title' => 'First Name', 'data-placement' => 'right')) !!}
+
+                        {!! Form::text('middlename', $data['middlename'], array('class' => 'add_patient_input', 'name' => 'middlename', 'placeholder' => 'Middle Name', 'id' => 'middlename', 'data-toggle' => 'tooltip', 'title' => 'Middle Name', 'data-placement' => 'right')) !!}
+
+                        {!! Form::text('LastName', $data['lastname'], array('class' => 'add_patient_input', 'name' => 'lastname', 'placeholder' => 'Last Name*', 'id' => 'last_name','required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Last Name', 'data-placement' => 'right')) !!}
+
+                        {!! Form::email('email', $data['email'], array('class' => 'add_patient_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
+
                         <span class="patient_phone_input">
 							{!! Form::text('cellphone', $data['cellphone'], array('class' => 'add_patient_input phone_visible', 'name' => 'cellphone', 'placeholder' => 'Cellphone', 'id' => 'phone', 'data-toggle' => 'tooltip', 'title' => 'Cellphone', 'data-placement' => 'right', 'pattern' => '[^A-Za-z]+')) !!}
             @if($data['workphone'] == '' || $data['homephone'] == '')<span class="add_another_phone" data-toggle="tooltip" title="Add another phone number" data-placement="right"><img src="{{URL::asset('images/plus_icon.png')}}"></span> @endif
