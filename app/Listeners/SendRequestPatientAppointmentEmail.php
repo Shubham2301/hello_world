@@ -36,7 +36,7 @@ class SendRequestPatientAppointmentEmail
         /**
          * Email action missing. 
          */
-        if(!in_array("email", $action)){
+        if(!in_array("email", $actions)){
             return;
         }
 
