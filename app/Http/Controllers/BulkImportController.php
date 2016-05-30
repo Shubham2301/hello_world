@@ -90,6 +90,7 @@ class BulkImportController extends Controller
             'disease_type',
             'severity',
             'insurance_type',
+            'language',
         ];
 
         if ($request->hasFile('patient_xlsx')) {
@@ -117,7 +118,7 @@ class BulkImportController extends Controller
                         $patients['lastname'] = isset($name[1]) ? $name[1] : '';
                         $patients['lastfourssn'] = isset($data['ssn_last_digits']) ? $data['ssn_last_digits'] : null ;
                         $patients['birthdate'] = isset($data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : '0000-00-00 00:00:00';
-
+                        $patients['language'] = isset($data['language']) ? $data['language'] : '';
                         $patient = Patient::where($patients)->first();
 
                         if ($patient) {
