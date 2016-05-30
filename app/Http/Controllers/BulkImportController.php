@@ -75,7 +75,9 @@ class BulkImportController extends Controller
         $import_result['exception'] = '';
 
         $format = [
-            'patient_name',
+            'first_name',
+			'middle_name',
+			'last_name',
             'birthdate',
             'ssn_last_digits',
             'phone_number',
@@ -90,6 +92,7 @@ class BulkImportController extends Controller
             'disease_type',
             'severity',
             'insurance_type',
+            'language',
         ];
 
         if ($request->hasFile('patient_xlsx')) {
@@ -102,28 +105,25 @@ class BulkImportController extends Controller
             $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'))->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request) {
                 foreach ($results as $data) {
                     $patients = [];
-
                     if (array_filter($data->toArray())) {
-
                         if($i == 0){
                             if(!(count(array_intersect_key(array_flip($format), $data->toArray())) === count($format))){
                                 $import_result['exception'] = 'Incorrect .xlsx format';
                                 return json_encode($import_result);
                             }
                         }
-
-                        $name = explode(' ', $data['patient_name']);
-                        $patients['firstname'] = isset($name[0]) ? $name[0] : '';
-                        $patients['lastname'] = isset($name[1]) ? $name[1] : '';
+						$patients['firstname'] = isset($data['first_name']) ? $data['first_name'] : '';
+						$patients['lastname'] = isset($data['last_name']) ? $data['last_name'] : '';
                         $patients['lastfourssn'] = isset($data['ssn_last_digits']) ? $data['ssn_last_digits'] : null ;
                         $patients['birthdate'] = isset($data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : '0000-00-00 00:00:00';
-
+                        $patients['language'] = isset($data['language']) ? $data['language'] : '';
                         $patient = Patient::where($patients)->first();
 
                         if ($patient) {
                             $old_patients = $old_patients + 1;
                             continue;
                         }
+						$patients['middlename'] = isset($data['middle_name']) ? $data['middle_name'] : '';
 
                         $patients['cellphone'] = isset($data['phone_number']) ? $data['phone_number'] : '';
                         $patients['email'] = isset($data['email']) ? $data['email'] : '';

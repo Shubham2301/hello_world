@@ -3,10 +3,10 @@
 @import 'media.less';
 @import 'helper.less';
 .appointment_info {
-    display: flex;
-    margin: 4em 10em 2em 10em;
     font-size: 1.2em;
-    &>.col-xs-4 {
+    margin: 4em auto 2em;
+    width: 75%;
+    &>.appointment_info_div {
         padding: 0px;
         order: 1;
         display: flex;
@@ -30,7 +30,8 @@
 }
 .appointment_message {
     border-bottom: solid 2px #fff;
-    margin: 3em 10em 1em 10em;
+    margin: 3em auto 1em;
+    width: 75%;
     &>p {
         text-align: left;
         font-size: 1.1em;
@@ -107,4 +108,21 @@ h4.schedule_place {
 }
 .content-right {
     padding: 15px;
+}
+
+/*
+----------------------
+Mobile Styling
+----------------------
+*/
+
+@media only screen and (max-width: 767px) {
+    .appointment_info {
+        display: block;
+    }
+}
+@media only screen and (min-width: 767px) {
+    .appointment_info {
+        display: flex;
+    }
 }

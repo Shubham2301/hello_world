@@ -40,7 +40,7 @@
         <div class="row content-row-margin">
             <div class="col-xs-12 section-header">
                 <span class="arial_bold">Schedule an appointment</span>
-                <p class="button_type_3 schedule_button" data-id="" data-practice-id="" align="right">Schedule<span class="glyphicon glyphicon-chevron-right"></span></p>
+                <p class="button_type_3 schedule_button" data-id="" data-practice-id="" align="right"><span class="hide_mobile">Schedule</span><span class="glyphicon glyphicon-chevron-right"></span></p>
             </div>
         </div>
     </div>
@@ -64,7 +64,7 @@
 <div class="practice_section active" id="practice_listing">
 @include('provider.listing')
 </div>
-<div class="row">
+<div class="row" style="margin:0;">
 <div class="patient_previous_information active">
     <div class="provider_near_patient arial_bold">
         <p>Providers near the patient address&nbsp;<span class="glyphicon glyphicon-chevron-right provider_near"></span></p>

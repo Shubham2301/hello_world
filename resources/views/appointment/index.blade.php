@@ -35,21 +35,21 @@
     <div class="appointment_section active" id="confirm-appointment">
         <button type="button" class="btn back-btn" id="back">Back</button><h3 class="center-align arial_bold">Schedule an appointment</h3>
         <div class="row appointment_info center-align">
-            <div class="col-xs-4">
+            <div class="col-sm-4 col-xs-12 appointment_info_div">
                 <div class="appointment_info_box patient">
                     <span class="arial_bold">Patient</span>
                     <div><img src="{{URL::asset('images/patient-img.png')}}" style="width:40%;"></div>
                     <h4><strong>{{ $data['patient_name'] }}</strong></h4>
                 </div>
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-4 col-xs-12 appointment_info_div">
                 <div class="appointment_info_box schedule">
                     <span class="arial_bold">Details</span>
                     <h4>{{ $data['appointment_time'] }}<br>{{ $data['appointment_date'] }}<br>{{ $data['appointment_type_name'] }}</h4><br>
                     <h4 class="schedule_place" style="padding-top:6px;"><strong>{{ $data['location'] }}</strong></h4>
                 </div>
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-4 col-xs-12 appointment_info_div">
                 <div class="appointment_info_box provider">
                     <span class="arial_bold">Provider</span>
                     <div><img src="{{URL::asset('images/provider-img.png')}}" style="width:40%;"></div>
