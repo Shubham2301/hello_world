@@ -5,7 +5,7 @@
 		<div class="col-xs-{{ $header['width'] }} center_dropdown_action" data-name="{{ $header['name'] }}">
 			<div class="dropdown">
 				<span class="glyphicon glyphicon glyphicon-triangle-bottom dropdown-toggle" id="dropdownMenu{{ $patient['patient_id'] }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" style="float: right;background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em; text-align:center"></span>
-				<ul class="dropdown-menu action_dropdownmenu" aria-labelledby="dropdownMenu{{ $patient['patient_id'] }}" data-patientid="{{ $patient['patient_id'] }}" data-consoleid="{{ $patient['console_id'] }}">
+				<ul class="dropdown-menu action_dropdownmenu"  data-patient-name="{{ $patient['patient_name'] }}" data-patient-email="{{ $patient['patient_email'] }}" data-patient-phone="{{ $patient['patient_phone'] }}" aria-labelledby="dropdownMenu{{ $patient['patient_id'] }}" data-patientid="{{ $patient['patient_id'] }}" data-consoleid="{{ $patient['console_id'] }}">
 					@foreach($actions as $action)
 					@if($patient['priority'] == 1 && $action['id'] == 30)
 

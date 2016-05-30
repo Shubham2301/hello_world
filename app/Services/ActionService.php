@@ -3,6 +3,7 @@
 namespace myocuhub\Services;
 
 use DateTime;
+use myocuhub\Events\RequestPatientAppointment;
 use myocuhub\Models\Action;
 use myocuhub\Models\ActionResult;
 use myocuhub\Models\Appointment;
@@ -45,6 +46,24 @@ class ActionService
         $contact->contact_activity_date = $contactDate->format('Y-m-d H:i:s');
         $contact->save();
         switch ($actionName) {
+            case 'request-patient-email':
+                $console = Careconsole::find($consoleID);
+                $patientID = $console->patient_id;
+                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['email']);
+                event($requestPatientAppointment);
+                break;
+            case 'request-patient-phone':
+                $console = Careconsole::find($consoleID);
+                $patientID = $console->patient_id;
+                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['phone']);
+                event($requestPatientAppointment);
+                break;
+            case 'request-patient-sms':
+                $console = Careconsole::find($consoleID);
+                $patientID = $console->patient_id;
+                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['sms']);
+                event($requestPatientAppointment);
+                break;
             case 'contact-attempted-by-phone':
             case 'contact-attempted-by-email':
             case 'contact-attempted-by-mail':

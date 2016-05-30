@@ -156,6 +156,12 @@ return [
         myocuhub\Providers\WebScheduling4PCServiceProvider::class,
         myocuhub\Providers\WriteBack4PCServiceProvider::class,
 
+        /*
+         * Twilio Service Providers...
+         */
+        myocuhub\Providers\SmsServiceProvider::class,
+        myocuhub\Providers\VoiceServiceProvider::class,
+
     ],
 
     /*
@@ -209,6 +215,8 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'WriteBack4PC' => myocuhub\Facades\Writeback4PC::class,
         'WebScheduling4PC' => myocuhub\Facades\WebScheduling4PC::class,
+        'Voice' => myocuhub\Facades\TwilioVoice::class,
+        'Sms' => myocuhub\Facades\TwilioSMS::class,
 
     ],
 
