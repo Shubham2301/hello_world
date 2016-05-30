@@ -25,6 +25,6 @@ class MessageTemplate extends Model
         	return $message;
         } 
 
-        return defaultTemplate($type, $stage);
+        return self::defaultTemplate($type, $stage);
     }
 }
