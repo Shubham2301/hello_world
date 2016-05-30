@@ -118,6 +118,7 @@ class PatientController extends Controller
             $patient = new Patient;
             $patient->firstname = $request->input('firstname');
             $patient->lastname = $request->input('lastname');
+            $patient->middlename = $request->input('middlename');
             $patient->email = $request->input('email');
             $patient->gender = $request->input('gender');
             $patient->lastfourssn = $request->input('lastfourssn');
@@ -252,13 +253,12 @@ class PatientController extends Controller
         $patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
 
         $ccda = Ccda::where('patient_id', $id)->orderBy('created_at', 'desc')->first();
-
+		$patientData['ccda'] = true;
         if (!($ccda)) {
-            $patientData['ccda'] = false;
-            $patientData['ccda_date'] = '';
+
+			$patientData['ccda_date'] = (new DateTime())->format('F j Y');
         }
         else{
-           $patientData['ccda'] = true;
            $patientData['ccda_date'] = (new DateTime($ccda->created_at))->format('F j Y');
         }
 
@@ -323,6 +323,7 @@ class PatientController extends Controller
         if ($patient) {
             $patient->firstname = $request->firstname;
             $patient->lastname = $request->lastname;
+            $patient->middlename = $request->middlename;
             $patient->cellphone = $request->cellphone;
             $patient->homephone = $request->homephone;
             $patient->workphone = $request->workphone;

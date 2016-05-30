@@ -109,7 +109,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('ccdaform', 'CcdaController@index');
     Route::get('/addvital/{id}', 'CcdaController@addVital');
     Route::post('/savevitals', 'CcdaController@saveVitals');
-    Route::get('/download/ccda/{id}', 'CcdaController@getxml');
+	Route::get('/download/ccda/{id}', 'CcdaController@getCCDAXml');
     Route::get('/showvitals/{id}', array('uses' => 'CcdaController@showVitals', 'as' => 'showvitals'));
     Route::post('update/ccda', 'CcdaController@updatePatientDemographics');
     Route::get('show/ccda/{id}', 'CcdaController@showCCDA');

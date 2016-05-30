@@ -1,0 +1,129 @@
+{
+    "document": {
+        "date": "2005-03-29T12:15:04Z",
+        "title": "Patient Health Summary",
+        "author": {
+            "name": {
+                "prefix": "",
+                "given": [
+                    ""
+                ],
+                "family": "Ocuhub"
+            },
+            "address": {
+                "street": [
+                    ""
+                ],
+                "city": "",
+                "state": "",
+                "zip": "",
+                "country": ""
+            },
+            "phone": {
+                "work": ""
+            }
+        },
+        "documentation_of": [{
+            "name": {
+                "prefix": "",
+                "given": [
+                    "Ocuhub"
+                ],
+                "family": ""
+            },
+            "phone": {
+                "work": ""
+            },
+            "address": {
+                "street": [],
+                "city": null,
+                "state": null,
+                "zip": null,
+                "country": null
+            }
+        }],
+        "location": {
+            "name": null,
+            "address": {
+                "street": [],
+                "city": null,
+                "state": null,
+                "zip": null,
+                "country": null
+            },
+            "encounter_date": null
+        }
+    },
+    "demographics": {
+        "name": {
+            "prefix": "",
+            "given": [
+                "",
+                ""
+            ],
+            "family": ""
+        },
+        "dob": "",
+        "gender": "",
+        "marital_status": "",
+        "address": {
+            "street": [
+                ""
+            ],
+            "city": "",
+            "state": "",
+            "zip": "",
+            "country": ""
+        },
+        "phone": {
+            "home": "",
+            "work": "",
+            "mobile": ""
+        },
+        "email": "",
+        "language": "",
+        "race": "",
+        "ethnicity": "Not Hispanic or Latino",
+        "religion": "",
+        "birthplace": {
+            "state": "",
+            "zip": "",
+            "country": ""
+        },
+        "guardian": {
+            "name": {
+                "given": [
+                    ""
+                ],
+                "family": ""
+            },
+            "relationship": "",
+            "relationship_code": "",
+            "address": {
+                "street": [
+                    ""
+                ],
+                "city": "",
+                "state": "",
+                "zip": "",
+                "country": ""
+            },
+            "phone": {
+                "home": ""
+            }
+        },
+        "provider": {
+            "organization": "Ocuhub",
+            "phone": "",
+            "address": {
+                "street": [
+                    ""
+                ],
+                "city": "",
+                "state": "",
+                "zip": "",
+                "country": ""
+            }
+        }
+    }
+}

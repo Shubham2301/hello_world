@@ -6,18 +6,18 @@
 </div>
 <div class="row content-row-margin practice_info" data-id="">
     <div class="col-xs-12">
-        <div class="col-xs-4 center-align">
+        <div class="col-sm-4 col-xs-6 center-align">
             <img src="{{asset('images/patient.png')}}" alt="">
             <br>
             <p class="button_type_1" id="change_practice_button">Change Provider</p>
             <br>
             <p id="openModel" class="arial_bold preference" data-toggle="modal" data-target="#provider_preferences">Provider Preferences</p>
         </div>
-        <div class="col-xs-8">
+        <div class="col-sm-8 col-xs-6">
             <p class="bold arial_bold" id="practice_name">Opthalmic Consultants of Long Island</p>
             <hr class="practice_name_underline">
             <div class="row provider_info_row">
-                <div class="col-xs-6">
+                <div class="col-sm-6 col-xs-12">
                     <p><span class="bold arial_bold">Doctor Name</span>
                         <br><span class="provider_detail_text arial" id="provider_name"></span></p>
                     <p><span class="bold arial_bold">Speciality</span>
@@ -29,7 +29,7 @@
                     </p>
 
                 </div>
-                <div class="col-xs-6 ">
+                <div class="col-sm-6 col-xs-12">
                     <p>
                         <span id="location" class="locations"></span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax appointment_type">
                         <span class="provider_detail_text arial" id="location_address"></span>

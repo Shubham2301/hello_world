@@ -1,6 +1,6 @@
 $(document).ready(function() {
-	if ($('#current_view').val() != 'index'){
-		$('.file_exchange_navbar_content_left').hide();
+	if ($('#current_view').val() === 'index'){
+		$('.file_exchange_navbar_content_left').addClass('active');
 	}
 
     $('[data-toggle="tooltip"]').tooltip();
