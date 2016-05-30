@@ -137,6 +137,9 @@ class CareConsoleService
             $patientsData[$i]['console_id'] = $patient['id'];
             $patientsData[$i]['patient_id'] = $patient['patient_id'];
             $patientsData[$i]['priority'] = $patient['priority'];
+            $patientsData[$i]['patient_name'] =$this->getPatientFieldValue($patient, 'full-name');
+            $patientsData[$i]['patient_email'] =$this->getPatientFieldValue($patient, 'email');
+            $patientsData[$i]['patient_phone'] =$this->getPatientFieldValue($patient, 'phone');
             foreach ($fields as $field) {
                 $patientsData[$i][$field] = $this->getPatientFieldValue($patient, $field);
             }
@@ -236,7 +239,17 @@ class CareConsoleService
                 return $patient['lastname'] . ', ' . $patient['firstname'];
                 break;
             case 'phone':
-                return $patient['cellphone'];
+
+                $phone = '-';
+                if ($patient['cellphone'] != '' || $patient['cellphone'] != null) {
+                    $phone = $patient['cellphone'];
+                } elseif ($patient['homephone'] != '' || $patient['homephone'] != null) {
+                    $phone = $patient['homephone'];
+                } elseif ($patient['workphone'] != '' || $patient['workphone'] != null) {
+                    $phone = $patient['workphone'];
+                }
+
+                return $phone;
                 break;
             case 'request-received':
                 $date = new \DateTime($patient['created_at']);
@@ -279,6 +292,9 @@ class CareConsoleService
                 $lastScheduledTo .= $previousProvider['title'] . ' ' . $previousProvider['firstname'] . ' ' . $previousProvider['lastname'] . ' from ';
                 $lastScheduledTo .= $previousProvider['name'];
                 return $lastScheduledTo;
+                break;
+            case 'email':
+                return $patient['email'];    
                 break;
             default:
                 return '-';
