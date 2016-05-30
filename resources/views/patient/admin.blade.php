@@ -29,7 +29,6 @@
 @else
 @include('patient.search')
 @include('patient.listing')
-@include('patient.referredby_details')
 @endif
 @endsection
 @section('mobile_sidebar_content')

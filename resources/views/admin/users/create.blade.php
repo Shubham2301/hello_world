@@ -62,25 +62,25 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
-                                        
-                                        {!! Form::select('usertype', $userTypes, $user['usertype_id'], array('class' => ' add_user_input', 'placeholder' => 'Select User Types*', 'id' => 'user_type', 'required' => 'required')) !!}
-                                        {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => ' add_user_input', 'placeholder' => 'Select User Levels*', 'id' => 'user_level', 'required' => 'required')) !!}
+                                        {!! Form::select('usertype', $userTypes, $user['usertype_id'], array('class' => ' add_user_input', 'placeholder' => 'Select User Types*', 'id' => 'user_type', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'User Type', 'data-placement' => 'right')) !!}
+                                        {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => ' add_user_input', 'placeholder' => 'Select User Levels*', 'id' => 'user_level', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'User Level', 'data-placement' => 'right')) !!}
 
                                         @if(session('user-level') == 1)
-                                            {!! Form::select('user_network', $networks, $user['network_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Network*', 'id' => 'user_network', 'style' => ($user['network_id'] == '') ? 'display:none' : "display:inline-block")) !!}
-                                            {!! Form::select('user_practice', [], $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
+                                            {!! Form::select('user_network', $networks, $user['network_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Network*', 'id' => 'user_network', 'data-toggle' => 'tooltip', 'title' => 'User Network', 'data-placement' => 'right', 'style' => ($user['network_id'] == '') ? 'display:none' : "display:inline-block")) !!}
+                                            {!! Form::select('user_practice', [], $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'data-toggle' => 'tooltip', 'title' => 'User Practice', 'data-placement' => 'right', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
                                         @elseif(session('user-level') == 2)
-                                            {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
+                                            {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'data-toggle' => 'tooltip', 'title' => 'User Practice', 'data-placement' => 'right', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
                                         @else
                                         {!! Form::hidden('user_practice', $user['practice_id'], array('id' => 'user_practice')) !!}
                                         @endif
 
-                                        {!! Form::select('landing_page', $menuoption, $user['menu_id'], array('class' => 'add_user_input', 'placeholder' => 'Select Landing Page', 'id' => 'landing_page')) !!}
+                                        {!! Form::select('landing_page', $menuoption, $user['menu_id'], array('class' => 'add_user_input', 'placeholder' => 'Select Landing Page', 'id' => 'landing_page' , 'data-toggle' => 'tooltip', 'title' => 'Landing Page', 'data-placement' => 'right')) !!}
 
                                     </div>
                                     <div class="col-xs-12 col-sm-6" style="color:#fff;">
                                        <h4>Roles*</h4>
-										@foreach($roles as $key => $role) @if(isset($user[$role])) {!! Form::checkbox('role[]', $role, true, array('id' => $key, 'class' => 'user_roles')); !!}
+										@foreach($roles as $key => $role)
+								        @if(isset($user[$role])) {!! Form::checkbox('role[]', $role, true, array('id' => $key, 'class' => 'user_roles')); !!}
 										@else {!! Form::checkbox('role[]', $role, null, array('id' => $key, 'class' => 'user_roles')); !!}
                                         @endif {!! Form::label($role, $role); !!}
                                         <br> @endforeach
@@ -103,19 +103,19 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::text('title', $user['title'], array('class' => ' add_user_input', 'placeholder' => 'Title', 'id' => 'title')) !!}
-                                        {!! Form::text('firstname', $user['firstname'], array('class' => ' add_user_input', 'placeholder' => 'First Name*', 'id' => 'first_name', 'required' => 'required')) !!}
-                                        {!! Form::text('middlename', $user['middlename'], array('class' => ' add_user_input', 'placeholder' => 'Middle Name', 'id' => 'middle_name')) !!}
-                                        {!! Form::text('lastname', $user['lastname'], array('class' => ' add_user_input', 'placeholder' => 'Last Name*', 'id' => 'last_name', 'required' => 'required')) !!}
-                                        {!! Form::text('npi', $user['npi'], array('class' => ' add_user_input', 'placeholder' => 'NPI', 'id' => 'npi')) !!}
-                                        {!! Form::text('acc_key', $user['acc_key'], array('class' => ' add_user_input', 'placeholder' => '4PC Account Key', 'id' => 'acc_key')) !!}
+                                        {!! Form::text('title', $user['title'], array('class' => ' add_user_input', 'placeholder' => 'Title', 'id' => 'title' , 'data-toggle' => 'tooltip', 'title' => 'Title', 'data-placement' => 'right')) !!}
+                                        {!! Form::text('firstname', $user['firstname'], array('class' => ' add_user_input', 'placeholder' => 'First Name*', 'id' => 'first_name', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'First Name', 'data-placement' => 'right')) !!}
+                                        {!! Form::text('middlename', $user['middlename'], array('class' => ' add_user_input', 'placeholder' => 'Middle Name', 'id' => 'middle_name', 'data-toggle' => 'tooltip', 'title' => 'Middle Name', 'data-placement' => 'right')) !!}
+                                        {!! Form::text('lastname', $user['lastname'], array('class' => ' add_user_input', 'placeholder' => 'Last Name*', 'id' => 'last_name', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Last Name', 'data-placement' => 'right')) !!}
+                                        {!! Form::text('npi', $user['npi'], array('class' => ' add_user_input', 'placeholder' => 'NPI', 'id' => 'npi', 'data-toggle' => 'tooltip', 'title' => 'NPI', 'data-placement' => 'right')) !!}
+                                        {!! Form::text('acc_key', $user['acc_key'], array('class' => ' add_user_input', 'placeholder' => '4PC Account Key', 'id' => 'acc_key', 'data-toggle' => 'tooltip', 'title' => '4PC Account Key', 'data-placement' => 'right')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::text('cellphone', $user['cellphone'], array('class' => ' add_user_input', 'placeholder' => 'Phone Number', 'id' => 'cell_phone')) !!}
-                                        {!! Form::text('address1', $user['address1'], array('class' => ' add_user_input', 'placeholder' => 'Address 1', 'id' => 'address1')) !!}
-                                        {!! Form::text('address2', $user['address2'], array('class' => ' add_user_input', 'placeholder' => 'Address 2', 'id' => 'address2')) !!}
-                                        {!! Form::text('city', $user['city'], array('class' => ' add_user_input', 'placeholder' => 'City', 'id' => 'city')) !!}
-                                        {!! Form::text('zip', $user['zip'], array('class' => ' add_user_input', 'placeholder' => 'Zip', 'id' => 'zip')) !!}
+										{!! Form::text('cellphone', $user['cellphone'], array('class' => ' add_user_input', 'placeholder' => 'Phone Number', 'id' => 'cell_phone', 'data-toggle' => 'tooltip', 'title' => 'Cellphone', 'data-placement' => 'right', 'pattern' => '[^A-Za-z]+')) !!}
+                                        {!! Form::text('address1', $user['address1'], array('class' => ' add_user_input', 'placeholder' => 'Address 1', 'id' => 'address1', 'data-toggle' => 'tooltip', 'title' => 'Address Line 1', 'data-placement' => 'right')) !!}
+                                        {!! Form::text('address2', $user['address2'], array('class' => ' add_user_input', 'placeholder' => 'Address 2', 'id' => 'address2', 'data-toggle' => 'tooltip', 'title' => 'Address Line 2', 'data-placement' => 'right')) !!}
+                                        {!! Form::text('city', $user['city'], array('class' => ' add_user_input', 'placeholder' => 'City', 'id' => 'city', 'data-toggle' => 'tooltip', 'title' => 'City', 'data-placement' => 'right')) !!}
+                                        {!! Form::text('zip', $user['zip'], array('class' => ' add_user_input', 'placeholder' => 'Zip', 'id' => 'zip', 'data-toggle' => 'tooltip', 'title' => 'Zip', 'data-placement' => 'right')) !!}
                                     </div>
                                 </div>
                             </div>
@@ -134,12 +134,12 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::email('email', $user['email'], array('class' => ' add_user_input','required' => 'required', 'placeholder' => 'Email*', 'id' => 'email')) !!}
-                                        {!! Form::email('sesemail', $user['sesemail'], array('class' => ' add_user_input', 'placeholder' => 'SES Email', 'id' => 'ses_email')) !!}
+                                        {!! Form::email('email', $user['email'], array('class' => ' add_user_input','required' => 'required', 'placeholder' => 'Email*', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
+                                        {!! Form::email('sesemail', $user['sesemail'], array('class' => ' add_user_input', 'placeholder' => 'SES Email', 'id' => 'ses_email', 'data-toggle' => 'tooltip', 'title' => 'SES Email', 'data-placement' => 'right')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::password('password', array('class' => ' add_user_input', 'placeholder' => 'Password', 'id' => 'password')) !!}
-                                        {!! Form::password('password_confirmation', array('class' => ' add_user_input', 'placeholder' => 'Password Confirmation', 'id' => 'confirm_password')) !!}
+                                        {!! Form::password('password', array('class' => ' add_user_input', 'placeholder' => 'Password', 'id' => 'password', 'data-toggle' => 'tooltip', 'title' => 'Password', 'data-placement' => 'right')) !!}
+                                        {!! Form::password('password_confirmation', array('class' => ' add_user_input', 'placeholder' => 'Password Confirmation', 'id' => 'confirm_password', 'data-toggle' => 'tooltip', 'title' => 'Confirm Password', 'data-placement' => 'right')) !!}
                                     </div>
                                 </div>
                             </div>
