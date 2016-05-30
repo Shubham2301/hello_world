@@ -101,6 +101,7 @@ class ActionService
                     $console->update();
                 }
                     $referralHistory = new ReferralHistory;
+                    $referralHistory->network_id  = session('network-id');
                     $referralHistory->referred_to_practice_id        = $appointment->practice_id;
                     $referralHistory->referred_to_practice_user_id  = $appointment->provider_id;
                     $referralHistory->referred_to_location_id        = $appointment->location_id;
@@ -162,6 +163,7 @@ class ActionService
                 }
 
                 $referralHistory = new ReferralHistory;
+                $referralHistory->network_id = session('network-id');
                 $referralHistory->referred_to_practice_id        = $appointment->practice_id;
                 $referralHistory->referred_to_practice_user_id  = $appointment->provider_id;
                 $referralHistory->referred_to_location_id        = $appointment->location_id;
