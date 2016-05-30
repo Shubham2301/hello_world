@@ -47,14 +47,20 @@ class ActionService
         $contact->save();
         switch ($actionName) {
             case 'request-patient-email':
+                $console = Careconsole::find($consoleID);
+                $patientID = $console->patient_id;
                 $requestPatientAppointment = new RequestPatientAppointment($patientID, ['email']);
                 event($requestPatientAppointment);
                 break;
             case 'request-patient-phone':
+                $console = Careconsole::find($consoleID);
+                $patientID = $console->patient_id;
                 $requestPatientAppointment = new RequestPatientAppointment($patientID, ['phone']);
                 event($requestPatientAppointment);
                 break;
             case 'request-patient-sms':
+                $console = Careconsole::find($consoleID);
+                $patientID = $console->patient_id;
                 $requestPatientAppointment = new RequestPatientAppointment($patientID, ['sms']);
                 event($requestPatientAppointment);
                 break;
