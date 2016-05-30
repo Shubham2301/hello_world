@@ -575,3 +575,37 @@ p.patient_dropdown_data {
 }
 
 
+/*
+----------------------
+Mobile Styling
+----------------------
+*/
+
+@media only screen and (max-width: 767px) {
+    .patient_table_mobile {
+        text-align: left;
+        margin-left: -1em;
+    }
+    .patient_table_mobile_section {
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid #f2f2f2;
+        color: #4d4d4d;
+        padding: .5em 0;
+        &>.patient_table_header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        &>.patient_table_content {
+            color: #f2f2f2;
+        }
+    }
+    .select_provider_button {
+        margin-right: .5em;
+    }
+}
+@media only screen and (min-width: 767px) {
+
+}
