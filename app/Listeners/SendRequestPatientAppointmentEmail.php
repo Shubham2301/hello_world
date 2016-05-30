@@ -3,14 +3,18 @@
 namespace myocuhub\Listeners;
 
 
+use Auth;
 use Event;
 use Exception;
-use Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Log;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Events\RequestPatientAppointment;
+use myocuhub\Models\MessageTemplate;
+use myocuhub\Patient;
 
 class SendRequestPatientAppointmentEmail
 {
@@ -48,6 +52,7 @@ class SendRequestPatientAppointmentEmail
         if($patient == null){
             return;
         }
+
         $data['email'] = $patient->email;
         $data['name'] = $patient->firstname.' '.$patient->lastname;
 
@@ -79,22 +84,21 @@ class SendRequestPatientAppointmentEmail
         }
 
         try {
-
             /**
              * Send Mail
              */
-            $mailToProvider = Mail::send('emails.appt-request-patient', ['appt' => $appt], function ($m) use ($patient) {
+            $mailToProvider = Mail::send('emails.appt-request-patient', ['data' => $data], function ($m) use ($data) {
                 $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to($patient->email, $patient->firstname.' '.$patient->lastname)->subject('Request for Appointment');
+                $m->to($data['email'], $data['name'])->subject('Request for Appointment');
             });
-
-        } catch (Exception $e) {
             
+            return true;
+        } catch (Exception $e) {
             /**
              * Audit, Exception Logging.
              */
             Log::error($e);
-            $action = 'Application Exception in sending Appointment Request email to patient '. $patient->email;
+            $action = 'Application Exception in sending Appointment Request email to patient '. $data['email'];
             $description = '';
             $filename = basename(__FILE__);
             $ip = '';
