@@ -7,10 +7,13 @@
 .file_exchange_navbar_content_left {
     flex-grow: 1;
     flex-basis: 0;
-    display: none;
+    display: flex;
     justify-content: flex-start;
-	&.active{
-		display: flex;
+	&>.buttons {
+        display: none;
+            &.active {
+		    display: flex;
+                }
 	}
 
 }
@@ -213,4 +216,13 @@ input[type=checkbox].file-exchange {
 
 .restore-button {
 	display: none;
+}
+textarea {
+    resize: none;
+}
+.page_title {
+    font-size: 1.3em;
+    padding-top: 2px;
+    color: #fff;
+    margin: 0 1em 0 15px;
 }

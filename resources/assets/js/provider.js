@@ -15,6 +15,7 @@ $(document).ready(function () {
     });
     $('#subscriber_dob').datetimepicker({
         format: 'MM/DD/YYYY',
+        maxDate: new Date(),
     });
     $(document).on('click', '.dropdown_ins_list>li', function () {
         old_ins_type = $('#ins_selected').html();

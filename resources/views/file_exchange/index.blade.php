@@ -12,12 +12,15 @@
 @endif
 <div class="content-section active" style="min-height: 40vh;">
     <div class="row no-margin">
-        <div class="col-xs-offset-1">
+        <div>
             <input type="hidden" value="{{$openView}}" id='current_view'>
             <div class="file_exchange_navbar">
                 <span class="file_exchange_navbar_content_left">
-                    <button id="" type="button" class="btn add-btn" data-toggle="modal" data-target="#newfolderModal">Add Folder</button>&nbsp;
-                    <button id="" type="button" class="btn add-doc-btn file_input" data-toggle="modal" data-target="#newfileModal">Add Document</button>
+                    <span class="arial_bold page_title">{{ $active_link['title'] }}</span>
+                    <span class="buttons">
+                        <button id="" type="button" class="btn add-btn" data-toggle="modal" data-target="#newfolderModal">Add Folder</button>&nbsp;
+                        <button id="" type="button" class="btn add-doc-btn file_input" data-toggle="modal" data-target="#newfileModal">Add Document</button>
+                    </span>
                 </span>
                 <span class="file_exchange_navbar_content_right">
                     <span class="file_exchange_button share-button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{URL::asset('images/sidebar/share-icon.png')}}" style="width:30px;"></span>
