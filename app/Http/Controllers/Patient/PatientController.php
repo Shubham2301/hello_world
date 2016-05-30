@@ -142,6 +142,7 @@ class PatientController extends Controller
             $referralHistory = new ReferralHistory;
             $referralHistory->referred_by_provider = $request->input('referred_by_provider');
             $referralHistory->referred_by_practice = $request->input('referred_by_practice');
+            $referralHistory->network_id = $networkID;
             $referralHistory->save();
 
             $careconsole = new Careconsole;
@@ -348,6 +349,7 @@ class PatientController extends Controller
                 if ($referralHistory) {
                     $referralHistory->referred_by_provider = $request->referred_by_provider;
                     $referralHistory->referred_by_practice = $request->referred_by_practice;
+                    $referralHistory->network_id = session('network-id');
                     $referralHistory->save();
                 }
             }
@@ -464,6 +466,7 @@ class PatientController extends Controller
         $referralHistory = new ReferralHistory;
         $referralHistory->referred_by_provider = $referredByProvider;
         $referralHistory->referred_by_practice = $referredByPractice;
+        $referralHistory->network_id = session('network-id');
         $referralHistory->save();
 
         $careconsole = Careconsole::where('patient_id', '=', $patientID)->first();
