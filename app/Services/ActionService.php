@@ -3,6 +3,7 @@
 namespace myocuhub\Services;
 
 use DateTime;
+use myocuhub\Events\RequestPatientAppointment;
 use myocuhub\Models\Action;
 use myocuhub\Models\ActionResult;
 use myocuhub\Models\Appointment;
