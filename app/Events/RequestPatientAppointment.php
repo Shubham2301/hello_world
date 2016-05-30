@@ -23,7 +23,7 @@ class RequestPatientAppointment extends Event
     public function __construct($patientID, $actions = [], $message = '')
     {
         $this->_setPatientID($patientID);
-        $this->_setAction($action);
+        $this->_setAction($actions);
         $this->_setMessage($message);
     }
 
