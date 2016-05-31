@@ -41,7 +41,7 @@
 <!--        </div>-->
     </div>
         <div class="row arial_bold col_title">
-            <div class="col-xs-1"></div>
+            <div class="col-xs-1 no-padding"></div>
             <div class="col-xs-7 no-padding">Name</div>
             <div class="col-xs-2 no-padding">Modified by</div>
             <div class="col-xs-2 no-padding">Date Modified</div>
@@ -51,7 +51,7 @@
     <div class="files">
  @foreach($folderlist as $folder)
         <div class="row arial col_content no-margin">
-            <div class="col-xs-1" style="text-align: center;">
+            <div class="col-xs-1 no-padding" style="text-align: center;">
                 <input type="checkbox" class="checkbox file-exchange folder-check" style="display: inline;" data-id="{{ $folder['id'] }}" data-name="folder">
             </div>
             <div class="col-xs-7 no-padding">
@@ -78,7 +78,7 @@
         </div>
         <hr> @endforeach @foreach($filelist as $file)
         <div class="row arial col_content no-margin">
-            <div class="col-xs-1" style="text-align: center;">
+            <div class="col-xs-1 no-padding" style="text-align: center;">
                 <input type="checkbox" class="checkbox file-exchange file-check" name="checkbox" style="display: inline;" data-id="{{ $file['id'] }}" data-name="file">
             </div>
 			<div class="col-xs-7 no-padding"><img src="{{URL::asset('images/files-white.png')}}" style="width: 2em;margin:0 0.5em 0.25em 0.25em"><span id="{{ $file['id'] }}_file_name">{{ $file['name'] }}</span></div>
