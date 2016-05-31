@@ -116,7 +116,7 @@ class CareConsoleService
 
         if ($kpiName !== '' && isset($stageID)) {
             $patients = $this->KPIService->getPatients($kpiName, $networkID, $stageID);
-        } else if (isset($stageID)) {
+        } elseif (isset($stageID)) {
             $patients = Careconsole::getStagePatients($networkID, $stageID);
         }
 
@@ -198,6 +198,9 @@ class CareConsoleService
             $patientsData[$i]['console_id'] = $patient['id'];
             $patientsData[$i]['patient_id'] = $patient['patient_id'];
             $patientsData[$i]['priority'] = $patient['priority'];
+            $patientsData[$i]['patient_name'] = $this->getPatientFieldValue($patient, 'full-name');
+            $patientsData[$i]['patient_email'] = $this->getPatientFieldValue($patient, 'email');
+            $patientsData[$i]['patient_phone'] = $this->getPatientFieldValue($patient, 'phone');
             foreach ($fields as $field) {
                 $patientsData[$i][$field] = $this->getPatientFieldValue($patient, $field);
             }
@@ -284,7 +287,7 @@ class CareConsoleService
                 return $lastScheduledTo;
                 break;
             case 'email':
-                return $patient['email'];    
+                return $patient['email'];
                 break;
             default:
                 return '-';
@@ -302,7 +305,9 @@ class CareConsoleService
         $colarr = array();
         foreach ($cols as $col => $order) {
             $colarr[$col] = array();
-            foreach ($array as $k => $row) {$colarr[$col]['_' . $k] = strtolower($row[$col]);}
+            foreach ($array as $k => $row) {
+                $colarr[$col]['_' . $k] = strtolower($row[$col]);
+            }
         }
         $eval = 'array_multisort(';
         foreach ($cols as $col => $order) {
@@ -322,7 +327,6 @@ class CareConsoleService
             }
         }
         return $ret;
-
     }
 
     /**

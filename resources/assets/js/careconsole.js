@@ -157,9 +157,6 @@ $(document).ready(function () {
         data['console_id'] = $(this).parent().attr('data-consoleid');
         data['stage_id'] = $('#current_stage').val();
         data['action_header'] = $(this).attr('data-displayname');
-        if ($('#current_stage').val() === '-1') {
-            return;
-        }
         
         var patientName = $(this).parent().attr('data-patient-name');
         var patientEmail = ($(this).parent().attr('data-patient-email') == '' ) ? '-' : $(this).parent().attr('data-patient-email');
