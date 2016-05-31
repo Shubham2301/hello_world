@@ -126,7 +126,7 @@ class BulkImportController extends Controller
 						$patients['middlename'] = isset($data['middle_name']) ? $data['middle_name'] : '';
 
                         $patients['cellphone'] = isset($data['phone_number']) ? $data['phone_number'] : '';
-                        $patients['email'] = isset($data['email']) ? $data['email'] : '';
+                        $patients['email'] = filter_var($data['email'], FILTER_VALIDATE_EMAIL) ? $data['email'] : '';
                         $patients['addressline1'] = isset($data['address_1']) ? $data['address_1'] : '';
                         $patients['addressline2'] = isset($data['address_2']) ? $data['address_2'] : '';
                         $patients['city'] = isset($data['city']) ? $data['city'] : '';
