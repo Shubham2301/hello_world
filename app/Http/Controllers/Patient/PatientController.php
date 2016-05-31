@@ -400,8 +400,8 @@ class PatientController extends Controller
             $data[$i]['email'] = $patient->email;
             $data[$i]['phone'] = $patient->cellphone;
             $data[$i]['lastfourssn'] = $patient->lastfourssn;
-            $data[$i]['addressline1'] = $patient->addressline1;
-            $data[$i]['addressline2'] = $patient->addressline2;
+            $data[$i]['addressline1'] = ($patient->addressline1 != null && $patient->addressline1 != '-') ? $patient->addressline1 : '';
+            $data[$i]['addressline2'] = ($patient->addressline2 != null && $patient->addressline2 != '-') ? $patient->addressline2 : '';
             $data[$i]['city'] = $patient->city;
             $birthdate = new DateTime($patient->birthdate);
             $data[$i]['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';

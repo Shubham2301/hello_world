@@ -13,7 +13,8 @@ $(document).ready(function() {
     }
 
     $('#dob').datetimepicker({
-        format: 'MM/DD/YYYY'
+        format: 'MM/DD/YYYY',
+        maxDate: new Date(),
     });
 
     $('#dob').on('change', function() {

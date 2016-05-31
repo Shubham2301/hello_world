@@ -1,5 +1,5 @@
 <div class="modal fade" id="shareModal" role="dialog">
-    <div class="modal-dialog form_model center">
+    <div class="modal-dialog alert">
         {!! Form::open(array('url' => 'shareFilesFolders', 'method' => 'POST', 'id'=>'share_files_folders')) !!}
         <div class="modal-content">
                 {!! csrf_field() !!}
@@ -28,14 +28,14 @@
                 </span>
 			<span class="modal_content_row">
 				<span class="left ">&nbsp;</span>
-				<span class="right"><span class="btn primary-btn"><input type="checkbox" name='share_with_network' id='share_in_network'></span>&nbsp;<p class="share_text">Share with all network users </p></span>
+				<span class="right"><span class="btn primary-btn share_option_button"><input type="checkbox" name='share_with_network' id='share_in_network'></span>&nbsp;<p class="share_text">Share with all network users </p></span>
 			</span>
 
                 <span class="modal_content_row">
                     <span class="left ">Writable</span>
                     <span class="right">
 						<span class="file-input ">
-							<span class="btn primary-btn"><input type="checkbox" name="share_writable" style="margin-left: -10px;"></span>
+							<span class="btn primary-btn share_option_button"><input type="checkbox" name="share_writable"></span>
                         </span>
                     </span>
                 </span>
