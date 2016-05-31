@@ -3,8 +3,8 @@
 namespace myocuhub\Facades;
 use Illuminate\Support\Facades\Facade;
 
-class TwilioSMS extends Facade {
+class Voice extends Facade {
 	protected static function getFacadeAccessor() {
-		return 'sms';
+		return 'voice';
 	}
 }

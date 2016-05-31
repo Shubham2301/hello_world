@@ -91,7 +91,7 @@ class SendRequestPatientAppointmentEmail
                 $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
                 $m->to($data['email'], $data['name'])->subject('Request for Appointment');
             });
-            
+
             return true;
         } catch (Exception $e) {
             /**

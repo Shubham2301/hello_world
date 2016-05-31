@@ -29,6 +29,22 @@ class Patient extends Model {
 	'preferredlanguage',
 	'state'
 	];
+
+	public function getPhone(){
+
+		$phone = '-';
+	    
+	    if ($this->cellphone != '' || $this->cellphone != null) {
+	        $phone = $this->cellphone;
+	    } elseif ($this->homephone != '' || $this->homephone != null) {
+	        $phone = $this->homephone;
+	    } elseif ($this->workphone != '' || $this->workphone != null) {
+	        $phone = $this->workphone;
+	    }
+
+	    return $phone;
+	}
+
 	public static function getPatients($filters) {
 
 		$columns = [

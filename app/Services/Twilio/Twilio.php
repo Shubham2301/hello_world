@@ -2,15 +2,17 @@
 
 namespace myocuhub\Services\Twilio;
 
+use Services_Twilio;
+
 /**
 * Parent Class for Twilio Service 
 */
 class Twilio
 {
 	
-	private $accountSID;
-	private $authToken;
-	private $from;
+	private static $accountSID;
+	private static $authToken;
+	private static $from;
 
 	function __construct()
 	{
@@ -37,9 +39,7 @@ class Twilio
      */
     private function _setAccountSID()
     {
-        $this->accountSID = env('TWILIO_ACCOUNT_SID');
-
-        return $this;
+        self::$accountSID = env('TWILIO_ACCOUNT_SID');
     }
 
     /**
@@ -59,9 +59,7 @@ class Twilio
      */
     private function _setAuthToken()
     {
-        $this->authToken = env('TWILIO_AUTH_TOKEN');
-
-        return $this;
+        self::$authToken = env('TWILIO_AUTH_TOKEN');
     }
 
 
@@ -70,7 +68,7 @@ class Twilio
      *
      * @return mixed
      */
-    public function getFrom()
+    public static function getFrom()
     {
         return self::$from;
     }
@@ -82,9 +80,7 @@ class Twilio
      */
     private function _setFrom()
     {
-        $this->from = env('TWILIO_AUTH_TOKEN');
-
-        return $this;
+        self::$from = env('TWILIO_AUTH_TOKEN');
     }
 
     /**
@@ -93,7 +89,7 @@ class Twilio
      */
     public static function getServiceClient(){
 
-		return new Services_Twilio(parent::getAccountSID(), parent::getAuthToken());
+		return new Services_Twilio(self::getAccountSID(), self::getAuthToken());
 
 	}
 

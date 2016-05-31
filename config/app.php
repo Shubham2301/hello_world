@@ -215,8 +215,8 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'WriteBack4PC' => myocuhub\Facades\Writeback4PC::class,
         'WebScheduling4PC' => myocuhub\Facades\WebScheduling4PC::class,
-        'Voice' => myocuhub\Facades\TwilioVoice::class,
-        'Sms' => myocuhub\Facades\TwilioSMS::class,
+        'Voice' => myocuhub\Facades\Voice::class,
+        'Sms' => myocuhub\Facades\Sms::class,
 
     ],
 
