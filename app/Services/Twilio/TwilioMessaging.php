@@ -1,6 +1,6 @@
 <?php
 
-namespace myocuhub\Services\PatientCare;
+namespace myocuhub\Services\Twilio;
 
 use Event;
 use Exception;
@@ -13,7 +13,7 @@ use myocuhub\Services\Twilio\Twilio;
 */
 class TwilioMessaging extends Twilio
 {
-	function __construct(argument)
+	public function __construct()
 	{
 		
 	}
@@ -30,7 +30,7 @@ class TwilioMessaging extends Twilio
 
 		} catch (Exception $e) {
 
-			Log::error(e);
+			Log::error($e);
             $action = "Attempt to send SMS to $to failed";
             $description = $e->faultstring;
             $filename = basename(__FILE__);

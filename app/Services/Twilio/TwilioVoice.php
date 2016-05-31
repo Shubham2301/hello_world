@@ -1,6 +1,6 @@
 <?php
 
-namespace myocuhub\Services\PatientCare;
+namespace myocuhub\Services\Twilio;
 
 /**
 * Voice Service Class for Twilio
@@ -23,7 +23,7 @@ class TwilioVoice extends Twilio
 
 		} catch (Exception $e) {
 			
-			Log::error(e);
+			Log::error($e);
             $action = "Attempt to call on $to failed";
             $description = $e->faultstring;
             $filename = basename(__FILE__);
