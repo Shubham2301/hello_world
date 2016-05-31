@@ -3,6 +3,7 @@
 namespace myocuhub;
 
 use Illuminate\Database\Eloquent\Model;
+use myocuhub\Models\MessageTemplate;
 
 class Network extends Model {
 	protected $fillable = ['id', 'name', 'email', 'phone', 'addressline1', 'addressline2', 'city', 'state', 'zip', 'country'];
@@ -16,6 +17,7 @@ class Network extends Model {
 		            ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
 		            ->orderBy('practices.name');
 	}
+	
 	public static function practicesByName($search) {
 		return self::where('networks.id', session('network-id'))
 			->leftJoin('practice_network', 'networks.id', '=', 'practice_network.network_id')

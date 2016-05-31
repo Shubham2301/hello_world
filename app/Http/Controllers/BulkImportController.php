@@ -73,11 +73,11 @@ class BulkImportController extends Controller
         $import_result['patients_added'] = 0;
         $import_result['already_exist'] = 0;
         $import_result['exception'] = '';
-
+        
         $format = [
             'first_name',
-			'middle_name',
-			'last_name',
+            'middle_name',
+            'last_name',
             'birthdate',
             'ssn_last_digits',
             'phone_number',
@@ -92,6 +92,7 @@ class BulkImportController extends Controller
             'disease_type',
             'severity',
             'insurance_type',
+            'language',
         ];
 
         if ($request->hasFile('patient_xlsx')) {
@@ -115,7 +116,7 @@ class BulkImportController extends Controller
 						$patients['lastname'] = isset($data['last_name']) ? $data['last_name'] : '';
                         $patients['lastfourssn'] = isset($data['ssn_last_digits']) ? $data['ssn_last_digits'] : null ;
                         $patients['birthdate'] = isset($data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : '0000-00-00 00:00:00';
-
+                        $patients['preferredlanguage'] = isset($data['language']) ? $data['language'] : '';
                         $patient = Patient::where($patients)->first();
 
                         if ($patient) {
@@ -125,7 +126,7 @@ class BulkImportController extends Controller
 						$patients['middlename'] = isset($data['middle_name']) ? $data['middle_name'] : '';
 
                         $patients['cellphone'] = isset($data['phone_number']) ? $data['phone_number'] : '';
-                        $patients['email'] = isset($data['email']) ? $data['email'] : '';
+                        $patients['email'] = filter_var($data['email'], FILTER_VALIDATE_EMAIL) ? $data['email'] : '';
                         $patients['addressline1'] = isset($data['address_1']) ? $data['address_1'] : '';
                         $patients['addressline2'] = isset($data['address_2']) ? $data['address_2'] : '';
                         $patients['city'] = isset($data['city']) ? $data['city'] : '';
@@ -190,6 +191,13 @@ class BulkImportController extends Controller
             return json_encode($import_result);
         }
         return "try again";
+    }
+
+    public function downloadBulkImportFormat(Request $request){
+        $name = 'Ocuhub Patient Import Format.xlsx';
+        $path = base_path() . '/public/formats/patient-xlxs-import.xlsx';
+        $headers = [ 'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ];
+        return response()->download($path, $name, $headers);
     }
 
 }

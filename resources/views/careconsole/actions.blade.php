@@ -12,6 +12,7 @@
                         <div class="row input_row" id="action_results">
                             <input type="hidden" value="" name="patient_id" id="action_patient_id">
                             <input type="hidden" value="" name="action_id" id="action_id">
+                            <input type="hidden" value="" name="action_name" id="action_name">
                             <input type="hidden" value="" name="console_id" id="action_console_id">
                             <input type="hidden" value="" name="stage_id" id="action_stage_id">
                             <div class="col-md-4 form-group">
@@ -128,7 +129,7 @@
                         </div>
 
 
-                        <div class="row input_row">
+                        <div class="row input_row" id="form_action_notes">
                             <div class="col-md-4 form-group">
                                 <label for="action_notes"><strong style="color:black;padding-left:1em;">Notes</strong></label>
                             </div>
@@ -136,6 +137,65 @@
                                 <textarea class="form-control" name="action_notes" id="action_notes" rows="5"></textarea>
                             </div>
                             <div class="col-md-1"></div>
+                        </div>
+                        <div id="form_action_request_email" style="display:none">
+                            <div class="row input_row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2 form-group">
+                                    <p><strong style="color:black;padding-left:1em;">To</strong></p>
+                                    <p><strong style="color:black;padding-left:1em;">Subject</strong></p>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    <p style="color:black;" class="form_action_patient_email_id"></p>
+                                    <p style="color:black;">Request For Appointment</p>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <div class="row input_row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10 form-group">
+                                    <textarea class="form-control" name="request_email" id="request_email" rows="5">{{ $overview['request_for_appointment']['email'] }}</textarea>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                        </div>
+                        <div id="form_action_request_phone" style="display:none">
+                            <div class="row input_row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5 form-group">
+                                    <p class="form_action_patient_name" style="color:black;"></p>
+                                </div>
+                                <div class="col-md-5 form-group">
+                                    <p style="color:black;text-align:right" class="form_action_patient_phone"></p>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <div class="row input_row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10 form-group">
+                                    <textarea class="form-control" name="request_phone" id="request_phone" rows="5">{{ $overview['request_for_appointment']['phone'] }}</textarea>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                        </div>
+                        <div id="form_action_request_sms" style="display:none">
+                            <div class="row input_row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5 form-group">
+                                    <p class="form_action_patient_name" style="color:black;"></p>
+                                </div>
+                                <div class="col-md-5 form-group">
+                                    <p style="color:black;text-align:right" class="form_action_patient_phone"></p>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <div class="row input_row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10 form-group">
+                                    <textarea class="form-control" name="request_sms" id="request_sms" rows="5">{{ $overview['request_for_appointment']['sms'] }}</textarea>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

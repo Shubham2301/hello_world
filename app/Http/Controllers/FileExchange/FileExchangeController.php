@@ -94,7 +94,11 @@ class FileExchangeController extends Controller {
 		$breadcrumbs = $this->getBreadcrumbs($request);
 		$accessLink = '/file_exchange';
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'index', 'accessLink' => $accessLink]);
+        $active_link = array();
+        $active_link['my_files'] = true;
+        $active_link['title'] = 'My Files';
+
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'index', 'accessLink' => $accessLink, 'active_link' => $active_link]);
 	}
 
 	public function folderDetails($folder_id = 0) {
@@ -333,17 +337,23 @@ class FileExchangeController extends Controller {
 
 		$accessLink = '/sharedWithMe';
 
+        $active_link = array();
+
 		if($sortOnRecent == 'true'){
 			$action = 'Accessed Recent Shared Changes in File Exchange';
+            $active_link['recent_share_changes'] = true;
+            $active_link['title'] = 'Recent Share Changes';
 		} elseif ($sortOnRecent == '' || $sortOnRecent == 'false') {
 			$action = 'Accessed Shared With Me in File Exchange';
+            $active_link['shared_with_me'] = true;
+            $active_link['title'] = 'Shared With Me';
 		}
         $description = '';
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'sharedWithMe', 'accessLink' => $accessLink]);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'sharedWithMe', 'accessLink' => $accessLink, 'active_link' => $active_link]);
 	}
 
 	public function recentShareChanges(Request $request) {
@@ -453,7 +463,11 @@ class FileExchangeController extends Controller {
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty, 'openView' => 'trash', 'accessLink' => $accessLink ]);
+        $active_link = array();
+        $active_link['trash'] = true;
+        $active_link['title'] = 'Trash';
+
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty, 'openView' => 'trash', 'accessLink' => $accessLink, 'active_link' => $active_link ]);
 	}
 	public function shareFilesFolders(Request $request) {
 

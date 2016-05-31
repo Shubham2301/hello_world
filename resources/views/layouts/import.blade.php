@@ -42,13 +42,12 @@
                                 </span>
 								<span class="xlsx_file_filename filename"></span>
                                 <input type='hidden' id='clear_image_path' value="{{asset('images/close-natural.png')}}">
-
+                                
                             </div>
                             <div class="col-md-2"></div>
                         </div>
-
+                        <a href="/import/format/xlsx"><div style="color:#000;text-decoration: underline; padding-left:3em;">Download Excel Format</div></a>
                         <div style="color:#FF7777; padding-left:3em;">* Max upload limit 5,000 patients.</div>
-
                     </div>
                     {!! Form::close()!!}
                     <p class="success_message"></p>

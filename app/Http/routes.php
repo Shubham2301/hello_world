@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'role:bulk-import, 9'], function () {
         Route::get('import/location', 'BulkImportController@getLocations');
         Route::post('import/xlsx', 'BulkImportController@importPatientsXlsx');
+        Route::get('import/format/xlsx', 'BulkImportController@downloadBulkImportFormat');
         Route::resource('bulkimport', 'BulkImportController');
     });
 

@@ -1,5 +1,5 @@
 <div class="modal fade" id="newfileModal" role="dialog">
-    <div class="modal-dialog form_model center">
+    <div class="modal-dialog alert">
         {!! Form::open(array('url' => 'uploadDocument', 'method' => 'POST', 'files'=>true, 'id'=>'upload_document')) !!}
         <div class="modal-content">
                 {!! csrf_field() !!}
