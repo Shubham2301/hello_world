@@ -10,15 +10,10 @@ use Services_Twilio;
 class Twilio
 {
 	
-	private static $accountSID;
-	private static $authToken;
-	private static $from;
 
 	function __construct()
 	{
-		self::$accountSID = env('TWILIO_ACCOUNT_SID');
-		self::$authToken = env('TWILIO_AUTH_TOKEN');
-		self::$from = env('TWILIO_FROM_NUMBER');
+
 	}
 
 
@@ -29,17 +24,7 @@ class Twilio
      */
     public static function getAccountSID()
     {
-        return self::$accountSID;
-    }
-
-    /**
-     * Sets the value of accountSID.
-     *
-     * @return self
-     */
-    private function _setAccountSID()
-    {
-        self::$accountSID = env('TWILIO_ACCOUNT_SID');
+        return env('TWILIO_ACCOUNT_SID');
     }
 
     /**
@@ -49,17 +34,7 @@ class Twilio
      */
     public static function getAuthToken()
     {
-        return self::$authToken;
-    }
-
-    /**
-     * Sets the value of authToken.
-     *
-     * @return self
-     */
-    private function _setAuthToken()
-    {
-        self::$authToken = env('TWILIO_AUTH_TOKEN');
+        return env('TWILIO_AUTH_TOKEN');
     }
 
 
@@ -70,18 +45,9 @@ class Twilio
      */
     public static function getFrom()
     {
-        return self::$from;
+        return env('TWILIO_FROM');
     }
 
-    /**
-     * Sets the value of from.
-     *
-     * @return self
-     */
-    private function _setFrom()
-    {
-        self::$from = env('TWILIO_AUTH_TOKEN');
-    }
 
     /**
      * 

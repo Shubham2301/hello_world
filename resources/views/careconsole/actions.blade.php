@@ -12,6 +12,7 @@
                         <div class="row input_row" id="action_results">
                             <input type="hidden" value="" name="patient_id" id="action_patient_id">
                             <input type="hidden" value="" name="action_id" id="action_id">
+                            <input type="hidden" value="" name="action_name" id="action_name">
                             <input type="hidden" value="" name="console_id" id="action_console_id">
                             <input type="hidden" value="" name="stage_id" id="action_stage_id">
                             <div class="col-md-4 form-group">

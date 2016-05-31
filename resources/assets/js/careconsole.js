@@ -169,6 +169,9 @@ $(document).ready(function () {
         clearActionFields();
         showDate = false;
 
+        
+        $('#action_name').val($(this).attr('data-name'));
+
         switch ($(this).attr('data-name')) {
             case 'reschedule':
             case 'schedule':
@@ -239,6 +242,9 @@ $(document).ready(function () {
         clearActionFields();
         showDate = false;
 
+        
+        $('#action_name').val($(this).attr('data-name'));
+
         switch ($(this).attr('data-name')) {
             case 'reschedule':
             case 'schedule':
@@ -306,6 +312,9 @@ $(document).ready(function () {
         clearActionFields();
         showDate = false;
         show_patient = false;
+        
+        $('#action_name').val($(this).attr('data-name'));
+
         switch ($(this).attr('data-name')) {
             case 'reschedule':
             case 'schedule':
@@ -601,6 +610,22 @@ function getPatientData() {
     });
 }
 
+function getRequestMessage(action_name) {
+
+    switch(action_name){
+        case 'request-patient-email':
+            return $('#request_email').val();
+        case 'request-patient-phone':
+            return $('#request_phone').val();
+        case 'request-patient-sms':
+            return $('#request_sms').val();
+        default: 
+            return '';            
+    }
+
+    return '';
+}
+
 function action() {
     if ($('#recall_date').val() == '' && showDate) {
         $('p.alert_message').text('please select a date');
@@ -612,6 +637,9 @@ function action() {
         $('#alert').modal('show');
         return;
     }
+
+    var request_message = getRequestMessage($('#action_name').val());
+    
     var formData = {
         'console_id': $('#action_console_id').val(),
         'stage_id': $('#action_stage_id').val(),
@@ -626,7 +654,8 @@ function action() {
         'manual_appointment_appointment_type': $('#manual_appointment_appointment_type').val(),
         'manual_referredby_practice': $('#manual_referredby_practice').val(),
         'manual_referredby_provider': $('#manual_referredby_provider').val(),
-        'custom_appointment_type': $('#manual_custom_appointment_appointment_type').val()
+        'custom_appointment_type': $('#manual_custom_appointment_appointment_type').val(),
+        'request_message': request_message
     };
 
     $.ajax({

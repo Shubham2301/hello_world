@@ -64,10 +64,7 @@ class SendRequestPatientAppointmentEmail
         $data['message'] = $event->getMessage();
 
         if($data['message'] == ''){
-            /**
-             * Predefined network message to be sent.
-             */
-            $data['message'] = MessageTemplate::getTemplate('email', 'request_for_appointment', session('network-id'))->message;
+            return;
         }
 
         $this->sendRequest($data);

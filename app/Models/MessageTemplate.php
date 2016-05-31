@@ -8,11 +8,8 @@ class MessageTemplate extends Model
 {
     //
     
-    public static function defaultTemplate($type, $stage){
-    	return self::where('network_id', NULL)
-    		->where('type' , config('constants.message_type.'.$type))
-			->where('stage' , config('constants.message_stage.'.$stage))
-            ->first(['message']);
+    public static function defaultTemplate(){
+    	return '';
     }
 
     public static function getTemplate($type, $stage, $networkID){
@@ -22,9 +19,9 @@ class MessageTemplate extends Model
             ->first(['message']);
         
         if ($message){
-        	return $message;
+        	return $message->message;
         } 
 
-        return self::defaultTemplate($type, $stage);
+        return self::defaultTemplate();
     }
 }

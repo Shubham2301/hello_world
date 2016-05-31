@@ -51,16 +51,13 @@ class SendRequestPatientAppointmentSMS
             return;
         }
 
-        $attr['phone'] = $patient->email;
+        $attr['phone'] = $patient->getPhone();
         $attr['name'] = $patient->firstname.' '.$patient->lastname;
 
         $attr['message'] = $event->getMessage();
 
         if($attr['message'] == ''){
-            /**
-             * Predefined network message to be sent.
-             */
-            $attr['message'] = MessageTemplate::getTemplate('sms', 'request_for_appointment', session('network-id'))->message;
+            return;
         }
 
         $this->sendRequest($attr);
@@ -69,9 +66,13 @@ class SendRequestPatientAppointmentSMS
     }
 
     public function sendRequest($attr){
-        
+
         $to = $attr['phone'];
         $message = $attr['message'];
+
+        /**
+         * TODO: Validate Phone number as Regional Phone Number 
+         */
 
         try {
             /**
@@ -81,8 +82,6 @@ class SendRequestPatientAppointmentSMS
 
             return true;
         } catch (Exception $e) {
-            Log::error($e);
-
             /**
              * Audit, Exception Logging.
              */

@@ -86,9 +86,9 @@ class CareConsoleController extends Controller {
 		$overview['network_practices'] = Network::find(session('network-id'))->practices;
 		$overview['appointment_types'] = $this->getAppointmentTypes();
 		
-		$overview['request_for_appointment']['email'] = MessageTemplate::getTemplate('email', 'request_for_appointment', $networkID)->message;
-		$overview['request_for_appointment']['phone'] = MessageTemplate::getTemplate('phone', 'request_for_appointment', $networkID)->message;
-		$overview['request_for_appointment']['sms'] = MessageTemplate::getTemplate('sms', 'request_for_appointment', $networkID)->message;
+		$overview['request_for_appointment']['email'] = MessageTemplate::getTemplate('email', 'request_for_appointment', $networkID);
+		$overview['request_for_appointment']['phone'] = MessageTemplate::getTemplate('phone', 'request_for_appointment', $networkID);
+		$overview['request_for_appointment']['sms'] = MessageTemplate::getTemplate('sms', 'request_for_appointment', $networkID);
 
 		return $overview;
 	}
@@ -141,7 +141,8 @@ class CareConsoleController extends Controller {
 		$manualAppointmentData['referredby_provider'] = $request->manual_referredby_provider;
 		$notes = $request->notes;
 		$consoleID = $request->console_id;
-		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID, $manualAppointmentData);
+		$message = $request->request_message;
+		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $recallDate, $notes, $message, $consoleID, $manualAppointmentData);
 		$stage = CareConsole::find($consoleID)->stage;
 		$patientStage['id'] = $stage->id;
 		$patientStage['name'] = $stage->display_name;
