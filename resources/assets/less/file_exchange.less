@@ -9,13 +9,12 @@
     flex-basis: 0;
     display: flex;
     justify-content: flex-start;
-	&>.buttons {
+    &>.buttons {
         display: none;
-            &.active {
-		    display: flex;
-                }
-	}
-
+        &.active {
+            display: flex;
+        }
+    }
 }
 .file_exchange_navbar_content_right {
     flex-grow: 1;
@@ -27,7 +26,7 @@
         visibility: visible;
     }
 }
-.modal-dialog.center{
+.modal-dialog.center {
     width: 45%;
 }
 .file_exchange_button {
@@ -75,7 +74,6 @@ input[type=checkbox].file-exchange {
     border-bottom-left-radius: .5em;
     box-shadow: -2px 0 2px #0071bc;
     padding: 1em;
-    width: 30vw;
     display: none;
     flex-direction: column;
     &.active {
@@ -90,7 +88,7 @@ input[type=checkbox].file-exchange {
         &>.glyphicon {
             color: #4d4d4d;
             cursor: pointer;
-            &:hover{
+            &:hover {
                 color: #ed1c24;
             }
         }
@@ -124,7 +122,7 @@ input[type=checkbox].file-exchange {
     line-height: 1.2em;
     height: 1.2em;
     overflow: hidden;
-	word-wrap: break-word;
+    word-wrap: break-word;
 }
 .modal-content {
     display: flex;
@@ -194,19 +192,17 @@ input[type=checkbox].file-exchange {
     opacity: 0;
     filter: alpha(opacity=0);
 }
-#new_filename{
-        margin: auto 1em;
+#new_filename {
+    margin: auto 1em;
 }
-
-.show_discription{
-	height: auto;
+.show_discription {
+    height: auto;
 }
 .content-right {
     padding: 1em;
 }
-
 .restore-button {
-	display: none;
+    display: none;
 }
 textarea {
     resize: none;
@@ -236,4 +232,23 @@ textarea {
 }
 .share_option_button {
     padding: 0;
+}
+.btn {
+    white-space: normal;
+}
+/*
+----------------------
+Mobile Styling
+----------------------
+*/
+
+@media only screen and (max-width: 767px) {
+    .item_info {
+        width: 100%;
+    }
+}
+@media only screen and (min-width: 767px) {
+    .item_info {
+        width: 35%;
+    }
 }
