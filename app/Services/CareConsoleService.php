@@ -170,7 +170,7 @@ class CareConsoleService
      * @param $stageID
      * @return mixed
      */
-    public function getBucketPatientsListing($stageID)
+    public function getBucketPatientsListing($stageID, $sortField = '', $sortOrder = '')
     {
         $userID = Auth::user()->id;
         $network = User::getNetwork($userID);
@@ -179,6 +179,12 @@ class CareConsoleService
         $headers = CareconsoleStage::find($stageID)->patientFields;
         $patients = $this->KPIService->getBucketPatients($networkID, $stageID);
 
+        if ($sortField == '') {
+            $sortField = 'full-name';
+        }
+        if ($sortOrder == '') {
+            $sortOrder = 'SORT_ASC';
+        }
         $headerData = [];
         $patientsData = [];
         $listing = [];
@@ -189,6 +195,9 @@ class CareConsoleService
             $headerData[$i]['display_name'] = $header['display_name'];
             $headerData[$i]['name'] = $header['name'];
             $headerData[$i]['width'] = $header['width'];
+            if ($header['name'] == $sortField) {
+                $headerData[$i]['sort_order'] = $sortOrder;
+            }
             array_push($fields, $header['name']);
             $i++;
         }
@@ -205,6 +214,10 @@ class CareConsoleService
                 $patientsData[$i][$field] = $this->getPatientFieldValue($patient, $field);
             }
             $i++;
+        }
+        if ($sortField != '' && in_array($sortField, $fields)) {
+            $sortParams = [$sortField => $sortOrder];
+            $patientsData = $this->array_msort($patientsData, $sortParams);
         }
 
         $listing['patients'] = $patientsData;
