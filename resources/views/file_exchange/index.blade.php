@@ -10,9 +10,10 @@
     </strong> {{ Session::pull('success') }}
 </div>
 @endif
-<div class="content-section active" style="min-height: 40vh;">
+<div class="content-section active">
+   <span class="files_head_section">
     <div class="row no-margin">
-        <div>
+<!--        <div>-->
             <input type="hidden" value="{{$openView}}" id='current_view'>
             <div class="file_exchange_navbar">
                 <span class="file_exchange_navbar_content_left">
@@ -37,16 +38,18 @@
                 < sizeof($breadcrumbs); $i++) <span>&nbsp;>&nbsp;</span>
 			<a href="{{$accessLink}}?id={{ $breadcrumbs[$i]['id'] }}"> {{ $breadcrumbs[$i]['name'] }}</a> @endfor
             </div>
-        </div>
+<!--        </div>-->
     </div>
-    <div class="files">
         <div class="row arial_bold col_title">
             <div class="col-xs-1"></div>
             <div class="col-xs-7 no-padding">Name</div>
             <div class="col-xs-2 no-padding">Modified by</div>
             <div class="col-xs-2 no-padding">Date Modified</div>
         </div>
-        <hr class="main"> @foreach($folderlist as $folder)
+        <hr class="main">
+    </span>
+    <div class="files">
+ @foreach($folderlist as $folder)
         <div class="row arial col_content no-margin">
             <div class="col-xs-1" style="text-align: center;">
                 <input type="checkbox" class="checkbox file-exchange folder-check" style="display: inline;" data-id="{{ $folder['id'] }}" data-name="folder">

@@ -47,7 +47,7 @@
         visibility: visible;
     }
 }
-.files>.col_title {
+.col_title {
     color: #4d4d4d;
 }
 .files>.col_content {
@@ -225,4 +225,21 @@ textarea {
     padding-top: 2px;
     color: #fff;
     margin: 0 1em 0 15px;
+}
+.main_content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.content-section.active {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.files {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    flex-grow: 1;
 }
