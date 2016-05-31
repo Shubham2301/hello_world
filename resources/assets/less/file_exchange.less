@@ -9,6 +9,7 @@
     flex-basis: 0;
     display: flex;
     justify-content: flex-start;
+    flex-wrap: wrap;
     &>.buttons {
         display: none;
         &.active {
@@ -21,6 +22,7 @@
     flex-basis: 0;
     display: flex;
     justify-content: flex-end;
+    flex-wrap: wrap;
     visibility: hidden;
     &.active {
         visibility: visible;
@@ -66,7 +68,7 @@ input[type=checkbox].file-exchange {
     background-color: #fff;
     position: absolute;
     color: #4d4d4d;
-    bottom: 5em;
+    top: 5em;
     right: 0;
     opacity: 0.8;
     z-index: 1;
@@ -211,7 +213,7 @@ textarea {
     font-size: 1.3em;
     padding-top: 2px;
     color: #fff;
-    margin: 0 1em 0 15px;
+    margin: 0 1em 0 0;
 }
 .main_content {
     flex-grow: 1;
