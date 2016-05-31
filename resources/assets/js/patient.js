@@ -531,7 +531,7 @@ function removePatient(id) {
         success: function success(e) {
             var searchdata = [];
             showpage = 1;
-            getPatients(searchdata, currentpage);
+			getPatients(searchdata, showpage);
 
         },
         error: function error() {

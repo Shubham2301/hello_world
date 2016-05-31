@@ -254,13 +254,11 @@ class PatientController extends Controller
         $patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
 
         $ccda = Ccda::where('patient_id', $id)->orderBy('created_at', 'desc')->first();
-		$patientData['ccda'] = true;
+        $patientData['ccda'] = true;
         if (!($ccda)) {
-
-			$patientData['ccda_date'] = (new DateTime())->format('F j Y');
-        }
-        else{
-           $patientData['ccda_date'] = (new DateTime($ccda->created_at))->format('F j Y');
+            $patientData['ccda_date'] = (new DateTime())->format('F j Y');
+        } else {
+            $patientData['ccda_date'] = (new DateTime($ccda->created_at))->format('F j Y');
         }
 
         $response = [
@@ -369,20 +367,16 @@ class PatientController extends Controller
     }
     public function destroy(Request $request)
     {
-        $i = 0;
-        while (1) {
-            if ($request->input($i)) {
-                $patient = Patient::where('id', $request->input($i))->delete();
-                $action = 'delete patient of id =' . $request->input($i);
-                $description = '';
-                $filename = basename(__FILE__);
-                $ip = $request->getClientIp();
-                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-                $i++;
-            } else {
-                break;
-            }
+        if (!$request->input() || $request->input() === '' || sizeof($request->input()) < 1) {
+            return;
         }
+        $patient = Patient::whereIn('id', $request->input())->delete();
+        $action = 'delete'.sizeof($request->input()) . 'patients';
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        return ;
     }
 
     public function search(Request $request)
