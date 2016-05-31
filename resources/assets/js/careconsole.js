@@ -390,6 +390,9 @@ $(document).ready(function () {
         if (field.length === 0) {
             return;
         }
+		if(toCall == 2){
+			return;
+		}
         if (field.css('display') !== 'none') {
             if (field.attr('data-order') === 'SORT_DESC') {
                 field.attr('data-order', 'SORT_ASC');
@@ -405,6 +408,8 @@ $(document).ready(function () {
         field.css('display', 'inline-block');
         $('#current_sort_field').val(field.attr('data-name'));
         $('#current_sort_order').val(field.attr('data-order'));
+
+
         currentPage = 1;
         getPatientData();
     });
