@@ -226,7 +226,9 @@ class CareConsoleController extends Controller {
 		$bucketName = $request->bucket;
 		$bucket = CareconsoleStage::where('name', $bucketName)->first();
 		$bucketID = $bucket->id;
-		$listing = $this->CareConsoleService->getBucketPatientsListing($bucketID);
+		$sortField = $request->sort_field;
+		$sortOrder = $request->sort_order;
+		$listing = $this->CareConsoleService->getBucketPatientsListing($bucketID, $sortField, $sortOrder);
 		$actions = $this->CareConsoleService->getActions($bucketID);
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
 		$drilldown['listing_header'] = view('careconsole.listing_header')->with('listing', $listing)->render();

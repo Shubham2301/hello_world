@@ -115,7 +115,7 @@ class BulkImportController extends Controller
 						$patients['firstname'] = isset($data['first_name']) ? $data['first_name'] : '';
 						$patients['lastname'] = isset($data['last_name']) ? $data['last_name'] : '';
                         $patients['lastfourssn'] = isset($data['ssn_last_digits']) ? $data['ssn_last_digits'] : null ;
-                        $patients['birthdate'] = isset($data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : '0000-00-00 00:00:00';
+						$patients['birthdate'] = (isset($data['birthdate'])&& $data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : '0000-00-00 00:00:00';
                         $patients['preferredlanguage'] = isset($data['language']) ? $data['language'] : '';
                         $patient = Patient::where($patients)->first();
 

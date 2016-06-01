@@ -404,11 +404,11 @@ function getPatients(formData, page) {
         async: false,
         success: function(e) {
             var patients = $.parseJSON(e);
-            lastPage = patients[0]['lastpage'];
+            lastPage = patients[0]['lastpage']+1;
             if ($('#from_admin').val()) {
                 toCall = 2;
                 var content = '';
-                lastPage = patients[0]['lastpage'];
+                lastPage = patients[0]['lastpage']+1;
                 if (patients.length > 0 && patients[0]['total'] > 0) {
                     // if (patients.length > 0) {
                     patients.forEach(function(patient) {
@@ -531,7 +531,7 @@ function removePatient(id) {
         success: function success(e) {
             var searchdata = [];
             showpage = 1;
-            getPatients(searchdata, currentpage);
+			getPatients(searchdata, showpage);
 
         },
         error: function error() {
