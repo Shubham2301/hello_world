@@ -413,7 +413,13 @@ function getPractices(formData, page) {
                 practices.forEach(function(practice) {
                     locationAddress.push(practice.locations);
                     var totalLocation = practice.locations.length - 1;
-		content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3" style="display:inline-flex;"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + practice.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + practice.name + '</p></div></div><div class="col-xs-3 location_address">' + practice.locations[totalLocation].addressline1 + '<br>' + practice.locations[totalLocation].city + ','+practice.locations[totalLocation].state+' '+practice.locations[totalLocation].zip+'</div><div class="col-xs-1 location_counter_toggle" data-index = "' + i + '">';
+		content += '<div class="row search_item" data-id="' + practice.id + '"><div class="col-xs-3" style="display:inline-flex;"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + practice.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p>' + practice.name + '</p></div></div>';
+                    if(totalLocation >= 0 ) {
+                    content += '<div class="col-xs-3 location_address">' + practice.locations[totalLocation].addressline1 + '<br>' + practice.locations[totalLocation].city + ','+practice.locations[totalLocation].state+' '+practice.locations[totalLocation].zip+'</div><div class="col-xs-1 location_counter_toggle" data-index = "' + i + '">';
+                    } else {
+                         content += '<div class="col-xs-3 location_address"><br></div><div class="col-xs-1 location_counter_toggle" data-index = "' + i + '">';
+                        totalLocation = 0;
+                    }
         content += '<img class="location_address_next" src="' + location_next_icon + '">';
 //        content += '<span class="glyphicon glyphicon-chevron-up glyph_design location_address_next"></span>';
         content += '<span><p class="location_address_counter">' + totalLocation + '</p></span>';
