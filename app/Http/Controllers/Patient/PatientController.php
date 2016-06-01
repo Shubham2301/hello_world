@@ -346,6 +346,9 @@ class PatientController extends Controller
                 $referralHistory = ReferralHistory::find($careconsole->referral_id);
                 if ($referralHistory == null) {
                     $referralHistory = new ReferralHistory;
+                    $referralHistory->save();
+                    $careconsole->referral_id = $referralHistory->id;
+                    $careconsole->save();
                 }
 
                 $referralHistory->referred_by_provider = $request->referred_by_provider;
