@@ -346,12 +346,14 @@ class PatientController extends Controller
             $careconsole = Careconsole::where('patient_id', '=', $id)->first();
             if ($careconsole) {
                 $referralHistory = ReferralHistory::find($careconsole->referral_id);
-                if ($referralHistory) {
-                    $referralHistory->referred_by_provider = $request->referred_by_provider;
-                    $referralHistory->referred_by_practice = $request->referred_by_practice;
-                    $referralHistory->network_id = session('network-id');
-                    $referralHistory->save();
+                if ($referralHistory == null) {
+                    $referralHistory = new ReferralHistory;
                 }
+
+                $referralHistory->referred_by_provider = $request->referred_by_provider;
+                $referralHistory->referred_by_practice = $request->referred_by_practice;
+                $referralHistory->network_id = session('network-id');
+                $referralHistory->save();
             }
 
             $action = 'update patient of id =' . $id;
