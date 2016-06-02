@@ -32,7 +32,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <span class="popover_text" data-content="Please fill all the required fields">
+                    <span class="popover_text" data-content="">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
         General Information</a>
                     </span>
@@ -43,7 +43,7 @@
                     <div class="row content-row-margin">
                         <div class="col-sm-6 col-xs-12">
                             {!! Form::text('Name', $data['name'] , array('class' => 'add_network_input', 'required' => 'required', 'name' => 'name', 'placeholder' => 'Network Name*', 'id' => 'name', 'data-toggle' => 'tooltip', 'title' => 'Network Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
-                            {!! Form::email('email', $data['email'], array('class' => 'add_network_input', 'name' => 'email', 'required' => 'required', 'placeholder' => 'Email*', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
+                            {!! Form::email('email', $data['email'], array('class' => 'add_network_input network_email_field', 'name' => 'email', 'required' => 'required', 'placeholder' => 'Email*', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
 							{!! Form::text('Phone', $data['phone'], array('class' => 'add_network_input', 'name' => 'phone', 'placeholder' => 'Phone', 'id' => 'phone', 'data-toggle' => 'tooltip', 'title' => 'Phone', 'data-placement' => 'right', 'pattern' => '[^A-Za-z]+', 'maxlength' => '20' )) !!}
                         </div>
 						<div class="col-sm-6 col-xs-12" style="color:#fff;">
@@ -62,7 +62,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <span class="popover_text" data-content="Please fill all the required fields">
+                    <span class="popover_text" data-content="">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
         Location Details</a>
                     </span>

@@ -1,6 +1,6 @@
 'use strict';
 $(document).ready(function () {
-    if(window.location.pathname != '/editprofile') {
+    if (window.location.pathname != '/editprofile') {
         loadAllUsers();
         getLandingPageByRole();
     }
@@ -89,18 +89,17 @@ $(document).ready(function () {
             }
         });
     });
-	$('#care-console').on('change', function(){
+    $('#care-console').on('change', function () {
 
-		if($('#care-console').prop('checked')){
-			var content = '<option value="'+landingPage['care-console'][0]+'" id="care-console_page">'+landingPage['care-console'][1]+'</option>';
-			$('#landing_page').append(content);
-		}
-		else{
+        if ($('#care-console').prop('checked')) {
+            var content = '<option value="' + landingPage['care-console'][0] + '" id="care-console_page">' + landingPage['care-console'][1] + '</option>';
+            $('#landing_page').append(content);
+        } else {
 
-			$("#landing_page>option[value='"+6+"']").remove();
-		}
+            $("#landing_page>option[value='" + 6 + "']").remove();
+        }
 
-	});
+    });
     $(document).keypress(function (e) {
         if (e.which == 13) {
             $("#search_user_button").trigger("click");
@@ -130,16 +129,16 @@ $(document).ready(function () {
             }
         });
     });
-	$('.user_listing').on('click', '.user_row_name', function(){
-		var id = $(this).closest('.search_item').attr('data-id');
-		showUserInfo(id)
-	});
-	$('.user_info').on('click','.user_back',function(){
-		$('.user_admin_index_header').removeClass('hide');
-		$('.user_listing').addClass('active');
-		$('.no_item_found').removeClass('active');
-		$('.user_info').removeClass('active');
-	});
+    $('.user_listing').on('click', '.user_row_name', function () {
+        var id = $(this).closest('.search_item').attr('data-id');
+        showUserInfo(id)
+    });
+    $('.user_info').on('click', '.user_back', function () {
+        $('.user_admin_index_header').removeClass('hide');
+        $('.user_listing').addClass('active');
+        $('.no_item_found').removeClass('active');
+        $('.user_info').removeClass('active');
+    });
 
 
 });
@@ -158,6 +157,7 @@ $(document).keypress(function (e) {
 });
 var flag = 0;
 var landingPage = [];
+
 function getCheckedID() {
     var id = [];
     $.each($("input[name='checkbox']:checked"), function () {
@@ -202,7 +202,7 @@ function getUsers(formData, page) {
     var scheduleimg = $('#dropdown_natural_img').val();
     var assign_role_image = $('#assign_role_image_path').val();
     var assign_user_image = $('#assign_user_image_path').val();
-	$('.user_admin_index_header').removeClass('hide');
+    $('.user_admin_index_header').removeClass('hide');
     $.ajax({
         url: '/users/search?page=' + page,
         type: 'GET',
@@ -291,13 +291,21 @@ function changePicture() {
 
 function checkForm() {
     var fields = $('.panel-body').find('.add_user_input');
+    var patt = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/gm;
     fields.each(function (field) {
         if ($(this).prop('required')) {
             if ($(this).val() == "") {
+                $($(this).parents('.panel-default').find('.popover_text')).attr('data-content', 'Please fill all the required fields');
                 $($(this).parents('.panel-default').find('.popover_text')).popover("show");
                 flag = 1;
                 return false;
             }
+        }
+        if ($(this).hasClass('user_email_field') && $(this).val() != "" && !patt.test($(this).val())) {
+            $($(this).parents('.panel-default').find('.popover_text')).attr('data-content', 'Please enter the email in correct format');
+            $($(this).parents('.panel-default').find('.popover_text')).popover("show");
+            flag = 1;
+            return false;
         }
     });
 }
@@ -313,7 +321,7 @@ function refreshPractices(networkID) {
             var practices = $.parseJSON(e);
             var practice_id;
             var content = '<option value="">Select Practice</option>';
-            for ( practice_id in practices ) {
+            for (practice_id in practices) {
                 content += '<option value="' + practice_id + '">' + practices[practice_id] + '</option>';
             }
             $('#user_practice').html(content);
@@ -328,38 +336,38 @@ function refreshPractices(networkID) {
 
 }
 
-function showUserInfo(id){
-	$.ajax({
-		url: '/users/show/'+id,
-		type: 'GET',
-		contentType: 'text/html',
-		async: false,
-		success: function (e) {
-		$('.user_admin_index_header').addClass('hide');
-		$('.user_listing').removeClass('active');
-		$('.no_item_found').removeClass('active');
-		$('.user_info').addClass('active');
-		$('.user_info').html(e);
-	},
-		   error: function error() {
-		$('p.alert_message').text('Error searching');
-		$('#alert').modal('show');
-	},
-		cache: false,
-			processData: false
-});
+function showUserInfo(id) {
+    $.ajax({
+        url: '/users/show/' + id,
+        type: 'GET',
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {
+            $('.user_admin_index_header').addClass('hide');
+            $('.user_listing').removeClass('active');
+            $('.no_item_found').removeClass('active');
+            $('.user_info').addClass('active');
+            $('.user_info').html(e);
+        },
+        error: function error() {
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
 
 }
 
-function getLandingPageByRole(){
-	$.ajax ({
-		url: '/getlandingpages',
-		cache: false,
-		processData: false,
-		contentType: false,
-		type: 'GET',
-		success: function (e) {
-		landingPage =$.parseJSON(e);
-		}
-	});
+function getLandingPageByRole() {
+    $.ajax({
+        url: '/getlandingpages',
+        cache: false,
+        processData: false,
+        contentType: false,
+        type: 'GET',
+        success: function (e) {
+            landingPage = $.parseJSON(e);
+        }
+    });
 }

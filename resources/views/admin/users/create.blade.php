@@ -52,7 +52,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <span class="popover_text" data-content="Please fill all the required fields">
+                                <span class="popover_text" data-content="">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
         Roles and User Access</a>
                                 </span>
@@ -93,7 +93,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <span class="popover_text" data-content="Please fill all the required fields">
+                                <span class="popover_text" data-content="">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
         General Information</a>
                                 </span>
@@ -124,7 +124,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading" >
                             <h4 class="panel-title">
-                                <span class="popover_text" data-content="Please fill all the required fields">
+                                <span class="popover_text" data-content="">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
             Direct Address and Password</a>
                                 </span>
@@ -134,8 +134,8 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::email('email', $user['email'], array('class' => ' add_user_input','required' => 'required', 'placeholder' => 'Email*', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
-                                        {!! Form::email('sesemail', $user['sesemail'], array('class' => ' add_user_input', 'placeholder' => 'SES Email', 'id' => 'ses_email', 'data-toggle' => 'tooltip', 'title' => 'SES Email', 'data-placement' => 'right')) !!}
+                                        {!! Form::email('email', $user['email'], array('class' => 'add_user_input user_email_field','required' => 'required', 'placeholder' => 'Email*', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
+                                        {!! Form::email('sesemail', $user['sesemail'], array('class' => 'add_user_input user_email_field', 'placeholder' => 'SES Email', 'id' => 'ses_email', 'data-toggle' => 'tooltip', 'title' => 'SES Email', 'data-placement' => 'right')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
 										{!! Form::password('password', array('class' => ' add_user_input', 'placeholder' => 'Password', 'id' => 'password', 'data-toggle' => 'tooltip', 'title' => 'Password', 'data-placement' => 'right', $user['password_required'] => $user['password_required'])) !!}
@@ -146,7 +146,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 no-padding">
+                <div class="col-xs-12 no-padding add_user_footer">
                     {!! Form::submit('Save', array('class' => 'btn add_user_submit_button')) !!}
                 </div>
             </form>

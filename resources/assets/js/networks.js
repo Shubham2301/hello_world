@@ -1,6 +1,6 @@
 'use strict';
 
-$(document).ready(function() {
+$(document).ready(function () {
     loadAllNetworks();
 
     $('.popover_text').popover({
@@ -10,7 +10,7 @@ $(document).ready(function() {
     $('.save_network_button').on('click', function () {
         checkForm();
     });
-    $('#search_network_button').on('click', function() {
+    $('#search_network_button').on('click', function () {
         var searchvalue = $('#search_network_input').val();
         $('.no_item_found > p:eq(1)').text(searchvalue);
         $('.no_item_found > p:eq(1)').css('padding-left', '4em');
@@ -26,46 +26,46 @@ $(document).ready(function() {
             loadAllNetworks();
         }
     });
-    $('.network_listing').on('click', '.editnetwork_from_row', function() {
+    $('.network_listing').on('click', '.editnetwork_from_row', function () {
         var val = $(this).parents('.search_item').attr('data-id');
         window.location = '/networks/edit/' + val + '';
     });
-    $('.network_listing').on('click', '.removenetwork_from_row', function() {
+    $('.network_listing').on('click', '.removenetwork_from_row', function () {
         var val = $(this).parents('.search_item').attr('data-id');
-        showModalConfirmDialog('Are you sure?', function(outcome) {
+        showModalConfirmDialog('Are you sure?', function (outcome) {
             if (outcome) {
                 removeNetwork(val);
                 $(this).parents('.search_item').remove();
             }
         });
     });
-    $('#dontsave_network').on('click', function() {
+    $('#dontsave_network').on('click', function () {
         $('.back-btn').trigger('click');
     });
-    $('#checked_all_networks').on('change', function() {
+    $('#checked_all_networks').on('change', function () {
         if ($(this).is(":checked")) {
-            $('.network_search_content').each(function() {
+            $('.network_search_content').each(function () {
                 $(this).find('input').prop('checked', true);
             });
         } else
-            $('.network_search_content').each(function() {
+            $('.network_search_content').each(function () {
                 $(this).find('input').prop('checked', false);
             });
     });
-    $('#refresh_networks').on('click', function() {
+    $('#refresh_networks').on('click', function () {
         $('#search_network_input').val('');
         loadAllNetworks();
     });
-    $('.network_search_content').on('mouseenter', '.action_dropdown', function() {
+    $('.network_search_content').on('mouseenter', '.action_dropdown', function () {
         $(this).attr('src', $('#dropdown_onhover_img').val());
     });
 
-    $('.network_search_content').on('mouseleave', '.action_dropdown', function() {
+    $('.network_search_content').on('mouseleave', '.action_dropdown', function () {
         $(this).attr('src', $('#dropdown_natural_img').val());
     });
 
 
-    $(document).keypress(function(e) {
+    $(document).keypress(function (e) {
         if (e.which == 13) {
             $("#search_network_button").trigger("click");
         }
@@ -104,29 +104,29 @@ function getNetworks(formData, page) {
             var content = '';
             $('#search_results').text('');
             if (networks.length > 0) {
-                networks.forEach(function(network) {
+                networks.forEach(function (network) {
                     content += '<div class="row search_item" data-id="' + network.id + '"><div class="col-xs-3 search_name"><input type="checkbox">&nbsp;&nbsp;<p>' + network.name + '</p></div>';
-                    if(network.email === '-' && network.phone === '-')
-                        content +='<div class="col-xs-3">' + network.email + '</div>';
+                    if (network.email === '-' && network.phone === '-')
+                        content += '<div class="col-xs-3">' + network.email + '</div>';
                     else
-                        content +='<div class="col-xs-3">' + network.email + '<br>' + network.phone + '</div>';
+                        content += '<div class="col-xs-3">' + network.email + '<br>' + network.phone + '</div>';
 
-                    if(network.addressline1 === '-' && network.addressline2 === '-')
-                        content +='<div class="col-xs-1"></div><div class="col-xs-3"><p>' + network.addressline1 + '</p></div>';
+                    if (network.addressline1 === '-' && network.addressline2 === '-')
+                        content += '<div class="col-xs-1"></div><div class="col-xs-3"><p>' + network.addressline1 + '</p></div>';
                     else
-                        content +='<div class="col-xs-1"></div><div class="col-xs-3"><p>' + network.addressline1 + '<br>' + network.addressline2 + '</p></div>';
+                        content += '<div class="col-xs-1"></div><div class="col-xs-3"><p>' + network.addressline1 + '<br>' + network.addressline2 + '</p></div>';
 
-                    content +='<div class="col-xs-2 search_edit"><p><div class="dropdown dropdown_action hide"><span  area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown" src="' + scheduleimg + '" alt=""></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p><p class="editnetwork_from_row arial_bold">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removenetwork_from_row"><img src="' + deleteimg + '" alt="" class="removenetwork_img" data-toggle="tooltip" title="Delete Network" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+                    content += '<div class="col-xs-2 search_edit"><p><div class="dropdown dropdown_action hide"><span  area-hidden="true" data-toggle="dropdown" class="dropdown-toggle"><img class="action_dropdown" src="' + scheduleimg + '" alt=""></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p><p class="editnetwork_from_row arial_bold">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removenetwork_from_row"><img src="' + deleteimg + '" alt="" class="removenetwork_img" data-toggle="tooltip" title="Delete Network" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                 });
                 $('.network_search_content').html(content);
                 $('.network_listing').addClass('active');
                 $('[data-toggle="tooltip"]').tooltip();
                 if ($('#checked_all_networks').is(":checked")) {
-                    $('.network_search_content').each(function() {
+                    $('.network_search_content').each(function () {
                         $(this).find('input').prop('checked', true);
                     });
                 }
-            }else{
+            } else {
                 $('.network_listing').removeClass('active');
                 $('.no_item_found').addClass('active');
             }
@@ -151,10 +151,10 @@ function loadAllNetworks() {
 }
 
 function showModalConfirmDialog(msg, handler) {
-    $('#network_listing').on('click', '.confirm_yes', function(evt) {
+    $('#network_listing').on('click', '.confirm_yes', function (evt) {
         handler(true);
     });
-    $('#network_listing').on('click', '.confirm_no', function(evt) {
+    $('#network_listing').on('click', '.confirm_no', function (evt) {
         handler(false);
     });
 
@@ -179,15 +179,25 @@ function removeNetwork(id) {
         processData: false
     });
 }
-function checkForm(){
+
+function checkForm() {
     var fields = $('.panel-body').find('.add_network_input');
+    var patt = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/gm;
     fields.each(function (field) {
         if ($(this).prop('required')) {
             if ($(this).val() == "") {
+                $($(this).parents('.panel-default').find('.popover_text')).attr('data-content', 'Please fill all the required fields');
                 $($(this).parents('.panel-default').find('.popover_text')).popover("show");
                 flag = 1;
                 return false;
             }
         }
+        if ($(this).hasClass('network_email_field') && $(this).val() != "" && !patt.test($(this).val())) {
+            $($(this).parents('.panel-default').find('.popover_text')).attr('data-content', 'Please enter the email in correct format');
+            $($(this).parents('.panel-default').find('.popover_text')).popover("show");
+            flag = 1;
+            return false;
+        }
+
     });
 }
