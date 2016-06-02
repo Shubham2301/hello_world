@@ -138,7 +138,7 @@
                                         {!! Form::email('sesemail', $user['sesemail'], array('class' => ' add_user_input', 'placeholder' => 'SES Email', 'id' => 'ses_email', 'data-toggle' => 'tooltip', 'title' => 'SES Email', 'data-placement' => 'right')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
-                                        {!! Form::password('password', array('class' => ' add_user_input', 'placeholder' => 'Password', 'id' => 'password', 'data-toggle' => 'tooltip', 'title' => 'Password', 'data-placement' => 'right')) !!}
+										{!! Form::password('password', array('class' => ' add_user_input', 'placeholder' => 'Password', 'id' => 'password', 'data-toggle' => 'tooltip', 'title' => 'Password', 'data-placement' => 'right', $user['password_required'] => $user['password_required'])) !!}
                                         {!! Form::password('password_confirmation', array('class' => ' add_user_input', 'placeholder' => 'Password Confirmation', 'id' => 'confirm_password', 'data-toggle' => 'tooltip', 'title' => 'Confirm Password', 'data-placement' => 'right')) !!}
                                     </div>
                                 </div>

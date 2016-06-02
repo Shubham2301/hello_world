@@ -89,7 +89,7 @@ class UserController extends Controller
         if (session('user-level') > 2) {
             $user['practice_id'] = User::getPractice(Auth::user()->id)->id;
         }
-
+		$user['password_required'] = 'required';
         return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data)->with('user', $user)->with('networks', $networkData)->with('menuoption', $menuData)->with('practices', $practices);
     }
 
@@ -281,7 +281,7 @@ class UserController extends Controller
             foreach ($networkPractices as $practice) {
                 $practices[$practice->id] = $practice->name;
             }
-
+			$user['password_required']='';
             return view('admin.users.create')->with('user', $user)->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels, 'menuoption' => $menuData])->with('data', $data)->with('networks', $networkData)->with('practices', $practices);
         }
     }
