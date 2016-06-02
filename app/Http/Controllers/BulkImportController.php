@@ -102,7 +102,10 @@ class BulkImportController extends Controller
             $importHistory->save();
 
             // $excels = Excel::load($request->file('patient_xlsx'))->get();
-            $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'))->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request) {
+            $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'), function($reader){
+                    $reader->setDateColumns(array('birthdate'));
+                    $reader->formatDates(true, 'Y-m-d');
+            })->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request) {
                 foreach ($results as $data) {
                     $patients = [];
                     if (array_filter($data->toArray())) {
