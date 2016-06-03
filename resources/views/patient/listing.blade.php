@@ -59,7 +59,7 @@
     <p>No results found matching :</p>
     <p></p>
 </div>
-<div class="row content-row-margin patient_info arial" data-id="">
+<div class="row content-row-margin patient_info arial {{array_key_exists('referraltype_id', $data) ? '' : 'side_padding' }}" data-id="">
 
 	@include('patient.patient_info')
 

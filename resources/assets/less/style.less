@@ -877,8 +877,9 @@ Section : Admin
     word-wrap: break-word;
 }
 .auto_scroll {
-    overflow-y: scroll;
+    overflow-y: auto;
     margin-bottom: 1em;
+    flex-grow: 1;
 }
 img.admin_seacrh_icon {
     width: 2em;
@@ -904,6 +905,11 @@ Mobile Styling
 ----------------------
 */
 
+.main_content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
 @media only screen and (max-width: 767px) {
     .main_collapsible_sidebar>li {
         margin: 0.5em 0 0 0;
