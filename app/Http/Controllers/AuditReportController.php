@@ -37,6 +37,7 @@ class AuditReportController extends Controller
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
+        $data['audit_report'] = true;
         return view('reporting.audit')->with('data', $data);
     }
 
