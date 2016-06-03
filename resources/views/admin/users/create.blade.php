@@ -66,7 +66,12 @@
                                         {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => ' add_user_input', 'placeholder' => 'Select User Levels*', 'id' => 'user_level', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'User Level', 'data-placement' => 'right')) !!}
 
                                         @if(session('user-level') == 1)
-                                            {!! Form::select('user_network', $networks, $user['network_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Network*', 'id' => 'user_network', 'data-toggle' => 'tooltip', 'title' => 'User Network', 'data-placement' => 'right', 'style' => ($user['network_id'] == '') ? 'display:none' : "display:inline-block")) !!}
+											@if($user['network_id'] == '')
+                                            {!! Form::select('user_network', $networks, $user['network_id'], array('class' => 'add_user_input', 'placeholder' => 'Select Network*', 'id' => 'user_network', 'data-toggle' => 'tooltip', 'title' => 'User Network', 'data-placement' => 'right', 'style' =>'display:none')) !!}
+                                            @else
+											<input type="hidden" value={{ $user['network_id'] }} name="user_network" />
+											{!! Form::text('non_editable_network', $networks[$user['network_id']], array('class' => ' add_user_input', 'placeholder' => '', 'id' => 'title' , 'data-toggle' => 'tooltip', 'title' => 'User Network', 'data-placement' => 'right', 'readonly')) !!}
+											@endif
                                             {!! Form::select('user_practice', [], $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'data-toggle' => 'tooltip', 'title' => 'User Practice', 'data-placement' => 'right', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
                                         @elseif(session('user-level') == 2)
                                             {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'data-toggle' => 'tooltip', 'title' => 'User Practice', 'data-placement' => 'right', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
