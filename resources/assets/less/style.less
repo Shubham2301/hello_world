@@ -646,22 +646,20 @@ Section : Admin Sidebar
     margin: 1em auto;
     justify-content: space-around;
     &>.admin_report_button {
-        .gradient(#f0f2f5, #e0e3e6);
+        background-color: #e3e3e3;
+        box-shadow: 0 0 5px #898989;
         border-radius: .4em;
         height: 5em;
         width: 5em;
         overflow: hidden;
         text-align: center;
         cursor: pointer;
-        box-shadow: 0 1px 1px #898989;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         &:hover {
-            background-color: #f0f2f5;
-            .gradient(#f0f2f5, #f0f2f5);
-            box-shadow: 0 1px 1px #898989;
+            background-color: #d2d3d5;
         }
         &>p {
             margin: 0;
@@ -674,8 +672,7 @@ Section : Admin Sidebar
         }
         &.active {
             background-color: #d2d3d5;
-            .gradient(#d2d3d5, #d2d3d5);
-            box-shadow: 0 1px 1px #d2d3d5;
+            box-shadow: none;
         }
     }
 }
