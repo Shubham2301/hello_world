@@ -79,6 +79,9 @@ class CareConsoleService
         $actionsData = [];
         $i = 0;
         foreach ($actions as $action) {
+            if(($action->id == 35 || $action->id == 36 || $action->id == 37 ) && session('network-id') == 1){
+                continue;
+            }
             $actionsData[$i]['id'] = $action->id;
             $actionsData[$i]['stage_id'] = $action->stage_id;
             $actionsData[$i]['name'] = $action->name;
