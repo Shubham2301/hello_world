@@ -15,6 +15,7 @@
     <div class="row no-margin">
 <!--        <div>-->
             <input type="hidden" value="{{$openView}}" id='current_view'>
+            <input type="hidden" value="{{$isEditable}}" id='parent_editable'>
             <div class="file_exchange_navbar">
                 <span class="file_exchange_navbar_content_left">
                     <span class="arial_bold page_title">{{ $active_link['title'] }}</span>

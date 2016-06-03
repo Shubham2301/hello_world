@@ -18,18 +18,26 @@ class File extends Model {
 	}
 
 	public static function getFiles($folder_id = 0, $active = 1) {
-
 		if ($folder_id == null) {
 			return File::where('status', '=', $active)
 				->where('creator_id', '=', Auth::user()->id)
 				->whereNull('folder_id')
 				->orderBy('title', 'asc')->get();
 		}
-
-		return File::where('status', '=', $active)
-			->where('creator_id', '=', Auth::user()->id)
+		$files =  File::where('status', '=', $active)
 			->where('folder_id', '=', $folder_id)
 			->orderBy('title', 'asc')->get();
+
+			$fileObj = new File;
+			$i = 0;
+			foreach ($files as $file) {
+			if(!$fileObj->checkShowStatus($file)){
+				$files->forget($i);
+			}
+			$i++;
+			}
+			return $files;
+
 	}
 
 	public function sharedWithUser($userId){
@@ -43,11 +51,20 @@ class File extends Model {
 			if($directShare->editable)
 				return true;
 		}
-
 		if($this->folder_id){
 			return Folder::find($this->folder_id)->isEditable();
 		}
 
 		return false;
+	}
+
+	public function checkShowStatus($file){
+			$userID = Auth::user()->id;
+			if($file->creator_id == $userID){
+				return true;
+			}
+			$folder  = Folder::find($file->folder_id);
+			$folderObj = new Folder;
+			return $folderObj->checkShowStatus($folder);
 	}
 }
