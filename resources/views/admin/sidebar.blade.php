@@ -101,13 +101,13 @@
             </a>
         </li>
         @endif
-        @if(1 >= Auth::user()->level)
-        <li class="admin_sidebar_menu_item">
-            <a class="files_sidebar_menu_item" href="/auditreports">
-                <span class="sidebar_img"><img src="{{URL::asset('images/sidebar/audit_icon.png')}}" style="width:90%;height:90%;"></span>
-                <span class="sidebar_title">Admin Reports</span>
-            </a>
-        </li>
-        @endif
     </ul>
+    @if(1 >= Auth::user()->level)
+    <div class="admin_report_button_container">
+        <a class="admin_report_button @if(isset($data)){{ array_key_exists('audit_report', $data) ? 'active' : '' }}@endif"  data-name="recall" style="color:black;text-decoration:none;" href="/auditreports">
+            <img src="{{URL::asset('images/sidebar/audit_icon.png')}}" alt="">
+            <p>Reports</p>
+        </a>
+    </div>
+    @endif
 </div>
