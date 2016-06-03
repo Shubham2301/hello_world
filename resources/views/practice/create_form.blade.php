@@ -26,7 +26,7 @@
                     <div class="col-sm-6 col-xs-12">
                         <input id="editmode" type="hidden" value="{{$data['id']}}">
                         <input id="location_index" type="hidden" value="{{$data['location_index']}}">
-                        {!! Form::text('practice_name', old('practice_name'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Name*', 'id' => 'practice_name' , 'data-toggle' => 'tooltip', 'title' => 'Practice Name', 'data-placement' => 'right')) !!}
+                        {!! Form::text('practice_name', old('practice_name'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Name*', 'id' => 'practice_name' , 'data-toggle' => 'tooltip', 'title' => 'Practice Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
                         {!! Form::text('practice_email', old('practice_email'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Email*', 'id' => 'practice_email', 'data-toggle' => 'tooltip', 'title' => 'Practice Email', 'data-placement' => 'right')) !!}
 
                     </div>

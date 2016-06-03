@@ -10,14 +10,18 @@
     </strong> {{ Session::pull('success') }}
 </div>
 @endif
-<div class="content-section active" style="min-height: 40vh;">
+<div class="content-section active">
+   <span class="files_head_section">
     <div class="row no-margin">
-        <div class="col-xs-offset-1">
+<!--        <div>-->
             <input type="hidden" value="{{$openView}}" id='current_view'>
             <div class="file_exchange_navbar">
                 <span class="file_exchange_navbar_content_left">
-                    <button id="" type="button" class="btn add-btn" data-toggle="modal" data-target="#newfolderModal">Add Folder</button>&nbsp;
-                    <button id="" type="button" class="btn add-doc-btn file_input" data-toggle="modal" data-target="#newfileModal">Add Document</button>
+                    <span class="arial_bold page_title">{{ $active_link['title'] }}</span>
+                    <span class="buttons">
+                        <button id="" type="button" class="btn add-btn" data-toggle="modal" data-target="#newfolderModal">Add Folder</button>&nbsp;
+                        <button id="" type="button" class="btn add-doc-btn file_input" data-toggle="modal" data-target="#newfileModal">Add Document</button>
+                    </span>
                 </span>
                 <span class="file_exchange_navbar_content_right">
                     <span class="file_exchange_button share-button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{URL::asset('images/sidebar/share-icon.png')}}" style="width:30px;"></span>
@@ -34,18 +38,20 @@
                 < sizeof($breadcrumbs); $i++) <span>&nbsp;>&nbsp;</span>
 			<a href="{{$accessLink}}?id={{ $breadcrumbs[$i]['id'] }}"> {{ $breadcrumbs[$i]['name'] }}</a> @endfor
             </div>
-        </div>
+<!--        </div>-->
     </div>
-    <div class="files">
         <div class="row arial_bold col_title">
-            <div class="col-xs-1"></div>
+            <div class="col-xs-1 no-padding"></div>
             <div class="col-xs-7 no-padding">Name</div>
             <div class="col-xs-2 no-padding">Modified by</div>
             <div class="col-xs-2 no-padding">Date Modified</div>
         </div>
-        <hr class="main"> @foreach($folderlist as $folder)
+        <hr class="main">
+    </span>
+    <div class="files">
+ @foreach($folderlist as $folder)
         <div class="row arial col_content no-margin">
-            <div class="col-xs-1" style="text-align: center;">
+            <div class="col-xs-1 no-padding" style="text-align: center;">
                 <input type="checkbox" class="checkbox file-exchange folder-check" style="display: inline;" data-id="{{ $folder['id'] }}" data-name="folder">
             </div>
             <div class="col-xs-7 no-padding">
@@ -72,7 +78,7 @@
         </div>
         <hr> @endforeach @foreach($filelist as $file)
         <div class="row arial col_content no-margin">
-            <div class="col-xs-1" style="text-align: center;">
+            <div class="col-xs-1 no-padding" style="text-align: center;">
                 <input type="checkbox" class="checkbox file-exchange file-check" name="checkbox" style="display: inline;" data-id="{{ $file['id'] }}" data-name="file">
             </div>
 			<div class="col-xs-7 no-padding"><img src="{{URL::asset('images/files-white.png')}}" style="width: 2em;margin:0 0.5em 0.25em 0.25em"><span id="{{ $file['id'] }}_file_name">{{ $file['name'] }}</span></div>

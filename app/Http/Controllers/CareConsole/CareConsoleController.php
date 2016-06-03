@@ -3,21 +3,22 @@
 namespace myocuhub\Http\Controllers\CareConsole;
 
 use Auth;
+use Event;
 use Illuminate\Http\Request;
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Action;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
+use myocuhub\Models\MessageTemplate;
+use myocuhub\Models\Practice;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
 use myocuhub\Services\CareConsoleService;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
-use myocuhub\Models\Practice;
-use Event;
-use myocuhub\Events\MakeAuditEntry;
 
 class CareConsoleController extends Controller {
 	/**
@@ -47,66 +48,6 @@ class CareConsoleController extends Controller {
 		$this->CareConsoleService->moveRecallPatientsToConsoleAsPending();
 		$overview = $this->getOverviewData();
 		return view('careconsole.index')->with('overview', $overview);
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function create() {
-
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function store(Request $request) {
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show($id) {
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit($id) {
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function update(Request $request, $id) {
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function destroy($id) {
-		//
 	}
 
 	/**
@@ -144,6 +85,11 @@ class CareConsoleController extends Controller {
 
 		$overview['network_practices'] = Network::find(session('network-id'))->practices;
 		$overview['appointment_types'] = $this->getAppointmentTypes();
+		
+		$overview['request_for_appointment']['email'] = MessageTemplate::getTemplate('email', 'request_for_appointment', $networkID);
+		$overview['request_for_appointment']['phone'] = MessageTemplate::getTemplate('phone', 'request_for_appointment', $networkID);
+		$overview['request_for_appointment']['sms'] = MessageTemplate::getTemplate('sms', 'request_for_appointment', $networkID);
+
 		return $overview;
 	}
 
@@ -195,7 +141,8 @@ class CareConsoleController extends Controller {
 		$manualAppointmentData['referredby_provider'] = $request->manual_referredby_provider;
 		$notes = $request->notes;
 		$consoleID = $request->console_id;
-		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $recallDate, $notes, $consoleID, $manualAppointmentData);
+		$message = $request->request_message;
+		$contactHistoryID = $this->ActionService->userAction($actionID, $actionResultID, $recallDate, $notes, $message, $consoleID, $manualAppointmentData);
 		$stage = CareConsole::find($consoleID)->stage;
 		$patientStage['id'] = $stage->id;
 		$patientStage['name'] = $stage->display_name;
@@ -279,7 +226,9 @@ class CareConsoleController extends Controller {
 		$bucketName = $request->bucket;
 		$bucket = CareconsoleStage::where('name', $bucketName)->first();
 		$bucketID = $bucket->id;
-		$listing = $this->CareConsoleService->getBucketPatientsListing($bucketID);
+		$sortField = $request->sort_field;
+		$sortOrder = $request->sort_order;
+		$listing = $this->CareConsoleService->getBucketPatientsListing($bucketID, $sortField, $sortOrder);
 		$actions = $this->CareConsoleService->getActions($bucketID);
 		$drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
 		$drilldown['listing_header'] = view('careconsole.listing_header')->with('listing', $listing)->render();
@@ -335,13 +284,6 @@ class CareConsoleController extends Controller {
 	}
 
 	public function getAppointmentTypes(){
-		$types = [];
-		$types['Annual Eye Exam'] 			= 'Annual Eye Exam';
-		$types['Comprehensive Eye Exam'] 	= 'Comprehensive Eye Exam';
-		$types['Diabetic Eye Exam'] 		= 'Diabetic Eye Exam';
-		$types['General Eye Exam'] 			= 'General Eye Exam';
-		$types['ABIorVTeval'] 				= 'ABIorVTeval';
-		$types['UnknownEncounterReschedule']= 'UnknownEncounterReschedule';
-		return $types;
+		return config('constants.appointment_types');
 	}
 }

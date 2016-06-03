@@ -1,5 +1,5 @@
 <div class="modal fade" id="newfolderModal" role="dialog">
-    <div class="modal-dialog form_model center">
+    <div class="modal-dialog alert">
         {!! Form::open(array('url' => 'createFolder', 'method' => 'POST', 'id'=>'create_folder')) !!}
         <div class="modal-content">
                 {!! csrf_field() !!}

@@ -102,7 +102,10 @@ class BulkImportController extends Controller
             $importHistory->save();
 
             // $excels = Excel::load($request->file('patient_xlsx'))->get();
-            $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'))->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request) {
+            $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'), function($reader){
+                    $reader->setDateColumns(array('birthdate'));
+                    $reader->formatDates(true, 'Y-m-d');
+            })->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request) {
                 foreach ($results as $data) {
                     $patients = [];
                     if (array_filter($data->toArray())) {
@@ -115,7 +118,7 @@ class BulkImportController extends Controller
 						$patients['firstname'] = isset($data['first_name']) ? $data['first_name'] : '';
 						$patients['lastname'] = isset($data['last_name']) ? $data['last_name'] : '';
                         $patients['lastfourssn'] = isset($data['ssn_last_digits']) ? $data['ssn_last_digits'] : null ;
-                        $patients['birthdate'] = isset($data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : '0000-00-00 00:00:00';
+						$patients['birthdate'] = (isset($data['birthdate'])&& $data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : '0000-00-00 00:00:00';
                         $patients['preferredlanguage'] = isset($data['language']) ? $data['language'] : '';
                         $patient = Patient::where($patients)->first();
 
@@ -126,7 +129,7 @@ class BulkImportController extends Controller
 						$patients['middlename'] = isset($data['middle_name']) ? $data['middle_name'] : '';
 
                         $patients['cellphone'] = isset($data['phone_number']) ? $data['phone_number'] : '';
-                        $patients['email'] = isset($data['email']) ? $data['email'] : '';
+                        $patients['email'] = filter_var($data['email'], FILTER_VALIDATE_EMAIL) ? $data['email'] : '';
                         $patients['addressline1'] = isset($data['address_1']) ? $data['address_1'] : '';
                         $patients['addressline2'] = isset($data['address_2']) ? $data['address_2'] : '';
                         $patients['city'] = isset($data['city']) ? $data['city'] : '';

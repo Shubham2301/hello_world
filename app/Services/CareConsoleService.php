@@ -119,7 +119,7 @@ class CareConsoleService
 
         if ($kpiName !== '' && isset($stageID)) {
             $patients = $this->KPIService->getPatients($kpiName, $networkID, $stageID);
-        } else if (isset($stageID)) {
+        } elseif (isset($stageID)) {
             $patients = Careconsole::getStagePatients($networkID, $stageID);
         }
 
@@ -140,6 +140,9 @@ class CareConsoleService
             $patientsData[$i]['console_id'] = $patient['id'];
             $patientsData[$i]['patient_id'] = $patient['patient_id'];
             $patientsData[$i]['priority'] = $patient['priority'];
+            $patientsData[$i]['patient_name'] = $this->getPatientFieldValue($patient, 'full-name');
+            $patientsData[$i]['patient_email'] = $this->getPatientFieldValue($patient, 'email');
+            $patientsData[$i]['patient_phone'] = $this->getPatientFieldValue($patient, 'phone');
             foreach ($fields as $field) {
                 $patientsData[$i][$field] = $this->getPatientFieldValue($patient, $field);
             }
@@ -170,7 +173,7 @@ class CareConsoleService
      * @param $stageID
      * @return mixed
      */
-    public function getBucketPatientsListing($stageID)
+    public function getBucketPatientsListing($stageID, $sortField = '', $sortOrder = '')
     {
         $userID = Auth::user()->id;
         $network = User::getNetwork($userID);
@@ -179,6 +182,12 @@ class CareConsoleService
         $headers = CareconsoleStage::find($stageID)->patientFields;
         $patients = $this->KPIService->getBucketPatients($networkID, $stageID);
 
+        if ($sortField == '') {
+            $sortField = 'full-name';
+        }
+        if ($sortOrder == '') {
+            $sortOrder = 'SORT_ASC';
+        }
         $headerData = [];
         $patientsData = [];
         $listing = [];
@@ -189,6 +198,9 @@ class CareConsoleService
             $headerData[$i]['display_name'] = $header['display_name'];
             $headerData[$i]['name'] = $header['name'];
             $headerData[$i]['width'] = $header['width'];
+            if ($header['name'] == $sortField) {
+                $headerData[$i]['sort_order'] = $sortOrder;
+            }
             array_push($fields, $header['name']);
             $i++;
         }
@@ -198,10 +210,17 @@ class CareConsoleService
             $patientsData[$i]['console_id'] = $patient['id'];
             $patientsData[$i]['patient_id'] = $patient['patient_id'];
             $patientsData[$i]['priority'] = $patient['priority'];
+            $patientsData[$i]['patient_name'] = $this->getPatientFieldValue($patient, 'full-name');
+            $patientsData[$i]['patient_email'] = $this->getPatientFieldValue($patient, 'email');
+            $patientsData[$i]['patient_phone'] = $this->getPatientFieldValue($patient, 'phone');
             foreach ($fields as $field) {
                 $patientsData[$i][$field] = $this->getPatientFieldValue($patient, $field);
             }
             $i++;
+        }
+        if ($sortField != '' && in_array($sortField, $fields)) {
+            $sortParams = [$sortField => $sortOrder];
+            $patientsData = $this->array_msort($patientsData, $sortParams);
         }
 
         $listing['patients'] = $patientsData;
@@ -239,7 +258,7 @@ class CareConsoleService
                 return $patient['lastname'] . ', ' . $patient['firstname'];
                 break;
             case 'phone':
-                return $patient['cellphone'];
+                return Patient::find($patient['patient_id'])->getPhone();
                 break;
             case 'request-received':
                 $date = new \DateTime($patient['created_at']);
@@ -283,6 +302,9 @@ class CareConsoleService
                 $lastScheduledTo .= $previousProvider['name'];
                 return $lastScheduledTo;
                 break;
+            case 'email':
+                return $patient['email'];
+                break;
             default:
                 return '-';
                 break;
@@ -299,7 +321,9 @@ class CareConsoleService
         $colarr = array();
         foreach ($cols as $col => $order) {
             $colarr[$col] = array();
-            foreach ($array as $k => $row) {$colarr[$col]['_' . $k] = strtolower($row[$col]);}
+            foreach ($array as $k => $row) {
+                $colarr[$col]['_' . $k] = strtolower($row[$col]);
+            }
         }
         $eval = 'array_multisort(';
         foreach ($cols as $col => $order) {
@@ -319,7 +343,6 @@ class CareConsoleService
             }
         }
         return $ret;
-
     }
 
     /**
