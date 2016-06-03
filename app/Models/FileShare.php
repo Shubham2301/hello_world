@@ -28,12 +28,12 @@ class FileShare extends Model
 		if(FolderShare::isParentShared($folderID)){
 			$files = File::where('folder_id', '=', $folderID)
 				->pluck('id');
-
 			$sharedFiles = [];
 			$i =0;
 			foreach($files as $id)
 			{
 				$sharedFiles[$i]['file_id'] = $id;
+				$i++;
 			}
 			return $sharedFiles;
 		}

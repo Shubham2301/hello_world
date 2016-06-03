@@ -37,7 +37,6 @@ class FileExchangeController extends Controller {
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
 		$folders = Folder::getFolders($request->id);
-
 		$folderlist = array();
 
 		$i = 0;
@@ -97,8 +96,9 @@ class FileExchangeController extends Controller {
         $active_link = array();
         $active_link['my_files'] = true;
         $active_link['title'] = 'My Files';
+        $isEditable =  true;
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'index', 'accessLink' => $accessLink, 'active_link' => $active_link]);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'index', 'accessLink' => $accessLink, 'active_link' => $active_link, 'isEditable'=> $isEditable ]);
 	}
 
 	public function folderDetails($folder_id = 0) {
@@ -128,7 +128,6 @@ class FileExchangeController extends Controller {
 
 	public function createFolder(Request $request) {
 		$parent_id = $request->parent_id;
-
 		$networkId = session('network-id');
 		$parent_treepath = "/" . $networkId . '/' . Auth::user()->id . "/";
 
@@ -258,7 +257,15 @@ class FileExchangeController extends Controller {
 		$userId = Auth::user()->id;
 
 		$sharedfolders = FolderShare::getSharedFoldersForUser($userId, $request->id);
+		$isEditable = false;
 
+    if($request->id != null && $request->id !='' )
+    {
+			$parentFolder = Folder::find($request->id);
+			if($parentFolder){
+    		$isEditable = $parentFolder->isEditable();
+    	}
+    }
 		$folderlist = array();
 
 		$i = 0;
@@ -353,7 +360,7 @@ class FileExchangeController extends Controller {
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'sharedWithMe', 'accessLink' => $accessLink, 'active_link' => $active_link]);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'sharedWithMe', 'accessLink' => $accessLink, 'active_link' => $active_link, 'isEditable'=> $isEditable]);
 	}
 
 	public function recentShareChanges(Request $request) {
@@ -466,8 +473,9 @@ class FileExchangeController extends Controller {
         $active_link = array();
         $active_link['trash'] = true;
         $active_link['title'] = 'Trash';
+        $isEditable = false;
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty, 'openView' => 'trash', 'accessLink' => $accessLink, 'active_link' => $active_link ]);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty, 'openView' => 'trash', 'accessLink' => $accessLink, 'active_link' => $active_link, 'isEditable' => $isEditable]);
 	}
 	public function shareFilesFolders(Request $request) {
 
@@ -600,6 +608,7 @@ class FileExchangeController extends Controller {
 			return($fileInfo);
 		}
 	}
+
 
 	public function changeDescription(Request $request) {
 		$id = $request->id;
