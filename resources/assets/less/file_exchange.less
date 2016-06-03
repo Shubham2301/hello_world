@@ -143,14 +143,10 @@ input[type=checkbox].file-exchange {
         flex-direction: row;
         padding: .5em 0;
         &>.left {
-            flex-basis: 0;
-            flex-grow: 1;
             display: inherit;
             justify-content: flex-start;
         }
         &>.right {
-            flex-basis: 0;
-            flex-grow: 3;
             display: inherit;
             justify-content: flex-start;
             &>input {
@@ -248,9 +244,29 @@ Mobile Styling
     .item_info {
         width: 100%;
     }
+    .modal-content>.modal_content_row {
+        &>.left {
+            flex-basis: 0;
+            flex-grow: 2;
+        }
+        &>.right {
+            flex-basis: 0;
+            flex-grow: 3;
+        }
+    }
 }
 @media only screen and (min-width: 767px) {
     .item_info {
         width: 35%;
+    }
+    .modal-content>.modal_content_row {
+        &>.left {
+            flex-basis: 0;
+            flex-grow: 1;
+        }
+        &>.right {
+            flex-basis: 0;
+            flex-grow: 3;
+        }
     }
 }

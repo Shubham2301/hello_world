@@ -1,4 +1,9 @@
 $(document).ready(function() {
+
+     if($('#parent_editable').val()){
+        $('.file_exchange_navbar_content_left>.buttons').addClass('active');
+    }
+
 	if ($('#current_view').val() === 'index'){
 		$('.file_exchange_navbar_content_left>.buttons').addClass('active');
 	}

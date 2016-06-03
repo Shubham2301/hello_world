@@ -15,7 +15,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <span class="popover_text" data-content="Please fill all the required fields">
+                <span class="popover_text" data-content="">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
                     Patient Information</a>
                 </span>
@@ -31,7 +31,7 @@
 
                         {!! Form::text('LastName', $data['lastname'], array('class' => 'add_patient_input', 'name' => 'lastname', 'placeholder' => 'Last Name*', 'id' => 'last_name','required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Last Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
 
-                        {!! Form::email('email', $data['email'], array('class' => 'add_patient_input', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
+                        {!! Form::email('email', $data['email'], array('class' => 'add_patient_input patient_email_field', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
 
                         <span class="patient_phone_input">
 							{!! Form::text('cellphone', $data['cellphone'], array('class' => 'add_patient_input phone_visible', 'name' => 'cellphone', 'placeholder' => 'Cellphone', 'id' => 'phone', 'data-toggle' => 'tooltip', 'title' => 'Cellphone', 'data-placement' => 'right', 'pattern' => '[^A-Za-z]+', 'maxlength' => '20')) !!}
@@ -57,7 +57,7 @@
                             <option value="F">Female</option>
                         </select>
 -->
-                        {!! Form::select('gender', $gender, $data['gender'], array('class' => 'add_patient_input', 'placeholder' => 'Gender*', 'id' => 'gender', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Gender', 'data-placement' => 'right')) !!} {!! Form::text('DateOfBirth', $data['birthdate'], array('class' => 'add_patient_input', 'name' => 'birthdate', 'placeholder' => 'Date of Birth', 'id' => 'dob', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Date of Birth', 'data-placement' => 'right')) !!} {!! Form::text('last_4_ssn', $data['lastfourssn'], array('class' => 'add_patient_input', 'name' => 'lastfourssn', 'placeholder' => 'Last 4 SSN', 'id' => 'last_4_ssn', 'data-toggle' => 'tooltip', 'title' => 'Last 4 SSN', 'data-placement' => 'right', 'maxlength' => '4')) !!}
+                        {!! Form::select('gender', $gender, $data['gender'], array('class' => 'add_patient_input', 'placeholder' => 'Gender*', 'id' => 'gender', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Gender', 'data-placement' => 'right')) !!} {!! Form::text('DateOfBirth', $data['birthdate'], array('class' => 'add_patient_input', 'name' => 'birthdate', 'placeholder' => 'Date of Birth*', 'id' => 'dob', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Date of Birth', 'data-placement' => 'right')) !!} {!! Form::text('last_4_ssn', $data['lastfourssn'], array('class' => 'add_patient_input', 'name' => 'lastfourssn', 'placeholder' => 'Last 4 SSN', 'id' => 'last_4_ssn', 'data-toggle' => 'tooltip', 'title' => 'Last 4 SSN', 'data-placement' => 'right', 'maxlength' => '4')) !!}
                         <!--
                         <select name="preferredlanguage" id="preferredlanguage" required class="add_patient_input">
                             <option value="">Select Language*</option>
@@ -74,7 +74,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <span class="popover_text" data-content="Please fill all the required fields">
+                <span class="popover_text" data-content="">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
                     Patient Address</a>
                 </span>
@@ -93,7 +93,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <span class="popover_text" data-content="Please fill all the required fields">
+                <span class="popover_text" data-content="">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
                     Referring Details</a>
                 </span>
