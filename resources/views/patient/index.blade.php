@@ -61,6 +61,11 @@
         </div>
         @include('patient.import_ccda')
         @include('patient.compare_ccda')
+		<button id="show_4pc_model" style="display:none" data-toggle="modal" data-target="#field_Modal_4PC" >show</button>
+
+        <div id="model_4pc_view">
+
+        </div>
     </div>
 
 

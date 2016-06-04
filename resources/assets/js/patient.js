@@ -104,7 +104,12 @@ $(document).ready(function () {
     });
     $('#select_provider_button').on('click', function () {
         var id = $(this).attr('data-id');
+		if(fields4PC.length > 0){
+			$('#show_4pc_model').trigger('click');
+		}
+		else{
         selectProvider(id);
+		}
     });
     $('#add_search_option').on('click', function () {
         var type = $('#search_patient_input_type').attr('value');
@@ -292,6 +297,11 @@ $(document).ready(function () {
         }
     });
 
+	$('#model_4pc_view').on('click', '.save_4pcdata', function(){
+		$('.patient_id_4pc').val($('#select_provider_button').attr('data-id'));
+		save4pcRequiredFields();
+	});
+
 });
 var flag = 0;
 var showpage = 1;
@@ -299,6 +309,7 @@ var lastPage = 0;
 var toCall = 0;
 var searchType = 'all';
 var searchValue = '';
+var fields4PC = null;
 $(document).click(function () {
     if (flag == 0) {
         $('.popover_text').popover("hide");
@@ -356,10 +367,15 @@ function showPatientInfo(data) {
     $('.patient_section').show();
     fillPatientData(data);
     $('.patient_table_content').removeClass('active');
+	fields4PC = data.validated4pc_data;
+	$('#model_4pc_view').html(data.validated4pc_data);
+	$('.field_date').datetimepicker({
+	});
+alert('hello');
+	$('.dismiss_button').trigger('click');
 }
 
 function getPatientInfo(formData) {
-
     $.ajax({
         url: '/patients/show',
         type: 'GET',
@@ -574,4 +590,26 @@ function checkForm() {
             return false;
         }
     });
+}
+
+function save4pcRequiredFields(){
+	var myform = document.getElementById("form_4pc_field");
+	var fd = new FormData(myform);
+	$.ajax({
+		url: "/updatepatientdata",
+		data: fd,
+		cache: false,
+		processData: false,
+		contentType: false,
+		type: 'POST',
+		success: function success(e) {
+			  var info = $.parseJSON(e);
+              console.log(info);
+                if (info.result === true) {
+                showPatientInfo(info.patient_data);
+                }
+            return;
+		}
+	});
+
 }
