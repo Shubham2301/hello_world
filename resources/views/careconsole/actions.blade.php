@@ -16,7 +16,7 @@
                             <input type="hidden" value="" name="console_id" id="action_console_id">
                             <input type="hidden" value="" name="stage_id" id="action_stage_id">
                             <div class="col-md-4 form-group">
-                                <lable for="action_result_id"><strong style="color:black;padding-left:1em;">Result</strong></lable>
+                                <lable for="action_result_id"><span class="arial_bold" style="color:black;padding-left:1em;">Result</span></lable>
                             </div>
                             <div class="col-md-7 form-group">
                                 <select class="form-control" name="action_result_id" id="action_result_id"></select>
@@ -25,7 +25,7 @@
                         </div>
                         <div class="row input_row" id="form_recall_date">
                             <div class="col-md-4 form-group">
-                                <label for="recall_date"><strong style="color:black;padding-left:1em;">Recall date</strong></label>
+                                <label for="recall_date"><span class="arial_bold" style="color:black;padding-left:1em;">Recall date</span></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <input type="text" class="form-control" name="recall_date" id="recall_date" rows="5">
@@ -34,7 +34,7 @@
                         </div>
                         <div class="row input_row" id="form_manual_referredby_details" style="display: none;">
                             <div class="col-md-4 form-group">
-                                <label for="manual_appointment_date"><strong style="color:black;padding-left:1em;">Referred By</strong></label>
+                                <label for="manual_appointment_date"><span class="arial_bold" style="color:black;padding-left:1em;">Referred By</span></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <div class="row">
@@ -55,7 +55,7 @@
                         </div>
                         <div class="row input_row" id="form_manual_appointment_date" style="display: none;">
                             <div class="col-md-4 form-group">
-                                <label for="manual_appointment_date"><strong style="color:black;padding-left:1em;">Appointment Date</strong></label>
+                                <label for="manual_appointment_date"><span class="arial_bold" style="color:black;padding-left:1em;">Appointment Date</span></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <input type="text" class="form-control" name="manual_appointment_date" id="manual_appointment_date">
@@ -65,7 +65,7 @@
 
                         <div class="row input_row" id="form_manual_appointment_practice" style="display:none">
                             <div class="col-md-4 form-group">
-                                <label for="manual_appointment_date"><strong style="color:black;padding-left:1em;">Practice</strong></label>
+                                <label for="manual_appointment_date"><span class="arial_bold" style="color:black;padding-left:1em;">Practice</span></label>
                             </div>
                             <div class="col-md-7 form-group">
 
@@ -83,7 +83,7 @@
 
                         <div class="row input_row" id="form_manual_appointment_provider" style="display:none">
                             <div class="col-md-4 form-group">
-                                <label for="manual_appointment_provider"><strong style="color:black;padding-left:1em;">Provider</strong></label>
+                                <label for="manual_appointment_provider"><span class="arial_bold" style="color:black;padding-left:1em;">Provider</span></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <select class="form-control" name="manual_appointment_provider" id="manual_appointment_provider"></select>
@@ -93,7 +93,7 @@
 
                         <div class="row input_row" id="form_manual_appointment_location" style="display:none">
                             <div class="col-md-4 form-group">
-                                <label for="manual_appointment_location"><strong style="color:black;padding-left:1em;">Location</strong></label>
+                                <label for="manual_appointment_location"><span class="arial_bold" style="color:black;padding-left:1em;">Location</span></label>
                             </div>
                             <div class="col-md-7 form-group">
 
@@ -105,7 +105,7 @@
 
                         <div class="row input_row" id="form_manual_appointment_appointment_type" style="display:none">
                             <div class="col-md-4 form-group">
-                                <label for="manual_appointment_location"><strong style="color:black;padding-left:1em;">Appointment Type</strong></label>
+                                <label for="manual_appointment_location"><span class="arial_bold" style="color:black;padding-left:1em;">Appointment Type</span></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <select class="form-control" name="manual_appointment_appointment_type" id="manual_appointment_appointment_type">
@@ -120,7 +120,7 @@
                         </div>
                         <div class="row input_row" id="form_manual_custom_appointment_appointment_type" style="display:none">
                             <div class="col-md-4 form-group">
-                                <label for="manual_appointment_location"><strong style="color:black;padding-left:1em;">&nbsp;</strong></label>
+                                <label for="manual_appointment_location"><span class="arial_bold" style="color:black;padding-left:1em;">&nbsp;</span></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <input type="text" class="form-control" name="manual_custom_appointment_appointment_type" id="manual_custom_appointment_appointment_type" placeholder="Custom Appointment Type">
@@ -131,7 +131,7 @@
 
                         <div class="row input_row" id="form_action_notes">
                             <div class="col-md-4 form-group">
-                                <label for="action_notes"><strong style="color:black;padding-left:1em;">Notes</strong></label>
+                                <label for="action_notes"><span class="arial_bold" style="color:black;padding-left:1em;">Notes</span></label>
                             </div>
                             <div class="col-md-7 form-group">
                                 <textarea class="form-control" name="action_notes" id="action_notes" rows="5"></textarea>
@@ -142,8 +142,8 @@
                             <div class="row input_row">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-2 form-group">
-                                    <p><strong style="color:black;padding-left:1em;">To</strong></p>
-                                    <p><strong style="color:black;padding-left:1em;">Subject</strong></p>
+                                    <p><span class="arial_bold" style="color:black;padding-left:1em;">To</span></p>
+                                    <p><span class="arial_bold" style="color:black;padding-left:1em;">Subject</span></p>
                                 </div>
                                 <div class="col-md-7 form-group">
                                     <p style="color:black;" class="form_action_patient_email_id"></p>
