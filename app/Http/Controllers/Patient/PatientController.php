@@ -200,13 +200,11 @@ class PatientController extends Controller
             'result' => false,
             'patient_data' => $patientData
         ];
-
         try {
             $patient = Patient::findOrFail($id);
         } catch (Exception $e) {
             return json_encode($response);
         }
-        
         $careconsole = Careconsole::where('patient_id', '=', $id)->first();
         $insurance = PatientInsurance::where('patient_id', '=', $id)->first(['insurance_carrier']);
         $previousProvider = Patient::getPreviousProvider($id);
@@ -262,10 +260,8 @@ class PatientController extends Controller
         }
 
         $validated4PCData = $this->validate4PCData($id);
-
+        $patientData['count_validated4pc_data'] = sizeof($validated4PCData);
         $patientData['validated4pc_data'] = view('patient.field_model_4pc')->with('fields_4PC', $validated4PCData)->render();
-
-
         $response = [
             'result' => true,
             'patient_data' => $patientData
@@ -482,38 +478,30 @@ class PatientController extends Controller
         return $patientID;
     }
 
-    public function validate4PCData($patientId){
-    $patient = Patient::find($patientId);
-    $tempFields = config('constants.4pcMandatory_fields');
-    $fields = $tempFields;
+    public function validate4PCData($patientId)
+    {
+        $patient = Patient::find($patientId);
+        $tempFields = config('constants.4pcMandatory_fields');
+        $fields = $tempFields;
 
-    foreach ($tempFields as $key => $field) {
-
-        if($field['type'] == 'field_date')
-        {
-            ($patient[$field['field_name']] && (bool)strtotime($patient[$field['field_name']])) ? array_forget($fields, $key):'';
+        foreach ($tempFields as $key => $field) {
+            if ($field['type'] == 'field_date') {
+                ($patient[$field['field_name']] && (bool)strtotime($patient[$field['field_name']])) ? array_forget($fields, $key):'';
+            } elseif ($patient[$field['field_name']]) {
+                array_forget($fields, $key);
+            }
         }
-        else if($patient[$field['field_name']])
-       {
-         array_forget($fields, $key);
-       }
-    }
-    return $fields;
+        return $fields;
     }
 
 
-public function update4PCRequiredData(Request $request){
-$data = $request->all();
-$patientID =  $request->patientId;
-//$patientID =  4;
-unset($data['patientId']);
-$updatePatient = Patient::where('id', $patientID)->update($data);
-$data = [];
-//$request->input('id') = $patientID;
-$data['patientId'] = $request->patientId;
-$request->request->add(['id'=> $patientID]);
-//dd($request->all());
-$data = $this->show($request);
-return json_encode($data);
-}
+    public function update4PCRequiredData(Request $request)
+    {
+        $data = $request->all();
+        $patientID =  $request->patientId;
+        unset($data['patientId']);
+        $updatePatient = Patient::where('id', $patientID)->update($data);
+        $request->request->add(['id'=> $patientID]);
+        return $this->show($request);
+    }
 }
