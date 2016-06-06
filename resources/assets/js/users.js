@@ -18,6 +18,11 @@ $(document).ready(function () {
         checkForm();
     });
 
+    $("#form_add_users").submit(function (event) {
+        if(!checkForm())
+            event.preventDefault();
+    });
+
     $('#user_level').on('change', function () {
         if ($(this).val() == 3) {
             $('#user_practice').show();
@@ -308,6 +313,9 @@ function checkForm() {
             return false;
         }
     });
+
+    if(flag == 0)
+        return true;
 }
 
 function refreshPractices(networkID) {

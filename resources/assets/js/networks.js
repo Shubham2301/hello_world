@@ -10,6 +10,11 @@ $(document).ready(function () {
     $('.save_network_button').on('click', function () {
         checkForm();
     });
+
+    $("#form_add_networks").submit(function (event) {
+        if(!checkForm())
+            event.preventDefault();
+    });
     $('#search_network_button').on('click', function () {
         var searchvalue = $('#search_network_input').val();
         $('.no_item_found > p:eq(1)').text(searchvalue);
@@ -198,6 +203,7 @@ function checkForm() {
             flag = 1;
             return false;
         }
-
     });
+    if(flag == 0)
+        return true;
 }

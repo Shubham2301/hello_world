@@ -46,7 +46,7 @@
             </span>
         </div>
         <div class="col-xs-12">
-            <form method="POST" action="{{$data['url']}}">
+            <form method="POST" action="{{$data['url']}}" id="form_add_users">
                 {!! csrf_field() !!} {{ method_field('POST') }}
                 <div class="panel-group accordian_margin" id="accordion">
                     <div class="panel panel-default">
