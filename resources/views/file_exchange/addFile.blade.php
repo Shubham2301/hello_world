@@ -7,7 +7,7 @@
                 <span class="modal_content_row">
                     <span class="left">Name</span>
 
-                    <span class="right"><input type="text" name="filename"></span>
+                    <span class="right"><input type="text" name="filename" required></span>
                 </span>
                 <span class="modal_content_row">
                     <span class="left">Description</span>
