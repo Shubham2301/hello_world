@@ -335,9 +335,6 @@ class ProviderController extends Controller
         foreach ($suggestions as $key => $value) {
             $data[$i]= $value;
             $i++;
-            if ($i > 5) {
-                break;
-            }
         }
         return json_encode($data);
     }
