@@ -39,7 +39,7 @@
 							</div>
 							<div class="col-xs-11 search_result_row_text">
 								<p class="result_title arial_bold result_name">Allen Rovenstine</p>
-								<p class="result_title arial_bold scheduled_name"><strong>Contact stage</p>
+                                <p class="result_title arial_bold scheduled_name"><strong>Contact stage</strong></p>
 							</div>
 						</div>
 					</div>

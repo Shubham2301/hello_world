@@ -12,6 +12,11 @@ $(document).ready(function () {
         getPatientInfo(formData);
     }
 
+    $("#form_add_patients").submit(function (event) {
+        if(!checkForm())
+            event.preventDefault();
+    });
+
     $('#dob').datetimepicker({
         format: 'MM/DD/YYYY',
         maxDate: new Date(),
@@ -104,7 +109,11 @@ $(document).ready(function () {
     });
     $('#select_provider_button').on('click', function () {
         var id = $(this).attr('data-id');
-        selectProvider(id);
+        if (unfill4pcFields > 0) {
+            $('#show_4pc_model').trigger('click');
+        } else {
+            selectProvider(id);
+        }
     });
     $('#add_search_option').on('click', function () {
         var type = $('#search_patient_input_type').attr('value');
@@ -292,6 +301,11 @@ $(document).ready(function () {
         }
     });
 
+    $('#model_4pc_view').on('click', '.save_4pcdata', function () {
+        $('.patient_id_4pc').val($('#select_provider_button').attr('data-id'));
+        save4pcRequiredFields();
+    });
+
 });
 var flag = 0;
 var showpage = 1;
@@ -299,6 +313,8 @@ var lastPage = 0;
 var toCall = 0;
 var searchType = 'all';
 var searchValue = '';
+var unfill4pcFields = null;
+
 $(document).click(function () {
     if (flag == 0) {
         $('.popover_text').popover("hide");
@@ -356,10 +372,17 @@ function showPatientInfo(data) {
     $('.patient_section').show();
     fillPatientData(data);
     $('.patient_table_content').removeClass('active');
+    unfill4pcFields = data.count_validated4pc_data;
+    $('#model_4pc_view').html('');
+    $('#model_4pc_view').html(data.validated4pc_data);
+    $('.field_date').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+
+    $('.modal-backdrop').remove();
 }
 
 function getPatientInfo(formData) {
-
     $.ajax({
         url: '/patients/show',
         type: 'GET',
@@ -557,7 +580,7 @@ function showModalConfirmDialog(msg, handler) {
 
 function checkForm() {
     var fields = $('.panel-body').find('.add_patient_input');
-    var patt = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
+    var patt = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/g;
     fields.each(function (field) {
         if ($(this).prop('required')) {
             if ($(this).val() == "") {
@@ -572,6 +595,27 @@ function checkForm() {
             $($(this).parents('.panel-default').find('.popover_text')).popover("show");
             flag = 1;
             return false;
+        }
+    });
+    if(flag == 0)
+        return true;
+}
+
+function save4pcRequiredFields() {
+    var myform = document.getElementById("form_4pc_field");
+    var fd = new FormData(myform);
+    $.ajax({
+        url: "/updatepatientdata",
+        data: fd,
+        cache: false,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function success(e) {
+            var info = $.parseJSON(e);
+            if (info.result === true) {
+                showPatientInfo(info.patient_data);
+            }
         }
     });
 }
