@@ -47,7 +47,7 @@ $(document).ready(function () {
         var practice_name = $('#practice_name').val();
 
         var patt = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-        if (practice_name != '' && $('#practice_email').val() != '') {
+        if (practice_name != '' && $('#practice_email').val() != '' && $('#practice_network').val() != '') {
 
             if (patt.test($('#practice_email').val())) {
 
@@ -60,7 +60,8 @@ $(document).ready(function () {
                     formdata.push({
                         "practice_name": $('#practice_name').val(),
                         "locations": locations,
-                        "practice_email": $('#practice_email').val()
+                        "practice_email": $('#practice_email').val(),
+                        "practice_network": $('#practice_network').val()
                     });
                     setNewLocationField();
                     locations = [];
@@ -73,7 +74,8 @@ $(document).ready(function () {
                         "practice_id": practice_id,
                         "practice_name": $('#practice_name').val(),
                         "locations": locations,
-                        "practice_email": $('#practice_email').val()
+                        "practice_email": $('#practice_email').val(),
+                        "practice_network": $('#practice_network').val()
                     });
                     updatePracticedata(formdata);
 
@@ -84,8 +86,13 @@ $(document).ready(function () {
             }
 
         } else {
-            $('p.alert_message').text('practice name or practice email is missing');
-            $('#alert').modal('show');
+            if ($('#practice_network').val() != '') {
+                $('p.alert_message').text('Practice name or practice email is missing');
+                $('#alert').modal('show');
+            } else {
+                $('p.alert_message').text('Please select a network for practice');
+                $('#alert').modal('show');
+            }
         }
     });
     $('#dontsave_new_practice').on('click', function () {

@@ -41,6 +41,7 @@
 
     </div>
 </div>
+<div id="model_4pc_view"></div>
 @else
 <div class="content-section active side_padding">
     <div class="row content-row-margin top_margin patient_admin_index_header active">

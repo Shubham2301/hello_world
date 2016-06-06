@@ -32,4 +32,17 @@ return [
 		'ABIorVTeval',
 		'UnknownEncounterReschedule',
 	],
+  '4pcMandatory_fields' => [
+      'email' => [
+        'display_name' => 'Email',
+        'field_name'  => 'email',
+        'type' => 'field_text'
+      ],
+      'birthdate' => [
+        'display_name' => 'Date of Birth',
+        'field_name'  => 'birthdate',
+        'type' => 'field_date'
+      ]
+  ],
+
 ];
