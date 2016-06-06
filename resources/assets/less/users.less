@@ -400,3 +400,11 @@ input[type=checkbox]{
 p.subsection_header {
     margin: 0;
 }
+
+.non_selectable_field {
+	&:focus {
+		border: 2px solid @font-color-4;
+		color: #fff;
+		box-shadow: none;
+	}
+}
