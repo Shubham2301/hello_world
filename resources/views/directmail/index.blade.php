@@ -168,8 +168,6 @@
                 return result;
             }, {});
 
-            //show(result);
-
             if (!result.error) {
                 if (result.state !== localStorage["state"]) {
                     //show("invalid state");
@@ -181,33 +179,23 @@
         }
 
         function getToken() {
-            //clear();
             document.getElementById('loadingImg').style.display = 'block';
-            //document.getElementById('newWindowMsg').style.display = 'block';
-            //setTimeout(updateTimer,1000);
             var xhr = new XMLHttpRequest();
             xhr.onload = function (e) {
                 if (xhr.status >= 400) {
-                    /* show({
-                                          status: xhr.status,
-                                          statusText: xhr.statusText,
-                                          wwwAuthenticate: xhr.getResponseHeader("WWW-Authenticate")
-                                      });*/
                     document.getElementById('loadingImg').style.display = 'none';
                     document.getElementById('newWindowMsg').style.display = 'none';
                     document.getElementById('errorMsgTxt').style.display = 'block';
                 } else {
                     var result = JSON.parse(xhr.response);
-                    //	show(result);
                     document.getElementById('loadingImg').style.display = 'none';
                     submitform(result.id_token);
-                    //	document.getElementById('newWindowMsg').style.display = 'none';
                 }
             };
             xhr.onerror = function (e) {
                 document.getElementById('errorMsgTxt').style.display = 'block';
                 console.log(e, xhr);
-                //show({ error: "unknown http error" });
+                logError('\n'+e);
             };
 
             xhr.open("POST", "{{ $ses['token_url'] }}", true);
