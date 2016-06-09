@@ -4,6 +4,7 @@
 
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/directmail.css')}}">
+<script type="text/javascript" src="{{elixir('js/sesconnect.js')}}"></script>
 @endsection
 
 @section('sidebar')
