@@ -154,7 +154,7 @@
                             <div class="row input_row">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-10 form-group">
-                                    <textarea class="form-control" name="request_email" id="request_email" rows="5">{{ $overview['request_for_appointment']['email'] }}</textarea>
+                                    <textarea class="form-control" name="request_email" id="request_email" rows="8">{{ $overview['request_for_appointment']['email'] }}</textarea>
                                 </div>
                                 <div class="col-md-1"></div>
                             </div>
@@ -172,8 +172,8 @@
                             </div>
                             <div class="row input_row">
                                 <div class="col-md-1"></div>
-                                <div class="col-md-10 form-group">
-                                    <textarea class="form-control" name="request_phone" id="request_phone" rows="5">{{ $overview['request_for_appointment']['phone'] }}</textarea>
+                                <div class="col-md-10 form-group" style="padding:0">
+                                    <p class="" style="color: rgba(0,0,0,0.8);border: solid 1px #eaeaea;padding: 1em;" name="request_phone" id="request_phone">{{ $overview['request_for_appointment']['phone'] }}</p>
                                 </div>
                                 <div class="col-md-1"></div>
                             </div>
@@ -192,7 +192,7 @@
                             <div class="row input_row">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-10 form-group">
-                                    <textarea class="form-control" name="request_sms" id="request_sms" rows="5">{{ $overview['request_for_appointment']['sms'] }}</textarea>
+                                    <textarea class="form-control" name="request_sms" id="request_sms" rows="8">{{ $overview['request_for_appointment']['sms'] }}</textarea>
                                 </div>
                                 <div class="col-md-1"></div>
                             </div>
