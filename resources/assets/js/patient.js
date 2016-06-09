@@ -108,12 +108,9 @@ $(document).ready(function () {
         $('.patient_admin_back').removeClass('active');
     });
     $('#select_provider_button').on('click', function () {
-        var id = $(this).attr('data-id');
-        if (unfill4pcFields > 0) {
-            $('#show_4pc_model').trigger('click');
-        } else {
-            selectProvider(id);
-        }
+         var id = $(this).attr('data-id');
+         selectProvider(id);
+
     });
     $('#add_search_option').on('click', function () {
         var type = $('#search_patient_input_type').attr('value');
@@ -301,10 +298,6 @@ $(document).ready(function () {
         }
     });
 
-    $('#model_4pc_view').on('click', '.save_4pcdata', function () {
-        $('.patient_id_4pc').val($('#select_provider_button').attr('data-id'));
-        save4pcRequiredFields();
-    });
 
 });
 var flag = 0;
@@ -313,7 +306,6 @@ var lastPage = 0;
 var toCall = 0;
 var searchType = 'all';
 var searchValue = '';
-var unfill4pcFields = null;
 
 $(document).click(function () {
     if (flag == 0) {
@@ -372,14 +364,6 @@ function showPatientInfo(data) {
     $('.patient_section').show();
     fillPatientData(data);
     $('.patient_table_content').removeClass('active');
-    unfill4pcFields = data.count_validated4pc_data;
-    $('#model_4pc_view').html('');
-    $('#model_4pc_view').html(data.validated4pc_data);
-    $('.field_date').datetimepicker({
-        format: 'YYYY-MM-DD'
-    });
-
-    $('.modal-backdrop').remove();
 }
 
 function getPatientInfo(formData) {
@@ -601,21 +585,3 @@ function checkForm() {
         return true;
 }
 
-function save4pcRequiredFields() {
-    var myform = document.getElementById("form_4pc_field");
-    var fd = new FormData(myform);
-    $.ajax({
-        url: "/updatepatientdata",
-        data: fd,
-        cache: false,
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function success(e) {
-            var info = $.parseJSON(e);
-            if (info.result === true) {
-                showPatientInfo(info.patient_data);
-            }
-        }
-    });
-}
