@@ -9,10 +9,12 @@
             @if(isset($data['email'])) Edit Patient @else Add New Patient @endif
         </p>
     </div>
+    @if(!$data['id'])
 	{!! Form::open(array('url' => '#', 'method' => 'POST', 'files'=>true,'id'=>'import_from_ccda_form')) !!}
 	<span class ='btn import-btn' id = "import_from_ccda">Import from C-CDA {!!Form::file('patient_ccda')!!}
 	</span>
 	{!! Form::close() !!}
+	@endif
 </div>
 {!! Form::open(array('url' => $data['url'], 'method' => 'POST', 'id' => 'form_add_patients')) !!}
 <div class="panel-group" id="accordion">
