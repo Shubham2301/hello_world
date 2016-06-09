@@ -312,9 +312,6 @@ class PracticeController extends Controller
         foreach ($suggestions as $key => $value) {
             $data[$i]= $value;
             $i++;
-            if ($i > 5) {
-                break;
-            }
         }
         return json_encode($data);
     }
@@ -322,7 +319,6 @@ class PracticeController extends Controller
     public function getPracticesByNetwork($networkID){
 
         $networkPractices = Network::find($networkID)->practices()->get(['practices.id', 'practices.name']);
-
         $practices = [];
         foreach ($networkPractices as $practice) {
             $practices[$practice->id] = $practice->name;
