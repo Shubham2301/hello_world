@@ -17,12 +17,12 @@ $(document).ready(function () {
             event.preventDefault();
     });
 
-    $('#dob').datetimepicker({
+	$('#birthdate').datetimepicker({
         format: 'MM/DD/YYYY',
         maxDate: new Date(),
     });
 
-    $('#dob').on('change', function () {
+	$('#birthdate').on('change', function () {
         console.log($(this).val());
     });
 
