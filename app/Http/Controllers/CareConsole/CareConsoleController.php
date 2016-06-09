@@ -265,6 +265,16 @@ class CareConsoleController extends Controller {
 		return json_encode($data);
 	}
 
+    public function getPatientInfo(Request $request) {
+		$data = [];
+		$patient = Patient::find($request->patientID);
+		$data['patient_id'] = $request->patientID;
+		$data['name'] = $patient->lastname . ', ' . $patient->firstname;
+		$data['phone'] = ($patient->cellphone) ? $patient->cellphone : (($patient->homephone) ? $patient->homephone : $patient->workphone);
+		$data['email'] = $patient->email;
+
+		return json_encode($data);
+	}
 	public function practiceProviders(Request $request) {
 		$practiceID = $request->practiceID;
 		$practiceUsers = User::practiceProvidersById($practiceID);

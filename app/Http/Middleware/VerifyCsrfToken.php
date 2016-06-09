@@ -13,7 +13,8 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
        '/auth/login',
-       '/password/reset/*'
+       '/password/reset/*',
+       '/errors/directmail/'
     ];
 
 }
