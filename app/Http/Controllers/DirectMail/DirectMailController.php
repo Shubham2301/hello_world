@@ -111,7 +111,7 @@ class DirectMailController extends Controller {
 				return json_encode(['result' => 'Invalid User']);
 			}
 
-			if(Auth::user()->id == 62){
+			if(Auth::user()->id != 62){
 				return json_encode(['result' => 'Invalid User']);
 			}
 
