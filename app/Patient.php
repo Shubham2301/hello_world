@@ -45,7 +45,7 @@ class Patient extends Model {
 	    return $phone;
 	}
 
-	public static function getPatients($filters) {
+	public static function getPatients($filters,$sortInfo = []) {
 
 		$columns = [
 			'patients.id',
@@ -106,27 +106,34 @@ class Patient extends Model {
 		});
 
 		if (session('user-level') == 1) {
-			return $query
-				->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
-				->orderBy('lastname', 'asc')
-				->paginate(200, $columns);
+			 $query
+				->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id');
 		} elseif (session('user-level') == 2) {
-			return $query
+			 $query
 				->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
 				->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
-				->where('import_history.network_id', session('network-id'))
-				->orderBy('lastname', 'asc')
-				->paginate(200, $columns);
+				->where('import_history.network_id', session('network-id'));
 		} else {
 			$practiceUser= PracticeUser::where('user_id', Auth::user()->id)->first();
-			return $query
+			 $query
 				->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
 				->leftjoin('practice_patient', 'patients.id', '=', 'practice_patient.patient_id')
-				->where('practice_patient.practice_id', $practiceUser['practice_id'])
-				->orderBy('lastname', 'asc')
-				->paginate(200, $columns);
+				->where('practice_patient.practice_id', $practiceUser['practice_id']);
 		}
+
+		if(!$sortInfo['order'])
+		{
+			$sortInfo['order']='SORT_ASC';
+			$sortInfo['field']='lastname';
+		}
+		$toSort['SORT_ASC'] = 'asc';
+		$toSort['SORT_DESC'] = 'desc';
 		
+		return
+			$query
+			->orderBy($sortInfo['field'], $toSort[$sortInfo['order']])
+			->paginate(20, $columns);
+
 	}
 
 	public static function getPatientsByName($name) {

@@ -388,8 +388,8 @@ class PatientController extends Controller
     public function search(Request $request)
     {
         $filters = json_decode($request->input('data'), true);
-
-        $patients = Patient::getPatients($filters);
+		$sortInfo =json_decode($request->input('tosort'), true);
+		$patients = Patient::getPatients($filters,$sortInfo);
 
         $data = [];
         $i = 0;
