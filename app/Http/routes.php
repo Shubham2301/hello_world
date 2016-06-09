@@ -191,6 +191,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/referredbyproviders', 'Practice\ProviderController@getReferringProviderSuggestions');
     Route::get('/referredbypractice', 'Practice\PracticeController@getReferringPracticeSuggestions');
 	Route::get('/savereferredby', 'Patient\PatientController@saveReferredbyDetails');
-    Route::post('/updatepatientdata', 'Patient\PatientController@update4PCRequiredData');
+	Route::post('/updatepatientdata', 'Practice\ProviderController@updateFPCRequiredData');
 	Route::post('/getccdadataforform', 'CcdaController@ccdaDataForPatientForm');
+	Route::get('/getfpcvalidateview', 'Practice\ProviderController@getFPCValidateView');
 });

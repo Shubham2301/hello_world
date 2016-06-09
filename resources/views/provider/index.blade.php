@@ -82,6 +82,8 @@
     </div>
 </div>
 </div>
+<button id="show_4pc_model" style="display:none" data-toggle="modal" data-target="#field_Modal_4PC">show</button>
+<div id="model_4pc_view"></div>
 @endsection
 @section('mobile_sidebar_content')
 @include('layouts.sidebar')
