@@ -32,6 +32,8 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 // Password reset routes...
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
+Route::post('errors/directmail/', 'DirectMail\DirectMailController@logClientError');
+
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -55,6 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('careconsole/searchpatient', 'CareConsole\CareConsoleController@searchPatients');
         Route::get('careconsole/bucketpatients', 'CareConsole\CareConsoleController@getBucketPatients');
         Route::get('/careconsole/patient/records', 'CareConsole\CareConsoleController@getPatientRecords');
+        Route::get('/careconsole/patient_info', 'CareConsole\CareConsoleController@getPatientInfo');
         Route::resource('careconsole', 'CareConsole\CareConsoleController');
         Route::get('/careconsole/action/practiceproviders', 'CareConsole\CareConsoleController@practiceProviders');
     });
@@ -189,4 +192,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/referredbypractice', 'Practice\PracticeController@getReferringPracticeSuggestions');
 	Route::get('/savereferredby', 'Patient\PatientController@saveReferredbyDetails');
     Route::post('/updatepatientdata', 'Patient\PatientController@update4PCRequiredData');
+	Route::post('/getccdadataforform', 'CcdaController@ccdaDataForPatientForm');
 });

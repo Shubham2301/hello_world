@@ -1,5 +1,14 @@
+var providerSuggestions = new Array();
+var practiceSuggestions = new Array();
+
+
 function referredByProviderSuggestions(searchValue) {
     if (searchValue != '') {
+
+        if (searchValue.length > 1) {
+            showPrefetchedProviders(searchValue);
+            return;
+        }
         $.ajax({
             url: '/referredbyproviders',
             type: 'GET',
@@ -10,16 +19,8 @@ function referredByProviderSuggestions(searchValue) {
             async: false,
             success: function success(e) {
                 var data = $.parseJSON(e);
-                var content = '';
-                data.forEach(function(providerName) {
-                    content += '<p class="provider_suggestion_item">' + providerName + '</p>';
-                });
-                if (content != '') {
-                    $('.provider_suggestions').addClass('active');
-                    $('.provider_suggestions').html(content);
-                } else {
-                    $('.provider_suggestions').removeClass('active');
-                }
+                providerSuggestions = data;
+                showRefferedBySuggestions(data, 'provider');
 
             },
             error: function error() {
@@ -36,6 +37,12 @@ function referredByProviderSuggestions(searchValue) {
 
 function referredByPracticeSuggestions(searchValue) {
     if (searchValue != '') {
+
+        if (searchValue.length > 1) {
+            showPrefetchedPractices(searchValue);
+            return;
+        }
+
         $.ajax({
             url: '/referredbypractice',
             type: 'GET',
@@ -47,16 +54,8 @@ function referredByPracticeSuggestions(searchValue) {
             success: function success(e) {
                 var data = [];
                 data = $.parseJSON(e);
-                var content = '';
-                data.forEach(function(practiceName) {
-                    content += '<p class="practice_suggestion_item">' + practiceName + '</p>';
-                });
-                if (content != '') {
-                    $('.practice_suggestions').addClass('active');
-                    $('.practice_suggestions').html(content);
-                } else {
-                    $('.practice_suggestions').removeClass('active');
-                }
+                practiceSuggestions = data;
+                showRefferedBySuggestions(data, 'practice');
 
             },
             error: function error() {
@@ -92,4 +91,77 @@ function saveReferredByDetails(formData) {
         cache: false,
         processData: false
     });
+}
+
+
+function showRefferedBySuggestions(data, type) {
+
+    switch (type) {
+
+        case 'practice':
+            var content = '';
+            var limit = 5;
+            if (limit > data.length) {
+                limit = data.length;
+            }
+
+            for (var i = 0; i < limit; i++) {
+                content += '<p class="practice_suggestion_item">' + data[i] + '</p>';
+            }
+            if (content != '') {
+                $('.practice_suggestions').addClass('active');
+                $('.practice_suggestions').html(content);
+            } else {
+                $('.practice_suggestions').removeClass('active');
+            }
+
+            break;
+
+        case 'provider':
+            var content = '';
+			var limit = 5;
+			if (limit > data.length) {
+				limit = data.length;
+			}
+			for (var i = 0; i < limit; i++) {
+                content += '<p class="provider_suggestion_item">' + data[i] + '</p>';
+            }
+
+            if (content != '') {
+                $('.provider_suggestions').addClass('active');
+                $('.provider_suggestions').html(content);
+            } else {
+                $('.provider_suggestions').removeClass('active');
+            }
+
+            break;
+    }
+}
+
+function showPrefetchedProviders(searchValue) {
+	var data = [];
+	var j = 0;
+	for (var i = 0; i < providerSuggestions.length; i++) {
+		if (providerSuggestions[i].toLowerCase().indexOf(searchValue.toLowerCase()) == 0) {
+			data[j] = providerSuggestions[i];
+			j++;
+		}
+	}
+	showRefferedBySuggestions(data, 'provider');
+
+	console.log(providerSuggestions);
+}
+
+function showPrefetchedPractices(searchValue) {
+    var data = [];
+    var j = 0;
+    for (var i = 0; i < practiceSuggestions.length; i++) {
+        if (practiceSuggestions[i].toLowerCase().indexOf(searchValue.toLowerCase()) == 0) {
+            data[j] = practiceSuggestions[i];
+            j++;
+        }
+    }
+    showRefferedBySuggestions(data, 'practice');
+
+    console.log(practiceSuggestions);
 }

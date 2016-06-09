@@ -3,13 +3,16 @@
 namespace myocuhub\Http\Controllers\DirectMail;
 
 use Auth;
+use Event;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\ImpersonationAudit;
 use myocuhub\Services\SES\SESConnect;
 use myocuhub\User;
-use Event;
-use myocuhub\Events\MakeAuditEntry;
 
 class DirectMailController extends Controller {
 	private $sesConnect;
@@ -100,63 +103,29 @@ class DirectMailController extends Controller {
 		return redirect('directmail');
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function create() {
-		//
+	public function logClientError(Request $request){
+
+		try {
+			$user = Auth::user();
+			if($user == null){
+				return json_encode(['result' => 'Invalid User']);
+			}
+
+			if(Auth::user()->id == 62){
+				return json_encode(['result' => 'Invalid User']);
+			}
+
+			$report = $request->report;
+			$context = $request->context;
+			File::append(base_path() . '/storage/logs/ses-client.log',  "\n" . $context . $report);
+
+			return json_encode(['result' => 'Error Logged']);
+
+		} catch (Exception $e) {
+			Log::error($e);
+			return json_encode(['result' => 'Exception in logging error. Ouch!!']);
+		}
+		
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function store(Request $request) {
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show($id) {
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit($id) {
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function update(Request $request, $id) {
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function destroy($id) {
-		//
-	}
 }

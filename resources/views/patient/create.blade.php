@@ -9,6 +9,10 @@
             @if(isset($data['email'])) Edit Patient @else Add New Patient @endif
         </p>
     </div>
+	{!! Form::open(array('url' => '#', 'method' => 'POST', 'files'=>true,'id'=>'import_from_ccda_form')) !!}
+	<span class ='btn import-btn' id = "import_from_ccda">Import from C-CDA {!!Form::file('patient_ccda')!!}
+	</span>
+	{!! Form::close() !!}
 </div>
 {!! Form::open(array('url' => $data['url'], 'method' => 'POST', 'id' => 'form_add_patients')) !!}
 <div class="panel-group" id="accordion">
@@ -25,29 +29,29 @@
             <div class="panel-body">
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
-                        {!! Form::text('FirstName', $data['firstname'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'firstname', 'placeholder' => 'First Name*', 'id' => 'first_name', 'data-toggle' => 'tooltip', 'title' => 'First Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
+						{!! Form::text('FirstName', $data['firstname'], array('class' => 'add_patient_input', 'required' => 'required', 'name' => 'firstname', 'placeholder' => 'First Name*', 'id' => 'firstname', 'data-toggle' => 'tooltip', 'title' => 'First Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
 
-                        {!! Form::text('middlename', $data['middlename'], array('class' => 'add_patient_input', 'name' => 'middlename', 'placeholder' => 'Middle Name', 'id' => 'middlename', 'data-toggle' => 'tooltip', 'title' => 'Middle Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
+						{!! Form::text('middlename', $data['middlename'], array('class' => 'add_patient_input', 'name' => 'middlename', 'placeholder' => 'Middle Name', 'id' => 'middlename', 'data-toggle' => 'tooltip', 'title' => 'Middle Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
 
-                        {!! Form::text('LastName', $data['lastname'], array('class' => 'add_patient_input', 'name' => 'lastname', 'placeholder' => 'Last Name*', 'id' => 'last_name','required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Last Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
+						{!! Form::text('LastName', $data['lastname'], array('class' => 'add_patient_input', 'name' => 'lastname', 'placeholder' => 'Last Name*', 'id' => 'lastname','required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Last Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
 
-                        {!! Form::email('email', $data['email'], array('class' => 'add_patient_input patient_email_field', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
+						{!! Form::email('email', $data['email'], array('class' => 'add_patient_input patient_email_field', 'name' => 'email', 'placeholder' => 'Email', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
 
                         <span class="patient_phone_input">
-							{!! Form::text('cellphone', $data['cellphone'], array('class' => 'add_patient_input phone_visible', 'name' => 'cellphone', 'placeholder' => 'Cellphone', 'id' => 'phone', 'data-toggle' => 'tooltip', 'title' => 'Cellphone', 'data-placement' => 'right', 'pattern' => '[^A-Za-z]+', 'maxlength' => '20')) !!}
-            @if($data['workphone'] == '' || $data['homephone'] == '')<span class="add_another_phone" data-toggle="tooltip" title="Add another phone number" data-placement="right"><img src="{{URL::asset('images/plus_icon.png')}}"></span> @endif
+							{!! Form::text('cellphone', $data['cellphone'], array('class' => 'add_patient_input phone_visible', 'name' => 'cellphone', 'placeholder' => 'Cellphone', 'id' => 'cellphone', 'data-toggle' => 'tooltip', 'title' => 'Cellphone', 'data-placement' => 'right', 'pattern' => '[^A-Za-z]+', 'maxlength' => '20')) !!}
+            				@if($data['workphone'] == '' || $data['homephone'] == '')<span class="add_another_phone" data-toggle="tooltip" title="Add another phone number" data-placement="right"><img src="{{URL::asset('images/plus_icon.png')}}"></span> @endif
                         </span>
                         @if($data['workphone'] == '')
                         <span class="workphone_span hide_phone_field">
                         @else
                             <span class="workphone_span">
                         @endif
-							{!! Form::text('workphone', $data['workphone'], array('class' => 'add_patient_input', 'name' => 'workphone', 'placeholder' => 'Workphone', 'id' => 'workphone', 'data-toggle' => 'tooltip', 'title' => 'Workphone', 'data-placement' => 'right', 'pattern' => '[^A-Za-z]+', 'maxlength' => '20')) !!}</span> @if($data['homephone'] == '')
+								{!! Form::text('workphone', $data['workphone'], array('class' => 'add_patient_input', 'name' => 'workphone', 'placeholder' => 'Workphone', 'id' => 'workphone', 'data-toggle' => 'tooltip', 'title' => 'Workphone', 'data-placement' => 'right', 'pattern' => '[^A-Za-z]+', 'maxlength' => '20')) !!}</span> @if($data['homephone'] == '')
                         <span class="homephone_span hide_phone_field">
                         @else
                             <span class="homephone_span">
                         @endif
-							{!! Form::text('homephone', $data['homephone'], array('class' => 'add_patient_input', 'name' => 'homephone', 'placeholder' => 'Homephone', 'id' => 'homephone', 'data-toggle' => 'tooltip', 'title' => 'Homephone', 'data-placement' => 'right', 'pattern' => '[^A-Za-z]+', 'maxlength' => '20' )) !!}</span>
+								{!! Form::text('homephone', $data['homephone'], array('class' => 'add_patient_input', 'name' => 'homephone', 'placeholder' => 'Homephone', 'id' => 'homephone', 'data-toggle' => 'tooltip', 'title' => 'Homephone', 'data-placement' => 'right', 'pattern' => '[^A-Za-z]+', 'maxlength' => '20' )) !!}</span>
                     </div>
                     <div class="col-sm-6 col-xs-12">
                         <!--
@@ -57,7 +61,11 @@
                             <option value="F">Female</option>
                         </select>
 -->
-                        {!! Form::select('gender', $gender, $data['gender'], array('class' => 'add_patient_input', 'placeholder' => 'Gender*', 'id' => 'gender', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Gender', 'data-placement' => 'right')) !!} {!! Form::text('DateOfBirth', $data['birthdate'], array('class' => 'add_patient_input', 'name' => 'birthdate', 'placeholder' => 'Date of Birth*', 'id' => 'dob', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Date of Birth', 'data-placement' => 'right')) !!} {!! Form::text('last_4_ssn', $data['lastfourssn'], array('class' => 'add_patient_input', 'name' => 'lastfourssn', 'placeholder' => 'Last 4 SSN', 'id' => 'last_4_ssn', 'data-toggle' => 'tooltip', 'title' => 'Last 4 SSN', 'data-placement' => 'right', 'maxlength' => '4')) !!}
+						{!! Form::select('gender', $gender, $data['gender'], array('class' => 'add_patient_input', 'placeholder' => 'Gender*', 'id' => 'gender', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Gender', 'data-placement' => 'right')) !!}
+
+						{!! Form::text('DateOfBirth', $data['birthdate'], array('class' => 'add_patient_input', 'name' => 'birthdate', 'placeholder' => 'Date of Birth*', 'id' => 'birthdate', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Date of Birth', 'data-placement' => 'right')) !!}
+
+						{!! Form::text('last_4_ssn', $data['lastfourssn'], array('class' => 'add_patient_input', 'name' => 'lastfourssn', 'placeholder' => 'Last 4 SSN', 'id' => 'lastfourssn', 'data-toggle' => 'tooltip', 'title' => 'Last 4 SSN', 'data-placement' => 'right', 'maxlength' => '4')) !!}
                         <!--
                         <select name="preferredlanguage" id="preferredlanguage" required class="add_patient_input">
                             <option value="">Select Language*</option>
@@ -65,7 +73,7 @@
                             <option value="french">French</option>
                         </select>
 -->
-                        {!! Form::select('preferredlanguage', $language, $data['preferredlanguage'], array('class' => 'add_patient_input', 'placeholder' => 'Language*', 'id' => 'preferredlanguage', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Preferred Language', 'data-placement' => 'right')) !!}
+						{!! Form::select('preferredlanguage', $language, $data['preferredlanguage'], array('class' => 'add_patient_input', 'placeholder' => 'Language*', 'id' => 'preferredlanguage', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Preferred Language', 'data-placement' => 'right')) !!}
                     </div>
                 </div>
             </div>
@@ -84,7 +92,20 @@
             <div class="panel-body">
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
-                        {!! Form::text('address_1', $data['addressline1'], array('class' => 'add_patient_input', 'name' => 'addressline1', 'placeholder' => 'Address 1', 'id' => 'Address_1', 'data-toggle' => 'tooltip', 'title' => 'Address Line 1', 'data-placement' => 'right')) !!} {!! Form::text('address_2', $data['addressline2'], array('class' => 'add_patient_input', 'name' => 'addressline2', 'placeholder' => 'Address 2', 'id' => 'Address_2', 'data-toggle' => 'tooltip', 'title' => 'Address Line 2', 'data-placement' => 'right')) !!} {!! Form::text('City', $data['city'], array('class' => 'add_patient_input', 'name' => 'city', 'placeholder' => 'City', 'id' => 'city', 'data-toggle' => 'tooltip', 'title' => 'City', 'data-placement' => 'right')) !!} {!! Form::text('State', $data['state'], array('class' => 'add_patient_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state', 'data-toggle' => 'tooltip', 'title' => 'State', 'data-placement' => 'right')) !!} {!! Form::text('Zip', $data['zip'], array('class' => 'add_patient_input', 'name' => 'zip', 'placeholder' => 'ZIP', 'id' => 'zip', 'data-toggle' => 'tooltip', 'title' => 'ZIP', 'data-placement' => 'right')) !!} @if(!$data['admin']) {!! Form::hidden('referraltype_id', $data['referraltype_id'], array('name' => 'referraltype_id' , 'id' => 'form_referraltype_id')) !!} {!! Form::hidden('action', $data['action'], array('name' => 'action' , 'id' => 'form_action')) !!} @endif
+						{!! Form::text('address_1', $data['addressline1'], array('class' => 'add_patient_input', 'name' => 'addressline1', 'placeholder' => 'Address 1', 'id' => 'addressline1', 'data-toggle' => 'tooltip', 'title' => 'Address Line 1', 'data-placement' => 'right')) !!}
+
+						{!! Form::text('address_2', $data['addressline2'], array('class' => 'add_patient_input', 'name' => 'addressline2', 'placeholder' => 'Address 2', 'id' => 'addressline2', 'data-toggle' => 'tooltip', 'title' => 'Address Line 2', 'data-placement' => 'right')) !!}
+
+                        {!! Form::text('City', $data['city'], array('class' => 'add_patient_input', 'name' => 'city', 'placeholder' => 'City', 'id' => 'city', 'data-toggle' => 'tooltip', 'title' => 'City', 'data-placement' => 'right')) !!}
+
+                        {!! Form::text('State', $data['state'], array('class' => 'add_patient_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state', 'data-toggle' => 'tooltip', 'title' => 'State', 'data-placement' => 'right')) !!}
+
+                        {!! Form::text('Zip', $data['zip'], array('class' => 'add_patient_input', 'name' => 'zip', 'placeholder' => 'ZIP', 'id' => 'zip', 'data-toggle' => 'tooltip', 'title' => 'ZIP', 'data-placement' => 'right')) !!}
+
+                        @if(!$data['admin'])
+                        	{!! Form::hidden('referraltype_id', $data['referraltype_id'], array('name' => 'referraltype_id' , 'id' => 'form_referraltype_id')) !!}
+                        	{!! Form::hidden('action', $data['action'], array('name' => 'action' , 'id' => 'form_action')) !!}
+                        @endif
                     </div>
                 </div>
             </div>
@@ -103,7 +124,7 @@
             <div class="panel-body">
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
-                        {!! Form::text('referred_by_practice', $data['referred_by_practice'], array('class' => 'add_patient_input referredby_practice', 'name' => 'referred_by_practice', 'placeholder' => 'ReferredBy Practice', 'id' => 'referred_by_practice', 'onkeyup'=>'referredByPracticeSuggestions(this.value)', 'autocomplete'=>'off', 'data-toggle' => 'tooltip', 'title' => 'Referred By Practice', 'data-placement' => 'right')) !!}
+						{!! Form::text('referred_by_practice', $data['referred_by_practice'], array('class' => 'add_patient_input referredby_practice', 'name' => 'referred_by_practice', 'placeholder' => 'ReferredBy Practice', 'id' => 'referred_by_practice', 'onkeyup'=>'referredByPracticeSuggestions(this.value)', 'autocomplete'=>'off', 'data-toggle' => 'tooltip', 'title' => 'Referred By Practice', 'data-placement' => 'right')) !!}
                         <ul class="suggestion_list practice_suggestions">
                             <p class="suggestion_item">Practice 1</p>
                             <p class="suggestion_item">Practice 2</p>

@@ -24,24 +24,15 @@ class CcdaController extends Controller
     {
         $data = [];
         if ($request->hasFile('patient_ccda')) {
-            $file = $request->file('patient_ccda');
-            $destinationPath = 'temp_ccda';
-            $extension = $file->getClientOriginalExtension();
-            $xmlfilename = str_random(9) . ".{$extension}";
-            $jsonfilename = str_random(9) . ".json";
-            $upload_success = $file->move(base_path() . '/' . $destinationPath, $xmlfilename);
-            $xmlfile = base_path() . '/' . $destinationPath . '/' . $xmlfilename;
-            $jsonfile = base_path() . '/' . $destinationPath . '/temp_json/' . $jsonfilename;
-            $xml_to_json = exec(env('NODE_PATH', '/usr/local/bin/node') ." " . public_path() . "/js/tojson.js " . $xmlfile . " " . $jsonfile);
-            $jsonstring = file_get_contents($jsonfile, true);
-            $validator = \Validator::make(array('jsson' => $jsonstring), array('jsson' => 'Required|json'));
-            unlink($xmlfile);
-            unlink($jsonfile);
+			  $file = $request->file('patient_ccda');
+			  $jsonstring = $this->generateJson($file);
 
-            if ($validator->fails()) {
-                $data['error'] = true;
-                return json_encode($data);
-            }
+			if(!$jsonstring)
+			{
+				$data['error'] = true;
+				return json_encode($data);
+			}
+
             $ccda = new Ccda;
             $ccda->ccdablob = $jsonstring;
             $ccda->patient_id = $request->patient_id;
@@ -136,13 +127,34 @@ class CcdaController extends Controller
         $data['workphone'] = $ccdaData['demographics']['phone']['work'];
         $data['homephone'] = $ccdaData['demographics']['phone']['home'];
         $data['cellphone'] = $ccdaData['demographics']['phone']['mobile'];
-        $data['email'] =     $ccdaData['demographics']['email'];
-        $data['city'] =      $ccdaData['demographics']['address']['city'];
-        $data['zip'] =       $ccdaData['demographics']['address']['zip'];
-        $data['country'] =   $ccdaData['demographics']['address']['country'];
+        $data['email']     = $ccdaData['demographics']['email'];
+        $data['city']      = $ccdaData['demographics']['address']['city'];
+        $data['zip']       = $ccdaData['demographics']['address']['zip'];
+        $data['country']   = $ccdaData['demographics']['address']['country'];
         $data['birthdate'] = date('Y-m-d', strtotime($ccdaData['demographics']['dob']));
-        $data['gender'] =    $ccdaData['demographics']['gender'];
-        $data['preferredlanguage'] = $ccdaData['demographics']['language'];
+		$data['state'] =       $ccdaData['demographics']['address']['state'];
+       	$data['gender']   = $ccdaData['demographics']['gender'];
+		$data['preferredlanguage'] = $ccdaData['demographics']['language'];
+
+		if($data['gender'])
+		{
+			$data['gender'] = 'Female';
+			if(stripos($data['gender'],'male') > -1)
+			{
+				$data['gender'] = 'Male';
+			}
+		}
+
+		if($data['preferredlanguage'])
+		{
+			$data['preferredlanguage'] = 'English';
+
+			if(stripos($data['preferredlanguage'],'Spanish')> -1)
+			{
+				$data['preferredlanguage'] = 'Spanish';
+			}
+		}
+
         return $data;
     }
 
@@ -231,4 +243,40 @@ class CcdaController extends Controller
 
 	}
 
+	public function generateJson($fileInXml)
+	{
+		$file = $fileInXml;
+		$destinationPath = 'temp_ccda';
+		$extension = $file->getClientOriginalExtension();
+		$xmlfilename = str_random(9) . ".{$extension}";
+		$jsonfilename = str_random(9) . ".json";
+		$upload_success = $file->move(base_path() . '/' . $destinationPath, $xmlfilename);
+		$xmlfile = base_path() . '/' . $destinationPath . '/' . $xmlfilename;
+		$jsonfile = base_path() . '/' . $destinationPath . '/temp_json/' . $jsonfilename;
+		$xml_to_json = exec(env('NODE_PATH', '/usr/local/bin/node') ." " . public_path() . "/js/tojson.js " . $xmlfile . " " . $jsonfile);
+		$jsonstring = file_get_contents($jsonfile, true);
+		$validator = \Validator::make(array('jsson' => $jsonstring), array('jsson' => 'Required|json'));
+		unlink($xmlfile);
+		unlink($jsonfile);
+		if ($validator->fails()) {
+			return false;
+		}
+		return $jsonstring;
+
+	}
+
+	public function ccdaDataForPatientForm(Request $request)
+	{
+		if ($request->hasFile('patient_ccda')) {
+			$file = $request->file('patient_ccda');
+			$jsonstring = $this->generateJson($file);
+			if(!$jsonstring)
+			{
+				$data['error'] = true;
+				return json_encode($data);
+			}
+			$data = $this->getCCDAData(json_decode($jsonstring, true));
+			return json_encode($data);
+		}
+	}
 }
