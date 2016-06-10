@@ -55,7 +55,7 @@ return [
 
 		],
 	],
-	  'fpc_mandatory_fields' => [
+    'fpc_mandatory_fields' => [
       'email' => [
         'display_name' => 'Email',
         'field_name'  => 'email',
@@ -66,6 +66,8 @@ return [
         'field_name'  => 'birthdate',
         'type' => 'field_date'
       ]
-  ],
+    ],
+    'provider_list_display_limit' => '5',
+    'practice_location_display_limit' => '3',
 
 ];

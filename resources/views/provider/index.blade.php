@@ -33,6 +33,7 @@
     {!! Form::hidden('location', '', array('id' => 'form_location')) !!}
     {!! Form::hidden('location_id', '', array('id' => 'form_location_id')) !!}
     {!! Form::hidden('location_code', '', array('id' => 'form_location_code')) !!}
+    {!! Form::hidden('provider_list_count_limit', config('constants.provider_list_display_limit'), array('id' => 'provider_list_count_limit')) !!}
     @include('appointment.insurance-details')
     {!! Form::close() !!}
     <div class="practice_section active" id="select_practice">
