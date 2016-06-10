@@ -65,6 +65,8 @@
             <button type="button" data-toggle="modal" data-target="#importModal" class="btn import-btn open_import">Import</button>
             @endcan
             <input type="hidden" id="clear_image_path" value="{{URL::asset('images/close-active.png')}}">
+			<input type="hidden" id="triangle_up_image_path" value="{{URL::asset('images/triangle-up.png')}}">
+			<input type="hidden" id="triangle_down_image_path" value="{{URL::asset('images/triangle-down.png')}}">
         </div>
         <p id="search_results" class="search_result"></p>
         <div class="row search_header arial top_margin_large">
@@ -73,18 +75,21 @@
                     <input id="checked_all_patients" type="checkbox">&nbsp;&nbsp;</div>
                 <div class="listing_header">
                     <p style="color:#333;margin-left: 11px;">Name</p>
-                    <span data-name="lastname" data-order="SORT_ASC" style="left: 14px;" class="sort_order  glyphicon glyphicon-chevron-up">
+                    <span data-name="lastname" data-order="SORT_ASC" style="left: 14px;" class="sort_order">
+						<img src="/images/triangle-up.png" class="sort_indicator" alt="" style="margin-top: -63px;">
 				</span>
                 </div>
             </div>
             <div class="col-xs-4 listing_header">
                 <p style="color:#333">Address</p>
-                <span data-name="addressline1" data-order="SORT_ASC" style="" class="sort_order glyphicon glyphicon-chevron-up">
+                <span data-name="addressline1" data-order="SORT_ASC" style="" class="sort_order">
+					<img src="/images/triangle-up.png" alt="" class="sort_indicator" >
 				</span>
             </div>
             <div class="col-xs-3 listing_header">
                 <p style="color:#333">Email</p>
-                <span data-name="email" data-order="SORT_ASC" style="" class="sort_order glyphicon glyphicon-chevron-up">
+                <span data-name="email" data-order="SORT_ASC" style="" class="sort_order">
+					<img src="/images/triangle-up.png" alt="" class="sort_indicator">
 				</span>
             </div>
             <div class="col-xs-2">

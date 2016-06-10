@@ -122,10 +122,18 @@ class Patient extends Model
                 ->where('practice_patient.practice_id', $practiceUser['practice_id']);
         }
 
-        if (!$sortInfo['order']) {
+		if(!isset($sortInfo['order']))
+		{
+			$sortInfo['order']='SORT_ASC';
+			$sortInfo['field']='lastname';
+		}
+
+		else if(!$sortInfo['order'] )
+		 {
             $sortInfo['order']='SORT_ASC';
             $sortInfo['field']='lastname';
         }
+
         $toSort['SORT_ASC'] = 'asc';
         $toSort['SORT_DESC'] = 'desc';
 

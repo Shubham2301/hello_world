@@ -301,6 +301,7 @@ $(document).ready(function () {
 
 	$(document).on('click', '.listing_header', function () {
 		var field = $(this).find('.sort_order');
+		var img = $(this).find('.sort_indicator');
 		if (field.length === 0) {
 			return;
 		}
@@ -308,12 +309,10 @@ $(document).ready(function () {
 		if (field.css('display') !== 'none') {
 			if (field.attr('data-order') === 'SORT_DESC') {
 				field.attr('data-order', 'SORT_ASC');
-				field.removeClass('glyphicon-chevron-down');
-				field.addClass('glyphicon-chevron-up');
+				img.attr('src', $('#triangle_up_image_path').val());
 			} else if (field.attr('data-order') === 'SORT_ASC') {
 				field.attr('data-order', 'SORT_DESC');
-				field.removeClass('glyphicon-chevron-up');
-				field.addClass('glyphicon-chevron-down');
+				img.attr('src', $('#triangle_down_image_path').val());
 			}
 		}
 		$('.sort_order').css('display', 'none');
