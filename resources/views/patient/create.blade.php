@@ -147,6 +147,29 @@
             </div>
         </div>
     </div>
+	<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<span class="popover_text" data-content="">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+								Disease  Details</a>
+						</span>
+					</h4>
+				</div>
+				<div id="collapse4" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div class="row content-row-margin">
+							<div class="col-sm-6 col-xs-12">
+								{!! Form::text('address_1', $data['disease_type'], array('class' => 'add_patient_input', 'name' => 'disease_type', 'placeholder' => 'Disease Type', 'id' => 'disease_type', 'data-toggle' => 'tooltip', 'title' => 'Disease Type', 'data-placement' => 'right')) !!}
+
+								{!! Form::text('address_1', $data['severity'], array('class' => 'add_patient_input', 'name' => 'severity', 'placeholder' => 'Severity', 'id' => 'severity', 'data-toggle' => 'tooltip', 'title' => 'Severity', 'data-placement' => 'right')) !!}
+
+								{!! Form::text('address_1', $data['insurance_type'], array('class' => 'add_patient_input', 'name' => 'insurance_type', 'placeholder' => 'Insurance Type', 'id' => 'insurance_type', 'data-toggle' => 'tooltip', 'title' => 'Insurance Type', 'data-placement' => 'right')) !!}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 </div>
 <div class="row content-row-margin add_patient_footer">
     <div class="col-xs-8 col-sm-8 col-md-8">
