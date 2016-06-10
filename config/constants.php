@@ -20,6 +20,17 @@ return [
 		'confirm_appointment' => 2,
 		'post_appointment' => 3,
 	],
+	'message_views' => [
+		'request_appointment_provider' => [
+			'subject' => 'Request for Appointment',
+			'view' => 'emails.appt-confirmation-provider'
+		],
+		'request_appointment_patient' => [
+			'subject' => 'Appointment has been scheduled',
+			'view' => 'emails.appt-confirmation-patient'
+		],
+	]
+	,
 	'language' => [
 		'english' => 1,
 		'spanish' => 2,
@@ -31,6 +42,18 @@ return [
 		'General Eye Exam',
 		'ABIorVTeval',
 		'UnknownEncounterReschedule',
+	],
+
+	'paths' => [
+		'ccda'=>[
+			'temp_ccda' => base_path() . '/temp_ccda/',
+			'temp_json' => base_path() . '/temp_ccda/temp_json/',
+			'default_ccda' => public_path() .'/lib/ccda/patient-demographics.json',
+			'tojson' => public_path() . '/js/tojson.js ',
+			'toxml' => public_path() . '/js/toxml.js ',
+			'stylesheet' => public_path() . '/lib/xslt/CDA.xsl',
+
+		],
 	],
   '4pcMandatory_fields' => [
       'email' => [

@@ -125,7 +125,7 @@ class DirectMailController extends Controller {
 			Log::error($e);
 			return json_encode(['result' => 'Exception in logging error. Ouch!!']);
 		}
-		
+
 	}
 
 }

@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
+use myocuhub\Facades\SES;
 use Log;
 use myocuhub\Events\AppointmentScheduled;
 use myocuhub\Events\MakeAuditEntry;
@@ -17,6 +18,7 @@ use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
 use myocuhub\User;
+use MyCCDA;
 
 class SendAppointmentRequestEmail
 {
@@ -48,7 +50,7 @@ class SendAppointmentRequestEmail
         $network = User::getNetwork($loggedInUser->id);
         $patient = Patient::find($appointment->patient_id);
         $provider = User::find($appointment->provider_id);
-        $location = PracticeLocation::find($appointment->location_id);      
+        $location = PracticeLocation::find($appointment->location_id);
         $patientInsurance = PatientInsurance::where('patient_id', $appointment->patient_id)->first();
         $appointmentType = $request->input('appointment_type');
         $appointmentTypeKey = $request->input('appointment_type_key');
@@ -68,6 +70,7 @@ class SendAppointmentRequestEmail
             'practice_phone' => $location->phone  ?: '',
             'appt_startdate' => $apptStartdate->format('F d, Y'),
             'appt_starttime' => $apptStartdate->format('h i A'),
+            'patient_id' => $patient->id  ?: '',
             'patient_name' => $patient->firstname  ?: '',
             'patient_email' => $patient->email  ?: '',
             'patient_phone' => $patient->cellphone . ', ' . $patient->workphone . ', ' . $patient->homephone,
@@ -95,22 +98,36 @@ class SendAppointmentRequestEmail
         $event->_setProviderEmailStatus($this->sendProviderMail($appt, $location));
 
         $event->_setPatientEmailStatus($this->sendPatientMail($appt, $patient));
-        
     }
 
-    public function sendPatientMail($appt, $patient){
-        if($patient->email == null || $patient->email == ''){
+    public function sendPatientMail($appt, $patient)
+    {
+        if ($patient->email == null || $patient->email == '') {
             return false;
         }
+
+        $attr = [
+            'from' => [
+                'name' => config('constants.support.email_name'),
+                'email' => config('constants.support.email_id'),
+            ],
+            'to' => [
+                'name' => $patient->lastname . ', ' . $patient->firstname,
+                'email' => $patient->email,
+            ],
+            'subject' => config('constants.message_views.request_appointment_patient.subject'),
+            'body' =>'',
+            'view' => config('constants.message_views.request_appointment_patient.view'),
+            'appt' => $appt,
+            'attachements' => [],
+        ];
+
         try {
-
-            $mailToPatient = Mail::send('emails.appt-confirmation-patient', ['appt' => $appt], function ($m) use ($patient) {
-                $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to($patient->email, $patient->lastname . ', ' . $patient->firstname)->subject('Appointment has been scheduled');
+            $mailToPatient = Mail::send($attr['view'], ['appt' => $attr['appt']], function ($m) use ($attr) {
+                $m->from($attr['from']['email'], $attr['from']['name']);
+                $m->to($attr['to']['email'], $attr['to']['name'])->subject($attr['subject']);
             });
-
         } catch (Exception $e) {
-
             Log::error($e);
             $action = 'Application Exception in sending Appointment Request email not sent to patient '. $patient->email;
             $description = '';
@@ -124,32 +141,75 @@ class SendAppointmentRequestEmail
         return true;
     }
 
-    public function sendProviderMail($appt, $location){
-
-        if($location->email == null || $location->email == ''){
+    public function sendProviderMail($appt, $location)
+    {
+        if ($location->email == null || $location->email == '') {
             return false;
         }
 
-        try {
+        $attr = [
+            'from' => [
+                'name' => config('constants.support.email_name'),
+                'email' => config('constants.support.email_id'),
+            ],
+            'to' => [
+                'name' => $location->name,
+                'email' => $location->email,
+            ],
+            'subject' => config('constants.message_views.request_appointment_provider.subject'),
+			'body' =>'',
+            'view' => config('constants.message_views.request_appointment_provider.view'),
+            'appt' => $appt,
+            'attachements' => [],
+        ];
+
+        /**
+         * Add Check for SES Email here. 
+         */
+
+        if (SES::isDirectID($location->email)) {
+            /**
+             * Generate CCDA file and send email via SES to Provider
+             */
             
-            $mailToProvider = Mail::send('emails.appt-confirmation-provider', ['appt' => $appt], function ($m) use ($location) {
-                $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to($location->email, $location->name)->subject('Request for Appointment');
-            });
+            try {
+                
+                $patientID = $attr['appt']['patient_id'];
+                $attr['attachements'][] = MyCCDA::generate($patientID) ?: '';
 
-        } catch (Exception $e) {
+                $directMessageID = SES::send($attr);
+            } catch (Exception $e) {
+                Log::error($e);
+                return false;
+            }
+        } else {
+            /**
+             * Send email via regular mail.
+             */
+            
+            try {
+                $mailToProvider = Mail::send($attr['view'], ['appt' => $attr['appt']], function ($m) use ($attr) {
+                    $m->from($attr['from']['email'], $attr['from']['name']);
+                    $m->to($attr['to']['email'], $attr['to']['name'])->subject($attr['subject']);
+                });
+            } catch (Exception $e) {
+                Log::error($e);
+                $action = 'Application Exception in sending Appointment Request email not sent to patient '. $location->email;
+                $description = '';
+                $filename = basename(__FILE__);
+                $ip = '';
+                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
-            Log::error($e);
-            $action = 'Application Exception in sending Appointment Request email not sent to patient '. $location->email;
-            $description = '';
-            $filename = basename(__FILE__);
-            $ip = '';
-            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
-            return false;
+                return false;
+            }
         }
+
+
+        /**
+         * If Practice Location has regular/ Non SES Email then send mail via Mandrill.
+         */
+
 
         return true;
-
     }
 }
