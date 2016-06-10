@@ -61,6 +61,9 @@ class PatientController extends Controller
         $data['url'] = '/administration/patients/add';
         $data['referred_by_provider'] = null;
         $data['referred_by_practice'] = null;
+        $data['disease_type'] = null;
+        $data['severity'] = null;
+        $data['insurance_type'] = null;
         if ($request->has('referraltype_id')) {
             $data['referraltype_id'] = $request->input('referraltype_id');
             $data['admin'] = false;
@@ -87,6 +90,9 @@ class PatientController extends Controller
         $data['referraltype_id'] = -1;
         $data['referred_by_provider'] = null;
         $data['referred_by_practice'] = null;
+        $data['disease_type'] = null;
+        $data['severity'] = null;
+        $data['insurance_type'] = null;
         return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
     }
 
@@ -113,6 +119,10 @@ class PatientController extends Controller
         }
         unset($data['referred_by_provider']);
         unset($data['referred_by_practice']);
+        unset($data['disease_type']);
+        unset($data['severity']);
+        unset($data['insurance_type']);
+
         $patient = Patient::where($data)->first();
         if (!$patient) {
             $patient = new Patient;
@@ -142,6 +152,8 @@ class PatientController extends Controller
             $referralHistory = new ReferralHistory;
             $referralHistory->referred_by_provider = $request->input('referred_by_provider');
             $referralHistory->referred_by_practice = $request->input('referred_by_practice');
+            $referralHistory->disease_type = $request->input('disease_type');
+            $referralHistory->severity = $request->input('severity');
             $referralHistory->network_id = $networkID;
             $referralHistory->save();
 
@@ -156,6 +168,11 @@ class PatientController extends Controller
                 $careconsole->referral_id = $referralHistory->id;
             }
             $careconsole->save();
+
+            $insuranceCarrier = new PatientInsurance;
+            $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
+            $insuranceCarrier->patient_id = $patient->id;
+            $insuranceCarrier->save();
 
             if (session('user-level') == 3) {
                 $practiceUser= PracticeUser::where('user_id', $userID)->first();
@@ -259,9 +276,6 @@ class PatientController extends Controller
             $patientData['ccda_date'] = (new DateTime($ccda->created_at))->format('F j Y');
         }
 
-        $validated4PCData = $this->validate4PCData($id);
-        $patientData['count_validated4pc_data'] = sizeof($validated4PCData);
-        $patientData['validated4pc_data'] = view('patient.field_model_4pc')->with('fields_4PC', $validated4PCData)->render();
         $response = [
             'result' => true,
             'patient_data' => $patientData
@@ -297,14 +311,23 @@ class PatientController extends Controller
         $data['referraltype_id'] = -1;
         $data['referred_by_provider'] = null;
         $data['referred_by_practice'] = null;
-
+        $data['disease_type'] = null;
+        $data['severity'] = null;
+        $data['insurance_type'] = null;
         $careconsole = Careconsole::where('patient_id', '=', $id)->first();
         if ($careconsole) {
             $referralHistory = ReferralHistory::find($careconsole->referral_id);
             if ($referralHistory) {
                 $data['referred_by_provider'] = $referralHistory->referred_by_provider;
                 $data['referred_by_practice'] = $referralHistory->referred_by_practice;
+                $data['disease_type'] = $referralHistory->disease_type;
+                $data['severity'] = $referralHistory->severity;
             }
+        }
+
+        $insuranceCarrier =  PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
+        if ($insuranceCarrier) {
+            $data['insurance_type'] = $insuranceCarrier->insurance_carrier;
         }
 
         return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
@@ -354,8 +377,16 @@ class PatientController extends Controller
 
                 $referralHistory->referred_by_provider = $request->referred_by_provider;
                 $referralHistory->referred_by_practice = $request->referred_by_practice;
+                $referralHistory->disease_type = $request->input('disease_type');
+                $referralHistory->severity = $request->input('severity');
                 $referralHistory->network_id = session('network-id');
                 $referralHistory->save();
+            }
+
+            $insuranceCarrier = PatientInsurance::where('patient_id', '=', $id)->orderBy('updated_at', 'desc')->first();
+            if ($insuranceCarrier) {
+                $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
+                $insuranceCarrier->save();
             }
 
             $action = 'update patient of id =' . $id;
@@ -388,8 +419,8 @@ class PatientController extends Controller
     public function search(Request $request)
     {
         $filters = json_decode($request->input('data'), true);
-
-        $patients = Patient::getPatients($filters);
+        $sortInfo =json_decode($request->input('tosort'), true);
+        $patients = Patient::getPatients($filters, $sortInfo);
 
         $data = [];
         $i = 0;
@@ -446,14 +477,28 @@ class PatientController extends Controller
         $data['referraltype_id'] = $request->input('referraltype_id');
         $data['action'] = $request->input('action');
         $data['patient_id'] = $id;
+        $data['referred_by_provider'] = null;
+        $data['referred_by_practice'] = null;
+        $data['disease_type'] = null;
+        $data['severity'] = null;
+        $data['insurance_type'] = null;
+
         $careconsole = Careconsole::where('patient_id', '=', $id)->first();
         if ($careconsole) {
             $referralHistory = ReferralHistory::find($careconsole->referral_id);
             if ($referralHistory) {
                 $data['referred_by_provider'] = $referralHistory->referred_by_provider;
                 $data['referred_by_practice'] = $referralHistory->referred_by_practice;
+                $data['disease_type'] = $referralHistory->disease_type;
+                $data['severity'] = $referralHistory->severity;
             }
         }
+
+        $insuranceCarrier =  PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
+        if ($insuranceCarrier) {
+            $data['insurance_type'] = $insuranceCarrier->insurance_carrier;
+        }
+
         return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
     }
 
@@ -478,30 +523,4 @@ class PatientController extends Controller
         return $patientID;
     }
 
-    public function validate4PCData($patientId)
-    {
-        $patient = Patient::find($patientId);
-        $tempFields = config('constants.4pcMandatory_fields');
-        $fields = $tempFields;
-
-        foreach ($tempFields as $key => $field) {
-            if ($field['type'] == 'field_date') {
-                ($patient[$field['field_name']] && (bool)strtotime($patient[$field['field_name']])) ? array_forget($fields, $key):'';
-            } elseif ($patient[$field['field_name']]) {
-                array_forget($fields, $key);
-            }
-        }
-        return $fields;
-    }
-
-
-    public function update4PCRequiredData(Request $request)
-    {
-        $data = $request->all();
-        $patientID =  $request->patientId;
-        unset($data['patientId']);
-        $updatePatient = Patient::where('id', $patientID)->update($data);
-        $request->request->add(['id'=> $patientID]);
-        return $this->show($request);
-    }
 }

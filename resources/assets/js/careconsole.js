@@ -498,6 +498,7 @@ $(document).ready(function () {
             $('#form_manual_custom_appointment_appointment_type').show();
         }
     });
+
 });
 
 var actionResults = {};
@@ -663,6 +664,7 @@ function getRequestMessage(action_name) {
 }
 
 function action() {
+
     if ($('#recall_date').val() == '' && showDate) {
         $('p.alert_message').text('please select a date');
         $('#alert').modal('show');
@@ -673,6 +675,32 @@ function action() {
         $('#alert').modal('show');
         return;
     }
+
+
+    if ($('#action_id').val() == 36) {
+        var data = [];
+        data['patient_id'] = $('#action_patient_id').val();
+        data['action_id'] = 1;
+        data['console_id'] = $('#action_console_id').val();
+        data['stage_id'] = $('#action_stage_id').val();
+        data['action_header'] = "Contact attempted by phone";
+
+        show_patient = true;
+        clearActionFields();
+        showDate = false;
+
+        $('#action_name').val('contact-attempted-by-phone');
+
+        showActionModel(data);
+
+    } else {
+
+        performAction();
+
+    }
+}
+
+function performAction() {
 
     var request_message = getRequestMessage($('#action_name').val());
 
@@ -693,7 +721,6 @@ function action() {
         'custom_appointment_type': $('#manual_custom_appointment_appointment_type').val(),
         'request_message': request_message
     };
-
     $.ajax({
         url: '/careconsole/action',
         type: 'GET',

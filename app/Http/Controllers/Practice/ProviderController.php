@@ -14,9 +14,12 @@ use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
+use myocuhub\Http\Controllers\Traits\ValidateFPCRequestParams;
 
 class ProviderController extends Controller
 {
+    use ValidateFPCRequestParams;
+
     /**
      * Display a listing of the resource.
      *
@@ -316,16 +319,16 @@ class ProviderController extends Controller
     public function getReferringProviderSuggestions(Request $request)
     {
         $searchString = $request->provider;
-		$providers = User::where('name', 'LIKE', ''.$searchString.'%')->where('usertype_id', 1);
+        $providers = User::where('name', 'LIKE', ''.$searchString.'%')->where('usertype_id', 1);
 
-        if(session('user-level') > 1){
-            $providers = $providers->leftjoin('network_user', 'users.id', '=','network_user.user_id')
+        if (session('user-level') > 1) {
+            $providers = $providers->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
                 ->where('network_user.network_id', session('network-id'));
         }
 
         $providers = $providers->pluck('users.name')->toArray();
         $fromReferring = ReferralHistory::where('referred_by_provider', 'LIKE', ''.$searchString.'%');
-        if(session('user-level') > 1){
+        if (session('user-level') > 1) {
             $fromReferring = $fromReferring->where('network_id', session('network-id'));
         }
         $fromReferring = $fromReferring->pluck('referred_by_provider')->toArray();

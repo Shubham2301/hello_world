@@ -564,7 +564,7 @@ function showPracticeInfo(info) {
     $('#the_practice_name').text(info.practice_name);
     var deactivate_user_img = $('#deactivate_user_img').val();
     var content = '';
-    if (info.locations.length > 0) {
+    if (info.locations.length > $('#provider_location_display_limit').val()) {
         var i = 0;
         content += '<div class="panel-group accordian_margin location_accordian" id="accordion">';
         info.locations.forEach(function (location) {
@@ -588,8 +588,31 @@ function showPracticeInfo(info) {
         $('.practice_list').removeClass('active');
         $('.practice_info').addClass('active');
         $('.practice_action_header').addClass('hide');
-
-
+    }
+    else if (info.locations.length > 0 && info.locations.length <= $('#provider_location_display_limit').val()) {
+        var i = 0;
+        content += '<div class="panel-group accordian_margin location_accordian" id="accordion">';
+        info.locations.forEach(function (location) {
+            content += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse' + i + '">' + location.locationname + '</a></h4></div>';
+            if (i == 0)
+                content += '<div id="collapse' + i + '" class=""><div class="panel-body location_accordian_body">';
+            else
+                content += '<div id="collapse' + i + '" class=""><div class="panel-body">';
+            var locationEmail = (location.email == null) ? 'Notification Email Not Set' : location.email;
+            content += '<div class="row practice_location_item" data-locationid = "' + location.id + '" data-index="' + i + '"><div class="col-xs-3 practice_info"><p>' + locationEmail + '</p><p>' + location.addressline1 + '<br>' + location.city + ',' + location.state + '&nbsp;  ' + location.zip + '<br>' + location.phone + '</p></div><div class="col-xs-4 practice_assign"><p class="hide">Assign roles </p><p class="hide">Assign users</p><p class="edit_location_frominfo">Edit</p><br><center class=""><span class="remove_location_frominfo"><img src="' + deleteImg + '"/></span></center></div><div class="col-xs-5"><div class="row">';
+            info.users.forEach(function (user) {
+                content += '<div class="col-xs-12 practice_users "><p style="width: 100%;"><span>' + user.firstname + ' ' + user.lastname + '</span><img src="' + deactivate_user_img + '" class="user_disable" data-id="' + user.id + '" data-toggle="tooltip" title="Disable User" data-placement="top"/></p></div>';
+            });
+            content += '</div></div></div>';
+            content += '</div></div></div>';
+            i++;
+        });
+        content += '</div>';
+        $('.practice_location_item_list').html(content);
+        $('[data-toggle="tooltip"]').tooltip();
+        $('.practice_list').removeClass('active');
+        $('.practice_info').addClass('active');
+        $('.practice_action_header').addClass('hide');
     }
 }
 

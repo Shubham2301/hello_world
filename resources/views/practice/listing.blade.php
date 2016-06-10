@@ -5,6 +5,7 @@
             <input type="hidden" id="assign_user_image_path" value="{{URL::asset('images/assign-user-icon-01.png')}}">
             <input type="hidden" id="location_previous_icon" value="{{URL::asset('images/triangle-down.png')}}">
             <input type="hidden" id="location_next_icon" value="{{URL::asset('images/triangle-up.png')}}">
+            <input type="hidden" id="provider_location_display_limit" value="{{config('constants.practice_location_display_limit')}}">
         </form>
     <div class="practice_search_content">
         <!--

@@ -162,6 +162,15 @@ return [
         myocuhub\Providers\SmsServiceProvider::class,
         myocuhub\Providers\VoiceServiceProvider::class,
 
+        /*
+         * SES Service Providers...
+         */
+        myocuhub\Providers\SESServiceProvider::class,
+
+		/*
+         * CCDA Service Providers...
+         */
+		myocuhub\Providers\CCDAServiceProvider::class,
     ],
 
     /*
@@ -217,7 +226,8 @@ return [
         'WebScheduling4PC' => myocuhub\Facades\WebScheduling4PC::class,
         'Voice' => myocuhub\Facades\Voice::class,
         'Sms' => myocuhub\Facades\Sms::class,
-
+        'SES' => myocuhub\Facades\SES::class,
+		'MyCCDA' => myocuhub\Facades\CCDAFacade::class,
     ],
 
 ];

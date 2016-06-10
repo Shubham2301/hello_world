@@ -1,4 +1,4 @@
-<div class="modal fade" id="field_Modal_4PC" role="dialog">
+<div class="modal fade" id="field_modal_fpc" role="dialog">
     <div class="modal-dialog alert">
 
         <!-- Modal content-->
@@ -9,8 +9,8 @@
             </div>
             <div class="modal-body">
                 <div class="content-section active">
-                    <form action="/updatepatientdata" id="form_4pc_field">
-                        <input type="hidden" name="patientId" value="" class="patient_id_4pc"> @foreach($fields_4PC as $field)
+                    <form action="/updatepatientdata" id="form_fpc_field">
+                        <input type="hidden" name="patientId" value="" class="patient_id_fpc"> @foreach($fields_FPC as $field)
                         <div class="row content-row-margin">
                             <div class="col-xs-4 form-group" style="padding-top: 5px;">
                                 <lable for="exampleInputName1"><strong style="padding-left:3em;color:black;"> {{$field['display_name']}}</strong></lable>
@@ -25,8 +25,8 @@
 
             <div class="modal-footer">
                 <div style="margin-right:33%">
-                    <button type="button" class="btn save_4pcdata active">Save</button>
-                    <button type="button" class="btn btn-default dismiss_button cancel_4pcdata" data-dismiss="modal" style="background-color:#d2d3d5">Cancel</button>
+                    <button type="button" class="btn save_fpcdata active">Save</button>
+                    <button type="button" class="btn btn-default dismiss_button cancel_fpcdata" data-dismiss="modal" style="background-color:#d2d3d5">Cancel</button>
                 </div>
             </div>
         </div>
