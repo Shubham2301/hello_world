@@ -1,32 +1,44 @@
-$(document).ready(function () {
-
+$(document).ready(function() {
+    loadFPCValidateModel();
     $('#subscriber_dob').datetimepicker({
         format: 'YYYY-MM-DD'
     });
 
     $('[data-toggle="tooltip"]').tooltip();
     $('.appointment_confirmed').hide();
-    $('#confirm_appointment').on('click', function () {
-        scheduleAppointment();
+    $('#confirm_appointment').on('click', function() {
+        if (unfillfpcFields > 0) {
+            $('#show_fpc_model').trigger('click');
+            return;
+        } else {
+            scheduleAppointment();
+        }
     });
 
-    $('#schedule_new_patient').on('click', function () {
+    $('#schedule_new_patient').on('click', function() {
         $('#form_patient_id').prop('disabled', true);
         $('#form_schedule_another_appointment').submit();
     });
-    $('#cancel_appointment').on('click', function () {
+    $('#cancel_appointment').on('click', function() {
         $('#form_patient_id').prop('disabled', true);
         $('#form_schedule_another_appointment').submit();
     });
-    $('#back').on('click', function () {
+    $('#back').on('click', function() {
         $('#form_schedule_another_appointment').attr('action', "/providers");
         $('#form_schedule_another_appointment').submit();
     });
+
+	$('#model_fpc_view').on('click', '.save_fpcdata', function() {
+		$('.patient_id_fpc').val($('#form_patient_id').val());
+		saveFPCRequiredFields();
+	});
 });
+var unfillfpcFields = null;
 
 function disableConfirmApptBttn() {
     $('.appointment_confirm>p>button').addClass('disable');
 }
+
 function enableConfirmApptBttn() {
     $('.appointment_confirm>p>button').removeClass('disable');
 }
@@ -37,7 +49,7 @@ function checkApptBttn() {
 
 function scheduleAppointment() {
 
-    if(checkApptBttn()){
+    if (checkApptBttn()) {
         return;
     }
 
@@ -72,8 +84,8 @@ function scheduleAppointment() {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function (e) {
-            
+        success: function(e) {
+
             if ($('#form_action').val() === 'careconsole') {
                 $('#back_to_console').show();
                 $('#schedule_new_patient').hide();
@@ -87,9 +99,62 @@ function scheduleAppointment() {
             $('.appointment_confirmed').show();
             $('#back').addClass('hide');
         },
-        error: function () {},
+        error: function() {},
         cache: false,
         processData: false
     });
 
+}
+
+function loadFPCValidateModel() {
+    var formData = {
+        'patient_id': $('#form_patient_id').val(),
+    };
+    $.ajax({
+        url: '/getfpcvalidateview',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function(e) {
+            var data = $.parseJSON(e);
+            unfillfpcFields = data.validate_fpc_count;
+            $('#model_fpc_view').html('');
+            $('#model_fpc_view').html(data.validate_fpc_view);
+            $('.field_date').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+
+            $('.modal-backdrop').remove();
+
+        },
+        error: function() {
+            $('p.alert_message').text('Error getting practice information');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+}
+
+function saveFPCRequiredFields() {
+    var myform = document.getElementById("form_fpc_field");
+    var fd = new FormData(myform);
+    $.ajax({
+        url: "/updatepatientdata",
+        data: fd,
+        cache: false,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function success(e) {
+            var info = $.parseJSON(e);
+            loadFPCValidateModel();
+            var formData = {
+                'id': $('#form_patient_id').val()
+            };
+            getPatientInfo(formData);
+            $('.cancel_fpcdata').trigger('click');
+        }
+    });
 }

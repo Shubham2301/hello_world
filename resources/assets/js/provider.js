@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-    loadFPCValidateModel();
     var insurancePrompt = 0;
     var old_ins_type = '';
     var new_ins_type = '';
@@ -152,11 +151,6 @@ $(document).ready(function () {
 
 
     $('.schedule_button').on('click', function() {
-        if (unfillfpcFields > 0) {
-            $('#show_fpc_model').trigger('click');
-            return;
-        }
-
         if (insurancePrompt == 0 && $('#insurance_carrier_key').val() == '') {
             $('#insuranceModal').modal('show');
             insurancePrompt++;
@@ -281,10 +275,6 @@ $(document).ready(function () {
         $('#ins_selected').html(new_ins_type);
     });
 
-    $('#model_fpc_view').on('click', '.save_fpcdata', function() {
-        $('.patient_id_fpc').val($('#form_patient_id').val());
-        saveFPCRequiredFields();
-    });
 
 });
 
@@ -755,55 +745,3 @@ function getNearByProviders(formData) {
 
 }
 
-function loadFPCValidateModel() {
-    var formData = {
-        'patient_id': $('#form_patient_id').val(),
-    };
-    $.ajax({
-        url: '/getfpcvalidateview',
-        type: 'GET',
-        data: $.param(formData),
-        contentType: 'text/html',
-        async: false,
-        success: function (e) {
-            var data = $.parseJSON(e);
-            unfillfpcFields = data.validate_fpc_count;
-            $('#model_fpc_view').html('');
-            $('#model_fpc_view').html(data.validate_fpc_view);
-            $('.field_date').datetimepicker({
-                format: 'YYYY-MM-DD'
-            });
-
-            $('.modal-backdrop').remove();
-
-        },
-        error: function () {
-            $('p.alert_message').text('Error getting practice information');
-            $('#alert').modal('show');
-        },
-        cache: false,
-        processData: false
-    });
-}
-
-function saveFPCRequiredFields() {
-    var myform = document.getElementById("form_fpc_field");
-    var fd = new FormData(myform);
-    $.ajax({
-        url: "/updatepatientdata",
-        data: fd,
-        cache: false,
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function success(e) {
-            var info = $.parseJSON(e);
-            loadFPCValidateModel();
-            var formData = {
-                'id': $('#form_patient_id').val()
-            };
-            getPatientInfo(formData);
-            $('.cancel_fpcdata').trigger('click');
-        }
-    });
-}
