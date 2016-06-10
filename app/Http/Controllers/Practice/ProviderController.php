@@ -14,9 +14,12 @@ use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
+use myocuhub\Http\Controllers\Traits\ValidateFPCRequestParams;
 
 class ProviderController extends Controller
 {
+    use ValidateFPCRequestParams;
+
     /**
      * Display a listing of the resource.
      *
@@ -316,16 +319,16 @@ class ProviderController extends Controller
     public function getReferringProviderSuggestions(Request $request)
     {
         $searchString = $request->provider;
-		$providers = User::where('name', 'LIKE', ''.$searchString.'%')->where('usertype_id', 1);
+        $providers = User::where('name', 'LIKE', ''.$searchString.'%')->where('usertype_id', 1);
 
-        if(session('user-level') > 1){
-            $providers = $providers->leftjoin('network_user', 'users.id', '=','network_user.user_id')
+        if (session('user-level') > 1) {
+            $providers = $providers->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
                 ->where('network_user.network_id', session('network-id'));
         }
 
         $providers = $providers->pluck('users.name')->toArray();
         $fromReferring = ReferralHistory::where('referred_by_provider', 'LIKE', ''.$searchString.'%');
-        if(session('user-level') > 1){
+        if (session('user-level') > 1) {
             $fromReferring = $fromReferring->where('network_id', session('network-id'));
         }
         $fromReferring = $fromReferring->pluck('referred_by_provider')->toArray();
@@ -338,40 +341,4 @@ class ProviderController extends Controller
         }
         return json_encode($data);
     }
-
-	public function validate4PCData($patientId)
-	{
-		$patient = Patient::find($patientId);
-		$tempFields = config('constants.4pcMandatory_fields');
-		$fields = $tempFields;
-
-		foreach ($tempFields as $key => $field) {
-			if ($field['type'] == 'field_date') {
-				($patient[$field['field_name']] && (bool)strtotime($patient[$field['field_name']])) ? array_forget($fields, $key):'';
-			} elseif ($patient[$field['field_name']]) {
-				array_forget($fields, $key);
-			}
-		}
-		return $fields;
-	}
-
-
-	public function updateFPCRequiredData(Request $request)
-	{
-		$data = $request->all();
-		$patientID =  $request->patientId;
-		unset($data['patientId']);
-		$updatePatient = Patient::where('id', $patientID)->update($data);
-		return $updatePatient;
-	}
-
-	public function getFPCValidateView(Request $request)
-	{
-		$patientID = $request->patient_id;
-		$validated4PCData = $this->validate4PCData($patientID);
-		$data['validate_fpc_count'] = sizeof($validated4PCData);
-		$data['validate_fpc_view'] = view('patient.field_model_4pc')->with('fields_4PC', $validated4PCData)->render();
-		return json_encode($data);
-	}
-
 }

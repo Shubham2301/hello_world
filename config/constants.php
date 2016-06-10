@@ -55,7 +55,7 @@ return [
 
 		],
 	],
-  '4pcMandatory_fields' => [
+	  'fpc_mandatory_fields' => [
       'email' => [
         'display_name' => 'Email',
         'field_name'  => 'email',

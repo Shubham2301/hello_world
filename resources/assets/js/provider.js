@@ -151,8 +151,8 @@ $(document).ready(function() {
     });
 
     $('.schedule_button').on('click', function() {
-        if (unfill4pcFields > 0) {
-            $('#show_4pc_model').trigger('click');
+        if (unfillfpcFields > 0) {
+            $('#show_fpc_model').trigger('click');
             return;
         }
 
@@ -293,14 +293,14 @@ $(document).ready(function() {
         $('#ins_selected').html(new_ins_type);
     });
 
-    $('#model_4pc_view').on('click', '.save_4pcdata', function() {
-        $('.patient_id_4pc').val($('#form_patient_id').val());
+    $('#model_fpc_view').on('click', '.save_fpcdata', function() {
+        $('.patient_id_fpc').val($('#form_patient_id').val());
         saveFPCRequiredFields();
     });
 
 });
 
-var unfill4pcFields = null;
+var unfillfpcFields = null;
 
 var nearByProviders = [];
 
@@ -749,9 +749,9 @@ function loadFPCValidateModel() {
         async: false,
         success: function(e) {
             var data = $.parseJSON(e);
-            unfill4pcFields = data.validate_fpc_count;
-            $('#model_4pc_view').html('');
-            $('#model_4pc_view').html(data.validate_fpc_view);
+            unfillfpcFields = data.validate_fpc_count;
+            $('#model_fpc_view').html('');
+            $('#model_fpc_view').html(data.validate_fpc_view);
             $('.field_date').datetimepicker({
                 format: 'YYYY-MM-DD'
             });
@@ -769,7 +769,7 @@ function loadFPCValidateModel() {
 }
 
 function saveFPCRequiredFields() {
-    var myform = document.getElementById("form_4pc_field");
+    var myform = document.getElementById("form_fpc_field");
     var fd = new FormData(myform);
     $.ajax({
         url: "/updatepatientdata",
@@ -785,7 +785,7 @@ function saveFPCRequiredFields() {
                 'id': $('#form_patient_id').val()
             };
             getPatientInfo(formData);
-            $('.cancel_4pcdata').trigger('click');
+            $('.cancel_fpcdata').trigger('click');
         }
     });
 }

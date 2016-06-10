@@ -164,7 +164,7 @@ class SendAppointmentRequestEmail
         ];
 
         /**
-         * Add Check for SES Email here. 
+         * Add Check for SES Email here.
          */
 
         if (SES::isDirectID($location->email)) {
@@ -173,7 +173,7 @@ class SendAppointmentRequestEmail
              */
             
             try {
-                
+
                 $patientID = $attr['appt']['patient_id'];
                 $attr['attachements'][] = MyCCDA::generate($patientID) ?: '';
 
@@ -186,7 +186,7 @@ class SendAppointmentRequestEmail
             /**
              * Send email via regular mail.
              */
-            
+
             try {
                 $mailToProvider = Mail::send($attr['view'], ['appt' => $attr['appt']], function ($m) use ($attr) {
                     $m->from($attr['from']['email'], $attr['from']['name']);

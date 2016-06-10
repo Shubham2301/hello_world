@@ -18,7 +18,7 @@ class SESMessaging extends SES
     }
 
     /**
-     * Check if input parameter is SES email ID. 
+     * Check if input parameter is SES email ID.
      *
      * @param  String  $email
      * @return Bool $type
