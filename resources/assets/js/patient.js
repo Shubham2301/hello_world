@@ -218,22 +218,11 @@ $(document).ready(function () {
         }
     });
     $('.content-right').on('scroll', function () {
-
-        if ($(this).scrollTop() + $(this).innerHeight() + 10 >= $(this)[0].scrollHeight) {
-            showpage++;
-            var searchdata = [];
-            if (toCall == 1)
-                searchdata = getsearchtype();
-            if (toCall == 2) {
-                searchdata = [];
-                searchdata.push({
-                    "type": searchType,
-                    "value": searchValue,
-                });
-            }
-            if (showpage < lastPage && searchdata.length != 0)
-                getPatients(searchdata, 0);
-        }
+		if ($(this).scrollTop() + $(this).innerHeight() + 2 >= $(this)[0].scrollHeight) {
+		setTimeout(function() {
+			loadPatientOnScroll();
+		}, 1000);
+		}
     });
     $(document).keypress(function (e) {
         if (e.which == 13) {
@@ -618,5 +607,25 @@ function checkForm() {
     });
     if(flag == 0)
         return true;
+}
+
+function loadPatientOnScroll()
+{
+		showpage++;
+		var searchdata = [];
+		if (toCall == 1)
+			searchdata = getsearchtype();
+		if (toCall == 2) {
+			searchdata = [];
+			searchdata.push({
+				"type": searchType,
+				"value": searchValue,
+			});
+		}
+		if (showpage < lastPage && searchdata.length != 0)
+		{
+			getPatients(searchdata, 0);
+		}
+
 }
 
