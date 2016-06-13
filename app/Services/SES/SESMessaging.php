@@ -64,19 +64,15 @@ class SESMessaging extends SES
 
         try {
 
-            $url = 'http://localhost/ocuhub-projectX/public/foo';
-            $payload = [
-                'form_params' => [
-                    'query' => $attr
-                ]
-            ];
-            
-            $client = new Client();
+            $JAVA_HOME = getenv('JAVA_HOME');
+            $PATH = "$JAVA_HOME/bin:".getenv('PATH');
 
-            $response = $client->request('POST', $url, $payload);
-            $body = $response->getBody();
+            putenv("JAVA_HOME=$JAVA_HOME");
+            putenv("PATH=$PATH");
+            echo 'java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "Body goes here" "'. $attr['attachments'][0]. '" ';
 
-            return $body->getContents();
+            $output = shell_exec('java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "Body goes here" "'. $attr['attachments'][0]. '" ');
+
         } catch (Exception $e) {
             Log::error($e);
             $action = 'Application Exception in sending Appointment Request email not sent to patient '. $location->email;
@@ -84,7 +80,7 @@ class SESMessaging extends SES
             $filename = basename(__FILE__);
             $ip = '';
             Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
+            
             return false;
         }
     }

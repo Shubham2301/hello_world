@@ -258,7 +258,11 @@ class CareConsoleService
                 return $patient['lastname'] . ', ' . $patient['firstname'];
                 break;
             case 'phone':
-                return Patient::find($patient['patient_id'])->getPhone();
+                $patient = Patient::find($patient['patient_id']);
+                if($patient){
+                    return $patient->getPhone();
+                }
+                return false;
                 break;
             case 'request-received':
                 $date = new \DateTime($patient['created_at']);
