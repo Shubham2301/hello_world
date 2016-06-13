@@ -194,4 +194,5 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/updatepatientdata', 'Practice\ProviderController@updateFPCRequiredData');
 	Route::post('/getccdadataforform', 'CcdaController@ccdaDataForPatientForm');
 	Route::get('/getfpcvalidateview', 'Practice\ProviderController@getFPCValidateView');
+	Route::get('export/audits', 'AuditReportController@downloadAsXSLS');
 });

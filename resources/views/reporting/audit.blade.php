@@ -29,7 +29,9 @@
         <option value="audit_report">Audit Report</option>
         <option value="impersonation_report">Impersonation Report</option>
     </select>
-    </span><br>
+    </span>
+	<span><button class="btn" id ="export_report_btn" onclick="downloadASXSLS()">Export</button></span>
+    <br>
     <span class="input_field">Start Date<input type="text" id="start_date"></span>
     <span class="input_field">End Date<input type="text" id="end_date"></span>
     <span class="input_field">Select Network
