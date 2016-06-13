@@ -37,6 +37,8 @@ Route::post('errors/directmail/', 'DirectMail\DirectMailController@logClientErro
 
 Route::group(['middleware' => 'auth'], function () {
 
+    Route::get('test', 'DirectMail\TestController@test');
+
     Route::get('writeback', 'Appointment\WriteBackController@index');
 
     Route::get('editprofile', 'Admin\UserController@editProfile');
