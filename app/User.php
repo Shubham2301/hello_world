@@ -12,12 +12,13 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use myocuhub\Models\UserLevel;
 use myocuhub\User;
 use Illuminate\Support\Facades\DB;
+use myocuhub\Http\Controllers\Traits\TwoFactorAuthenticatable;
 
-class User extends Model implements AuthenticatableContract,
-AuthorizableContract,
+class User extends Model implements AuthenticatableContract, 
+AuthorizableContract, 
 CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword;
+    use Authenticatable, Authorizable, CanResetPassword, TwoFactorAuthenticatable;
 
     /**
      * The database table used by the model.
