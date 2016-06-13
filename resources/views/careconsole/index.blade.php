@@ -14,13 +14,13 @@
 				<div class="search" id="care_console_search">
 					<input type="text" id="search_data">
                     <span class="active" aria-hidden="true" id="search_bar_open">
-                        <img src="{{URL::asset('/images/left-natural.png')}}" class="left_natural active_img">
-                        <img src="{{URL::asset('/images/left-active.png')}}" class="left_active active_img">
-                        <img src="{{URL::asset('/images/right-natural.png')}}" class="right_natural non_active_img">
-                        <img src="{{URL::asset('/images/right-active.png')}}" class="right_active non_active_img">
+                        <img src="{{elixir('images/sidebar/left-natural.png')}}" class="left_natural active_img">
+                        <img src="{{elixir('images/sidebar/left-active.png')}}" class="left_active active_img">
+                        <img src="{{elixir('images/sidebar/right-natural.png')}}" class="right_natural non_active_img">
+                        <img src="{{elixir('images/sidebar/right-active.png')}}" class="right_active non_active_img">
                     </span>
                     <span class="" aria-hidden="true" id="search_do">
-                        <img src="{{elixir('images/sidebar/search-icon.png')}}" class="">
+                        <img src="{{elixir('images/sidebar/search-icon-schedule.png')}}" class="">
                     </span>
 
 					<div class="search_result">

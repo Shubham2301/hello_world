@@ -3,7 +3,7 @@
         <div>
             <div class="dropdown">
                 <span class="dropdown-toggle admin_button sidebar_user_img_dropdown" type="button" data-toggle="dropdown">
-                <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini" onerror="this.src = '{{elixir('images/sidebar/care_coordination_icon_small.png')}}'">
+                <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini" onerror="this.src = '{{elixir('images/sidebar/care_coordinator.png')}}'">
                 <span class="caret"></span></span>
                 <ul class="dropdown-menu sidebar">
                     @can('access-directmail')

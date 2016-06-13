@@ -20,7 +20,7 @@
             <option value="address">Address</option>
         </select>
 -->
-            <div class="dropdown"><span data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="custom_dropdown"><span id="search_patient_input_type" value="all">All</span><img src="/images/triangle-down.png" class="custom_dropdown_img_search"></span>
+            <div class="dropdown"><span data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="custom_dropdown"><span id="search_patient_input_type" value="all">All</span><img src="images/sidebar/triangle-down.png" class="custom_dropdown_img_search"></span>
                 </span>
                 <ul class="dropdown-menu" id="custom_dropdown">
                     <li value="all">All</li>
