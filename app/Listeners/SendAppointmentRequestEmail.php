@@ -166,7 +166,7 @@ class SendAppointmentRequestEmail
         /**
          * Add Check for SES Email here.
          */
-
+//	dd($location->email, SES::isDirectID($location->email));
         if (SES::isDirectID($location->email)) {
             /**
              * Generate CCDA file and send email via SES to Provider
@@ -175,11 +175,12 @@ class SendAppointmentRequestEmail
             try {
 
                 $patientID = $attr['appt']['patient_id'];
-                $attr['attachements'][] = MyCCDA::generate($patientID) ?: '';
-
+                $attr['attachments'][] = MyCCDA::generate($patientID) ?: '';
+//dd($attr['attachments']);
                 $directMessageID = SES::send($attr);
             } catch (Exception $e) {
-                Log::error($e);
+                throw $e;
+		Log::error($e);
                 return false;
             }
         } else {
