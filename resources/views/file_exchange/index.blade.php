@@ -25,11 +25,11 @@
                     </span>
                 </span>
                 <span class="file_exchange_navbar_content_right">
-                    <span class="file_exchange_button share-button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{URL::asset('images/sidebar/share-icon.png')}}" style="width:30px;"></span>
-                <span class="file_exchange_button trash-button" data-toggle="tooltip" title="Trash" data-placement="bottom"><img src="{{URL::asset('images/sidebar/trash-icon.png')}}" style="width:30px;"></span>
-                <span class="file_exchange_button download-button" data-toggle="tooltip" title="Download" data-placement="bottom"><img src="{{URL::asset('images/sidebar/download-icon.png')}}" style="width:30px;"></span>
-                <span class="file_exchange_button info-button" data-toggle="tooltip" title="Details" data-placement="bottom" id="details"><img src="{{URL::asset('images/sidebar/details-icon.png')}}" style="width:30px;"></span>
-					<span class="file_exchange_button restore-button" data-toggle="tooltip" title="Restore" data-placement="bottom" id="restore"><img src="{{URL::asset('images/sidebar/restore-icon.png')}}" style="width:30px;"></span>
+                    <span class="file_exchange_button share-button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{elixir('images/sidebar/share-icon.png')}}"></span>
+                <span class="file_exchange_button trash-button" data-toggle="tooltip" title="Trash" data-placement="bottom"><img src="{{elixir('images/sidebar/trash-icon.png')}}"></span>
+                <span class="file_exchange_button download-button" data-toggle="tooltip" title="Download" data-placement="bottom"><img src="{{elixir('images/sidebar/download-icon.png')}}"></span>
+                <span class="file_exchange_button info-button" data-toggle="tooltip" title="Details" data-placement="bottom" id="details"><img src="{{elixir('images/sidebar/details-icon.png')}}"></span>
+					<span class="file_exchange_button restore-button" data-toggle="tooltip" title="Restore" data-placement="bottom" id="restore"><img src="{{elixir('images/sidebar/restore-icon.png')}}"></span>
                 </span>
             </div>
             <div class="folder_path active">

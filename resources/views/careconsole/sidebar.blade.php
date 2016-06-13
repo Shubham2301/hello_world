@@ -7,21 +7,21 @@
                 <span class="caret"></span></span>
                 <ul class="dropdown-menu sidebar" >
                     @can('access-directmail')
-                    <li class="hello"><a href="/directmail" data-toggle="tooltip" title="Direct Mail" data-placement="right"><img src="{{URL::asset('images/sidebar/messages.png')}}" class="drop_image"></a></li>
+                    <li class="hello"><a href="/directmail" data-toggle="tooltip" title="Direct Mail" data-placement="right"><img src="{{elixir('images/sidebar/messages.png')}}" class="drop_image"></a></li>
                     @endcan
-                    <li><a href="file_exchange" data-toggle="tooltip" title="File Exchange" data-placement="right"><img src="{{URL::asset('images/sidebar/file_update.png')}}" class="drop_image"></a></li>
-                    <li><a href="#" id="menu-announcements" data-toggle="tooltip" title="Announcements" data-placement="right"><img src="{{URL::asset('images/sidebar/announcements.png')}}" class="drop_image menu-announcements"></a></li>
-                    <li><a href="/referraltype" data-toggle="tooltip" title="Schedule Patients" data-placement="right"><img src="{{URL::asset('images/sidebar/schedule.png')}}" class="drop_image"></a></li>
-<!--                    <li><a href="#" data-toggle="tooltip" title="Patients Records" data-placement="right"><img src="{{URL::asset('images/sidebar/records.png')}}" class="drop_image"></a></li>-->
+                    <li><a href="file_exchange" data-toggle="tooltip" title="File Exchange" data-placement="right"><img src="{{elixir('images/sidebar/file_update.png')}}" class="drop_image"></a></li>
+                    <li><a href="#" id="menu-announcements" data-toggle="tooltip" title="Announcements" data-placement="right"><img src="{{elixir('images/sidebar/announcements.png')}}" class="drop_image menu-announcements"></a></li>
+                    <li><a href="/referraltype" data-toggle="tooltip" title="Schedule Patients" data-placement="right"><img src="{{elixir('images/sidebar/schedule.png')}}" class="drop_image"></a></li>
+<!--                    <li><a href="#" data-toggle="tooltip" title="Patients Records" data-placement="right"><img src="{{elixir('images/sidebar/records.png')}}" class="drop_image"></a></li>-->
                     @can('care-cordination')
-                    <li><a href="/careconsole" data-toggle="tooltip" title="Care Console" data-placement="right"><img src="{{URL::asset('images/sidebar/care-coordination.png')}}" class="drop_image"></a></li>
+                    <li><a href="/careconsole" data-toggle="tooltip" title="Care Console" data-placement="right"><img src="{{elixir('images/sidebar/care-coordination.png')}}" class="drop_image"></a></li>
                     @endcan
                     @if(2 == Auth::user()->usertype_id)
-                    <li><a href="/administration" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{URL::asset('images/sidebar/administration.png')}}" class="drop_image"></a></li>
+                    <li><a href="/administration" data-toggle="tooltip" title="Administration" data-placement="right"><img src="{{elixir('images/sidebar/administration.png')}}" class="drop_image"></a></li>
                     @endif
                     @can('view-reports')
                     <li>
-                        <a href="/careconsole_reports"  data-toggle="tooltip" title="Reports" data-placement="right"><img src="{{URL::asset('images/sidebar/reports.png')}}" class="drop_image"></a>
+                        <a href="/careconsole_reports"  data-toggle="tooltip" title="Reports" data-placement="right"><img src="{{elixir('images/sidebar/reports.png')}}" class="drop_image"></a>
                     </li>
                     @endcan
                 </ul>
@@ -66,15 +66,15 @@
     </ul>
     <div class="C3_day_row console_bucket_row">
         <div class="console_buckets"  data-name="recall" style="color:black">
-            <img src="{{URL::asset('images/recall-icon.png')}}" alt="">
+            <img src="{{elixir('images/sidebar/recall-icon.png')}}" alt="">
             <p>Recall</p>
         </div>
         <div class=" console_buckets" data-name="archived" style="color:black">
-            <img src="{{URL::asset('images/archive-icon.png')}}" alt="">
+            <img src="{{elixir('images/sidebar/archive-icon.png')}}" alt="">
             <p>Archive</p>
         </div>
         <div class=" console_buckets"  data-name="priority" style="color:black">
-            <img src="{{URL::asset('images/priority-icon.png')}}" alt="">
+            <img src="{{elixir('images/sidebar/priority-icon.png')}}" alt="">
             <p>Priority</p>
         </div>
     </div>

@@ -3,7 +3,7 @@
     <div class="col-xs-10 search_input">
         <input type="text" class="" id="search_practice_input" >
 <!--        <span class="glyphicon glyphicon-search" id="search_practice_button" aria-hidden="true"></span>-->
-        <img src="{{URL::asset('images/search-icon.png')}}" id="search_practice_button">
+        <img src="{{elixir('images/sidebar/search-icon-schedule.png')}}" id="search_practice_button">
         <span class="glyphicon glyphicon-plus-sign add_search_option" id="add_practice_search_option" aria-hidden="true">    </span>
     </div>
     <div class="col-xs-2 search_dropdown" patient-id="{!! $data['patient_id']!!}">

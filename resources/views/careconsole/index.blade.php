@@ -20,7 +20,7 @@
                         <img src="{{URL::asset('/images/right-active.png')}}" class="right_active non_active_img">
                     </span>
                     <span class="" aria-hidden="true" id="search_do">
-                        <img src="{{URL::asset('/images/search-icon.png')}}" class="">
+                        <img src="{{elixir('images/sidebar/search-icon.png')}}" class="">
                     </span>
 
 					<div class="search_result">
@@ -100,9 +100,9 @@
 			</div>
 		</div>
 	</div>
-    <input type="hidden" id="recall_icon_path" value="{{URL::asset('/images/recall-icon.png')}}">
-    <input type="hidden" id="archive_icon_path" value="{{URL::asset('/images/archive-icon.png')}}">
-    <input type="hidden" id="priority_icon_path" value="{{URL::asset('/images/priority-icon.png')}}">
+    <input type="hidden" id="recall_icon_path" value="{{elixir('images/sidebar/recall-icon-header.png')}}">
+    <input type="hidden" id="archive_icon_path" value="{{elixir('images/sidebar/archive-icon-header.png')}}">
+    <input type="hidden" id="priority_icon_path" value="{{elixir('images/sidebar/priority-icon-header.png')}}">
 	@include('careconsole.patientinfo')
 	@include('careconsole.overview')
 	@include('careconsole.drilldown')
