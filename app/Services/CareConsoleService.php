@@ -258,7 +258,7 @@ class CareConsoleService
                 return $patient['lastname'] . ', ' . $patient['firstname'];
                 break;
             case 'phone':
-                $patient = Patient::find($patient['patient_id'])->getPhone();
+                $patient = Patient::find($patient['patient_id']);
                 if($patient){
                     return $patient->getPhone();
                 }
