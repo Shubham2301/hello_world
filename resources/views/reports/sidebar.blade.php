@@ -3,7 +3,7 @@
         <div>
             <div class="dropdown">
                 <span class="dropdown-toggle admin_button sidebar_user_img_dropdown" type="button" data-toggle="dropdown">
-                <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini" onerror="this.src = '{{URL::asset('images/sidebar/care_coordinator.png')}}'">
+                <img src="{{URL::asset('images/users/user_'. Auth::user()->id .'.jpg')}}" class="profile_img_sidebar_mini" onerror="this.src = '{{elixir('images/sidebar/care_coordination_icon_small.png')}}'">
                 <span class="caret"></span></span>
                 <ul class="dropdown-menu sidebar">
                     @can('access-directmail')
@@ -47,7 +47,7 @@
 <div class="sidebar_item_list">
 <span class="report_sidebar_button sidebar_realtime realtime_header active">
                   <span class="report_sidebar_image">
-                      <span><img src="{{URL::asset('images/real-time-icon.png')}}" style="width:80%;height:80%;"></span>
+                      <span><img src="{{elixir('images/sidebar/real-time-icon.png')}}"></span>
                   </span>
                   <span class="report_sidebar_text">
                       <span class="text">Real Time</span>
@@ -57,7 +57,7 @@
             </div>
 <span class="report_sidebar_button sidebar_historical historical_header">
                   <span class="report_sidebar_image">
-                      <span><img src="{{URL::asset('images/historical-icon.png')}}" style="width:80%;height:80%;"></span>
+                      <span><img src="{{elixir('images/sidebar/historical-icon.png')}}"></span>
                   </span>
                   <span class="report_sidebar_text">
                       <span class="text">Historical</span>
