@@ -34,8 +34,16 @@ Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 Route::post('errors/directmail/', 'DirectMail\DirectMailController@logClientError');
 
+// Two Factor Authentication routes...
+Route::get('auth/twofactorauth', 'Auth\TwoFactorAuthController@twoFactorAuth');
+Route::post('auth/verifyotp', 'Auth\TwoFactorAuthController@verifyOTP');
+Route::post('auth/resendotp', 'Auth\TwoFactorAuthController@resendOTP');
+// Route::get('auth/verifyphone', 'Auth\AuthController@twoFactorAuth');
+// Route::post('auth/verifyphone', 'Auth\AuthController@verifyPhone');
 
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('test', 'DirectMail\TestController@test');
 
     Route::get('writeback', 'Appointment\WriteBackController@index');
 
@@ -194,4 +202,5 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/updatepatientdata', 'Practice\ProviderController@updateFPCRequiredData');
 	Route::post('/getccdadataforform', 'CcdaController@ccdaDataForPatientForm');
 	Route::get('/getfpcvalidateview', 'Practice\ProviderController@getFPCValidateView');
+	Route::get('export/audits', 'AuditReportController@downloadAsXSLS');
 });

@@ -44,6 +44,10 @@ class Authenticate {
 
 		$user = Auth::user();
 
+		if ($user->two_factor_auth == 1 && session('two-factor-auth') != true) {
+			return redirect('/auth/twofactorauth');
+		}
+
 		if ($network = User::getNetwork($user->id)) {
 			session(['network-id' => $network->network_id]);
 		}
