@@ -43,7 +43,6 @@ return [
 		'ABIorVTeval',
 		'UnknownEncounterReschedule',
 	],
-
 	'paths' => [
 		'ccda'=>[
 			'temp_ccda' => base_path() . '/temp_ccda/',
@@ -65,9 +64,11 @@ return [
         'display_name' => 'Date of Birth',
         'field_name'  => 'birthdate',
         'type' => 'field_date'
-      ]
-    ],
+      ],
+  	],
+  	'two_factor_auth' => [
+  		'validity_limit' => 5,
+  	],
     'provider_list_display_limit' => '5',
     'practice_location_display_limit' => '3',
-
 ];
