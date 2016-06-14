@@ -43,7 +43,7 @@
         @endif
 
         <img id="loadingImg" alt="Loading..."   src="{{ asset('/images/ajax-loader.gif') }}" style="width:1em;display: none;">
-        <div id="refreshBtn" onclick="refreshPage()"><img src="{{ asset('/images/refresh-icon-01.png') }}" alt=""></div>
+        <div id="refreshBtn" onclick="refreshPage()"><img src="{{ elixir('/images/sidebar/refresh-icon-01.png') }}" alt=""></div>
         <button id="getCodeBtn" class="btn dismiss_button" style="width:20%;display: none;">Get Code</button>
 
         @if (Session::has('request_failed_msg'))
