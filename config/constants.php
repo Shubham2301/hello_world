@@ -20,6 +20,17 @@ return [
 		'confirm_appointment' => 2,
 		'post_appointment' => 3,
 	],
+	'message_views' => [
+		'request_appointment_provider' => [
+			'subject' => 'Request for Appointment',
+			'view' => 'emails.appt-confirmation-provider'
+		],
+		'request_appointment_patient' => [
+			'subject' => 'Appointment has been scheduled',
+			'view' => 'emails.appt-confirmation-patient'
+		],
+	]
+	,
 	'language' => [
 		'english' => 1,
 		'spanish' => 2,
@@ -32,17 +43,27 @@ return [
 		'ABIorVTeval',
 		'UnknownEncounterReschedule',
 	],
-  '4pcMandatory_fields' => [
-      'email' => [
-        'display_name' => 'Email',
-        'field_name'  => 'email',
-        'type' => 'field_text'
-      ],
+	'paths' => [
+		'ccda'=>[
+			'temp_ccda' => base_path() . '/temp_ccda/',
+			'temp_json' => base_path() . '/temp_ccda/temp_json/',
+			'default_ccda' => public_path() .'/lib/ccda/patient-demographics.json',
+			'tojson' => public_path() . '/js/tojson.js ',
+			'toxml' => public_path() . '/js/toxml.js ',
+			'stylesheet' => public_path() . '/lib/xslt/CDA.xsl',
+
+		],
+	],
+    'fpc_mandatory_fields' => [
       'birthdate' => [
         'display_name' => 'Date of Birth',
         'field_name'  => 'birthdate',
         'type' => 'field_date'
-      ]
-  ],
-
+      ],
+  	],
+  	'two_factor_auth' => [
+  		'validity_limit' => 5,
+  	],
+    'provider_list_display_limit' => '5',
+    'practice_location_display_limit' => '3',
 ];

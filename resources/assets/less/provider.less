@@ -252,7 +252,6 @@ Section : Imports
 }
 .dropdown {
     color: #000;
-    margin: auto;
 }
 .availability {
     display: none;
@@ -428,8 +427,6 @@ p.patient_dropdown_data {
     margin: auto .5em;
 }
 .custom_dropdown_img_search {
-    width: 1em;
-    height: 1em;
     margin: auto .5em;
 }
 .practice_name_underline {
@@ -464,7 +461,7 @@ p.patient_dropdown_data {
     color: black;
     margin-top: .5em;
 }
-.underline{
+.underline {
     border: 0;
     border-top: 2px solid #f2f2f2;
     width: 2em;
@@ -472,6 +469,15 @@ p.patient_dropdown_data {
     margin-top: 0;
     margin-right: auto;
 }
+ul.location_list {
+    list-style: none;
+    padding: 0;
+    &>li:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
 /*
 ----------------------
 Mobile Styling
@@ -485,7 +491,7 @@ Mobile Styling
     .patient_previous_information {
         width: 100%;
     }
-        .patient_table_mobile {
+    .patient_table_mobile {
         text-align: left;
         margin-left: -1em;
     }

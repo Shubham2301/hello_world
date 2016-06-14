@@ -31,8 +31,8 @@
                 </div>
                 <div class="col-sm-6 col-xs-12">
                     <p>
-                        <span id="location" class="locations"></span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax appointment_type">
-                        <span class="provider_detail_text arial" id="location_address"></span>
+                        <span id="location" class="locations location_list"></span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax appointment_type">
+                        <span class="provider_detail_text arial location_list" id="location_address"></span>
                         <br>
                         <span class="provider_detail_text arial" id="location_contact"></span>
                         <br>

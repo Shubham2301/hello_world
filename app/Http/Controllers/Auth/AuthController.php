@@ -10,6 +10,7 @@ use Auth;
 use Validator;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Controllers\Traits\TwoFactorAuthentication;
 
 class AuthController extends Controller
 {
@@ -24,7 +25,7 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesAndRegistersUsers, ThrottlesLogins, TwoFactorAuthentication;
 
     /**
      * Create a new authentication controller instance.

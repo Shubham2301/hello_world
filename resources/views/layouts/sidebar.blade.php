@@ -13,14 +13,14 @@
     @endif
     <li id="menu-{{ $menu->name }}" class="sidebar_menu_item @if(isset($data)){{ array_key_exists($menu->name, $data) ? 'active' : '' }}@endif menu-{{ $menu->name }}" onclick="location.href = '{{$menu->url}}'">
         <a class="main_sidebar_menu_item" href="{{ $menu->url }}">
-            <span class="sidebar_img"><img src="{{URL::asset($menu->icon_path.'.png')}}" class="image"></span>
+            <span class="sidebar_img"><img src="{{elixir($menu->icon_path.'.png')}}" class="image"></span>
             <span class="sidebar_title">
                 <span class="sidebar_title_text">
                     {{ $menu->display_name }}
                 </span>
                 @if($menu->name == "care-console")
                 <span class="notification arial_bold care_console_notification active" id="menu-notification-{{ $menu->name }}">
-                    <img src="{{URL::asset('images/priority-icon.png')}}" class="sidebar_priority_image">
+                    <img src="{{elixir('images/sidebar/priority-icon-small.png')}}" class="sidebar_priority_image">
                 </span>
                 @else
                 <span class="notification arial_bold" id="menu-notification-{{ $menu->name }}">

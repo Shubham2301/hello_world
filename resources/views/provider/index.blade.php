@@ -33,6 +33,7 @@
     {!! Form::hidden('location', '', array('id' => 'form_location')) !!}
     {!! Form::hidden('location_id', '', array('id' => 'form_location_id')) !!}
     {!! Form::hidden('location_code', '', array('id' => 'form_location_code')) !!}
+    {!! Form::hidden('provider_list_count_limit', config('constants.provider_list_display_limit'), array('id' => 'provider_list_count_limit')) !!}
     @include('appointment.insurance-details')
     {!! Form::close() !!}
     <div class="practice_section active" id="select_practice">
@@ -46,7 +47,7 @@
     </div>
     <div class="row content-row-margin-scheduling">
         <div class="col-xs-12 subsection-header-previous-stage arial">
-            <span>1. Search for Patient&nbsp;<img src="{{URL::asset('images/tick-icon.png')}}" style="width:1.5em;margin-top:-.3em;">
+            <span>1. Search for Patient&nbsp;<img src="{{elixir('images/sidebar/tick-icon.png')}}" style="margin-top:-.3em;">
             </span>
             <span class="selected_patient arial_bold"><p>Patient Selected:</p>&nbsp;&nbsp;<p class="selected_patient_name"></p>
             <p class="view_selected_patient view">View</p>&nbsp;&nbsp;
@@ -82,6 +83,7 @@
     </div>
 </div>
 </div>
+
 @endsection
 @section('mobile_sidebar_content')
 @include('layouts.sidebar')

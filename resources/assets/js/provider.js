@@ -149,7 +149,8 @@ $(document).ready(function () {
 
     });
 
-    $('.schedule_button').on('click', function () {
+
+    $('.schedule_button').on('click', function() {
         if (insurancePrompt == 0 && $('#insurance_carrier_key').val() == '') {
             $('#insuranceModal').modal('show');
             insurancePrompt++;
@@ -158,23 +159,10 @@ $(document).ready(function () {
         scheduleAppointment($(this).attr('data-id'), $(this).attr('data-practice-id'));
     });
 
-    $('.locations').on('click', 'ul.dropdown-menu>li', function () {
+    $('.location_list').on('click', 'ul>li', function () {
         var location_address = $(this).attr('data-address_1') + ' ' + $(this).attr('data-address_2');
         var location_contact = $(this).attr('data-contact');
-        $('#location_address').html('');
-        $('#location_contact').html('');
-        $('#appointment_type').html('');
-        $('#appointment_date').html('');
-        $('#appointment_time').html('');
-        $('.appointment_type_not_found').hide();
-        $('.appointment_detail').addClass('hide');
-        $('#appointment_type_list').html('');
-        $('.availability-btn').removeClass('hide');
-        $('.get_availability').addClass('hide');
-        $('.availability').html('');
-        $('.availability').removeClass('active');
-        $('.schedule_button').removeClass('active');
-        $('.availability-text').removeClass('hide');
+        resetLocationData();
         $('#location_address').html(location_address);
         $('#location_contact').html(location_contact);
         $('#form_location_id').val($(this).attr('data-id'));
@@ -286,7 +274,11 @@ $(document).ready(function () {
     $('.confirm_ins_btn').on('click', function () {
         $('#ins_selected').html(new_ins_type);
     });
+
+
 });
+
+var unfillfpcFields = null;
 
 var nearByProviders = [];
 
@@ -336,6 +328,23 @@ function showPatientInfo() {
         }
         $('.patient_previous_information').removeClass('hide');
     }
+}
+
+function resetLocationData() {
+    $('#location_address').html('');
+    $('#location_contact').html('');
+    $('#appointment_type').html('');
+    $('#appointment_date').html('');
+    $('#appointment_time').html('');
+    $('.appointment_type_not_found').hide();
+    $('.appointment_detail').addClass('hide');
+    $('#appointment_type_list').html('');
+    $('.availability-btn').removeClass('hide');
+    $('.get_availability').addClass('hide');
+    $('.availability').html('');
+    $('.availability').removeClass('active');
+    $('.schedule_button').removeClass('active');
+    $('.availability-text').removeClass('hide');
 }
 
 //function that is used to fetch the information of the patient that is being scheduled
@@ -423,6 +432,17 @@ function showProviderInfo(data) {
     }
     content += '</ul></div>';
     $('.locations').html(content);
+    if (locations.length < $('#provider_list_count_limit').val()) {
+        content = '';
+        content += '<ul class="location_list">';
+        if (locations.length > 0) {
+            locations.forEach(function (location) {
+                content += '<li data-id="' + location.id + '" data-code="' + location.location_code + '" data-address_1="' + location.addressline1 + '" data-address_2="' + location.addressline2 + '" data-contact="' + location.phone + '">' + location.locationname + '</li>';
+            });
+        }
+        content += '</ul>';
+        $('#location_address').html(content);
+    }
     $('.practice_list').removeClass('active');
     $('.practice_info').addClass('active');
     $('.patient_previous_information').removeClass('active');
@@ -441,6 +461,8 @@ function getProviderInfo(formData) {
             var info = $.parseJSON(e);
             showProviderInfo(info);
             $('#ins_list').hide();
+            if (info.locations.length == 1)
+                $('ul.location_dropdown>li').first().click();
         },
         error: function () {
             $('p.alert_message').text('Error getting practice information');
@@ -722,3 +744,4 @@ function getNearByProviders(formData) {
     });
 
 }
+

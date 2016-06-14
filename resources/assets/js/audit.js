@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     var cur_date = new Date();
     var set_start_date = new Date(cur_date.getTime());
     $('#start_date').datetimepicker({
@@ -85,4 +84,15 @@ function refreshReports() {
     });
 
 
+}
+
+function downloadASXSLS(){
+	var formData = {
+		start_date: $('#start_date').val(),
+		end_date: $('#end_date').val(),
+		network_id: $('#select_network').val(),
+		report_type: $('#select_report_type').val(),
+	};
+	var query = $.param(formData);
+	window.location= '/export/audits?'+query;
 }
