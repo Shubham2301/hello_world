@@ -64,7 +64,7 @@
             </div>
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
-            <div class="row">
+<!--            <div class="row">-->
                 @if(strlen($folder['description']) > 90)
                 <div class="col-xs-7 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $folder['id'] }}_folder" style="cursor:pointer;" data-clickable="true">
                     <p style="margin-left: 8%;">{{ $folder['description'] }}</p>
@@ -75,7 +75,7 @@
                     <p style="margin-left: 8%;">{{ $folder['description'] }}</p>
                 </div>
                 @endif
-            </div>
+<!--            </div>-->
         </div>
         <hr> @endforeach @foreach($filelist as $file)
         <div class="row arial col_content no-margin">
@@ -85,7 +85,7 @@
 			<div class="col-xs-7 no-padding"><img src="{{URL::asset('images/sidebar/files-white.png')}}" style="margin:0 0.5em 0.25em 0.25em"><span id="{{ $file['id'] }}_file_name">{{ $file['name'] }}</span></div>
             <div class="col-xs-2 no-padding">{{ $file['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $file['updated_at'] }}</div>
-            <div class="row">
+<!--            <div class="row">-->
                 @if(strlen($file['description']) > 90)
 				<div class="col-xs-7 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $file['id'] }}_file" style="cursor:pointer;" data-clickable="true">
                     <p style="margin-left: 8%;">{{ $file['description'] }}</p>
@@ -96,7 +96,7 @@
                     <p style="margin-left: 8%;">{{ $file['description'] }}</p>
                 </div>
                 @endif
-            </div>
+<!--            </div>-->
         </div>
         <hr> @endforeach
     </div>
