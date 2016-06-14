@@ -286,6 +286,16 @@ $(document).ready(function () {
 			getPreviousProviders(formData);
 		}
 
+	$(document).on('click', '.lastseen_content',function(){
+		var id = $('#form_patient_id').attr('value');
+		selectPreviousProvider = true;
+		$('.view_selected_patient').trigger('click');
+		var formData = {
+			'patient_id': id
+		};
+		getPreviousProviders(formData);
+
+	});
 
 });
 
