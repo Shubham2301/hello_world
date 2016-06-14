@@ -4,7 +4,7 @@
         <a href="/administration/users/create"><button type="button" class="btn add-btn">Add New</button></a>
     <span class="search_input_box">
         <input type="text" class="arial_italic" id="search_user_input" placeholder="search">
-        <img src="{{asset('images/search-icon.png')}}" class="admin_seacrh_icon" id="search_user_button">
+        <img src="{{elixir('images/sidebar/search-icon.png')}}" class="admin_seacrh_icon" id="search_user_button">
     </span>
     <span class="glyphicon glyphicon-remove" id="refresh_users" area-hidden="true"></span>
     <div class="dropdown admin_delete_dropdown" data-toggle="tooltip" title="Deactivate Users" data-placement="top"><span area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removeuser_from_row admin_delete"><img class="cancel_image" src="{{URL::asset('images/deactivate.png')}}"><img class="cancel_image-hover" src="{{URL::asset('images/deactivate.png')}}"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to deactivate the selected users?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div>
@@ -28,7 +28,7 @@
 			<input type="hidden" id="dropdown_natural_img" value="{{asset('images/dropdown-natural-new.png')}}">
 			<input type="hidden" id="dropdown_onhover_img" value="{{asset('images/dropdown-hover-new.png')}}">
 			<input type="hidden" id="dropdown_active_img" value="{{asset('images/dropdown-active-new.png')}}">
-			<input type="hidden" id="active_user_img" value="{{asset('images/deactivate-icon.png')}}">
+			<input type="hidden" id="active_user_img" value="{{elixir('images/sidebar/deactivate-icon.png')}}">
 <!--
 			<p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"></span>
 			<span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>

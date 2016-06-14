@@ -25,11 +25,11 @@
                     </span>
                 </span>
                 <span class="file_exchange_navbar_content_right">
-                    <span class="file_exchange_button share-button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{URL::asset('images/sidebar/share-icon.png')}}" style="width:30px;"></span>
-                <span class="file_exchange_button trash-button" data-toggle="tooltip" title="Trash" data-placement="bottom"><img src="{{URL::asset('images/sidebar/trash-icon.png')}}" style="width:30px;"></span>
-                <span class="file_exchange_button download-button" data-toggle="tooltip" title="Download" data-placement="bottom"><img src="{{URL::asset('images/sidebar/download-icon.png')}}" style="width:30px;"></span>
-                <span class="file_exchange_button info-button" data-toggle="tooltip" title="Details" data-placement="bottom" id="details"><img src="{{URL::asset('images/sidebar/details-icon.png')}}" style="width:30px;"></span>
-					<span class="file_exchange_button restore-button" data-toggle="tooltip" title="Restore" data-placement="bottom" id="restore"><img src="{{URL::asset('images/sidebar/restore-icon.png')}}" style="width:30px;"></span>
+                    <span class="file_exchange_button share-button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{elixir('images/sidebar/share-icon.png')}}"></span>
+                <span class="file_exchange_button trash-button" data-toggle="tooltip" title="Trash" data-placement="bottom"><img src="{{elixir('images/sidebar/trash-icon.png')}}"></span>
+                <span class="file_exchange_button download-button" data-toggle="tooltip" title="Download" data-placement="bottom"><img src="{{elixir('images/sidebar/download-icon.png')}}"></span>
+                <span class="file_exchange_button info-button" data-toggle="tooltip" title="Details" data-placement="bottom" id="details"><img src="{{elixir('images/sidebar/details-icon.png')}}"></span>
+					<span class="file_exchange_button restore-button" data-toggle="tooltip" title="Restore" data-placement="bottom" id="restore"><img src="{{elixir('images/sidebar/restore-icon.png')}}"></span>
                 </span>
             </div>
             <div class="folder_path active">
@@ -57,14 +57,14 @@
             </div>
             <div class="col-xs-7 no-padding">
 				@if($openView != 'trash')
-				<a href="{{$accessLink}}?id={{$folder['id']}}"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em"><span id="{{ $folder['id'] }}_folder_name">{{ $folder['name'] }}</span></a>
+				<a href="{{$accessLink}}?id={{$folder['id']}}"><img src="{{ URL::asset('images/sidebar/folder-white.png') }}" style="margin:0 0.5em 0.25em 0.25em"><span id="{{ $folder['id'] }}_folder_name">{{ $folder['name'] }}</span></a>
 				@else
-				<a href="#" data-id="{{$folder['id']}}" class="restore_item"><img src="{{ URL::asset('images/folder-white.png') }}" style="width: 2em;margin:0 0.5em 0.25em 0.25em"><span id="{{$folder['id'] }}_folder_name">{{ $folder['name'] }}</span></a>
+				<a href="#" data-id="{{$folder['id']}}" class="restore_item"><img src="{{ URL::asset('images/sidebar/folder-white.png') }}" style="margin:0 0.5em 0.25em 0.25em"><span id="{{$folder['id'] }}_folder_name">{{ $folder['name'] }}</span></a>
 				@endif
             </div>
             <div class="col-xs-2 no-padding">{{ $folder['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $folder['updated_at'] }}</div>
-            <div class="row">
+<!--            <div class="row">-->
                 @if(strlen($folder['description']) > 90)
                 <div class="col-xs-7 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $folder['id'] }}_folder" style="cursor:pointer;" data-clickable="true">
                     <p style="margin-left: 8%;">{{ $folder['description'] }}</p>
@@ -75,17 +75,17 @@
                     <p style="margin-left: 8%;">{{ $folder['description'] }}</p>
                 </div>
                 @endif
-            </div>
+<!--            </div>-->
         </div>
         <hr> @endforeach @foreach($filelist as $file)
         <div class="row arial col_content no-margin">
             <div class="col-xs-1 no-padding" style="text-align: center;">
                 <input type="checkbox" class="checkbox file-exchange file-check" name="checkbox" style="display: inline;" data-id="{{ $file['id'] }}" data-name="file">
             </div>
-			<div class="col-xs-7 no-padding"><img src="{{URL::asset('images/files-white.png')}}" style="width: 2em;margin:0 0.5em 0.25em 0.25em"><span id="{{ $file['id'] }}_file_name">{{ $file['name'] }}</span></div>
+			<div class="col-xs-7 no-padding"><img src="{{URL::asset('images/sidebar/files-white.png')}}" style="margin:0 0.5em 0.25em 0.25em"><span id="{{ $file['id'] }}_file_name">{{ $file['name'] }}</span></div>
             <div class="col-xs-2 no-padding">{{ $file['modified_by'] }}</div>
             <div class="col-xs-2 no-padding">{{ $file['updated_at'] }}</div>
-            <div class="row">
+<!--            <div class="row">-->
                 @if(strlen($file['description']) > 90)
 				<div class="col-xs-7 col-xs-offset-1 no-padding description_text arial_italic" id="{{ $file['id'] }}_file" style="cursor:pointer;" data-clickable="true">
                     <p style="margin-left: 8%;">{{ $file['description'] }}</p>
@@ -96,7 +96,7 @@
                     <p style="margin-left: 8%;">{{ $file['description'] }}</p>
                 </div>
                 @endif
-            </div>
+<!--            </div>-->
         </div>
         <hr> @endforeach
     </div>

@@ -69,9 +69,10 @@ class SESMessaging extends SES
 
             putenv("JAVA_HOME=$JAVA_HOME");
             putenv("PATH=$PATH");
-            echo 'java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "Body goes here" "'. $attr['attachments'][0]. '" ';
 
-            $output = shell_exec('java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "Body goes here" "'. $attr['attachments'][0]. '" ');
+//            echo 'java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "Body goes here" "'. $attr['attachments'][0]. '" ';
+            // die;
+            $output = shell_exec('java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "'. addslashes($attr['body']) .'" "'. $attr['attachments'][0]. '" ');
 
         } catch (Exception $e) {
             Log::error($e);

@@ -47,7 +47,7 @@
     </div>
     <div class="row content-row-margin-scheduling">
         <div class="col-xs-12 subsection-header-previous-stage arial">
-            <span>1. Search for Patient&nbsp;<img src="{{URL::asset('images/tick-icon.png')}}" style="width:1.5em;margin-top:-.3em;">
+            <span>1. Search for Patient&nbsp;<img src="{{elixir('images/sidebar/tick-icon.png')}}" style="margin-top:-.3em;">
             </span>
             <span class="selected_patient arial_bold"><p>Patient Selected:</p>&nbsp;&nbsp;<p class="selected_patient_name"></p>
             <p class="view_selected_patient view">View</p>&nbsp;&nbsp;

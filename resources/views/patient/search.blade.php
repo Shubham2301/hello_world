@@ -4,7 +4,7 @@
         <div class="col-xs-10 search_input">
             <input type="text" class="" id="search_patient_input">
             <!--        <span class="glyphicon glyphicon-search" id="search_patient_button" aria-hidden="true"></span>-->
-            <img src="{{URL::asset('images/search-icon.png')}}" id="search_patient_button">
+            <img src="{{elixir('images/sidebar/search-icon-schedule.png')}}" id="search_patient_button">
             <span class="glyphicon glyphicon-plus-sign add_search_option" id="add_search_option" aria-hidden="true"></span>
 
         </div>
@@ -20,7 +20,7 @@
             <option value="address">Address</option>
         </select>
 -->
-            <div class="dropdown"><span data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="custom_dropdown"><span id="search_patient_input_type" value="all">All</span><img src="/images/triangle-down.png" class="custom_dropdown_img_search"></span>
+            <div class="dropdown"><span data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="custom_dropdown"><span id="search_patient_input_type" value="all">All</span><img src="images/sidebar/triangle-down.png" class="custom_dropdown_img_search"></span>
                 </span>
                 <ul class="dropdown-menu" id="custom_dropdown">
                     <li value="all">All</li>
@@ -55,7 +55,7 @@
             @endcan
             <span class="search_input_box">
                 <input type="text" class="arial_italic" id="search_patient_input" placeholder="search">
-                <img src="{{asset('images/search-icon.png')}}" class="admin_seacrh_icon" id="search_patient_button">
+                <img src="{{asset('images/sidebar/search-icon.png')}}" class="admin_seacrh_icon" id="search_patient_button">
             </span>
             <span class="glyphicon glyphicon-remove" id="refresh_patients" area-hidden="true"></span>
             <span class="admin_delete" data-toggle="tooltip" title="Delete Patients" data-placement="top">

@@ -75,7 +75,7 @@ elixir(function (mix) {
 				'js/reporting.js',
 				'js/reports.js',
 				'js/session_timeout.js',
-                'js/audit.js'
+                'js/audit.js',
+                 'images/*'
                 ]);
-
 });
