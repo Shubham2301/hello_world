@@ -65,6 +65,7 @@ class ProviderController extends Controller
             $insurance['subscriber_relation'] = '';
             $insurance['insurance_group_no'] = '';
         }
+		$data['previous_selected'] = $request->has('selected_previous_provider');
 
         return view('provider.index')->with('data', $data)->with('insurance', $insurance);
     }
@@ -341,4 +342,5 @@ class ProviderController extends Controller
         }
         return json_encode($data);
     }
+
 }
