@@ -56,14 +56,14 @@ class SendAppointmentRequestEmail
         $appointmentTypeKey = $request->input('appointment_type_key');
         $apptStartdate = new DateTime($appointment->start_datetime);
         $patientDob = new DateTime($patient->birthdate);
-		
+
         $appt = [
             'user_name' => $loggedInUser->name ?: '',
             'user_network' => $network->name ?: '',
             'user_email' => $loggedInUser->email ?: '',
             'user_phone' => $loggedInUser->cellphone ?: '',
             'appt_type' => $appointmentType ?: '',
-			'provider_name' => $provider->title.' '.$provider->firstname.' '.$provider->lastname,
+            'provider_name' => $provider->title.' '.$provider->firstname.' '.$provider->lastname,
             'location_name' => $location->locationname ?: '',
             'location_address' => ($location->addressline1 ?: '') . ', ' . ($location->addressline2 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: ''),
             'practice_name' => $practice->name  ?: '',
@@ -157,7 +157,7 @@ class SendAppointmentRequestEmail
                 'email' => $location->email,
             ],
             'subject' => config('constants.message_views.request_appointment_provider.subject'),
-			'body' =>'',
+            'body' =>'',
             'view' => config('constants.message_views.request_appointment_provider.view'),
             'appt' => $appt,
             'attachements' => [],
@@ -173,14 +173,13 @@ class SendAppointmentRequestEmail
              */
             
             try {
-
                 $patientID = $attr['appt']['patient_id'];
                 $attr['attachments'][] = MyCCDA::generate($patientID) ?: '';
 //dd($attr['attachments']);
                 $directMessageID = SES::send($attr);
             } catch (Exception $e) {
                 throw $e;
-		Log::error($e);
+                Log::error($e);
                 return false;
             }
         } else {
