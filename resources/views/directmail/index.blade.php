@@ -28,7 +28,7 @@
             <div style="background-color:#d3eefa;padding:0.25em;border-radius:100%;width:2.5em;display:inline-block">
                 <img style="width:2em" src="{{ asset('/images/impersonate-icon-01.png') }}" alt="">
             </div>
-            <span style="display:inline-block"> &nbsp;Impersonating <span class="arial_bold">{{ session('impersonation-name') }}</span>&nbsp;</span>
+            <span style="display:inline-block"> &nbsp;Proxying <span class="arial_bold">{{ session('impersonation-name') }}</span>&nbsp;</span>
             <form action="/directmail/endimpersonate" method="POST" id="reload-active-direct" style="display:inline-block">
                {{ csrf_field() }}
                 <div onclick="endImpersonation()" style="display:inline-block">
@@ -38,7 +38,7 @@
         </div>
         @else
             @if(sizeof($impersonation) > 0)
-            <div id="impersonateBtn">Impersonate User</div>
+            <div id="impersonateBtn">Proxy User</div>
             @endif
         @endif
 
