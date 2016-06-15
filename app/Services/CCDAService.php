@@ -17,7 +17,7 @@ class CCDAService
         $this->ccdaPaths = config('constants.paths.ccda');
     }
 
-    public function generate($patientID)
+	public function genrateXml($patientID, $updated = false)
     {
         if (!$patientID) {
             return false;
@@ -27,7 +27,14 @@ class CCDAService
             if (!$ccda) {
                 $ccda = $this->generateCCDAFromSystem($patientID);
             }
-            $dataInjson = $ccda->ccdablob;
+
+			$dataInjson = $ccda->ccdablob;
+			if($updated)
+			{
+				$dataInjson = json_encode($this->updateDemographics($ccda->ccdablob, $patientID));
+			}
+
+
             $jsonfilename = str_random(9) . ".json";
             $xmlfilename = str_random(9) . ".xml";
 
@@ -37,8 +44,8 @@ class CCDAService
             $myfile = fopen($jsonfile, "w");
             $ss = fwrite($myfile, $dataInjson);
 
-            exec(env('NODE_PATH', '/usr/local/bin/node').' ' . $this->ccdaPaths['toxml'] . $jsonfile . " " . $xmlfile);
-
+			$command = env('NODE_PATH', '/usr/local/bin/node').' ' . $this->ccdaPaths['toxml'] . $jsonfile . " " . $xmlfile;
+			exec($command);
             fclose($myfile);
             unlink($jsonfile);
             return $xmlfile;
@@ -91,4 +98,26 @@ class CCDAService
         $ccda->save();
         return $ccda;
     }
+
+	public function generateJson($fileInXml)
+	{
+		$file = $fileInXml;
+		$extension = $file->getClientOriginalExtension();
+		$xmlfilename = str_random(9) . ".{$extension}";
+		$jsonfilename = str_random(9) . ".json";
+		$upload_success = $file->move($this->ccdaPaths['temp_ccda'], $xmlfilename);
+		$xmlfile = $this->ccdaPaths['temp_ccda'] . '/' . $xmlfilename;
+		$jsonfile = $this->ccdaPaths['temp_json'] . $jsonfilename;
+		$xml_to_json = exec(env('NODE_PATH', '/usr/local/bin/node') ." " . $this->ccdaPaths['tojson'] . $xmlfile . " " . $jsonfile);
+		$jsonstring = file_get_contents($jsonfile, true);
+		$validator = \Validator::make(array('jsson' => $jsonstring), array('jsson' => 'Required|json'));
+		unlink($xmlfile);
+		unlink($jsonfile);
+		if ($validator->fails()) {
+			return false;
+		}
+		return $jsonstring;
+	}
+
+
 }
