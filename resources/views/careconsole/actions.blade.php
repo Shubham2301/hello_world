@@ -173,7 +173,7 @@
                             <div class="row input_row">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-10 form-group" style="padding:0">
-                                    <p class="" style="color: rgba(0,0,0,0.8);border: solid 1px #eaeaea;padding: 1em;" name="request_phone" id="request_phone">{{ $overview['request_for_appointment']['phone'] }}</p>
+                                    <p class="" style="color: rgba(0,0,0,0.8);border: solid 1px #eaeaea;padding: 1em;" name="request_phone" id="request_phone">{!! $overview['request_for_appointment']['phone'] !!}</p>
                                 </div>
                                 <div class="col-md-1"></div>
                             </div>

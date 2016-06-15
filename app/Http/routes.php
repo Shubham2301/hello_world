@@ -117,14 +117,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('restoreFilesFolders', 'FileExchange\FileExchangeController@restoreFilesFolders');
 
     //Ccda routes
-    Route::post('/import/ccda', 'CcdaController@saveCcda');
+    Route::post('/import/ccda', 'CcdaController@save');
     Route::get('ccdaform', 'CcdaController@index');
     Route::get('/addvital/{id}', 'CcdaController@addVital');
     Route::post('/savevitals', 'CcdaController@saveVitals');
 	Route::get('/download/ccda/{id}', 'CcdaController@getCCDAXml');
     Route::get('/showvitals/{id}', array('uses' => 'CcdaController@showVitals', 'as' => 'showvitals'));
     Route::post('update/ccda', 'CcdaController@updatePatientDemographics');
-    Route::get('show/ccda/{id}', 'CcdaController@showCCDA');
+    Route::get('show/ccda/{id}', 'CcdaController@show');
 
     Route::get('terms', 'SupportController@termsIndex');
     Route::get('privacy', 'SupportController@privacyIndex');
