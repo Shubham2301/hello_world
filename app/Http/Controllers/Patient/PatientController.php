@@ -388,6 +388,12 @@ class PatientController extends Controller
                 $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
                 $insuranceCarrier->save();
             }
+            else {
+                $insuranceCarrier = new PatientInsurance;
+                $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
+                $insuranceCarrier->patient_id = $id;
+                $insuranceCarrier->save();
+            }
 
             $action = 'update patient of id =' . $id;
             $description = '';
