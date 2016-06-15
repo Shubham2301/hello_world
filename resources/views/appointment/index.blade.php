@@ -58,7 +58,9 @@
             </div>
         </div>
         <div class="appointment_message arial">
-            <p><span><input type="checkbox" disabled></span> Send patient C-CDA file to provider</p>
+			@if($data['sesmail'])
+			<p><span><input type="checkbox" checked="checked" id="send_ccda_checkbox" ></span> Send patient C-CDA file to provider</p>
+            @endif
         </div>
         <div class="appointment_confirm center-align arial">
             <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment" data-toggle="tooltip" title="You will lose all progress" data-placement="bottom">Abort</button></p>

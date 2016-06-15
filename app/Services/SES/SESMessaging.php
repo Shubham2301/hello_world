@@ -31,7 +31,10 @@ class SESMessaging extends SES
 
     public function isDirectID($email)
     {
-        
+		if(!$email)
+		{
+			return false;
+		}
         $data = ['email' => $email];
         $validate = Validator::make($data, $this->rule);
 
@@ -62,6 +65,9 @@ class SESMessaging extends SES
         $content = self::prepareContent($attr['view'], $attr['appt']);
         $attr['body'] = $content;
 
+		$attachments = json_encode($attr['attachments'], JSON_FORCE_OBJECT);
+		echo $attachments;
+
         try {
 
             $JAVA_HOME = getenv('JAVA_HOME');
@@ -70,9 +76,7 @@ class SESMessaging extends SES
             putenv("JAVA_HOME=$JAVA_HOME");
             putenv("PATH=$PATH");
 
-//            echo 'java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "Body goes here" "'. $attr['attachments'][0]. '" ';
-            // die;
-            $output = shell_exec('java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "'. addslashes($attr['body']) .'" "'. $attr['attachments'][0]. '" ');
+			$output = shell_exec('java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "'. addslashes($attr['body']) .'" "'.$attachments. '" ');
 
         } catch (Exception $e) {
             Log::error($e);
@@ -119,7 +123,7 @@ class SESMessaging extends SES
         $exec = "java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper ";
         
         foreach ($args as $arg) {
-            $exec =. ' ' . $arg;
+            $exec = $exec.' '. $arg;
         }
 
         $output = shell_exec($exec);

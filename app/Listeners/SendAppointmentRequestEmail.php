@@ -56,6 +56,13 @@ class SendAppointmentRequestEmail
         $appointmentTypeKey = $request->input('appointment_type_key');
         $apptStartdate = new DateTime($appointment->start_datetime);
         $patientDob = new DateTime($patient->birthdate);
+		$sendCCDA = false;
+		if($request->has('send_ccda_file') && $request->send_ccda_file === 'true')
+		{
+			$sendCCDA = true;
+		}
+
+
         
         $appt = [
             'user_name' => $loggedInUser->name ?: '',
@@ -83,6 +90,7 @@ class SendAppointmentRequestEmail
             'subscriber_birthdate' => '',
             'insurance_group_no' => '',
             'subscriber_relation' => '',
+			'send_ccda' => $sendCCDA
         ];
 
         if ($patientInsurance != null) {
@@ -160,7 +168,7 @@ class SendAppointmentRequestEmail
 			'body' =>'',
             'view' => config('constants.message_views.request_appointment_provider.view'),
             'appt' => $appt,
-            'attachements' => [],
+			'attachments' => [],
         ];
 
         /**
@@ -175,12 +183,16 @@ class SendAppointmentRequestEmail
             try {
 
                 $patientID = $attr['appt']['patient_id'];
-                $attr['attachments'][] = MyCCDA::generate($patientID) ?: '';
-//dd($attr['attachments']);
+
+				if($appt['send_ccda'])
+				{
+					$attr['attachments'][] = MyCCDA::generateXml($patientID) ?: '';
+				}
+
                 $directMessageID = SES::send($attr);
             } catch (Exception $e) {
                 throw $e;
-		Log::error($e);
+				Log::error($e);
                 return false;
             }
         } else {
