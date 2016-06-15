@@ -11,6 +11,7 @@ use myocuhub\Models\Vital;
 use myocuhub\Patient;
 use \DOMDocument;
 use \XSLTProcessor;
+use MyCCDA;
 
 class CcdaController extends Controller
 {
@@ -25,12 +26,12 @@ class CcdaController extends Controller
 		return view('ccda.ccdatest');
 	}
 
-	public function saveCcda(Request $request)
+	public function save(Request $request)
 	{
 		$data = [];
 		if ($request->hasFile('patient_ccda')) {
 			$file = $request->file('patient_ccda');
-			$jsonstring = $this->generateJson($file);
+			$jsonstring = MyCCDA::generateJson($file);
 
 			if(!$jsonstring)
 			{
@@ -60,8 +61,7 @@ class CcdaController extends Controller
 
 	public function getCCDAXml($patient_id)
 	{
-		$ccdaInJson = $this->checkExistingCCDA($patient_id, true);
-		$ccdafile =  $this->genrateXml($ccdaInJson);
+		$ccdafile =  MyCCDA::genrateXml($patient_id, true);
 		if ($ccdafile == false) {
 			return 'nofile';
 		}
@@ -69,48 +69,6 @@ class CcdaController extends Controller
 			'Content-Type: application/xml',
 		);
 		return Response()->download($ccdafile, 'Patient-'.$patient_id.'.xml', $headers)->deleteFileAfterSend(true);
-	}
-
-
-	public function updateDemographics($ccdaInJson, $patientID)
-	{
-		$data = json_decode($ccdaInJson, true);
-		$patient_data = Patient::find($patientID)->toArray();
-		if ($patient_data) {
-			$data['demographics']['name']['prefix']        = $patient_data['title'];
-			$data['demographics']['name']['given'][0]        = $patient_data['firstname'];
-			$data['demographics']['name']['family']        = $patient_data['lastname'];
-			$data['demographics']['phone']['work']            = $patient_data['workphone'];
-			$data['demographics']['phone']['home']            = $patient_data['homephone'];
-			$data['demographics']['phone']['mobile']        = $patient_data['cellphone'];
-			$data['demographics']['email']                    = $patient_data['email'];
-			$data['demographics']['address']['street'][0]    = $patient_data['addressline1'];
-			$data['demographics']['address']['street'][1]    = $patient_data['addressline2'];
-			$data['demographics']['address']['city']        = $patient_data['city'];
-			$data['demographics']['address']['zip']        = $patient_data['zip'];
-			$data['demographics']['address']['country']    = $patient_data['country'];
-			$data['demographics']['dob']                    = $patient_data['birthdate'];
-			$data['demographics']['gender']                = $patient_data['gender'];
-			$data['demographics']['language']                = $patient_data['preferredlanguage'];
-			$data['document']['date'] = date('Y-m-d H:i:m');
-			return $data;
-		}
-		return false;
-	}
-
-	public function genrateXml($data)
-	{
-		$jsonobject = json_encode($data);
-		$jsonfilename = str_random(9) . ".json";
-		$jsonfile = $this->ccdaPaths['temp_json'] . $jsonfilename;
-		$myfile = fopen($jsonfile, "w");
-		$ss = fwrite($myfile, $jsonobject);
-		$xmlfilename = str_random(9) . ".xml";
-		$xmlfile = $this->ccdaPaths['temp_ccda'] . $xmlfilename;
-		$a = exec(env('NODE_PATH', '/usr/local/bin/node').' ' . $this->ccdaPaths['toxml'] . $jsonfile . " " . $xmlfile);
-		fclose($myfile);
-		unlink($jsonfile);
-		return $xmlfile;
 	}
 
 	public function validateKey($data, $key)
@@ -209,10 +167,9 @@ class CcdaController extends Controller
 		return 'false';
 	}
 
-	public function showCCDA($patient_id)
+	public function show($patient_id)
 	{
-		$ccdaInJson = $this->checkExistingCCDA($patient_id, false);
-		$ccdafile   = $this->genrateXml($ccdaInJson);
+		$ccdafile   = MyCCDA::genrateXml($patient_id);
 
 		$xml = new DOMDocument;
 		$xml->load($ccdafile);
@@ -227,50 +184,11 @@ class CcdaController extends Controller
 		return $transformed_xml;
 	}
 
-	public function checkExistingCCDA($patientID, $updated)
-	{
-		$ccda = Ccda::where('patient_id', $patientID)->orderBy('created_at', 'desc')->first();
-		if (!$ccda) {
-			$jsonstring = file_get_contents($this->ccdaPaths['default_ccda']);
-			$dataInjson = $this->updateDemographics($jsonstring, $patientID);
-			$jsonstring = json_encode($dataInjson);
-			$ccda = new Ccda;
-			$ccda->ccdablob = $jsonstring;
-			$ccda->patient_id = $patientID;
-			$ccda->save();
-			return json_decode($ccda->ccdablob, true);
-		}
-		if ($updated) {
-			return $this->updateDemographics($ccda->ccdablob, $patientID);
-		}
-		return json_decode($ccda->ccdablob, true);
-	}
-
-	public function generateJson($fileInXml)
-	{
-		$file = $fileInXml;
-		$extension = $file->getClientOriginalExtension();
-		$xmlfilename = str_random(9) . ".{$extension}";
-		$jsonfilename = str_random(9) . ".json";
-		$upload_success = $file->move($this->ccdaPaths['temp_ccda'], $xmlfilename);
-		$xmlfile = $this->ccdaPaths['temp_ccda'] . '/' . $xmlfilename;
-		$jsonfile = $this->ccdaPaths['temp_json'] . $jsonfilename;
-		$xml_to_json = exec(env('NODE_PATH', '/usr/local/bin/node') ." " . $this->ccdaPaths['tojson'] . $xmlfile . " " . $jsonfile);
-		$jsonstring = file_get_contents($jsonfile, true);
-		$validator = \Validator::make(array('jsson' => $jsonstring), array('jsson' => 'Required|json'));
-		unlink($xmlfile);
-		unlink($jsonfile);
-		if ($validator->fails()) {
-			return false;
-		}
-		return $jsonstring;
-	}
-
 	public function ccdaDataForPatientForm(Request $request)
 	{
 		if ($request->hasFile('patient_ccda')) {
 			$file = $request->file('patient_ccda');
-			$jsonstring = $this->generateJson($file);
+			$jsonstring = MyCCDA::generateJson($file);
 			if(!$jsonstring)
 			{
 				$data['error'] = true;
