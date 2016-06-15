@@ -272,21 +272,6 @@ $(document).ready(function () {
         $('.suggestion_list').removeClass('active');
     });
 
-    $('.patient_table_header').on('click', function () {
-//        if ($(this).next('.patient_table_content').hasClass('active')) {
-//            $(this).next('.patient_table_content').removeClass('active');
-//            $(this).find('.glyphicon').removeClass('glyphicon-chevron-right');
-//            $(this).find('.glyphicon').addClass('glyphicon-chevron-down');
-//        } else {
-//            $('.patient_table_header>.glyphicon').removeClass('glyphicon-chevron-right');
-//            $('.patient_table_header>.glyphicon').addClass('glyphicon-chevron-down');
-//            $('.patient_table_content').removeClass('active');
-//            $(this).next('.patient_table_content').addClass('active');
-//            $(this).find('.glyphicon').removeClass('glyphicon-chevron-down');
-//            $(this).find('.glyphicon').addClass('glyphicon-chevron-right');
-//        }
-    });
-
 
 	$(document).on('click', '.listing_header', function () {
 		var field = $(this).find('.sort_order');
