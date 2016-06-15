@@ -115,18 +115,13 @@ class AuthController extends Controller
     }
 
 	protected function getFailedLoginMessage(Request $request){
-
 		$email = $request->input('email');
-		$errorMessage = "These credentials do not match our records.";
 		$user = User::where('email', $email)->first();
 
 		if(!$user){
-			$errorMessage = "Please enter a valid email";
-			return $errorMessage;
+			return Lang::get('auth.invalid_email');
 		}
 
-		return Lang::has('auth.failed')
-			? Lang::get('auth.failed')
-				: $errorMessage;
+		return Lang::get('auth.failed');
 	}
 }
