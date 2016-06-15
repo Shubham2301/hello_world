@@ -121,8 +121,10 @@
                                         {!! Form::text('address2', $user['address2'], array('class' => ' add_user_input', 'placeholder' => 'Address 2', 'id' => 'address2', 'data-toggle' => 'tooltip', 'title' => 'Address Line 2', 'data-placement' => 'right')) !!}
                                         {!! Form::text('city', $user['city'], array('class' => ' add_user_input', 'placeholder' => 'City', 'id' => 'city', 'data-toggle' => 'tooltip', 'title' => 'City', 'data-placement' => 'right')) !!}
                                         {!! Form::text('zip', $user['zip'], array('class' => ' add_user_input', 'placeholder' => 'Zip', 'id' => 'zip', 'data-toggle' => 'tooltip', 'title' => 'Zip', 'data-placement' => 'right')) !!}
+                                        <span class="hide">
                                         <input type="checkbox" name="two_factor_auth" id="two_factor_auth" style="margin:1em" @if($user['two_factor_auth'] == true) checked @endif>
                                         <label for="two_factor_auth" style="margin:1em 0em;color: #fff;">Enable Two Factor Authentication</label>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
