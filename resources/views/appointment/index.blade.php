@@ -65,7 +65,7 @@
         <div class="appointment_confirm center-align arial">
             <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment" data-toggle="tooltip" title="You will lose all progress" data-placement="bottom">Abort</button></p>
         </div>
-		<div id="loader-container" class="hidden-xs">
+		<div id="schedule_apt_loader" class="hidden-xs">
 			{{--
 			<p id="loadingText">Loading</p> --}}
 		</div>

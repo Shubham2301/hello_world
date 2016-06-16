@@ -55,7 +55,7 @@ function scheduleAppointment() {
 
     //disableConfirmApptBttn();
 	$('.appointment_confirm').hide();
-	$("#loader-container").css("display", "inline-block");
+	$('#schedule_apt_loader').css("display", "block");
     var patient_id = $('#form_patient_id').val();
     var provider_id = $('#form_provider_id').val();
     var practice_id = $('#form_practice_id').val();
@@ -89,7 +89,7 @@ function scheduleAppointment() {
         async: true,
         success: function(e) {
 
-			$("#loader-container").css("display", "block");
+			$('#schedule_apt_loader').css("display", "none");
 
             if ($('#form_action').val() === 'careconsole') {
                 $('#back_to_console').show();
