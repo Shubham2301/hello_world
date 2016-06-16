@@ -257,20 +257,6 @@ $(document).ready(function () {
         }
     });
 
-    $('.patient_table_header').on('click', function () {
-        if ($(this).next('.patient_table_content').hasClass('active')) {
-            $(this).next('.patient_table_content').removeClass('active');
-            $(this).find('.glyphicon').removeClass('glyphicon-chevron-up');
-            $(this).find('.glyphicon').addClass('glyphicon-chevron-down');
-        } else {
-            $('.patient_table_header>.glyphicon').removeClass('glyphicon-chevron-up');
-            $('.patient_table_header>.glyphicon').addClass('glyphicon-chevron-down');
-            $('.patient_table_content').removeClass('active');
-            $(this).next('.patient_table_content').addClass('active');
-            $(this).find('.glyphicon').removeClass('glyphicon-chevron-down');
-            $(this).find('.glyphicon').addClass('glyphicon-chevron-up');
-        }
-    });
 
     $('.confirm_ins_btn').on('click', function () {
         $('#ins_selected').html(new_ins_type);

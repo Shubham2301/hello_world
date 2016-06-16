@@ -364,6 +364,7 @@ function showPatientInfo(data) {
     $('.patient_admin_back').addClass('active');
     if ($('#from_admin').val()) {
         $('#change_patient_button').hide();
+		$('.lastseen_content').css("cursor", "default");
     }
     $('.patient_section').show();
     fillPatientData(data);
