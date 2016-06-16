@@ -2,15 +2,17 @@
 
 namespace myocuhub\Http\Controllers\Auth;
 
+use Auth;
 use Event;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Lang;
 use Validator;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Http\Controllers\Traits\TwoFactorAuthentication;
+use myocuhub\User;
 
 class AuthController extends Controller
 {
@@ -88,7 +90,7 @@ class AuthController extends Controller
         return redirect()->back()
             ->withInput($request->only($this->loginUsername(), 'remember'))
             ->withErrors([
-                $this->loginUsername() => $this->getFailedLoginMessage(),
+				$this->loginUsername() => $this->getFailedLoginMessage($request),
             ]);
     }
 
@@ -112,4 +114,14 @@ class AuthController extends Controller
         return redirect()->intended($this->redirectPath());
     }
 
+	protected function getFailedLoginMessage(Request $request){
+		$email = $request->input('email');
+		$user = User::where('email', $email)->first();
+
+		if(!$user){
+			return Lang::get('auth.invalid_email');
+		}
+
+		return Lang::get('auth.failed');
+	}
 }
