@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         \myocuhub\Console\Commands\Inspire::class,
         \myocuhub\Console\Commands\WriteBack::class,
         \myocuhub\Console\Commands\CareConsoleRecallPatients::class,
+        \myocuhub\Console\Commands\CleanTwoFactorAuth::class,
     ];
 
     /**
@@ -32,8 +33,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('writeback')
                  ->withoutOverlapping()
                  ->daily();
-        $schedule->command('two-factor-auth:clean')
-                 ->withoutOverlapping()
-                 ->daily();         
+        // $schedule->command('two-factor-auth:clean')
+        //          ->withoutOverlapping()
+        //          ->daily();         
     }
 }
