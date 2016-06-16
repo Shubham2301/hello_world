@@ -61,7 +61,7 @@ class CcdaController extends Controller
 
 	public function getCCDAXml($patient_id)
 	{
-		$ccdafile =  MyCCDA::genrateXml($patient_id, true);
+		$ccdafile =  MyCCDA::generateXml($patient_id, true);
 		if ($ccdafile == false) {
 			return 'nofile';
 		}
@@ -169,7 +169,7 @@ class CcdaController extends Controller
 
 	public function show($patient_id)
 	{
-		$ccdafile   = MyCCDA::genrateXml($patient_id);
+		$ccdafile   = MyCCDA::generateXml($patient_id);
 
 		$xml = new DOMDocument;
 		$xml->load($ccdafile);

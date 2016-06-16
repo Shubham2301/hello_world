@@ -17,7 +17,7 @@ class CCDAService
         $this->ccdaPaths = config('constants.paths.ccda');
     }
 
-	public function genrateXml($patientID, $updated = false)
+	public function generateXml($patientID, $updated = false)
     {
         if (!$patientID) {
             return false;

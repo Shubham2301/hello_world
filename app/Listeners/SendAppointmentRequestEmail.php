@@ -174,8 +174,7 @@ class SendAppointmentRequestEmail
             
             try {
                 $patientID = $attr['appt']['patient_id'];
-                $attr['attachments'][] = MyCCDA::generate($patientID) ?: '';
-//dd($attr['attachments']);
+				$attr['attachments'][] = MyCCDA::generateXml($patientID) ?: '';
                 $directMessageID = SES::send($attr);
             } catch (Exception $e) {
                 throw $e;
