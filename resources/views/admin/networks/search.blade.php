@@ -6,7 +6,7 @@
         <input type="text" class="arial_italic" id="search_network_input" placeholder="search">
         <img src="{{elixir('images/sidebar/search-icon.png')}}" class="admin_seacrh_icon" id="search_network_button">
     </span>
-        <span class="glyphicon glyphicon-remove" id="refresh_networks" area-hidden="true"></span>
+        <img src="{{URL::asset('images/close-white-small.png')}}" id="refresh_networks">
     </div>
         <p id="search_results" class="search_result"></p>
     <div class="row search_header arial top_margin_large">
