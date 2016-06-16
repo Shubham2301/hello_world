@@ -42,7 +42,6 @@ class SendAppointmentRequestEmail
     {
         $request = $event->getRequest();
         $appointment = $event->getAppointment();
-        
         $appt = [];
 
         $practice = Practice::find($appointment->practice_id);
@@ -61,7 +60,6 @@ class SendAppointmentRequestEmail
 		{
 			$sendCCDA = true;
 		}
-
 
         
         $appt = [
@@ -151,6 +149,7 @@ class SendAppointmentRequestEmail
 
     public function sendProviderMail($appt, $location)
     {
+
         if ($location->email == null || $location->email == '') {
             return false;
         }
@@ -186,6 +185,7 @@ class SendAppointmentRequestEmail
 
 				if($appt['send_ccda'])
 				{
+
 					$attr['attachments'][] = MyCCDA::generateXml($patientID) ?: '';
 				}
 

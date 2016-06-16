@@ -64,9 +64,9 @@ class SESMessaging extends SES
         
         $content = self::prepareContent($attr['view'], $attr['appt']);
         $attr['body'] = $content;
-
 		$attachments = json_encode($attr['attachments'], JSON_FORCE_OBJECT);
-		echo $attachments;
+		//echo $attachments;
+
 
         try {
 
@@ -76,7 +76,10 @@ class SESMessaging extends SES
             putenv("JAVA_HOME=$JAVA_HOME");
             putenv("PATH=$PATH");
 
-			$output = shell_exec('java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "'. addslashes($attr['body']) .'" "'.$attachments. '" ');
+
+			$output = shell_exec('java -classpath '.env('JAVA_ADAPTER_CLASSPATH') .' com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "'. addslashes($attr['body']) .'" "'.$attachments. '" ');
+
+		return $output;
 
         } catch (Exception $e) {
             Log::error($e);
