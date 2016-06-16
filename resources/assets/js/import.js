@@ -62,6 +62,12 @@ $(document).ready(function() {
         //saveCcdafile();
     });
     $(document).on('click', '.compare_ccda_button', function() {
+
+		if($('#form_edit_mode').val())
+			{
+				setCheckedFieldInForm();
+				return;
+			}
         updatePatientData();
     });
     $(document).on('click', '#compare_ccda_button', function() {
@@ -446,12 +452,28 @@ function getCCDAData() {
             if (data.error) {
                 $('p.alert_message').text('Error: Please provide a valid CCDA file.');
                 $('#alert').modal('show');
-            } else {
-                for (var key in data) {
-                    $('#' + key).val(data[key]);
+            }
+			else if($('#form_edit_mode').val())
+			{
+				$('#compareCcda').modal('show');
+				showComparisionData(data);
+			}
+			else {
+                for (var key in data.ccda) {
+                    $('#' + key).val(data.ccda[key]);
                 }
 
             }
         }
     });
+}
+
+function setCheckedFieldInForm(){
+	var $inputs = $('#compare_ccda_form :input');
+	$inputs.each(function() {
+		if($(this).prop('checked')){
+			$('#form_add_patients').find('#'+this.name).val($(this).val());
+		}
+	});
+	$('#compareCcda').modal('hide');
 }
