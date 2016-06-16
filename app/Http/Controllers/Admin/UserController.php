@@ -134,7 +134,8 @@ class UserController extends Controller
         $user->usertype_id = $request->input('usertype');
         $user->level = $request->input('userlevel');
         $user->acc_key = $request->input('acc_key');
-        $user->two_factor_auth = $request->input('two_factor_auth');
+
+        $user->two_factor_auth = $request->input('two_factor_auth') ? $request->input('two_factor_auth') : 0;
         $roles = array();
         $roles = $request->input('role', []);
 
