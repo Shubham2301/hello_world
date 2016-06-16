@@ -99,8 +99,6 @@ function scheduleAppointment() {
                 $('#schedule_new_patient').show();
             }
 
-            //$('.appointment_confirm').hide();
-
             $('.appointment_confirmed').show();
             $('#back').addClass('hide');
         },

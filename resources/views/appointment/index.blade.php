@@ -69,7 +69,7 @@
 			{{--
 			<p id="loadingText">Loading</p> --}}
 		</div>
-        <div class="appointment_confirmed center-align">
+        <div class="appointment_confirmed center-align" style="display:none">
             <button class="confirmed" disabled>Confirmed</button>
             <h4>You have scheduled an appointment</h4>
             <p id="schedule_new_patient">Schedule another appointment</p>
