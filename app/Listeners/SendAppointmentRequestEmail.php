@@ -42,7 +42,6 @@ class SendAppointmentRequestEmail
     {
         $request = $event->getRequest();
         $appointment = $event->getAppointment();
-        
         $appt = [];
 
         $practice = Practice::find($appointment->practice_id);
@@ -56,6 +55,11 @@ class SendAppointmentRequestEmail
         $appointmentTypeKey = $request->input('appointment_type_key');
         $apptStartdate = new DateTime($appointment->start_datetime);
         $patientDob = new DateTime($patient->birthdate);
+
+        $sendCCDA = false;
+        if ($request->has('send_ccda_file') && $request->send_ccda_file === 'true') {
+            $sendCCDA = true;
+        }
 
         $appt = [
             'user_name' => $loggedInUser->name ?: '',
@@ -83,6 +87,7 @@ class SendAppointmentRequestEmail
             'subscriber_birthdate' => '',
             'insurance_group_no' => '',
             'subscriber_relation' => '',
+            'send_ccda' => $sendCCDA
         ];
 
         if ($patientInsurance != null) {
@@ -160,24 +165,24 @@ class SendAppointmentRequestEmail
             'body' =>'',
             'view' => config('constants.message_views.request_appointment_provider.view'),
             'appt' => $appt,
-            'attachements' => [],
+            'attachments' => [],
         ];
 
         /**
          * Add Check for SES Email here.
          */
-//	dd($location->email, SES::isDirectID($location->email));
         if (SES::isDirectID($location->email)) {
             /**
              * Generate CCDA file and send email via SES to Provider
              */
-            
+
             try {
                 $patientID = $attr['appt']['patient_id'];
-				$attr['attachments'][] = MyCCDA::generateXml($patientID) ?: '';
-                $directMessageID = SES::send($attr);
+                if ($appt['send_ccda']) {
+                    $attr['attachments'][] = MyCCDA::generateXml($patientID) ?: '';
+                }
+                return  SES::send($attr);
             } catch (Exception $e) {
-                throw $e;
                 Log::error($e);
                 return false;
             }

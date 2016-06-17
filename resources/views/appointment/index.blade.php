@@ -58,12 +58,18 @@
             </div>
         </div>
         <div class="appointment_message arial">
-            <p><span><input type="checkbox" disabled></span> Send patient C-CDA file to provider</p>
+			@if($data['sesmail'])
+			<p><span><input type="checkbox" checked="checked" id="send_ccda_checkbox" ></span> Send patient C-CDA file to provider</p>
+            @endif
         </div>
         <div class="appointment_confirm center-align arial">
             <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment" data-toggle="tooltip" title="You will lose all progress" data-placement="bottom">Abort</button></p>
         </div>
-        <div class="appointment_confirmed center-align">
+		<div id="schedule_apt_loader" class="hidden-xs">
+			{{--
+			<p id="loadingText">Loading</p> --}}
+		</div>
+        <div class="appointment_confirmed center-align" style="display:none">
             <button class="confirmed" disabled>Confirmed</button>
             <h4>You have scheduled an appointment</h4>
             <p id="schedule_new_patient">Schedule another appointment</p>

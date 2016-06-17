@@ -20,7 +20,7 @@ use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
-
+use myocuhub\Facades\SES;
 class AppointmentController extends Controller
 {
     /**
@@ -35,6 +35,9 @@ class AppointmentController extends Controller
 
     public function schedule(Request $request)
     {
+
+
+
         $apptStatus = [
             'appointment_saved' => false,
             'provider_email' => false,
@@ -212,6 +215,10 @@ class AppointmentController extends Controller
         $patientInsurance->insurance_group_no = ($request->input('insurance_group') != '') ? $request->input('insurance_group') : $patientInsurance->insurance_group_no;
         $patientInsurance->subscriber_relation = ($request->input('subscriber_relation') != '') ? $request->input('subscriber_relation') : $patientInsurance->subscriber_relation;
         $patientInsurance->save();
+
+		$location = PracticeLocation::find($locationID);
+		$data['sesmail'] = SES::isDirectID($location->email);
+
         return view('appointment.index')->with('data', $data);
     }
 
