@@ -24,6 +24,7 @@
 </div>
 @endif
 <input type="hidden" id="from_admin" value="{{$data['admin']}}" >
+@include('patient.compare_ccda')
 @if(! empty($data['referraltype_id']))
 @include('patient.create')
 @else

@@ -87,7 +87,7 @@ class CareConsoleController extends Controller {
 		$overview['appointment_types'] = $this->getAppointmentTypes();
 		
 		$overview['request_for_appointment']['email'] = MessageTemplate::getTemplate('email', 'request_for_appointment', $networkID);
-		$overview['request_for_appointment']['phone'] = MessageTemplate::getTemplate('phone', 'request_for_appointment', $networkID);
+		$overview['request_for_appointment']['phone'] = nl2br(MessageTemplate::getTemplate('phone', 'request_for_appointment', $networkID), false);
 		$overview['request_for_appointment']['sms'] = MessageTemplate::getTemplate('sms', 'request_for_appointment', $networkID);
 
 		return $overview;

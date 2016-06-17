@@ -207,6 +207,7 @@ $(document).ready(function () {
         $('.previous_provider_patient_list').toggleClass("active");
         if ($('.previous_provider_patient_list').hasClass("active")) {
             var id = $('#form_patient_id').attr('value');
+			selectPreviousProvider = false;
             var formData = {
                 'patient_id': id
             };
@@ -256,28 +257,35 @@ $(document).ready(function () {
         }
     });
 
-    $('.patient_table_header').on('click', function () {
-        if ($(this).next('.patient_table_content').hasClass('active')) {
-            $(this).next('.patient_table_content').removeClass('active');
-            $(this).find('.glyphicon').removeClass('glyphicon-chevron-up');
-            $(this).find('.glyphicon').addClass('glyphicon-chevron-down');
-        } else {
-            $('.patient_table_header>.glyphicon').removeClass('glyphicon-chevron-up');
-            $('.patient_table_header>.glyphicon').addClass('glyphicon-chevron-down');
-            $('.patient_table_content').removeClass('active');
-            $(this).next('.patient_table_content').addClass('active');
-            $(this).find('.glyphicon').removeClass('glyphicon-chevron-down');
-            $(this).find('.glyphicon').addClass('glyphicon-chevron-up');
-        }
-    });
 
     $('.confirm_ins_btn').on('click', function () {
         $('#ins_selected').html(new_ins_type);
     });
 
+	if($('#select_previous').val())
+		{
+			var id = $('#form_patient_id').attr('value');
+			selectPreviousProvider = true;
+			var formData = {
+				'patient_id': id
+			};
+			getPreviousProviders(formData);
+		}
+
+	$(document).on('click', '.lastseen_content',function(){
+		var id = $('#form_patient_id').attr('value');
+		selectPreviousProvider = true;
+		$('.view_selected_patient').trigger('click');
+		var formData = {
+			'patient_id': id
+		};
+		getPreviousProviders(formData);
+
+	});
 
 });
 
+var selectPreviousProvider = false;
 var unfillfpcFields = null;
 
 var nearByProviders = [];
@@ -707,6 +715,16 @@ function getPreviousProviders(formData) {
         async: false,
         success: function (e) {
             var info = $.parseJSON(e);
+			if(selectPreviousProvider){
+				var formData = {
+					'provider_id': info[0]['id'],
+					'practice_id': info[0]['practice_id']
+				};
+				selectPreviousProvider = false;
+				getProviderInfo(formData);
+
+				return;
+			}
             showPreviousProvider(info);
         },
         error: function () {
@@ -744,4 +762,5 @@ function getNearByProviders(formData) {
     });
 
 }
+
 

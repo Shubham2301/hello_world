@@ -244,7 +244,7 @@ class CareConsoleService
         $dateFormat = 'F j Y, g:i a';
         switch ($field) {
             case 'archived-at':
-                $date = new \DateTime($patient['archived_at']);
+                $date = new \DateTime($patient['archived_date']);
                 return $date->format($dateFormat);
                 break;
             case 'current-stage':

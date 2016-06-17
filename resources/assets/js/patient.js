@@ -272,21 +272,6 @@ $(document).ready(function () {
         $('.suggestion_list').removeClass('active');
     });
 
-    $('.patient_table_header').on('click', function () {
-        if ($(this).next('.patient_table_content').hasClass('active')) {
-            $(this).next('.patient_table_content').removeClass('active');
-            $(this).find('.glyphicon').removeClass('glyphicon-chevron-up');
-            $(this).find('.glyphicon').addClass('glyphicon-chevron-down');
-        } else {
-            $('.patient_table_header>.glyphicon').removeClass('glyphicon-chevron-up');
-            $('.patient_table_header>.glyphicon').addClass('glyphicon-chevron-down');
-            $('.patient_table_content').removeClass('active');
-            $(this).next('.patient_table_content').addClass('active');
-            $(this).find('.glyphicon').removeClass('glyphicon-chevron-down');
-            $(this).find('.glyphicon').addClass('glyphicon-chevron-up');
-        }
-    });
-
 
 	$(document).on('click', '.listing_header', function () {
 		var field = $(this).find('.sort_order');
@@ -312,7 +297,9 @@ $(document).ready(function () {
 
 	});
 
-
+	$(document).on('click', '.lastseen_content', function(){
+		selectPreviousProvider();
+	});
 
 
 
@@ -377,6 +364,7 @@ function showPatientInfo(data) {
     $('.patient_admin_back').addClass('active');
     if ($('#from_admin').val()) {
         $('#change_patient_button').hide();
+		$('.lastseen_content').css("cursor", "default");
     }
     $('.patient_section').show();
     fillPatientData(data);
@@ -629,3 +617,10 @@ function loadPatientOnScroll()
 
 }
 
+function selectPreviousProvider(){
+	var patientID = $('#select_provider_button').attr('data-id');
+	var content = '<input type="hidden" name="selected_previous_provider" value ="true"/>';
+	$('#form_select_provider').append(content);
+	$('#form_patient_id').val(patientID);
+	$('#form_select_provider').submit();
+}

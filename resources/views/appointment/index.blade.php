@@ -38,7 +38,7 @@
             <div class="col-sm-4 col-xs-12 appointment_info_div">
                 <div class="appointment_info_box patient">
                     <span class="arial_bold">Patient</span>
-                    <div style="width:40%;align-self: center;height:40%;"><img src="{{URL::asset('images/patient-img.png')}}" style="width:100%;"></div>
+                    <div style="width:40%;align-self: center;"><img src="{{URL::asset('images/patient-icon-schedule.png')}}" style="width:100%;"></div>
                     <h4><strong>{{ $data['patient_name'] }}</strong></h4>
                 </div>
             </div>
@@ -52,7 +52,7 @@
             <div class="col-sm-4 col-xs-12 appointment_info_div">
                 <div class="appointment_info_box provider">
                     <span class="arial_bold">Provider</span>
-                    <div style="width:40%;align-self: center;height:40%;"><img src="{{URL::asset('images/provider-img.png')}}" style="width:100%;"></div>
+                    <div style="width:40%;align-self: center;"><img src="{{URL::asset('images/provider-icon-schedule.png')}}" style="width:100%;"></div>
                     <h4><strong>{{ $data['provider_name'] }}</strong><br>{{ $data['practice_name'] }}</h4>
                 </div>
             </div>

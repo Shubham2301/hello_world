@@ -1,4 +1,11 @@
-@if(!$data['admin']) {!! Form::open(array('url' => '/patients', 'method' => 'GET', 'id' => 'back_to_select_patient')) !!} {!! Form::hidden('referraltype_id', $data['referraltype_id'], array('id' => 'form_referraltype_id')) !!} {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!} @if(isset($data['patient_id'])) {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patientid')) !!} @endif {!! Form::close() !!} @endif
+@if(!$data['admin'])
+{!! Form::open(array('url' => '/patients', 'method' => 'GET', 'id' => 'back_to_select_patient')) !!}
+{!! Form::hidden('referraltype_id', $data['referraltype_id'], array('id' => 'form_referraltype_id')) !!}
+{!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
+@if(isset($data['patient_id']))
+{!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patientid')) !!}
+@endif {!! Form::close() !!}
+@endif
 <div class="row content-row-margin add_header">
     <div>
         <button type="button" id="{{$data['back_btn']}}" class="btn back patient_back">Back</button>
@@ -9,12 +16,14 @@
             @if(isset($data['email'])) Edit Patient @else Add New Patient @endif
         </p>
     </div>
-    @if(!$data['id'])
+
+
+
 	{!! Form::open(array('url' => '#', 'method' => 'POST', 'files'=>true,'id'=>'import_from_ccda_form')) !!}
 	<span class ='btn import-btn' id = "import_from_ccda">Import from C-CDA {!!Form::file('patient_ccda')!!}
 	</span>
+	<input type="hidden" id="form_edit_mode" name="ccda_patient_id"  value="{{$data['id']}}">
 	{!! Form::close() !!}
-	@endif
 </div>
 {!! Form::open(array('url' => $data['url'], 'method' => 'POST', 'id' => 'form_add_patients')) !!}
 <div class="panel-group" id="accordion">

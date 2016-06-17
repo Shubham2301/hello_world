@@ -67,7 +67,8 @@ class UserController extends Controller
             //			if ($menu_option->id != 3 && $menu_option->id != 5) {
 //				$menuData[$menu_option->id] = $menu_option->display_name;
 //			}
-            $menuData[$menu_option->id] = $menu_option->display_name;
+            if($menu_option->landing_page != 0)
+                $menuData[$menu_option->id] = $menu_option->display_name;
         }
 
         $networkPractices = [];
@@ -134,7 +135,8 @@ class UserController extends Controller
         $user->usertype_id = $request->input('usertype');
         $user->level = $request->input('userlevel');
         $user->acc_key = $request->input('acc_key');
-        $user->two_factor_auth = $request->input('two_factor_auth');
+
+        $user->two_factor_auth = $request->input('two_factor_auth') ? $request->input('two_factor_auth') : 0;
         $roles = array();
         $roles = $request->input('role', []);
 
@@ -256,7 +258,8 @@ class UserController extends Controller
 
             $menuData = [];
             foreach ($menu_options as $menu_option) {
-                $menuData[$menu_option->id] = $menu_option->display_name;
+                if($menu_option->landing_page != 0)
+                    $menuData[$menu_option->id] = $menu_option->display_name;
             }
             $user['network_id'] = '';
             $user_network = NetworkUser::where('user_id', '=', $id)->first();

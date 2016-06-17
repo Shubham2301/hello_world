@@ -189,12 +189,20 @@ class CcdaController extends Controller
 		if ($request->hasFile('patient_ccda')) {
 			$file = $request->file('patient_ccda');
 			$jsonstring = MyCCDA::generateJson($file);
+			$data['error'] = false;
 			if(!$jsonstring)
 			{
 				$data['error'] = true;
 				return json_encode($data);
 			}
-			$data = $this->getCCDAData(json_decode($jsonstring, true));
+
+			$data['patient'] = [];
+			$patientID = $request->ccda_patient_id;
+			if($patientID)
+			{
+				$data['patient'] = $this->getPatientData($patientID);
+			}
+			$data['ccda'] = $this->getCCDAData(json_decode($jsonstring, true));
 			return json_encode($data);
 		}
 	}

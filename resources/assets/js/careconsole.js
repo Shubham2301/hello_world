@@ -415,7 +415,8 @@ $(document).ready(function () {
         });
         $(this).addClass('active');
         var index = $(this).attr('data-index');
-        $('.patient_contact_info').find('.contact_notes').html(contact_notes[index]);
+		$('.patient_contact_info').find('.action_note').html(contact_notes[index]);
+		$('.patient_contact_info').find('.action_result').html(contact_results[index]);
     });
     $(document).on('click', '.drilldown_header_item', function () {
         var field = $(this).find('.sort_order');
@@ -513,6 +514,7 @@ var bucketName = '';
 var currentPage = 1;
 var toCall = 0;
 var lastPage = 1;
+var contact_results = [];
 
 function searchc3() {
     $('.search_result_info').removeClass('active');
@@ -907,19 +909,26 @@ function setPatientRecords(consoleID) {
             $('.patient_records_info').find('.appointment_date').text(data.appointment_date);
             var content = '';
             contact_notes = [];
+            contact_results = [];
             var i = 0;
             var show_active = 'active';
-            $('.patient_contact_info').find('.contact_notes').html('');
+			$('.patient_contact_info').find('.action_note').html('');
+			$('.patient_contact_info').find('.action_result').html('');
             if (data.contacts_attempt.length > 0) {
                 data.contacts_attempt.forEach(function (contact) {
                     content += '<p class="history_item ' + show_active + '" data-index = "' + i + '"><span class="history_item_name ">' + contact.name + '</span> <span class="history_item_date attempt_phone">' + contact.date + '</span></p>';
                     contact_notes[i] = '-';
-                    if (contact.notes) contact_notes[i] = contact.notes;
+                    if (contact.notes)
+					{
+						contact_notes[i] = contact.notes;
+						contact_results[i] = contact.result;
+					}
                     show_active = '';
                     i++;
                 });
                 $('.contact_attempts').html(content);
-                $('.patient_contact_info').find('.contact_notes').html(contact_notes[0]);
+				$('.patient_contact_info').find('.action_note').html(contact_notes[0]);
+				$('.patient_contact_info').find('.action_result').html(contact_results[0]);
             } else {
                 $('.contact_attempts').text('-');
             }
