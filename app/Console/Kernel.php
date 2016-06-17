@@ -35,6 +35,6 @@ class Kernel extends ConsoleKernel
                  ->daily();
         // $schedule->command('two-factor-auth:clean')
         //          ->withoutOverlapping()
-        //          ->daily();         
+        //          ->daily();
     }
 }
