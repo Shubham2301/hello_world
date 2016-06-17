@@ -31,10 +31,9 @@ class SESMessaging extends SES
 
     public function isDirectID($email)
     {
-		if(!$email)
-		{
-			return false;
-		}
+        if (!$email) {
+            return false;
+        }
         $data = ['email' => $email];
         $validate = Validator::make($data, $this->rule);
 
@@ -45,11 +44,11 @@ class SESMessaging extends SES
         return false;
     }
 
-    public static function getDirectID($userID){
-        
+    public static function getDirectID($userID)
+    {
         $user = User::find($userID);
         
-        if($user){
+        if ($user) {
             return $user->sesemail;
         }
 
@@ -61,40 +60,38 @@ class SESMessaging extends SES
      */
     public static function send($attr)
     {
-        
-        $content = self::prepareContent($attr['view'], $attr['appt']);
-        $attr['body'] = $content;
-		$attachments = json_encode($attr['attachments'], JSON_FORCE_OBJECT);
-		//echo $attachments;
-
-
         try {
+            $content = self::prepareContent($attr['view'], $attr['appt']);
+            $attr['body'] = $content;
+            $attachments = json_encode($attr['attachments'], JSON_FORCE_OBJECT);
 
-            $JAVA_HOME = getenv('JAVA_HOME');
-            $PATH = "$JAVA_HOME/bin:".getenv('PATH');
+            //prepare arguments
+            $args = [
+                'action'        => 'sendMessage',
+                'email_to'      =>  $attr['to']['email'],
+                'subject'       =>  $attr['subject'],
+                'body'          =>  addslashes($attr['body']),
+                'attachments'   =>  $attachments,
+            ];
 
-            putenv("JAVA_HOME=$JAVA_HOME");
-            putenv("PATH=$PATH");
-
-
-			$output = shell_exec('java -classpath '.env('JAVA_ADAPTER_CLASSPATH') .' com.ocuhub.sesintegration.SESHelper sendMessage "' . $attr['to']['email'] .'" "'. $attr['subject'] .'" "'. addslashes($attr['body']) .'" "'.$attachments. '" ');
-
-		return $output;
-
+            $output = self::javaServiceConnect($args);
+            foreach ($attr['attachments'] as $path) {
+                unlink($path);
+            }
+            return $output;
         } catch (Exception $e) {
             Log::error($e);
-            $action = 'Application Exception in sending Appointment Request email not sent to patient '. $location->email;
+            $action = 'Application Exception in sending Appointment Request email not sent to patient '. $aatr['from']['email'];
             $description = '';
             $filename = basename(__FILE__);
             $ip = '';
             Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-            
             return false;
         }
     }
 
-    public static function getUnreadCount($userID){ 
-        
+    public static function getUnreadCount($userID)
+    {
         $directID = self::getDirectID($userID);
         
         if ($directID) {
@@ -107,29 +104,40 @@ class SESMessaging extends SES
         return false;
     }
 
-    public static function getJavaHome(){
+    public static function getJavaHome()
+    {
         return getenv('JAVA_HOME');
     }
 
-    public static function getPath(){
-        return "$JAVA_HOME/bin:".getenv('PATH');
+    public static function getPath()
+    {
+        return self::getJavaHome()."/bin:".getenv('PATH');
     }
 
-    private static function javaServiceConnect($args){
-        
-        $JAVA_HOME = self::getJavaHome();
-        $PATH = self::getPath();
+    private static function javaServiceConnect($args)
+    {
+        try {
+            $JAVA_HOME = self::getJavaHome();
+            $PATH = self::getPath();
 
-        putenv("JAVA_HOME=$JAVA_HOME");
-        putenv("PATH=$PATH");
-
-        $exec = "java -classpath /usr/local/bin/bin:/usr/local/bin/lib/*: com.ocuhub.sesintegration.SESHelper ";
+            putenv("JAVA_HOME=$JAVA_HOME");
+            putenv("PATH=$PATH");
+            $exec = "java -classpath '.env('JAVA_ADAPTER_CLASSPATH').' com.ocuhub.sesintegration.SESHelper";
         
-        foreach ($args as $arg) {
-            $exec = $exec.' '. $arg;
+            foreach ($args as $arg) {
+                $exec = $exec.' '. $arg;
+            }
+            $output = shell_exec($exec);
+            return $output;
+        } catch (Exception $e) {
+            Log::error($e);
+            $action = 'Application Exception in java ses api ';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = '';
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+            return false;
         }
-
-        $output = shell_exec($exec);
     }
 
     private static function prepareContent($view, $appt)

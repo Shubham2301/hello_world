@@ -55,11 +55,10 @@ class SendAppointmentRequestEmail
         $appointmentTypeKey = $request->input('appointment_type_key');
         $apptStartdate = new DateTime($appointment->start_datetime);
         $patientDob = new DateTime($patient->birthdate);
-		$sendCCDA = false;
-		if($request->has('send_ccda_file') && $request->send_ccda_file === 'true')
-		{
-			$sendCCDA = true;
-		}
+        $sendCCDA = false;
+        if ($request->has('send_ccda_file') && $request->send_ccda_file === 'true') {
+            $sendCCDA = true;
+        }
 
         
         $appt = [
@@ -88,7 +87,7 @@ class SendAppointmentRequestEmail
             'subscriber_birthdate' => '',
             'insurance_group_no' => '',
             'subscriber_relation' => '',
-			'send_ccda' => $sendCCDA
+            'send_ccda' => $sendCCDA
         ];
 
         if ($patientInsurance != null) {
@@ -149,7 +148,6 @@ class SendAppointmentRequestEmail
 
     public function sendProviderMail($appt, $location)
     {
-
         if ($location->email == null || $location->email == '') {
             return false;
         }
@@ -164,35 +162,28 @@ class SendAppointmentRequestEmail
                 'email' => $location->email,
             ],
             'subject' => config('constants.message_views.request_appointment_provider.subject'),
-			'body' =>'',
+            'body' =>'',
             'view' => config('constants.message_views.request_appointment_provider.view'),
             'appt' => $appt,
-			'attachments' => [],
+            'attachments' => [],
         ];
 
         /**
          * Add Check for SES Email here.
          */
-//	dd($location->email, SES::isDirectID($location->email));
         if (SES::isDirectID($location->email)) {
             /**
              * Generate CCDA file and send email via SES to Provider
              */
-            
+
             try {
-
                 $patientID = $attr['appt']['patient_id'];
-
-				if($appt['send_ccda'])
-				{
-
-					$attr['attachments'][] = MyCCDA::generateXml($patientID) ?: '';
-				}
-
-                $directMessageID = SES::send($attr);
+                if ($appt['send_ccda']) {
+                    $attr['attachments'][] = MyCCDA::generateXml($patientID) ?: '';
+                }
+                return  SES::send($attr);
             } catch (Exception $e) {
-                throw $e;
-				Log::error($e);
+                Log::error($e);
                 return false;
             }
         } else {
