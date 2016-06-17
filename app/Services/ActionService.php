@@ -339,12 +339,14 @@ class ActionService
         $date = new \DateTime();
         $i = 0;
         foreach ($contactsData as $contact) {
+
             if ($contact['contact_activity_date'] != 0) {
                 $date = new \DateTime($contact['contact_activity_date']);
             }
 
             $actions[$i]['date'] = $date->format('j F Y');
             $actions[$i]['name'] = $contact['display_name'];
+			$actions[$i]['result'] = ($contact['result_display_name']) ?: '-';
 
             if ($contact['name'] == 'unarchive' || $contact['name'] == 'move-to-console') {
                 $actions[$i]['name'] = 'entered into console';
@@ -362,6 +364,7 @@ class ActionService
         $actions[$i]['date'] = $date->format('j F Y');
         $actions[$i]['name'] = 'entered into console';
         $actions[$i]['notes'] = '-';
+		$actions[$i]['result'] = '-';
         return $actions;
     }
 
