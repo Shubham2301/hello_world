@@ -75,7 +75,7 @@ class SendAppointmentRequestEmail
             'appt_startdate' => $apptStartdate->format('F d, Y'),
             'appt_starttime' => $apptStartdate->format('h i A'),
             'patient_id' => $patient->id  ?: '',
-            'patient_name' => $patient->firstname  ?: '',
+			'patient_name' => $patient->title.' '.$patient->firstname.' '.$provider->lastname,
             'patient_email' => $patient->email  ?: '',
             'patient_phone' => $patient->cellphone . ', ' . $patient->workphone . ', ' . $patient->homephone,
             'patient_ssn' => $patient->lastfourssn ?: '',
@@ -118,7 +118,7 @@ class SendAppointmentRequestEmail
             ],
             'to' => [
                 'name' => $patient->lastname . ', ' . $patient->firstname,
-                'email' => $patient->email,
+				'email' => $patient->email,
             ],
             'subject' => config('constants.message_views.request_appointment_patient.subject'),
             'body' =>'',
