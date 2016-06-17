@@ -75,7 +75,7 @@ class SendAppointmentRequestEmail
             'appt_startdate' => $apptStartdate->format('F d, Y'),
             'appt_starttime' => $apptStartdate->format('h i A'),
             'patient_id' => $patient->id  ?: '',
-			'patient_name' => $patient->title.' '.$patient->firstname.' '.$provider->lastname,
+			'patient_name' => $patient->title.' '.$patient->firstname.' '.$patient->lastname,
             'patient_email' => $patient->email  ?: '',
             'patient_phone' => $patient->cellphone . ', ' . $patient->workphone . ', ' . $patient->homephone,
             'patient_ssn' => $patient->lastfourssn ?: '',
