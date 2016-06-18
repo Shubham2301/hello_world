@@ -124,7 +124,7 @@ class SendAppointmentRequestEmail
             'body' =>'',
             'view' => config('constants.message_views.request_appointment_patient.view'),
             'appt' => $appt,
-            'attachements' => [],
+            'attachments' => [],
         ];
 
         try {

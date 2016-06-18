@@ -60,6 +60,7 @@ class SESMessaging extends SES
      */
     public static function send($attr)
     {
+
         try {
             $content = self::prepareContent($attr['view'], $attr['appt']);
             $attr['body'] = $content;
@@ -127,9 +128,8 @@ class SESMessaging extends SES
             $exec = "java -classpath ".env('JAVA_ADAPTER_CLASSPATH')." com.ocuhub.sesintegration.SESHelper";
         
             foreach ($args as $arg) {
-                $exec = $exec.' '. $arg;
+                $exec = $exec.' "'. $arg.'"';
             }
-
             $output = shell_exec($exec);
             return $output;
         } catch (Exception $e) {
