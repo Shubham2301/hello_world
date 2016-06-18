@@ -72,10 +72,11 @@ class SESMessaging extends SES
                 'email_to'      =>  $attr['to']['email'],
                 'subject'       =>  $attr['subject'],
                 'body'          =>  addslashes($attr['body']),
-                'attachments'   =>  $attachments,
+                'attachments'   =>  addslashes($attachments),
             ];
 
             $output = self::javaServiceConnect($args);
+
             foreach ($attr['attachments'] as $path) {
                 if (file_exists($path)) {
                     unlink($path);
@@ -130,6 +131,7 @@ class SESMessaging extends SES
             foreach ($args as $arg) {
                 $exec = $exec.' "'. $arg.'"';
             }
+
             $output = shell_exec($exec);
             return $output;
         } catch (Exception $e) {
