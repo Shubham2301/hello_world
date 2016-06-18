@@ -133,7 +133,11 @@ class SESMessaging extends SES
             }
 
             $output = shell_exec($exec);
-            return $output;
+			if($output)
+			{
+				return true;
+			}
+            return false;
         } catch (Exception $e) {
             Log::error($e);
             $action = 'Application Exception in java ses api ';
