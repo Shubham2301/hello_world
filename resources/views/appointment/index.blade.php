@@ -67,7 +67,7 @@
         </div>
         <div id="apt_loader" style="display:none;">
 		<div id="schedule_apt_loader" class="hidden-xs"></div>
-		<p id="loadingText" >Please wait it may take some time</p>
+			<p id="loadingText"><span style="padding-left:25px;">Please wait...</span><br> it may take some time</p>
 		</div>
         <div class="appointment_confirmed center-align" style="display:none">
             <button class="confirmed" disabled>Confirmed</button>
