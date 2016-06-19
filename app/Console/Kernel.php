@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         \myocuhub\Console\Commands\CareConsoleRecallPatients::class,
         \myocuhub\Console\Commands\CleanTwoFactorAuth::class,
         \myocuhub\Console\Commands\PatientInvalidDates::class,
+        \myocuhub\Console\Commands\LimitStageName::class,
 
     ];
 
