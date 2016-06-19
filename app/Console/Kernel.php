@@ -17,6 +17,8 @@ class Kernel extends ConsoleKernel
         \myocuhub\Console\Commands\WriteBack::class,
         \myocuhub\Console\Commands\CareConsoleRecallPatients::class,
         \myocuhub\Console\Commands\CleanTwoFactorAuth::class,
+        \myocuhub\Console\Commands\PatientInvalidDates::class,
+
     ];
 
     /**
