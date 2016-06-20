@@ -186,6 +186,7 @@ function removeNetwork(id) {
 }
 
 function checkForm() {
+    $('.network_email_field').val($('.network_email_field').val().trim());
     var fields = $('.panel-body').find('.add_network_input');
     var patt = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
     fields.each(function (field) {

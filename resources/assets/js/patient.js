@@ -13,16 +13,16 @@ $(document).ready(function () {
     }
 
     $("#form_add_patients").submit(function (event) {
-        if(!checkForm())
+        if (!checkForm())
             event.preventDefault();
     });
 
-	$('#birthdate').datetimepicker({
+    $('#birthdate').datetimepicker({
         format: 'MM/DD/YYYY',
         maxDate: new Date(),
     });
 
-	$('#birthdate').on('change', function () {
+    $('#birthdate').on('change', function () {
         console.log($(this).val());
     });
 
@@ -108,8 +108,8 @@ $(document).ready(function () {
         $('.patient_admin_back').removeClass('active');
     });
     $('#select_provider_button').on('click', function () {
-         var id = $(this).attr('data-id');
-         selectProvider(id);
+        var id = $(this).attr('data-id');
+        selectProvider(id);
 
     });
     $('#add_search_option').on('click', function () {
@@ -218,11 +218,11 @@ $(document).ready(function () {
         }
     });
     $('.content-right').on('scroll', function () {
-		if ($(this).scrollTop() + $(this).innerHeight() + 2 >= $(this)[0].scrollHeight) {
-		setTimeout(function() {
-			loadPatientOnScroll();
-		}, 1000);
-		}
+        if ($(this).scrollTop() + $(this).innerHeight() + 2 >= $(this)[0].scrollHeight) {
+            setTimeout(function () {
+                loadPatientOnScroll();
+            }, 1000);
+        }
     });
     $(document).keypress(function (e) {
         if (e.which == 13) {
@@ -273,33 +273,33 @@ $(document).ready(function () {
     });
 
 
-	$(document).on('click', '.listing_header', function () {
-		var field = $(this).find('.sort_order');
-		var img = $(this).find('.sort_indicator');
-		if (field.length === 0) {
-			return;
-		}
+    $(document).on('click', '.listing_header', function () {
+        var field = $(this).find('.sort_order');
+        var img = $(this).find('.sort_indicator');
+        if (field.length === 0) {
+            return;
+        }
 
-		if (field.css('display') !== 'none') {
-			if (field.attr('data-order') === 'SORT_DESC') {
-				field.attr('data-order', 'SORT_ASC');
-				img.attr('src', $('#triangle_up_image_path').val());
-			} else if (field.attr('data-order') === 'SORT_ASC') {
-				field.attr('data-order', 'SORT_DESC');
-				img.attr('src', $('#triangle_down_image_path').val());
-			}
-		}
-		$('.sort_order').css('display', 'none');
-		field.css('display', 'inline-block');
-		$('#current_sort_field').val(field.attr('data-name'));
-		$('#current_sort_order').val(field.attr('data-order'));
-		loadAllPatients();
+        if (field.css('display') !== 'none') {
+            if (field.attr('data-order') === 'SORT_DESC') {
+                field.attr('data-order', 'SORT_ASC');
+                img.attr('src', $('#triangle_up_image_path').val());
+            } else if (field.attr('data-order') === 'SORT_ASC') {
+                field.attr('data-order', 'SORT_DESC');
+                img.attr('src', $('#triangle_down_image_path').val());
+            }
+        }
+        $('.sort_order').css('display', 'none');
+        field.css('display', 'inline-block');
+        $('#current_sort_field').val(field.attr('data-name'));
+        $('#current_sort_order').val(field.attr('data-order'));
+        loadAllPatients();
 
-	});
+    });
 
-	$(document).on('click', '.lastseen_content', function(){
-		selectPreviousProvider();
-	});
+    $(document).on('click', '.lastseen_content', function () {
+        selectPreviousProvider();
+    });
 
 
 
@@ -364,7 +364,7 @@ function showPatientInfo(data) {
     $('.patient_admin_back').addClass('active');
     if ($('#from_admin').val()) {
         $('#change_patient_button').hide();
-		$('.lastseen_content').css("cursor", "default");
+        $('.lastseen_content').css("cursor", "default");
     }
     $('.patient_section').show();
     fillPatientData(data);
@@ -405,18 +405,18 @@ function getPatients(formData, page) {
     var delete_img = $('#delete_practice_img').val();
 
     var tojson = JSON.stringify(formData);
-	var sortInfo = {
-		'order':$('#current_sort_order').val(),
-		'field':$('#current_sort_field').val()
+    var sortInfo = {
+        'order': $('#current_sort_order').val(),
+        'field': $('#current_sort_field').val()
 
-	};
-	sortInfo = JSON.stringify(sortInfo);
+    };
+    sortInfo = JSON.stringify(sortInfo);
     $.ajax({
         url: '/patients/search?page=' + showpage,
         type: 'GET',
         data: $.param({
             data: tojson,
-			tosort:sortInfo
+            tosort: sortInfo
         }),
         contentType: 'text/html',
         async: false,
@@ -430,7 +430,7 @@ function getPatients(formData, page) {
                 if (patients.length > 0 && patients[0]['total'] > 0) {
                     // if (patients.length > 0) {
                     patients.forEach(function (patient) {
-		content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3 search_name" style="display:inline-flex"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + patient.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p style="margin-left:9px;">' + patient.lname + ', ' + patient.fname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p><div><a href="/providers?referraltype_id=6&action=schedule_appointment&patient_id=' + patient.id + '" data-toggle="tooltip" title="Schedule Patient" data-placement="bottom"><img class="action_dropdown_img" src="' + active_img + '" alt=""></a></div></p><p class="editPatient_from_row arial_bold" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepatient_from_row"><img src="' + delete_img + '" alt="" class="removepatient_img" data-toggle="tooltip" title="Delete Patient" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+                        content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3 search_name" style="display:inline-flex"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + patient.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name"><p style="margin-left:9px;">' + patient.lname + ', ' + patient.fname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p><div><a href="/providers?referraltype_id=6&action=schedule_appointment&patient_id=' + patient.id + '" data-toggle="tooltip" title="Schedule Patient" data-placement="bottom"><img class="action_dropdown_img" src="' + active_img + '" alt=""></a></div></p><p class="editPatient_from_row arial_bold" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepatient_from_row"><img src="' + delete_img + '" alt="" class="removepatient_img" data-toggle="tooltip" title="Delete Patient" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     });
                     $('.patient_list').addClass('active');
                     if (showpage > 1)
@@ -575,6 +575,7 @@ function showModalConfirmDialog(msg, handler) {
 }
 
 function checkForm() {
+    $('.patient_email_field').val($('.patient_email_field').val().trim());
     var fields = $('.panel-body').find('.add_patient_input');
     var patt = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
     fields.each(function (field) {
@@ -593,34 +594,32 @@ function checkForm() {
             return false;
         }
     });
-    if(flag == 0)
+    if (flag == 0)
         return true;
 }
 
-function loadPatientOnScroll()
-{
-		showpage++;
-		var searchdata = [];
-		if (toCall == 1)
-			searchdata = getsearchtype();
-		if (toCall == 2) {
-			searchdata = [];
-			searchdata.push({
-				"type": searchType,
-				"value": searchValue,
-			});
-		}
-		if (showpage < lastPage && searchdata.length != 0)
-		{
-			getPatients(searchdata, 0);
-		}
+function loadPatientOnScroll() {
+    showpage++;
+    var searchdata = [];
+    if (toCall == 1)
+        searchdata = getsearchtype();
+    if (toCall == 2) {
+        searchdata = [];
+        searchdata.push({
+            "type": searchType,
+            "value": searchValue,
+        });
+    }
+    if (showpage < lastPage && searchdata.length != 0) {
+        getPatients(searchdata, 0);
+    }
 
 }
 
-function selectPreviousProvider(){
-	var patientID = $('#select_provider_button').attr('data-id');
-	var content = '<input type="hidden" name="selected_previous_provider" value ="true"/>';
-	$('#form_select_provider').append(content);
-	$('#form_patient_id').val(patientID);
-	$('#form_select_provider').submit();
+function selectPreviousProvider() {
+    var patientID = $('#select_provider_button').attr('data-id');
+    var content = '<input type="hidden" name="selected_previous_provider" value ="true"/>';
+    $('#form_select_provider').append(content);
+    $('#form_patient_id').val(patientID);
+    $('#form_select_provider').submit();
 }

@@ -45,7 +45,7 @@ $(document).ready(function () {
         showinfo = true;
         var formdata = [];
         var practice_name = $('#practice_name').val();
-
+        $('#practice_email').val($('#practice_email').val().trim());
         var patt = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
         if (practice_name != '' && $('#practice_email').val() != '' && $('#practice_network').val() != '') {
 
@@ -378,7 +378,7 @@ function validateLocation() {
 
 function validateEmail() {
     var patt = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-    var email = $('#location_email').val();
+    var email = $('#location_email').val().trim();
     if (patt.test(email)) return true;
     else return false;
 }
@@ -588,8 +588,7 @@ function showPracticeInfo(info) {
         $('.practice_list').removeClass('active');
         $('.practice_info').addClass('active');
         $('.practice_action_header').addClass('hide');
-    }
-    else if (info.locations.length > 0 && info.locations.length <= $('#provider_location_display_limit').val()) {
+    } else if (info.locations.length > 0 && info.locations.length <= $('#provider_location_display_limit').val()) {
         var i = 0;
         content += '<div class="panel-group accordian_margin location_accordian" id="accordion">';
         info.locations.forEach(function (location) {
