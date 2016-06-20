@@ -42,7 +42,6 @@ class SendAppointmentRequestEmail
     {
         $request = $event->getRequest();
         $appointment = $event->getAppointment();
-        
         $appt = [];
 
         $practice = Practice::find($appointment->practice_id);
@@ -56,14 +55,19 @@ class SendAppointmentRequestEmail
         $appointmentTypeKey = $request->input('appointment_type_key');
         $apptStartdate = new DateTime($appointment->start_datetime);
         $patientDob = new DateTime($patient->birthdate);
-        
+
+        $sendCCDA = false;
+        if ($request->has('send_ccda_file') && $request->send_ccda_file === 'true') {
+            $sendCCDA = true;
+        }
+
         $appt = [
             'user_name' => $loggedInUser->name ?: '',
             'user_network' => $network->name ?: '',
             'user_email' => $loggedInUser->email ?: '',
             'user_phone' => $loggedInUser->cellphone ?: '',
             'appt_type' => $appointmentType ?: '',
-            'provider_name' => $provider->firstname ?: '',
+            'provider_name' => $provider->title.' '.$provider->firstname.' '.$provider->lastname,
             'location_name' => $location->locationname ?: '',
             'location_address' => ($location->addressline1 ?: '') . ', ' . ($location->addressline2 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: ''),
             'practice_name' => $practice->name  ?: '',
@@ -71,7 +75,7 @@ class SendAppointmentRequestEmail
             'appt_startdate' => $apptStartdate->format('F d, Y'),
             'appt_starttime' => $apptStartdate->format('h i A'),
             'patient_id' => $patient->id  ?: '',
-            'patient_name' => $patient->firstname  ?: '',
+			'patient_name' => $patient->title.' '.$patient->firstname.' '.$patient->lastname,
             'patient_email' => $patient->email  ?: '',
             'patient_phone' => $patient->cellphone . ', ' . $patient->workphone . ', ' . $patient->homephone,
             'patient_ssn' => $patient->lastfourssn ?: '',
@@ -83,6 +87,7 @@ class SendAppointmentRequestEmail
             'subscriber_birthdate' => '',
             'insurance_group_no' => '',
             'subscriber_relation' => '',
+            'send_ccda' => $sendCCDA
         ];
 
         if ($patientInsurance != null) {
@@ -113,13 +118,13 @@ class SendAppointmentRequestEmail
             ],
             'to' => [
                 'name' => $patient->lastname . ', ' . $patient->firstname,
-                'email' => $patient->email,
+				'email' => $patient->email,
             ],
             'subject' => config('constants.message_views.request_appointment_patient.subject'),
             'body' =>'',
             'view' => config('constants.message_views.request_appointment_patient.view'),
             'appt' => $appt,
-            'attachements' => [],
+            'attachments' => [],
         ];
 
         try {
@@ -157,30 +162,28 @@ class SendAppointmentRequestEmail
                 'email' => $location->email,
             ],
             'subject' => config('constants.message_views.request_appointment_provider.subject'),
-			'body' =>'',
+            'body' =>'',
             'view' => config('constants.message_views.request_appointment_provider.view'),
             'appt' => $appt,
-            'attachements' => [],
+            'attachments' => [],
         ];
 
         /**
          * Add Check for SES Email here.
          */
-//	dd($location->email, SES::isDirectID($location->email));
         if (SES::isDirectID($location->email)) {
             /**
              * Generate CCDA file and send email via SES to Provider
              */
-            
-            try {
 
+            try {
                 $patientID = $attr['appt']['patient_id'];
-                $attr['attachments'][] = MyCCDA::generate($patientID) ?: '';
-//dd($attr['attachments']);
-                $directMessageID = SES::send($attr);
+                if ($appt['send_ccda']) {
+                    $attr['attachments'][] = MyCCDA::generateXml($patientID) ?: '';
+                }
+                return  SES::send($attr);
             } catch (Exception $e) {
-                throw $e;
-		Log::error($e);
+                Log::error($e);
                 return false;
             }
         } else {

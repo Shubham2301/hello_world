@@ -38,7 +38,7 @@
             <div class="col-sm-4 col-xs-12 appointment_info_div">
                 <div class="appointment_info_box patient">
                     <span class="arial_bold">Patient</span>
-                    <div style="width:40%;align-self: center;height:40%;"><img src="{{URL::asset('images/patient-img.png')}}" style="width:100%;"></div>
+                    <div style="width:40%;align-self: center;"><img src="{{URL::asset('images/patient-icon-schedule.png')}}" style="width:100%;"></div>
                     <h4><strong>{{ $data['patient_name'] }}</strong></h4>
                 </div>
             </div>
@@ -52,18 +52,24 @@
             <div class="col-sm-4 col-xs-12 appointment_info_div">
                 <div class="appointment_info_box provider">
                     <span class="arial_bold">Provider</span>
-                    <div style="width:40%;align-self: center;height:40%;"><img src="{{URL::asset('images/provider-img.png')}}" style="width:100%;"></div>
+                    <div style="width:40%;align-self: center;"><img src="{{URL::asset('images/provider-icon-schedule.png')}}" style="width:100%;"></div>
                     <h4><strong>{{ $data['provider_name'] }}</strong><br>{{ $data['practice_name'] }}</h4>
                 </div>
             </div>
         </div>
         <div class="appointment_message arial">
-            <p><span><input type="checkbox" disabled></span> Send patient C-CDA file to provider</p>
+			@if($data['sesmail'])
+			<p><span><input type="checkbox" checked="checked" id="send_ccda_checkbox" ></span> Send patient C-CDA file to provider</p>
+            @endif
         </div>
         <div class="appointment_confirm center-align arial">
             <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment" data-toggle="tooltip" title="You will lose all progress" data-placement="bottom">Abort</button></p>
         </div>
-        <div class="appointment_confirmed center-align">
+        <div id="apt_loader" style="display:none;">
+		<div id="schedule_apt_loader" class="hidden-xs"></div>
+			<p id="loadingText"><span style="padding-left:25px;">Please wait...</span><br> it may take some time</p>
+		</div>
+        <div class="appointment_confirmed center-align" style="display:none">
             <button class="confirmed" disabled>Confirmed</button>
             <h4>You have scheduled an appointment</h4>
             <p id="schedule_new_patient">Schedule another appointment</p>

@@ -29,9 +29,12 @@
         <p class="info_header arial_bold">
             Notes
         </p>
-        <p class="contact_notes">
-            Click on history status to see notes
-        </p>
+
+        <div class="contact_notes">
+			<p class="action_note">Click on history status to see notes</p>
+			<p class="arial text-normal" style = "font-style:normal;"><strong>Result</strong></p>
+           	<p class="action_result"></p>
+         </div>
         <div class="dropdown patient_info_action">
             <div id="dropdownMenuPatientInfo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" class="action_dropdown_patient_info dropdown-toggle">
                 <div style="cursor: pointer;">Take Action <span class="glyphicon glyphicon glyphicon-triangle-bottom"></span></div>

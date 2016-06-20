@@ -17,6 +17,9 @@ class Kernel extends ConsoleKernel
         \myocuhub\Console\Commands\WriteBack::class,
         \myocuhub\Console\Commands\CareConsoleRecallPatients::class,
         \myocuhub\Console\Commands\CleanTwoFactorAuth::class,
+        \myocuhub\Console\Commands\PatientInvalidDates::class,
+        \myocuhub\Console\Commands\LimitStageName::class,
+
     ];
 
     /**
@@ -35,6 +38,6 @@ class Kernel extends ConsoleKernel
                  ->daily();
         // $schedule->command('two-factor-auth:clean')
         //          ->withoutOverlapping()
-        //          ->daily();         
+        //          ->daily();
     }
 }

@@ -57,7 +57,7 @@
                 <input type="text" class="arial_italic" id="search_patient_input" placeholder="search">
                 <img src="{{asset('images/sidebar/search-icon.png')}}" class="admin_seacrh_icon" id="search_patient_button">
             </span>
-            <span class="glyphicon glyphicon-remove" id="refresh_patients" area-hidden="true"></span>
+            <img src="{{URL::asset('images/close-white-small.png')}}" id="refresh_patients">
             <span class="admin_delete" data-toggle="tooltip" title="Delete Patients" data-placement="top">
                 <img class="cancel_image" src="{{URL::asset('images/delete-natural.png')}}">
                 <img class="cancel_image-hover" src="{{URL::asset('images/delete-natural-hover.png')}}">

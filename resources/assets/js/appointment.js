@@ -53,8 +53,10 @@ function scheduleAppointment() {
         return;
     }
 
-    disableConfirmApptBttn();
-
+    //disableConfirmApptBttn();
+	$('.appointment_confirm').hide();
+	$('#schedule_apt_loader').css("display", "block");
+	$('#apt_loader').show();
     var patient_id = $('#form_patient_id').val();
     var provider_id = $('#form_provider_id').val();
     var practice_id = $('#form_practice_id').val();
@@ -75,17 +77,21 @@ function scheduleAppointment() {
         'provider_acc_key': provider_acc_key,
         'appointment_type': appointment_type_name,
         'appointment_type_key': appointment_type_key,
-        'appointment_time': appointment_time
+        'appointment_time': appointment_time,
+		'send_ccda_file':$('#send_ccda_checkbox').prop('checked')
     };
+
 
     $.ajax({
         url: '/appointments/schedule',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',
-        async: false,
+        async: true,
         success: function(e) {
 
+			$('#schedule_apt_loader').css("display", "none");
+			$('#apt_loader').hide();
             if ($('#form_action').val() === 'careconsole') {
                 $('#back_to_console').show();
                 $('#schedule_new_patient').hide();
@@ -93,8 +99,6 @@ function scheduleAppointment() {
                 $('#back_to_console').hide();
                 $('#schedule_new_patient').show();
             }
-
-            $('.appointment_confirm').hide();
 
             $('.appointment_confirmed').show();
             $('#back').addClass('hide');
