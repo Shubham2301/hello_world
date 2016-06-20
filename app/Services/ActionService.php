@@ -30,13 +30,18 @@ class ActionService
     {
         $actionName = Action::find($actionID)->name;
         if ($actionResultID == '-1') {
-            $actionResultID = 14;
+            $actionResultID = null;
             $actionResultName = 'patient-notes';
         }
 
         $contactDate = new DateTime();
 
-        $actionResultName = ActionResult::find($actionResultID)->name;
+        $actionResultName = ActionResult::find($actionResultID);
+
+		if($actionResultName)
+		{
+			$actionResultName = $actionResultName->name;
+		}
 
         $contact = new ContactHistory;
         $contact->action_id = $actionID;
@@ -339,20 +344,26 @@ class ActionService
         $date = new \DateTime();
         $i = 0;
         foreach ($contactsData as $contact) {
-
             if ($contact['contact_activity_date'] != 0) {
                 $date = new \DateTime($contact['contact_activity_date']);
             }
 
             $actions[$i]['date'] = $date->format('j F Y');
             $actions[$i]['name'] = $contact['display_name'];
-			$actions[$i]['result'] = ($contact['result_display_name']) ?: '-';
+			$actions[$i]['result'] = ($contact['result_display_name']) ?: false;
+
 
             if ($contact['name'] == 'unarchive' || $contact['name'] == 'move-to-console') {
                 $actions[$i]['name'] = 'entered into console';
             }
 
             $actions[$i]['notes'] = $contact['notes'];
+
+			if($contact['result_id'] == 14 || !$contact['result_id'])
+			{
+				$actions[$i]['result'] = false;
+			}
+
             $i++;
         }
 
@@ -364,7 +375,7 @@ class ActionService
         $actions[$i]['date'] = $date->format('j F Y');
         $actions[$i]['name'] = 'entered into console';
         $actions[$i]['notes'] = '-';
-		$actions[$i]['result'] = '-';
+		$actions[$i]['result'] = false;
         return $actions;
     }
 

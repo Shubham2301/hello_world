@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
     loadImportForm();
     $('#datetimepicker_action_date').datetimepicker({
         format: 'YYYY-MM-DD'
@@ -9,7 +9,7 @@ $(document).ready(function () {
     var archive_icon_path = $('#archive_icon_path').val();
     var priority_icon_path = $('#priority_icon_path').val();
 
-    $('#search_bar_open').on('click', function () {
+    $('#search_bar_open').on('click', function() {
         if ($('#search_bar_open').hasClass('active')) {
             $('#search_bar_open').removeClass('active');
             $('#search_do').addClass('active');
@@ -25,7 +25,7 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on('click', '.C3_day_box', function () {
+    $(document).on('click', '.C3_day_box', function() {
         var kpi_id = $(this).attr('data-id');
         var kpi_name = $(this).attr('data-name');
         var stageID = $(this).parent().attr('data-stageid');
@@ -58,7 +58,7 @@ $(document).ready(function () {
         }
         setSidebarButtonActive();
     });
-    $(document).on('click', '.console_buckets', function () {
+    $(document).on('click', '.console_buckets', function() {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             $('.c3_overview_link').removeClass('active');
@@ -96,11 +96,11 @@ $(document).ready(function () {
     $('#recall_date').datetimepicker({
         format: 'MM/DD/YYYY'
     });
-    $('.day_box.active').on('click', function () {
+    $('.day_box.active').on('click', function() {
         $(this).removeClass('active');
     });
     $('#search_do').on('click', searchc3);
-    $('.c3_overview_link').on('click', function () {
+    $('.c3_overview_link').on('click', function() {
         $('.console_buckets').removeClass('active');
         refreshOverview();
         $('.c3_overview_link').removeClass('active');
@@ -113,7 +113,7 @@ $(document).ready(function () {
         $('#current_stage').val('-1');
         setSidebarButtonActive();
     });
-    $('.info_section').on('click', function () {
+    $('.info_section').on('click', function() {
         $('.c3_overview_link').addClass('active');
         $('.console_bucket_row').addClass('hide');
         $('.control_section').addClass('active');
@@ -130,7 +130,7 @@ $(document).ready(function () {
         $('#current_stage').val(stage_id);
         showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator);
     });
-    $('.stage').on('click', function () {
+    $('.stage').on('click', function() {
         $('.c3_overview_link').addClass('active');
         $('.console_bucket_row').addClass('hide');
         $('.control_section').addClass('active');
@@ -150,7 +150,7 @@ $(document).ready(function () {
         $('#current_stage').val(stage_id);
         showStageData(stage_id, stage_name);
     });
-    $('#drilldown_patients_listing').on('click', '.careconsole_action', function () {
+    $('#drilldown_patients_listing').on('click', '.careconsole_action', function() {
         var data = [];
         data['patient_id'] = $(this).parent().attr('data-patientid');
         data['action_id'] = $(this).attr('data-id');
@@ -227,7 +227,7 @@ $(document).ready(function () {
                 showActionModel(data);
         }
     });
-    $('#records_action_dropdown').on('click', '.careconsole_action', function () {
+    $('#records_action_dropdown').on('click', '.careconsole_action', function() {
         var data = [];
         data['patient_id'] = $(this).attr('data-patientid');
         data['action_id'] = $(this).attr('data-id');
@@ -302,7 +302,7 @@ $(document).ready(function () {
                 showActionModel(data);
         }
     });
-    $('#search_action_dropdown').on('click', '.careconsole_action', function () {
+    $('#search_action_dropdown').on('click', '.careconsole_action', function() {
         var data = [];
         data['patient_id'] = $(this).attr('data-patientid');
         data['action_id'] = $(this).attr('data-id');
@@ -401,24 +401,29 @@ $(document).ready(function () {
                 showActionModel(data);
         }
     });
-    $('.search_result').on('click', '.search_result_row', function () {
+    $('.search_result').on('click', '.search_result_row', function() {
         var index = $(this).attr('data-index');
         setSearchFields(index);
     });
-    $('#back_to_search').on('click', function () {
+    $('#back_to_search').on('click', function() {
         $('.search_result').addClass('active');
         $('.search_result_info').removeClass('active');
     });
-    $('.contact_attempts').on('click', '.history_item', function () {
-        $('.history_item').each(function () {
+    $('.contact_attempts').on('click', '.history_item', function() {
+        $('.history_item').each(function() {
             $(this).removeClass('active');
         });
         $(this).addClass('active');
         var index = $(this).attr('data-index');
-		$('.patient_contact_info').find('.action_note').html(contact_notes[index]);
-		$('.patient_contact_info').find('.action_result').html(contact_results[index]);
+        $('.patient_contact_info').find('.action_note').html(contact_notes[index]);
+        if (!contact_results[index]) {
+            $('#action_result_section').hide();
+        } else {
+            $('#action_result_section').show();
+            $('.patient_contact_info').find('.action_result').html(contact_results[index]);
+        }
     });
-    $(document).on('click', '.drilldown_header_item', function () {
+    $(document).on('click', '.drilldown_header_item', function() {
         var field = $(this).find('.sort_order');
         if (field.length === 0) {
             return;
@@ -447,7 +452,7 @@ $(document).ready(function () {
             getPatientData();
         }
     });
-    $(document).on('click', '.drilldown_item>div', function () {
+    $(document).on('click', '.drilldown_item>div', function() {
         if ($(this).attr('data-name') === 'actions') {
             return;
         }
@@ -455,20 +460,20 @@ $(document).ready(function () {
         setPatientRecords(consoleID);
         $('.patient_records_info').addClass('active');
     });
-    $(document).on('click', '.close_patient_records_info', function () {
+    $(document).on('click', '.close_patient_records_info', function() {
         $('.patient_records_info').removeClass('active');
     });
-    $(document).keypress(function (e) {
+    $(document).keypress(function(e) {
         if (e.which == 13 && $('#search_data').val() != '') {
             searchc3();
         }
     });
 
-    $('#manual_appointment_practice').on('change', function () {
+    $('#manual_appointment_practice').on('change', function() {
         getProvidersAndLocations($(this).val());
     });
 
-    $('#listing_content').on('scroll', function () {
+    $('#listing_content').on('scroll', function() {
         if ($(this).scrollTop() + $(this).innerHeight() + 10 >= $(this)[0].scrollHeight) {
             currentPage++;
 
@@ -477,22 +482,22 @@ $(document).ready(function () {
         }
     });
 
-    $('.suggestion_list').on('click', '.practice_suggestion_item', function () {
+    $('.suggestion_list').on('click', '.practice_suggestion_item', function() {
         var selectedValue = $(this).text();
         $('#manual_referredby_practice').val(selectedValue);
         $(this).closest('.suggestion_list').removeClass('active');
     });
 
-    $('.suggestion_list').on('click', '.provider_suggestion_item', function () {
+    $('.suggestion_list').on('click', '.provider_suggestion_item', function() {
         var selectedValue = $(this).text();
         $('#manual_referredby_provider').val(selectedValue);
         $(this).closest('.suggestion_list').removeClass('active');
     });
 
-    $(document).on('click', function () {
+    $(document).on('click', function() {
         $('.suggestion_list').removeClass('active');
     });
-    $('#manual_appointment_appointment_type').on('change', function () {
+    $('#manual_appointment_appointment_type').on('change', function() {
         var val = $(this).find(":selected").val();
         $('#form_manual_custom_appointment_appointment_type').hide();
         if (val === '-1') {
@@ -534,7 +539,7 @@ function searchc3() {
                 if (patientdata.length > 1) {
                     var content = '';
                     var index = 0;
-                    patientdata.forEach(function (patient) {
+                    patientdata.forEach(function(patient) {
                         content += '<div class="search_result_row row" data-index= "' + index + '"><div class="col-xs-1 search_color_col"><div class="circle" id="" style="background-color:' + patient.stage_color + '"></div></div><div class="col-xs-11 search_result_row_text"><p class="result_title arial_bold result_name">' + patient.name + '</p><p class="result_title arial_bold scheduled_name">' + patient.stage_name + '</p></div></div>';
 
                         index++;
@@ -624,7 +629,7 @@ function getPatientData() {
             listing = data.listing;
             lastPage = data.lastpage;
             if (actions.length > 0) {
-                actions.forEach(function (action) {
+                actions.forEach(function(action) {
                     actionResults[action.id] = action.action_results;
                     actionList += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '"><a href="#">' + action.display_name + '</a></li>';
                 });
@@ -767,9 +772,9 @@ function refreshOverview() {
             }
             var stages = e.stages;
 
-            stages.forEach(function (stage) {
+            stages.forEach(function(stage) {
                 var kpis = stage.kpis;
-                kpis.forEach(function (kpi) {
+                kpis.forEach(function(kpi) {
                     $('.info_section_number.' + kpi.name).html(kpi.count);
                 });
             });
@@ -829,7 +834,7 @@ function setSearchFields(index) {
     $('.search_result').removeClass('active');
 
     var content = '';
-    patient.actions.forEach(function (action) {
+    patient.actions.forEach(function(action) {
         actionResults[action.id] = action.action_results;
         content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid = "' + patient.id + '" data-consoleid="' + patient.console_id + '" data-stageid="' + patient.stage_id + '" ><a href="#">' + action.display_name + '</a></li>';
     });
@@ -864,7 +869,7 @@ function bucketData(bucketName) {
             listing = data.listing;
             lastPage = data.lastpage;
             if (actions.length > 0) {
-                actions.forEach(function (action) {
+                actions.forEach(function(action) {
                     actionResults[action.id] = action.action_results;
                     actionList += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '"><a href="#">' + action.display_name + '</a></li>';
                 });
@@ -912,28 +917,33 @@ function setPatientRecords(consoleID) {
             contact_results = [];
             var i = 0;
             var show_active = 'active';
-			$('.patient_contact_info').find('.action_note').html('');
-			$('.patient_contact_info').find('.action_result').html('');
+            $('.patient_contact_info').find('.action_note').html('');
+            $('.patient_contact_info').find('.action_result').html('');
             if (data.contacts_attempt.length > 0) {
-                data.contacts_attempt.forEach(function (contact) {
+                data.contacts_attempt.forEach(function(contact) {
                     content += '<p class="history_item ' + show_active + '" data-index = "' + i + '"><span class="history_item_name ">' + contact.name + '</span> <span class="history_item_date attempt_phone">' + contact.date + '</span></p>';
                     contact_notes[i] = '-';
-                    if (contact.notes)
-					{
-						contact_notes[i] = contact.notes;
-						contact_results[i] = contact.result;
-					}
+                    if (contact.notes) {
+                        contact_notes[i] = contact.notes;
+                        contact_results[i] = contact.result;
+                    }
                     show_active = '';
                     i++;
                 });
                 $('.contact_attempts').html(content);
-				$('.patient_contact_info').find('.action_note').html(contact_notes[0]);
-				$('.patient_contact_info').find('.action_result').html(contact_results[0]);
+
+                $('.patient_contact_info').find('.action_note').html(contact_notes[0]);
+                if (!contact_results[0]) {
+                    $('#action_result_section').hide();
+                } else {
+                    $('#action_result_section').show();
+                    $('.patient_contact_info').find('.action_result').html(contact_results[0]);
+                }
             } else {
                 $('.contact_attempts').text('-');
             }
             content = '';
-            data.actions.forEach(function (action) {
+            data.actions.forEach(function(action) {
                 actionResults[action.id] = action.action_results;
                 if (data.priority == 1 && action.id == 30) {} else if (!data.priority && action.id == 31) {} else {
                     content += '<li class="careconsole_action" data-id="' + action.id + '" data-displayname="' + action.display_name + '" data-name="' + action.name + '" data-patientid= "' + data.patient_id + '" data-consoleid="' + consoleID + '" data-stageid = "' + data.stageid + '"><a href="#">' + action.display_name + '</a></li>';
@@ -994,7 +1004,7 @@ function showActionModel(data) {
     var results = actionResults[data['action_id']];
     if (results.length > 0) {
         var content = '<option value="0">Select Action Result</option>';
-        results.forEach(function (result) {
+        results.forEach(function(result) {
             content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
         });
         $('#action_result_id').html(content);
@@ -1028,7 +1038,7 @@ function getProvidersAndLocations(practiceID) {
 
             var locations = data['locations'];
             var content = '<option value="0">Select Location</option>';
-            $.each(locations, function (index, val) {
+            $.each(locations, function(index, val) {
                 content += '<option value="' + val.id + '">' + val.locationname + '</option>';
             });
             $('#manual_appointment_location').html(content);
@@ -1041,7 +1051,7 @@ function getProvidersAndLocations(practiceID) {
             }
             var content = '<option value="0">Select User</option>';
 
-            $.each(providers, function (index, val) {
+            $.each(providers, function(index, val) {
                 content += '<option value="' + val.id + '">' + val.name + '</option>';
             });
             $('#manual_appointment_provider').html(content);
@@ -1086,7 +1096,7 @@ function referredByProviderSuggestions(searchValue) {
             success: function success(e) {
                 var data = $.parseJSON(e);
                 var content = '';
-                data.forEach(function (providerName) {
+                data.forEach(function(providerName) {
                     content += '<p class="provider_suggestion_item">' + providerName + '</p>';
                 });
                 if (content != '') {
@@ -1122,7 +1132,7 @@ function referredByPracticeSuggestions(searchValue) {
                 var data = [];
                 data = $.parseJSON(e);
                 var content = '';
-                data.forEach(function (practiceName) {
+                data.forEach(function(practiceName) {
                     content += '<p class="practice_suggestion_item">' + practiceName + '</p>';
                 });
                 if (content != '') {
