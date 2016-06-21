@@ -650,3 +650,49 @@ Mobile Styling
 	width: 10%;
 	margin-top: -3em;
 }
+
+.custom_model_footer {
+	padding: 15px;
+	text-align: center;
+	border-top: 1px solid #e5e5e5;
+}
+
+.custom_save_btn {
+	background-color: #0071bc;
+	color:#fff;
+	:hover{
+		color:#fff;
+	}
+}
+.btn:hover {
+	color: #fff;
+}
+
+.file_upload_form_input {
+	position: relative;
+	overflow: hidden;
+	color: #4d4d4d;
+	display: none;
+	padding-right: 30px;
+	padding-top: 2px;
+	&.active{
+		display: inline-block;
+	}
+}
+
+.file_upload_form_input input[type="file"] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	min-width: 100%;
+	min-height: 100%;
+	text-align: right;
+	filter: alpha(opacity=0);
+	opacity: 0;
+	outline: none;
+	display: block;
+	cursor: pointer;
+}
+.file_upload_form_filename {
+	color:#4d4d4d;
+}

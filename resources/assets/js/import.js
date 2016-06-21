@@ -31,6 +31,8 @@ $(document).ready(function() {
     });
 
     $('.filename').on('click', '.clear_image_path', function() {
+
+
         $('.xlsx_file-input input[type="file"]').val('');
         $('.filename').html('');
         $('.xlsx_file-input').addClass('active');
@@ -63,11 +65,10 @@ $(document).ready(function() {
     });
     $(document).on('click', '.compare_ccda_button', function() {
 
-		if($('#form_edit_mode').val())
-			{
-				setCheckedFieldInForm();
-				return;
-			}
+        if ($('#form_edit_mode').val()) {
+            setCheckedFieldInForm();
+            return;
+        }
         updatePatientData();
     });
     $(document).on('click', '#compare_ccda_button', function() {
@@ -140,6 +141,29 @@ $(document).ready(function() {
         }
     });
 
+    $(document).on('change', '.file_upload_form_input input[type="file"]', function() {
+        var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+        var clear_image_path = $('#clear_image_path').val();
+        filename += '&nbsp;&nbsp;<img src="' + clear_image_path + '" class="remove_file_name " data-toggle="tooltip" title="Remove File" data-placement="top">';
+		var parent = $(this).parent();
+		if (filename.length > 0) {
+			parent.removeClass('active');
+		}
+		parent.siblings('.file_upload_form_filename').html(filename);
+
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+	$(document).on('click', '.remove_file_name', function(){
+		$(this).parent().siblings('.file_upload_form_input').addClass('active');
+		var inputDom = $(this).parent().siblings('.file_upload_form_input');
+		inputDom.find('input').val('');
+		$(this).parent().html('');
+	});
+
+	$(document).on('click', '.upload_files_btn', function(){
+		uploadPatientFiles();
+	})
 });
 
 
@@ -452,13 +476,10 @@ function getCCDAData() {
             if (data.error) {
                 $('p.alert_message').text('Error: Please provide a valid CCDA file.');
                 $('#alert').modal('show');
-            }
-			else if($('#form_edit_mode').val())
-			{
-				$('#compareCcda').modal('show');
-				showComparisionData(data);
-			}
-			else {
+            } else if ($('#form_edit_mode').val()) {
+                $('#compareCcda').modal('show');
+                showComparisionData(data);
+            } else {
                 for (var key in data.ccda) {
                     $('#' + key).val(data.ccda[key]);
                 }
@@ -468,12 +489,32 @@ function getCCDAData() {
     });
 }
 
-function setCheckedFieldInForm(){
-	var $inputs = $('#compare_ccda_form :input');
-	$inputs.each(function() {
-		if($(this).prop('checked')){
-			$('#form_add_patients').find('#'+this.name).val($(this).val());
+function setCheckedFieldInForm() {
+    var $inputs = $('#compare_ccda_form :input');
+    $inputs.each(function() {
+        if ($(this).prop('checked')) {
+            $('#form_add_patients').find('#' + this.name).val($(this).val());
+        }
+    });
+    $('#compareCcda').modal('hide');
+}
+
+function uploadPatientFiles(){
+	var myform = document.getElementById("upload_files_form");
+	var fd = new FormData(myform);
+
+	$.ajax({
+		url: "/uploadpatientfiles",
+		data: fd,
+		cache: false,
+		processData: false,
+		contentType: false,
+		type: 'POST',
+		success: function(e) {
+			alert('successfull');
+			//var data = $.parseJSON(e);
+
 		}
 	});
-	$('#compareCcda').modal('hide');
 }
+
