@@ -265,8 +265,15 @@ class PatientController extends Controller
         $patientData['cellphone'] = $patient->cellphone ?: '';
         $patientData['workphone'] = $patient->workphone ?: '';
         $patientData['homephone'] = $patient->homephone ?: '';
-        $birthdate = new DateTime($patient->birthdate);
-        $patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
+
+		if($patient->birthdate === '0000-00-00 00:00:00')
+		{
+			$patientData['birthdate'] = '-';
+		}
+		else{
+			$birthdate = new DateTime($patient->birthdate);
+			$patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
+		}
 
         $ccda = Ccda::where('patient_id', $id)->orderBy('created_at', 'desc')->first();
         $patientData['ccda'] = true;
