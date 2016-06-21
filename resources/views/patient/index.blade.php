@@ -38,7 +38,7 @@
     @include('patient.compare_ccda')
     <button id="show_4pc_model" style="display:none" data-toggle="modal" data-target="#field_Modal_4PC">show</button>
 </div>
-@include('patient.files_upload')
+
 
 @endsection
 @section('mobile_sidebar_content')

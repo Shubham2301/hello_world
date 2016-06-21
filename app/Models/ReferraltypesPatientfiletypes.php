@@ -12,4 +12,13 @@ class ReferraltypesPatientfiletypes extends Model
 	 * @var string
 	 */
 	protected $table = 'referraltypes_patientfiletypes';
+
+
+   public static function getFilesForReferral($referralTypeID = 1){
+
+	   return self::where('referraltype_id', $referralTypeID)
+		   ->leftjoin('patientfiletypes', 'referraltypes_patientfiletypes.patientfiletype_id', '=', 'patientfiletypes.id')
+		   ->get();
+   }
+
 }

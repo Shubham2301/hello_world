@@ -204,6 +204,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/getfpcvalidateview', 'Practice\ProviderController@getFPCValidateView');
 	Route::get('export/audits', 'AuditReportController@downloadAsXSLS');
 
-	Route::post('uploadpatientfiles', 'Patient\PatientFilesController@index');
+	Route::post('uploadpatientfiles', 'Patient\PatientFilesController@upload');
+	Route::get('/getfileuploadview', 'Patient\PatientFilesController@getFileUploadView');
 
 });

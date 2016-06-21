@@ -16,6 +16,7 @@ use myocuhub\Models\Practice;
 use myocuhub\Models\PracticePatient;
 use myocuhub\Models\PracticeUser;
 use myocuhub\Models\ReferralHistory;
+use myocuhub\Models\ReferraltypesPatientfiletypes;
 use myocuhub\Patient;
 use myocuhub\User;
 
@@ -33,7 +34,14 @@ class PatientFilesController extends Controller
 
 	public function getFileUploadView()
 	{
-
+		$referralFiles = ReferraltypesPatientfiletypes::getFilesForReferral(1);
+		$formView = view('patient.files_upload')->with('files', $referralFiles)->render();
+		return $formView;
 	}
 
+
+	public function upload(Request $request)
+	{
+		$referralFiles = ReferraltypesPatientfiletypes::getFilesForReferral(1);
+	}
 }

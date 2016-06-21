@@ -13,8 +13,7 @@
 			<div class="col-md-3 form-group">
 			</div>
 			<div class="col-md-7 ">
-				<span class="file-input">Upload Patient File{!!Form::file('patient_ccda')!!}
-				</span>
+				<span class="upload_file_view_btn">Upload Patient File</span>
 				<span class="filename"></span>
 
 			</div>
@@ -194,4 +193,7 @@
 
     </div>
 </div>
+
+
+<div id = "file_upload_view"></div>
 

@@ -9,26 +9,18 @@
             </div>
             <div class="modal-body">
                 <div class="content-section active">
-						{!! Form::open(array('url'=>'#','method'=>'POST', 'files'=>true, 'id'=>'upload_files_form')) !!}
-
-                        <div class="row content-row-margin">
-                            <div class="col-xs-4 form-group text-right" style="padding-top: 5px;">
-                                <lable for="exampleInputName1"><strong style="color:black;"> {{'File Name'}}</strong></lable>
-                            </div>
-                            <div class="col-xs-8">
-                                <span class="file_upload_form_input active">Select{!!Form::file('filetype_id')!!}</span>
-                                <span class="file_upload_form_filename filename"></span>
-                            </div>
+                    {!! Form::open(array('url'=>'#','method'=>'POST', 'files'=>true, 'id'=>'upload_files_form')) !!}
+                    @foreach($files as $file)
+                    <div class="row content-row-margin">
+                        <div class="col-xs-4 form-group text-right" style="padding-top: 5px;">
+							<lable for="exampleInputName1"><strong style="color:black;"> {{$file->display_name}}</strong></lable>
                         </div>
-					<div class="row content-row-margin">
-						<div class="col-xs-4 form-group text-right" style="padding-top: 5px;">
-							<lable for="exampleInputName1"><strong style="color:black;"> {{'File Name'}}</strong></lable>
-						</div>
-						<div class="col-xs-8">
-							<span class="file_upload_form_input active">Select{!!Form::file('filetype_id2')!!}</span>
-							<span class="file_upload_form_filename filename"></span>
-						</div>
-					</div>
+                        <div class="col-xs-8">
+                            <span class="file_upload_form_input active">Select{!!Form::file($file->name)!!}</span>
+                            <span class="file_upload_form_filename filename"></span>
+                        </div>
+                    </div>
+                    @endforeach
 
                     </form>
                     <p class="success_message"></p>

@@ -1,13 +1,15 @@
 $(document).ready(function() {
+
+
     $(document).on('change', '#practice_list', function(e) {
         var practice_id = $(this).find(":selected").val();
         getLocation(practice_id);
 
     });
-    $(document).on('change', '.file-input input[type="file"]', function() {
-        if ($(this).val() != '')
-            saveCcdafile();
-    });
+//    $(document).on('change', '.file-input input[type="file"]', function() {
+//        if ($(this).val() != '')
+//            saveCcdafile();
+//    });
 
     $(document).on('change', '.xlsx_file-input input[type="file"]', function() {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -145,25 +147,30 @@ $(document).ready(function() {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         var clear_image_path = $('#clear_image_path').val();
         filename += '&nbsp;&nbsp;<img src="' + clear_image_path + '" class="remove_file_name " data-toggle="tooltip" title="Remove File" data-placement="top">';
-		var parent = $(this).parent();
-		if (filename.length > 0) {
-			parent.removeClass('active');
-		}
-		parent.siblings('.file_upload_form_filename').html(filename);
+        var parent = $(this).parent();
+        if (filename.length > 0) {
+            parent.removeClass('active');
+        }
+        parent.siblings('.file_upload_form_filename').html(filename);
 
         $('[data-toggle="tooltip"]').tooltip();
     });
 
-	$(document).on('click', '.remove_file_name', function(){
-		$(this).parent().siblings('.file_upload_form_input').addClass('active');
-		var inputDom = $(this).parent().siblings('.file_upload_form_input');
-		inputDom.find('input').val('');
-		$(this).parent().html('');
-	});
+    $(document).on('click', '.remove_file_name', function() {
+        $(this).parent().siblings('.file_upload_form_input').addClass('active');
+        var inputDom = $(this).parent().siblings('.file_upload_form_input');
+        inputDom.find('input').val('');
+        $(this).parent().html('');
+    });
 
-	$(document).on('click', '.upload_files_btn', function(){
-		uploadPatientFiles();
-	})
+    $(document).on('click', '.upload_files_btn', function() {
+        uploadPatientFiles();
+    })
+
+	$(document).on('click', '.upload_file_view_btn', function(){
+		getFileUploadView();
+
+	});
 });
 
 
@@ -512,9 +519,25 @@ function uploadPatientFiles(){
 		type: 'POST',
 		success: function(e) {
 			alert('successfull');
+			$('#upload_files').modal('hide');
 			//var data = $.parseJSON(e);
 
 		}
 	});
 }
 
+function getFileUploadView() {
+
+    $.ajax({
+		url: "/getfileuploadview",
+        cache: false,
+        processData: false,
+        contentType: false,
+        type: 'GET',
+        success: function(e) {
+            $('#file_upload_view').html(e);
+            $('#upload_files').modal('show');
+
+        }
+    });
+}
