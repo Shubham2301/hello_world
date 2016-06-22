@@ -179,7 +179,11 @@
                     <div class="row" id="appointment_type"></div>
                 </div>
                 <div class="section_separator print_page_break"></div>
-
+                <div class="historical_section">
+                    <p class="report_sub_header">Archived Patient</p>
+                    <div class="separator"></div>
+                    <div class="row" id="archive_data"></div>
+                </div>
                 <div class="report_section_inner realtime_section">
                     <p class="report_sub_header">Referred To <span id="referred_to_meta"> </span></p>
                     <div class="row" id="referred_to">
