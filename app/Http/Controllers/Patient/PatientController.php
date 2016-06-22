@@ -11,6 +11,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\Ccda;
 use myocuhub\Models\ImportHistory;
+use myocuhub\Models\PatientFile;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticePatient;
@@ -285,7 +286,9 @@ class PatientController extends Controller
         }
 
 		//fetch patient Files
-
+          $files =  PatientFile::getfiles($id);
+         //$files =  PatientFile::getfiles(1);
+         $patientData['files'] =  $files;
 
         $response = [
             'result' => true,

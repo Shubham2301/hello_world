@@ -464,8 +464,10 @@ function fillPatientData(data) {
     if (data.ccda) {
         $('.patient_files_content').html(' <div class="patient_file_item row"><div class="col-xs-7"><p class="file_name" >CCDA ' + data.ccda_date + '</p></div><div class="col-xs-2"><a href="/show/ccda/' + data.id + '" class="view_file" target="_blank" >View</a></div><div class="col-xs-3"><a href="/download/ccda/' + data.id + '" class="download_file">Get</a></div></div>');
     } else {
-        $('.patient_files_content').html('No Files');
+       // $('.patient_files_content').html('No Files');
     }
+	showPatientFiles(data.files);
+
 }
 
 function getCCDAData() {
@@ -520,9 +522,14 @@ function uploadPatientFiles(){
 		contentType: false,
 		type: 'POST',
 		success: function(e) {
-			alert('successfull');
+			console.log('successful');
+			console.log(e);
+			var data = $.parseJSON(e);
 			$('#upload_files').modal('hide');
-			//var data = $.parseJSON(e);
+			var formData = {
+				'id': data.id,
+			};
+			getPatientInfo(formData);
 
 		}
 	});
@@ -548,7 +555,13 @@ function getFileUploadView() {
     });
 }
 
-function showPatientFiles(){
+function showPatientFiles(files){
+	var content = '';
+    files.forEach(function (file) {
+		content += '<div class="patient_file_item row"><div class="col-xs-7"><p class="file_name" >'+file.display_name +' ' + file.date + '</p></div><div class="col-xs-2"></div><div class="col-xs-3"><a href="/download/file/'+file.patient_id +'/' + file.patientfiletype_id + '" class="download_file">Get</a></div></div>';
+    });
+
+	$('.patient_files_content').append(content);
 
 }
 

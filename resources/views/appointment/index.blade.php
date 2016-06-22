@@ -59,7 +59,7 @@
         </div>
         <div class="appointment_message arial">
 			@if($data['sesmail'])
-			<p><span><input type="checkbox" checked="checked" id="send_ccda_checkbox" ></span> Send patient C-CDA file to provider</p>
+			<p><span><input type="checkbox" checked="checked" id="send_ccda_checkbox" ></span> Send patient files to provider</p>
             @endif
         </div>
         <div class="appointment_confirm center-align arial">

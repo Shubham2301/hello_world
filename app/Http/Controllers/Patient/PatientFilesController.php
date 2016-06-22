@@ -47,22 +47,25 @@ class PatientFilesController extends Controller
     public function upload(Request $request)
     {
         $referralTypeID = $request->upload_referral_id;
-        $referralFiles = ReferraltypesPatientfiletypes::getFilesForReferral(1);
+		$referralFiles = ReferraltypesPatientfiletypes::getFilesForReferral($referralTypeID);
         $patientID = $request->upload_patient_id;
-        $i = 0;
+		$i = 0;
         foreach ($referralFiles as $referralFile) {
             if ($request->hasFile($referralFile->name)) {
-              $i++;
-                // $file = $request->file($referralFile->name);
-                // $fileTypeID = PatientFileType::where('name', $referralFile->name)->first()->id;
-                // $this->save($patientID, $file, $fileTypeID);
+                 $file = $request->file($referralFile->name);
+                 $fileTypeID = PatientFileType::where('name', $referralFile->name)->first()->id;
+                 $this->save($patientID, $file, $fileTypeID);
+				$i++;
             }
         }
+		$data = array();
+		$data['count'] = $i;
+		$data['id'] = $patientID;
+		return json_encode($data);
     }
 
     public function save($patientID, $file, $fileTypeID)
     {
-        echo $file->getClientSize().''."\n";
         $patientFile = new PatientFile;
         $fileName = rand(11111, 99999);
         $patientFile->name = $fileName;
@@ -80,5 +83,6 @@ class PatientFilesController extends Controller
          $parent_treepath . '/' . $fileName . '.' .$patientFile->extension,
         file_get_contents($file->getRealPath())
     );
+		return true;
     }
 }
