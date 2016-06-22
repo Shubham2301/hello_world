@@ -10,6 +10,18 @@
             <div class="modal-body">
                 <div class="content-section active">
                     {!! Form::open(array('url'=>'#','method'=>'POST', 'files'=>true, 'id'=>'upload_files_form')) !!}
+                     <input type="hidden" id="upload_referral_id" name="upload_referral_id"  value="">
+                     <input type="hidden" id="upload_patient_id" name="upload_patient_id"  value="">
+
+                     <div class="row content-row-margin">
+                        <div class="col-xs-4 form-group text-right" style="padding-top: 5px;">
+                            <lable for="exampleInputName1"><strong style="color:black;"> {{'CCDA'}}</strong></lable>
+                        </div>
+                        <div class="col-xs-8">
+                            <span class="file_upload_form_input active">Select{!!Form::file('patient_ccda')!!}</span>
+                            <span class="file_upload_form_filename filename"></span>
+                        </div>
+                    </div>
                     @foreach($files as $file)
                     <div class="row content-row-margin">
                         <div class="col-xs-4 form-group text-right" style="padding-top: 5px;">

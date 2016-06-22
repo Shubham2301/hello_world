@@ -277,11 +277,15 @@ class PatientController extends Controller
 
         $ccda = Ccda::where('patient_id', $id)->orderBy('created_at', 'desc')->first();
         $patientData['ccda'] = true;
+
         if (!($ccda)) {
             $patientData['ccda_date'] = (new DateTime())->format('F j Y');
         } else {
             $patientData['ccda_date'] = (new DateTime($ccda->created_at))->format('F j Y');
         }
+
+		//fetch patient Files
+
 
         $response = [
             'result' => true,

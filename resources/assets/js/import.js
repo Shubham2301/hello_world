@@ -507,9 +507,11 @@ function setCheckedFieldInForm() {
 }
 
 function uploadPatientFiles(){
+    $('#upload_patient_id').val($('.patient_info').attr('data-id'));
+    $('#upload_referral_id').val($('#form_referraltype_id').val());
+
 	var myform = document.getElementById("upload_files_form");
 	var fd = new FormData(myform);
-
 	$.ajax({
 		url: "/uploadpatientfiles",
 		data: fd,
@@ -528,9 +530,13 @@ function uploadPatientFiles(){
 
 function getFileUploadView() {
 
+    var formData = {
+            'upload_referral_id': $('#form_referraltype_id').val(),
+        };
     $.ajax({
 		url: "/getfileuploadview",
         cache: false,
+        data: $.param(formData),
         processData: false,
         contentType: false,
         type: 'GET',
@@ -541,3 +547,10 @@ function getFileUploadView() {
         }
     });
 }
+
+function showPatientFiles(){
+
+}
+
+
+
