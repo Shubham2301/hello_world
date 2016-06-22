@@ -299,6 +299,47 @@ class Reports
         }
         return $appointmentTypeResult;
     }
+
+    public function getArchiveData($results)
+    {
+        $archiveDataResult = [];
+
+        $archiveDataResult['patient_declined_service']['count'] = 0;
+        $archiveDataResult['patient_declined_service']['name'] = 'Patient declined service';
+        $archiveDataResult['already_seen_by_an_outside_doctor']['count'] = 0;
+        $archiveDataResult['already_seen_by_an_outside_doctor']['name'] = 'Already seen by an outside doctor';
+        $archiveDataResult['no_need_to_schedule']['count'] = 0;
+        $archiveDataResult['no_need_to_schedule']['name'] = 'No need to schedule';
+        $archiveDataResult['no_insurance']['count'] = 0;
+        $archiveDataResult['no_insurance']['name'] = 'No insurance';
+        $archiveDataResult['other_reason']['count'] = 0;
+        $archiveDataResult['other_reason']['name'] = 'Other Reason for Declining';
+
+        foreach ($results as $result) {
+            switch ($result->action_result_id) {
+                case 9:
+                    $archiveDataResult['patient_declined_service']['count']++;
+                    break;
+                case 10:
+                    $archiveDataResult['other_reason']['count']++;
+                    break;
+                case 15:
+                    $archiveDataResult['already_seen_by_an_outside_doctor']['count']++;
+                    break;
+                case 16:
+                    $archiveDataResult['no_need_to_schedule']['count']++;
+                    break;
+                case 17:
+                    $archiveDataResult['no_insurance']['count']++;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $archiveDataResult;
+    }
+
     public function initStatusOfPatients()
     {
         $statuses = [];
@@ -476,6 +517,7 @@ class Reports
         $networkData['gender_demographics']['male'] = round($gender['male'] * 100 / sizeof($results), 2);
         $networkData['gender_demographics']['female'] = round($gender['female'] * 100 / sizeof($results), 2);
         $networkData['appointment_status'] = $this->getHistoricalAppointmentStatus($results);
+        $networkData['archive_data'] = $this->getArchiveData($results);
 
         return json_encode($networkData);
     }
@@ -655,7 +697,7 @@ class Reports
                     left join `practice_patient` on `careconsole`.`patient_id` = `practice_patient`.`patient_id`
                     left join `users` on `appointments`.`provider_id` = `users`.`id`
                     left join (select console_id, archived, COUNT(*) as count from contact_history where archived is null group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
-                    left join (select console_id, action_result_id as action_result_id from contact_history where action_result_id = '15' OR action_result_id = '16' OR action_result_id = '9' OR action_result_id = '10') as `action_result_id` on `action_result_id`.`console_id` = `careconsole`.`id`
+                    left join (select console_id, action_result_id as action_result_id from contact_history where action_result_id = '15' OR action_result_id = '16' OR action_result_id = '9' OR action_result_id = '10' OR action_result_id = '17') as `action_result_id` on `action_result_id`.`console_id` = `careconsole`.`id`
                     left join `patient_insurance` on `patient_insurance`.`patient_id` = `careconsole`.`patient_id`
                     $queryFilters";
 
@@ -781,6 +823,28 @@ class Reports
                 } else {
                 $queryFilters .= ' and `referral_history`.`severity` IS NULL';
                 }
+            }
+        }
+
+        if ($filters['archive_data'] != 'none') {
+            switch ($filters['archive_data']) {
+                case 'patient_declined_service':
+                    $queryFilters .= " and `action_result_id` = 9 ";
+                    break;
+                case 'other_reason':
+                    $queryFilters .= " and `action_result_id` = 10 ";
+                    break;
+                case 'already_seen_by_an_outside_doctor':
+                    $queryFilters .= " and `action_result_id` = 15 ";
+                    break;
+                case 'no_need_to_schedule':
+                    $queryFilters .= " and `action_result_id` = 16 ";
+                    break;
+                case 'no_insurance':
+                    $queryFilters .= " and `action_result_id` = 17 ";
+                    break;
+                default:
+                    break;
             }
         }
 
