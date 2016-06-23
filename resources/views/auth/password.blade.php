@@ -4,7 +4,7 @@
     <div class="row" id="flash-message">
         @foreach ($errors->all() as $error)
         <div class="col-sm-12 left-padding top-margin">
-            <p class="white-text">{{ $error }}</p>
+			<p class="white-text left_padding">{{ $error }}</p>
         </div>
         @endforeach
     </div>
