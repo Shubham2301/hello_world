@@ -266,14 +266,12 @@ class PatientController extends Controller
         $patientData['workphone'] = $patient->workphone ?: '';
         $patientData['homephone'] = $patient->homephone ?: '';
 
-		if($patient->birthdate === '0000-00-00 00:00:00')
-		{
-			$patientData['birthdate'] = '-';
-		}
-		else{
-			$birthdate = new DateTime($patient->birthdate);
-			$patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
-		}
+        if ($patient->birthdate === '0000-00-00 00:00:00') {
+            $patientData['birthdate'] = '-';
+        } else {
+            $birthdate = new DateTime($patient->birthdate);
+            $patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
+        }
 
         $ccda = Ccda::where('patient_id', $id)->orderBy('created_at', 'desc')->first();
         $patientData['ccda'] = true;
@@ -394,8 +392,7 @@ class PatientController extends Controller
             if ($insuranceCarrier) {
                 $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
                 $insuranceCarrier->save();
-            }
-            else {
+            } else {
                 $insuranceCarrier = new PatientInsurance;
                 $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
                 $insuranceCarrier->patient_id = $id;
@@ -447,8 +444,12 @@ class PatientController extends Controller
             $data[$i]['addressline1'] = ($patient->addressline1 != null && $patient->addressline1 != '-') ? $patient->addressline1 : '';
             $data[$i]['addressline2'] = ($patient->addressline2 != null && $patient->addressline2 != '-') ? $patient->addressline2 : '';
             $data[$i]['city'] = $patient->city;
-            $birthdate = new DateTime($patient->birthdate);
-            $data[$i]['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
+            if ($patient->birthdate === '0000-00-00 00:00:00') {
+                $data[$i]['birthdate'] = '-';
+            } else {
+                $birthdate = new DateTime($patient->birthdate);
+                $data[$i]['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
+            }
             $i++;
         }
         $data[0]['total'] = $patients->total();
@@ -535,5 +536,4 @@ class PatientController extends Controller
         }
         return $patientID;
     }
-
 }
