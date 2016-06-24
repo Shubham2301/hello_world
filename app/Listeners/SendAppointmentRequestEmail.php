@@ -179,7 +179,7 @@ class SendAppointmentRequestEmail
             try {
                 $patientID = $attr['appt']['patient_id'];
                 if ($appt['send_ccda']) {
-                    $attr['attachments'][] = MyCCDA::generateXml($patientID) ?: '';
+                    $attr['attachments'][] = MyCCDA::generateXml($patientID, true) ?: '';
                 }
                 return  SES::send($attr);
             } catch (Exception $e) {
