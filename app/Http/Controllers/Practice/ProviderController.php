@@ -194,6 +194,7 @@ class ProviderController extends Controller
             $filename = basename(__FILE__);
             $ip = $request->getClientIp();
             Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+			return json_encode($apptTypes);
         }
 
 		$aptAsJson=  json_encode($apptTypes);
