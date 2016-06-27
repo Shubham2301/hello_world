@@ -179,9 +179,6 @@ class ProviderController extends Controller
         $providerKey = $request->input('provider_id');
         $locationKey = $request->input('location_id');
 
-//		$providerKey =9704;// 9704;//3709
-//		$locationKey = 1467;
-
         $providerInfo['LocKey'] = $locationKey;
         $providerInfo['AcctKey'] = $providerKey;
 
@@ -199,6 +196,11 @@ class ProviderController extends Controller
 
 		$aptAsJson=  json_encode($apptTypes);
 		$aptAsArray = json_decode($aptAsJson, true);
+
+		if(!array_key_exists('ApptType', $aptAsArray['GetApptTypesResult']))
+		{
+			return $aptAsJson;
+		}
 
 		$checkaptFormat = array_key_exists(0, $aptAsArray['GetApptTypesResult']['ApptType']);
 
