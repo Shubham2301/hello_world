@@ -18,7 +18,7 @@ class PostAppointmentEngagement extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '';
 
     /**
      * Create a new command instance.
@@ -37,6 +37,8 @@ class PostAppointmentEngagement extends Command
      */
     public function handle()
     {
-        //
+        // get list of appointments for which post appointment engagement is pending
+        // get patient preferences
+        // prepare jobs for each stack on SMS, Phone, Email
     }
 }
