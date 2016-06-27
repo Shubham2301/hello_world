@@ -16,6 +16,7 @@ class EventServiceProvider extends ServiceProvider {
 		'myocuhub\Events\AppointmentScheduled' => [
 			'myocuhub\Listeners\RequestFPCAppointment',
 			'myocuhub\Listeners\SendAppointmentRequestEmail',
+			'myocuhub\Listeners\SendConfirmPatientAppointmentSMS',
 		],
 		'myocuhub\Events\RequestPatientAppointment' => [
 			'myocuhub\Listeners\SendRequestPatientAppointmentEmail',
