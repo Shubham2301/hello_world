@@ -31,6 +31,7 @@ $(document).ready(function() {
         var stageID = $(this).parent().attr('data-stageid');
         var stageName = $('.drilldown>.section-header').html();
         var kpi_indicator = $(this).attr('data-indicator');
+
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             showcontrolls = true;
@@ -42,13 +43,13 @@ $(document).ready(function() {
             $(this).addClass('active');
             showcontrolls = false;
             currentPage = 1;
-            if (kpi_id) {
+			if (kpi_name) {
                 $('#current_stage').val(stageID);
                 $('#current_sort_field').val();
                 $('#current_sort_order').val();
                 if ($(this).hasClass('low')) {
                     $('#current_kpi').val('0');
-                    setPandingDayslimit(kpi_id, stageID);
+					setPandingDayslimit(kpi_name, stageID);
                     getPatientData();
                 } else {
                     showKPIData(stageID, kpi_id, stageName, kpi_name, kpi_indicator);
