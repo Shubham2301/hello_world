@@ -63,4 +63,9 @@ class PasswordController extends Controller {
         return redirect($this->redirectPath())->with('status', trans($response));
     }
 
+	protected function getSendResetLinkEmailSuccessResponse($response)
+	{
+		return redirect()->back()->with('success', trans($response));
+	}
+
 }
