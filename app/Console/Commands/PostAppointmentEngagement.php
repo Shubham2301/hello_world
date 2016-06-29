@@ -44,28 +44,32 @@ class PostAppointmentEngagement extends Command
     public function handle()
     {
         $appointments = Appointment::pastAppointmentsForEngagement();
-
         foreach ($appointments as $appt) {
-
-            switch ($appt['patient_preference']) {
-
-                case config('constants.message_type.sms'):
-                    dispatch((new PostAppointmentPatientSms($appt))->onQueue('sms'));
-                    break;
-
-                case config('constants.message_type.phone'):
-                    dispatch((new PostAppointmentPatientPhone($appt))->onQueue('phone'));
-                    break;  
-
-                case config('constants.message_type.email'):
-                default:
-                    dispatch((new PostAppointmentPatientMail($appt))->onQueue('email'));
-                    break;
-
+            if($this->authorizeEngagement(Patient::find($appt['patient_id'])))
+                $this->engagePatient($appt);
             }
-
         }
+    }
 
+    public function engagePatient($appt){
+        switch ($appt['patient_preference']) {
+            case config('patient_engagement.type.sms'):
+                dispatch((new PostAppointmentPatientSms($appt))->onQueue('sms'));
+                break;
+            case config('patient_engagement.type.phone'):
+                dispatch((new PostAppointmentPatientPhone($appt))->onQueue('phone'));
+                break;
+            case config('patient_engagement.type.email'):
+            default:
+                dispatch((new PostAppointmentPatientMail($appt))->onQueue('email'));
+                break;
+        }
+    }
+
+    public function authorizeEngagement($patient){
+        $policy = new EngagePatientPolicy($patient)->authorize();
+        $stage = config('patient_engagement.stage.post_appointment');
+        return $policy->authorize($appt['patient_preference'], $stage);
     }
 
 }

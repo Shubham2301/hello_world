@@ -30,16 +30,11 @@ class Appointment extends Model {
 	}
 
     public static function pastAppointmentsForEngagement(){
-        
         $format = 'Y-m-d H:i:s';
-
-        return self::where('appointments.active', '1')
+        $appointments = self::where('appointments.active', '1')
             ->where('appointments.start_datetime', '>' , date($format, strtotime('today')))
-            ->where('appointments.start_datetime', '<' , date($format, strtotime('7 July 2016')))
+            ->where('appointments.start_datetime', '<' , date($format, strtotime('tomorrow')))
             ->leftjoin('engagement_preferences', 'appointments.patient_id', '=', 'engagement_preferences.patient_id')
-            ->leftjoin('patients', 'appointments.patient_id', '=', 'patients.id')
-            ->leftjoin('users', 'appointments.provider_id', '=', 'users.id')
-            ->leftjoin('practices', 'appointments.practice_id', '=', 'practices.id')
             ->get([
                     'appointments.id as id',
                     'engagement_preferences.type as patient_preference',

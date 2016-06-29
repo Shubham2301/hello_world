@@ -156,6 +156,7 @@ class Patient extends Model
             })
             ->get(['*', 'patients.id']);
     }
+
     public static function getPreviousProvider($patientID)
     {
         return self::where('patients.id', $patientID)
@@ -185,6 +186,21 @@ class Patient extends Model
             ->get();
     }
 
+    public function canBeEngaged($type, $stage){
+        $networkID = $this->network()->id;
+        $count = MessageTemplate::where('network_id', $this->network()->id)
+            ->where('type', $type)
+            ->where('stage', $stage)
+            ->count();
+        return ($count == 0) ? false : true;
+    }
+
+    public function network(){
+        $import = $this->hasOne('myocuhub\Models\Careconsole')
+                    ->belongsToOne('myocuhub\Models\ImportHistory');
+        return Network::find($import->network_id);
+    }
+    
     public function getLocation()
     {
         $address = urlencode($this->addressline1.' '.$this->addressline2.' '.$this->city.' '.$this->state.' '.$this->zip.' '.$this->country);
