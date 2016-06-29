@@ -41,6 +41,10 @@ Route::post('auth/resendotp', 'Auth\TwoFactorAuthController@resendOTP');
 // Route::get('auth/verifyphone', 'Auth\AuthController@twoFactorAuth');
 // Route::post('auth/verifyphone', 'Auth\AuthController@verifyPhone');
 
+Route::get('testmail',  function (){
+    Artisan::call('pee:post-appt');
+});
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('test', 'DirectMail\TestController@test');

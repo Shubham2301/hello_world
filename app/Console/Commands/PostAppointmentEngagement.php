@@ -3,9 +3,15 @@
 namespace myocuhub\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use myocuhub\Jobs\PostAppointmentPatientMail;
+use myocuhub\Jobs\PostAppointmentPatientPhone;
+use myocuhub\Models\Appointment;
+
 
 class PostAppointmentEngagement extends Command
 {
+
     /**
      * The name and signature of the console command.
      *
@@ -37,8 +43,29 @@ class PostAppointmentEngagement extends Command
      */
     public function handle()
     {
-        // get list of appointments for which post appointment engagement is pending
-        // get patient preferences
-        // prepare jobs for each stack on SMS, Phone, Email
+        $appointments = Appointment::pastAppointmentsForEngagement();
+
+        foreach ($appointments as $appt) {
+
+            switch ($appt['patient_preference']) {
+
+                case config('constants.message_type.sms'):
+                    dispatch((new PostAppointmentPatientSms($appt))->onQueue('sms'));
+                    break;
+
+                case config('constants.message_type.phone'):
+                    dispatch((new PostAppointmentPatientPhone($appt))->onQueue('phone'));
+                    break;  
+
+                case config('constants.message_type.email'):
+                default:
+                    dispatch((new PostAppointmentPatientMail($appt))->onQueue('email'));
+                    break;
+
+            }
+
+        }
+
     }
+
 }

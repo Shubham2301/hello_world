@@ -3,10 +3,15 @@
 namespace myocuhub\Jobs;
 
 use Exception;
-use myocuhub\Jobs\Job;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use myocuhub\Jobs\Job;
+use myocuhub\Models\Appointment;
+use myocuhub\Patient;
 
 class PostAppointmentPatientMail extends Job implements ShouldQueue
 {
@@ -19,9 +24,9 @@ class PostAppointmentPatientMail extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($appt)
+    public function __construct(Appointment $appt)
     {
-        $appt = $this->appt;
+        $this->appt = $appt;
     }
 
     /**
@@ -31,25 +36,26 @@ class PostAppointmentPatientMail extends Job implements ShouldQueue
      */
     public function handle()
     {
-        $this->sendMail($appt);
-    }
-
-    public function sendMail($appt){
+        $appt = $this->appt;
         
-        if(Validator::make($appt, ['email' => 'email'])->fails()){
-            $this->recordFailedStatus();
-        }
+        $patient = Patient::find($appt->patient_id);
+
+        $to = [
+            'name' => $patient->firstname . ' ' . $patient->lastname,
+            'email' => $patient->email
+        ];
 
         try {
-            $mailToProvider = Mail::send('patient-engagement.emails.post-appt', ['appt' => $appt], function ($m) use ($appt) {
+            $mail = Mail::send('emails.master', ['appt' => $appt, 'to' => $to], function ($m) use ($appt, $to) {
                 $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to($appt['email'], $appt['name'])->subject($appt['subject']);
+                $m->to($to['email'], $to['name'])->subject($appt['subject']);
             });
+            dd($mail);
         } catch (Exception $e) {
             Log::error($e);
+            throw $e;
             $this->recordFailedStatus();
         }
-
     }
 
     public function recordFailedStatus(){
