@@ -14,14 +14,16 @@ Section : Imports
     &.active {
         display: block;
     }
-    &>p{
+    &>p {
         margin-bottom: .5em;
     }
 }
-.import-btn{
+
+.import-btn {
     margin-left: auto;
     margin-right: 1em;
 }
+
 .patient_list_item {
     border-top: 1px solid;
     opacity: 0.9;
@@ -34,14 +36,13 @@ Section : Imports
 .patient_info {
     display: none;
     margin-top: 2em;
-            &>.patient_table_header {
-            border-bottom: 2px solid #fff;
-            border-top: 1px solid #fff;
-            color: #333;
-            padding: .7em 0 .5em 0;
-            margin: 1em 0;
-        }
-
+    &>.patient_table_header {
+        border-bottom: 2px solid #fff;
+        border-top: 1px solid #fff;
+        color: #333;
+        padding: .7em 0 .5em 0;
+        margin: 1em 0;
+    }
     &.active {
         display: block;
     }
@@ -96,7 +97,7 @@ Section : Imports
     display: none;
     &.active {
         display: inline-block;
-		cursor: pointer;
+        cursor: pointer;
     }
 }
 
@@ -119,10 +120,12 @@ Section : Imports
         text-decoration: none;
     }
 }
-#add_patient_btn{
+
+#add_patient_btn {
     padding: 0;
     margin-right: 10px;
 }
+
 .add-btn {
     margin: 0 1em;
 }
@@ -130,13 +133,16 @@ Section : Imports
 .lastseenby_show {
     cursor: pointer;
 }
-.patient_list_name{
+
+.patient_list_name {
     font-size: 1.1em;
     padding-bottom: .3em;
 }
-.patient_list_data{
+
+.patient_list_data {
     font-size: .9em;
 }
+
 .referredby_content {
     display: none;
     &.active {
@@ -144,8 +150,7 @@ Section : Imports
     }
 }
 
-.referredby_show {
-}
+.referredby_show {}
 
 .insurance_provider_show {
     cursor: pointer;
@@ -200,7 +205,7 @@ p.add_title {
     }
     &:focus {
         border: 2px solid #fff;
-        color:#66c7eb;
+        color: #66c7eb;
         box-shadow: 0px 0px 2px #fff;
     }
 }
@@ -245,7 +250,7 @@ p.address {
     background-color: #00B6F1;
     border-color: #fff;
     margin-left: 14%;
-    &:hover{
+    &:hover {
         background-color: #cde8f4;
     }
 }
@@ -257,7 +262,7 @@ p.address {
     float: left;
     font-size: 1.1em;
     margin-left: 34%;
-    &:hover{
+    &:hover {
         background-color: #0071bc;
         color: #fff;
     }
@@ -274,7 +279,8 @@ p.patient_dropdown_data {
 #patient_name {
     margin: 0;
 }
-.underline{
+
+.underline {
     border: 0;
     border-top: 2px solid #f2f2f2;
     width: 2em;
@@ -282,19 +288,21 @@ p.patient_dropdown_data {
     margin-top: 0;
     margin-right: auto;
 }
-.space_below>p{
+
+.space_below>p {
     margin-bottom: 1.3em;
 }
+
 .patient_detail_info {
     font-size: .9em;
 }
+
 .search_input_box {
     display: flex;
     flex-direction: row;
     background-color: #ffffff;
     font-size: 1em;
-    &>input,
-    &>input:focus {
+    &>input, &>input:focus {
         width: 100%;
         border: none;
         padding: 6px 12px;
@@ -306,6 +314,7 @@ p.patient_dropdown_data {
         position: absolute;
     }
 }
+
 .glyp {
     padding-top: 8px;
     padding-right: 5px;
@@ -314,13 +323,15 @@ p.patient_dropdown_data {
     margin-top: 2em;
     margin-left: -2em;
 }
-.page_title{
+
+.page_title {
     font-size: 1.3em;
     padding-top: 2px;
     color: #fff;
     padding-left: 15px;
     margin: 0 1em 0 0;
 }
+
 .btn {
     padding: 6px 22px;
 }
@@ -342,17 +353,15 @@ p.patient_dropdown_data {
     display: inline-flex;
 }
 
-
-
 .search_item {
     margin: 0 1em;
     padding: .8em 0;
     border-bottom: 1px solid #f2f2f2;
     color: #f2f2f2;
-    &>div{
+    &>div {
         cursor: default;
         word-wrap: break-word;
-        &>p{
+        &>p {
             margin: 0;
         }
     }
@@ -365,13 +374,15 @@ p.patient_dropdown_data {
 .search_edit {
     display: inline-flex;
 }
-.search_name{
+
+.search_name {
     cursor: pointer;
     padding: 0;
-    &>p{
+    &>p {
         margin: 0;
     }
 }
+
 .search_edit {
     cursor: pointer;
     padding: 0;
@@ -382,6 +393,7 @@ p.patient_dropdown_data {
         cursor: pointer;
     }
 }
+
 .action_dropdown_img {
     width: 24px;
     margin-top: -0.2em;
@@ -412,9 +424,9 @@ p.patient_dropdown_data {
     padding-right: 11px;
     padding-top: 3px;
     padding-bottom: 3px;
-    &:hover{
+    &:hover {
         background: red;
-        color:#fff;
+        color: #fff;
     }
 }
 
@@ -428,11 +440,12 @@ p.patient_dropdown_data {
     padding-right: 11px;
     padding-top: 3px;
     padding-bottom: 3px;
-    &:hover{
+    &:hover {
         background: red;
-        color:#fff;
+        color: #fff;
     }
 }
+
 #row_remove_dropdown {
     bckground-color: #fff;
     margin-top: -3px;
@@ -445,12 +458,13 @@ p.patient_dropdown_data {
     height: 9em;
 }
 
-
 .patient_back {
     padding-left: 10px;
     padding-right: 10px;
 }
-.p_right, .p_left{
+
+.p_right,
+.p_left {
     cursor: pointer;
 }
 
@@ -460,7 +474,7 @@ p.patient_dropdown_data {
 
 .patient_admin_back {
     display: none;
-    &.active{
+    &.active {
         display: block;
     }
 }
@@ -475,49 +489,58 @@ p.patient_dropdown_data {
 }
 
 #open_patient_form {
-	float: right;
-	margin-left: 2em;
+    float: right;
+    margin-left: 2em;
 }
+
 .popover {
     color: #4d4d4d;
 }
+
 .panel-title>span>a {
     text-decoration: none;
     font-size: 1.3em;
 }
-.search_header{
-    &>div{
-        &>input[type=checkbox]{
+
+.search_header {
+    &>div {
+        &>input[type=checkbox] {
             margin: auto 0;
             margin-right: 1em;
         }
-        &>p{
+        &>p {
             margin: 0;
         }
     }
 }
-.admin_delete{
+
+.admin_delete {
     margin: auto 1em;
 }
-.patient_back{
+
+.patient_back {
     color: #f2f2f2;
-    &:hover{
+    &:hover {
         color: #fff;
     }
 }
-.custom_dropdown{
+
+.custom_dropdown {
     cursor: pointer;
 }
-.dropdown-menu>ul>li{
+
+.dropdown-menu>ul>li {
     color: #4d4d4d;
     cursor: pointer;
     &:hover {
         color: #000;
     }
 }
-.custom_dropdown_img_search{
+
+.custom_dropdown_img_search {
     margin: auto .5em;
 }
+
 #custom_dropdown {
     background-color: #ebeced;
     box-shadow: 0px 0px 3px #82888f;
@@ -528,6 +551,7 @@ p.patient_dropdown_data {
     color: black;
     margin-top: .5em;
 }
+
 .dropdown {
     color: #000;
     &.delete_from_row_dropdown {
@@ -536,19 +560,23 @@ p.patient_dropdown_data {
 }
 
 .edit_patient_button {
-	cursor: pointer;
-	color:#333;
+    cursor: pointer;
+    color: #333;
 }
+
 #patient_listing {
     overflow-y: auto;
 }
+
 .phone_visible {
     margin: 0 0 0 1em;
     padding-right: 2em;
 }
+
 .patient_phone_input {
     display: flex;
 }
+
 .add_another_phone {
     margin: .5em 0;
     margin-left: -2em;
@@ -559,9 +587,11 @@ p.patient_dropdown_data {
         height: 1em;
     }
 }
+
 .hide_phone_field {
     display: none;
 }
+
 .workphone_span,
 .homephone_span {
     margin-top: 1em;
@@ -599,100 +629,107 @@ Mobile Styling
         margin-right: .5em;
     }
 }
-@media only screen and (min-width: 767px) {
 
-}
+@media only screen and (min-width: 767px) {}
 
 .save_4pcdata {
-	background-color: #0071bc;
+    background-color: #0071bc;
 }
 
 #field_Modal_4PC {
-	margin-left: 12em;
+    margin-left: 12em;
 }
 
 #import_from_ccda {
-	margin-left: 38em;
-	position: relative;
-	overflow: hidden;
-	display: inline-block;
+    margin-left: 38em;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
 }
+
 #import_from_ccda input[type="file"] {
-	position: absolute;
-	top: 0;
-	right: 0;
-	min-width: 100%;
-	min-height: 100%;
-	text-align: right;
-	filter: alpha(opacity=0);
-	opacity: 0;
-	outline: none;
-	display: block;
-	cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    display: block;
+    cursor: pointer;
 }
 
 .sort_order {
-	position: absolute;
-	display: none;
-	left: 0;
-	color: #000;
+    position: absolute;
+    display: none;
+    left: 0;
+    color: #000;
 }
 
 .search_name {
-	padding: 0px;
+    padding: 0px;
 }
 
 .listing_header {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .sort_indicator {
-	width: 10%;
-	margin-top: -3em;
+    width: 10%;
+    margin-top: -3em;
 }
 
 .custom_model_footer {
-	padding: 15px;
-	text-align: center;
-	border-top: 1px solid #e5e5e5;
+    padding: 15px;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
 }
 
 .custom_save_btn {
-	background-color: #0071bc;
-	color:#fff;
-	:hover{
-		color:#fff;
-	}
+    background-color: #0071bc;
+    color: #fff;
+    :hover {
+        color: #fff;
+    }
 }
+
 .btn:hover {
-	color: #fff;
+    color: #fff;
 }
 
 .file_upload_form_input {
-	position: relative;
-	overflow: hidden;
-	color: #4d4d4d;
-	display: none;
-	padding-right: 30px;
-	padding-top: 2px;
-	&.active{
-		display: inline-block;
-	}
+    position: relative;
+    overflow: hidden;
+    color: #4d4d4d;
+    display: none;
+    padding-right: 30px;
+    padding-top: 2px;
+    &.active {
+        display: inline-block;
+    }
 }
 
 .file_upload_form_input input[type="file"] {
-	position: absolute;
-	top: 0;
-	right: 0;
-	min-width: 100%;
-	min-height: 100%;
-	text-align: right;
-	filter: alpha(opacity=0);
-	opacity: 0;
-	outline: none;
-	display: block;
-	cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    display: block;
+    cursor: pointer;
 }
+
 .file_upload_form_filename {
-	color:#4d4d4d;
+    color: #4d4d4d;
+}
+
+.search_name_text {
+    cursor: pointer;
+    padding: 0px;
 }
