@@ -48,8 +48,9 @@ $(document).ready(function() {
                 $('#current_sort_field').val();
                 $('#current_sort_order').val();
                 if ($(this).hasClass('low')) {
-                    $('#current_kpi').val('0');
-					setPandingDayslimit(kpi_name, stageID);
+					$('#current_kpi').val(0);
+					$('.subsection-header').removeClass('active');
+					setPendingDayslimit(kpi_name, stageID);
                     getPatientData();
                 } else {
                     showKPIData(stageID, kpi_id, stageName, kpi_name, kpi_indicator);
@@ -962,7 +963,7 @@ function setPatientRecords(consoleID) {
     });
 }
 
-function setPandingDayslimit(kpi_name, stageID) {
+function setPendingDayslimit(kpi_name, stageID) {
 
     switch (kpi_name) {
         case 'Low':
