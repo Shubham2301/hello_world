@@ -101,6 +101,7 @@ class CCDAService
 
 	public function generateJson($fileInXml)
 	{
+		try{
 		$file = $fileInXml;
 		$extension = $file->getClientOriginalExtension();
 		$xmlfilename = str_random(9) . ".{$extension}";
@@ -117,7 +118,25 @@ class CCDAService
 			return false;
 		}
 		return $jsonstring;
+		} catch (Exception $e) {
+			Log::error($e);
+			$action = 'Application Exception in generating C-CDA file for patient id '. $patientID;
+			$description = '';
+			$filename = basename(__FILE__);
+			$ip = '';
+			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+			return false;
+		}
 	}
 
+	public function IsCCDA($file)
+	{
+		$extension = $file->getClientOriginalExtension();
+		if($extension != 'xml')
+		{
+			return false;
+		}
+		return $this->generateJson($file);
+	}
 
 }

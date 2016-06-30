@@ -22,6 +22,7 @@ use myocuhub\Models\ReferralHistory;
 use myocuhub\Models\ReferraltypesPatientfiletypes;
 use myocuhub\Patient;
 use myocuhub\User;
+use MyCCDA;
 
 class PatientFilesController extends Controller
 {
@@ -41,14 +42,23 @@ class PatientFilesController extends Controller
 		$patientID = $request->upload_patient_id;
 		$files = $request->all();
 		$count = $request->count_patient_file;
+		$isCCDA = false;
 		$data = [];
 		$j =0;
 		for($i=1; $i<= $count; $i++ )
 		{
 			$data[$j]['name'] = $request->input('patient_file_name_'.$i);
 			$data[$j]['file'] = $request->file('patient_file_'.$i);
+
 			if($request->hasFile('patient_file_'.$i))
 			{
+				if(MyCCDA::isCCDA($data[$j]['file']))
+				{
+					$file = $request->file('patient_file_'.$i);
+					$isCCDA = true;
+					continue;
+				}
+
 			$this->save($patientID, $data[$j]);
 			$j++;
 			}
