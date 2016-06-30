@@ -317,6 +317,8 @@ function clearHTML() {
 function showPatientInfo() {
     if ($('.view_selected_patient').hasClass('view')) {
         $('.patient_info').addClass('active')
+		$('.patient_section').show();
+		$('.show_in_provider_patient').show();
         $('.view_selected_patient').text("Hide");
         $('.view_selected_patient').removeClass('view');
         $('.view_selected_patient').addClass('remove');

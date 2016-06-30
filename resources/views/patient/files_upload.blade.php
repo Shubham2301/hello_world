@@ -1,5 +1,5 @@
 <div class="modal fade" id="upload_files" role="dialog">
-    <div class="modal-dialog form_model">
+	<div class="modal-dialog form_model" style="background-color: transparent;">
 
         <!-- Modal content-->
         <div class="modal-content " style="width:35em;">

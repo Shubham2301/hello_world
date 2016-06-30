@@ -367,6 +367,8 @@ function showPatientInfo(data) {
         $('.lastseen_content').css("cursor", "default");
     }
     $('.patient_section').show();
+	$('.show_in_provider_patient').show();
+	$('.show_in_patient').show();
     fillPatientData(data);
     $('.patient_table_content').removeClass('active');
 }

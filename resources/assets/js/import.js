@@ -144,7 +144,7 @@ $(document).ready(function() {
     });
 
     $(document).on('change', '.file_upload_form_input input[type="file"]', function() {
-		var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '').substring(0,7)+'...';
+        var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '').substring(0, 7) + '...';
         var clear_image_path = $('#clear_image_path').val();
         filename += '&nbsp;&nbsp;<img src="' + clear_image_path + '" class="remove_file_name " data-toggle="tooltip" title="Remove File" data-placement="top">';
         var parent = $(this).parent();
@@ -168,20 +168,20 @@ $(document).ready(function() {
     })
 
     $(document).on('click', '.upload_file_view_btn', function() {
-		$('.patient_file_section').html('');
-		fileIndex = 1;
-		$('#count_patient_file').val(fileIndex);
-		$('#upload_files').modal('show');
+        $('.patient_file_section').html('');
+        fileIndex = 1;
+        $('#count_patient_file').val(fileIndex);
+        $('#upload_files').modal('show');
 
     });
 
     $('#new_file_upload_btn').on('click', function() {
-		createNewFileInput();
+        createNewFileInput();
     });
 
-	$(document).on('click', '.remove_upload_input', function(){
-     $(this).closest('.row').remove();
-	})
+    $(document).on('click', '.remove_upload_input', function() {
+        $(this).closest('.row').remove();
+    })
 
 
 });
@@ -518,9 +518,15 @@ function setCheckedFieldInForm() {
 }
 
 function uploadPatientFiles() {
-    $('#upload_patient_id').val($('.patient_info').attr('data-id'));
-    $('#upload_referral_id').val($('#form_referraltype_id').val());
+    var patientID = location.search.split('patient_id=')[1];
+    patientID = parseInt(patientID, 10);
+    if (patientID > 0) {
+        $('#upload_patient_id').val(patientID);
+    } else {
+        $('#upload_patient_id').val($('.patient_info').attr('data-id'));
+    }
 
+    alert($('#upload_patient_id').val());
     var myform = document.getElementById("upload_files_form");
     var fd = new FormData(myform);
     $.ajax({
@@ -547,31 +553,30 @@ function uploadPatientFiles() {
 function showPatientFiles(files) {
     var content = '';
     files.forEach(function(file) {
-		content += '<div class="patient_file_item row" data-id = "'+file.id +'"><div class="col-xs-1"><input type = "checkbox" value="'+file.id+'" class = "selected_files" style="margin-top:6px;"/></div><div class="col-xs-9"><a href = "downloadpatientfile/'+file.id +'" target="_blank" class="file_name" style="text-decoration:none;">' + file.display_name + ' ' + '' + '</a></div></div>';
+        content += '<div class="patient_file_item row" data-id = "' + file.id + '"><div class="col-xs-1"><input type = "checkbox" value="' + file.id + '" class = "selected_files" style="margin-top:6px;"/></div><div class="col-xs-9"><a href = "downloadpatientfile/' + file.id + '" target="_blank" class="file_name" style="text-decoration:none;">' + file.display_name + ' ' + '' + '</a></div></div>';
     });
 
     $('.patient_files_content').html(content);
 
 }
 
-function getSelectedFiles(){
-	return $('input:checkbox:checked.selected_files').map(function () {
-		return this.value;
-	}).get();
+function getSelectedFiles() {
+    return $('input:checkbox:checked.selected_files').map(function() {
+        return this.value;
+    }).get();
 }
 
-function createNewFileInput()
-{
-	fileIndex = fileIndex + 1;
-	var file_name = 'patient_file_name_' + fileIndex;
-	var uploadFileName = 'patient_file_' + fileIndex;
+function createNewFileInput() {
+    fileIndex = fileIndex + 1;
+    var file_name = 'patient_file_name_' + fileIndex;
+    var uploadFileName = 'patient_file_' + fileIndex;
 
-	var removetag = '<img src="'+$('#clear_image_path').val()+'" alt="" style="width:100%;" class="remove_upload_input" data-toggle="tooltip" title="Remove" data-placement="top">';
-	var removetag = '';
+    var removetag = '<img src="' + $('#clear_image_path').val() + '" alt="" style="width:100%;" class="remove_upload_input" data-toggle="tooltip" title="Remove" data-placement="top">';
+    var removetag = '';
 
-	var content = '<div class="row content-row-margin"><div class="col-xs-2">'+removetag+'</div><div class="col-xs-6 form-group text-right" style="padding-top: 5px;"><input type="text" name="' + file_name + '"style="color: #4d4d4d;border-radius: 6px;border: 1px solid #4d4d4d;padding: 0.25em 0.5em;font-style: italic;width:100%" placeholder="File name"></div><div class="col-xs-4"><span class="file_upload_form_input active select_patient_file">Select<input name="' + uploadFileName + '" type="file"></span><span class="file_upload_form_filename filename"></span></div></div>';
+    var content = '<div class="row content-row-margin"><div class="col-xs-2">' + removetag + '</div><div class="col-xs-6 form-group text-right" style="padding-top: 5px;"><input type="text" name="' + file_name + '"style="color: #4d4d4d;border-radius: 6px;border: 1px solid #4d4d4d;padding: 0.25em 0.5em;font-style: italic;width:100%" placeholder="File name"></div><div class="col-xs-4"><span class="file_upload_form_input active select_patient_file">Select<input name="' + uploadFileName + '" type="file"></span><span class="file_upload_form_filename filename"></span></div></div>';
 
-	$('.patient_file_section').append(content);
-	$('#count_patient_file').val(fileIndex);
+    $('.patient_file_section').append(content);
+    $('#count_patient_file').val(fileIndex);
 
 }
