@@ -1,6 +1,6 @@
 <?php
 
-namespace myocuhub\Jobs;
+namespace myocuhub\Jobs\PatientEngagement;
 
 use myocuhub\Jobs\Job;
 use Illuminate\Queue\SerializesModels;
@@ -20,10 +20,7 @@ class PostAppointmentPatientPhone.php extends Job implements ShouldQueue
 
     public function handle()
     {
-        $this->makeCall($appt);
-    }
-
-    public function makeCall($appt){
         //code here
     }
+
 }

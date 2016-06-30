@@ -29,6 +29,10 @@ return [
 			'subject' => 'Appointment has been scheduled',
 			'view' => 'emails.appt-confirmation-patient'
 		],
+		'post_appointment_patient' => [
+			'subject' => 'How was your Appointment',
+			'view' => 'emails.post-appointment-patient'
+		],
 	]
 	,
 	'language' => [

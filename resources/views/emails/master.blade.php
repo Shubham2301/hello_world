@@ -3,7 +3,7 @@
 		
 		<div>
 			<div style="width: 100%;display: inline-block;text-align:left">
-				<p>{{ $to['name'] }}</p>
+				@yield('to')
 			</div>
 			<div style="width: 100%;display: inline-block;text-align:left">
 				@yield('content')

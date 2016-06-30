@@ -4,7 +4,11 @@ namespace myocuhub;
 
 use Auth;
 use Illuminate\Database\Eloquent\Model;
+use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientMail;
+use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientPhone;
+use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientSMS;
 use myocuhub\Models\PracticeUser;
+use myocuhub\Network;
 
 class Patient extends Model
 {
@@ -186,19 +190,27 @@ class Patient extends Model
             ->get();
     }
 
-    public function canBeEngaged($type, $stage){
-        $networkID = $this->network()->id;
-        $count = MessageTemplate::where('network_id', $this->network()->id)
-            ->where('type', $type)
-            ->where('stage', $stage)
-            ->count();
-        return ($count == 0) ? false : true;
+    public function engagePatient($appt){
+        switch ($appt['patient_preference']) {
+            case config('patient_engagement.type.sms'):
+                dispatch((new PostAppointmentPatientSMS($appt))->onQueue('sms'));
+                break;
+            case config('patient_engagement.type.phone'):
+                dispatch((new PostAppointmentPatientPhone($appt))->onQueue('phone'));
+                break;
+            case config('patient_engagement.type.email'):
+            default:
+                dispatch((new PostAppointmentPatientMail($appt))->onQueue('email'));
+                break;
+        }
     }
 
     public function network(){
-        $import = $this->hasOne('myocuhub\Models\Careconsole')
-                    ->belongsToOne('myocuhub\Models\ImportHistory');
-        return Network::find($import->network_id);
+        $network = $this->where('patients.id', $this->id)
+                    ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
+                    ->leftjoin('import_history', 'careconsole.import_id' , '=' , 'import_history.id')
+                    ->first(['import_history.network_id']);
+        return Network::find($network['network_id']);
     }
     
     public function getLocation()

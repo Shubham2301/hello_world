@@ -47,7 +47,7 @@ class TwilioMessaging extends Twilio
 	}
 
 	public function prepare($view, $attr){
-		 return view($view)->with('attr', $attr)->render();
+		return view($view)->with('content', $attr)->render();
 	}
 
 }
