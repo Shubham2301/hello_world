@@ -526,7 +526,6 @@ function uploadPatientFiles() {
         $('#upload_patient_id').val($('.patient_info').attr('data-id'));
     }
 
-    alert($('#upload_patient_id').val());
     var myform = document.getElementById("upload_files_form");
     var fd = new FormData(myform);
     $.ajax({
@@ -540,6 +539,7 @@ function uploadPatientFiles() {
             console.log('successful');
             console.log(e);
             var data = $.parseJSON(e);
+			console.log(data);
             $('#upload_files').modal('hide');
             var formData = {
                 'id': data.id,

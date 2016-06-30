@@ -23,6 +23,7 @@ use myocuhub\Models\ReferraltypesPatientfiletypes;
 use myocuhub\Patient;
 use myocuhub\User;
 use MyCCDA;
+use myocuhub\Http\Controllers\CcdaController;
 
 class PatientFilesController extends Controller
 {
@@ -39,6 +40,8 @@ class PatientFilesController extends Controller
 	public function upload(Request $request)
 	{
 		//dd($request->all());
+		$ccdaFile = null;
+		$ccdaFileName = '';
 		$patientID = $request->upload_patient_id;
 		$files = $request->all();
 		$count = $request->count_patient_file;
@@ -54,8 +57,9 @@ class PatientFilesController extends Controller
 			{
 				if(MyCCDA::isCCDA($data[$j]['file']))
 				{
-					$file = $request->file('patient_file_'.$i);
+					$ccdaFile = $request->file('patient_file_'.$i);
 					$isCCDA = true;
+					$ccdaFileName = 'patient_file_'.$i;
 					continue;
 				}
 
@@ -65,9 +69,20 @@ class PatientFilesController extends Controller
 
 		}
 
+		if($isCCDA)
+		{
+			$ccdaController = new CcdaController();
+			$ccdaData = $ccdaController->save($request, $ccdaFile, $ccdaFileName);
+			$ccdaData = json_decode($ccdaData, true);
+		}
+
+
 		$data = array();
 		$data['count'] = $j;
 		$data['id'] = $patientID;
+		$data['ccda'] = $isCCDA;
+		$data['ccdaData'] = $ccdaData;
+
 		return json_encode($data);
 	}
 

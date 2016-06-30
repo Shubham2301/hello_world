@@ -26,11 +26,12 @@ class CcdaController extends Controller
 		return view('ccda.ccdatest');
 	}
 
-	public function save(Request $request)
+	public function save(Request $request, $file=null, $fileName = '')
 	{
+		//dd($request->all());
 		$data = [];
-		if ($request->hasFile('patient_ccda')) {
-			$file = $request->file('patient_ccda');
+		if ($request->hasFile($fileName)) {
+			$file = $request->file($fileName);
 			$jsonstring = MyCCDA::generateJson($file);
 
 			if(!$jsonstring)
@@ -40,7 +41,7 @@ class CcdaController extends Controller
 			}
 			$ccda = new Ccda;
 			$ccda->ccdablob = $jsonstring;
-			$ccda->patient_id = $request->patient_id;
+			$ccda->patient_id = $request->upload_patient_id;
 			if ($ccda->save()) {
 				$data['error']   = false;
 				$data['patient'] = $this->getPatientData($ccda->patient_id);
