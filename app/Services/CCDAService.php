@@ -109,7 +109,9 @@ class CCDAService
 		$upload_success = $file->move($this->ccdaPaths['temp_ccda'], $xmlfilename);
 		$xmlfile = $this->ccdaPaths['temp_ccda'] . '/' . $xmlfilename;
 		$jsonfile = $this->ccdaPaths['temp_json'] . $jsonfilename;
-		$xml_to_json = exec(env('NODE_PATH', '/usr/local/bin/node') ." " . $this->ccdaPaths['tojson'] . $xmlfile . " " . $jsonfile);
+			$command = env('NODE_PATH', '/usr/local/bin/node') ." " . $this->ccdaPaths['tojson'] . $xmlfile . " " . $jsonfile;
+			echo $command;
+			$xml_to_json = exec($command);
 		$jsonstring = file_get_contents($jsonfile, true);
 		$validator = \Validator::make(array('jsson' => $jsonstring), array('jsson' => 'Required|json'));
 		unlink($xmlfile);
