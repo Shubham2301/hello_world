@@ -222,7 +222,12 @@ class SendAppointmentRequestEmail
 		$data = explode( ',', $fileString );
 		$data = array_unique($data);
 		$paths = [];
-		$paths[] = MyCCDA::generateXml($patientID, true) ?: '';
+
+		if (in_array("CCDA", $data)) {
+			$paths[] = MyCCDA::generateXml($patientID, true) ?: '';
+			$key = array_search('CCDA', $data);
+			array_splice($data, $key, 1);
+		}
 
 		for($i=0; $i<sizeOf($data); $i++)
 		{

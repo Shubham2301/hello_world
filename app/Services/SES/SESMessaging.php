@@ -77,11 +77,11 @@ class SESMessaging extends SES
 
             $output = self::javaServiceConnect($args);
 
-//            foreach ($attr['attachments'] as $path) {
-//                if (file_exists($path)) {
-//                    unlink($path);
-//                }
-//            }
+            foreach ($attr['attachments'] as $path) {
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+            }
             return $output;
         } catch (Exception $e) {
             Log::error($e);
