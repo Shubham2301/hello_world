@@ -283,6 +283,11 @@ $(document).ready(function() {
 
     });
 
+	var patientView = location.search.split('patient_view=')[1];
+	if (patientView) {
+		showPatientInfo();
+	}
+
 });
 
 var selectPreviousProvider = false;

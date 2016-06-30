@@ -104,7 +104,7 @@ function scheduleAppointment() {
             $('.appointment_confirmed').show();
 
 			if($('#isses').val()){
-			$('.apt_msg').text('Files has been send successfully');
+			$('.apt_msg').text('Files have been sent successfully');
 			}
 
             $('#back').addClass('hide');

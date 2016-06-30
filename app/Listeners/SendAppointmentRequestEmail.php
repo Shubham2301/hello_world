@@ -217,7 +217,8 @@ class SendAppointmentRequestEmail
 		return true;
 	}
 
-	public function getSelectedFiles($fileString, $patientID){
+	public function getSelectedFiles($fileString, $patientID)
+	{
 		$data = explode( ',', $fileString );
 		$data = array_unique($data);
 		$paths = [];

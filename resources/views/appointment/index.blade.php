@@ -63,7 +63,7 @@
 			@if($data['sesmail'])
 			<p class="apt_msg"><span><input type="checkbox" checked="checked" id="send_ccda_checkbox" ></span> Send {{$data['count_files']}} patient files to provider</p>
             @else
-			<p class="apt_msg"><span></span> No files will send because provider does not have an SES email </p>
+			<p class="apt_msg"><span></span> No files will be sent because the provider does not have an SES email </p>
             @endif
         </div>
         <div class="appointment_confirm center-align arial">
@@ -71,7 +71,7 @@
         </div>
         <div id="apt_loader" style="display:none;">
 		<div id="schedule_apt_loader" class="hidden-xs"></div>
-			<p id="loadingText"><span style="padding-left:25px;">Please wait...</span><br> it may take some time</p>
+			<p id="loadingText"><span style="padding-left:25px;">Please wait...</span><br> It may take some time</p>
 		</div>
         <div class="appointment_confirmed center-align" style="display:none">
             <button class="confirmed" disabled>Confirmed</button>

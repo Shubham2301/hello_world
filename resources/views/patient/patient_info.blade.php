@@ -10,9 +10,9 @@
 		{!! Form::open(array('url' => 'import/ccda', 'method' => 'POST', 'files'=>true,'id'=>'import_ccda_form')) !!} {!! Form::hidden('patient_id', '', array('id' => 'ccda_patient_id')) !!}
 
 		<div class="row input_row">
-			<div class="col-md-3 form-group">
+			<div class="col-md-2 form-group">
 			</div>
-			<div class="col-md-7 ">
+			<div class="col-md-8 ">
 				<span class="upload_file_view_btn">Upload Patient File</span>
 				<span class="filename"></span>
 

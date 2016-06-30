@@ -52,7 +52,7 @@
 }
 
 .filename {
-    padding: 0 10px;
+    padding: 7px 10px;
     display: inline-block;
     vertical-align: top;
     font-style: italic;
@@ -383,8 +383,11 @@
 }
 
 .file_name{
-	font-size:12px;
-	margin-top:3px;
+	font-size:1em;
+	&:hover{
+		border-bottom: 1px solid #fff;
+		padding-bottom: 0.15em;
+	}
 }
 
 .patient_files_show {
@@ -399,4 +402,9 @@
 
 .upload_file_view_btn {
 	cursor: pointer;
+	color:#333;
+	padding-left: 15px;
+}
+.patient_file_item{
+	margin-top:1px;
 }

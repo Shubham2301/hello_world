@@ -37,6 +37,7 @@ class PatientFilesController extends Controller
 
 	public function upload(Request $request)
 	{
+		//dd($request->all());
 		$patientID = $request->upload_patient_id;
 		$files = $request->all();
 		$count = $request->count_patient_file;
@@ -46,8 +47,12 @@ class PatientFilesController extends Controller
 		{
 			$data[$j]['name'] = $request->input('patient_file_name_'.$i);
 			$data[$j]['file'] = $request->file('patient_file_'.$i);
+			if($request->hasFile('patient_file_'.$i))
+			{
 			$this->save($patientID, $data[$j]);
 			$j++;
+			}
+
 		}
 
 		$data = array();
@@ -71,7 +76,6 @@ class PatientFilesController extends Controller
 		$patientFile->treepath = $networkID.'/patient_files'.'/'.$patientID;
 		$patientFile->status = 1;
 		$patientFile->save();
-
 		Storage::put(
 			$patientFile->treepath . '/' . $patientFile->name . '.' .$patientFile->extension,
 			file_get_contents($file->getRealPath())
