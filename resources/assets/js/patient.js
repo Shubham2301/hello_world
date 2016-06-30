@@ -510,33 +510,7 @@ function selectProvider(id) {
     $('#form_select_provider').submit();
 }
 
-function updatePatientData() {
-    var myform = document.getElementById("compare_ccda_form");
-    var fd = new FormData(myform);
-    $.ajax({
-        url: "update/ccda",
-        data: fd,
-        cache: false,
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function (dataofconfirm) {
-            if (dataofconfirm != 'false') {
-                $('.update_header').removeClass('active');
-                $('.compare_form').removeClass('active');
-                $('.success_message').text("You have successfully updated the data.");
-                $('.success_message').addClass('active');
-                $('.compare_ccda_button').removeClass('active');
-                $('.dismiss_button').text('OK');
-            }
 
-            var formData = {
-                'id': dataofconfirm
-            };
-            getPatientInfo(formData);
-        }
-    });
-}
 
 function removePatient(id) {
     var removeId = {};

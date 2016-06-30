@@ -26,13 +26,9 @@ class CcdaController extends Controller
 		return view('ccda.ccdatest');
 	}
 
-	public function save(Request $request, $file=null, $fileName = '')
+	public function save(Request $request, $jsonstring, $patientID)
 	{
-		//dd($request->all());
-		$data = [];
-		if ($request->hasFile($fileName)) {
-			$file = $request->file($fileName);
-			$jsonstring = MyCCDA::generateJson($file);
+			$data = [];
 
 			if(!$jsonstring)
 			{
@@ -41,12 +37,12 @@ class CcdaController extends Controller
 			}
 			$ccda = new Ccda;
 			$ccda->ccdablob = $jsonstring;
-			$ccda->patient_id = $request->upload_patient_id;
+			$ccda->patient_id = $patientID;
+
 			if ($ccda->save()) {
 				$data['error']   = false;
 				$data['patient'] = $this->getPatientData($ccda->patient_id);
 				$data['ccda']    = $this->getCCDAData(json_decode($ccda->ccdablob, true));
-
 				$action = 'saved new CCDA';
 				$description = '';
 				$filename = basename(__FILE__);
@@ -54,10 +50,9 @@ class CcdaController extends Controller
 				Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 				return json_encode($data);
 			}
-		}
+
 		$data['error'] = true;
 		return json_encode($data);
-		;
 	}
 
 	public function getCCDAXml($patient_id)
@@ -207,4 +202,5 @@ class CcdaController extends Controller
 			return json_encode($data);
 		}
 	}
+
 }

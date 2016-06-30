@@ -55,16 +55,17 @@ class PatientFilesController extends Controller
 
 			if($request->hasFile('patient_file_'.$i))
 			{
-				if(MyCCDA::isCCDA($data[$j]['file']))
+				$jsonString = MyCCDA::isCCDA($data[$j]['file']);
+				if($jsonString)
 				{
-					$ccdaFile = $request->file('patient_file_'.$i);
+					$ccdaFile = $jsonString;
 					$isCCDA = true;
 					$ccdaFileName = 'patient_file_'.$i;
 					continue;
 				}
 
-			$this->save($patientID, $data[$j]);
-			$j++;
+				$this->save($patientID, $data[$j]);
+				$j++;
 			}
 
 		}
@@ -72,10 +73,9 @@ class PatientFilesController extends Controller
 		if($isCCDA)
 		{
 			$ccdaController = new CcdaController();
-			$ccdaData = $ccdaController->save($request, $ccdaFile, $ccdaFileName);
+			$ccdaData = $ccdaController->save($request, $ccdaFile, $patientID);
 			$ccdaData = json_decode($ccdaData, true);
 		}
-
 
 		$data = array();
 		$data['count'] = $j;

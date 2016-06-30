@@ -169,6 +169,12 @@ $(document).ready(function() {
 
     $(document).on('click', '.upload_file_view_btn', function() {
         $('.patient_file_section').html('');
+		$('.success_message').removeClass('active');
+		$('.dismiss_button').text('Cancel');
+		$('.patient_file_name').val('');
+		$('.file_upload_form_input').addClass('active');
+		$('.remove_file_name').remove();
+		$('.file_upload_form_filename').html('');
         fileIndex = 1;
         $('#count_patient_file').val(fileIndex);
         $('#upload_files').modal('show');
@@ -536,11 +542,13 @@ function uploadPatientFiles() {
         contentType: false,
         type: 'POST',
         success: function(e) {
-            console.log('successful');
-            console.log(e);
             var data = $.parseJSON(e);
-			console.log(data);
             $('#upload_files').modal('hide');
+			$('.dismiss_button').trigger('click');
+			showComparisionData(data.ccdaData);
+			$('#compare_ccda_button').trigger('click');
+			$('#compared_patient_id').val(data.ccdaData.patient.id);
+
             var formData = {
                 'id': data.id,
             };
@@ -574,9 +582,37 @@ function createNewFileInput() {
     var removetag = '<img src="' + $('#clear_image_path').val() + '" alt="" style="width:100%;" class="remove_upload_input" data-toggle="tooltip" title="Remove" data-placement="top">';
     var removetag = '';
 
-    var content = '<div class="row content-row-margin"><div class="col-xs-2">' + removetag + '</div><div class="col-xs-6 form-group text-right" style="padding-top: 5px;"><input type="text" name="' + file_name + '"style="color: #4d4d4d;border-radius: 6px;border: 1px solid #4d4d4d;padding: 0.25em 0.5em;font-style: italic;width:100%" placeholder="File name"></div><div class="col-xs-4"><span class="file_upload_form_input active select_patient_file">Select<input name="' + uploadFileName + '" type="file"></span><span class="file_upload_form_filename filename"></span></div></div>';
+	var content = '<div class="row content-row-margin"><div class="col-xs-2">' + removetag + '</div><div class="col-xs-6 form-group text-right" style="padding-top: 5px;"><input type="text" name="' + file_name + '"class="patient_file_name" placeholder="File name"></div><div class="col-xs-4"><span class="file_upload_form_input active select_patient_file">Select<input name="' + uploadFileName + '" type="file"></span><span class="file_upload_form_filename filename"></span></div></div>';
 
     $('.patient_file_section').append(content);
     $('#count_patient_file').val(fileIndex);
 
+}
+
+function updatePatientData() {
+	var myform = document.getElementById("compare_ccda_form");
+	var fd = new FormData(myform);
+	$.ajax({
+		url: "update/ccda",
+		data: fd,
+		cache: false,
+		processData: false,
+		contentType: false,
+		type: 'POST',
+		success: function (dataofconfirm) {
+			if (dataofconfirm != 'false') {
+				$('.update_header').removeClass('active');
+				$('.compare_form').removeClass('active');
+				$('.success_message').text("You have successfully updated the data.");
+				$('.success_message').addClass('active');
+				$('.compare_ccda_button').removeClass('active');
+				$('.dismiss_button').text('OK');
+			}
+
+			var formData = {
+				'id': dataofconfirm
+			};
+			getPatientInfo(formData);
+		}
+	});
 }

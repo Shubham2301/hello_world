@@ -63,6 +63,7 @@
 @endif
 @include('provider.search')
 @include('provider.preferences')
+@include('patient.compare_ccda')
 </div>
 <div class="practice_section active" id="practice_listing">
 @include('provider.listing')
