@@ -32,6 +32,7 @@ class ProviderController extends Controller
 
     public function index(Request $request)
     {
+
         $data = array();
         $data['admin'] = false;
         $data['schedule-patient'] = true;
@@ -66,6 +67,7 @@ class ProviderController extends Controller
             $insurance['insurance_group_no'] = '';
         }
 		$data['previous_selected'] = $request->has('selected_previous_provider');
+		$data['selectedfiles'] = $request->selectedfiles;
 
         return view('provider.index')->with('data', $data)->with('insurance', $insurance);
     }

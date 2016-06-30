@@ -31,6 +31,7 @@
     {!! Form::hidden('location_id', $data['location_id'], array('id' => 'form_location_id')) !!}
     {!! Form::hidden('location_code', $data['location_code'], array('id' => 'form_location_code')) !!}
     {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patient_id')) !!}
+	{!! Form::hidden('selectedfiles', $data['selectedfiles'], array('id' => 'selected_patient_files')) !!}
     {!! Form::close() !!}
     <div class="appointment_section active" id="confirm-appointment">
         <button type="button" class="btn back-btn" id="back">Back</button><h3 class="center-align arial_bold">Schedule an appointment</h3>
@@ -58,8 +59,11 @@
             </div>
         </div>
         <div class="appointment_message arial">
+			<input type="hidden" id="isses" value="{{$data['sesmail']}}">
 			@if($data['sesmail'])
-			<p><span><input type="checkbox" checked="checked" id="send_ccda_checkbox" ></span> Send patient files to provider</p>
+			<p class="apt_msg"><span><input type="checkbox" checked="checked" id="send_ccda_checkbox" ></span> Send {{$data['count_files']}} patient files to provider</p>
+            @else
+			<p class="apt_msg"><span></span> No files will send because provider does not have an SES email </p>
             @endif
         </div>
         <div class="appointment_confirm center-align arial">

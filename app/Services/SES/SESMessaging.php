@@ -133,6 +133,7 @@ class SESMessaging extends SES
             }
 
             $output = shell_exec($exec);
+
 			if($output)
 			{
 				return true;

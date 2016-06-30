@@ -501,6 +501,9 @@ function getOptionContent(type, value) {
 
 function selectProvider(id) {
 
+	var filesIDs = getSelectedFiles();
+
+	$('#selected_patient_files').val(filesIDs);
     $('#form_patient_id').val(id);
     $('#form_select_provider').submit();
 }

@@ -206,5 +206,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::post('uploadpatientfiles', 'Patient\PatientFilesController@upload');
 	Route::get('/getfileuploadview', 'Patient\PatientFilesController@getFileUploadView');
+	Route::get('downloadpatientfile/{id}', 'Patient\PatientFilesController@downloadFile');
 
 });

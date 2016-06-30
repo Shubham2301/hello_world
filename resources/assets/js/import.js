@@ -6,10 +6,10 @@ $(document).ready(function() {
         getLocation(practice_id);
 
     });
-//    $(document).on('change', '.file-input input[type="file"]', function() {
-//        if ($(this).val() != '')
-//            saveCcdafile();
-//    });
+    //    $(document).on('change', '.file-input input[type="file"]', function() {
+    //        if ($(this).val() != '')
+    //            saveCcdafile();
+    //    });
 
     $(document).on('change', '.xlsx_file-input input[type="file"]', function() {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -167,12 +167,33 @@ $(document).ready(function() {
         uploadPatientFiles();
     })
 
-	$(document).on('click', '.upload_file_view_btn', function(){
-		getFileUploadView();
+    $(document).on('click', '.upload_file_view_btn', function() {
+		$('#upload_files').modal('show');
 
-	});
+    });
+
+    $('#new_file_upload_btn').on('click', function() {
+        fileIndex = fileIndex + 1;
+        var file_name = 'patient_file_name_' + fileIndex;
+        var uploadFileName = 'patient_file_' + fileIndex;
+
+
+		var content = '<div class="row content-row-margin"><div class="col-xs-1"></div><div class="col-xs-8 form-group text-right" style="padding-top: 5px;"><input type="text" name="' + file_name + '"style="color: #4d4d4d;border-radius: 6px;border: 1px solid #4d4d4d;padding: 0.25em 0.5em;font-style: italic;width:100%"></div><div class="col-xs-2"><span class="file_upload_form_input active" style="color: #fff;background: #4d4d4d;padding: 0.25em 0.5em;margin: 0.25em 0;font-style: italic;">Select<input name="' + uploadFileName + '" type="file"></span><span class="file_upload_form_filename filename"></span></div></div>';
+
+        $('.patient_file_section').append(content);
+        $('#count_patient_file').val(fileIndex);
+
+    });
+
+	$(document).on('click', '.patient_file_item', function(){
+
+
+	})
+
+
 });
 
+var fileIndex = 1;
 
 function getCcdaFile(url) {
 
@@ -461,12 +482,7 @@ function fillPatientData(data) {
         $('.patient_table_header').removeClass('hide');
     }
 
-    if (data.ccda) {
-        $('.patient_files_content').html(' <div class="patient_file_item row"><div class="col-xs-7"><p class="file_name" >CCDA ' + data.ccda_date + '</p></div><div class="col-xs-2"><a href="/show/ccda/' + data.id + '" class="view_file" target="_blank" >View</a></div><div class="col-xs-3"><a href="/download/ccda/' + data.id + '" class="download_file">Get</a></div></div>');
-    } else {
-       // $('.patient_files_content').html('No Files');
-    }
-	showPatientFiles(data.files);
+    showPatientFiles(data.files);
 
 }
 
@@ -508,61 +524,47 @@ function setCheckedFieldInForm() {
     $('#compareCcda').modal('hide');
 }
 
-function uploadPatientFiles(){
+function uploadPatientFiles() {
     $('#upload_patient_id').val($('.patient_info').attr('data-id'));
     $('#upload_referral_id').val($('#form_referraltype_id').val());
 
-	var myform = document.getElementById("upload_files_form");
-	var fd = new FormData(myform);
-	$.ajax({
-		url: "/uploadpatientfiles",
-		data: fd,
-		cache: false,
-		processData: false,
-		contentType: false,
-		type: 'POST',
-		success: function(e) {
-			console.log('successful');
-			console.log(e);
-			var data = $.parseJSON(e);
-			$('#upload_files').modal('hide');
-			var formData = {
-				'id': data.id,
-			};
-			getPatientInfo(formData);
-
-		}
-	});
-}
-
-function getFileUploadView() {
-
-    var formData = {
-            'upload_referral_id': $('#form_referraltype_id').val(),
-        };
+    var myform = document.getElementById("upload_files_form");
+    var fd = new FormData(myform);
     $.ajax({
-		url: "/getfileuploadview",
+        url: "/uploadpatientfiles",
+        data: fd,
         cache: false,
-        data: $.param(formData),
         processData: false,
         contentType: false,
-        type: 'GET',
+        type: 'POST',
         success: function(e) {
-            $('#file_upload_view').html(e);
-            $('#upload_files').modal('show');
+            console.log('successful');
+            console.log(e);
+            var data = $.parseJSON(e);
+            $('#upload_files').modal('hide');
+            var formData = {
+                'id': data.id,
+            };
+            getPatientInfo(formData);
 
         }
     });
 }
 
-function showPatientFiles(files){
-	var content = '';
-    files.forEach(function (file) {
-		content += '<div class="patient_file_item row"><div class="col-xs-7"><p class="file_name" >'+file.display_name +' ' + file.date + '</p></div><div class="col-xs-2"></div><div class="col-xs-3"><a href="/download/file/'+file.patient_id +'/' + file.patientfiletype_id + '" class="download_file">Get</a></div></div>';
+function showPatientFiles(files) {
+    var content = '';
+    files.forEach(function(file) {
+		content += '<a href = "downloadpatientfile/'+file.id +'" target="_blank"><div class="patient_file_item row" data-id = "'+file.id +'"><div class="col-xs-1"><input type = "checkbox" value="'+file.id+'" class = "selected_files"/></div><div class="col-xs-9"><p class="file_name" >' + file.display_name + ' ' + '' + '</p></div></div></a>';
     });
 
-	$('.patient_files_content').append(content);
+    $('.patient_files_content').append(content);
 
+}
+
+function getSelectedFiles(){
+	return $('input:checkbox:checked.selected_files').map(function () {
+		return this.value;
+	}).get();
 }
 
 

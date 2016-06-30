@@ -195,5 +195,8 @@
 </div>
 
 
-<div id = "file_upload_view"></div>
+<div id = "file_upload_view">
+
+	@include('patient.files_upload')
+</div>
 

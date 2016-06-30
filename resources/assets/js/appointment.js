@@ -78,7 +78,8 @@ function scheduleAppointment() {
         'appointment_type': appointment_type_name,
         'appointment_type_key': appointment_type_key,
         'appointment_time': appointment_time,
-		'send_ccda_file':$('#send_ccda_checkbox').prop('checked')
+		'send_ccda_file':$('#send_ccda_checkbox').prop('checked'),
+		'selectedfiles': $('#selected_patient_files').val()
     };
 
 
@@ -101,6 +102,11 @@ function scheduleAppointment() {
             }
 
             $('.appointment_confirmed').show();
+
+			if($('#isses').val()){
+			$('.apt_msg').text('Files has been send successfully');
+			}
+
             $('#back').addClass('hide');
         },
         error: function() {},
