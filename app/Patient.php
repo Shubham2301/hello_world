@@ -50,6 +50,10 @@ class Patient extends Model
         return $phone;
     }
 
+    public function getName(){
+        return $this->lastname . ', ' . $this->firstname;
+    }
+
     public static function getPatients($filters, $sortInfo = [])
     {
         $columns = [

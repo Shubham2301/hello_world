@@ -30,7 +30,7 @@ class PostAppointmentPatientMail extends PatientEngagement implements ShouldQueu
         $patient = $this->getPatient();
 
         $to = [
-            'name' => $patient->firstname . ' ' . $patient->lastname,
+            'name' => $patient->getName(),
             'email' => $patient->email
         ];
 

@@ -27,8 +27,8 @@ class PostAppointmentPatientSMS extends PatientEngagement implements ShouldQueue
     {
         $patient = $this->getPatient();
         $to = [
-            'phone' => $patient->cellphone,
-            'name' => $patient->firstname . ' ' . $patient->lastname
+            'name' => $patient->getName(),
+            'phone' => $patient->cellphone
         ];
 
         $content = $this->getContent();
