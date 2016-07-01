@@ -16,12 +16,6 @@ class AddTimestampsPatientfiles extends Migration
         Schema::table('patient_files', function (Blueprint $table) {
             $table->timestamps();
         });
-         Schema::table('referraltypes_patientfiletypes', function (Blueprint $table) {
-            $table->timestamps();
-        });
-          Schema::table('patientfiletypes', function (Blueprint $table) {
-            $table->timestamps();
-        });
     }
 
     /**
