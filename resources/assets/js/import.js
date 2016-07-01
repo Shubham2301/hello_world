@@ -5,8 +5,9 @@ $(document).ready(function() {
 
     });
     $(document).on('change', '.file-input input[type="file"]', function() {
-        if ($(this).val() != '')
+        if ($(this).val() != ''){
             saveCcdafile();
+		}
     });
 
     $(document).on('change', '.xlsx_file-input input[type="file"]', function() {
@@ -236,7 +237,7 @@ function saveCcdafile() {
     var myform = document.getElementById("import_ccda_form");
     var fd = new FormData(myform);
     $.ajax({
-        url: "import/ccda",
+        url: "/import/ccda",
         data: fd,
         cache: false,
         processData: false,
