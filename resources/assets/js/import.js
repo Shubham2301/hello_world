@@ -598,10 +598,12 @@ function createNewFileInput() {
 }
 
 function updatePatientData() {
+
 	var myform = document.getElementById("compare_ccda_form");
 	var fd = new FormData(myform);
+
 	$.ajax({
-		url: "update/ccda",
+		url: "/update/ccda",
 		data: fd,
 		cache: false,
 		processData: false,
