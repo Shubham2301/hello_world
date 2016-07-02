@@ -50,17 +50,12 @@ $(document).ready(function() {
     $(document).on('click', '#import_ccda_button', function() {
         var id = $(this).attr('data-id');
         $('#ccda_patient_id').val(id);
-        // $('.import_form').addClass('active');
         $('.success_message').text('');
         $('.success_message').removeClass('active');
         $('.save_ccda_button').addClass('active');
         $('.dismiss_button').text('Cancel');
     });
 
-
-    $(document).on('click', '.save_ccda_button', function() {
-        //saveCcdafile();
-    });
     $(document).on('click', '.compare_ccda_button', function() {
 
         if ($('#form_edit_mode').val()) {

@@ -13,10 +13,5 @@ class PatientFile extends Model
 	 * @var string
 	 */
 	protected $table = 'patient_files';
-
-  public static function getfiles($patientID){
-     return self::where('patient_id', $patientID)
-            ->get();
-    }
 }
 

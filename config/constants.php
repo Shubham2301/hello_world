@@ -66,4 +66,19 @@ return [
   	],
     'provider_list_display_limit' => '5',
     'practice_location_display_limit' => '3',
+
+   'btn_urls' =>[
+      'from_schedule'=> [
+         'back_btn' => 'back_to_select_patient_btn',
+         'save_url' => '/administration/patients/add'
+      ],
+      'from_admin' =>[
+          'back_btn' => 'back_to_admin_patient_btn',
+          'save_url' => '/administration/patients/add'
+
+      ]
+
+
+   ],
+
 ];

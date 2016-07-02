@@ -97,9 +97,3 @@ trait CCDATrait {
 	}
 
 }
-
-
-
-
-
-?>

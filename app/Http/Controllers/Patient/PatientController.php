@@ -58,8 +58,8 @@ class PatientController extends Controller
 		$language['Spanish'] = 'Spanish';
 		$data = Patient::getColumnNames();
 		$data['admin'] = true;
-		$data['back_btn'] = 'back_to_select_patient_btn';
-		$data['url'] = '/administration/patients/add';
+		$data['back_btn'] = config('constants.btn_urls.from_schedule.back_btn');
+		$data['url'] = config('constants.btn_urls.from_schedule.back_btn');
 		$data['referred_by_provider'] = null;
 		$data['referred_by_practice'] = null;
 		$data['disease_type'] = null;
@@ -86,8 +86,8 @@ class PatientController extends Controller
 		$data = array();
 		$data = Patient::getColumnNames();
 		$data['admin'] = true;
-		$data['back_btn'] = 'back_to_admin_patient_btn';
-		$data['url'] = '/administration/patients/add';
+		$data['back_btn'] = config('constants.btn_urls.from_admin.back_btn');
+		$data['url'] = config('constants.btn_urls.from_admin.save_url');
 		$data['referraltype_id'] = -1;
 		$data['referred_by_provider'] = null;
 		$data['referred_by_practice'] = null;
@@ -211,7 +211,6 @@ class PatientController extends Controller
 	public function show(Request $request)
 	{
 		$id = $request->input('id');
-
 		$patientData = [];
 
 		$response = [
@@ -283,9 +282,7 @@ class PatientController extends Controller
 			$patientData['ccda_date'] = (new DateTime($ccda->created_at))->format('F j Y');
 		}
 
-		//fetch patient Files
-		$files =  PatientFile::getfiles($id);
-		$patientData['files'] =  $files;
+		$patientData['files'] =  $patient->files;
 
 		$response = [
 			'result' => true,

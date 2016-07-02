@@ -30,11 +30,11 @@ class PatientFilesController extends Controller
 
 	public function upload(Request $request)
 	{
-		$ccdaAsJson = null;
+
 		$patientID = $request->upload_patient_id;
-		$files = $request->all();
 		$count = $request->count_patient_file;
 		$isCCDA = false;
+		$ccdaAsJson = null;
 		$data = [];
 		$j =0;
 		for($i=1; $i<= $count; $i++ )

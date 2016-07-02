@@ -5,6 +5,7 @@ namespace myocuhub;
 use Auth;
 use Illuminate\Database\Eloquent\Model;
 use myocuhub\Models\PracticeUser;
+use myocuhub\Models\PatientFile;
 
 class Patient extends Model
 {
@@ -202,4 +203,8 @@ class Patient extends Model
         }
         return $data;
     }
+    public function files(){
+        return $this->hasMany(PatientFile::class);
+    }
+
 }
