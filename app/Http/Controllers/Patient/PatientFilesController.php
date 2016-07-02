@@ -9,24 +9,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
-use myocuhub\Models\Careconsole;
 use myocuhub\Models\Ccda;
-use myocuhub\Models\ImportHistory;
 use myocuhub\Models\PatientFile;
-use myocuhub\Models\PatientFileType;
-use myocuhub\Models\PatientInsurance;
-use myocuhub\Models\Practice;
-use myocuhub\Models\PracticePatient;
-use myocuhub\Models\PracticeUser;
-use myocuhub\Models\ReferralHistory;
-use myocuhub\Models\ReferraltypesPatientfiletypes;
 use myocuhub\Patient;
-use myocuhub\User;
 use MyCCDA;
-use myocuhub\Http\Controllers\CcdaController;
+use myocuhub\Http\Controllers\Traits\CCDATrait;
 
 class PatientFilesController extends Controller
 {
+	use CCDATrait;
 	/**
      * Display a listing of the resource.
      *
@@ -39,9 +30,7 @@ class PatientFilesController extends Controller
 
 	public function upload(Request $request)
 	{
-		//dd($request->all());
-		$ccdaFile = null;
-		$ccdaFileName = '';
+		$ccdaAsJson = null;
 		$patientID = $request->upload_patient_id;
 		$files = $request->all();
 		$count = $request->count_patient_file;
@@ -55,26 +44,20 @@ class PatientFilesController extends Controller
 
 			if($request->hasFile('patient_file_'.$i))
 			{
-				$jsonString = MyCCDA::isCCDA($data[$j]['file']);
-				if($jsonString)
+				$ccdaAsJson = MyCCDA::isCCDA($data[$j]['file']);
+				if($ccdaAsJson)
 				{
-					$ccdaFile = $jsonString;
 					$isCCDA = true;
-					$ccdaFileName = 'patient_file_'.$i;
 					continue;
 				}
-
-				$this->save($patientID, $data[$j]);
+				$this->saveFile($patientID, $data[$j]);
 				$j++;
 			}
-
 		}
 
 		if($isCCDA)
 		{
-			$ccdaController = new CcdaController();
-			$ccdaData = $ccdaController->save($request, $ccdaFile, $patientID);
-			$ccdaData = json_decode($ccdaData, true);
+			$ccdaData = $this->saveCCDA($request, $ccdaAsJson, $patientID);
 		}
 
 		$data = array();
@@ -86,7 +69,7 @@ class PatientFilesController extends Controller
 		return json_encode($data);
 	}
 
-	public function save($patientID, $data)
+	public function saveFile($patientID, $data)
 	{
 		$networkID = session('network-id');
 		$file = $data['file'];

@@ -123,7 +123,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/savevitals', 'CcdaController@saveVitals');
 	Route::get('/download/ccda/{id}', 'CcdaController@getCCDAXml');
     Route::get('/showvitals/{id}', array('uses' => 'CcdaController@showVitals', 'as' => 'showvitals'));
-    Route::post('update/ccda', 'CcdaController@updatePatientDemographics');
+	Route::post('update/ccda', 'Patient\PatientController@updateDemographics');
     Route::get('show/ccda/{id}', 'CcdaController@show');
 
     Route::get('terms', 'SupportController@termsIndex');

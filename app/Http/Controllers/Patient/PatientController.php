@@ -418,6 +418,7 @@ class PatientController extends Controller
 		$path = 'patients?referraltype_id=' . $request->input('referraltype_id') . '&action=' . $request->input('action').'&patient_id='.$id;
 		return redirect($path);
 	}
+
 	public function destroy(Request $request)
 	{
 		if (!$request->input() || $request->input() === '' || sizeof($request->input()) < 1) {
@@ -541,5 +542,26 @@ class PatientController extends Controller
 			$careconsole->save();
 		}
 		return $patientID;
+	}
+
+	public function updateDemographics(Request $request)
+	{
+		$data = $request->all();
+		$patient_id = $data['patient_id'];
+		unset($data['patient_id']);
+		unset($data['_token']);
+		$patient = Patient::find($patient_id);
+		if ($patient) {
+			$patient->update($data);
+
+			$action = 'updated patient demographics';
+			$description = '';
+			$filename = basename(__FILE__);
+			$ip = $request->getClientIp();
+			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+			return $patient_id;
+		}
+		return 'false';
 	}
 }

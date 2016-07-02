@@ -66,21 +66,21 @@ class CCDAService
 		$data = json_decode($ccdaInJson, true);
 		$patient_data = Patient::find($patientID)->toArray();
 		if ($patient_data) {
-			$data['demographics']['name']['prefix']        = $patient_data['title'];
-			$data['demographics']['name']['given'][0]        = $patient_data['firstname'];
-			$data['demographics']['name']['family']        = $patient_data['lastname'];
-			$data['demographics']['phone']['work']            = $patient_data['workphone'];
-			$data['demographics']['phone']['home']            = $patient_data['homephone'];
+			$data['demographics']['name']['prefix']   		= $patient_data['title'];
+			$data['demographics']['name']['given'][0]       = $patient_data['firstname'];
+			$data['demographics']['name']['family']        	= $patient_data['lastname'];
+			$data['demographics']['phone']['work']          = $patient_data['workphone'];
+			$data['demographics']['phone']['home']          = $patient_data['homephone'];
 			$data['demographics']['phone']['mobile']        = $patient_data['cellphone'];
-			$data['demographics']['email']                    = $patient_data['email'];
-			$data['demographics']['address']['street'][0]    = $patient_data['addressline1'];
-			$data['demographics']['address']['street'][1]    = $patient_data['addressline2'];
+			$data['demographics']['email']                  = $patient_data['email'];
+			$data['demographics']['address']['street'][0]   = $patient_data['addressline1'];
+			$data['demographics']['address']['street'][1]   = $patient_data['addressline2'];
 			$data['demographics']['address']['city']        = $patient_data['city'];
-			$data['demographics']['address']['zip']        = $patient_data['zip'];
-			$data['demographics']['address']['country']    = $patient_data['country'];
+			$data['demographics']['address']['zip']         = $patient_data['zip'];
+			$data['demographics']['address']['country']    	= $patient_data['country'];
 			$data['demographics']['dob']                    = $patient_data['birthdate'];
-			$data['demographics']['gender']                = $patient_data['gender'];
-			$data['demographics']['language']                = $patient_data['preferredlanguage'];
+			$data['demographics']['gender']                	= $patient_data['gender'];
+			$data['demographics']['language']               = $patient_data['preferredlanguage'];
 			$data['document']['date'] = date('Y-m-d H:i:m');
 			return $data;
 		}
@@ -140,10 +140,12 @@ class CCDAService
 		return $this->generateJson($file);
 	}
 
-//	public function save($file, $request){
-//		$patientID = $request->upload_patient_id;
-//
-//
-//	}
+	public function store($json, $patientID)
+	{
+		return Ccda::create([
+			'ccdablob'=> $json,
+			'patient_id' =>$patientID
+		]);
+	}
 
 }
