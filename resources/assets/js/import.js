@@ -6,10 +6,6 @@ $(document).ready(function() {
         getLocation(practice_id);
 
     });
-    //    $(document).on('change', '.file-input input[type="file"]', function() {
-    //        if ($(this).val() != '')
-    //            saveCcdafile();
-    //    });
 
     $(document).on('change', '.xlsx_file-input input[type="file"]', function() {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -287,7 +283,7 @@ function saveCcdafile() {
     var myform = document.getElementById("import_ccda_form");
     var fd = new FormData(myform);
     $.ajax({
-        url: "import/ccda",
+        url: "/import/ccda",
         data: fd,
         cache: false,
         processData: false,
