@@ -64,7 +64,7 @@
             </span> @can('bulk-import')
             <button type="button" data-toggle="modal" data-target="#importModal" class="btn import-btn open_import">Import</button>
             @endcan
-            <input type="hidden" id="clear_image_path" value="{{URL::asset('images/close-active.png')}}">
+
 			<input type="hidden" id="triangle_up_image_path" value="{{URL::asset('images/triangle-up.png')}}">
 			<input type="hidden" id="triangle_down_image_path" value="{{URL::asset('images/triangle-down.png')}}">
         </div>

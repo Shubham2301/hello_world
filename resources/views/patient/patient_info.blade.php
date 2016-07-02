@@ -199,7 +199,7 @@
     </div>
 </div>
 
-
+<input type="hidden" id="clear_image_path" value="{{URL::asset('images/close-active.png')}}">
 <div id = "file_upload_view">
 
 	@include('patient.files_upload')
