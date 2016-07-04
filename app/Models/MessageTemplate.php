@@ -14,8 +14,8 @@ class MessageTemplate extends Model
 
     public static function getTemplate($type, $stage, $networkID){
     	$message = self::where('network_id', $networkID)
-    		->where('type' , config('constants.message_type.'.$type))
-			->where('stage' , config('constants.message_stage.'.$stage))
+    		->where('type' , config('patient_engagement.type.'.$type))
+			->where('stage' , config('patient_engagement.stage.'.$stage))
             ->first(['message']);
         
         if ($message){

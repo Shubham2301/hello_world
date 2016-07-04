@@ -15,6 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'myocuhub\Model' => 'myocuhub\Policies\ModelPolicy',
+        'myocuhub\Patient' => 'myocuhub\Policies\PatientPolicy',
     ];
 
     /**

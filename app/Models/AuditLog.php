@@ -29,4 +29,5 @@ class AuditLog extends Model
             ->orderBy('audit_logs.created_at', 'desc')
             ->get(['users.name as user_fname', 'users.lastname as user_lname', 'users.id as user_id', 'networks.name as network_name', 'networks.id as network_id', 'audit_logs.action', 'audit_logs.created_at', 'audit_logs.ip as ip']);
     }
+    
 }

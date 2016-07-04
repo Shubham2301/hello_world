@@ -19,8 +19,8 @@ class Kernel extends ConsoleKernel
         \myocuhub\Console\Commands\CleanTwoFactorAuth::class,
         \myocuhub\Console\Commands\PatientInvalidDates::class,
         \myocuhub\Console\Commands\LimitStageName::class,
+        \myocuhub\Console\Commands\PostAppointmentEngagement::class,
 		\myocuhub\Console\Commands\ClearethnicGroupCode::class,
-
     ];
 
     /**
@@ -37,6 +37,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('writeback')
                  ->withoutOverlapping()
                  ->daily();
+        $schedule->command('pee:post-appt')
+                 ->withoutOverlapping()
+                 ->dailyAt('18:00');
         // $schedule->command('two-factor-auth:clean')
         //          ->withoutOverlapping()
         //          ->daily();

@@ -29,6 +29,10 @@ return [
             'subject' => 'Appointment has been scheduled',
             'view' => 'emails.appt-confirmation-patient'
         ],
+        'post_appointment_patient' => [
+            'subject' => 'How was your Appointment',
+            'view' => 'emails.post-appointment-patient'
+        ],
     ]
     ,
     'language' => [
@@ -51,7 +55,6 @@ return [
             'tojson' => public_path() . '/js/tojson.js ',
             'toxml' => public_path() . '/js/toxml.js ',
             'stylesheet' => public_path() . '/lib/xslt/CDA.xsl',
-
         ],
     ],
     'fpc_mandatory_fields' => [
@@ -66,7 +69,6 @@ return [
     ],
     'provider_list_display_limit' => '5',
     'practice_location_display_limit' => '3',
-
    'btn_urls' =>[
       'from_schedule'=> [
          'back_btn' => 'back_to_select_patient_btn',
