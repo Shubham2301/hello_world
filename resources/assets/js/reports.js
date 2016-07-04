@@ -14,6 +14,7 @@ function resetFilter() {
         "appointment_status": "none",
         "disease_type": "none",
         "severity_scale": "none",
+        "archive_data":"none",
         "incomming_referrals": {
             "appointment_type": "none",
             "referred_by": {
@@ -139,6 +140,13 @@ function addFilter(name, value, meta) {
             $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">Referred To ' + meta + '</span></div><span class="filter_remove ">x</span></div>');
             $('#referred_to_meta').html(meta);
             break;
+        case 'archive_data':
+            if (filterOptions.archive_data != 'none') {
+                $('.filter[data-id="' + name + '"]').remove();
+            }
+            filterOptions.archive_data = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">Archived Patient: ' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            break;
     }
 }
 
@@ -190,6 +198,9 @@ function removeFilter(name) {
             filterOptions.referred_to.type = 'none';
             filterOptions.referred_to.name = 'none';
             $('#referred_to_meta').html('');
+            break;
+        case 'archive_data':
+            filterOptions.archive_data = 'none';
             break;
     }
 }
@@ -350,6 +361,7 @@ function getReport() {
                 renderAgeDemographics(data.age_demographics);
             }
             renderAppointmentStatusDemographics(data.appointment_status);
+            renderArchiveDataDemographics(data.archive_data);
         },
         error: function () {
             alert('Error Refreshing');
@@ -516,6 +528,23 @@ function renderAppointmentStatusDemographics(info) {
     $('#appointment_status').html(content);
 }
 
+function renderArchiveDataDemographics(info) {
+    var content = '';
+    var disable = '';
+    for (var key in info) {
+        if (info.hasOwnProperty(key)) {
+            if (info[key]['count'] === 0) {
+                disable = 'disable_drilldown';
+            } else {
+                disable = '';
+            }
+            content += '<div class="col-xs-12 remove-padding drilldown_item ' + disable + '" data-type="archive_data" data-id="' + key + '" data-meta="' + info[key]['name'] + '"><div class="col-xs-8"><p class="report_content_label">' + info[key]['name'] + '</p></div><div class="col-xs-4"><p class="report_content_value">' + info[key]['count'] + '</p></div></div>';
+        }
+    }
+
+    $('#archive_data').html(content);
+}
+
 function renderDiseaseType(data) {
 
     var content = '';
@@ -583,7 +612,14 @@ function drawAgeChart(dataArray) {
         pieSliceTextStyle: {
             color: 'white',
         },
-        legend: {position: 'bottom', alignment: 'center', textStyle: {color: '#4d4d4d', fontSize: 12}},
+        legend: {
+            position: 'bottom',
+            alignment: 'center',
+            textStyle: {
+                color: '#4d4d4d',
+                fontSize: 12
+            }
+        },
         chartArea: {
             width: '90%',
             left: '0',

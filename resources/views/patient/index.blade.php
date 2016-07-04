@@ -13,7 +13,12 @@
 <input type="hidden" id="from_admin" value="{{$data['admin']}}">
 <div class="content-section content-section-scheduling active" id="patients_section">
     <div class="patients_section active" id="select_patient">
-        {!! Form::open(array('url' => '/providers', 'method' => 'GET', 'id' => 'form_select_provider')) !!} {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!} {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!} {!! Form::hidden('patient_id', '', array('id' => 'form_patient_id')) !!} {!! Form::close() !!} @if(array_key_exists('referraltype_id', $data))
+        {!! Form::open(array('url' => '/providers', 'method' => 'GET', 'id' => 'form_select_provider')) !!} {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!} {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
+        {!! Form::hidden('patient_id', '', array('id' => 'form_patient_id')) !!}
+
+        {!! Form::hidden('selectedfiles', '', array('id' => 'selected_patient_files')) !!}
+
+        {!! Form::close() !!} @if(array_key_exists('referraltype_id', $data))
         <div class="row content-row-margin">
             <div class="col-xs-12 section-header">
                 <span class="arial_bold">Schedule an appointment</span>
@@ -39,4 +44,8 @@
     <button id="show_4pc_model" style="display:none" data-toggle="modal" data-target="#field_Modal_4PC">show</button>
 </div>
 
-@endsection @section('mobile_sidebar_content') @include('layouts.sidebar') @endsection
+
+@endsection
+@section('mobile_sidebar_content')
+@include('layouts.sidebar')
+@endsection

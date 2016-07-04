@@ -47,6 +47,13 @@ trait ValidateFPCRequestParams
 
     public function validateDate($date)
     {
+
+		if($date === '0000-00-00 00:00:00')
+		{
+			return false;
+		}
+
+
         $timeStamp = strtotime($date);
         if (!$timeStamp) {
             return false;

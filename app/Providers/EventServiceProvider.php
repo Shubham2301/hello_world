@@ -13,6 +13,12 @@ class EventServiceProvider extends ServiceProvider {
 	 */
 	protected $listen = [
 		'myocuhub\Events\MakeAuditEntry' => [],
+		'myocuhub\Events\PatientEngagementSuccess' => [
+			'myocuhub\Listeners\AuditListener',
+		],
+		'myocuhub\Events\PatientEngagementFailure' => [
+			'myocuhub\Listeners\AuditListener',
+		],
 		'myocuhub\Events\AppointmentScheduled' => [
 			'myocuhub\Listeners\RequestFPCAppointment',
 			'myocuhub\Listeners\SendAppointmentRequestEmail',
@@ -32,7 +38,5 @@ class EventServiceProvider extends ServiceProvider {
 	 */
 	public function boot(DispatcherContract $events) {
 		parent::boot($events);
-
-		//
 	}
 }
