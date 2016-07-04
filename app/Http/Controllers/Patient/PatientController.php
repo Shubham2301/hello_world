@@ -11,6 +11,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\Ccda;
 use myocuhub\Models\ImportHistory;
+use myocuhub\Models\PatientFile;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticePatient;
@@ -57,8 +58,8 @@ class PatientController extends Controller
         $language['Spanish'] = 'Spanish';
         $data = Patient::getColumnNames();
         $data['admin'] = true;
-        $data['back_btn'] = 'back_to_select_patient_btn';
-        $data['url'] = '/administration/patients/add';
+        $data['back_btn'] = config('constants.btn_urls.from_schedule.back_btn');
+        $data['url'] = config('constants.btn_urls.from_schedule.back_btn');
         $data['referred_by_provider'] = null;
         $data['referred_by_practice'] = null;
         $data['disease_type'] = null;
@@ -85,8 +86,8 @@ class PatientController extends Controller
         $data = array();
         $data = Patient::getColumnNames();
         $data['admin'] = true;
-        $data['back_btn'] = 'back_to_admin_patient_btn';
-        $data['url'] = '/administration/patients/add';
+        $data['back_btn'] = config('constants.btn_urls.from_admin.back_btn');
+        $data['url'] = config('constants.btn_urls.from_admin.save_url');
         $data['referraltype_id'] = -1;
         $data['referred_by_provider'] = null;
         $data['referred_by_practice'] = null;
@@ -210,7 +211,6 @@ class PatientController extends Controller
     public function show(Request $request)
     {
         $id = $request->input('id');
-        
         $patientData = [];
 
         $response = [
@@ -275,11 +275,14 @@ class PatientController extends Controller
 
         $ccda = Ccda::where('patient_id', $id)->orderBy('created_at', 'desc')->first();
         $patientData['ccda'] = true;
+
         if (!($ccda)) {
             $patientData['ccda_date'] = (new DateTime())->format('F j Y');
         } else {
             $patientData['ccda_date'] = (new DateTime($ccda->created_at))->format('F j Y');
         }
+
+        $patientData['files'] =  $patient->files;
 
         $response = [
             'result' => true,
@@ -412,6 +415,7 @@ class PatientController extends Controller
         $path = 'patients?referraltype_id=' . $request->input('referraltype_id') . '&action=' . $request->input('action').'&patient_id='.$id;
         return redirect($path);
     }
+
     public function destroy(Request $request)
     {
         if (!$request->input() || $request->input() === '' || sizeof($request->input()) < 1) {
@@ -535,5 +539,26 @@ class PatientController extends Controller
             $careconsole->save();
         }
         return $patientID;
+    }
+
+    public function updateDemographics(Request $request)
+    {
+        $data = $request->all();
+        $patient_id = $data['patient_id'];
+        unset($data['patient_id']);
+        unset($data['_token']);
+        $patient = Patient::find($patient_id);
+        if ($patient) {
+            $patient->update($data);
+
+            $action = 'updated patient demographics';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+            return $patient_id;
+        }
+        return 'false';
     }
 }

@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="compareCcda" role="dialog">
-    <div class="modal-dialog compare_model">
+	<div class="modal-dialog compare_model" style="background-color: transparent;">
 
         <!-- Modal content-->
         <div class="modal-content ">

@@ -367,6 +367,8 @@ function showPatientInfo(data) {
         $('.lastseen_content').css("cursor", "default");
     }
     $('.patient_section').show();
+	$('.show_in_provider_patient').show();
+	$('.show_in_patient').show();
     fillPatientData(data);
     $('.patient_table_content').removeClass('active');
 }
@@ -430,7 +432,7 @@ function getPatients(formData, page) {
                 if (patients.length > 0 && patients[0]['total'] > 0) {
                     // if (patients.length > 0) {
                     patients.forEach(function (patient) {
-                        content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3 search_name" style="display:inline-flex"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + patient.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name_text"><p style="margin-left:9px;">' + patient.lname + ', ' + patient.fname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p><div><a href="/providers?referraltype_id=6&action=schedule_appointment&patient_id=' + patient.id + '" data-toggle="tooltip" title="Schedule Patient" data-placement="bottom"><img class="action_dropdown_img" src="' + active_img + '" alt=""></a></div></p><p class="editPatient_from_row arial_bold" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepatient_from_row"><img src="' + delete_img + '" alt="" class="removepatient_img" data-toggle="tooltip" title="Delete Patient" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+                        content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3 search_name" style="display:inline-flex"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + patient.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name_text"><p style="margin-left:9px;">' + patient.lname + ', ' + patient.fname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p><div><a href="/providers?referraltype_id=6&action=schedule_appointment&patient_id=' + patient.id + '&patient_view=true" data-toggle="tooltip" title="Schedule Patient" data-placement="bottom"><img class="action_dropdown_img" src="' + active_img + '" alt=""></a></div></p><p class="editPatient_from_row arial_bold" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepatient_from_row"><img src="' + delete_img + '" alt="" class="removepatient_img" data-toggle="tooltip" title="Delete Patient" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     });
                     $('.patient_list').addClass('active');
                     if (showpage > 1)
@@ -501,37 +503,14 @@ function getOptionContent(type, value) {
 
 function selectProvider(id) {
 
+	var filesIDs = getSelectedFiles();
+
+	$('#selected_patient_files').val(filesIDs);
     $('#form_patient_id').val(id);
     $('#form_select_provider').submit();
 }
 
-function updatePatientData() {
-    var myform = document.getElementById("compare_ccda_form");
-    var fd = new FormData(myform);
-    $.ajax({
-        url: "update/ccda",
-        data: fd,
-        cache: false,
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function (dataofconfirm) {
-            if (dataofconfirm != 'false') {
-                $('.update_header').removeClass('active');
-                $('.compare_form').removeClass('active');
-                $('.success_message').text("You have successfully updated the data.");
-                $('.success_message').addClass('active');
-                $('.compare_ccda_button').removeClass('active');
-                $('.dismiss_button').text('OK');
-            }
 
-            var formData = {
-                'id': dataofconfirm
-            };
-            getPatientInfo(formData);
-        }
-    });
-}
 
 function removePatient(id) {
     var removeId = {};

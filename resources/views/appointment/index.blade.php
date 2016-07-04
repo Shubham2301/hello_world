@@ -31,6 +31,7 @@
     {!! Form::hidden('location_id', $data['location_id'], array('id' => 'form_location_id')) !!}
     {!! Form::hidden('location_code', $data['location_code'], array('id' => 'form_location_code')) !!}
     {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patient_id')) !!}
+	{!! Form::hidden('selectedfiles', $data['selectedfiles'], array('id' => 'selected_patient_files')) !!}
     {!! Form::close() !!}
     <div class="appointment_section active" id="confirm-appointment">
         <button type="button" class="btn back-btn" id="back">Back</button><h3 class="center-align arial_bold">Schedule an appointment</h3>
@@ -58,8 +59,11 @@
             </div>
         </div>
         <div class="appointment_message arial">
+			<input type="hidden" id="isses" value="{{$data['sesmail']}}">
 			@if($data['sesmail'])
-			<p><span><input type="checkbox" checked="checked" id="send_ccda_checkbox" ></span> Send patient C-CDA file to provider</p>
+			<p class="apt_msg"><span><input type="checkbox" checked="checked" id="send_ccda_checkbox" ></span> Send {{$data['count_files']}} patient files to provider</p>
+            @else
+			<p class="apt_msg"><span></span> No files will be sent because the provider does not have an SES email </p>
             @endif
         </div>
         <div class="appointment_confirm center-align arial">
@@ -67,7 +71,7 @@
         </div>
         <div id="apt_loader" style="display:none;">
 		<div id="schedule_apt_loader" class="hidden-xs"></div>
-			<p id="loadingText"><span style="padding-left:25px;">Please wait...</span><br> it may take some time</p>
+			<p id="loadingText"><span style="padding-left:25px;">Please wait...</span><br> It may take some time</p>
 		</div>
         <div class="appointment_confirmed center-align" style="display:none">
             <button class="confirmed" disabled>Confirmed</button>
