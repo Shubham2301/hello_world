@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         \myocuhub\Console\Commands\PatientInvalidDates::class,
         \myocuhub\Console\Commands\LimitStageName::class,
         \myocuhub\Console\Commands\PostAppointmentEngagement::class,
+		\myocuhub\Console\Commands\ClearethnicGroupCode::class,
     ];
 
     /**

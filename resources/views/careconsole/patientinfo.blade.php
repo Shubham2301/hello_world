@@ -32,8 +32,10 @@
 
         <div class="contact_notes">
 			<p class="action_note">Click on history status to see notes</p>
+			<span id="action_result_section">
 			<p class="arial text-normal" style = "font-style:normal;"><strong>Result</strong></p>
            	<p class="action_result"></p>
+			</span>
          </div>
         <div class="dropdown patient_info_action">
             <div id="dropdownMenuPatientInfo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" area-hidden="true" class="action_dropdown_patient_info dropdown-toggle">

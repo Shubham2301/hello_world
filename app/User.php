@@ -83,6 +83,7 @@ CanResetPasswordContract
             ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
             ->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
             ->where('usertype_id', 1)
+			->where('active', '1')
             ->where(function ($query) use ($filters) {
                 foreach ($filters as $filter) {
                     $query->where(function ($query) use ($filter) {
@@ -202,6 +203,7 @@ CanResetPasswordContract
         return self::whereNotNull('npi')
             ->whereNotNull('acc_key')
             ->where('usertype_id', 1)
+			->where('active', '1')
             ->get(['id', 'npi']);
     }
 
@@ -234,6 +236,7 @@ CanResetPasswordContract
         ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
         ->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
         ->where('usertype_id', 1)
+		->where('active', '1')
         ->select(DB::raw('*, ( 3959 * acos( cos( radians('.$lat.') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$lng.') ) + sin( radians('.$lat.') ) * sin( radians( latitude ) ) ) ) AS distance'))
         ->having('distance', '<=', $range)
         ->orderBy('distance', 'ASC');

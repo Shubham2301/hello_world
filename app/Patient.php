@@ -9,6 +9,7 @@ use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientPhone;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientSMS;
 use myocuhub\Models\PracticeUser;
 use myocuhub\Network;
+use myocuhub\Models\PatientFile;
 
 class Patient extends Model
 {
@@ -130,14 +131,10 @@ class Patient extends Model
                 ->where('practice_patient.practice_id', $practiceUser['practice_id']);
         }
 
-		if(!isset($sortInfo['order']))
-		{
-			$sortInfo['order']='SORT_ASC';
-			$sortInfo['field']='lastname';
-		}
-
-		else if(!$sortInfo['order'] )
-		 {
+        if (!isset($sortInfo['order'])) {
+            $sortInfo['order']='SORT_ASC';
+            $sortInfo['field']='lastname';
+        } elseif (!$sortInfo['order']) {
             $sortInfo['order']='SORT_ASC';
             $sortInfo['field']='lastname';
         }
@@ -233,5 +230,9 @@ class Patient extends Model
             $data['longitude'] = $patientLocation['results'][0]['geometry']['location']['lng'];
         }
         return $data;
+    }
+    public function files()
+    {
+        return $this->hasMany(PatientFile::class);
     }
 }

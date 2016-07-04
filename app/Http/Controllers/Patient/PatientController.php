@@ -11,6 +11,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\Ccda;
 use myocuhub\Models\ImportHistory;
+use myocuhub\Models\PatientFile;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticePatient;
@@ -57,8 +58,8 @@ class PatientController extends Controller
         $language['Spanish'] = 'Spanish';
         $data = Patient::getColumnNames();
         $data['admin'] = true;
-        $data['back_btn'] = 'back_to_select_patient_btn';
-        $data['url'] = '/administration/patients/add';
+        $data['back_btn'] = config('constants.btn_urls.from_schedule.back_btn');
+        $data['url'] = config('constants.btn_urls.from_schedule.back_btn');
         $data['referred_by_provider'] = null;
         $data['referred_by_practice'] = null;
         $data['disease_type'] = null;
@@ -85,8 +86,8 @@ class PatientController extends Controller
         $data = array();
         $data = Patient::getColumnNames();
         $data['admin'] = true;
-        $data['back_btn'] = 'back_to_admin_patient_btn';
-        $data['url'] = '/administration/patients/add';
+        $data['back_btn'] = config('constants.btn_urls.from_admin.back_btn');
+        $data['url'] = config('constants.btn_urls.from_admin.save_url');
         $data['referraltype_id'] = -1;
         $data['referred_by_provider'] = null;
         $data['referred_by_practice'] = null;
@@ -210,7 +211,6 @@ class PatientController extends Controller
     public function show(Request $request)
     {
         $id = $request->input('id');
-        
         $patientData = [];
 
         $response = [
@@ -265,16 +265,24 @@ class PatientController extends Controller
         $patientData['cellphone'] = $patient->cellphone ?: '';
         $patientData['workphone'] = $patient->workphone ?: '';
         $patientData['homephone'] = $patient->homephone ?: '';
-        $birthdate = new DateTime($patient->birthdate);
-        $patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
+
+        if ($patient->birthdate === '0000-00-00 00:00:00') {
+            $patientData['birthdate'] = '-';
+        } else {
+            $birthdate = new DateTime($patient->birthdate);
+            $patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
+        }
 
         $ccda = Ccda::where('patient_id', $id)->orderBy('created_at', 'desc')->first();
         $patientData['ccda'] = true;
+
         if (!($ccda)) {
             $patientData['ccda_date'] = (new DateTime())->format('F j Y');
         } else {
             $patientData['ccda_date'] = (new DateTime($ccda->created_at))->format('F j Y');
         }
+
+        $patientData['files'] =  $patient->files;
 
         $response = [
             'result' => true,
@@ -387,8 +395,7 @@ class PatientController extends Controller
             if ($insuranceCarrier) {
                 $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
                 $insuranceCarrier->save();
-            }
-            else {
+            } else {
                 $insuranceCarrier = new PatientInsurance;
                 $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
                 $insuranceCarrier->patient_id = $id;
@@ -408,6 +415,7 @@ class PatientController extends Controller
         $path = 'patients?referraltype_id=' . $request->input('referraltype_id') . '&action=' . $request->input('action').'&patient_id='.$id;
         return redirect($path);
     }
+
     public function destroy(Request $request)
     {
         if (!$request->input() || $request->input() === '' || sizeof($request->input()) < 1) {
@@ -440,8 +448,12 @@ class PatientController extends Controller
             $data[$i]['addressline1'] = ($patient->addressline1 != null && $patient->addressline1 != '-') ? $patient->addressline1 : '';
             $data[$i]['addressline2'] = ($patient->addressline2 != null && $patient->addressline2 != '-') ? $patient->addressline2 : '';
             $data[$i]['city'] = $patient->city;
-            $birthdate = new DateTime($patient->birthdate);
-            $data[$i]['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
+            if ($patient->birthdate === '0000-00-00 00:00:00') {
+                $data[$i]['birthdate'] = '-';
+            } else {
+                $birthdate = new DateTime($patient->birthdate);
+                $data[$i]['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
+            }
             $i++;
         }
         $data[0]['total'] = $patients->total();
@@ -529,4 +541,24 @@ class PatientController extends Controller
         return $patientID;
     }
 
+    public function updateDemographics(Request $request)
+    {
+        $data = $request->all();
+        $patient_id = $data['patient_id'];
+        unset($data['patient_id']);
+        unset($data['_token']);
+        $patient = Patient::find($patient_id);
+        if ($patient) {
+            $patient->update($data);
+
+            $action = 'updated patient demographics';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+            return $patient_id;
+        }
+        return 'false';
+    }
 }

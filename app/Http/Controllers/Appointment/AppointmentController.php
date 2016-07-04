@@ -35,10 +35,7 @@ class AppointmentController extends Controller
 
     public function schedule(Request $request)
     {
-
-
-
-        $apptStatus = [
+	   $apptStatus = [
             'appointment_saved' => false,
             'provider_email' => false,
             'patient_email' => false,
@@ -66,7 +63,6 @@ class AppointmentController extends Controller
             'appointmenttype' => $appointmentType,
             'start_datetime' => $appointmentDateTime->format('Y-m-d H:i:s')
         ]);
-
         if (!$appointment) {
             return $apptStatus;
         } else {
@@ -120,7 +116,7 @@ class AppointmentController extends Controller
 
             $referralHistory->save();
         }
-        //dd($appointmentScheduled);
+
         $apptStatus['provider_email'] = $appointmentScheduled->getProviderEmailStatus();
         $apptStatus['patient_email'] = $appointmentScheduled->getPatientEmailStatus();
         $apptStatus['fpc_request'] = $appointmentScheduled->getFPCRequestStatus();
@@ -198,6 +194,12 @@ class AppointmentController extends Controller
         $patient = Patient::find($patient_id);
         $data['patient_name'] = $patient->firstname . ' ' . $patient->lastname;
         $data['schedule-patient'] = true;
+		$data['selectedfiles'] = $request->selectedfiles;
+
+		$filearray = explode( ',', $request->selectedfiles);
+		$filearray = array_unique($filearray);
+		$data['count_files'] = sizeOf($filearray);
+
 
         $patientInsurance = PatientInsurance::where('patient_id', $patient_id)->first();
         if (sizeof($patientInsurance) == 0) {

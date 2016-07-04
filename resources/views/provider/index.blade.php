@@ -35,6 +35,7 @@
     {!! Form::hidden('location_id', '', array('id' => 'form_location_id')) !!}
     {!! Form::hidden('location_code', '', array('id' => 'form_location_code')) !!}
     {!! Form::hidden('provider_list_count_limit', config('constants.provider_list_display_limit'), array('id' => 'provider_list_count_limit')) !!}
+	{!! Form::hidden('selectedfiles', $data['selectedfiles'], array('id' => 'selected_patient_files')) !!}
     @include('appointment.insurance-details')
     {!! Form::close() !!}
     <div class="practice_section active" id="select_practice">
@@ -62,6 +63,7 @@
 @endif
 @include('provider.search')
 @include('provider.preferences')
+@include('patient.compare_ccda')
 </div>
 <div class="practice_section active" id="practice_listing">
 @include('provider.listing')

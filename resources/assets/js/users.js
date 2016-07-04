@@ -295,7 +295,8 @@ function changePicture() {
 }
 
 function checkForm() {
-    $('.user_email_field').val($('.user_email_field').val().trim());
+    $('.user_email_field#email').val($('.user_email_field#email').val().trim());
+    $('.user_email_field#ses_email').val($('.user_email_field#ses_email').val().trim());
     var fields = $('.panel-body').find('.add_user_input');
     var patt = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
     fields.each(function (field) {

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call('RolesSeeder');
         $this->call('PermissionsSeeder');
 
+
         Model::reguard();
     }
 }

@@ -32,6 +32,7 @@ class ProviderController extends Controller
 
     public function index(Request $request)
     {
+
         $data = array();
         $data['admin'] = false;
         $data['schedule-patient'] = true;
@@ -66,6 +67,7 @@ class ProviderController extends Controller
             $insurance['insurance_group_no'] = '';
         }
 		$data['previous_selected'] = $request->has('selected_previous_provider');
+		$data['selectedfiles'] = $request->selectedfiles;
 
         return view('provider.index')->with('data', $data)->with('insurance', $insurance);
     }
@@ -184,14 +186,38 @@ class ProviderController extends Controller
 
         $apptTypes = WebScheduling4PC::getApptTypes($providerInfo);
 
+
         if (!isset($apptTypes->GetApptTypesResult->ApptType)) {
             $action = 'No data received for Provider = ' . $providerKey . ' Location = ' . $locationKey;
             $description = '';
             $filename = basename(__FILE__);
             $ip = $request->getClientIp();
             Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+			return json_encode($apptTypes);
         }
-        return json_encode($apptTypes);
+
+		$aptAsJson=  json_encode($apptTypes);
+		$aptAsArray = json_decode($aptAsJson, true);
+
+		if(!array_key_exists('ApptType', $aptAsArray['GetApptTypesResult']))
+		{
+			return $aptAsJson;
+		}
+
+		$checkaptFormat = array_key_exists(0, $aptAsArray['GetApptTypesResult']['ApptType']);
+
+		if(!$checkaptFormat)
+		{
+			$data['ApptTypeName'] =  $aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeName'];
+			$data['ApptTypeKey'] =  $aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeKey'];
+			unset($aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeKey']);
+			unset($aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeName']);
+			$aptAsArray['GetApptTypesResult']['ApptType'][0] = $data;
+			$aptAsJson = json_encode($aptAsArray);
+
+		}
+
+		return $aptAsJson;
     }
 
     public function getInsuranceList(Request $request)
