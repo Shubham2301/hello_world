@@ -20,7 +20,9 @@ class PostAppointmentPatientMail extends PatientEngagement implements ShouldQueu
 
     public function __construct(Appointment $appt)
     {
-        parent::__construct($appt);
+        $this->setAppt($appt);
+        $this->setPatient(Patient::find($this->appt->patient_id));
+        $this->setStage('post_appointment');
         $this->setType('mail');
     }
 

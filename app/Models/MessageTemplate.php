@@ -17,11 +17,16 @@ class MessageTemplate extends Model
     		->where('type' , config('patient_engagement.type.'.$type))
 			->where('stage' , config('patient_engagement.stage.'.$stage))
             ->first(['message']);
-        
         if ($message){
         	return $message->message;
         } 
-
         return self::defaultTemplate();
+    }
+
+    public static prepareMessage($attr, $template){
+        foreach($attr as $key => $value){
+            $template = str_replace('{'.strtoupper($key).'}', $value, $template);
+        }
+        return $template;
     }
 }

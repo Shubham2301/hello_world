@@ -2,10 +2,12 @@
 
 namespace myocuhub\Jobs\PatientEngagement;
 
-use myocuhub\Jobs\Job;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use myocuhub\Jobs\Job;
+use myocuhub\Models\Appointment;
+use myocuhub\Patient;
 
 class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQueue
 {
@@ -16,9 +18,12 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Patient $patient, Appointment $appt)
     {
-        //
+        $this->setPatient($patient);
+        $this->setAppt($appt);
+        $this->setStage('confirm_appointment');
+        $this->setType('mail');
     }
 
     /**
