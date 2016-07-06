@@ -33,7 +33,9 @@ class Patient extends Model
     'insurancecarrier',
     'country',
     'preferredlanguage',
-    'state'
+    'state',
+    'special_request',
+    'pcp'
     ];
 
     public function getPhone()

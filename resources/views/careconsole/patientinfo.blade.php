@@ -17,6 +17,10 @@
         <p>
             <span class="special_request arial"></span>
         </p>
+        <p class="info_header arial_bold">Primary Care Physician</p>
+        <p>
+            <span class="pcp arial"></span>
+        </p>
     </div>
     <div class="patient_appt_info ">
         <p class="info_header arial_bold">Appointment Information</p>

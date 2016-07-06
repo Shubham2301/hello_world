@@ -257,6 +257,7 @@ class CareConsoleController extends Controller {
 		}
 		
 		$data['special_request'] = ($patient->special_request != null && $patient->special_request != '') ? $patient->special_request : '-';
+		$data['pcp'] = ($patient->pcp != null && $patient->pcp != '') ? $patient->pcp : '-';
 		$data['scheduled_to'] = ($provider) ? $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname : '-';
 		$data['appointment_date'] = ($console->appointment_id) ? $this->CareConsoleService->getPatientFieldValue($console, 'appointment-date') : '-';
 		$data['contacts_attempt'] = $this->ActionService->getContactActions($consoleID);
