@@ -51,16 +51,16 @@ class PatientFilesController extends Controller
             }
         }
 
-        if ($isCCDA) {
-            $ccdaData = $this->saveCCDA($request, $ccdaAsJson, $patientID);
-        }
-
         $data = array();
         $data['count'] = $j;
         $data['id'] = $patientID;
         $data['ccda'] = $isCCDA;
-        $data['ccdaData'] = $ccdaData;
 
+        if ($isCCDA) {
+            $ccdaData = $this->saveCCDA($request, $ccdaAsJson, $patientID);
+            $data['ccdaData'] = $ccdaData;
+        }
+        
         return json_encode($data);
     }
 
