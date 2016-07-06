@@ -2,6 +2,7 @@
 
 namespace myocuhub\Jobs\PatientEngagement;
 
+use myocuhub\Events\PatientEngagementSuccess;
 use myocuhub\Jobs\Job;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\MessageTemplate;
@@ -17,6 +18,39 @@ class PatientEngagement extends Job{
     public function __construct()
     {
         
+    }
+
+    public function sendSMS($phone, $message)
+    {
+        try {
+            $message = Sms::send($phone, $message);
+            $engaged = new PatientEngagementSuccess();
+            $engaged->setAction('Ocuhub Scheduler sent Post Appointment SMS to : ' . $this->getPatient()->name . ' at '. $phone);
+            event(new PatientEngagementSuccess([
+                'action' =>  . $this->getPatient()->name . ' at '. $phone,
+                ]));
+        } catch (Exception $e) {
+            Log::error($e);
+        }
+    }
+
+    public function sendEmail($attr)
+    {
+        try {
+            $message = Sms::send($phone, $message);
+            $engaged = new PatientEngagementSuccess();
+            $engaged->setAction('Ocuhub Scheduler sent Post Appointment SMS to : ' . $this->getPatient()->name . ' at '. $phone);
+            event(new PatientEngagementSuccess([
+                'action' =>  . $this->getPatient()->name . ' at '. $phone,
+                ]));
+        } catch (Exception $e) {
+            Log::error($e);
+        }
+    }
+
+    public function auditMessage()
+    {
+        return 'Ocuhub Scheduler sent Post Appointment SMS to : ';
     }
 
     public function getContent(){

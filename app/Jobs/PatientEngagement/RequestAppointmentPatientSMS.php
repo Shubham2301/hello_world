@@ -24,7 +24,10 @@ class RequestAppointmentPatientSMS extends Job implements ShouldQueue
 
     public function handle()
     {
-    
+        $attr['phone'] = $this->patient->getPhone();
+        $attr['name'] = $this->patient->firstname.' '.$this->patient->lastname;
+        $attr['message'] = $this->message
+        $this->sendRequest($attr);
     }
 
     public function sendRequest($attr){

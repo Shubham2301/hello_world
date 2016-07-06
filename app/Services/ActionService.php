@@ -53,21 +53,15 @@ class ActionService
         switch ($actionName) {
             case 'request-patient-email':
                 $console = Careconsole::find($consoleID);
-                $patientID = $console->patient_id;
-                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['email'], $message);
-                event($requestPatientAppointment);
+                $patient = Patient::find($console->patient_id);
+                dispatch((new RequestAppointmentPatientMail($patient, $message))->onQueue('mail'));
                 break;
             case 'request-patient-phone':
-                $console = Careconsole::find($consoleID);
-                $patientID = $console->patient_id;
-                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['phone'], $message);
-                event($requestPatientAppointment);
                 break;
             case 'request-patient-sms':
                 $console = Careconsole::find($consoleID);
-                $patientID = $console->patient_id;
-                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['sms'], $message);
-                event($requestPatientAppointment);
+                $patientID = Patient::find($console->patient_id);
+                dispatch((new RequestAppointmentPatientSMS($patient, $message))->onQueue('sms'));
                 break;
             case 'contact-attempted-by-phone':
             case 'contact-attempted-by-email':
