@@ -71,12 +71,14 @@ class CareConsoleController extends Controller {
 			$kpis = CareconsoleStage::find($stage->stage_id)->kpi;
 			$j = 0;
 			foreach ($kpis as $kpi) {
+                $count = $this->KPIService->getCount($kpi->name, $networkID, $stage->stage_id);
 				$overview['stages'][$i]['kpis'][$j]['id'] = $kpi->id;
 				$overview['stages'][$i]['kpis'][$j]['name'] = $kpi->name;
 				$overview['stages'][$i]['kpis'][$j]['display_name'] = $kpi->display_name;
 				$overview['stages'][$i]['kpis'][$j]['color_indicator'] = $kpi->color_indicator;
 				$overview['stages'][$i]['kpis'][$j]['description'] = $kpi->description;
-				$overview['stages'][$i]['kpis'][$j]['count'] = $this->KPIService->getCount($kpi->name, $networkID, $stage->stage_id);
+				$overview['stages'][$i]['kpis'][$j]['count'] = $count['precise_count'];
+				$overview['stages'][$i]['kpis'][$j]['abbreviated_count'] = $count['abbreviated_count'];
 				$j++;
 			}
 			$overview['stages'][$i]['kpi_count'] = $j;
