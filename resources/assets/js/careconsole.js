@@ -61,6 +61,7 @@ $(document).ready(function() {
         setSidebarButtonActive();
     });
     $(document).on('click', '.console_buckets', function() {
+        $('.control_section').html('');
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             $('.c3_overview_link').removeClass('active');
