@@ -80,7 +80,9 @@ class BulkImportController extends Controller
             'last_name',
             'birthdate',
             'ssn_last_digits',
-            'phone_number',
+            'cellphone',
+            'homephone',
+            'workphone',
             'email',
             'address_1',
             'address_2',
@@ -129,7 +131,9 @@ class BulkImportController extends Controller
                         }
 						$patients['middlename'] = isset($data['middle_name']) ? $data['middle_name'] : '';
 
-                        $patients['cellphone'] = isset($data['phone_number']) ? $data['phone_number'] : '';
+                        $patients['cellphone'] = isset($data['cellphone']) ? $data['cellphone'] : '';
+                        $patients['homephone'] = isset($data['homephone']) ? $data['homephone'] : '';
+                        $patients['workphone'] = isset($data['workphone']) ? $data['workphone'] : '';
                         $patients['email'] = filter_var($data['email'], FILTER_VALIDATE_EMAIL) ? $data['email'] : '';
                         $patients['addressline1'] = isset($data['address_1']) ? $data['address_1'] : '';
                         $patients['addressline2'] = isset($data['address_2']) ? $data['address_2'] : '';
