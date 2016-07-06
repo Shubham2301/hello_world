@@ -93,6 +93,7 @@ class BulkImportController extends Controller
             'severity',
             'insurance_type',
             'language',
+            'special_request',
         ];
 
         if ($request->hasFile('patient_xlsx')) {
@@ -135,6 +136,7 @@ class BulkImportController extends Controller
                         $patients['city'] = isset($data['city']) ? $data['city'] : '';
                         $patients['zip'] = isset($data['zip']) ? $data['zip'] : '';
                         $patients['gender'] = isset($data['gender']) ? $data['gender'] : '';
+                        $patients['special_request'] = isset($data['special_request']) ? $data['special_request'] : '';
 
                         $referralHistory = null;
 
