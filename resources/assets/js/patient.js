@@ -225,7 +225,7 @@ $(document).ready(function () {
         }
     });
     $(document).keypress(function (e) {
-        if (e.which == 13) {
+        if (e.which == 13 && !$('.patient_info').hasClass('active')) {
             $("#search_patient_button").trigger("click");
         }
     });

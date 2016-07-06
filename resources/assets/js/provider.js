@@ -253,7 +253,7 @@ $(document).ready(function() {
     });
 
     $(document).keypress(function(e) {
-        if (e.which == 13) {
+        if (e.which == 13 && !$('.patient_info').hasClass('active') && !$('.practice_info').hasClass('active')) {
             $("#search_practice_button").trigger("click");
         }
     });
