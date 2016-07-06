@@ -912,6 +912,8 @@ function setPatientRecords(consoleID) {
             }
             $('.patient_records_info').find('.patient_name').text(data.name);
             $('.patient_records_info').find('.patient_phone').text(data.phone);
+            $('.patient_records_info').find('.special_request').text(data.special_request);
+            $('.patient_records_info').find('.pcp').text(data.pcp);
             $('.patient_records_info').find('.scheduled_to').text(data.scheduled_to);
             $('.patient_records_info').find('.appointment_date').text(data.appointment_date);
             var content = '';

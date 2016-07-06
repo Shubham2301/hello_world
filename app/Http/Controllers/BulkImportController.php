@@ -150,6 +150,7 @@ class BulkImportController extends Controller
                         $patients['zip'] = isset($data['zip']) ? $data['zip'] : '';
                         $patients['gender'] = isset($data['gender']) ? $data['gender'] : '';
                         $patients['special_request'] = isset($data['special_request']) ? $data['special_request'] : '';
+                        $patients['pcp'] = isset($data['primary_care_physician']) ? $data['primary_care_physician'] : '';
 
                         $referralHistory = null;
 
@@ -169,7 +170,7 @@ class BulkImportController extends Controller
                             $careconsole->import_id = $importHistory->id;
                             $careconsole->patient_id = $patient->id;
                             $careconsole->stage_id = 1;
-                            $careconsole->priority = (isset($data['priority']) && array_key_exists('priority', $data))? $data['priority'] : null;
+                            $careconsole->priority = (isset($data['priority']) && $data['priority'] == '1') ? 1 : null;
 
                             if ($referralHistory != null) {
                                 $careconsole->referral_id = $referralHistory->id;
@@ -187,8 +188,8 @@ class BulkImportController extends Controller
 
                             $engagementPreference = EngagementPreference::create([
                                     'patient_id' => $patient->id,
-                                    'type' => config('patient_engagement.type.' strtolower($data['preferred_method_of_contact'])),
-                                    'language' => config('patient_engagement.language.' strtolower($data['language'])),
+                                    'type' => config('patient_engagement.type.' . strtolower($data['preferred_method_of_contact'])),
+                                    'language' => config('patient_engagement.language.' . strtolower($data['language'])),
                                 ]);
 
                             $date = new \DateTime();
