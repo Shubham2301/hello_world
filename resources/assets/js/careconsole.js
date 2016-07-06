@@ -31,6 +31,7 @@ $(document).ready(function() {
         var stageID = $(this).parent().attr('data-stageid');
         var stageName = $('.drilldown>.section-header').html();
         var kpi_indicator = $(this).attr('data-indicator');
+
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             showcontrolls = true;
@@ -42,13 +43,14 @@ $(document).ready(function() {
             $(this).addClass('active');
             showcontrolls = false;
             currentPage = 1;
-            if (kpi_id) {
+			if (kpi_name) {
                 $('#current_stage').val(stageID);
                 $('#current_sort_field').val();
                 $('#current_sort_order').val();
                 if ($(this).hasClass('low')) {
-                    $('#current_kpi').val('0');
-                    setPandingDayslimit(kpi_id, stageID);
+					$('#current_kpi').val(0);
+					$('.subsection-header').removeClass('active');
+					setPendingDayslimit(kpi_name, stageID);
                     getPatientData();
                 } else {
                     showKPIData(stageID, kpi_id, stageName, kpi_name, kpi_indicator);
@@ -910,6 +912,8 @@ function setPatientRecords(consoleID) {
             }
             $('.patient_records_info').find('.patient_name').text(data.name);
             $('.patient_records_info').find('.patient_phone').text(data.phone);
+            $('.patient_records_info').find('.special_request').text(data.special_request);
+            $('.patient_records_info').find('.pcp').text(data.pcp);
             $('.patient_records_info').find('.scheduled_to').text(data.scheduled_to);
             $('.patient_records_info').find('.appointment_date').text(data.appointment_date);
             var content = '';
@@ -961,7 +965,7 @@ function setPatientRecords(consoleID) {
     });
 }
 
-function setPandingDayslimit(kpi_name, stageID) {
+function setPendingDayslimit(kpi_name, stageID) {
 
     switch (kpi_name) {
         case 'Low':

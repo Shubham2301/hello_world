@@ -1,20 +1,21 @@
 <div class="col-xs-12">
 	<div class="col-sm-4 col-xs-6 center-align">
-	<span class="patient_section" style="display:none">
+	<span class="patient_section" style="display:none;">
 		<img src="{{asset('images/patient.png')}}" alt="">
+		<span class="show_in_patient" style="display:none;">
 		<br> @can('edit-patient')
 		<p class="edit_patient_button">Edit Patient</p>
 		@endcan
 		<p class="button_type_1" id="change_patient_button">Change Patient</p>
 		<br>
+		</span>
+		<span class="show_in_provider_patient" style="display:none;">
 		{!! Form::open(array('url' => 'import/ccda', 'method' => 'POST', 'files'=>true,'id'=>'import_ccda_form')) !!} {!! Form::hidden('patient_id', '', array('id' => 'ccda_patient_id')) !!}
-
 		<div class="row input_row">
-			<div class="col-md-3 form-group">
+			<div class="col-md-2 form-group">
 			</div>
-			<div class="col-md-7 ">
-				<span class="file-input">Upload Patient File{!!Form::file('patient_ccda')!!}
-				</span>
+			<div class="col-md-8 ">
+				<span class="upload_file_view_btn">Upload Patient File</span>
 				<span class="filename"></span>
 
 			</div>
@@ -22,12 +23,15 @@
 		</div>
 
 		{!! Form::close() !!}
+		</span>
 
 		<p class="button_type_1" style="display:none;" id="compare_ccda_button" data-toggle="modal" data-target="#compareCcda">update CCDA</p>
 	</span>
+<!--
 	<span class="provider_section" style="display:none">
 		<img src="{{asset('images/patient.png')}}" alt=""><br>
 	</span>
+-->
 	    <span class="patient_table_mobile show_mobile">
             <span class="patient_table_mobile_section">
                <span class="patient_table_header">
@@ -193,5 +197,11 @@
         </div>
 
     </div>
+</div>
+
+<input type="hidden" id="clear_image_path" value="{{URL::asset('images/close-active.png')}}">
+<div id = "file_upload_view">
+
+	@include('patient.files_upload')
 </div>
 

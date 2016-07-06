@@ -28,7 +28,7 @@
                     <button type="button" class="btn save_fpcdata active">Save</button>
                     <button type="button" class="btn btn-default dismiss_button cancel_fpcdata" data-dismiss="modal" style="background-color:#d2d3d5">Cancel</button>
                 </div>
-            </div>
+               </div>
         </div>
 
     </div>

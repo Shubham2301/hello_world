@@ -9,7 +9,10 @@ class Ccda extends Model
 
     protected $table = 'ccda';
 
-
+	protected $fillable = [
+		'ccdablob',
+		'patient_id'
+	];
 
 
 }

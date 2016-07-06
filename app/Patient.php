@@ -4,7 +4,12 @@ namespace myocuhub;
 
 use Auth;
 use Illuminate\Database\Eloquent\Model;
+use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientMail;
+use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientPhone;
+use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientSMS;
 use myocuhub\Models\PracticeUser;
+use myocuhub\Network;
+use myocuhub\Models\PatientFile;
 
 class Patient extends Model
 {
@@ -28,7 +33,9 @@ class Patient extends Model
     'insurancecarrier',
     'country',
     'preferredlanguage',
-    'state'
+    'state',
+    'special_request',
+    'pcp'
     ];
 
     public function getPhone()
@@ -44,6 +51,10 @@ class Patient extends Model
         }
 
         return $phone;
+    }
+
+    public function getName(){
+        return $this->lastname . ', ' . $this->firstname;
     }
 
     public static function getPatients($filters, $sortInfo = [])
@@ -122,14 +133,10 @@ class Patient extends Model
                 ->where('practice_patient.practice_id', $practiceUser['practice_id']);
         }
 
-		if(!isset($sortInfo['order']))
-		{
-			$sortInfo['order']='SORT_ASC';
-			$sortInfo['field']='lastname';
-		}
-
-		else if(!$sortInfo['order'] )
-		 {
+        if (!isset($sortInfo['order'])) {
+            $sortInfo['order']='SORT_ASC';
+            $sortInfo['field']='lastname';
+        } elseif (!$sortInfo['order']) {
             $sortInfo['order']='SORT_ASC';
             $sortInfo['field']='lastname';
         }
@@ -156,6 +163,7 @@ class Patient extends Model
             })
             ->get(['*', 'patients.id']);
     }
+
     public static function getPreviousProvider($patientID)
     {
         return self::where('patients.id', $patientID)
@@ -185,6 +193,29 @@ class Patient extends Model
             ->get();
     }
 
+    public function engagePatient($appt){
+        switch ($appt['patient_preference']) {
+            case config('patient_engagement.type.sms'):
+                dispatch((new PostAppointmentPatientSMS($appt))->onQueue('sms'));
+                break;
+            case config('patient_engagement.type.phone'):
+                dispatch((new PostAppointmentPatientPhone($appt))->onQueue('phone'));
+                break;
+            case config('patient_engagement.type.email'):
+            default:
+                dispatch((new PostAppointmentPatientMail($appt))->onQueue('email'));
+                break;
+        }
+    }
+
+    public function network(){
+        $network = $this->where('patients.id', $this->id)
+                    ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
+                    ->leftjoin('import_history', 'careconsole.import_id' , '=' , 'import_history.id')
+                    ->first(['import_history.network_id']);
+        return Network::find($network['network_id']);
+    }
+    
     public function getLocation()
     {
         $address = urlencode($this->addressline1.' '.$this->addressline2.' '.$this->city.' '.$this->state.' '.$this->zip.' '.$this->country);
@@ -201,5 +232,9 @@ class Patient extends Model
             $data['longitude'] = $patientLocation['results'][0]['geometry']['location']['lng'];
         }
         return $data;
+    }
+    public function files()
+    {
+        return $this->hasMany(PatientFile::class);
     }
 }

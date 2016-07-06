@@ -28,4 +28,17 @@ class Appointment extends Model {
 		$this->fpc_id = $apptID;
 		$this->save();
 	}
+
+    public static function pastAppointmentsForEngagement(){
+        $format = 'Y-m-d H:i:s';
+        return self::where('appointments.active', '1')
+            ->where('appointments.start_datetime', '>' , date($format, strtotime('yesterday 18:00')))
+            ->where('appointments.start_datetime', '<' , date($format, strtotime('today 18:00')))
+            ->leftjoin('engagement_preferences', 'appointments.patient_id', '=', 'engagement_preferences.patient_id')
+            ->get([
+                    'appointments.id as id',
+                    'appointments.patient_id as patient_id',
+                    'engagement_preferences.type as patient_preference',
+                ]);
+    }
 }
