@@ -777,7 +777,7 @@ function refreshOverview() {
             stages.forEach(function(stage) {
                 var kpis = stage.kpis;
                 kpis.forEach(function(kpi) {
-                    $('.info_section_number.' + kpi.name).html(kpi.count);
+                    $('.info_section_number.' + kpi.name).html(kpi.abbreviated_count);
                 });
             });
         },

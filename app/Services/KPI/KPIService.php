@@ -19,44 +19,46 @@ class KPIService {
 	 * @return mixed
 	 */
 	public function getCount($kpiName, $networkID, $stageID) {
+        $count = array();
 		switch ($kpiName) {
 			case 'contact-attempted':
-				$count = Careconsole::getContactAttemptedCount($networkID, $stageID);
+				$count['precise_count'] = Careconsole::getContactAttemptedCount($networkID, $stageID);
 				break;
 			case 'contact-pending':
-				$count = Careconsole::getContactPendingCount($networkID, $stageID);
+				$count['precise_count'] = Careconsole::getContactPendingCount($networkID, $stageID);
 				break;
 			case 'appointment-scheduled':
-				$count = Careconsole::getAppointmentScheduledCount($networkID, $stageID);
+				$count['precise_count'] = Careconsole::getAppointmentScheduledCount($networkID, $stageID);
 				break;
 			case 'appointment-tomorrow':
-				$count = Careconsole::getAppointmentTomorrowCount($networkID, $stageID);
+				$count['precise_count'] = Careconsole::getAppointmentTomorrowCount($networkID, $stageID);
 				break;
 			case 'past-appointment':
-				$count = Careconsole::getPastAppointmentCount($networkID, $stageID);
+				$count['precise_count'] = Careconsole::getPastAppointmentCount($networkID, $stageID);
 				break;
 			case 'waiting-for-report':
-				$count = Careconsole::getStageWaitingCount($networkID, $stageID, $kpiName);
+				$count['precise_count'] = Careconsole::getStageWaitingCount($networkID, $stageID, $kpiName);
 				break;
 			case 'reports-overdue':
-				$count = Careconsole::getStageOverdueCount($networkID, $stageID, $kpiName);
+				$count['precise_count'] = Careconsole::getStageOverdueCount($networkID, $stageID, $kpiName);
 				break;
 			case 'pending-information':
 			case 'cancelled':
 			case 'no-show':
-				$count = Careconsole::getAppointmentStatusCount($networkID, $stageID, $kpiName);
+				$count['precise_count'] = Careconsole::getAppointmentStatusCount($networkID, $stageID, $kpiName);
 				break;
 			case 'ready-to-be-completed':
-				$count = Careconsole::getStageWaitingCount($networkID, $stageID, $kpiName);
+				$count['precise_count'] = Careconsole::getStageWaitingCount($networkID, $stageID, $kpiName);
 				break;
 			case 'overdue':
-				$count = Careconsole::getStageOverdueCount($networkID, $stageID, $kpiName);
+				$count['precise_count'] = Careconsole::getStageOverdueCount($networkID, $stageID, $kpiName);
 				break;
 			default:
-				$count = -1;
+				$count['precise_count'] = -1;
 				break;
 		}
-		return $count;
+        $count['abbreviated_count'] = $this->getAbbreviationCount($count['precise_count']);
+        return $count;
 	}
 	/**
 	 * @param $kpiName
@@ -129,5 +131,20 @@ class KPIService {
 
 		return $patients;
 	}
+
+    /**
+	 * @param $count
+	 * @return shortcount
+	 */
+    public function getAbbreviationCount ($count) {
+
+        if ($count < 1000)
+            return $count;
+        else {
+            $count = $count/1000;
+            $count = number_format((float)$count, 0, '.', '').'K';
+            return $count;
+        }
+    }
 
 }

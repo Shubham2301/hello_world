@@ -9,7 +9,7 @@
                     <div class="info_section_title">{{ $stage['kpis'][$i]['display_name'] }}</div>
                     <div class="right">
                         <div class="circle" style="background-color:{{ $stage['kpis'][$i]['color_indicator'] }}"></div>
-                        <div class="info_section_number {{ $stage['kpis'][$i]['name'] }} arial_bold">{{ $stage['kpis'][$i]['count'] }}</div>
+                        <div class="info_section_number {{ $stage['kpis'][$i]['name'] }} arial_bold">{{ $stage['kpis'][$i]['abbreviated_count'] }}</div>
                     </div>
                 </div>
                 @if($i < $stage['kpi_count'] - 1)
