@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Models\Careconsole;
+use myocuhub\Models\EngagementPreference;
 use myocuhub\Models\ImportHistory;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\PracticeLocation;
@@ -93,9 +94,17 @@ class BulkImportController extends Controller
             'source',
             'disease_type',
             'severity',
-            'insurance_type',
-            'language',
+            'insurance_carrier',
+            'subscriber_name',
+            'subscriber_dob',
+            'subscriber_id',
+            'group_no',
+            'relation_to_patient',
+            'priority',
             'special_request',
+            'language',
+            'preferred_method_of_contact',
+            'primary_care_physician',
         ];
 
         if ($request->hasFile('patient_xlsx')) {
@@ -166,10 +175,21 @@ class BulkImportController extends Controller
                                 $careconsole->referral_id = $referralHistory->id;
                             }
 
-                            $insuranceCarrier = new PatientInsurance;
-                            $insuranceCarrier->insurance_carrier = $data['insurance_type'];
-                            $insuranceCarrier->patient_id = $patient->id;
-                            $insuranceCarrier->save();
+                            $insuranceCarrier = PatientInsurance::create([
+                                    'patient_id' => $patient->id,
+                                    'insurance_carrier' => $data['insurance_carrier'],
+                                    'subscriber_name' => $data['subscriber_name'],
+                                    'subscriber_id' => $data['subscriber_id'],
+                                    'subscriber_birthdate' => $data['subscriber_dob'],
+                                    'insurance_group_no' => $data['group_no'],
+                                    'subscriber_relation' => $data['relation_to_patient']
+                                ]);
+
+                            $engagementPreference = EngagementPreference::create([
+                                    'patient_id' => $patient->id,
+                                    'type' => config('patient_engagement.type.' strtolower($data['preferred_method_of_contact'])),
+                                    'language' => config('patient_engagement.language.' strtolower($data['language'])),
+                                ]);
 
                             $date = new \DateTime();
                             $careconsole->stage_updated_at = $date->format('Y-m-d H:i:s');

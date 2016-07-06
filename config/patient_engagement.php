@@ -14,4 +14,9 @@ return [
 		'post_appointment' => 3,
 	],
 
+	'language' => [
+        'english' => 1,
+        'spanish' => 2,
+    ],
+
 ];
