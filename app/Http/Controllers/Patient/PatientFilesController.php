@@ -50,7 +50,7 @@ class PatientFilesController extends Controller
                 $j++;
             }
         }
-
+        $ccdaData = null;
         if ($isCCDA) {
             $ccdaData = $this->saveCCDA($request, $ccdaAsJson, $patientID);
         }
@@ -66,24 +66,35 @@ class PatientFilesController extends Controller
 
     public function saveFile($patientID, $data)
     {
-        $networkID = session('network-id');
-        $file = $data['file'];
-        $patientFile = new PatientFile;
-        $patientFile->display_name = $data['name'];
-        $patientFile->name = rand();
-        $patientFile->patient_id = $patientID;
-        $patientFile->treepath = '';
-        $patientFile->extension = $file->getClientOriginalExtension();
-        $patientFile->mimetype = $file->getClientMimeType();
-        $patientFile->filesize = $file->getClientSize();
-        $patientFile->treepath = $networkID.'/patient_files'.'/'.$patientID;
-        $patientFile->status = 1;
-        $patientFile->save();
-        Storage::put(
+        try {
+            $networkID = session('network-id');
+            $file = $data['file'];
+            $patientFile = new PatientFile;
+            $patientFile->display_name = $data['name'];
+            $patientFile->name = rand();
+            $patientFile->patient_id = $patientID;
+            $patientFile->treepath = '';
+            $patientFile->extension = $file->getClientOriginalExtension();
+            $patientFile->mimetype = $file->getClientMimeType();
+            $patientFile->filesize = $file->getClientSize();
+            $patientFile->treepath = $networkID.'/patient_files'.'/'.$patientID;
+            $patientFile->status = 1;
+            $patientFile->save();
+            Storage::put(
             $patientFile->treepath . '/' . $patientFile->name . '.' .$patientFile->extension,
             file_get_contents($file->getRealPath())
         );
-        return true;
+            return true;
+        } catch (Exception $e) {
+            Log::error($e);
+            $action = 'Application Exception in uploading files for patient id '. $patientID;
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = '';
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+            return false;
+        }
     }
 
     public function downloadFile($id)

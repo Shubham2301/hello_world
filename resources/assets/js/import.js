@@ -160,12 +160,12 @@ $(document).ready(function() {
 
     $(document).on('click', '.upload_file_view_btn', function() {
         $('.patient_file_section').html('');
-		$('.success_message').removeClass('active');
-		$('.dismiss_button').text('Cancel');
-		$('.patient_file_name').val('');
-		$('.file_upload_form_input').addClass('active');
-		$('.remove_file_name').remove();
-		$('.file_upload_form_filename').html('');
+        $('.success_message').removeClass('active');
+        $('.dismiss_button').text('Cancel');
+        $('.patient_file_name').val('');
+        $('.file_upload_form_input').addClass('active');
+        $('.remove_file_name').remove();
+        $('.file_upload_form_filename').html('');
         fileIndex = 1;
         $('#count_patient_file').val(fileIndex);
         $('#upload_files').modal('show');
@@ -535,29 +535,30 @@ function uploadPatientFiles() {
         success: function(e) {
             var data = $.parseJSON(e);
             $('#upload_files').modal('hide');
-			$('.dismiss_button').trigger('click');
-			showComparisionData(data.ccdaData);
-			$('#compare_ccda_button').trigger('click');
-			$('#compared_patient_id').val(data.ccdaData.patient.id);
-
-            var formData = {
-                'id': data.id,
-            };
-            getPatientInfo(formData);
-
+            if (data.ccda) {
+                $('.dismiss_button').trigger('click');
+                showComparisionData(data.ccdaData);
+                $('#compare_ccda_button').trigger('click');
+                $('#compared_patient_id').val(data.ccdaData.patient.id);
+            } else {
+                var formData = {
+                    'id': data.id,
+                };
+                getPatientInfo(formData);
+            }
         }
     });
 }
 
 function showPatientFiles(files) {
-	var patientID = location.search.split('patient_id=')[1];
-	patientID = parseInt(patientID, 10);
+    var patientID = location.search.split('patient_id=')[1];
+    patientID = parseInt(patientID, 10);
 
-	if (!patientID ) {
-		patientID = $('.patient_info').attr('data-id');
-	}
+    if (!patientID) {
+        patientID = $('.patient_info').attr('data-id');
+    }
 
-	var content = '<div class="patient_file_item row" data-id = ""><div class="col-xs-1"><input type = "checkbox" value="' + "CCDA" + '" class = "selected_files" style="margin-top:6px;"/></div><div class="col-xs-9"><a href = "/download/ccda/' + patientID + '" target="_blank" class="file_name" style="text-decoration:none;">' + "CCDA" + ' ' + '' + '</a></div></div>';
+    var content = '<div class="patient_file_item row" data-id = ""><div class="col-xs-1"><input type = "checkbox" value="' + "CCDA" + '" class = "selected_files" style="margin-top:6px;"/></div><div class="col-xs-9"><a href = "/download/ccda/' + patientID + '" target="_blank" class="file_name" style="text-decoration:none;">' + "CCDA" + ' ' + '' + '</a></div></div>';
 
     files.forEach(function(file) {
         content += '<div class="patient_file_item row" data-id = "' + file.id + '"><div class="col-xs-1"><input type = "checkbox" value="' + file.id + '" class = "selected_files" style="margin-top:6px;"/></div><div class="col-xs-9"><a href = "downloadpatientfile/' + file.id + '" target="_blank" class="file_name" style="text-decoration:none;">' + file.display_name + ' ' + '' + '</a></div></div>';
@@ -581,7 +582,7 @@ function createNewFileInput() {
     var removetag = '<img src="' + $('#clear_image_path').val() + '" alt="" style="width:100%;" class="remove_upload_input" data-toggle="tooltip" title="Remove" data-placement="top">';
     var removetag = '';
 
-	var content = '<div class="row content-row-margin"><div class="col-xs-2">' + removetag + '</div><div class="col-xs-6 form-group text-right" style="padding-top: 5px;"><input type="text" name="' + file_name + '"class="patient_file_name" placeholder="File name"></div><div class="col-xs-4"><span class="file_upload_form_input active select_patient_file">Select<input name="' + uploadFileName + '" type="file"></span><span class="file_upload_form_filename filename"></span></div></div>';
+    var content = '<div class="row content-row-margin"><div class="col-xs-2">' + removetag + '</div><div class="col-xs-6 form-group text-right" style="padding-top: 5px;"><input type="text" name="' + file_name + '"class="patient_file_name" placeholder="File name"></div><div class="col-xs-4"><span class="file_upload_form_input active select_patient_file">Select<input name="' + uploadFileName + '" type="file"></span><span class="file_upload_form_filename filename"></span></div></div>';
 
     $('.patient_file_section').append(content);
     $('#count_patient_file').val(fileIndex);
@@ -590,30 +591,30 @@ function createNewFileInput() {
 
 function updatePatientData() {
 
-	var myform = document.getElementById("compare_ccda_form");
-	var fd = new FormData(myform);
+    var myform = document.getElementById("compare_ccda_form");
+    var fd = new FormData(myform);
 
-	$.ajax({
-		url: "/update/ccda",
-		data: fd,
-		cache: false,
-		processData: false,
-		contentType: false,
-		type: 'POST',
-		success: function (dataofconfirm) {
-			if (dataofconfirm != 'false') {
-				$('.update_header').removeClass('active');
-				$('.compare_form').removeClass('active');
-				$('.success_message').text("You have successfully updated the data.");
-				$('.success_message').addClass('active');
-				$('.compare_ccda_button').removeClass('active');
-				$('.dismiss_button').text('OK');
-			}
+    $.ajax({
+        url: "/update/ccda",
+        data: fd,
+        cache: false,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function(dataofconfirm) {
+            if (dataofconfirm != 'false') {
+                $('.update_header').removeClass('active');
+                $('.compare_form').removeClass('active');
+                $('.success_message').text("You have successfully updated the data.");
+                $('.success_message').addClass('active');
+                $('.compare_ccda_button').removeClass('active');
+                $('.dismiss_button').text('OK');
+            }
 
-			var formData = {
-				'id': dataofconfirm
-			};
-			getPatientInfo(formData);
-		}
-	});
+            var formData = {
+                'id': dataofconfirm
+            };
+            getPatientInfo(formData);
+        }
+    });
 }
