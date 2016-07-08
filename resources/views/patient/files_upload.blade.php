@@ -21,7 +21,7 @@
 							<input type="text" name="patient_file_name_1" class="patient_file_name" placeholder="File name" >
                         </div>
                         <div class="col-xs-4">
-							<span class="file_upload_form_input active select_patient_file ">Select<input name="patient_file_1" type="file"></span>
+							<span class="file_upload_form_input active select_patient_file ">Select<input name="patient_file_1" type="file" class="select_file_to_upload"></span>
                             <span class="file_upload_form_filename filename"></span>
                         </div>
                     </div>

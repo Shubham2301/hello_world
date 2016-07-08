@@ -41,8 +41,9 @@ class PatientFilesController extends Controller
             $data[$j]['file'] = $request->file('patient_file_'.$i);
 
             if ($request->hasFile('patient_file_'.$i)) {
-                $ccdaAsJson = MyCCDA::isCCDA($data[$j]['file']);
-                if ($ccdaAsJson) {
+				$jsonString = MyCCDA::isCCDA($data[$j]['file']);
+				if ($jsonString) {
+					$ccdaAsJson = $jsonString;
                     $isCCDA = true;
                     continue;
                 }
