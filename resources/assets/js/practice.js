@@ -645,17 +645,16 @@ function updatePracticedata(formdata) {
     var tojson = JSON.stringify(formdata);
     $.ajax({
         url: '/practices/update',
-        type: 'GET',
+        type: 'POST',
         data: $.param({
             data: tojson
         }),
-        contentType: 'text/html',
         async: false,
         success: function success(e) {
             window.location = "/administration/practices";
         },
         error: function error() {
-            $('p.alert_message').text('Error searching');
+            $('p.alert_message').text('Error saving info');
             $('#alert').modal('show');
         },
         cache: false,

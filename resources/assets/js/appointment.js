@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     loadFPCValidateModel();
     $('#subscriber_dob').datetimepicker({
         format: 'YYYY-MM-DD'
@@ -6,7 +6,7 @@ $(document).ready(function() {
 
     $('[data-toggle="tooltip"]').tooltip();
     $('.appointment_confirmed').hide();
-    $('#confirm_appointment').on('click', function() {
+    $('#confirm_appointment').on('click', function () {
         if (unfillfpcFields > 0) {
             $('#show_fpc_model').trigger('click');
             return;
@@ -15,23 +15,23 @@ $(document).ready(function() {
         }
     });
 
-    $('#schedule_new_patient').on('click', function() {
+    $('#schedule_new_patient').on('click', function () {
         $('#form_patient_id').prop('disabled', true);
         $('#form_schedule_another_appointment').submit();
     });
-    $('#cancel_appointment').on('click', function() {
+    $('#cancel_appointment').on('click', function () {
         $('#form_patient_id').prop('disabled', true);
         $('#form_schedule_another_appointment').submit();
     });
-    $('#back').on('click', function() {
+    $('#back').on('click', function () {
         $('#form_schedule_another_appointment').attr('action', "/providers");
         $('#form_schedule_another_appointment').submit();
     });
 
-	$('#model_fpc_view').on('click', '.save_fpcdata', function() {
-		$('.patient_id_fpc').val($('#form_patient_id').val());
-		saveFPCRequiredFields();
-	});
+    $('#model_fpc_view').on('click', '.save_fpcdata', function () {
+        $('.patient_id_fpc').val($('#form_patient_id').val());
+        saveFPCRequiredFields();
+    });
 });
 var unfillfpcFields = null;
 
@@ -53,10 +53,17 @@ function scheduleAppointment() {
         return;
     }
 
+
     //disableConfirmApptBttn();
-	$('.appointment_confirm').hide();
-	$('#schedule_apt_loader').css("display", "block");
-	$('#apt_loader').show();
+    $('#back').addClass('hide');
+    $('.appointment_confirm').hide();
+    $('#schedule_apt_loader').css("display", "block");
+    $('#apt_loader').show();
+
+    window.onbeforeunload = function () {
+        return 'Scripts are running. Please wait.';
+    };
+
     var patient_id = $('#form_patient_id').val();
     var provider_id = $('#form_provider_id').val();
     var practice_id = $('#form_practice_id').val();
@@ -78,8 +85,8 @@ function scheduleAppointment() {
         'appointment_type': appointment_type_name,
         'appointment_type_key': appointment_type_key,
         'appointment_time': appointment_time,
-		'send_ccda_file':$('#send_ccda_checkbox').prop('checked'),
-		'selectedfiles': $('#selected_patient_files').val()
+        'send_ccda_file': $('#send_ccda_checkbox').prop('checked'),
+        'selectedfiles': $('#selected_patient_files').val()
     };
 
 
@@ -89,10 +96,10 @@ function scheduleAppointment() {
         data: $.param(formData),
         contentType: 'text/html',
         async: true,
-        success: function(e) {
+        success: function (e) {
 
-			$('#schedule_apt_loader').css("display", "none");
-			$('#apt_loader').hide();
+            $('#schedule_apt_loader').css("display", "none");
+            $('#apt_loader').hide();
             if ($('#form_action').val() === 'careconsole') {
                 $('#back_to_console').show();
                 $('#schedule_new_patient').hide();
@@ -103,13 +110,15 @@ function scheduleAppointment() {
 
             $('.appointment_confirmed').show();
 
-			if($('#isses').val()){
-			$('.apt_msg').text('Files have been sent successfully');
-			}
+            if ($('#isses').val()) {
+                $('.apt_msg').text('Files have been sent successfully');
+            }
 
-            $('#back').addClass('hide');
+            window.onbeforeunload = function () {};
         },
-        error: function() {},
+        error: function () {
+            $('#back').removeClass('hide');
+        },
         cache: false,
         processData: false
     });
@@ -126,7 +135,7 @@ function loadFPCValidateModel() {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var data = $.parseJSON(e);
             unfillfpcFields = data.validate_fpc_count;
             $('#model_fpc_view').html('');
@@ -138,7 +147,7 @@ function loadFPCValidateModel() {
             $('.modal-backdrop').remove();
 
         },
-        error: function() {
+        error: function () {
             $('p.alert_message').text('Error getting practice information');
             $('#alert').modal('show');
         },

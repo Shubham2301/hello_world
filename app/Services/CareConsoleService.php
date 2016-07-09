@@ -59,7 +59,8 @@ class CareConsoleService
                     $controls[$i]['options'][$j]['kpi_name'] = '';
                     if (isset($kpis[$j])) {
                         $controls[$i]['options'][$j]['kpi_name'] = $kpis[$j]->name;
-                        $controls[$i]['options'][$j]['count'] = $this->KPIService->getCount($kpis[$j]->name, $networkID, $stageID);
+                        $count = $this->KPIService->getCount($kpis[$j]->name, $networkID, $stageID);
+                        $controls[$i]['options'][$j]['count'] = $count['precise_count'];
                     }
                 }
                 $j++;

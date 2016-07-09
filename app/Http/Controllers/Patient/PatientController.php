@@ -62,7 +62,7 @@ class PatientController extends Controller
         $data = Patient::getColumnNames();
         $data['admin'] = true;
         $data['back_btn'] = config('constants.btn_urls.from_schedule.back_btn');
-        $data['url'] = config('constants.btn_urls.from_schedule.back_btn');
+        $data['url'] = config('constants.btn_urls.from_schedule.save_url');
         $data['referred_by_provider'] = null;
         $data['referred_by_practice'] = null;
         $data['disease_type'] = null;
