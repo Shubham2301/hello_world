@@ -18,7 +18,7 @@
                     <div class="row content-row-margin">
 						<div class="col-xs-2"></div>
                         <div class="col-xs-6 form-group text-right" style="padding-top: 5px;">
-							<input type="text" name="patient_file_name_1" class="patient_file_name" placeholder="File name" >
+							<input type="text" name="patient_file_name_1" class="patient_file_name" placeholder="File name" onkeyup="hidePopover(this)" data-toggle="popover" data-content=""  data-trigger="manual" data-placement="bottom">
                         </div>
                         <div class="col-xs-4">
 							<span class="file_upload_form_input active select_patient_file ">Select<input name="patient_file_1" type="file" class="select_file_to_upload"></span>

@@ -524,12 +524,9 @@ function uploadPatientFiles() {
     }
 
     var isValid = validateFilesForm();
-	if(!isValid)
-    {
-		$('p.alert_message').text('Please enter file name ');
-		$('#alert').modal('show');
-		return false;
-	}
+    if (!isValid) {
+        return false;
+    }
 
     var myform = document.getElementById("upload_files_form");
     var fd = new FormData(myform);
@@ -590,7 +587,7 @@ function createNewFileInput() {
     var removetag = '<img src="' + $('#clear_image_path').val() + '" alt="" style="width:100%;" class="remove_upload_input" data-toggle="tooltip" title="Remove" data-placement="top">';
     var removetag = '';
 
-    var content = '<div class="row content-row-margin"><div class="col-xs-2">' + removetag + '</div><div class="col-xs-6 form-group text-right" style="padding-top: 5px;"><input type="text" name="' + file_name + '"class="patient_file_name" placeholder="File name"></div><div class="col-xs-4"><span class="file_upload_form_input active select_patient_file">Select<input name="' + uploadFileName + '" type="file" class="select_file_to_upload"></span><span class="file_upload_form_filename filename"></span></div></div>';
+	var content = '<div class="row content-row-margin"><div class="col-xs-2">' + removetag + '</div><div class="col-xs-6 form-group text-right" style="padding-top: 5px;"><input type="text" name="' + file_name + '"class="patient_file_name" placeholder="File name" onkeyup="hidePopover(this)" data-toggle="popover" data-content=""  data-trigger="manual" data-placement="bottom"></div><div class="col-xs-4"><span class="file_upload_form_input active select_patient_file">Select<input name="' + uploadFileName + '" type="file" class="select_file_to_upload"></span><span class="file_upload_form_filename filename"></span></div></div>';
 
     $('.patient_file_section').append(content);
     $('#count_patient_file').val(fileIndex);
@@ -628,15 +625,26 @@ function updatePatientData() {
 }
 
 function validateFilesForm() {
-	var result = true;
+    var result = true;
     $('.select_file_to_upload').each(function(file) {
         var file = $(this).val();
-        var fileName = $(this).parent().parent().parent().find('.patient_file_name').val();
+        var inputObj = $(this).parent().parent().parent().find('.patient_file_name');
+        var fileName = inputObj.val();
 
         if (file && !fileName) {
-			 result = false;
+            result = false;
+            inputObj.focus();
+            inputObj.attr('data-content', 'Enter file name ');
+			inputObj.popover('show');
+			return false;
+
         }
 
     });
-	return result;
+    return result;
+}
+
+function hidePopover(inputObj) {
+	$(inputObj).attr('data-content', '');
+	$(inputObj).popover('hide');
 }
