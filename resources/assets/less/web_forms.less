@@ -1,0 +1,130 @@
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
+
+.select_form_dropdown {
+	&>p
+	{
+		padding-top: 24px;
+		cursor: pointer;
+	}
+	&>ul{
+		width:29%;
+
+		&>li{
+			color: black;
+			padding-left: 12px;
+			cursor: pointer;
+		}
+	}
+}
+
+.header_patient_name{
+	padding : 3px;
+	width: 60%;
+}
+
+.form_footer {
+	border-top:1px solid #fff;
+}
+
+.unit_input_text{
+	background-color:transparent;
+	border: none;
+	border-bottom: 1px solid #fff;
+	width:10%;
+	margin: 1px;
+}
+
+.input_checkbox{
+	margin-left: 1em;
+}
+
+.search_section {
+	display: none;
+	&.active{
+		display: block;
+	}
+}
+
+.patient_list_item {
+   border-bottom: 1px solid;
+    opacity: 0.9;
+    cursor: pointer;
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.search_input_box {
+	display: flex;
+	flex-direction: row;
+	background-color: @font-color-4;
+	border: 2px solid @font-color-4;
+	font-size: 1em;
+	width: 50%;
+	margin:1em;
+	&>input,
+	&>input:focus {
+		width: 100%;
+		border: none;
+		padding: 6px 12px;
+		color: #66c7eb;
+		outline: none;
+		background-color: @font-color-4;
+		&::placeholder{
+			color: #b2e3f5;
+		}
+	}
+	&>span {
+		position: absolute;
+	}
+}
+
+#search_patient_button {
+	cursor: pointer;
+}
+
+.form_section {
+	display: none;
+	&.active{
+		display: block;
+	}
+}
+.form_chunk {
+	display:none;
+	&.active {
+	display:block;
+	}
+}
+.tgl
+{
+	display:none;
+}
+
+.tgl_text {
+  color: #0071bc;
+  background-color:transparent;
+  cursor:pointer;
+  border-radius:5px;
+  padding:1px;
+  &:hover {
+  border:1px solid #f4f4f4;
+  }
+ &.checkfiled {
+    color: #0071bc;
+    font-style: normal;
+    background-color:#fff;
+    border-radius:5px;
+    padding:1px;
+    cursor:pointer;
+  }
+}
+
+.other_option_input {
+  background-color:transparent;
+  border:1px solid #fff;
+}
+
+
