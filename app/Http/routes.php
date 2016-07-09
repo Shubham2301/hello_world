@@ -54,7 +54,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('providers/search', 'Practice\ProviderController@search');
     Route::get('practices/search', 'Practice\PracticeController@search');
     Route::get('practices/store', 'Practice\PracticeController@store');
-    Route::get('practices/update', 'Practice\PracticeController@update');
+    Route::post('practices/update', 'Practice\PracticeController@update');
     Route::get('practices/remove', 'Practice\PracticeController@destroy');
     Route::get('practices/users', 'Practice\PracticeController@practiceUsers');
 
