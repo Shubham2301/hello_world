@@ -56,6 +56,16 @@ CanResetPasswordContract
         return !!$role->intersect($this->roles)->count();
     }
 
+
+    // public function hasPermission($permission)
+    // {
+    //     if (is_string($permission)) {
+    //         return $this->roles->contains('name', $role);
+    //     }
+
+    //     return !!$role->intersect($this->roles)->count();
+    // }
+
     public function assign($role)
     {
         if (is_string($role)) {

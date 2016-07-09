@@ -24,4 +24,12 @@ class MessageTemplate extends Model
 
         return self::defaultTemplate();
     }
+
+    public static function getMessageTypes(){     
+        $types = array_flip(config('patient_engagement.type'));
+        foreach ($types as $key => $value) {
+               $types[$key] = ucfirst($value);
+        } 
+        return $types;
+    }
 }
