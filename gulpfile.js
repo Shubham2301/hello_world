@@ -26,9 +26,9 @@ elixir(function (mix) {
     mix.less(['users.less'], 'public/css/users.css');
     mix.less(['reporting.less'], 'public/css/reporting.css');
     mix.less(['reports.less'], 'public/css/reports.css');
-	mix.less(['web_forms.less'], 'public/css/web_forms.css');
-	mix.less(['web_forms_print.less'], 'public/css/web_forms_print.css');
-	mix.less(['patient_records.less'], 'public/css/patient_records.css');
+    mix.less(['web_forms.less'], 'public/css/web_forms.css');
+    mix.less(['web_forms_print.less'], 'public/css/web_forms_print.css');
+    mix.less(['patient_records.less'], 'public/css/patient_records.css');
 
     mix.babel(['main.js', 'announcements.js'], 'public/js/main.js');
     mix.babel(['sesconnect.js'], 'public/js/sesconnect.js');
