@@ -117,7 +117,7 @@ function getPatients(formData, page) {
     };
     sortInfo = JSON.stringify(sortInfo);
     $.ajax({
-        url: '/patients/search',
+        url: '/patientlistforcreaterecord',
         type: 'GET',
         data: $.param({
             data: tojson,
@@ -126,10 +126,9 @@ function getPatients(formData, page) {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-            var patients = $.parseJSON(e);
 			$('.section').removeClass('active');
             $('.search_section').addClass('active');
-            $('#search_listing').html(patients[0]['view']);
+            $('#search_listing').html(e);
             $('#search_patient_button').show();
             $('#remove_patient_button').hide();
         },
@@ -170,17 +169,4 @@ function savePatientRecord(){
 	$('#patient_id').val($('#search_patient_input').attr('data-id'));
 	$('#template_id').val(templateID);
 	myform.submit();
-
-//	var fd = new FormData(myform);
-//	$.ajax({
-//		url: "/save_records",
-//		data:fd,
-//		cache: false,
-//		processData: false,
-//		contentType: false,
-//		type: 'POST',
-//		success: function(e) {
-//			alert('success');
-//		}
-//	});
 }

@@ -502,7 +502,6 @@ class PatientController extends Controller
         }
         $data[0]['total'] = $patients->total();
         $data[0]['lastpage'] = $patients->lastPage();
-		$data[0]['view'] = (sizeof($patients) === 0) ? '' : view('web-forms.search_patient')->with('patients', $patients)->render();
 
         return json_encode($data);
     }

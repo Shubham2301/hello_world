@@ -53,4 +53,10 @@ trait PatientRecordsTrait
 		$request->session()->put('success', 'Record created successfully');
 		return redirect('/webform');
     }
+
+    public function PatientListForCreateRecord(Request $request){
+        $patients = $this->search($request);
+        $patients = json_decode($patients, true);
+        return (sizeof($patients) === 0) ? 'No patient found' : view('web-forms.search_patient')->with('patients', $patients)->render();
+    }
 }
