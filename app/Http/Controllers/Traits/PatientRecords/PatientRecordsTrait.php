@@ -57,6 +57,21 @@ trait PatientRecordsTrait
     public function PatientListForCreateRecord(Request $request){
         $patients = $this->search($request);
         $patients = json_decode($patients, true);
+		if(!array_key_exists('id',$patients[0] ))
+		{
+			return 'no result found';
+		}
         return (sizeof($patients) === 0) ? 'No patient found' : view('web-forms.search_patient')->with('patients', $patients)->render();
     }
+
+	public function PatientListForShowRecord(Request $request){
+		$patients = $this->search($request);
+		$patients = json_decode($patients, true);
+		if(!array_key_exists('id',$patients[0] ))
+		{
+			return 'no result found';
+		}
+		return (sizeof($patients) === 0) ? 'No patient found' : view('patient-records.patient_listing')->with('patients', $patients)->render();
+
+	}
 }

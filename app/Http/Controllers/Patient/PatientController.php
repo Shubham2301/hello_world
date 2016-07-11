@@ -478,7 +478,13 @@ class PatientController extends Controller
     {
         $filters = json_decode($request->input('data'), true);
         $sortInfo =json_decode($request->input('tosort'), true);
-        $patients = Patient::getPatients($filters, $sortInfo);
+		$countResult = 20;
+		if($request->has('countresult'))
+		{
+			$countResult = $request->countresult;
+		}
+
+		$patients = Patient::getPatients($filters, $sortInfo, $countResult);
 
         $data = [];
         $i = 0;
@@ -498,10 +504,28 @@ class PatientController extends Controller
                 $birthdate = new DateTime($patient->birthdate);
                 $data[$i]['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
             }
+			$data[$i]['name'] = $patient->getName();
             $i++;
         }
         $data[0]['total'] = $patients->total();
         $data[0]['lastpage'] = $patients->lastPage();
+		$data[0]['currentpage'] = $patients->currentPage();
+		$data[0]['nextpage'] = $data[0]['currentpage'] + 1;
+		$data[0]['previouspage'] = $data[0]['currentpage'] - 1;
+
+
+		if($data[0]['nextpage'] > $data[0]['lastpage'])	{
+
+			$data[0]['nextpage'] = $data[0]['currentpage'];
+		}
+
+		if($countResult > $data[0]['total'])
+		{
+			$countResult = $data[0]['total'];
+		}
+
+
+		$data[0]['result_count_info'] = $data[0]['previouspage']*$countResult.'-'.$data[0]['currentpage']*$countResult.' of '.$data[0]['total'];
 
         return json_encode($data);
     }
