@@ -478,7 +478,7 @@ class PatientController extends Controller
     {
         $filters = json_decode($request->input('data'), true);
         $sortInfo =json_decode($request->input('tosort'), true);
-        $countResult = 20;
+        $countResult = config('constants.default_paginate_result');
         if($request->has('countresult'))
         {
             $countResult = $request->countresult;

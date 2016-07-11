@@ -75,7 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('providers/insurancelist', 'Practice\ProviderController@getInsuranceList');
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
     Route::get('providers/previous', 'Practice\ProviderController@getPreviousProviders');
-	Route::get('providers/nearby', 'Practice\ProviderController@getNearByProviders');
+    Route::get('providers/nearby', 'Practice\ProviderController@getNearByProviders');
 
     Route::group(['middleware' => 'role:direct-mail'], function () {
         Route::get('directmail/beginimpersonate', 'DirectMail\DirectMailController@beginImpersonate');
@@ -103,7 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Route::resource('export/fake', 'BulkImportController@fakeExport');
 
     Route::get('file_exchange/update_description', 'FileExchange\FileExchangeController@changeDescription');
-	Route::get('file_exchange/update_filename', 'FileExchange\FileExchangeController@changeItemName');
+    Route::get('file_exchange/update_filename', 'FileExchange\FileExchangeController@changeItemName');
     Route::get('file_exchange/showinfo', 'FileExchange\FileExchangeController@show');
     Route::resource('file_exchange', 'FileExchange\FileExchangeController');
     Route::post('createFolder', 'FileExchange\FileExchangeController@createFolder');
@@ -121,9 +121,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('ccdaform', 'CcdaController@index');
     Route::get('/addvital/{id}', 'CcdaController@addVital');
     Route::post('/savevitals', 'CcdaController@saveVitals');
-	Route::get('/download/ccda/{id}', 'CcdaController@getCCDAXml');
+    Route::get('/download/ccda/{id}', 'CcdaController@getCCDAXml');
     Route::get('/showvitals/{id}', array('uses' => 'CcdaController@showVitals', 'as' => 'showvitals'));
-	Route::post('update/ccda', 'Patient\PatientController@updateDemographics');
+    Route::post('update/ccda', 'Patient\PatientController@updateDemographics');
     Route::get('show/ccda/{id}', 'CcdaController@show');
 
     Route::get('terms', 'SupportController@termsIndex');
@@ -193,25 +193,25 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('careconsole_reports', 'ReportsController');
     Route::get('careconsole_reports/show', 'ReportsController@show');
-	Route::get('/cleanupphones', 'ScriptsController@cleanUpPhoneNumbers');
+    Route::get('/cleanupphones', 'ScriptsController@cleanUpPhoneNumbers');
     Route::get('getlandingpages', 'Admin\UserController@getLandingPagebyRole');
     Route::get('/administration', 'HomeController@administration');
     Route::get('/referredbyproviders', 'Practice\ProviderController@getReferringProviderSuggestions');
     Route::get('/referredbypractice', 'Practice\PracticeController@getReferringPracticeSuggestions');
-	Route::get('/savereferredby', 'Patient\PatientController@saveReferredbyDetails');
-	Route::post('/updatepatientdata', 'Practice\ProviderController@updateFPCRequiredData');
-	Route::post('/getccdadataforform', 'CcdaController@ccdaDataForPatientForm');
-	Route::get('/getfpcvalidateview', 'Practice\ProviderController@getFPCValidateView');
-	Route::get('export/audits', 'AuditReportController@downloadAsXSLS');
+    Route::get('/savereferredby', 'Patient\PatientController@saveReferredbyDetails');
+    Route::post('/updatepatientdata', 'Practice\ProviderController@updateFPCRequiredData');
+    Route::post('/getccdadataforform', 'CcdaController@ccdaDataForPatientForm');
+    Route::get('/getfpcvalidateview', 'Practice\ProviderController@getFPCValidateView');
+    Route::get('export/audits', 'AuditReportController@downloadAsXSLS');
 
-	Route::post('uploadpatientfiles', 'Patient\PatientFilesController@upload');
-	Route::get('/getfileuploadview', 'Patient\PatientFilesController@getFileUploadView');
-	Route::get('downloadpatientfile/{id}', 'Patient\PatientFilesController@downloadFile');
-	Route::get('records', 'Patient\PatientController@getPatientRecordView');
-	Route::get('webform', 'Patient\PatientController@getWebFormIndex');
-	Route::get('createrecord/{name}', 'Patient\PatientController@createRecord');
-	Route::post('save_records', 'Patient\PatientController@savePatientRecord');
+    Route::post('uploadpatientfiles', 'Patient\PatientFilesController@upload');
+    Route::get('/getfileuploadview', 'Patient\PatientFilesController@getFileUploadView');
+    Route::get('downloadpatientfile/{id}', 'Patient\PatientFilesController@downloadFile');
+    Route::get('records', 'Patient\PatientController@getPatientRecordView');
+    Route::get('webform', 'Patient\PatientController@getWebFormIndex');
+    Route::get('createrecord', 'Patient\PatientController@createRecord');
+    Route::post('save_records', 'Patient\PatientController@savePatientRecord');
     Route::get('patientlistforcreaterecord', 'Patient\PatientController@PatientListForCreateRecord');
-	Route::get('patientlistforshowrecord', 'Patient\PatientController@PatientListForShowRecord');
+    Route::get('patientlistforshowrecord', 'Patient\PatientController@PatientListForShowRecord');
 
 });

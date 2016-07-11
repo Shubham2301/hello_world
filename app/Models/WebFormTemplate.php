@@ -13,7 +13,7 @@ class WebFormTemplate extends Model
 	 */
 	protected $table = 'web_form_templates';
 
-	public static function get($name = 'pre-op-form') {
+	public static function get($name) {
 		$template = self::where('name', $name)->first(['structure']);
 		$template = json_decode($template['structure'], true);
     	return $template;

@@ -144,7 +144,7 @@ function getPatients(formData, page) {
 function showWebForm(name) {
 
     $.ajax({
-        url: '/createrecord/' + name,
+        url: '/createrecord?name=' + name,
         type: 'GET',
         data: '',
         contentType: 'text/html',

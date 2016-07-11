@@ -14,16 +14,16 @@ class WebFormTables extends Migration
     {
 		Schema::create('web_form_templates', function (Blueprint $table) {
 			$table->increments('id');
-			$table->string('name')->nullable();
-			$table->text('description');
-			$table->binary('structure')->nullable();
+			$table->string('name')->->unique();
+			$table->text('description')->nullable();
+			$table->binary('structure');
 			$table->timestamps();
 		});
 		Schema::create('patient_records', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('patient_id')->unsigned();
 			$table->integer('web_form_template_id')->unsigned();
-			$table->binary('content')->nullable();
+			$table->binary('content');
 			$table->timestamps();
 		});
 
