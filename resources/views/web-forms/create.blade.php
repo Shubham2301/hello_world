@@ -37,7 +37,7 @@
                                     <p>{{ $element['display-name'] }}</p>
 
                                 @elseif($element['type'] == 'input:text')
-                                    {!! Form::text($element['id'], '', array('class' => config('webforms.class.input-text'), 'placeholder' => $element['display-name'], 'id' => $element['id'] , 'data-toggle' => 'tooltip', 'title' => $element['display-name'], 'data-placement' => 'right', 'style'=>'margin:0em')) !!}
+                                    {!! Form::text($element['id'], '', array('class' => config('webforms.class.input-text').' '.'field_date', 'placeholder' => $element['display-name'], 'id' => $element['id'] , 'data-toggle' => 'tooltip', 'title' => $element['display-name'], 'data-placement' => 'right', 'style'=>'margin:0em')) !!}
 
                                 @elseif($element['type'] == 'input:text:other')
                                     {!! Form::text($element['id'], '', array('class' => 'other_option_input', 'placeholder' => $element['display-name'], 'id' => $element['id'] , 'data-toggle' => 'tooltip', 'title' => $element['display-name'], 'data-placement' => 'right')) !!}
