@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientMail;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientPhone;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientSMS;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use myocuhub\Models\PracticeUser;
 use myocuhub\Network;
 use myocuhub\Models\PatientFile;
 
 class Patient extends Model
 {
+
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
 
     protected $fillable = [
     'title',
