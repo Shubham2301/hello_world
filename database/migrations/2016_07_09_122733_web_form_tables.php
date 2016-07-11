@@ -14,7 +14,7 @@ class WebFormTables extends Migration
     {
 		Schema::create('web_form_templates', function (Blueprint $table) {
 			$table->increments('id');
-			$table->string('name')->->unique();
+			$table->string('name')->unique();
 			$table->text('description')->nullable();
 			$table->binary('structure');
 			$table->timestamps();
