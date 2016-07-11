@@ -154,6 +154,9 @@ function showWebForm(name) {
             $('.search_section').removeClass('active');
             $('.form_section').html(e);
             $('.form_section').addClass('active');
+			$('.field_date').datetimepicker({
+				format: 'YYYY-MM-DD'
+			});
         },
         error: function error() {
             $('p.alert_message').text('Error searching');
