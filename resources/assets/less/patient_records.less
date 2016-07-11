@@ -1,0 +1,78 @@
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
+
+.search_input_box {
+	display: flex;
+	flex-direction: row;
+	background-color: #f6f6f6;;
+	font-size: 1em;
+	&>input,
+	&>input:focus {
+		width: 100%;
+		border: none;
+		padding: 6px 12px;
+		color: #4d4d4d;
+		outline: none;
+	}
+	&>span {
+		color: #0071bc;
+		position: absolute;
+	}
+}
+#button_active {
+	background-color: #d2d3d5;
+	background-image: linear-gradient(#d2d3d5 10%, #d2d3d5 90%);
+	box-shadow: 0 1px 1px #d2d3d5;
+	color: #6B31D7;
+	font-size: 1.2em;
+	.arial_bold;
+}
+.header_text {
+	padding-top: 0.2em;
+	font-size: 1.3em;
+	color: #fff;
+	padding-left: 2em;
+}
+
+.search_list_header {
+	border-bottom:2px solid #f2f2f2;
+	color: #333;
+}
+
+.search_list_item {
+	color:#f2f2f2;
+	border-bottom: 1px solid #f2f2f2;
+	&>div{
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
+}
+
+.list_item_name {
+	cursor: pointer;
+}
+
+.item_info{
+	&>span{
+		font-weight: bold;
+		color: #fff;
+	}
+	&>p{
+		font-size: 1em;
+	}
+}
+
+.listing_section{
+	display: none;
+	&.active{
+		display: block;
+	}
+}
+
+#pagination{
+	&>img{
+		cursor: pointer;
+	}
+}

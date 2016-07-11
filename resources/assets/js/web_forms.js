@@ -117,7 +117,7 @@ function getPatients(formData, page) {
     };
     sortInfo = JSON.stringify(sortInfo);
     $.ajax({
-        url: '/patientlistforcreaterecord',
+		url: '/patientlistforcreaterecord',
         type: 'GET',
         data: $.param({
             data: tojson,
