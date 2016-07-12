@@ -733,11 +733,14 @@ class Reports
         $startDate = $this->getStartDate();
         $endDate = $this->getEndDate();
 
+
         $queryFilters = " and `import_history`.`network_id` = $networkID ";
 
         if(session('user-level') == 3 || session('user-level') == 4){
             $practice = User::getPractice($userId);
-            $queryFilters .= $practice ? " and `practice_patient`.`practice_id` = $practice->id " : '';
+            $patientsReferredToPractice = " `practices`.`id` = $practice->id ";
+            $patientsAddedByPractice = " `practice_patient`.`practice_id` = $practice->id ";
+            $queryFilters .= $practice ? " and ( $patientsReferredToPractice or $patientsAddedByPractice ) " : '';
         }
 
         if ($filters['type'] == 'real-time') {
