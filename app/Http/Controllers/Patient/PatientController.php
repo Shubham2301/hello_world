@@ -522,6 +522,7 @@ class PatientController extends Controller
         $language = array();
         $language['English'] = 'English';
         $language['Spanish'] = 'Spanish';
+        $preferences = MessageTemplate::getMessageTypes();
         $data = array();
         $data = Patient::find($id);
         if (!$data) {
@@ -553,12 +554,22 @@ class PatientController extends Controller
             }
         }
 
+        $preference =  EngagementPreference::where('patient_id', $id)->first();
+        $data['engagement_preference'] = null;
+        if ($preference) {
+            $data['engagement_preference'] = $preference->type;
+        }
+
         $insuranceCarrier =  PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
         if ($insuranceCarrier) {
             $data['insurance_type'] = $insuranceCarrier->insurance_carrier;
         }
 
-        return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
+        return view('patient.admin')
+            ->with('data', $data)
+            ->with('gender', $gender)
+            ->with('language', $language)
+            ->with('preferences', $preferences);
     }
 
     public function saveReferredbyDetails(Request $request)
