@@ -86,6 +86,7 @@ class PatientController extends Controller
 
     public function createByAdmin()
     {
+		$this->authorize('add-patient');
         $gender = array();
         $gender['Male'] = 'Male';
         $gender['Female'] = 'Female';
@@ -505,6 +506,7 @@ class PatientController extends Controller
 
     public function administration(Request $request)
     {
+		$this->authorize('add-patient');
         $data = array();
         $practicedata = array();
         $data['admin'] = true;

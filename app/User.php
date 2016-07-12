@@ -261,4 +261,8 @@ CanResetPasswordContract
             ->get();
         }
     }
+
+	public function isSuperAdmin(){
+		return $this->level == 1;
+	}
 }

@@ -29,6 +29,7 @@ class UserController extends Controller
      */
     public function index()
     {
+		$this->authorize('create-user');
         $users = User::all();
         $data = array();
         $data['user_active'] = true;
@@ -42,6 +43,7 @@ class UserController extends Controller
      */
     public function create()
     {
+		$this->authorize('create-user');
         $user = array();
         $userID = Auth::user()->id;
         $user = User::find($userID)->toArray();
