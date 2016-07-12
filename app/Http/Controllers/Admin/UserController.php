@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function index()
     {
-		$this->authorize('create-user');
+        $this->authorize('create-user');
         $users = User::all();
         $data = array();
         $data['user_active'] = true;
@@ -43,7 +43,7 @@ class UserController extends Controller
      */
     public function create()
     {
-		$this->authorize('create-user');
+        $this->authorize('create-user');
         $user = array();
         $userID = Auth::user()->id;
         $user = User::find($userID)->toArray();
@@ -66,9 +66,9 @@ class UserController extends Controller
         $menu_options = Menu::find([1, 2, 3, 4, 5]);
         $menuData = [];
         foreach ($menu_options as $menu_option) {
-            //			if ($menu_option->id != 3 && $menu_option->id != 5) {
-//				$menuData[$menu_option->id] = $menu_option->display_name;
-//			}
+            //          if ($menu_option->id != 3 && $menu_option->id != 5) {
+//              $menuData[$menu_option->id] = $menu_option->display_name;
+//          }
             if($menu_option->landing_page != 0)
                 $menuData[$menu_option->id] = $menu_option->display_name;
         }
@@ -92,7 +92,7 @@ class UserController extends Controller
         if (session('user-level') > 2) {
             $user['practice_id'] = User::getPractice(Auth::user()->id)->id;
         }
-		$user['password_required'] = 'required';
+        $user['password_required'] = 'required';
         return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data)->with('user', $user)->with('networks', $networkData)->with('menuoption', $menuData)->with('practices', $practices);
     }
 
@@ -287,7 +287,7 @@ class UserController extends Controller
             foreach ($networkPractices as $practice) {
                 $practices[$practice->id] = $practice->name;
             }
-			$user['password_required']='';
+            $user['password_required']='';
             return view('admin.users.create')->with('user', $user)->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels, 'menuoption' => $menuData])->with('data', $data)->with('networks', $networkData)->with('practices', $practices);
         }
     }
@@ -384,13 +384,13 @@ class UserController extends Controller
 
         }
 
-		$userData = [];
-		if (session('user-level') == 1) {
-			$userData['network_id'] = $request->input('user_network');
-		} else {
-			$userData['network_id'] = session('network-id');
-		}
-		$network_user = NetworkUser::where('user_id', $id)->update($userData);
+        $userData = [];
+        if (session('user-level') == 1) {
+            $userData['network_id'] = $request->input('user_network');
+        } else {
+            $userData['network_id'] = session('network-id');
+        }
+        $network_user = NetworkUser::where('user_id', $id)->update($userData);
 
         $action = 'updated user profile ';
         if ($password != ''){
@@ -491,9 +491,9 @@ class UserController extends Controller
         }
 
         $data = [];
-//		$data[0]['total'] = $users->total();
-//		$data[0]['lastpage'] = $users->lastPage();
-//		$data[0]['currentPage'] = $users->currentPage();
+//      $data[0]['total'] = $users->total();
+//      $data[0]['lastpage'] = $users->lastPage();
+//      $data[0]['currentPage'] = $users->currentPage();
         $i = 0;
         foreach ($users as $user) {
             if ((session('user-level') == 3 || session('user-level') == 4) && $user->practice_id != User::getPractice($userID)->id) {
