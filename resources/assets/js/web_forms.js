@@ -19,38 +19,38 @@ $(document).ready(function() {
     });
 
     $('#search_listing').on('click', '.patient_list_item', function() {
-		$('.section').removeClass('active');
+        $('.section').removeClass('active');
         $('.search_section').removeClass('active');
         $('#search_patient_input').val($(this).attr('data-name'));
         $('#search_patient_input').attr('data-id', $(this).attr('data-id'));
         $('#search_patient_input').prop('readonly', true);
         $('#search_patient_button').hide();
         $('#remove_patient_button').show();
-		$('.select_form_dropdown').find('p').show();
+        $('.select_form_dropdown').find('p').show();
     });
 
     $('.search_input_box').on('click', '#remove_patient_button', function() {
-		var r = confirm("All data will be lost");
-		if (r == true) {
-			$(this).hide();
-			$('.section').removeClass('active');
-			$('.search_section').addClass('active');
-			$('#search_patient_button').show();
-			$('#search_patient_input').prop('readonly', false);
-			$('.select_form_dropdown').find('p').hide();
-		}
+        var r = confirm("All data will be lost");
+        if (r == true) {
+            $(this).hide();
+            $('.section').removeClass('active');
+            $('.search_section').addClass('active');
+            $('#search_patient_button').show();
+            $('#search_patient_input').prop('readonly', false);
+            $('.select_form_dropdown').find('p').hide();
+        }
     });
 
     $('.showwebform').on('click', function() {
         var name = $(this).attr('value');
-		templateID = $(this).attr('data-id');
+        templateID = $(this).attr('data-id');
 
         showWebForm(name);
     });
 
     $(document).keypress(function(e) {
         if (e.which == 13) {
-			if ($('#search_patient_button').css('display') != 'none') {
+            if ($('#search_patient_button').css('display') != 'none') {
                 $('#search_patient_button').trigger("click");
             }
         }
@@ -103,7 +103,7 @@ $(document).ready(function() {
           }
     });
 
-	$('.form_section').on('click', '#create_record', savePatientRecord);
+    $('.form_section').on('click', '#create_record', savePatientRecord);
 
 });
 
@@ -117,7 +117,7 @@ function getPatients(formData, page) {
     };
     sortInfo = JSON.stringify(sortInfo);
     $.ajax({
-		url: '/patientlistforcreaterecord',
+        url: '/patientlistforcreaterecord',
         type: 'GET',
         data: $.param({
             data: tojson,
@@ -126,7 +126,7 @@ function getPatients(formData, page) {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-			$('.section').removeClass('active');
+            $('.section').removeClass('active');
             $('.search_section').addClass('active');
             $('#search_listing').html(e);
             $('#search_patient_button').show();
@@ -144,19 +144,19 @@ function getPatients(formData, page) {
 function showWebForm(name) {
 
     $.ajax({
-        url: '/createrecord?name=' + name,
+        url: '/createrecord/' + name,
         type: 'GET',
         data: '',
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-			$('.section').removeClass('active');
+            $('.section').removeClass('active');
             $('.search_section').removeClass('active');
             $('.form_section').html(e);
             $('.form_section').addClass('active');
-			$('.field_date').datetimepicker({
-				format: 'YYYY-MM-DD'
-			});
+            $('.field_date').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
         },
         error: function error() {
             $('p.alert_message').text('Error searching');
@@ -168,8 +168,8 @@ function showWebForm(name) {
 }
 
 function savePatientRecord(){
-	var myform = document.getElementById("patient_record_form");
-	$('#patient_id').val($('#search_patient_input').attr('data-id'));
-	$('#template_id').val(templateID);
-	myform.submit();
+    var myform = document.getElementById("patient_record_form");
+    $('#patient_id').val($('#search_patient_input').attr('data-id'));
+    $('#template_id').val(templateID);
+    myform.submit();
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Models\WebFormTemplate;
 use myocuhub\Models\PatientRecord;
+use myocuhub\Events\Patient\PatientRecordCreation;
 
 trait PatientRecordsTrait
 {
@@ -19,9 +20,8 @@ trait PatientRecordsTrait
         return view('web-forms.show', [ 'template' => $record->template, 'record' => $record->content]);
     }
 
-    public function createRecord(Request $request)
+    public function createRecord($name)
     {
-        $name = $request->name;
         $template = WebFormTemplate::get($name);
         return view('web-forms.create', [ 'template' => $template]);
     }
@@ -51,6 +51,13 @@ trait PatientRecordsTrait
 
         PatientRecord::create($data);
         $request->session()->put('success', 'Record created successfully');
+        event(new PatientRecordCreation(
+            [
+                'template_id' => $request->template_id,
+                'patient_id' => $request->patient_id,
+                'ip'   => $request->getClientIp()
+            ]
+        ));
         return redirect('/webform');
     }
 
@@ -59,7 +66,7 @@ trait PatientRecordsTrait
         $patients = $this->search($request);
         $patients = json_decode($patients, true);
         if (!array_key_exists('id', $patients[0])) {
-            return 'no result found';
+            return 'No result found';
         }
         return (sizeof($patients) === 0) ? 'No patient found' : view('web-forms.search_patient')->with('patients', $patients)->render();
     }
@@ -69,7 +76,7 @@ trait PatientRecordsTrait
         $patients = $this->search($request);
         $patients = json_decode($patients, true);
         if (!array_key_exists('id', $patients[0])) {
-            return 'no result found';
+            return 'No result found';
         }
         return (sizeof($patients) === 0) ? 'No patient found' : view('patient-records.patient_listing')->with('patients', $patients)->render();
     }
