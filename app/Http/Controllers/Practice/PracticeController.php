@@ -38,6 +38,8 @@ class PracticeController extends Controller
      */
     public function create()
     {
+        $this->authorize('add-practices');
+
         $id = -1;
         $data = array();
         $data['practice_active'] = true;
@@ -113,6 +115,7 @@ class PracticeController extends Controller
      */
     public function show(Request $request)
     {
+        $this->authorize('add-practices');
         $data = array();
         $practice_id = $request->input('practice_id');
         $practice_name = Practice::find($practice_id)->name;
@@ -247,9 +250,9 @@ class PracticeController extends Controller
         }
 
         $data = [];
-//		$data[0]['total'] = $practices->total();
-//		$data[0]['lastpage'] = $practices->lastPage();
-//		$data[0]['currentPage'] = $practices->currentPage();
+//      $data[0]['total'] = $practices->total();
+//      $data[0]['lastpage'] = $practices->lastPage();
+//      $data[0]['currentPage'] = $practices->currentPage();
         $i = 0;
         foreach ($practices as $practice) {
             $data[$i]['id'] = $practice->id;
@@ -264,6 +267,7 @@ class PracticeController extends Controller
 
     public function administration(Request $request)
     {
+        $this->authorize('add-practices');
         $data = array();
         $data['practice_active'] = true;
         return view('practice.admin')->with('data', $data);

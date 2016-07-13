@@ -10,7 +10,9 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\Ccda;
+use myocuhub\Models\EngagementPreference;
 use myocuhub\Models\ImportHistory;
+use myocuhub\Models\MessageTemplate;
 use myocuhub\Models\PatientFile;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
@@ -56,15 +58,17 @@ class PatientController extends Controller
         $language = array();
         $language['English'] = 'English';
         $language['Spanish'] = 'Spanish';
+        $preferences = MessageTemplate::getMessageTypes();
         $data = Patient::getColumnNames();
         $data['admin'] = true;
         $data['back_btn'] = config('constants.btn_urls.from_schedule.back_btn');
-        $data['url'] = config('constants.btn_urls.from_schedule.back_btn');
+        $data['url'] = config('constants.btn_urls.from_schedule.save_url');
         $data['referred_by_provider'] = null;
         $data['referred_by_practice'] = null;
         $data['disease_type'] = null;
         $data['severity'] = null;
         $data['insurance_type'] = null;
+        $data['engagement_preference'] = null;
         if ($request->has('referraltype_id')) {
             $data['referraltype_id'] = $request->input('referraltype_id');
             $data['admin'] = false;
@@ -72,17 +76,24 @@ class PatientController extends Controller
         if ($request->has('action')) {
             $data['action'] = $request->input('action');
         }
-        return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
+
+        return view('patient.admin')
+        ->with('data', $data)
+        ->with('gender', $gender)
+        ->with('language', $language)
+        ->with('preferences', $preferences);
     }
 
     public function createByAdmin()
     {
+        $this->authorize('add-patient');
         $gender = array();
         $gender['Male'] = 'Male';
         $gender['Female'] = 'Female';
         $language = array();
         $language['English'] = 'English';
         $language['Spanish'] = 'Spanish';
+        $preferences = MessageTemplate::getMessageTypes();
         $data = array();
         $data = Patient::getColumnNames();
         $data['admin'] = true;
@@ -94,7 +105,12 @@ class PatientController extends Controller
         $data['disease_type'] = null;
         $data['severity'] = null;
         $data['insurance_type'] = null;
-        return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
+        $data['engagement_preference'] = null;
+        return view('patient.admin')
+            ->with('data', $data)
+            ->with('gender', $gender)
+            ->with('language', $language)
+            ->with('preferences', $preferences);
     }
 
     /**
@@ -123,6 +139,7 @@ class PatientController extends Controller
         unset($data['disease_type']);
         unset($data['severity']);
         unset($data['insurance_type']);
+        unset($data['engagement_preference']);
 
         $patient = Patient::where($data)->first();
         if (!$patient) {
@@ -144,6 +161,8 @@ class PatientController extends Controller
             $patient->homephone = $request->input('homephone');
             $patient->workphone = $request->input('workphone');
             $patient->state = $request->input('state');
+            $patient->pcp = $request->input('pcp');
+            $patient->special_request = $request->input('special_request');
             $patient->save();
 
             $importHistory = new ImportHistory;
@@ -157,6 +176,11 @@ class PatientController extends Controller
             $referralHistory->severity = $request->input('severity');
             $referralHistory->network_id = $networkID;
             $referralHistory->save();
+
+            $preference = new EngagementPreference;
+            $preference->type = $request->input('engagement_preference') ?: null;
+            $preference->patient_id = $patient->id;
+            $preference->save();
 
             $careconsole = new Careconsole;
             $careconsole->import_id = $importHistory->id;
@@ -305,6 +329,7 @@ class PatientController extends Controller
         $language = array();
         $language['English'] = 'English';
         $language['Spanish'] = 'Spanish';
+        $preferences = MessageTemplate::getMessageTypes();
         $data = array();
         $data = Patient::find($id);
         if (!$data) {
@@ -332,13 +357,22 @@ class PatientController extends Controller
                 $data['severity'] = $referralHistory->severity;
             }
         }
-
+        $preference =  EngagementPreference::where('patient_id', $id)->first();
+        $data['engagement_preference'] = null;
+        if ($preference) {
+            $data['engagement_preference'] = $preference->type;
+        }
+        
         $insuranceCarrier =  PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
         if ($insuranceCarrier) {
             $data['insurance_type'] = $insuranceCarrier->insurance_carrier;
         }
 
-        return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
+        return view('patient.admin')
+        ->with('data', $data)
+        ->with('gender', $gender)
+        ->with('language', $language)
+        ->with('preferences', $preferences);
     }
 
     /**
@@ -367,6 +401,8 @@ class PatientController extends Controller
             $patient->city = $request->city;
             $patient->state = $request->state;
             $patient->zip = $request->zip;
+            $patient->pcp = $request->pcp;
+            $patient->special_request = $request->special_request;
 
             $dob = new DateTime($request->birthdate);
             $patient->birthdate = $dob->format('Y-m-d 00:00:00');
@@ -392,15 +428,21 @@ class PatientController extends Controller
             }
 
             $insuranceCarrier = PatientInsurance::where('patient_id', '=', $id)->orderBy('updated_at', 'desc')->first();
-            if ($insuranceCarrier) {
-                $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
-                $insuranceCarrier->save();
-            } else {
+            if ($insuranceCarrier == null) {
                 $insuranceCarrier = new PatientInsurance;
-                $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
                 $insuranceCarrier->patient_id = $id;
-                $insuranceCarrier->save();
             }
+
+            $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
+            $insuranceCarrier->save();
+
+            $preference =  EngagementPreference::where('patient_id', $id)->first();
+            if ($preference == null) {
+                $preference = new EngagementPreference;
+                $preference->patient_id = $id;
+            }
+            $preference->type = $request->input('engagement_preference');
+            $preference->save();
 
             $action = 'update patient of id =' . $id;
             $description = '';
@@ -464,6 +506,7 @@ class PatientController extends Controller
 
     public function administration(Request $request)
     {
+        $this->authorize('add-patient');
         $data = array();
         $practicedata = array();
         $data['admin'] = true;
@@ -481,6 +524,7 @@ class PatientController extends Controller
         $language = array();
         $language['English'] = 'English';
         $language['Spanish'] = 'Spanish';
+        $preferences = MessageTemplate::getMessageTypes();
         $data = array();
         $data = Patient::find($id);
         if (!$data) {
@@ -512,12 +556,22 @@ class PatientController extends Controller
             }
         }
 
+        $preference =  EngagementPreference::where('patient_id', $id)->first();
+        $data['engagement_preference'] = null;
+        if ($preference) {
+            $data['engagement_preference'] = $preference->type;
+        }
+
         $insuranceCarrier =  PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
         if ($insuranceCarrier) {
             $data['insurance_type'] = $insuranceCarrier->insurance_carrier;
         }
 
-        return view('patient.admin')->with('data', $data)->with('gender', $gender)->with('language', $language);
+        return view('patient.admin')
+            ->with('data', $data)
+            ->with('gender', $gender)
+            ->with('language', $language)
+            ->with('preferences', $preferences);
     }
 
     public function saveReferredbyDetails(Request $request)

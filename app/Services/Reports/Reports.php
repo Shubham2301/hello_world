@@ -65,6 +65,8 @@ class Reports
         return Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('careconsole.created_at', '>=', $this->getStartDate())
+            ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+            ->whereNull('deleted_at')
             ->where('careconsole.created_at', '<=', $this->getEndDate())
             ->where('import_history.network_id', session('network-id'))
             ->count();
@@ -76,6 +78,8 @@ class Reports
         return Careconsole::where('stage_id', 1)
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
+            ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+            ->whereNull('deleted_at')
             ->join('contact_history', 'careconsole.id', '=', 'contact_history.console_id', 'left outer')
             ->where('careconsole.created_at', '>=', $this->getStartDate())
             ->where('careconsole.created_at', '<=', $this->getEndDate())
@@ -101,6 +105,8 @@ class Reports
             ->where('contact_history.created_at', '>=', $this->getStartDate())
             ->where('contact_history.created_at', '<=', $this->getEndDate())
             ->leftjoin('careconsole', 'contact_history.console_id', '=', 'careconsole.id')
+            ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+            ->whereNull('deleted_at')
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
             ->count();
@@ -118,6 +124,8 @@ class Reports
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
             ->whereNotNull('careconsole.referral_id')
+            ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+            ->whereNull('deleted_at')
             ->leftjoin('referral_history', 'careconsole.referral_id', '=', 'referral_history.id')
             ->whereNotNull('referral_history.referred_to_practice_id')
             ->where('careconsole.created_at', '>=', $this->getStartDate())
@@ -149,6 +157,8 @@ class Reports
                 $query->where('stage_id', 4)
                     ->orWhere('stage_id', 5);
             })
+            ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+            ->whereNull('deleted_at')
             ->count();
         if (session('user-level') == 2) {
             $network_name = Network::find(session('network-id'))->name;
@@ -170,6 +180,8 @@ class Reports
             ->where('careconsole.created_at', '>=', $this->getStartDate())
             ->where('careconsole.created_at', '<=', $this->getEndDate())
             ->where('stage_id', 2)
+            ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+            ->whereNull('deleted_at')
             ->count();
         $result['scheduled_not_seen'][1] = 'Scheduled but not seen yet';
 
@@ -183,6 +195,8 @@ class Reports
                 $query->where('action_result_id', 16)
                     ->orWhere('action_result_id', 15);
             })
+            ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+            ->whereNull('deleted_at')
             ->count();
         $result['appointment_not_needed'][1] = 'Appointment not needed';
 
@@ -196,6 +210,8 @@ class Reports
                 $query->where('action_result_id', 10)
                     ->orWhere('action_result_id', 9);
             })
+            ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+            ->whereNull('deleted_at')
             ->count();
         $result['appointment_declined'][1] = 'Declined Appointment';
 
@@ -206,6 +222,8 @@ class Reports
             ->where('careconsole.created_at', '<=', $this->getEndDate())
             ->where('stage_id', 5)
             ->whereNotNull('careconsole.archived_date')
+            ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+            ->whereNull('deleted_at')
             ->count();
         $result['patients_ran_through'][1] = 'Established patient ran through';
 
@@ -221,6 +239,8 @@ class Reports
             ->whereNotNull('referral_history.referred_by_practice')
             ->where('careconsole.created_at', '>=', $this->getStartDate())
             ->where('careconsole.created_at', '<=', $this->getEndDate())
+            ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
+            ->whereNull('deleted_at')
             ->get(['referral_history.referred_by_practice']);
 
         $practices = [];
@@ -699,6 +719,7 @@ class Reports
                     left join (select console_id, archived, COUNT(*) as count from contact_history where archived is null group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
                     left join (select console_id, action_result_id as action_result_id from contact_history where action_result_id = '15' OR action_result_id = '16' OR action_result_id = '9' OR action_result_id = '10' OR action_result_id = '17') as `action_result_id` on `action_result_id`.`console_id` = `careconsole`.`id`
                     left join `patient_insurance` on `patient_insurance`.`patient_id` = `careconsole`.`patient_id`
+                    where `patients`.`deleted_at` is null
                     $queryFilters";
 
         return $query;
@@ -712,11 +733,14 @@ class Reports
         $startDate = $this->getStartDate();
         $endDate = $this->getEndDate();
 
-        $queryFilters = " where `import_history`.`network_id` = $networkID ";
+
+        $queryFilters = " and `import_history`.`network_id` = $networkID ";
 
         if(session('user-level') == 3 || session('user-level') == 4){
             $practice = User::getPractice($userId);
-            $queryFilters .= $practice ? " and `practice_patient`.`practice_id` = $practice->id " : '';
+            $patientsReferredToPractice = " `practices`.`id` = $practice->id ";
+            $patientsAddedByPractice = " `practice_patient`.`practice_id` = $practice->id ";
+            $queryFilters .= $practice ? " and ( $patientsReferredToPractice or $patientsAddedByPractice ) " : '';
         }
 
         if ($filters['type'] == 'real-time') {

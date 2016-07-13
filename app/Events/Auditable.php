@@ -4,10 +4,10 @@ namespace myocuhub\Events;
 
 trait Auditable
 {
-	protected $action;
-    protected $description;
-    protected $result;
-    protected $ip;
+	private $action;
+    private $description;
+    private $result;
+    private $ip;
 
     function __construct($attr)
 	{

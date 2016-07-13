@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Models\Careconsole;
+use myocuhub\Models\EngagementPreference;
 use myocuhub\Models\ImportHistory;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\PracticeLocation;
@@ -80,7 +81,9 @@ class BulkImportController extends Controller
             'last_name',
             'birthdate',
             'ssn_last_digits',
-            'phone_number',
+            'cellphone',
+            'homephone',
+            'workphone',
             'email',
             'address_1',
             'address_2',
@@ -91,8 +94,17 @@ class BulkImportController extends Controller
             'source',
             'disease_type',
             'severity',
-            'insurance_type',
+            'insurance_carrier',
+            'subscriber_name',
+            'subscriber_dob',
+            'subscriber_id',
+            'group_no',
+            'relation_to_patient',
+            'priority',
+            'special_request',
             'language',
+            'preferred_method_of_contact',
+            'primary_care_physician',
         ];
 
         if ($request->hasFile('patient_xlsx')) {
@@ -128,13 +140,17 @@ class BulkImportController extends Controller
                         }
 						$patients['middlename'] = isset($data['middle_name']) ? $data['middle_name'] : '';
 
-                        $patients['cellphone'] = isset($data['phone_number']) ? $data['phone_number'] : '';
+                        $patients['cellphone'] = isset($data['cellphone']) ? $data['cellphone'] : '';
+                        $patients['homephone'] = isset($data['homephone']) ? $data['homephone'] : '';
+                        $patients['workphone'] = isset($data['workphone']) ? $data['workphone'] : '';
                         $patients['email'] = filter_var($data['email'], FILTER_VALIDATE_EMAIL) ? $data['email'] : '';
                         $patients['addressline1'] = isset($data['address_1']) ? $data['address_1'] : '';
                         $patients['addressline2'] = isset($data['address_2']) ? $data['address_2'] : '';
                         $patients['city'] = isset($data['city']) ? $data['city'] : '';
                         $patients['zip'] = isset($data['zip']) ? $data['zip'] : '';
                         $patients['gender'] = isset($data['gender']) ? $data['gender'] : '';
+                        $patients['special_request'] = isset($data['special_request']) ? $data['special_request'] : '';
+                        $patients['pcp'] = isset($data['primary_care_physician']) ? $data['primary_care_physician'] : '';
 
                         $referralHistory = null;
 
@@ -154,16 +170,27 @@ class BulkImportController extends Controller
                             $careconsole->import_id = $importHistory->id;
                             $careconsole->patient_id = $patient->id;
                             $careconsole->stage_id = 1;
-                            $careconsole->priority = (isset($data['priority']) && array_key_exists('priority', $data))? $data['priority'] : null;
+                            $careconsole->priority = (isset($data['priority']) && $data['priority'] == '1') ? 1 : null;
 
                             if ($referralHistory != null) {
                                 $careconsole->referral_id = $referralHistory->id;
                             }
 
-                            $insuranceCarrier = new PatientInsurance;
-                            $insuranceCarrier->insurance_carrier = $data['insurance_type'];
-                            $insuranceCarrier->patient_id = $patient->id;
-                            $insuranceCarrier->save();
+                            $insuranceCarrier = PatientInsurance::create([
+                                    'patient_id' => $patient->id,
+                                    'insurance_carrier' => $data['insurance_carrier'],
+                                    'subscriber_name' => $data['subscriber_name'],
+                                    'subscriber_id' => $data['subscriber_id'],
+                                    'subscriber_birthdate' => $data['subscriber_dob'],
+                                    'insurance_group_no' => $data['group_no'],
+                                    'subscriber_relation' => $data['relation_to_patient']
+                                ]);
+
+                            $engagementPreference = EngagementPreference::create([
+                                    'patient_id' => $patient->id,
+                                    'type' => config('patient_engagement.type.' . strtolower($data['preferred_method_of_contact'])),
+                                    'language' => config('patient_engagement.language.' . strtolower($data['language'])),
+                                ]);
 
                             $date = new \DateTime();
                             $careconsole->stage_updated_at = $date->format('Y-m-d H:i:s');

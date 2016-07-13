@@ -84,7 +84,8 @@
                             <option value="french">French</option>
                         </select>
 -->
-						{!! Form::select('preferredlanguage', $language, $data['preferredlanguage'], array('class' => 'add_patient_input', 'placeholder' => 'Language*', 'id' => 'preferredlanguage', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Preferred Language', 'data-placement' => 'right')) !!}
+				        {!! Form::select('preferredlanguage', $language, $data['preferredlanguage'], array('class' => 'add_patient_input', 'placeholder' => 'Language*', 'id' => 'preferredlanguage', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Preferred Language', 'data-placement' => 'right')) !!}
+                        {!! Form::select('engagement_preference', $preferences, $data['engagement_preference'], array('class' => 'add_patient_input', 'placeholder' => 'Engagement Preference*', 'id' => 'engagement_preference', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Engagement Preference', 'data-placement' => 'right')) !!}
                     </div>
                 </div>
             </div>
@@ -175,6 +176,11 @@
 
 								{!! Form::text('address_1', $data['insurance_type'], array('class' => 'add_patient_input', 'name' => 'insurance_type', 'placeholder' => 'Insurance Type', 'id' => 'insurance_type', 'data-toggle' => 'tooltip', 'title' => 'Insurance Type', 'data-placement' => 'right')) !!}
 							</div>
+                            <div class="col-sm-6 col-xs-12">
+                                {!! Form::text('special_request', $data['special_request'], array('class' => 'add_patient_input', 'name' => 'special_request', 'placeholder' => 'Special Request', 'id' => 'special_request', 'data-toggle' => 'tooltip', 'title' => 'Special Request', 'data-placement' => 'right')) !!}
+
+                                {!! Form::text('pcp', $data['pcp'], array('class' => 'add_patient_input', 'name' => 'pcp', 'placeholder' => 'Primary Care Physician', 'id' => 'pcp', 'data-toggle' => 'tooltip', 'title' => 'Primary Care Physician', 'data-placement' => 'right')) !!}
+                            </div>
 						</div>
 					</div>
 				</div>

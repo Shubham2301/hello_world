@@ -30,6 +30,10 @@ class AuthServiceProvider extends ServiceProvider
 
         foreach ($this->getPermissions() as $permission) {
             $gate->define($permission->name, function($user) use ($permission) {
+				if($user->isSuperAdmin())
+				{
+					return true;
+				}
                 return $user->hasRole($permission->roles);
             });
         }
