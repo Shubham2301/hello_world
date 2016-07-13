@@ -61,7 +61,13 @@
         <div class="appointment_message arial">
 			<input type="hidden" id="isses" value="{{$data['sesmail']}}">
 			@if($data['sesmail'])
+
+            @if($data['count_files'])
 			<p class="apt_msg"><span><input type="checkbox" checked="checked" id="send_ccda_checkbox" ></span> Send {{$data['count_files']}} patient files to provider</p>
+            @else
+            <p> No file selected </p>
+            @endif
+
             @else
 			<p class="apt_msg"><span></span> No files will be sent because the provider does not have an SES email </p>
             @endif

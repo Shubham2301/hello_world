@@ -16,6 +16,9 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         'myocuhub\Model' => 'myocuhub\Policies\ModelPolicy',
         'myocuhub\Patient' => 'myocuhub\Policies\PatientPolicy',
+        'myocuhub\User' => 'myocuhub\Policies\UserPolicy',
+        'myocuhub\Models\Practice' => 'myocuhub\Policies\PracticePolicy',
+        'myocuhub\Network' => 'myocuhub\Policies\NetworkPolicy',
     ];
 
     /**
@@ -30,6 +33,10 @@ class AuthServiceProvider extends ServiceProvider
 
         foreach ($this->getPermissions() as $permission) {
             $gate->define($permission->name, function($user) use ($permission) {
+				if($user->isSuperAdmin())
+				{
+					return true;
+				}
                 return $user->hasRole($permission->roles);
             });
         }

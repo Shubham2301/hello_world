@@ -29,6 +29,11 @@ class UserController extends Controller
      */
     public function index()
     {
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+        
         $users = User::all();
         $data = array();
         $data['user_active'] = true;
@@ -42,6 +47,10 @@ class UserController extends Controller
      */
     public function create()
     {
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $user = array();
         $userID = Auth::user()->id;
         $user = User::find($userID)->toArray();
@@ -64,9 +73,9 @@ class UserController extends Controller
         $menu_options = Menu::find([1, 2, 3, 4, 5]);
         $menuData = [];
         foreach ($menu_options as $menu_option) {
-            //			if ($menu_option->id != 3 && $menu_option->id != 5) {
-//				$menuData[$menu_option->id] = $menu_option->display_name;
-//			}
+            //          if ($menu_option->id != 3 && $menu_option->id != 5) {
+//              $menuData[$menu_option->id] = $menu_option->display_name;
+//          }
             if($menu_option->landing_page != 0)
                 $menuData[$menu_option->id] = $menu_option->display_name;
         }
@@ -90,7 +99,7 @@ class UserController extends Controller
         if (session('user-level') > 2) {
             $user['practice_id'] = User::getPractice(Auth::user()->id)->id;
         }
-		$user['password_required'] = 'required';
+        $user['password_required'] = 'required';
         return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data)->with('user', $user)->with('networks', $networkData)->with('menuoption', $menuData)->with('practices', $practices);
     }
 
@@ -102,6 +111,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $validator = $this->validateData($request->all());
         if ($validator->fails()) {
             $request->session()->flash('error', $validator->errors()->first());
@@ -226,6 +239,10 @@ class UserController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $level = Auth::user()->level;
         $user = User::find($id);
         if ($level > $user->level) {
@@ -285,7 +302,7 @@ class UserController extends Controller
             foreach ($networkPractices as $practice) {
                 $practices[$practice->id] = $practice->name;
             }
-			$user['password_required']='';
+            $user['password_required']='';
             return view('admin.users.create')->with('user', $user)->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels, 'menuoption' => $menuData])->with('data', $data)->with('networks', $networkData)->with('practices', $practices);
         }
     }
@@ -299,6 +316,10 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $validator = $this->validateData($request->all(), $id);
         if ($validator->fails()) {
             $request->session()->flash('error', $validator->errors()->first());
@@ -382,13 +403,13 @@ class UserController extends Controller
 
         }
 
-		$userData = [];
-		if (session('user-level') == 1) {
-			$userData['network_id'] = $request->input('user_network');
-		} else {
-			$userData['network_id'] = session('network-id');
-		}
-		$network_user = NetworkUser::where('user_id', $id)->update($userData);
+        $userData = [];
+        if (session('user-level') == 1) {
+            $userData['network_id'] = $request->input('user_network');
+        } else {
+            $userData['network_id'] = session('network-id');
+        }
+        $network_user = NetworkUser::where('user_id', $id)->update($userData);
 
         $action = 'updated user profile ';
         if ($password != ''){
@@ -411,6 +432,10 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         if (!$request->input() || $request->input() === '' || sizeof($request->input()) < 1) {
             return;
         }
@@ -489,9 +514,9 @@ class UserController extends Controller
         }
 
         $data = [];
-//		$data[0]['total'] = $users->total();
-//		$data[0]['lastpage'] = $users->lastPage();
-//		$data[0]['currentPage'] = $users->currentPage();
+//      $data[0]['total'] = $users->total();
+//      $data[0]['lastpage'] = $users->lastPage();
+//      $data[0]['currentPage'] = $users->currentPage();
         $i = 0;
         foreach ($users as $user) {
             if ((session('user-level') == 3 || session('user-level') == 4) && $user->practice_id != User::getPractice($userID)->id) {

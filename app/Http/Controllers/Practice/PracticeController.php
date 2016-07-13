@@ -38,6 +38,11 @@ class PracticeController extends Controller
      */
     public function create()
     {
+        if(!policy(new Practice)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
         $id = -1;
         $data = array();
         $data['practice_active'] = true;
@@ -61,6 +66,11 @@ class PracticeController extends Controller
      */
     public function store(Request $request)
     {
+        if(!policy(new Practice)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
         $practicedata = json_decode($request->input('data'), true);
         $practice = new Practice;
         $practice->name = $practicedata[0]['practice_name'];
@@ -136,6 +146,11 @@ class PracticeController extends Controller
      */
     public function edit($id, $location)
     {
+        if(!policy(new Practice)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
         $data = array();
         $data['practice_active'] = true;
         $data['id'] = $id;
@@ -158,6 +173,11 @@ class PracticeController extends Controller
      */
     public function update(Request $request)
     {
+        if(!policy(new Practice)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
         $practicedata = json_decode($request->input('data'), true);
         $practicename = $practicedata[0]['practice_name'];
         $practiceemail = $practicedata[0]['practice_email'];
@@ -217,6 +237,11 @@ class PracticeController extends Controller
      */
     public function destroy(Request $request)
     {
+        if(!policy(new Practice)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
         $i = 0;
         while (1) {
             if ($request->input($i)) {
@@ -247,9 +272,9 @@ class PracticeController extends Controller
         }
 
         $data = [];
-//		$data[0]['total'] = $practices->total();
-//		$data[0]['lastpage'] = $practices->lastPage();
-//		$data[0]['currentPage'] = $practices->currentPage();
+//      $data[0]['total'] = $practices->total();
+//      $data[0]['lastpage'] = $practices->lastPage();
+//      $data[0]['currentPage'] = $practices->currentPage();
         $i = 0;
         foreach ($practices as $practice) {
             $data[$i]['id'] = $practice->id;
@@ -264,6 +289,11 @@ class PracticeController extends Controller
 
     public function administration(Request $request)
     {
+
+        if(!policy(new Practice)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $data = array();
         $data['practice_active'] = true;
         return view('practice.admin')->with('data', $data);
@@ -271,6 +301,11 @@ class PracticeController extends Controller
 
     public function removelocation(Request $request)
     {
+        if(!policy(new Practice)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+        
         $data = PracticeLocation::find($request->location_id)->delete();
 
         return json_encode($data);

@@ -21,6 +21,10 @@ class NetworkController extends Controller {
 	public function index() {
         //$roles = Role::all();
 		//return view('admin.networks.index')->with('roles', $roles);
+		if(!policy(new Network)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $data = array();
         $data['network_active'] = true;
 		return view('admin.networks.index')->with('data', $data);
@@ -32,6 +36,11 @@ class NetworkController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create() {
+		if(!policy(new Network)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
         $data = [];
 		$data = Network::getColumnNames();
         $data['id']= -1;
@@ -39,6 +48,11 @@ class NetworkController extends Controller {
         return view('admin.networks.create')->with('data', $data);
 	}
 	public function add(Request $request) {
+		if(!policy(new Network)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
         $network = new Network;
 		$network->name = $request->input('name');
 		$network->email = $request->input('email');
@@ -69,6 +83,11 @@ class NetworkController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request) {
+		if(!policy(new Network)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
 		$action = 'Store a network';
 		$description = '';
 		$filename = basename(__FILE__);
@@ -94,6 +113,11 @@ class NetworkController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit($id) {
+		if(!policy(new Network)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
         $data = [];
         $data = Network::find($id);
         $data['id']=$id;
@@ -109,6 +133,11 @@ class NetworkController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(Request $request, $id) {
+		if(!policy(new Network)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
         $network = Network::find($id);
         $network->update($request->input());
 		$network->enable_console =0;
@@ -131,6 +160,11 @@ class NetworkController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
     public function destroy(Request $request, $id) {
+    	if(!policy(new Network)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+        
         $network = Network::where('id', $id)->delete();
 		$action = 'delete network of id =' . $id;
 		$description = '';

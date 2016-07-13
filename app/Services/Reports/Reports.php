@@ -473,11 +473,11 @@ class Reports
 
             if ($result->referred_to_practice_id != null) {
                 $referredToPractice[] = $result->referred_to_practice_id;
-                $referredToPracticeName[$result->referred_to_practice_id] = $result->referred_to_practice;
+                $referredToPracticeName[$result->referred_to_practice_id] =  $this->cleanName($result->referred_to_practice);
             }
             if ($result->referred_to_provider_id != null) {
                 $referredToPracticeUser[] = $result->referred_to_provider_id;
-                $referredToPracticeUserName[$result->referred_to_provider_id] = $result->referred_to_provider;
+                $referredToPracticeUserName[$result->referred_to_provider_id] =  $this->cleanName($result->referred_to_provider);
             }
 
             if ($result->gender == 'Male' || $result->gender == 'M') {
@@ -490,7 +490,7 @@ class Reports
             $age[$category]['count']++;
 
             if ($result->appointmenttype != '' && $result->appointmenttype != null) {
-                $appointmentType[] = $result->appointmenttype;
+                $appointmentType[] = $this->cleanName($result->appointmenttype);
             }
 
             if ($result->disease_type == null or $result->disease_type == '') {
@@ -501,19 +501,19 @@ class Reports
                 $result->severity = 'NA';
             }
 
-            $severities[$result->disease_type][] = $result->severity;
-            $diseases[] = $result->disease_type;
+            $severities[$this->cleanName($result->disease_type)][] =  $this->cleanName($result->severity);
+            $diseases[] =  $this->cleanName($result->disease_type);
 
             if ($result->referred_by_provider != '' && $result->referred_by_provider != null) {
-                $referredByDoctor[] = $result->referred_by_provider;
+                $referredByDoctor[] = $this->cleanName($result->referred_by_provider);
             }
 
             if ($result->referred_by_practice != '' && $result->referred_by_practice != null) {
-                $referredByHospital[] = $result->referred_by_practice;
+                $referredByHospital[] = $this->cleanName($result->referred_by_practice);
             }
 
             if ($result->insurance_carrier != '' && $result->insurance_carrier != null) {
-                $insuranceTypes[] = $result->insurance_carrier;
+                $insuranceTypes[] = $this->cleanName($result->insurance_carrier);
             }
 
         }
@@ -544,7 +544,6 @@ class Reports
 
     public function formatReferredBy($type, $referredBy)
     {
-
         $result = array();
         $result['type'] = $type;
         $countPractice = array_count_values($referredBy);
@@ -733,11 +732,14 @@ class Reports
         $startDate = $this->getStartDate();
         $endDate = $this->getEndDate();
 
+
         $queryFilters = " and `import_history`.`network_id` = $networkID ";
 
         if(session('user-level') == 3 || session('user-level') == 4){
             $practice = User::getPractice($userId);
-            $queryFilters .= $practice ? " and `practice_patient`.`practice_id` = $practice->id " : '';
+            $patientsReferredToPractice = " `practices`.`id` = $practice->id ";
+            $patientsAddedByPractice = " `practice_patient`.`practice_id` = $practice->id ";
+            $queryFilters .= $practice ? " and ( $patientsReferredToPractice or $patientsAddedByPractice ) " : '';
         }
 
         if ($filters['type'] == 'real-time') {
@@ -878,6 +880,10 @@ class Reports
             $result = DB::select(DB::raw($query));
         }
         return $result;
+    }
+
+    public function cleanName($name){
+        return trim($name);
     }
 
 }

@@ -198,8 +198,11 @@ class AppointmentController extends Controller
 
 		$filearray = explode( ',', $request->selectedfiles);
 		$filearray = array_unique($filearray);
-		$data['count_files'] = sizeOf($filearray);
+        $data['count_files'] = sizeOf($filearray);
 
+        if($request->selectedfiles == ''){
+            $data['count_files'] = 0;
+        }
 
         $patientInsurance = PatientInsurance::where('patient_id', $patient_id)->first();
         if (sizeof($patientInsurance) == 0) {
