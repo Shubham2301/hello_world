@@ -2,6 +2,7 @@
 
 namespace myocuhub\Services;
 
+use Auth;
 use DateTime;
 use myocuhub\Events\RequestPatientAppointment;
 use myocuhub\Jobs\PatientEngagement\RequestAppointmentPatientMail;
@@ -46,13 +47,28 @@ class ActionService
 			$actionResultName = $actionResultName->name;
 		}
 
+        $previous_contact_history = ContactHistory::where('console_id', $consoleID)->orderBy('id', 'desc')->first();
+        if($previous_contact_history->archived == 0) {
+            $prev_date = new DateTime($previous_contact_history->contact_activity_date);
+            $interval = $contactDate->diff($prev_date);
+            $date_diff = $interval->format('%a') + $previous_contact_history->days_in_current_stage;
+        }
+        else {
+            $prev_date = new DateTime(Careconsole::find($consoleID)->stage_updated_at);
+            $interval = $contactDate->diff($prev_date);
+            $date_diff = $interval->format('%a');
+        }
+
         $contact = new ContactHistory;
         $contact->action_id = $actionID;
         $contact->action_result_id = $actionResultID;
         $contact->notes = $notes;
         $contact->console_id = $consoleID;
         $contact->contact_activity_date = $contactDate->format('Y-m-d H:i:s');
+        $contact->user_id = Auth::user()->id;
         $contact->save();
+        $contact->days_in_current_stage = $date_diff;
+
         switch ($actionName) {
             case 'request-patient-email':
                 $console = Careconsole::find($consoleID);
@@ -72,6 +88,7 @@ class ActionService
             case 'contact-attempted-by-other':
             case 'patient-notes':
             case 'requested-data':
+
                 break;
             case 'manually-schedule':
                 $console = Careconsole::find($consoleID);
@@ -113,6 +130,9 @@ class ActionService
                 $contact->save();
                 $appointment->save();
                 if ($appointment) {
+                    $contact->previous_stage = $console->stage_id;
+                    $contact->days_in_prev_stage = $date_diff;
+                    $contact->days_in_current_stage = 0;
                     $console->appointment_id = $appointment->id;
                     $console->stage_id = 2;
                     $console->recall_date = null;
@@ -174,6 +194,9 @@ class ActionService
                 $contact->save();
                 $appointment->save();
                 if ($appointment) {
+                    $contact->previous_stage = $console->stage_id;
+                    $contact->days_in_prev_stage = $date_diff;
+                    $contact->days_in_current_stage = 0;
                     $console->appointment_id = $appointment->id;
                     $console->stage_id = 2;
                     $console->recall_date = null;
@@ -198,6 +221,9 @@ class ActionService
                 break;
             case 'move-to-console':
                 $console = Careconsole::find($consoleID);
+                $contact->previous_stage = $console->stage_id;
+                $contact->days_in_prev_stage = $date_diff;
+                $contact->days_in_current_stage = 0;
                 $referralHistory = new ReferralHistory;
                 $referralHistory->save();
                 $console->referral_id = $referralHistory->id;
@@ -221,6 +247,9 @@ class ActionService
             case 'unarchive':
                 $console = Careconsole::find($consoleID);
                 $date = new DateTime();
+                $contact->previous_stage = $console->stage_id;
+                $contact->days_in_prev_stage = $date_diff;
+                $contact->days_in_current_stage = 0;
                 $console->archived_date = null;
                 $console->stage_id = 1;
                 $console->appointment_id = null;
@@ -247,6 +276,9 @@ class ActionService
                 $kpi = Kpi::where('name', 'waiting-for-report')->first();
                 $appointment->appointment_status = $kpi['id'];
                 $appointment->save();
+                $contact->previous_stage = $console->stage_id;
+                $contact->days_in_prev_stage = $date_diff;
+                $contact->days_in_current_stage = 0;
                 $console->stage_id = 4;
                 $date = new DateTime();
                 $console->stage_updated_at = $date->format('Y-m-d H:i:s');
@@ -258,6 +290,9 @@ class ActionService
                 $kpi = Kpi::where('name', 'no-show')->first();
                 $appointment->appointment_status = $kpi['id'];
                 $appointment->save();
+                $contact->previous_stage = $console->stage_id;
+                $contact->days_in_prev_stage = $date_diff;
+                $contact->days_in_current_stage = 0;
                 $console->stage_id = 3;
                 $date = new DateTime();
                 $console->stage_updated_at = $date->format('Y-m-d H:i:s');
@@ -269,6 +304,9 @@ class ActionService
                 $kpi = Kpi::where('name', 'cancelled')->first();
                 $appointment->appointment_status = $kpi['id'];
                 $appointment->save();
+                $contact->previous_stage = $console->stage_id;
+                $contact->days_in_prev_stage = $date_diff;
+                $contact->days_in_current_stage = 0;
                 $console->stage_id = 3;
                 $date = new DateTime();
                 $console->stage_updated_at = $date->format('Y-m-d H:i:s');
@@ -276,6 +314,9 @@ class ActionService
                 break;
             case 'data-received':
                 $console = Careconsole::find($consoleID);
+                $contact->previous_stage = $console->stage_id;
+                $contact->days_in_prev_stage = $date_diff;
+                $contact->days_in_current_stage = 0;
                 $console->stage_id = 5;
                 $date = new DateTime();
                 $console->stage_updated_at = $date->format('Y-m-d H:i:s');
@@ -309,6 +350,10 @@ class ActionService
             default:
                 break;
         }
+
+        $console = Careconsole::find($consoleID);
+        $contact->current_stage = $console->stage_id;
+        $contact->save();
         switch ($actionResultName) {
             case 'mark-as-priority':
                 $console = Careconsole::find($consoleID);

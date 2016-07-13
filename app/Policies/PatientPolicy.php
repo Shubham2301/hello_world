@@ -3,6 +3,7 @@
 namespace myocuhub\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Auth;
 use myocuhub\Models\MessageTemplate;
 use myocuhub\Patient;
 
@@ -21,6 +22,15 @@ class PatientPolicy
     public function validPhone(Patient $patient){
     	$phone = $patient->getPhone();
     	return ($phone != null && $phone != '-');
+    }
+    
+    public function administration(){
+    	$user = Auth::user();
+    	try {
+    		return $user->isSuperAdmin() ?: ($user->hasRole('patient-admin') ?: false);
+    	} catch (Exception $e) {
+    		Log::error($e);
+    	}
     }
 
 }
