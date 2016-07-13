@@ -29,6 +29,11 @@ class UserController extends Controller
      */
     public function index()
     {
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+        
         $users = User::all();
         $data = array();
         $data['user_active'] = true;
