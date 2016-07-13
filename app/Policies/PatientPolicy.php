@@ -25,7 +25,7 @@ class PatientPolicy
     		return $user->isSuperAdmin() ?: ($user->hasRole('patient-admin') ?: false);
     	} catch (Exception $e) {
     		Log::error($e);
-    	}	
+    	}
     }
 
 }

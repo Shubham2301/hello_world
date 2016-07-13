@@ -29,7 +29,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        $this->authorize('create-user');
         $users = User::all();
         $data = array();
         $data['user_active'] = true;
@@ -43,7 +42,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        $this->authorize('create-user');
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $user = array();
         $userID = Auth::user()->id;
         $user = User::find($userID)->toArray();
@@ -104,6 +106,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $validator = $this->validateData($request->all());
         if ($validator->fails()) {
             $request->session()->flash('error', $validator->errors()->first());
@@ -228,6 +234,10 @@ class UserController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $level = Auth::user()->level;
         $user = User::find($id);
         if ($level > $user->level) {
@@ -301,6 +311,10 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $validator = $this->validateData($request->all(), $id);
         if ($validator->fails()) {
             $request->session()->flash('error', $validator->errors()->first());
@@ -413,6 +427,10 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
+        if(!policy(new User)->administration()){
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         if (!$request->input() || $request->input() === '' || sizeof($request->input()) < 1) {
             return;
         }
