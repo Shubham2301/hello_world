@@ -26,10 +26,10 @@ elixir(function (mix) {
     mix.less(['users.less'], 'public/css/users.css');
     mix.less(['reporting.less'], 'public/css/reporting.css');
     mix.less(['reports.less'], 'public/css/reports.css');
+    mix.less(['reach_rate_report.less'], 'public/css/reach_rate_report.css');
     mix.less(['web_forms.less'], 'public/css/web_forms.css');
     mix.less(['web_forms_print.less'], 'public/css/web_forms_print.css');
     mix.less(['patient_records.less'], 'public/css/patient_records.css');
-
     mix.babel(['main.js', 'announcements.js'], 'public/js/main.js');
     mix.babel(['sesconnect.js'], 'public/js/sesconnect.js');
     mix.babel(['referraltype.js'], 'public/js/referraltype.js');
@@ -47,6 +47,7 @@ elixir(function (mix) {
     mix.babel(['users.js'], 'public/js/users.js');
     mix.babel(['reporting.js'], 'public/js/reporting.js');
     mix.babel(['reports.js'], 'public/js/reports.js');
+    mix.babel(['reach_rate_report.js'], 'public/js/reach_rate_report.js');
     mix.babel(['session_timeout.js'], 'public/js/session_timeout.js');
     mix.babel(['web_forms.js'], 'public/js/web_forms.js');
     mix.babel(['patient_records.js'], 'public/js/patient_records.js');
@@ -62,9 +63,10 @@ elixir(function (mix) {
                 'css/networks.css',
                 'css/file_exchange.css',
                 'css/announcements.css',
-                'css/users.css',
-                'css/reporting.css',
-                'css/reports.css',
+				'css/users.css',
+				'css/reporting.css',
+				'css/reports.css',
+				'css/reach_rate_report.css',
                 'css/web_forms.css',
                 'css/web_forms_print.css',
                 'css/patient_records.css',
@@ -79,9 +81,10 @@ elixir(function (mix) {
                 'js/careconsole.js',
                 'js/networks.js',
                 'js/file_exchange.js',
-                'js/users.js',
-                'js/reporting.js',
-                'js/reports.js',
+				'js/users.js',
+				'js/reporting.js',
+				'js/reports.js',
+				'js/reach_rate_report.js',
                 'js/session_timeout.js',
                 'js/audit.js',
                 'js/web_forms.js',

@@ -31,7 +31,7 @@ class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQ
 
     public function handle()
     {
-        
+
         $user = Auth::user();
 
         $attr = [
@@ -52,7 +52,7 @@ class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQ
     }
 
     private function sendRequest($attr){
-        
+
         if(Validator::make($attr, ['email' => 'email'])->fails()){
             return false;
         }

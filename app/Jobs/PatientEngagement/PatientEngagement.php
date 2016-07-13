@@ -23,7 +23,7 @@ class PatientEngagement extends Job{
 
     public function __construct()
     {
-        
+
     }
 
     public function sendSMS($phone, $message)

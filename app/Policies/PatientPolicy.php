@@ -23,7 +23,7 @@ class PatientPolicy
     	$phone = $patient->getPhone();
     	return ($phone != null && $phone != '-');
     }
-    
+
     public function administration(){
     	$user = Auth::user();
     	try {

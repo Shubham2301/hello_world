@@ -9,7 +9,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 class PatientRecordCreation extends Event
 {
     use SerializesModels;
-  
+
     /**
      * Create a new event instance.
      *

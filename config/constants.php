@@ -80,7 +80,7 @@ return [
 
       ]
    ],
-    
+
     'default_paginate_result'=>20
 
 ];

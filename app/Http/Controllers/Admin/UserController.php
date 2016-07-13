@@ -33,7 +33,7 @@ class UserController extends Controller
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
         $users = User::all();
         $data = array();
         $data['user_active'] = true;

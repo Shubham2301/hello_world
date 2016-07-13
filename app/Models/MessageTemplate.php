@@ -19,7 +19,7 @@ class MessageTemplate extends Model
             ->first(['message']);
         if ($message){
         	return $message->message;
-        } 
+        }
         return self::defaultTemplate();
     }
 
@@ -29,7 +29,7 @@ class MessageTemplate extends Model
         }
         return $template;
     }
-    
+
     public static function getMessageTypes(){     
         $types = array_flip(config('patient_engagement.type'));
         foreach ($types as $key => $value) {

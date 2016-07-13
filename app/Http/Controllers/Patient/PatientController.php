@@ -54,12 +54,12 @@ class PatientController extends Controller
      */
     public function create(Request $request)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
         $data = array();
         $gender = array();
         $gender['Male'] = 'Male';
@@ -95,12 +95,12 @@ class PatientController extends Controller
 
     public function createByAdmin()
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
         $gender = array();
         $gender['Male'] = 'Male';
         $gender['Female'] = 'Female';
@@ -135,12 +135,12 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         $userID = Auth::user()->id;
         $network = User::getNetwork($userID);
@@ -344,12 +344,12 @@ class PatientController extends Controller
      */
     public function edit($id)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         $gender = array();
         $gender['Male'] = 'Male';
@@ -412,12 +412,12 @@ class PatientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         $patient = Patient::find($id);
         if ($patient) {
@@ -495,12 +495,12 @@ class PatientController extends Controller
 
     public function destroy(Request $request)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         if (!$request->input() || $request->input() === '' || sizeof($request->input()) < 1) {
             return;
@@ -588,12 +588,12 @@ class PatientController extends Controller
 
     public function editFromReferral(Request $request)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         $id = $request->input('patient_id');
         $gender = array();
@@ -675,12 +675,12 @@ class PatientController extends Controller
 
     public function updateDemographics(Request $request)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         $data = $request->all();
         $patient_id = $data['patient_id'];
