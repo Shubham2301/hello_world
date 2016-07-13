@@ -208,4 +208,5 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/getfileuploadview', 'Patient\PatientFilesController@getFileUploadView');
 	Route::get('downloadpatientfile/{id}', 'Patient\PatientFilesController@downloadFile');
 
+    Route::resource('report/reach_rate_report', 'Reports\ReachRateController');
 });
