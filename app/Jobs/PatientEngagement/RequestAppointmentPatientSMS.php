@@ -2,19 +2,22 @@
 
 namespace myocuhub\Jobs\PatientEngagement;
 
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use myocuhub\Facades\Sms;
 use myocuhub\Jobs\Job;
 use myocuhub\Patient;
 
-class RequestAppointmentPatientSMS extends Job implements ShouldQueue
+class RequestAppointmentPatientSMS extends PatientEngagement implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 
     public $message;
 
-    public function __construct(Patient $patient)
+    public function __construct(Patient $patient, $message)
     {
         $this->setPatient($patient);
         $this->setStage('request_appointment');
@@ -24,9 +27,10 @@ class RequestAppointmentPatientSMS extends Job implements ShouldQueue
 
     public function handle()
     {
-        $attr['phone'] = $this->patient->getPhone();
-        $attr['name'] = $this->patient->firstname.' '.$this->patient->lastname;
-        $attr['message'] = $this->message
+        $patient = $this->getPatient();
+        $attr['phone'] = $patient->getPhone();
+        $attr['name'] = $patient->firstname.' '.$patient->lastname;
+        $attr['message'] = $this->message;
         $this->sendRequest($attr);
     }
 

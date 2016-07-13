@@ -2,13 +2,20 @@
 
 namespace myocuhub\Jobs\PatientEngagement;
 
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Jobs\Job;
 use myocuhub\Patient;
 
-class RequestAppointmentPatientMail extends Job implements ShouldQueue
+class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 
@@ -28,8 +35,8 @@ class RequestAppointmentPatientMail extends Job implements ShouldQueue
         $user = Auth::user();
 
         $attr = [
-            'email' => $patient->email,
-            'name' => $patient->getName(),
+            'email' => $this->getPatient()->email,
+            'name' => $this->getPatient()->getName(),
             'sent_by_name' => $user->name,
             'sent_by_email'=> $user->email,
             'network_id' => session('network-id'),

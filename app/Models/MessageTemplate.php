@@ -23,7 +23,7 @@ class MessageTemplate extends Model
         return self::defaultTemplate();
     }
 
-    public static prepareMessage($attr, $template){
+    public static function prepareMessage($attr, $template){
         foreach($attr as $key => $value){
             $template = str_replace('{'.strtoupper($key).'}', $value, $template);
         }

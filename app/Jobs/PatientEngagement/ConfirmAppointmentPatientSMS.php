@@ -2,12 +2,18 @@
 
 namespace myocuhub\Jobs\PatientEngagement;
 
+use DateTime;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 use myocuhub\Jobs\Job;
 use myocuhub\Models\Appointment;
+use myocuhub\Models\MessageTemplate;
+use myocuhub\Models\Practice;
+use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
+use myocuhub\User;
 
 class ConfirmAppointmentPatientSMS extends PatientEngagement implements ShouldQueue
 {

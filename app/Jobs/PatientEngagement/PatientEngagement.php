@@ -2,7 +2,13 @@
 
 namespace myocuhub\Jobs\PatientEngagement;
 
+use Exception;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use myocuhub\Events\PatientEngagementFailure;
 use myocuhub\Events\PatientEngagementSuccess;
+use myocuhub\Facades\Sms;
 use myocuhub\Jobs\Job;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\MessageTemplate;
@@ -24,28 +30,41 @@ class PatientEngagement extends Job{
     {
         try {
             $message = Sms::send($phone, $message);
-            $engaged = new PatientEngagementSuccess();
-            $engaged->setAction('Ocuhub Scheduler sent Post Appointment SMS to : ' . $this->getPatient()->name . ' at '. $phone);
             event(new PatientEngagementSuccess([
-                'action' =>  . $this->getPatient()->name . ' at '. $phone,
+                'action' =>  'Engaged ' . $this->getPatient()->name . ' by SMS at'. $phone,
                 ]));
         } catch (Exception $e) {
             Log::error($e);
+            event(new PatientEngagementFailure([
+                'action' =>  'Application Exception in engaging patient : ' . $this->getPatient()->getName() . ' by ' . $this->getType() . ' on ' . $this->getStage() . ' at ' . $phone,
+                'description' => $e->getMessage()
+                ]));
         }
     }
 
     public function sendEmail($attr)
     {
+        if(Validator::make($attr['to'], ['email' => 'email'])->fails()){
+            return false;
+        }
+
         try {
-            $message = Sms::send($phone, $message);
-            $engaged = new PatientEngagementSuccess();
-            $engaged->setAction('Ocuhub Scheduler sent Post Appointment SMS to : ' . $this->getPatient()->name . ' at '. $phone);
+            $mailToProvider = Mail::send($attr['view'], ['attr' => $attr['attr']], function ($m) use ($attr) {
+                $m->from($attr['from']['email'], $attr['from']['name']);
+                $m->to($attr['to']['email'], $attr['to']['name'])->subject($attr['subject']);
+            });
             event(new PatientEngagementSuccess([
-                'action' =>  . $this->getPatient()->name . ' at '. $phone,
+                'action' =>  'Engaged patient : ' . $this->getPatient()->getName() . ' by ' . $this->getType() . ' on ' . $this->getStage() . ' at ' . $attr['to']['email'],
                 ]));
+            return true;
         } catch (Exception $e) {
             Log::error($e);
+            event(new PatientEngagementFailure([
+                'action' =>  'Application Exception in engaging patient : ' . $this->getPatient()->getName() . ' by ' . $this->getType() . ' on ' . $this->getStage() . ' at ' . $attr['to']['email'],
+                'description' => $e->getMessage()
+                ]));
         }
+
     }
 
     public function auditMessage()

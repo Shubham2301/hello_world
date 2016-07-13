@@ -9,9 +9,20 @@ trait Auditable
     protected $result;
     protected $ip;
 
-    function __construct()
+    function __construct($attr)
 	{
-		
+        if (array_key_exists('ip', $attr)) {
+            $this->setIp($attr['ip']);
+        }
+        if (array_key_exists('description', $attr)) {
+            $this->setDescription($attr['description']);
+        }
+        if (array_key_exists('result', $attr)) {
+            $this->setResult($attr['result']);
+        }
+        if (array_key_exists('action', $attr)) {
+            $this->setAction($attr['action']);
+        }
 	}
 
     /**

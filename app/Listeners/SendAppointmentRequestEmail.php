@@ -16,6 +16,8 @@ use myocuhub\Events\AppointmentScheduled;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Facades\SES;
 use myocuhub\Jobs\PatientEngagement\ConfirmAppointmentPatientMail;
+use myocuhub\Jobs\PatientEngagement\ConfirmAppointmentPatientSMS;
+use myocuhub\Models\EngagementPreference;
 use myocuhub\Models\PatientFile;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
@@ -105,10 +107,12 @@ class SendAppointmentRequestEmail
 		}
 
 		$event->_setProviderEmailStatus($this->sendProviderMail($appt, $location));
+
+		$this->engagePatient($patient, $appointment);
 	}
 
 	public function engagePatient($patient, $appointment){
-		$preference = EngagementPreference::where('patient_id', $patient->id)->get();
+		$preference = EngagementPreference::where('patient_id', $patient->id)->first();
 		switch ($preference['type']) {
 			case config('patient_engagement.type.sms'):
                 dispatch((new ConfirmAppointmentPatientSMS($patient, $appointment))->onQueue('sms'));
@@ -120,7 +124,6 @@ class SendAppointmentRequestEmail
                 dispatch((new ConfirmAppointmentPatientMail($patient, $appointment))->onQueue('email'));
                 break;
 		}
-		dispatch(new ConfirmAppointmentPatientMail($patient, $appointment));
 	}
 
 	public function sendProviderMail($appt, $location)
@@ -175,7 +178,7 @@ class SendAppointmentRequestEmail
 				});
 			} catch (Exception $e) {
 				Log::error($e);
-				$action = 'Application Exception in sending Appointment Request email not sent to patient '. $location->email;
+				$action = 'Application Exception in sending Appointment Request email to practice : '. $location->email;
 				$description = '';
 				$filename = basename(__FILE__);
 				$ip = '';

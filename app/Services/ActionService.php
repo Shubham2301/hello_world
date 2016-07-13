@@ -4,6 +4,8 @@ namespace myocuhub\Services;
 
 use DateTime;
 use myocuhub\Events\RequestPatientAppointment;
+use myocuhub\Jobs\PatientEngagement\RequestAppointmentPatientMail;
+use myocuhub\Jobs\PatientEngagement\RequestAppointmentPatientSMS;
 use myocuhub\Models\Action;
 use myocuhub\Models\ActionResult;
 use myocuhub\Models\Appointment;
@@ -11,6 +13,7 @@ use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
 use myocuhub\Models\ReferralHistory;
+use myocuhub\Patient;
 use myocuhub\User;
 
 class ActionService
@@ -60,7 +63,7 @@ class ActionService
                 break;
             case 'request-patient-sms':
                 $console = Careconsole::find($consoleID);
-                $patientID = Patient::find($console->patient_id);
+                $patient = Patient::find($console->patient_id);
                 dispatch((new RequestAppointmentPatientSMS($patient, $message))->onQueue('sms'));
                 break;
             case 'contact-attempted-by-phone':
