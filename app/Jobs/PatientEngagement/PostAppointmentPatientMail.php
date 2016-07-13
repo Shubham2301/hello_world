@@ -46,16 +46,19 @@ class PostAppointmentPatientMail extends PatientEngagement implements ShouldQueu
                 $m->to($to['email'], $to['name'])->subject($subject);
             });
             if($mail->getStatusCode() == "200"){
-                $engaged = new PatientEngagementSuccess();
-                $engaged->setAction('Ocuhub Scheduler sent Post Appointment mail to : ' . $to['name'] . ' ' . $to['email']);
-                event($engaged);
+                event(new PatientEngagementSuccess([
+                        'action' => 'Ocuhub Scheduler sent Post Appointment mail to : ' . $to['name'] . ' ' . $to['email'],
+                    ]););
             }
         } catch (Exception $e) {
             Log::error($e);
-            $engaged = new PatientEngagementFailure();
-            $engaged->setAction('Ocuhub Scheduler sent Post Appointment mail to : ' . $to['name'] . ' ' . $to['email']);
-            $engaged->setDescription($e->getMessage());
-            event($engaged);
+            $engaged = ;
+            $engaged->setAction();
+            $engaged->setDescription();
+            event(new PatientEngagementFailure([
+                    'action' => 'Ocuhub Scheduler Failed to send Post Appointment mail to : ' . $to['name'] . ' ' . $to['email'],
+                    'description' => $e->getMessage()
+                ]));
         }
     }
 }
