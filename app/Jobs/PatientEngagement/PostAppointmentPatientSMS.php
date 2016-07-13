@@ -19,7 +19,9 @@ class PostAppointmentPatientSMS extends PatientEngagement implements ShouldQueue
 
     public function __construct(Appointment $appt)
     {
-        parent::__construct($appt);
+        $this->setAppt($appt);
+        $this->setPatient(Patient::find($this->appt->patient_id));
+        $this->setStage('post_appointment');
         $this->setType('sms');
     }
 
@@ -34,17 +36,6 @@ class PostAppointmentPatientSMS extends PatientEngagement implements ShouldQueue
         $content = $this->getContent();
         $message = Sms::prepare('sms.master', $content);
 
-        try {
-            Sms::send($to['phone'], $message);
-            $engaged = new PatientEngagementSuccess();
-            $engaged->setAction('Ocuhub Scheduler sent Post Appointment SMS to : ' . $to['name'] . ' at '.$to['phone']);
-            event($engaged);
-        } catch (Exception $e) {
-            Log::error($e);
-            $engaged = new PatientEngagementFailure();
-            $engaged->setAction('Ocuhub Scheduler failed to send Post Appointment SMS to : ' . $to['name'] . ' at '.$to['phone']);
-            $engaged->setDescription($e->getMessage());
-            event($engaged);
-        }
+        $this->sendSMS($to['phone'], $message);
     }
 }

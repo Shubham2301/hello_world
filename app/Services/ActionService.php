@@ -5,6 +5,8 @@ namespace myocuhub\Services;
 use Auth;
 use DateTime;
 use myocuhub\Events\RequestPatientAppointment;
+use myocuhub\Jobs\PatientEngagement\RequestAppointmentPatientMail;
+use myocuhub\Jobs\PatientEngagement\RequestAppointmentPatientSMS;
 use myocuhub\Models\Action;
 use myocuhub\Models\ActionResult;
 use myocuhub\Models\Appointment;
@@ -12,6 +14,7 @@ use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
 use myocuhub\Models\ReferralHistory;
+use myocuhub\Patient;
 use myocuhub\User;
 
 class ActionService
@@ -69,21 +72,15 @@ class ActionService
         switch ($actionName) {
             case 'request-patient-email':
                 $console = Careconsole::find($consoleID);
-                $patientID = $console->patient_id;
-                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['email'], $message);
-                event($requestPatientAppointment);
+                $patient = Patient::find($console->patient_id);
+                dispatch((new RequestAppointmentPatientMail($patient, $message))->onQueue('mail'));
                 break;
             case 'request-patient-phone':
-                $console = Careconsole::find($consoleID);
-                $patientID = $console->patient_id;
-                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['phone'], $message);
-                event($requestPatientAppointment);
                 break;
             case 'request-patient-sms':
                 $console = Careconsole::find($consoleID);
-                $patientID = $console->patient_id;
-                $requestPatientAppointment = new RequestPatientAppointment($patientID, ['sms'], $message);
-                event($requestPatientAppointment);
+                $patient = Patient::find($console->patient_id);
+                dispatch((new RequestAppointmentPatientSMS($patient, $message))->onQueue('sms'));
                 break;
             case 'contact-attempted-by-phone':
             case 'contact-attempted-by-email':

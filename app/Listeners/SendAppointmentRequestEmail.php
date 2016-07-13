@@ -9,18 +9,21 @@ use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
-use myocuhub\Facades\SES;
 use Log;
+use MyCCDA;
+use Storage;
 use myocuhub\Events\AppointmentScheduled;
 use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Facades\SES;
+use myocuhub\Jobs\PatientEngagement\ConfirmAppointmentPatientMail;
+use myocuhub\Jobs\PatientEngagement\ConfirmAppointmentPatientSMS;
+use myocuhub\Models\EngagementPreference;
+use myocuhub\Models\PatientFile;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
 use myocuhub\User;
-use myocuhub\Models\PatientFile;
-use MyCCDA;
-use Storage;
 
 class SendAppointmentRequestEmail
 {
@@ -105,48 +108,22 @@ class SendAppointmentRequestEmail
 
 		$event->_setProviderEmailStatus($this->sendProviderMail($appt, $location));
 
-		$event->_setPatientEmailStatus($this->sendPatientMail($appt, $patient));
+		$this->engagePatient($patient, $appointment);
 	}
 
-	public function sendPatientMail($appt, $patient)
-	{
-		if ($patient->email == null || $patient->email == '') {
-			return false;
+	public function engagePatient($patient, $appointment){
+		$preference = EngagementPreference::where('patient_id', $patient->id)->first();
+		switch ($preference['type']) {
+			case config('patient_engagement.type.sms'):
+                dispatch((new ConfirmAppointmentPatientSMS($patient, $appointment))->onQueue('sms'));
+                break;
+            case config('patient_engagement.type.phone'):
+                break;
+            case config('patient_engagement.type.email'):
+            default:
+                dispatch((new ConfirmAppointmentPatientMail($patient, $appointment))->onQueue('email'));
+                break;
 		}
-
-		$attr = [
-			'from' => [
-				'name' => config('constants.support.email_name'),
-				'email' => config('constants.support.email_id'),
-			],
-			'to' => [
-				'name' => $patient->lastname . ', ' . $patient->firstname,
-				'email' => $patient->email,
-			],
-			'subject' => config('constants.message_views.request_appointment_patient.subject'),
-			'body' =>'',
-			'view' => config('constants.message_views.request_appointment_patient.view'),
-			'appt' => $appt,
-			'attachments' => [],
-		];
-
-		try {
-			$mailToPatient = Mail::send($attr['view'], ['appt' => $attr['appt']], function ($m) use ($attr) {
-				$m->from($attr['from']['email'], $attr['from']['name']);
-				$m->to($attr['to']['email'], $attr['to']['name'])->subject($attr['subject']);
-			});
-		} catch (Exception $e) {
-			Log::error($e);
-			$action = 'Application Exception in sending Appointment Request email not sent to patient '. $patient->email;
-			$description = '';
-			$filename = basename(__FILE__);
-			$ip = '';
-			Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
-			return false;
-		}
-
-		return true;
 	}
 
 	public function sendProviderMail($appt, $location)
@@ -201,7 +178,7 @@ class SendAppointmentRequestEmail
 				});
 			} catch (Exception $e) {
 				Log::error($e);
-				$action = 'Application Exception in sending Appointment Request email not sent to patient '. $location->email;
+				$action = 'Application Exception in sending Appointment Request email to practice : '. $location->email;
 				$description = '';
 				$filename = basename(__FILE__);
 				$ip = '';

@@ -19,6 +19,11 @@ class PatientPolicy
         return ($count == 0) ? false : true;
     }
 
+    public function validPhone(Patient $patient){
+    	$phone = $patient->getPhone();
+    	return ($phone != null && $phone != '-');
+    }
+    
     public function administration(){
     	$user = Auth::user();
     	try {

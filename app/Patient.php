@@ -198,6 +198,10 @@ class Patient extends Model
             ->get();
     }
 
+    public function engagementPreference(){
+        return $this->hasOne('myocuhub\Models\EngagementPreference');
+    }
+
     public function engagePatient($appt){
         switch ($appt['patient_preference']) {
             case config('patient_engagement.type.sms'):
