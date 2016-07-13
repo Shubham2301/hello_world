@@ -17,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
         'myocuhub\Model' => 'myocuhub\Policies\ModelPolicy',
         'myocuhub\Patient' => 'myocuhub\Policies\PatientPolicy',
         'myocuhub\User' => 'myocuhub\Policies\UserPolicy',
-        'myocuhub\Practice' => 'myocuhub\Policies\PracticePolicy',
+        'myocuhub\models\Practice' => 'myocuhub\Policies\PracticePolicy',
         'myocuhub\Network' => 'myocuhub\Policies\NetworkPolicy',
     ];
 
