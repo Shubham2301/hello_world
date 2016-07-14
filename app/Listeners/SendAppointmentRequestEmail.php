@@ -115,14 +115,14 @@ class SendAppointmentRequestEmail
 		$preference = EngagementPreference::where('patient_id', $patient->id)->first();
 		switch ($preference['type']) {
 			case config('patient_engagement.type.sms'):
-                dispatch((new ConfirmAppointmentPatientSMS($patient, $appointment))->onQueue('sms'));
-                break;
-            case config('patient_engagement.type.phone'):
-                break;
-            case config('patient_engagement.type.email'):
-            default:
-                dispatch((new ConfirmAppointmentPatientMail($patient, $appointment))->onQueue('email'));
-                break;
+			dispatch((new ConfirmAppointmentPatientSMS($patient, $appointment))->onQueue('sms'));
+               		break;
+            		case config('patient_engagement.type.phone'):
+                	break;
+            		case config('patient_engagement.type.email'):
+            		default:
+                	dispatch(new ConfirmAppointmentPatientMail($patient, $appointment));
+                	break;
 		}
 	}
 

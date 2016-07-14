@@ -12,6 +12,8 @@ use myocuhub\Events\PatientEngagementSuccess;
 use myocuhub\Facades\Sms;
 use myocuhub\Jobs\Job;
 use myocuhub\Models\Appointment;
+use myocuhub\Patient;
+
 
 class PostAppointmentPatientSMS extends PatientEngagement implements ShouldQueue
 {

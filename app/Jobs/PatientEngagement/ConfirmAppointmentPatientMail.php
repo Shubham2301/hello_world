@@ -29,10 +29,11 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
      */
     public function __construct(Patient $patient, Appointment $appt)
     {
-        $this->setPatient($patient);
+        //dd('asdasd');
+	$this->setPatient($patient);
         $this->setAppt($appt);
         $this->setStage('confirm_appointment');
-        $this->setType('mail');
+        $this->setType('email');
     }
 
     /**
@@ -42,9 +43,9 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
      */
     public function handle()
     {
-        $appointment = $this->getAppt();
+	$appointment = $this->getAppt();
         $appt = [];
-
+	
         $practice = Practice::find($appointment->practice_id);
         $loggedInUser = Auth::user();
         $network = User::getNetwork($loggedInUser->id);
@@ -88,7 +89,6 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
             'view' => config('constants.message_views.request_appointment_patient.view'),
             'attr' => $appt,
         ];
-
         $this->sendEmail($attr);
     }
 }

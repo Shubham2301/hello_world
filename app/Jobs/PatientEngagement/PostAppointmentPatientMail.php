@@ -13,6 +13,7 @@ use myocuhub\Events\PatientEngagementFailure;
 use myocuhub\Events\PatientEngagementSuccess;
 use myocuhub\Jobs\Job;
 use myocuhub\Models\Appointment;
+use myocuhub\Patient;
 
 class PostAppointmentPatientMail extends PatientEngagement implements ShouldQueue
 {
@@ -23,7 +24,7 @@ class PostAppointmentPatientMail extends PatientEngagement implements ShouldQueu
         $this->setAppt($appt);
         $this->setPatient(Patient::find($this->appt->patient_id));
         $this->setStage('post_appointment');
-        $this->setType('mail');
+        $this->setType('email');
     }
 
     public function handle()
@@ -39,7 +40,7 @@ class PostAppointmentPatientMail extends PatientEngagement implements ShouldQueu
         $content = $this->getContent();
         $message_config = 'constants.message_views.post_appointment_patient';
         $subject = config("$message_config.subject");
-
+	
         try {
             $mail = Mail::send(config("$message_config.view"), ['content' => $content, 'to' => $to], function ($m) use ($to, $subject) {
                 $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
@@ -48,13 +49,10 @@ class PostAppointmentPatientMail extends PatientEngagement implements ShouldQueu
             if($mail->getStatusCode() == "200"){
                 event(new PatientEngagementSuccess([
                         'action' => 'Ocuhub Scheduler sent Post Appointment mail to : ' . $to['name'] . ' ' . $to['email'],
-                    ]););
+                    ]));
             }
         } catch (Exception $e) {
             Log::error($e);
-            $engaged = ;
-            $engaged->setAction();
-            $engaged->setDescription();
             event(new PatientEngagementFailure([
                     'action' => 'Ocuhub Scheduler Failed to send Post Appointment mail to : ' . $to['name'] . ' ' . $to['email'],
                     'description' => $e->getMessage()
