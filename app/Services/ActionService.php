@@ -48,7 +48,7 @@ class ActionService
 		}
 
         $previous_contact_history = ContactHistory::where('console_id', $consoleID)->orderBy('id', 'desc')->first();
-        if($previous_contact_history->archived == 0) {
+        if($previous_contact_history && $previous_contact_history->archived == 0) {
             $prev_date = new DateTime($previous_contact_history->contact_activity_date);
             $interval = $contactDate->diff($prev_date);
             $date_diff = $interval->format('%a') + $previous_contact_history->days_in_current_stage;
