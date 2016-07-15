@@ -148,6 +148,7 @@ class UserController extends Controller
         $user->usertype_id = $request->input('usertype');
         $user->level = $request->input('userlevel');
         $user->acc_key = $request->input('acc_key');
+        $user->speciality = $request->input('speciality');
 
         $user->two_factor_auth = $request->input('two_factor_auth') ? $request->input('two_factor_auth') : 0;
         $roles = array();
@@ -346,6 +347,7 @@ class UserController extends Controller
         $user->level = $request->input('userlevel');
         $user->acc_key = $request->input('acc_key');
         $user->two_factor_auth = $request->input('two_factor_auth');
+        $user->speciality = $request->input('speciality');
         $menuID = $request->input('landing_page');
         if ($menuID != '') {
             $user->menu_id = $menuID;
