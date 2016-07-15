@@ -75,6 +75,7 @@ trait PatientRecordsTrait
     {
         $patients = $this->search($request);
         $patients = json_decode($patients, true);
+        
         if (!array_key_exists('id', $patients[0])) {
             return 'No result found';
         }
