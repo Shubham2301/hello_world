@@ -29,10 +29,6 @@ $(document).ready(function() {
 		getPatients(searchdata, page);
 	});
 
-//	$('#paginate_right').on('click', '#paginate_right', function(){
-//
-//	});
-
 
 	$(document).keypress(function(e) {
 		if (e.which == 13) {

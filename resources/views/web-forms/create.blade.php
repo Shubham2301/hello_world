@@ -1,10 +1,4 @@
 <div>
-
-    <div class="row">
-        <div class="col-xs-6">
-            <h3>{{ $template['display'] }}</h3>
-        </div>
-    </div>
      <div class="row">
         <div class="col-xs-4">
             <h9></h9>
@@ -16,7 +10,6 @@
             <h9 style= "padding-left: 21%;">OD</h9>
         </div>
     </div>
-
 
     <div class="web-form-section" style="height:26em;" >
 		<form action="/save_records" id="patient_record_form" method="POST">

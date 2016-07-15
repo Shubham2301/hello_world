@@ -76,3 +76,42 @@
 		cursor: pointer;
 	}
 }
+
+.timeline {
+  	margin-left:2em;
+  	&>ul{
+  	margin-bottom:-2px;
+  	}
+}
+.timeline ul li {
+  list-style-type: none;
+  position: relative;
+  width: 2px;
+  padding-top: 50px;
+  background: #fff;
+  	&::before {
+		content: '';
+    	position: absolute;
+    	left: 50%;
+    	transform: translateX(-50%);
+    	width: 20px;
+    	height: 20px;
+    	border-radius: 50%;
+    	background: #00b6f1;
+    	transform: translate(-50%, -50%);
+    	border: 2px solid #f2f2f2;
+    	outline-color: white;
+    	bottom:80%;
+		}
+	&.active {
+	  &::before {
+    	background: #fff;
+    	border: 4px solid #00b6f1;
+    	box-shadow: 0 0 3px #fff;
+		}
+	}
+}
+
+.patient_status {
+	cursor:pointer;
+}

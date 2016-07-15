@@ -54,6 +54,34 @@
 		</div>
 	</div>
 </div>
-<div class="col-xs-6">
-
+<div class="col-xs-6" style="margin-top:2em;" >
+@for($i=0; $i<3; $i++)
+   <div class="row">
+        <div class="col-xs-1">
+        	1,2016<br>
+        	March
+        </div>
+   		<div class="col-xs-2" style="margin-top:1.5em">
+   			<div class="timeline">
+  			<ul>
+    			<li class="inactive">
+    			</li>
+  			</ul>
+			</div>
+   		</div>
+   		<div class="col-xs-6">
+   		      <div>
+     				<span data-toggle="collapse" data-target="#{{'left'.$i}}" class="patient_status">{{ 'Hello' }}
+     				</span>
+					<div class="row collapse" id="{{ 'left'.$i }}" >
+						<div class="col-xs-6">
+	                      hello
+						</div>
+						<div class="col-xs-6">
+						</div>
+					</div>
+			   </div>
+   		</div>
+   </div>
+   @endfor
 </div>
