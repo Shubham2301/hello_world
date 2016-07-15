@@ -127,6 +127,7 @@ $(document).ready(function() {
         $('.availability').removeClass('active');
         $('.patient_previous_information').addClass('active');
         $('.search_filter').removeClass('hide');
+         $('.show_specialist').show()
         clearHTML();
     });
 
@@ -283,10 +284,10 @@ $(document).ready(function() {
 
     });
 
-	var patientView = location.search.split('patient_view=')[1];
-	if (patientView) {
-		showPatientInfo();
-	}
+    var patientView = location.search.split('patient_view=')[1];
+    if (patientView) {
+        showPatientInfo();
+    }
 
 });
 
@@ -317,8 +318,8 @@ function clearHTML() {
 function showPatientInfo() {
     if ($('.view_selected_patient').hasClass('view')) {
         $('.patient_info').addClass('active')
-		$('.patient_section').show();
-		$('.show_in_provider_patient').show();
+        $('.patient_section').show();
+        $('.show_in_provider_patient').show();
         $('.view_selected_patient').text("Hide");
         $('.view_selected_patient').removeClass('view');
         $('.view_selected_patient').addClass('remove');
@@ -330,6 +331,7 @@ function showPatientInfo() {
         $('.availability').addClass('hide');
         $('.patient_previous_information').addClass('hide');
         $('.patient_table_content').removeClass('active');
+        $('.show_specialist').hide();
     } else if ($('.view_selected_patient').hasClass('remove')) {
         $('.patient_info').removeClass('active')
         $('.view_selected_patient').text("View");
@@ -342,6 +344,7 @@ function showPatientInfo() {
             $('.search_filter').removeClass('hide');
         }
         $('.patient_previous_information').removeClass('hide');
+        $('.show_specialist').show();
     }
 }
 
@@ -463,6 +466,7 @@ function showProviderInfo(data) {
     $('.practice_info').addClass('active');
     $('.patient_previous_information').removeClass('active');
     $('.search_filter').addClass('hide');
+    $('.show_specialist').hide();
 }
 
 function getProviderInfo(formData) {
@@ -534,11 +538,16 @@ function getProviders(formData) {
     $('.practice_info').removeClass('active');
     $('.appointment_type_not_found').hide();
     var tojson = JSON.stringify(formData);
+    var show_specialist = {
+        show : $('#show_specialist').prop('checked'),
+        referraltype_id:$('#form_referraltype_id').val()
+    }
     $.ajax({
         url: '/providers/search',
         type: 'GET',
         data: $.param({
-            data: tojson
+            data: tojson,
+            show_specialist: show_specialist
         }),
         contentType: 'text/html',
         async: false,

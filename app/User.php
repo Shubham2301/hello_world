@@ -14,8 +14,8 @@ use myocuhub\User;
 use Illuminate\Support\Facades\DB;
 use myocuhub\Http\Controllers\Traits\TwoFactorAuthenticatable;
 
-class User extends Model implements AuthenticatableContract, 
-AuthorizableContract, 
+class User extends Model implements AuthenticatableContract,
+AuthorizableContract,
 CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, TwoFactorAuthenticatable;
@@ -117,6 +117,9 @@ CanResetPasswordContract
                                     ->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
                                     ->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
                                 break;
+                            case 'specialty':
+                                $query->where('speciality', 'LIKE', '%' . $filter['value'] . '%');
+                                break;
                             case 'all':
                                 $query->where('practices.name', 'LIKE', '%' . $filter['value'] . '%')
                                     ->orWhere('practice_location.city', 'LIKE', '%' . $filter['value'] . '%')
@@ -129,7 +132,7 @@ CanResetPasswordContract
                                     ->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
                                     ->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
                                     ->orWhere('locationname', 'LIKE', '%' . $filter['value'] . '%')
-                                    ->where('practice_location.zip', $filter['value']);
+                                    ->orwhere('practice_location.zip', $filter['value']);
                                 break;
 
                         }
@@ -137,7 +140,7 @@ CanResetPasswordContract
                 }
             })
             ->groupBy('users.id');
-
+            
         if (session('user-level') == 1) {
             return $query
                 ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
@@ -262,7 +265,8 @@ CanResetPasswordContract
         }
     }
 
-    public function isSuperAdmin(){
+    public function isSuperAdmin()
+    {
         return $this->level == 1;
     }
 }

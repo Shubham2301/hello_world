@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Controllers\Traits\ValidateFPCRequestParams;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
+use myocuhub\Referraltype;
 use myocuhub\User;
-use myocuhub\Http\Controllers\Traits\ValidateFPCRequestParams;
 
 class ProviderController extends Controller
 {
@@ -32,7 +33,6 @@ class ProviderController extends Controller
 
     public function index(Request $request)
     {
-
         $data = array();
         $data['admin'] = false;
         $data['schedule-patient'] = true;
@@ -66,8 +66,8 @@ class ProviderController extends Controller
             $insurance['subscriber_relation'] = '';
             $insurance['insurance_group_no'] = '';
         }
-		$data['previous_selected'] = $request->has('selected_previous_provider');
-		$data['selectedfiles'] = $request->selectedfiles;
+        $data['previous_selected'] = $request->has('selected_previous_provider');
+        $data['selectedfiles'] = $request->selectedfiles;
 
         return view('provider.index')->with('data', $data)->with('insurance', $insurance);
     }
@@ -150,8 +150,20 @@ class ProviderController extends Controller
 
     public function search(Request $request)
     {
+        $showSpecialist = false;
         $filters = json_decode($request->input('data'), true);
-        //search quar
+        if ($request->has('show_specialist')) {
+            $showSpecialist = $request->show_specialist['show'];
+            if ($showSpecialist == 'true') {
+                $referraltypeID = $request->show_specialist['referraltype_id'];
+                $referraltype = Referraltype::find($referraltypeID);
+                $filters[] = [
+                    'type' =>'specialty',
+                    'value' => $referraltype->display_name
+                ];
+            }
+        }
+        
         $providers = User::providers($filters);
         $data = [];
         $i = 0;
@@ -193,31 +205,28 @@ class ProviderController extends Controller
             $filename = basename(__FILE__);
             $ip = $request->getClientIp();
             Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-			return json_encode($apptTypes);
+            return json_encode($apptTypes);
         }
 
-		$aptAsJson=  json_encode($apptTypes);
-		$aptAsArray = json_decode($aptAsJson, true);
+        $aptAsJson=  json_encode($apptTypes);
+        $aptAsArray = json_decode($aptAsJson, true);
 
-		if(!array_key_exists('ApptType', $aptAsArray['GetApptTypesResult']))
-		{
-			return $aptAsJson;
-		}
+        if (!array_key_exists('ApptType', $aptAsArray['GetApptTypesResult'])) {
+            return $aptAsJson;
+        }
 
-		$checkaptFormat = array_key_exists(0, $aptAsArray['GetApptTypesResult']['ApptType']);
+        $checkaptFormat = array_key_exists(0, $aptAsArray['GetApptTypesResult']['ApptType']);
 
-		if(!$checkaptFormat)
-		{
-			$data['ApptTypeName'] =  $aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeName'];
-			$data['ApptTypeKey'] =  $aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeKey'];
-			unset($aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeKey']);
-			unset($aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeName']);
-			$aptAsArray['GetApptTypesResult']['ApptType'][0] = $data;
-			$aptAsJson = json_encode($aptAsArray);
+        if (!$checkaptFormat) {
+            $data['ApptTypeName'] =  $aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeName'];
+            $data['ApptTypeKey'] =  $aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeKey'];
+            unset($aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeKey']);
+            unset($aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeName']);
+            $aptAsArray['GetApptTypesResult']['ApptType'][0] = $data;
+            $aptAsJson = json_encode($aptAsArray);
+        }
 
-		}
-
-		return $aptAsJson;
+        return $aptAsJson;
     }
 
     public function getInsuranceList(Request $request)
@@ -368,5 +377,4 @@ class ProviderController extends Controller
         }
         return json_encode($data);
     }
-
 }
