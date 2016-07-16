@@ -10,9 +10,15 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Models\WebFormTemplate;
 use myocuhub\Models\PatientRecord;
 use myocuhub\Events\Patient\PatientRecordCreation;
+use myocuhub\Services\ActionService;
 
 trait PatientRecordsTrait
 {
+    private $ActionService;
+
+    public function __construct(ActionService $ActionService) {
+        $this->ActionService = $ActionService;
+    }
 
     public function showRecord(Request $request)
     {
@@ -75,10 +81,23 @@ trait PatientRecordsTrait
     {
         $patients = $this->search($request);
         $patients = json_decode($patients, true);
-        
+        $progress = $this->ActionService->getContactActions(23836);
+        $progress = $this->changeDateInArray($progress);
         if (!array_key_exists('id', $patients[0])) {
             return 'No result found';
         }
-        return (sizeof($patients) === 0) ? 'No patient found' : view('patient-records.patient_listing')->with('patients', $patients)->render();
+
+        return (sizeof($patients) === 0) ? 'No patient found' : view('patient-records.patient_listing')->with('patients', $patients)->with('progress', $progress)->render();
+    }
+
+
+    public function changeDateInArray($dataArray) {
+        $i = 0 ;
+        foreach ($dataArray as $data) {
+          $dataArray[$i]['date'] = explode(" ", $data['date']);
+          $dataArray[$i]['notes'] = explode("</br>", $data['notes']);
+          $i++;
+        }
+        return $dataArray;
     }
 }

@@ -67,7 +67,8 @@
 .listing_section{
 	display: none;
 	&.active{
-		display: block;
+		display: flex;
+        overflow-y:auto;
 	}
 }
 
@@ -78,15 +79,17 @@
 }
 
 .timeline {
+    margin-top:1em;
   	&>ul{
-  	margin-bottom:-2px;
+  	margin-bottom:-7px;
+    padding-left: 1em;
   	}
 }
 .timeline ul li {
   list-style-type: none;
   position: relative;
   width: 2px;
-  padding-top: 50px;
+  padding-top: 7em;
   background: #fff;
   	&::before {
 		content: '';
@@ -104,13 +107,47 @@
 		}
 	&.active {
 	  &::before {
-    	background: #fff;
-    	border: 4px solid #00b6f1;
-    	box-shadow: 0 0 3px #fff;
+    	background: #3c763d;
+        border: 4px solid #00b6f1;
+        box-shadow: 0 0 3px #fff;
 		}
 	}
 }
 
 .patient_status {
 	cursor:pointer;
+    font-size:1em;
+}
+.care_timeline {
+    display:flex;
+    overflow-y:auto;
+    overflow-x:hidden;
+    flex-direction:column;
+    font-size: 0.8em;
+    margin-top:2em;
+    &>div{
+    flex-grow: 3;
+    overflow-y:auto;
+    overflow-x:hidden;
+    margin-bottom:3em;
+    }
+}
+.date_left {
+    text-align: left;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+}
+.timeline_notes {
+   height:6em;
+   overflow-y:scroll;
+   overflow-x:hidden;
+}
+.note_item{
+    padding-top:2px;
+}
+.data_right{
+    display: inline-block;
+    position: absolute;
+    left: 0;
 }
