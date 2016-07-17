@@ -39,9 +39,8 @@ class CareConsoleController extends Controller {
 
 	public function index(Request $request) {
 
-		$careconsoleStages = Network::find(User::getNetwork(Auth::user()->id)->network_id)->careconsoleStages;
-		if(sizeof($careconsoleStages) == 0){
-			$request->session()->flash('failure', 'Careconsole Stages have not been configured for your network. Please contact your administrator.');
+		if(!policy(new Careconsole)->accessConsole()){
+			$request->session()->flash('failure', 'Unauthorized Access to the Console. Please contact your administrator.');
 			return redirect('/');
 		}
 

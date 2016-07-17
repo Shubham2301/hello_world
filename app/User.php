@@ -75,6 +75,11 @@ CanResetPasswordContract
         return $this->belongsTo(Models\UserLevel::class);
     }
 
+    public function checkUserLevel($level){
+        $userlevel = UserLevel::find($this->level);
+        return $userlevel->name == $level;
+    }
+
     public function usertype()
     {
         return $this->belongsTo(Usertype::class);
