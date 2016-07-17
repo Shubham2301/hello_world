@@ -55,7 +55,7 @@ CanResetPasswordContract
 
         return !!$role->intersect($this->roles)->count();
     }
-
+    
     public function administrationAccess(){
         return ($this->hasRole('user-admin') || $this->hasRole('patient-admin') || $this->hasRole('practice-admin') || $this->isSuperAdmin());
     }
