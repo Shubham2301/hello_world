@@ -8,7 +8,7 @@
 <ul class="sidebar_item_list arial">
     <?php $menus = \myocuhub\Models\Menu::renderForUser(Auth::user())?>
     @foreach($menus as $menu)
-    @if($menu->name == "administration" && 2 != Auth::user()->usertype_id)
+    @if($menu->name == "administration" && !Auth::user()->administrationAccess())
         <?php continue;?>
     @endif
     <li id="menu-{{ $menu->name }}" class="sidebar_menu_item @if(isset($data)){{ array_key_exists($menu->name, $data) ? 'active' : '' }}@endif menu-{{ $menu->name }}" onclick="location.href = '{{$menu->url}}'">
