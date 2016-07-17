@@ -90,26 +90,42 @@ trait PatientRecordsTrait
         return (sizeof($patients) === 0) ? 'No patient found' : view('patient-records.patient_listing')->with('patients', $patients)->render();
     }
 
-    public function changeDateInArray($dataArray)
+    public function changeValuesInArray($dataArray, $getResult)
     {
         $i = 0 ;
         foreach ($dataArray as $data) {
             $dataArray[$i]['date'] = explode(" ", $data['date']);
             $dataArray[$i]['notes'] = explode("</br>", $data['notes']);
+
+            if ($i > $getResult) {
+                break;
+            }
+
             $i++;
         }
-        return $dataArray;
+
+		return array_slice($dataArray, 0, $getResult);
     }
 
-    public function getCareTimeLine($patientID)
+    public function getCareTimeLine(Request $request)
     {
+
+        $patientID = $request->patient_id;
+        $getResult = $request->getresult;
+		if($getResult == "")
+		{
+			$getResult = 0;
+		}
+		$getResult += config('constants.default_timeline_result');
         $patient = Patient::find($patientID);
         $consoleID = $patient->careConsole->id;
-        $progress = $this->ActionService->getContactActions(23836);
         $progress = $this->ActionService->getContactActions($consoleID);
-        $progress = $this->changeDateInArray($progress);
-        return view('patient-records.care_timeline')
-        ->with('progress', $progress)->render();
+        $progress = $this->changeValuesInArray($progress, $getResult);
 
+        return view('patient-records.care_timeline')
+        ->with('progress', $progress)
+		->with('getResults',$getResult)
+		->with('patientID', $patientID)
+		->render();
     }
 }

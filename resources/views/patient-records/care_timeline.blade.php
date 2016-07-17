@@ -57,11 +57,13 @@
     </div>
     <?php $i++; ?> @endforeach
 </div>
-<div class="show_more">
+<div class="show_more_section">
     <div class="row">
-        <div class="col-xs-3"></div>
-        <div class="col-xs-2">
-            <p>Show More</p>
+        <div class="col-xs-2"></div>
+        <div class="col-xs-3">
+			@if(sizeOf($progress) == $getResults)
+			<p class="show_more_text" data-id="{{$patientID}}" data-result="{{$getResults}}" >Show More</p>
+            @endif
         </div>
 
     </div>

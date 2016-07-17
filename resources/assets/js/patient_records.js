@@ -28,6 +28,7 @@ $(document).ready(function() {
 
 		getPatients(searchdata, page);
 	});
+
 	$('.listing_section').on('click', '.list_item_name', function() {
 		var patientID = $(this).attr('data-id');
 		if(!$(this).attr('aria-expanded') || $(this).attr('aria-expanded') === "false")
@@ -40,6 +41,11 @@ $(document).ready(function() {
 		}
 	});
 
+	$('.listing_section').on('click', '.show_more_text', function(){
+		var patientID= $(this).attr('data-id');
+		showCareTimeLine(patientID)
+	});
+
 	$(document).keypress(function(e) {
 		if (e.which == 13) {
 			$('#search_patient_button').trigger("click");
@@ -50,6 +56,7 @@ $(document).ready(function() {
 
 
 var searchValue = '';
+
 
 function getPatients(formData, page) {
 	var tojson = JSON.stringify(formData);
@@ -81,14 +88,21 @@ function getPatients(formData, page) {
 		processData: false
 	});
 }
+
 function showCareTimeLine(patientID) {
 	$.ajax({
-		url: '/getcaretimeline/'+ patientID,
+		url: '/getcaretimeline',
+		data: $.param({
+			patient_id: patientID,
+			getresult :$('.show_more_text').attr('data-result')
+		}),
+
 		type: 'GET',
 		contentType: 'text/html',
 		async: false,
 		success: function success(e) {
 			$('.care_timeline').html(e);
+			$('.timeline_section').scrollTop($('.timeline_section')[0].scrollHeight);
 		},
 		error: function error() {
 			$('p.alert_message').text('Error searching');
