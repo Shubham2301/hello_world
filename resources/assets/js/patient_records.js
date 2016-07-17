@@ -18,7 +18,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.listing_section').on('click', '#pagination>img', function(){
+	$('.listing_section').on('click', '#pagination>img', function() {
 		var page = $(this).attr('data-index');
 		var searchdata = [];
 		searchdata.push({
@@ -28,7 +28,17 @@ $(document).ready(function() {
 
 		getPatients(searchdata, page);
 	});
-
+	$('.listing_section').on('click', '.list_item_name', function() {
+		var patientID = $(this).attr('data-id');
+		if(!$(this).attr('aria-expanded') || $(this).attr('aria-expanded') === "false")
+		{
+			showCareTimeLine(patientID);
+		}
+		else
+		{
+			$('.care_timeline').html('');
+		}
+	});
 
 	$(document).keypress(function(e) {
 		if (e.which == 13) {
@@ -70,4 +80,22 @@ function getPatients(formData, page) {
 		cache: false,
 		processData: false
 	});
+}
+function showCareTimeLine(patientID) {
+	$.ajax({
+		url: '/getcaretimeline/'+ patientID,
+		type: 'GET',
+		contentType: 'text/html',
+		async: false,
+		success: function success(e) {
+			$('.care_timeline').html(e);
+		},
+		error: function error() {
+			$('p.alert_message').text('Error searching');
+			$('#alert').modal('show');
+		},
+		cache: false,
+		processData: false
+	});
+
 }

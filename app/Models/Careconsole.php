@@ -14,7 +14,7 @@ class Careconsole extends Model
      */
     public function patient()
     {
-        return $this->hasOne('myocuhub\Patient');
+        return $this->belongsTo('myocuhub\Patient');
     }
 
     /**

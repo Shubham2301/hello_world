@@ -7,16 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use myocuhub\Events\MakeAuditEntry;
-use myocuhub\Models\WebFormTemplate;
-use myocuhub\Models\PatientRecord;
 use myocuhub\Events\Patient\PatientRecordCreation;
+use myocuhub\Models\PatientRecord;
+use myocuhub\Models\WebFormTemplate;
+use myocuhub\Patient;
 use myocuhub\Services\ActionService;
 
 trait PatientRecordsTrait
 {
     private $ActionService;
 
-    public function __construct(ActionService $ActionService) {
+    public function __construct(ActionService $ActionService)
+    {
         $this->ActionService = $ActionService;
     }
 
@@ -81,23 +83,33 @@ trait PatientRecordsTrait
     {
         $patients = $this->search($request);
         $patients = json_decode($patients, true);
-        $progress = $this->ActionService->getContactActions(23836);
-        $progress = $this->changeDateInArray($progress);
         if (!array_key_exists('id', $patients[0])) {
             return 'No result found';
         }
 
-        return (sizeof($patients) === 0) ? 'No patient found' : view('patient-records.patient_listing')->with('patients', $patients)->with('progress', $progress)->render();
+        return (sizeof($patients) === 0) ? 'No patient found' : view('patient-records.patient_listing')->with('patients', $patients)->render();
     }
 
-
-    public function changeDateInArray($dataArray) {
+    public function changeDateInArray($dataArray)
+    {
         $i = 0 ;
         foreach ($dataArray as $data) {
-          $dataArray[$i]['date'] = explode(" ", $data['date']);
-          $dataArray[$i]['notes'] = explode("</br>", $data['notes']);
-          $i++;
+            $dataArray[$i]['date'] = explode(" ", $data['date']);
+            $dataArray[$i]['notes'] = explode("</br>", $data['notes']);
+            $i++;
         }
         return $dataArray;
+    }
+
+    public function getCareTimeLine($patientID)
+    {
+        $patient = Patient::find($patientID);
+        $consoleID = $patient->careConsole->id;
+        $progress = $this->ActionService->getContactActions(23836);
+        $progress = $this->ActionService->getContactActions($consoleID);
+        $progress = $this->changeDateInArray($progress);
+        return view('patient-records.care_timeline')
+        ->with('progress', $progress)->render();
+
     }
 }

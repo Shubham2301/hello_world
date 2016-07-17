@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use myocuhub\Models\PracticeUser;
 use myocuhub\Network;
 use myocuhub\Models\PatientFile;
+use myocuhub\Models\Careconsole;
 
 class Patient extends Model
 {
@@ -245,5 +246,9 @@ class Patient extends Model
     public function files()
     {
         return $this->hasMany(PatientFile::class);
+    }
+
+    public function careConsole(){
+        return $this->hasOne(Careconsole::class);
     }
 }
