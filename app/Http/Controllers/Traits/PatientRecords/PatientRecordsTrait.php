@@ -12,7 +12,10 @@ use myocuhub\Models\PatientRecord;
 use myocuhub\Models\WebFormTemplate;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
-
+use myocuhub\Models\ContactHistory;
+use myocuhub\Models\Action;
+use Auth;
+use DateTime;
 trait PatientRecordsTrait
 {
     private $ActionService;
@@ -58,6 +61,8 @@ trait PatientRecordsTrait
         ];
 
         PatientRecord::create($data);
+		$this->createContactHistory($data['patient_id'], $data['web_form_template_id']);
+
         $request->session()->put('success', 'Record created successfully');
         event(new PatientRecordCreation(
             [
@@ -109,13 +114,13 @@ trait PatientRecordsTrait
 
     public function getCareTimeLine(Request $request)
     {
-
         $patientID = $request->patient_id;
         $getResult = $request->getresult;
 		if($getResult == "")
 		{
 			$getResult = 0;
 		}
+
 		$getResult += config('constants.default_timeline_result');
         $patient = Patient::find($patientID);
         $consoleID = $patient->careConsole->id;
@@ -128,4 +133,20 @@ trait PatientRecordsTrait
 		->with('patientID', $patientID)
 		->render();
     }
+
+	public function createContactHistory($paientID, $templateID){
+		$actionID = Action::where('name', 'create-record')->first()->id;
+		$templateName = WebFormTemplate::find($templateID)->display_name;
+		$contactDate = new DateTime();
+		$patient = Patient::find($paientID);
+		$consoleID = $patient->careConsole->id;
+		$contactHistory = new ContactHistory;
+		$contactHistory->user_id = Auth::user()->id;
+		$contactHistory->action_id = $actionID;
+		$contactHistory->notes = $templateName;
+		$contactHistory->console_id = $consoleID;
+		$contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:i:s');
+		$contactHistory->save();
+
+	}
 }

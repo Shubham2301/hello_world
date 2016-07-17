@@ -23,7 +23,25 @@
                 <div class="row collapse" id="{{ 'left'.$i }}">
                     <div class="col-xs-12 ">
                         <div class="timeline_notes">
-                            @if(sizeOf($status['notes']) == 1) {{ $status['notes'][0] }} @elseif($status['notes'] > 1)
+
+							@if($status['name'] == 'Create Record' )
+
+							<div class="row note_item">
+								<div class="col-xs-12">
+									<p>Log Recorded for that action</p>
+								</div>
+							</div>
+							<div class="row note_item">
+								<div class="col-xs-12">
+									<a href="#a" target="_blank">{{ $status['notes'][0] }}</a>
+								</div>
+							</div>
+
+
+							@elseif(sizeOf($status['notes']) == 1)
+                            	{{ $status['notes'][0] }}
+
+                            @elseif($status['notes'] > 1)
                             <div class="row note_item">
                                 <div class="col-xs-6">
                                     <span>Scheduled to</span>

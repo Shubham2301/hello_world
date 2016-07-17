@@ -58,5 +58,4 @@
     </div>
 </div>
 <div class="col-xs-7 care_timeline">
-
 </div>
