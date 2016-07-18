@@ -9,6 +9,25 @@ class ContactHistory extends Model
 {
 	protected $table = "contact_history";
 
+    public function careconsole() {
+        return $this->belongsTo('myocuhub\Models\Careconsole', 'console_id');
+    }
+
+    public function action() {
+        return $this->belongsTo('myocuhub\Models\Action');
+    }
+
+    public function actionResult() {
+        return $this->belongsTo('myocuhub\Models\ActionResult');
+    }
+
+    public function currentStage() {
+        return $this->belongsTo('myocuhub\Models\CareconsoleStage', 'current_stage');
+    }
+
+    public function previousStage() {
+        return $this->belongsTo('myocuhub\Models\CareconsoleStage', 'previous_stage');
+    }
 
 	public static function getContactHistory($consoleID){
 		return self::where('console_id', $consoleID)
@@ -20,4 +39,12 @@ class ContactHistory extends Model
 			->get(['*', 'contact_history.id']);
 
 	}
+
+    public static function getAverageDaysInStage($stage_id, $startDate, $endDate) {
+        return self::whereNotNull('user_id')
+            ->where('previous_stage', $stage_id)
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<=', $endDate)
+            ->avg('days_in_prev_stage');
+    }
 }

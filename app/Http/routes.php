@@ -216,4 +216,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('getcaretimeline', 'Patient\PatientController@getCareTimeLine');
 
     Route::resource('report/reach_rate_report', 'Reports\ReachRateController');
+    Route::get('/report/reach_rate_report/show', 'Reports\ReachRateController@show');
 });

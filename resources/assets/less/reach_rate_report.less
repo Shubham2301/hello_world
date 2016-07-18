@@ -19,6 +19,7 @@
 .row.report_summary {
     margin: 2em 0;
     display: flex;
+    flex-wrap: wrap;
     &>div {
         border: solid .5em #fff;
         padding: 1.5em 1em;
@@ -67,11 +68,13 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        flex-wrap: wrap;
         &>.stage_content_subsection {
             flex-grow: 1;
             display: flex;
             &.passed_stage {
                 justify-content: flex-start;
+                flex-grow: 1;
                 &>.row {
                     flex-grow: 1;
                 }
@@ -79,6 +82,7 @@
             &.still_in_stage {
                 justify-content: flex-end;
                 flex-direction: column;
+                flex-grow: 2;
                 &>.row {
                     flex-grow: 1;
                 }
@@ -91,4 +95,10 @@ hr {
     margin-bottom: 5px;
     border: 0;
     border-top: 1px solid #4d4d4d;
+}
+.show {
+    display: inline-block!important;
+}
+.text_align_end {
+    text-align: end;
 }
