@@ -14,8 +14,8 @@ use myocuhub\User;
 use Illuminate\Support\Facades\DB;
 use myocuhub\Http\Controllers\Traits\TwoFactorAuthenticatable;
 
-class User extends Model implements AuthenticatableContract, 
-AuthorizableContract, 
+class User extends Model implements AuthenticatableContract,
+AuthorizableContract,
 CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, TwoFactorAuthenticatable;
@@ -55,16 +55,10 @@ CanResetPasswordContract
 
         return !!$role->intersect($this->roles)->count();
     }
-
-
-    // public function hasPermission($permission)
-    // {
-    //     if (is_string($permission)) {
-    //         return $this->roles->contains('name', $role);
-    //     }
-
-    //     return !!$role->intersect($this->roles)->count();
-    // }
+    
+    public function administrationAccess(){
+        return ($this->hasRole('user-admin') || $this->hasRole('patient-admin') || $this->hasRole('practice-admin') || $this->isSuperAdmin());
+    }
 
     public function assign($role)
     {
@@ -79,6 +73,11 @@ CanResetPasswordContract
     public function UserLevel()
     {
         return $this->belongsTo(Models\UserLevel::class);
+    }
+
+    public function checkUserLevel($level){
+        $userlevel = UserLevel::find($this->level);
+        return $userlevel->name == $level;
     }
 
     public function usertype()
@@ -117,6 +116,9 @@ CanResetPasswordContract
                                     ->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
                                     ->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
                                 break;
+                            case 'specialty':
+                                $query->where('speciality', 'LIKE', '%' . $filter['value'] . '%');
+                                break;
                             case 'all':
                                 $query->where('practices.name', 'LIKE', '%' . $filter['value'] . '%')
                                     ->orWhere('practice_location.city', 'LIKE', '%' . $filter['value'] . '%')
@@ -129,7 +131,7 @@ CanResetPasswordContract
                                     ->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
                                     ->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
                                     ->orWhere('locationname', 'LIKE', '%' . $filter['value'] . '%')
-                                    ->where('practice_location.zip', $filter['value']);
+                                    ->orwhere('practice_location.zip', $filter['value']);
                                 break;
 
                         }
@@ -137,7 +139,7 @@ CanResetPasswordContract
                 }
             })
             ->groupBy('users.id');
-
+            
         if (session('user-level') == 1) {
             return $query
                 ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
@@ -262,7 +264,8 @@ CanResetPasswordContract
         }
     }
 
-    public function isSuperAdmin(){
+    public function isSuperAdmin()
+    {
         return $this->level == 1;
     }
 }

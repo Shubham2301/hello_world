@@ -19,10 +19,15 @@ class PatientPolicy
         return ($count == 0) ? false : true;
     }
 
+    public function validPhone(Patient $patient){
+    	$phone = $patient->getPhone();
+    	return ($phone != null && $phone != '-');
+    }
+
     public function administration(){
     	$user = Auth::user();
     	try {
-    		return $user->isSuperAdmin() ?: ($user->hasRole('patient-admin') ?: false);
+    		return ($user->isSuperAdmin() || $user->hasRole('patient-admin'));
     	} catch (Exception $e) {
     		Log::error($e);
     	}

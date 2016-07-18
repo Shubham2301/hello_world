@@ -164,7 +164,7 @@ class NetworkController extends Controller {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
         $network = Network::where('id', $id)->delete();
 		$action = 'delete network of id =' . $id;
 		$description = '';

@@ -10,9 +10,9 @@ class PatientEngagementFailure extends Event
 {
     use SerializesModels;
 
-    public function __construct()
+    public function __construct($attr)
     {
-        
+        parent::__construct($attr);
     }
 
 }

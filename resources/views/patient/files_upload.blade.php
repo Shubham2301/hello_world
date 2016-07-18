@@ -1,4 +1,4 @@
-<div class="modal fade" id="upload_files" role="dialog">
+<div class="modal fade" id="upload_files" role="dialog" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog form_model" style="background-color: transparent;">
 
         <!-- Modal content-->
@@ -21,7 +21,7 @@
 							<input type="text" name="patient_file_name_1" class="patient_file_name" placeholder="File name" onkeyup="hidePopover(this)" data-toggle="popover" data-content=""  data-trigger="manual" data-placement="bottom">
                         </div>
                         <div class="col-xs-4">
-							<span class="file_upload_form_input active select_patient_file ">Select<input name="patient_file_1" type="file" class="select_file_to_upload"></span>
+							<span class="file_upload_form_input active select_patient_file " onclick="hidePopover(this)" data-toggle="popover" data-content=""  data-trigger="manual" data-placement="bottom">Select<input name="patient_file_1" type="file" class="select_file_to_upload" ></span>
                             <span class="file_upload_form_filename filename"></span>
                         </div>
                     </div>
@@ -33,10 +33,14 @@
             </div>
 
             <div class="custom_model_footer">
-                <div style="">
+                <div id="footer_btn">
                     <button type="button" class="btn custom_save_btn upload_files_btn">Upload</button>
                     <button type="button" class="btn btn-default dismiss_button" data-dismiss="modal" style="background-color:#d2d3d5">Cancel</button>
                 </div>
+                  <div id="footer_loader_section" style="display:none;">
+                        <div class="footer_loader" class="hidden-xs"></div>
+                        <p id="loading_text"><span>Please wait...</span><br> It may take some time</p>
+                 </div>
             </div>
         </div>
 

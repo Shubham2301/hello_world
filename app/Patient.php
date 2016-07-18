@@ -62,7 +62,7 @@ class Patient extends Model
         return $this->lastname . ', ' . $this->firstname;
     }
 
-    public static function getPatients($filters, $sortInfo = [])
+    public static function getPatients($filters, $sortInfo = [], $countResult)
     {
         $columns = [
             'patients.id',
@@ -152,7 +152,7 @@ class Patient extends Model
         return
             $query
             ->orderBy($sortInfo['field'], $toSort[$sortInfo['order']])
-            ->paginate(20, $columns);
+			->paginate($countResult, $columns);
     }
 
     public static function getPatientsByName($name)
@@ -196,6 +196,10 @@ class Patient extends Model
             ->leftjoin('practice_location', 'appointments.location_id', '=', 'practice_location.id')
             ->groupBy('users.id')
             ->get();
+    }
+
+    public function engagementPreference(){
+        return $this->hasOne('myocuhub\Models\EngagementPreference');
     }
 
     public function engagePatient($appt){

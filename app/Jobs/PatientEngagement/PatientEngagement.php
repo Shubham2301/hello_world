@@ -2,6 +2,13 @@
 
 namespace myocuhub\Jobs\PatientEngagement;
 
+use Exception;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use myocuhub\Events\PatientEngagementFailure;
+use myocuhub\Events\PatientEngagementSuccess;
+use myocuhub\Facades\Sms;
 use myocuhub\Jobs\Job;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\MessageTemplate;
@@ -14,34 +21,66 @@ class PatientEngagement extends Job{
     protected $stage;
     protected $patient;
 
-    public function __construct(Appointment $appt)
+    public function __construct()
     {
-        $this->appt = $appt;
-        $this->stage = 'post_appointment';
-        $this->patient = Patient::find($this->appt->patient_id);
+
+    }
+
+    public function sendSMS($phone, $message)
+    {
+        try {
+            $message = Sms::send($phone, $message);
+            event(new PatientEngagementSuccess([
+                'action' =>  'Engaged ' . $this->getPatient()->name . ' by SMS at'. $phone,
+                ]));
+        } catch (Exception $e) {
+            Log::error($e);
+            event(new PatientEngagementFailure([
+                'action' =>  'Application Exception in engaging patient : ' . $this->getPatient()->getName() . ' by ' . $this->getType() . ' on ' . $this->getStage() . ' at ' . $phone,
+                'description' => $e->getMessage()
+                ]));
+        }
+    }
+
+    public function sendEmail($attr)
+    {
+        if(Validator::make($attr['to'], ['email' => 'email'])->fails()){
+            return false;
+        }
+
+        try {
+            $mailToProvider = Mail::send($attr['view'], ['attr' => $attr['attr']], function ($m) use ($attr) {
+                $m->from($attr['from']['email'], $attr['from']['name']);
+                $m->to($attr['to']['email'], $attr['to']['name'])->subject($attr['subject']);
+            });
+            event(new PatientEngagementSuccess([
+                'action' =>  'Engaged patient : ' . $this->getPatient()->getName() . ' by ' . $this->getType() . ' on ' . $this->getStage() . ' at ' . $attr['to']['email'],
+                ]));
+            return true;
+        } catch (Exception $e) {
+            Log::error($e);
+            event(new PatientEngagementFailure([
+                'action' =>  'Application Exception in engaging patient : ' . $this->getPatient()->getName() . ' by ' . $this->getType() . ' on ' . $this->getStage() . ' at ' . $attr['to']['email'],
+                'description' => $e->getMessage()
+                ]));
+        }
+
+    }
+
+    public function auditMessage()
+    {
+        return 'Ocuhub Scheduler sent Post Appointment SMS to : ';
     }
 
     public function getContent(){
         return MessageTemplate::getTemplate($this->getType(), $this->getStage(), $this->getPatient()->network()->id);
     }
 
-    /**
-     * Gets the value of appt.
-     *
-     * @return mixed
-     */
     public function getAppt()
     {
         return $this->appt;
     }
 
-    /**
-     * Sets the value of appt.
-     *
-     * @param mixed $appt the appt
-     *
-     * @return self
-     */
     protected function setAppt($appt)
     {
         $this->appt = $appt;
@@ -49,23 +88,11 @@ class PatientEngagement extends Job{
         return $this;
     }
 
-    /**
-     * Gets the value of type.
-     *
-     * @return mixed
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * Sets the value of type.
-     *
-     * @param mixed $type the type
-     *
-     * @return self
-     */
     protected function setType($type)
     {
         $this->type = $type;
@@ -73,23 +100,11 @@ class PatientEngagement extends Job{
         return $this;
     }
 
-    /**
-     * Gets the value of stage.
-     *
-     * @return mixed
-     */
     public function getStage()
     {
         return $this->stage;
     }
 
-    /**
-     * Sets the value of stage.
-     *
-     * @param mixed $stage the stage
-     *
-     * @return self
-     */
     protected function setStage($stage)
     {
         $this->stage = $stage;
@@ -97,23 +112,11 @@ class PatientEngagement extends Job{
         return $this;
     }
 
-    /**
-     * Gets the value of patient.
-     *
-     * @return mixed
-     */
     public function getPatient()
     {
         return $this->patient;
     }
 
-    /**
-     * Sets the value of patient.
-     *
-     * @param mixed $patient the patient
-     *
-     * @return self
-     */
     protected function setPatient(Patient $patient)
     {
         $this->patient = $patient;

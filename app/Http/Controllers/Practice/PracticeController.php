@@ -305,7 +305,7 @@ class PracticeController extends Controller
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
         $data = PracticeLocation::find($request->location_id)->delete();
 
         return json_encode($data);

@@ -21,9 +21,12 @@ use myocuhub\Models\PracticeUser;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
+use myocuhub\Http\Controllers\Traits\PatientRecords\PatientRecordsTrait;
+use myocuhub\Models\WebFormTemplate;
 
 class PatientController extends Controller
 {
+    use PatientRecordsTrait;
     /**
      * Display a listing of the resource.
      *
@@ -51,12 +54,12 @@ class PatientController extends Controller
      */
     public function create(Request $request)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
         $data = array();
         $gender = array();
         $gender['Male'] = 'Male';
@@ -92,12 +95,12 @@ class PatientController extends Controller
 
     public function createByAdmin()
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
         $gender = array();
         $gender['Male'] = 'Male';
         $gender['Female'] = 'Female';
@@ -132,12 +135,12 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         $userID = Auth::user()->id;
         $network = User::getNetwork($userID);
@@ -341,12 +344,12 @@ class PatientController extends Controller
      */
     public function edit($id)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         $gender = array();
         $gender['Male'] = 'Male';
@@ -409,12 +412,12 @@ class PatientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         $patient = Patient::find($id);
         if ($patient) {
@@ -492,12 +495,12 @@ class PatientController extends Controller
 
     public function destroy(Request $request)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         if (!$request->input() || $request->input() === '' || sizeof($request->input()) < 1) {
             return;
@@ -515,7 +518,13 @@ class PatientController extends Controller
     {
         $filters = json_decode($request->input('data'), true);
         $sortInfo =json_decode($request->input('tosort'), true);
-        $patients = Patient::getPatients($filters, $sortInfo);
+        $countResult = config('constants.default_paginate_result');
+        if($request->has('countresult'))
+        {
+            $countResult = $request->countresult;
+        }
+
+        $patients = Patient::getPatients($filters, $sortInfo, $countResult);
 
         $data = [];
         $i = 0;
@@ -535,10 +544,28 @@ class PatientController extends Controller
                 $birthdate = new DateTime($patient->birthdate);
                 $data[$i]['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
             }
+            $data[$i]['name'] = $patient->getName();
             $i++;
         }
         $data[0]['total'] = $patients->total();
         $data[0]['lastpage'] = $patients->lastPage();
+        $data[0]['currentpage'] = $patients->currentPage();
+        $data[0]['nextpage'] = $data[0]['currentpage'] + 1;
+        $data[0]['previouspage'] = $data[0]['currentpage'] - 1;
+
+
+        if($data[0]['nextpage'] > $data[0]['lastpage']) {
+
+            $data[0]['nextpage'] = $data[0]['currentpage'];
+        }
+
+        if($countResult > $data[0]['total'])
+        {
+            $countResult = $data[0]['total'];
+        }
+
+
+        $data[0]['result_count_info'] = $data[0]['previouspage']*$countResult.'-'.$data[0]['currentpage']*$countResult.' of '.$data[0]['total'];
 
         return json_encode($data);
     }
@@ -561,12 +588,12 @@ class PatientController extends Controller
 
     public function editFromReferral(Request $request)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         $id = $request->input('patient_id');
         $gender = array();
@@ -648,12 +675,12 @@ class PatientController extends Controller
 
     public function updateDemographics(Request $request)
     {
-        
+
         if(!policy(new Patient)->administration()){
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        
+
 
         $data = $request->all();
         $patient_id = $data['patient_id'];

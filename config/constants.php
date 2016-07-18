@@ -79,8 +79,8 @@ return [
           'save_url' => '/administration/patients/add'
 
       ]
-
-
    ],
+
+    'default_paginate_result'=>20
 
 ];

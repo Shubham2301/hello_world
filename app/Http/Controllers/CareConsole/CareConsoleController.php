@@ -38,7 +38,12 @@ class CareConsoleController extends Controller {
 	}
 
 	public function index(Request $request) {
-		
+
+		if(!policy(new Careconsole)->accessConsole()){
+			$request->session()->flash('failure', 'Unauthorized Access to the Console. Please contact your administrator.');
+			return redirect('/');
+		}
+
 		$action = 'Accessed Careconsole';
         $description = '';
         $filename = basename(__FILE__);

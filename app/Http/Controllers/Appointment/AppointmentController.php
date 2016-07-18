@@ -81,6 +81,10 @@ class AppointmentController extends Controller
 
         if ($careconsole != null) {
 
+            $contactHistory = new ContactHistory;
+            $contactHistory->previous_stage = $careconsole->stage_id;
+            $contactHistory->user_id = Auth::user()->id;
+
             $careconsole->appointment_id = $appointment->id;
             $careconsole->stage_id = 2;
             $careconsole->recall_date = null;
@@ -94,12 +98,26 @@ class AppointmentController extends Controller
             $notes = $scheduledTo . '</br>' . $appointment->start_datetime . '</br>' . $appointmentType;
 
             $contactDate = new DateTime();
-            $contactHistory = new ContactHistory;
+            $previous_contact_history = ContactHistory::where('console_id', $careconsole->id)->orderBy('id', 'desc')->first();
+            if($previous_contact_history && $previous_contact_history->archived == 0) {
+                $prev_date = new DateTime($previous_contact_history->contact_activity_date);
+                $interval = $contactDate->diff($prev_date);
+                $date_diff = $interval->format('%a')  + $previous_contact_history->days_in_current_stage;
+            }
+            else {
+                $prev_date = new DateTime($careconsole->stage_updated_at);
+                $interval = $contactDate->diff($prev_date);
+                $date_diff = $interval->format('%a');
+            }
+
             $contactHistory->action_id = 9;
             $contactHistory->action_result_id = 14;
             $contactHistory->notes = $notes;
             $contactHistory->console_id = $careconsole->id;
             $contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:i:s');
+            $contactHistory->current_stage = $careconsole->stage_id;
+            $contactHistory->days_in_prev_stage = $date_diff;
+            $contactHistory->days_in_current_stage = 0;
             $contactHistory->save();
 
             $referralHistory = ReferralHistory::find($careconsole->referral_id);

@@ -168,6 +168,8 @@ $(document).ready(function() {
         $('.file_upload_form_filename').html('');
         fileIndex = 1;
         $('#count_patient_file').val(fileIndex);
+        $('#footer_btn').show();
+        $('#footer_loader_section').hide();
         $('#upload_files').modal('show');
 
     });
@@ -528,6 +530,9 @@ function uploadPatientFiles() {
         return false;
     }
 
+    $('#footer_btn').hide();
+    $('#footer_loader_section').show();
+
     var myform = document.getElementById("upload_files_form");
     var fd = new FormData(myform);
     $.ajax({
@@ -537,6 +542,7 @@ function uploadPatientFiles() {
         processData: false,
         contentType: false,
         type: 'POST',
+        async: true,
         success: function(e) {
             var data = $.parseJSON(e);
             $('#upload_files').modal('hide');
@@ -581,13 +587,9 @@ function getSelectedFiles() {
 
 function createNewFileInput() {
     fileIndex = fileIndex + 1;
-    var file_name = 'patient_file_name_' + fileIndex;
+    var fileName = 'patient_file_name_' + fileIndex;
     var uploadFileName = 'patient_file_' + fileIndex;
-
-    var removetag = '<img src="' + $('#clear_image_path').val() + '" alt="" style="width:100%;" class="remove_upload_input" data-toggle="tooltip" title="Remove" data-placement="top">';
-    var removetag = '';
-
-	var content = '<div class="row content-row-margin"><div class="col-xs-2">' + removetag + '</div><div class="col-xs-6 form-group text-right" style="padding-top: 5px;"><input type="text" name="' + file_name + '"class="patient_file_name" placeholder="File name" onkeyup="hidePopover(this)" data-toggle="popover" data-content=""  data-trigger="manual" data-placement="bottom"></div><div class="col-xs-4"><span class="file_upload_form_input active select_patient_file">Select<input name="' + uploadFileName + '" type="file" class="select_file_to_upload"></span><span class="file_upload_form_filename filename"></span></div></div>';
+    var content = '<div class="row content-row-margin"><div class="col-xs-2"></div><div class="col-xs-6 form-group text-right" style="padding-top: 5px;"><input type="text" name="' + fileName + '"class="patient_file_name" placeholder="File name" onkeyup="hidePopover(this)" data-toggle="popover" data-content=""  data-trigger="manual" data-placement="bottom"></div><div class="col-xs-4"><span class="file_upload_form_input active select_patient_file" onclick="hidePopover(this)" data-toggle="popover" data-content=""  data-trigger="manual" data-placement="bottom">Select<input name="' + uploadFileName + '" type="file" class="select_file_to_upload"></span><span class="file_upload_form_filename filename"></span></div></div>';
 
     $('.patient_file_section').append(content);
     $('#count_patient_file').val(fileIndex);
@@ -626,25 +628,48 @@ function updatePatientData() {
 
 function validateFilesForm() {
     var result = true;
+    var i =0;
     $('.select_file_to_upload').each(function(file) {
         var file = $(this).val();
         var inputObj = $(this).parent().parent().parent().find('.patient_file_name');
         var fileName = inputObj.val();
 
-        if (file && !fileName) {
+        if (i==0 && !fileName)
+        {
+            result = false;
+            inputObj.focus();
+            inputObj.attr('data-content', 'Enter file name');
+            inputObj.popover('show');
+            return false;
+        }
+        else if (i==0 && !file)
+        {
+            result = false;
+            $(this).parent().attr('data-content', 'select file');
+            $(this).parent().popover('show');
+            return false;
+        }
+
+       else if (file && !fileName) {
             result = false;
             inputObj.focus();
             inputObj.attr('data-content', 'Enter file name ');
-			inputObj.popover('show');
-			return false;
-
+            inputObj.popover('show');
+            return false;
         }
+        else if (fileName && !file) {
+            result = false;
+            $(this).parent().attr('data-content', 'select file');
+            $(this).parent().popover('show');
+            return false;
+        }
+        i++;
 
     });
     return result;
 }
 
 function hidePopover(inputObj) {
-	$(inputObj).attr('data-content', '');
-	$(inputObj).popover('hide');
+    $(inputObj).attr('data-content', '');
+    $(inputObj).popover('hide');
 }

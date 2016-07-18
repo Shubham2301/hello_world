@@ -12,7 +12,7 @@ class NetworkPolicy
     public function administration(){
     	$user = Auth::user();
     	try {
-    		return $user->isSuperAdmin() ?: ($user->hasRole('network-admin') ?: false);
+    		return ($user->isSuperAdmin() || $user->hasRole('patient-admin'));
     	} catch (Exception $e) {
     		Log::error($e);
     	}
