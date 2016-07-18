@@ -33,8 +33,7 @@ return [
             'subject' => 'How was your Appointment',
             'view' => 'emails.post-appointment-patient'
         ],
-    ]
-    ,
+    ],
     'language' => [
         'english' => 1,
         'spanish' => 2,
@@ -69,7 +68,7 @@ return [
     ],
     'provider_list_display_limit' => '5',
     'practice_location_display_limit' => '3',
-   'btn_urls' =>[
+    'btn_urls' =>[
       'from_schedule'=> [
          'back_btn' => 'back_to_select_patient_btn',
          'save_url' => '/administration/patients/add'
@@ -81,6 +80,7 @@ return [
       ]
    ],
 
-    'default_paginate_result'=>20
+    'default_paginate_result' => 20,
+    'default_timeline_result' => 5,
 
 ];

@@ -44,7 +44,7 @@ $(document).ready(function() {
     $('.showwebform').on('click', function() {
         var name = $(this).attr('value');
         templateID = $(this).attr('data-id');
-
+        $('.form_name').text($(this).text());
         showWebForm(name);
     });
 

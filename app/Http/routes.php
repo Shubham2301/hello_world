@@ -213,6 +213,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('save_records', 'Patient\PatientController@savePatientRecord');
     Route::get('patientlistforcreaterecord', 'Patient\PatientController@PatientListForCreateRecord');
     Route::get('patientlistforshowrecord', 'Patient\PatientController@PatientListForShowRecord');
+    Route::get('getcaretimeline', 'Patient\PatientController@getCareTimeLine');
 
     Route::resource('report/reach_rate_report', 'Reports\ReachRateController');
 });

@@ -4,17 +4,20 @@
 @import 'helper.less';
 
 .select_form_dropdown {
-	&>p
-	{
-		padding-top: 24px;
+    margin-left: 11em;
+    font-size: 1.5em;
+	&>p {
+		padding-top: 20px;
 		cursor: pointer;
 	}
 	&>ul{
-		width:29%;
-
-		&>li{
-			color: black;
-			padding-left: 12px;
+		width:13em;
+        background-color: #ebeced;
+        border-radius: 3px;
+        text-align: left;
+		&>li {
+			color: #4d4d4d;
+			padding: 0.25em 0.5em;
 			cursor: pointer;
 		}
 	}
@@ -98,8 +101,7 @@
 	display:block;
 	}
 }
-.tgl
-{
+.tgl {
 	display:none;
 }
 
@@ -127,4 +129,12 @@
   border:1px solid #fff;
 }
 
-
+#remove_patient_button {
+    width: 20px;
+    height: 30px;
+    padding-right: 4px;
+    padding-top: 9px;
+    margin-top: -4px;
+    cursor: pointer;
+    display:none;
+}
