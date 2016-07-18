@@ -14,7 +14,7 @@ use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
-use myocuhub\Referraltype;
+use myocuhub\ReferralType;
 use myocuhub\User;
 
 class ProviderController extends Controller
@@ -156,7 +156,7 @@ class ProviderController extends Controller
             $showSpecialist = $request->show_specialist['show'];
             if ($showSpecialist == 'true') {
                 $referraltypeID = $request->show_specialist['referraltype_id'];
-                $referraltype = Referraltype::find($referraltypeID);
+                $referraltype = ReferralType::find($referraltypeID);
                 $filters[] = [
                     'type' =>'specialty',
                     'value' => $referraltype->display_name
