@@ -15,10 +15,6 @@ use myocuhub\Models\Careconsole;
 
 class Patient extends Model
 {
-    public function careconsole()
-    {
-        return $this->hasOne('myocuhub\Models\Careconsole');
-    }
 
     use SoftDeletes;
 
