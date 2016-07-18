@@ -12,6 +12,9 @@
                     @if($menu->name == "administration" && !Auth::user()->administrationAccess())
                         <?php continue;?>
                     @endif
+                    @if($menu->name == "care-console" && !policy(new \myocuhub\Models\Careconsole)->accessConsole())
+                        <?php continue; ?>
+                    @endif
                     <li id="menu-{{ $menu->name }}" ><a href="{{ $menu->url }}" data-toggle="tooltip" title="{{ $menu->display_name }}" data-placement="right"><img src="{{ elixir($menu->icon_path.'.png') }}" class="drop_image"></a></li>
                 @endforeach
                 </ul>
