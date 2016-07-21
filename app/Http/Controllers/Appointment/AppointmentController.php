@@ -49,6 +49,7 @@ class AppointmentController extends Controller
         $providerID = $request->input('provider_id');
         $locationID = $request->input('location_id');
         $practiceID = $request->input('practice_id');
+        $referralTypeID = $request->input('referraltype_id');
         $appointmentType = $request->input('appointment_type');
         $appointmentTypeKey = $request->input('appointment_type_key');
         $appointmentDateTime = new DateTime($request->input('appointment_time'));
@@ -128,9 +129,11 @@ class AppointmentController extends Controller
                 $careconsole->save();
             }
 
+            $referralHistory->network_id = session('network-id');
             $referralHistory->referred_to_practice_id = $appointment->practice_id;
             $referralHistory->referred_to_location_id = $appointment->location_id;
             $referralHistory->referred_to_practice_user_id = $appointment->provider_id;
+            $referralHistory->referralType_id = $referralTypeID;
 
             $referralHistory->save();
         }
