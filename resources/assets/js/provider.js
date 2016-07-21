@@ -5,6 +5,8 @@ $(document).ready(function() {
     var new_ins_type = '';
     var ins_value = '';
 
+    window.history.pushState("disable forward navigation", "Provider-forward-disable", "");
+
     $('.dropdown-menu li').click(function() {
         $('#search_practice_input_type').text($(this).text());
         $('#search_practice_input_type').attr('value', $(this).attr('value'));

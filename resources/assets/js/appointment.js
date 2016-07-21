@@ -115,6 +115,8 @@ function scheduleAppointment() {
             }
 
             window.onbeforeunload = function () {};
+
+            window.history.replaceState("Redirect to referral screen after appointment scheduled", "Redirect", "/referraltype");
         },
         error: function () {
             $('#back').removeClass('hide');
