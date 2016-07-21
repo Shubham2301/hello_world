@@ -290,6 +290,10 @@ $(document).ready(function() {
     if (patientView) {
         showPatientInfo();
     }
+	
+	$('#show_specialist').on('change', function(){
+		$("#search_practice_button").trigger("click");
+	});
 
 });
 
