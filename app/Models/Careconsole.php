@@ -14,7 +14,7 @@ class Careconsole extends Model
      */
     public function patient()
     {
-        return $this->hasOne('myocuhub\Patient');
+        return $this->belongsTo('myocuhub\Patient');
     }
 
     /**
@@ -22,7 +22,7 @@ class Careconsole extends Model
      */
     public function importHistory()
     {
-        return $this->hasOne('myocuhub\Models\ImportHistory');
+        return $this->belongsTo('myocuhub\Models\ImportHistory', 'import_id');
     }
 
     /**
@@ -30,7 +30,7 @@ class Careconsole extends Model
      */
     public function contactHistory()
     {
-        return $this->hasMany('myocuhub\Models\ContactHistory');
+        return $this->hasMany('myocuhub\Models\ContactHistory', 'console_id');
     }
 
     /**
@@ -577,4 +577,24 @@ class Careconsole extends Model
             ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
         //->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
+
+
+    public static function getReachRateData($networkID, $startDate, $endDate)
+    {
+        return self::whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
+                $query->whereNotNull('user_id');
+                $query->where('contact_history.created_at', '>=', $startDate);
+                $query->where('contact_history.created_at', '<=', $endDate);
+            })
+            ->whereHas('importHistory', function ($query) use ($networkID) {
+                $query->where('network_id', $networkID);
+            })
+            ->with(['contactHistory' => function ($query) use ($startDate, $endDate)  {
+                $query->whereNotNull('user_id');
+                $query->where('created_at', '>=', $startDate);
+                $query->where('created_at', '<=', $endDate);
+            }, 'contactHistory.action', 'contactHistory.actionResult', 'contactHistory.currentStage', 'contactHistory.previousStage'])
+            ->get();
+    }
+
 }

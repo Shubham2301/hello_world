@@ -68,11 +68,11 @@ function scheduleAppointment() {
     var provider_id = $('#form_provider_id').val();
     var practice_id = $('#form_practice_id').val();
     var location_id = $('#form_location_id').val();
+    var referraltype_id = $('#form_referraltype_id').val();
     var appointment_type_key = $('#form_appointment_type_id').val();
     var appointment_time = $('#form_appointment_date').val() + ' ' + $('#form_appointment_time').val();
     var appointment_type_name = $('#form_appointment_type_name').val();
     var provider_acc_key = $('#form_provider_acc_key').val();
-    var location_code = $('#form_location_code').val();
     var location_code = $('#form_location_code').val();
 
     var formData = {
@@ -80,6 +80,7 @@ function scheduleAppointment() {
         'provider_id': provider_id,
         'practice_id': practice_id,
         'location_id': location_id,
+        'referraltype_id': referraltype_id,
         'location_code': location_code,
         'provider_acc_key': provider_acc_key,
         'appointment_type': appointment_type_name,
@@ -115,6 +116,8 @@ function scheduleAppointment() {
             }
 
             window.onbeforeunload = function () {};
+
+            window.history.replaceState("Redirect to referral screen after appointment scheduled", "Redirect", "/referraltype");
         },
         error: function () {
             $('#back').removeClass('hide');

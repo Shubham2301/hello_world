@@ -5,6 +5,8 @@ $(document).ready(function() {
     var new_ins_type = '';
     var ins_value = '';
 
+    window.history.pushState("disable forward navigation", "Provider-forward-disable", "");
+
     $('.dropdown-menu li').click(function() {
         $('#search_practice_input_type').text($(this).text());
         $('#search_practice_input_type').attr('value', $(this).attr('value'));
@@ -254,7 +256,7 @@ $(document).ready(function() {
     });
 
     $(document).keypress(function(e) {
-        if (e.which == 13 && !$('.patient_info').hasClass('active') && !$('.practice_info').hasClass('active')) {
+        if (e.which == 13 && !$('.modal.fade').hasClass('in')) {
             $("#search_practice_button").trigger("click");
         }
     });
@@ -288,6 +290,10 @@ $(document).ready(function() {
     if (patientView) {
         showPatientInfo();
     }
+	
+	$('#show_specialist').on('change', function(){
+		$("#search_practice_button").trigger("click");
+	});
 
 });
 
