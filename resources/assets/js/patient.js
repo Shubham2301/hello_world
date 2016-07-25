@@ -22,8 +22,9 @@ $(document).ready(function () {
         maxDate: new Date(),
     });
 
-    $('#birthdate').on('change', function () {
-        console.log($(this).val());
+    $('#subscriber_birthdate').datetimepicker({
+        format: 'MM/DD/YYYY',
+        maxDate: new Date(),
     });
 
     $('.popover_text').popover({

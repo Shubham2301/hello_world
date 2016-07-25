@@ -7,7 +7,9 @@ use DateTime;
 use Event;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Facades\Helper;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Controllers\Traits\PatientRecords\PatientRecordsTrait;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\Ccda;
 use myocuhub\Models\EngagementPreference;
@@ -19,10 +21,9 @@ use myocuhub\Models\Practice;
 use myocuhub\Models\PracticePatient;
 use myocuhub\Models\PracticeUser;
 use myocuhub\Models\ReferralHistory;
+use myocuhub\Models\WebFormTemplate;
 use myocuhub\Patient;
 use myocuhub\User;
-use myocuhub\Http\Controllers\Traits\PatientRecords\PatientRecordsTrait;
-use myocuhub\Models\WebFormTemplate;
 
 class PatientController extends Controller
 {
@@ -191,7 +192,7 @@ class PatientController extends Controller
             $insuranceCarrier = new PatientInsurance;
             $insuranceCarrier->insurance_carrier = $request->input('insurance_carrier');
             $insuranceCarrier->subscriber_name = $request->input('subscriber_name');
-            $insuranceCarrier->subscriber_birthdate = $request->input('subscriber_birthdate');
+            $insuranceCarrier->subscriber_birthdate = Helper::formatDate($request->input('subscriber_birthdate'), config('constants.db_date_format'));
             $insuranceCarrier->subscriber_id = $request->input('subscriber_id');
             $insuranceCarrier->subscriber_relation = $request->input('subscriber_relation');
             $insuranceCarrier->insurance_group_no = $request->input('insurance_group_no');
@@ -364,7 +365,7 @@ class PatientController extends Controller
         if ($insuranceCarrier) {
             $data['insurance_carrier'] = $insuranceCarrier->insurance_carrier;
             $data['subscriber_name'] = $insuranceCarrier->subscriber_name;
-            $data['subscriber_birthdate'] = $insuranceCarrier->subscriber_birthdate;
+            $data['subscriber_birthdate'] = Helper::formatDate($insuranceCarrier->subscriber_birthdate, config('constants.date_format'));
             $data['subscriber_id'] = $insuranceCarrier->subscriber_id;
             $data['subscriber_relation'] = $insuranceCarrier->subscriber_relation;
             $data['insurance_group_no'] = $insuranceCarrier->insurance_group_no;
@@ -442,7 +443,7 @@ class PatientController extends Controller
 
             $insuranceCarrier->insurance_carrier = $request->input('insurance_carrier');
             $insuranceCarrier->subscriber_name = $request->input('subscriber_name');
-            $insuranceCarrier->subscriber_birthdate = $request->input('subscriber_birthdate');
+            $insuranceCarrier->subscriber_birthdate = Helper::formatDate($request->input('subscriber_birthdate'), config('constants.db_date_format'));
             $insuranceCarrier->subscriber_id = $request->input('subscriber_id');
             $insuranceCarrier->subscriber_relation = $request->input('subscriber_relation');
             $insuranceCarrier->insurance_group_no = $request->input('insurance_group_no');
@@ -613,7 +614,7 @@ class PatientController extends Controller
         if ($insuranceCarrier) {
             $data['insurance_carrier'] = $insuranceCarrier->insurance_carrier;
             $data['subscriber_name'] = $insuranceCarrier->subscriber_name;
-            $data['subscriber_birthdate'] = $insuranceCarrier->subscriber_birthdate;
+            $data['subscriber_birthdate'] = Helper::formatDate($insuranceCarrier->subscriber_birthdate, config('constants.date_format'));
             $data['subscriber_id'] = $insuranceCarrier->subscriber_id;
             $data['subscriber_relation'] = $insuranceCarrier->subscriber_relation;
             $data['insurance_group_no'] = $insuranceCarrier->insurance_group_no;

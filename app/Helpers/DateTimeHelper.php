@@ -5,28 +5,18 @@ use DateTime;
 
 trait DateTimeHelper{
 
-	private $format;
-
-	function __construct()
-	{
-		$this->_setFormat(config('constants.date_format'));
-	}
-
     public function validateDate($date, $format = null)
     {
-    	$format = ($format == null) ?: $this->getFormat();
+    	$format = ($format == null) ?: config('constants.date_time_format');
         $dateInFormat = DateTime::createFromFormat($format, $date);
         return $dateInFormat && $dateInFormat->format($format) == $date;
     }
 
-    public function getFormat()
+
+    public function formatDate($date, $format)
     {
-        return $this->format;
+    	$date = new DateTime($date);
+        return $date->format($format);
     }
 
-    private function _setFormat($format)
-    {
-        $this->format = $format;
-        return $this;
-    }
 }
