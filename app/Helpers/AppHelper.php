@@ -5,7 +5,7 @@ namespace myocuhub\Helpers;
 trait AppHelper{
 
 	public static function ifExists($key, $array){
-		return array_key_exists($key, $array) ? $array[$key] : null; 
+		return isset($key, $array) ? $array[$key] : null; 
 	}
 
 	public static function invertConfig($expression){

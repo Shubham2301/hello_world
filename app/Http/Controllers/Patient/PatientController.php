@@ -128,7 +128,6 @@ class PatientController extends Controller
         unset($data['disease_type']);
         unset($data['severity']);
         unset($data['insurance_carrier']);
-        unset($data['insurance_carrier']);
         unset($data['subscriber_name']);
         unset($data['subscriber_birthdate']);
         unset($data['subscriber_id']);
@@ -193,7 +192,7 @@ class PatientController extends Controller
             $insuranceCarrier->insurance_carrier = $request->input('insurance_carrier');
             $insuranceCarrier->subscriber_name = $request->input('subscriber_name');
             $insuranceCarrier->subscriber_birthdate = $request->input('subscriber_birthdate');
-            $insuranceCarrier->subscriber_id = $request->input('insurance_carrier');
+            $insuranceCarrier->subscriber_id = $request->input('subscriber_id');
             $insuranceCarrier->subscriber_relation = $request->input('subscriber_relation');
             $insuranceCarrier->insurance_group_no = $request->input('insurance_group_no');
             $insuranceCarrier->patient_id = $patient->id;
@@ -366,7 +365,7 @@ class PatientController extends Controller
             $data['insurance_carrier'] = $insuranceCarrier->insurance_carrier;
             $data['subscriber_name'] = $insuranceCarrier->subscriber_name;
             $data['subscriber_birthdate'] = $insuranceCarrier->subscriber_birthdate;
-            $data['subscriber_id'] = $insuranceCarrier->insurance_carrier;
+            $data['subscriber_id'] = $insuranceCarrier->subscriber_id;
             $data['subscriber_relation'] = $insuranceCarrier->subscriber_relation;
             $data['insurance_group_no'] = $insuranceCarrier->insurance_group_no;
         }
@@ -444,7 +443,7 @@ class PatientController extends Controller
             $insuranceCarrier->insurance_carrier = $request->input('insurance_carrier');
             $insuranceCarrier->subscriber_name = $request->input('subscriber_name');
             $insuranceCarrier->subscriber_birthdate = $request->input('subscriber_birthdate');
-            $insuranceCarrier->subscriber_id = $request->input('insurance_carrier');
+            $insuranceCarrier->subscriber_id = $request->input('subscriber_id');
             $insuranceCarrier->subscriber_relation = $request->input('subscriber_relation');
             $insuranceCarrier->insurance_group_no = $request->input('insurance_group_no');
             $insuranceCarrier->save();
@@ -613,6 +612,11 @@ class PatientController extends Controller
         $insuranceCarrier =  PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
         if ($insuranceCarrier) {
             $data['insurance_carrier'] = $insuranceCarrier->insurance_carrier;
+            $data['subscriber_name'] = $insuranceCarrier->subscriber_name;
+            $data['subscriber_birthdate'] = $insuranceCarrier->subscriber_birthdate;
+            $data['subscriber_id'] = $insuranceCarrier->subscriber_id;
+            $data['subscriber_relation'] = $insuranceCarrier->subscriber_relation;
+            $data['insurance_group_no'] = $insuranceCarrier->insurance_group_no;
         }
 
         return view('patient.admin')
