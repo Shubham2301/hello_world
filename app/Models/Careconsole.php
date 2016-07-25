@@ -66,8 +66,7 @@ class Careconsole extends Model
             ->where('import_history.network_id', $networkID)
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
-            ->paginate(200, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+            ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -80,8 +79,7 @@ class Careconsole extends Model
             ->where('import_history.network_id', $networkID)
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+            ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -96,8 +94,7 @@ class Careconsole extends Model
             ->whereNull('recall_date')
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+           ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -113,8 +110,7 @@ class Careconsole extends Model
             ->whereNull('recall_date')
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
+            ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -346,8 +342,7 @@ class Careconsole extends Model
             ->whereNull('recall_date')
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+            ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -371,9 +366,7 @@ class Careconsole extends Model
             ->whereNull('archived_date')
             ->whereNull('recall_date')
             ->groupBy('patient_id')
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+           ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -534,8 +527,7 @@ class Careconsole extends Model
             ->whereNull('archived_date')
             ->whereNull('recall_date')
             ->where('kpis.name', '=', $statusName)
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+            ->get(['*', 'careconsole.id', 'careconsole.created_at']);
         return;
     }
     /**
@@ -568,8 +560,7 @@ class Careconsole extends Model
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
             ->whereRaw('datediff(`recall_date`, CURRENT_TIMESTAMP) = 1')
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+           ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
 

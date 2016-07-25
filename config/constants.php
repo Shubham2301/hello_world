@@ -81,10 +81,11 @@ return [
           'back_btn' => 'back_to_admin_patient_btn',
           'save_url' => '/administration/patients/add'
 
-      ]
-   ],
-
+        ]
+    ],
     'default_paginate_result' => 20,
     'default_timeline_result' => 5,
+    'default_careconsole_paginate' => 50,
+    'date_format' => 'F j Y, g:i a',
 
 ];

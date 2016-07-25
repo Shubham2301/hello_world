@@ -109,6 +109,9 @@ class CareConsoleController extends Controller
     public function getDrilldownData(Request $request)
     {
         $stageID = $request->stage;
+        
+        $this->CareConsoleService->setPage($request->page);
+        
         if ($stageID == '-1') {
             $stageID = 1;
         }
@@ -119,11 +122,12 @@ class CareConsoleController extends Controller
         $lower_limit = $request->lower_limit;
         $upper_limit = $request->upper_limit;
 
-        $listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder);
         if ($upper_limit != -1) {
             $listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder, $lower_limit, $upper_limit);
+        } else {
+            $listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder);
         }
-
+        
         $actions = $this->CareConsoleService->getActions($stageID);
         $controls = $this->CareConsoleService->getControls($stageID);
         $drilldown['controls'] = (sizeof($controls) === 0) ? '' : view('careconsole.controls')->with('controls', $controls)->render();
@@ -236,6 +240,7 @@ class CareConsoleController extends Controller
      */
     public function getBucketPatients(Request $request)
     {
+        $this->CareConsoleService->setPage($request->page);
         $bucketName = $request->bucket;
         $bucket = CareconsoleStage::where('name', $bucketName)->first();
         $bucketID = $bucket->id;
