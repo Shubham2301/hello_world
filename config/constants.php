@@ -36,7 +36,11 @@ return [
     ],
     'language' => [
         'english' => 1,
-        'spanish' => 2,
+        'spanish' => 2
+    ],
+    'gender' => [
+        'male' => 'M',
+        'female' => 'F'
     ],
     'appointment_types' => [
         'Annual Eye Exam',
