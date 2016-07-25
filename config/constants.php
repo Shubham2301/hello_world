@@ -86,6 +86,7 @@ return [
     'default_paginate_result' => 20,
     'default_timeline_result' => 5,
     'default_careconsole_paginate' => 50,
-    'date_format' => 'F j Y, g:i a',
-
+    'date_time_format' => 'F j Y, g:i a',
+    'date_format' => 'm/d/Y',
+    'db_date_format' => 'Y-m-d h:i:s',
 ];
