@@ -12,7 +12,11 @@ class PatientPolicy
     use HandlesAuthorization;
 
     public function engage(Patient $patient, $type, $stage){
-        $count = MessageTemplate::where('network_id', $patient->network()->id)
+        $network = $patient->network();
+        if($network == null){
+            return false;
+        }
+        $count = MessageTemplate::where('network_id', $network->id)
             ->where('type', $type)
             ->where('stage', $stage)
             ->count();
