@@ -156,10 +156,16 @@ class AnnouncementController extends Controller
             if($request->input($i)){
                 $announcementId = $request->input($i);
                 $announcement = AnnouncementUser::where('user_id', '=', $userID)->where('announcement_id', '=', $announcementId)->first();
-                $announcementArchive = AnnouncementUser::find($announcement->id);
+                if($announcement == null){
+                    $announcement = new AnnouncementUser;
+                    $announcement->user_id = $userID;
+                    $announcement->announcement_id = $announcementId;
+                    $announcementArchive->save();
+                }
                 $announcementArchive->read = 1;
                 $announcementArchive->save();
-                $i++;}
+                $i++;
+            }
             else
                 break;
         }
