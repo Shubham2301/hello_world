@@ -7,7 +7,9 @@ use DateTime;
 use Event;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Facades\Helper;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Controllers\Traits\PatientRecords\PatientRecordsTrait;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\Ccda;
 use myocuhub\Models\EngagementPreference;
@@ -19,10 +21,9 @@ use myocuhub\Models\Practice;
 use myocuhub\Models\PracticePatient;
 use myocuhub\Models\PracticeUser;
 use myocuhub\Models\ReferralHistory;
+use myocuhub\Models\WebFormTemplate;
 use myocuhub\Patient;
 use myocuhub\User;
-use myocuhub\Http\Controllers\Traits\PatientRecords\PatientRecordsTrait;
-use myocuhub\Models\WebFormTemplate;
 
 class PatientController extends Controller
 {
@@ -61,23 +62,10 @@ class PatientController extends Controller
         }
 
         $data = array();
-        $gender = array();
-        $gender['Male'] = 'Male';
-        $gender['Female'] = 'Female';
-        $language = array();
-        $language['English'] = 'English';
-        $language['Spanish'] = 'Spanish';
-        $preferences = MessageTemplate::getMessageTypes();
         $data = Patient::getColumnNames();
         $data['admin'] = true;
         $data['back_btn'] = config('constants.btn_urls.from_schedule.back_btn');
         $data['url'] = config('constants.btn_urls.from_schedule.save_url');
-        $data['referred_by_provider'] = null;
-        $data['referred_by_practice'] = null;
-        $data['disease_type'] = null;
-        $data['severity'] = null;
-        $data['insurance_type'] = null;
-        $data['engagement_preference'] = null;
         if ($request->has('referraltype_id')) {
             $data['referraltype_id'] = $request->input('referraltype_id');
             $data['admin'] = false;
@@ -87,10 +75,8 @@ class PatientController extends Controller
         }
 
         return view('patient.admin')
-        ->with('data', $data)
-        ->with('gender', $gender)
-        ->with('language', $language)
-        ->with('preferences', $preferences);
+        ->with('data', $data);
+
     }
 
     public function createByAdmin()
@@ -101,30 +87,14 @@ class PatientController extends Controller
             return redirect('/home');
         }
 
-        $gender = array();
-        $gender['Male'] = 'Male';
-        $gender['Female'] = 'Female';
-        $language = array();
-        $language['English'] = 'English';
-        $language['Spanish'] = 'Spanish';
-        $preferences = MessageTemplate::getMessageTypes();
         $data = array();
         $data = Patient::getColumnNames();
         $data['admin'] = true;
         $data['back_btn'] = config('constants.btn_urls.from_admin.back_btn');
         $data['url'] = config('constants.btn_urls.from_admin.save_url');
         $data['referraltype_id'] = -1;
-        $data['referred_by_provider'] = null;
-        $data['referred_by_practice'] = null;
-        $data['disease_type'] = null;
-        $data['severity'] = null;
-        $data['insurance_type'] = null;
-        $data['engagement_preference'] = null;
         return view('patient.admin')
-            ->with('data', $data)
-            ->with('gender', $gender)
-            ->with('language', $language)
-            ->with('preferences', $preferences);
+            ->with('data', $data);
     }
 
     /**
@@ -140,7 +110,6 @@ class PatientController extends Controller
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-
 
         $userID = Auth::user()->id;
         $network = User::getNetwork($userID);
@@ -159,7 +128,12 @@ class PatientController extends Controller
         unset($data['referred_by_practice']);
         unset($data['disease_type']);
         unset($data['severity']);
-        unset($data['insurance_type']);
+        unset($data['insurance_carrier']);
+        unset($data['subscriber_name']);
+        unset($data['subscriber_birthdate']);
+        unset($data['subscriber_id']);
+        unset($data['subscriber_relation']);
+        unset($data['insurance_group_no']);
         unset($data['engagement_preference']);
 
         $patient = Patient::where($data)->first();
@@ -216,7 +190,12 @@ class PatientController extends Controller
             $careconsole->save();
 
             $insuranceCarrier = new PatientInsurance;
-            $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
+            $insuranceCarrier->insurance_carrier = $request->input('insurance_carrier');
+            $insuranceCarrier->subscriber_name = $request->input('subscriber_name');
+            $insuranceCarrier->subscriber_birthdate = Helper::formatDate($request->input('subscriber_birthdate'), config('constants.db_date_format'));
+            $insuranceCarrier->subscriber_id = $request->input('subscriber_id');
+            $insuranceCarrier->subscriber_relation = $request->input('subscriber_relation');
+            $insuranceCarrier->insurance_group_no = $request->input('insurance_group_no');
             $insuranceCarrier->patient_id = $patient->id;
             $insuranceCarrier->save();
 
@@ -350,14 +329,6 @@ class PatientController extends Controller
             return redirect('/home');
         }
 
-
-        $gender = array();
-        $gender['Male'] = 'Male';
-        $gender['Female'] = 'Female';
-        $language = array();
-        $language['English'] = 'English';
-        $language['Spanish'] = 'Spanish';
-        $preferences = MessageTemplate::getMessageTypes();
         $data = array();
         $data = Patient::find($id);
         if (!$data) {
@@ -374,7 +345,6 @@ class PatientController extends Controller
         $data['referred_by_practice'] = null;
         $data['disease_type'] = null;
         $data['severity'] = null;
-        $data['insurance_type'] = null;
         $careconsole = Careconsole::where('patient_id', '=', $id)->first();
         if ($careconsole) {
             $referralHistory = ReferralHistory::find($careconsole->referral_id);
@@ -393,14 +363,17 @@ class PatientController extends Controller
         
         $insuranceCarrier =  PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
         if ($insuranceCarrier) {
-            $data['insurance_type'] = $insuranceCarrier->insurance_carrier;
+            $data['insurance_carrier'] = $insuranceCarrier->insurance_carrier;
+            $data['subscriber_name'] = $insuranceCarrier->subscriber_name;
+            $data['subscriber_birthdate'] = Helper::formatDate($insuranceCarrier->subscriber_birthdate, config('constants.date_format'));
+            $data['subscriber_id'] = $insuranceCarrier->subscriber_id;
+            $data['subscriber_relation'] = $insuranceCarrier->subscriber_relation;
+            $data['insurance_group_no'] = $insuranceCarrier->insurance_group_no;
         }
 
+
         return view('patient.admin')
-        ->with('data', $data)
-        ->with('gender', $gender)
-        ->with('language', $language)
-        ->with('preferences', $preferences);
+        ->with('data', $data);
     }
 
     /**
@@ -468,7 +441,12 @@ class PatientController extends Controller
                 $insuranceCarrier->patient_id = $id;
             }
 
-            $insuranceCarrier->insurance_carrier = $request->input('insurance_type');
+            $insuranceCarrier->insurance_carrier = $request->input('insurance_carrier');
+            $insuranceCarrier->subscriber_name = $request->input('subscriber_name');
+            $insuranceCarrier->subscriber_birthdate = Helper::formatDate($request->input('subscriber_birthdate'), config('constants.db_date_format'));
+            $insuranceCarrier->subscriber_id = $request->input('subscriber_id');
+            $insuranceCarrier->subscriber_relation = $request->input('subscriber_relation');
+            $insuranceCarrier->insurance_group_no = $request->input('insurance_group_no');
             $insuranceCarrier->save();
 
             $preference =  EngagementPreference::where('patient_id', $id)->first();
@@ -596,13 +574,6 @@ class PatientController extends Controller
 
 
         $id = $request->input('patient_id');
-        $gender = array();
-        $gender['Male'] = 'Male';
-        $gender['Female'] = 'Female';
-        $language = array();
-        $language['English'] = 'English';
-        $language['Spanish'] = 'Spanish';
-        $preferences = MessageTemplate::getMessageTypes();
         $data = array();
         $data = Patient::find($id);
         if (!$data) {
@@ -621,7 +592,6 @@ class PatientController extends Controller
         $data['referred_by_practice'] = null;
         $data['disease_type'] = null;
         $data['severity'] = null;
-        $data['insurance_type'] = null;
 
         $careconsole = Careconsole::where('patient_id', '=', $id)->first();
         if ($careconsole) {
@@ -642,14 +612,16 @@ class PatientController extends Controller
 
         $insuranceCarrier =  PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
         if ($insuranceCarrier) {
-            $data['insurance_type'] = $insuranceCarrier->insurance_carrier;
+            $data['insurance_carrier'] = $insuranceCarrier->insurance_carrier;
+            $data['subscriber_name'] = $insuranceCarrier->subscriber_name;
+            $data['subscriber_birthdate'] = Helper::formatDate($insuranceCarrier->subscriber_birthdate, config('constants.date_format'));
+            $data['subscriber_id'] = $insuranceCarrier->subscriber_id;
+            $data['subscriber_relation'] = $insuranceCarrier->subscriber_relation;
+            $data['insurance_group_no'] = $insuranceCarrier->insurance_group_no;
         }
 
         return view('patient.admin')
-            ->with('data', $data)
-            ->with('gender', $gender)
-            ->with('language', $language)
-            ->with('preferences', $preferences);
+            ->with('data', $data);
     }
 
     public function saveReferredbyDetails(Request $request)

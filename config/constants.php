@@ -36,7 +36,11 @@ return [
     ],
     'language' => [
         'english' => 1,
-        'spanish' => 2,
+        'spanish' => 2
+    ],
+    'gender' => [
+        'male' => 'M',
+        'female' => 'F'
     ],
     'appointment_types' => [
         'Annual Eye Exam',
@@ -77,10 +81,12 @@ return [
           'back_btn' => 'back_to_admin_patient_btn',
           'save_url' => '/administration/patients/add'
 
-      ]
-   ],
-
+        ]
+    ],
     'default_paginate_result' => 20,
     'default_timeline_result' => 5,
-
+    'default_careconsole_paginate' => 50,
+    'date_time_format' => 'F j Y, g:i a',
+    'date_format' => 'm/d/Y',
+    'db_date_format' => 'Y-m-d h:i:s',
 ];

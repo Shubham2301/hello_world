@@ -61,14 +61,12 @@ class Careconsole extends Model
      */
     public static function getArchivedPatients($networkID)
     {
-
         return self::whereNotNull('archived_date')
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', $networkID)
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
-            ->paginate(200, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+            ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -81,8 +79,7 @@ class Careconsole extends Model
             ->where('import_history.network_id', $networkID)
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+            ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -97,8 +94,7 @@ class Careconsole extends Model
             ->whereNull('recall_date')
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+           ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -114,9 +110,7 @@ class Careconsole extends Model
             ->whereNull('recall_date')
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-
+            ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -190,17 +184,17 @@ class Careconsole extends Model
     public static function getAppointmentScheduledCount($networkID, $stageID)
     {
         $sqlResult = DB::select("select count(*) as count from `careconsole`
-            	left join `appointments`
-            	on `careconsole`.`appointment_id` = `appointments`.`id`
-            	left join `import_history`
-            	on `import_history`.`id` = `careconsole`.`import_id`
+                left join `appointments`
+                on `careconsole`.`appointment_id` = `appointments`.`id`
+                left join `import_history`
+                on `import_history`.`id` = `careconsole`.`import_id`
                 left join `patients`
                 on `appointments`.`patient_id` = `patients`.`id`
-            	where `import_history`.`network_id` = $networkID and
-            	`stage_id` = $stageID and
-            	`careconsole`.`archived_date` is null and
-            	`careconsole`.`recall_date` is null and
-            	datediff(`start_datetime`, CURRENT_TIMESTAMP) > 1 and
+                where `import_history`.`network_id` = $networkID and
+                `stage_id` = $stageID and
+                `careconsole`.`archived_date` is null and
+                `careconsole`.`recall_date` is null and
+                datediff(`start_datetime`, CURRENT_TIMESTAMP) > 1 and
                 `patients`.`deleted_at` is null");
 
         return $sqlResult[0]->count;
@@ -214,17 +208,17 @@ class Careconsole extends Model
     public static function getAppointmentTomorrowCount($networkID, $stageID)
     {
         $sqlResult = DB::select("select count(*) as count from `careconsole`
-            	left join `appointments`
-            	on `careconsole`.`appointment_id` = `appointments`.`id`
-            	left join `import_history`
-            	on `import_history`.`id` = `careconsole`.`import_id`
+                left join `appointments`
+                on `careconsole`.`appointment_id` = `appointments`.`id`
+                left join `import_history`
+                on `import_history`.`id` = `careconsole`.`import_id`
                 left join `patients`
                 on `appointments`.`patient_id` = `patients`.`id`
-            	where `import_history`.`network_id` = $networkID and
-            	`stage_id` = $stageID and
-            	`careconsole`.`archived_date` is null and
-            	`careconsole`.`recall_date` is null and
-            	datediff(`start_datetime`, CURRENT_TIMESTAMP) = 1 and
+                where `import_history`.`network_id` = $networkID and
+                `stage_id` = $stageID and
+                `careconsole`.`archived_date` is null and
+                `careconsole`.`recall_date` is null and
+                datediff(`start_datetime`, CURRENT_TIMESTAMP) = 1 and
                 `patients`.`deleted_at` is null");
 
         return $sqlResult[0]->count;
@@ -237,17 +231,17 @@ class Careconsole extends Model
     public static function getPastAppointmentCount($networkID, $stageID)
     {
         $sqlResult = DB::select("select count(*) as count from `careconsole`
-            	left join `appointments`
-            	on `careconsole`.`appointment_id` = `appointments`.`id`
-            	left join `import_history`
-            	on `import_history`.`id` = `careconsole`.`import_id`
+                left join `appointments`
+                on `careconsole`.`appointment_id` = `appointments`.`id`
+                left join `import_history`
+                on `import_history`.`id` = `careconsole`.`import_id`
                 left join `patients`
                 on `appointments`.`patient_id` = `patients`.`id`
-            	where `import_history`.`network_id` = $networkID and
-            	`stage_id` = $stageID and
-            	`careconsole`.`archived_date` is null and
-            	`careconsole`.`recall_date` is null and
-            	datediff(`start_datetime`, CURRENT_TIMESTAMP) <= 0 and
+                where `import_history`.`network_id` = $networkID and
+                `stage_id` = $stageID and
+                `careconsole`.`archived_date` is null and
+                `careconsole`.`recall_date` is null and
+                datediff(`start_datetime`, CURRENT_TIMESTAMP) <= 0 and
                 `patients`.`deleted_at` is null");
 
         return $sqlResult[0]->count;
@@ -292,17 +286,16 @@ class Careconsole extends Model
      */
     public static function getStageWaitingCount($networkID, $stageID)
     {
-
         $sqlResult = DB::select("select count(*) as count from `careconsole`
-            	left join `import_history`
-            	on `import_history`.`id` = `careconsole`.`import_id`
+                left join `import_history`
+                on `import_history`.`id` = `careconsole`.`import_id`
                 left join `patients`
-            	on `careconsole`.`patient_id` = `patients`.`id`
-            	where `import_history`.`network_id` = $networkID and
-            	`stage_id` = $stageID and
-            	`careconsole`.`archived_date` is null and
-            	`careconsole`.`recall_date` is null and
-            	datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) < 5 and
+                on `careconsole`.`patient_id` = `patients`.`id`
+                where `import_history`.`network_id` = $networkID and
+                `stage_id` = $stageID and
+                `careconsole`.`archived_date` is null and
+                `careconsole`.`recall_date` is null and
+                datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) < 5 and
                 `patients`.`deleted_at` is null");
 
         return $sqlResult[0]->count;
@@ -315,17 +308,16 @@ class Careconsole extends Model
      */
     public static function getStageOverdueCount($networkID, $stageID)
     {
-
         $sqlResult = DB::select("select count(*) as count from `careconsole`
-            	left join `import_history`
-            	on `import_history`.`id` = `careconsole`.`import_id`
+                left join `import_history`
+                on `import_history`.`id` = `careconsole`.`import_id`
                 left join `patients`
-            	on `careconsole`.`patient_id` = `patients`.`id`
-            	where `stage_id` = $stageID and
-            	`import_history`.`network_id` = $networkID and
-            	`careconsole`.`archived_date` is null and
-            	`careconsole`.`recall_date` is null and
-            	datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) > 4 and
+                on `careconsole`.`patient_id` = `patients`.`id`
+                where `stage_id` = $stageID and
+                `import_history`.`network_id` = $networkID and
+                `careconsole`.`archived_date` is null and
+                `careconsole`.`recall_date` is null and
+                datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) > 4 and
                 `patients`.`deleted_at` is null");
 
         return $sqlResult[0]->count;
@@ -350,8 +342,7 @@ class Careconsole extends Model
             ->whereNull('recall_date')
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+            ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -375,9 +366,7 @@ class Careconsole extends Model
             ->whereNull('archived_date')
             ->whereNull('recall_date')
             ->groupBy('patient_id')
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+           ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
     /**
@@ -388,17 +377,17 @@ class Careconsole extends Model
     public static function getAppointmentScheduledPatients($networkID, $stageID)
     {
         $sqlResult = DB::select("select *, `careconsole`.id, `careconsole`.created_at from `careconsole`
-            	left join `appointments`
-            	on `careconsole`.`appointment_id` = `appointments`.`id`
-            	left join `patients`
-            	on `careconsole`.`patient_id` = `patients`.`id`
-				left join `import_history`
-            	on `import_history`.`id` = `careconsole`.`import_id`
-            	where `import_history`.`network_id` = $networkID and
-            	`stage_id` = $stageID and
-            	`careconsole`.`archived_date` is null and
-            	`careconsole`.`recall_date` is null and
-            	datediff(`start_datetime`, CURRENT_TIMESTAMP) > 1 and
+                left join `appointments`
+                on `careconsole`.`appointment_id` = `appointments`.`id`
+                left join `patients`
+                on `careconsole`.`patient_id` = `patients`.`id`
+                left join `import_history`
+                on `import_history`.`id` = `careconsole`.`import_id`
+                where `import_history`.`network_id` = $networkID and
+                `stage_id` = $stageID and
+                `careconsole`.`archived_date` is null and
+                `careconsole`.`recall_date` is null and
+                datediff(`start_datetime`, CURRENT_TIMESTAMP) > 1 and
                 `patients`.`deleted_at` is null");
 
         $results = array();
@@ -418,17 +407,17 @@ class Careconsole extends Model
     public static function getAppointmentTomorrowPatients($networkID, $stageID)
     {
         $sqlResult = DB::select("select *, `careconsole`.id, `careconsole`.created_at from `careconsole`
-            	left join `appointments`
-            	on `careconsole`.`appointment_id` = `appointments`.`id`
-            	left join `patients`
-            	on `careconsole`.`patient_id` = `patients`.`id`
-				left join `import_history`
-            	on `import_history`.`id` = `careconsole`.`import_id`
-            	where `import_history`.`network_id` = $networkID and
-            	`stage_id` = $stageID and
-            	`careconsole`.`archived_date` is null and
-            	`careconsole`.`recall_date` is null and
-            	datediff(`start_datetime`, CURRENT_TIMESTAMP) = 1 and
+                left join `appointments`
+                on `careconsole`.`appointment_id` = `appointments`.`id`
+                left join `patients`
+                on `careconsole`.`patient_id` = `patients`.`id`
+                left join `import_history`
+                on `import_history`.`id` = `careconsole`.`import_id`
+                where `import_history`.`network_id` = $networkID and
+                `stage_id` = $stageID and
+                `careconsole`.`archived_date` is null and
+                `careconsole`.`recall_date` is null and
+                datediff(`start_datetime`, CURRENT_TIMESTAMP) = 1 and
                 `patients`.`deleted_at` is null");
 
         $results = array();
@@ -447,17 +436,17 @@ class Careconsole extends Model
     public static function getPastAppointmentPatients($networkID, $stageID)
     {
         $sqlResult = DB::select("select *, `careconsole`.id, `careconsole`.created_at from `careconsole`
-            	left join `appointments`
-            	on `careconsole`.`appointment_id` = `appointments`.`id`
-            	left join `patients`
-            	on `careconsole`.`patient_id` = `patients`.`id`
-				left join `import_history`
-            	on `import_history`.`id` = `careconsole`.`import_id`
-            	where `import_history`.`network_id` = $networkID and
-            	`stage_id` = $stageID and
-            	`careconsole`.`archived_date` is null and
-            	`careconsole`.`recall_date` is null and
-            	datediff(`start_datetime`, CURRENT_TIMESTAMP) <= 0 and
+                left join `appointments`
+                on `careconsole`.`appointment_id` = `appointments`.`id`
+                left join `patients`
+                on `careconsole`.`patient_id` = `patients`.`id`
+                left join `import_history`
+                on `import_history`.`id` = `careconsole`.`import_id`
+                where `import_history`.`network_id` = $networkID and
+                `stage_id` = $stageID and
+                `careconsole`.`archived_date` is null and
+                `careconsole`.`recall_date` is null and
+                datediff(`start_datetime`, CURRENT_TIMESTAMP) <= 0 and
                 `patients`.`deleted_at` is null");
 
         $results = array();
@@ -477,17 +466,16 @@ class Careconsole extends Model
      */
     public static function getStageWaitingPatients($networkID, $stageID)
     {
-
         $sqlResult = DB::select("select *, `careconsole`.id, `careconsole`.created_at from `careconsole`
-            	left join `import_history`
-            	on `import_history`.`id` = `careconsole`.`import_id`
-            	left join `patients`
-            	on `careconsole`.`patient_id` = `patients`.`id`
-            	where `import_history`.`network_id` = $networkID and
-            	`stage_id` = $stageID and
-            	`careconsole`.`archived_date` is null and
-            	`careconsole`.`recall_date` is null and
-            	datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) < 5 and
+                left join `import_history`
+                on `import_history`.`id` = `careconsole`.`import_id`
+                left join `patients`
+                on `careconsole`.`patient_id` = `patients`.`id`
+                where `import_history`.`network_id` = $networkID and
+                `stage_id` = $stageID and
+                `careconsole`.`archived_date` is null and
+                `careconsole`.`recall_date` is null and
+                datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) < 5 and
                 `patients`.`deleted_at` is null");
 
         $results = array();
@@ -506,17 +494,16 @@ class Careconsole extends Model
      */
     public static function getStageOverduePatients($networkID, $stageID)
     {
-
         $sqlResult = DB::select("select *, `careconsole`.id, `careconsole`.created_at from `careconsole`
-            	left join `import_history`
-            	on `import_history`.`id` = `careconsole`.`import_id`
-            	left join `patients`
-            	on `careconsole`.`patient_id` = `patients`.`id`
-            	where `stage_id` = $stageID and
-            	`import_history`.`network_id` = $networkID and
-            	`careconsole`.`archived_date` is null and
-            	`careconsole`.`recall_date` is null and
-            	datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) > 4 and
+                left join `import_history`
+                on `import_history`.`id` = `careconsole`.`import_id`
+                left join `patients`
+                on `careconsole`.`patient_id` = `patients`.`id`
+                where `stage_id` = $stageID and
+                `import_history`.`network_id` = $networkID and
+                `careconsole`.`archived_date` is null and
+                `careconsole`.`recall_date` is null and
+                datediff(CURRENT_TIMESTAMP, `careconsole`.`stage_updated_at`) > 4 and
                 `patients`.`deleted_at` is null");
 
         $results = array();
@@ -540,8 +527,7 @@ class Careconsole extends Model
             ->whereNull('archived_date')
             ->whereNull('recall_date')
             ->where('kpis.name', '=', $statusName)
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+            ->get(['*', 'careconsole.id', 'careconsole.created_at']);
         return;
     }
     /**
@@ -574,8 +560,7 @@ class Careconsole extends Model
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
             ->whereRaw('datediff(`recall_date`, CURRENT_TIMESTAMP) = 1')
-            ->paginate(50, ['*', 'careconsole.id', 'careconsole.created_at']);
-        //->get(['*', 'careconsole.id', 'careconsole.created_at']);
+           ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
 
@@ -589,12 +574,11 @@ class Careconsole extends Model
             ->whereHas('importHistory', function ($query) use ($networkID) {
                 $query->where('network_id', $networkID);
             })
-            ->with(['contactHistory' => function ($query) use ($startDate, $endDate)  {
+            ->with(['contactHistory' => function ($query) use ($startDate, $endDate) {
                 $query->whereNotNull('user_id');
                 $query->where('created_at', '>=', $startDate);
                 $query->where('created_at', '<=', $endDate);
             }, 'contactHistory.action', 'contactHistory.actionResult', 'contactHistory.currentStage', 'contactHistory.previousStage'])
             ->get();
     }
-
 }

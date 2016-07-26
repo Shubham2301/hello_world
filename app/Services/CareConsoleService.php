@@ -13,12 +13,16 @@ use myocuhub\Models\Practice;
 use myocuhub\Patient;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
+use DateTime;
+use Helper;
 
 class CareConsoleService
 {
 
     private $KPIService;
     private $ActionService;
+    private $pageNum;
+    private $countChunk;
     /**
      * @param KPIService $KPIService
      */
@@ -80,7 +84,7 @@ class CareConsoleService
         $actionsData = [];
         $i = 0;
         foreach ($actions as $action) {
-            if(($action->id == 35 || $action->id == 36 || $action->id == 37 ) && session('network-id') == 1){
+            if (($action->id == 35 || $action->id == 36 || $action->id == 37) && session('network-id') == 1) {
                 continue;
             }
             $actionsData[$i]['id'] = $action->id;
@@ -111,7 +115,7 @@ class CareConsoleService
         if ($sortOrder == '') {
             $sortOrder = 'SORT_ASC';
         }
-
+            
         $headerData = [];
         $patientsData = [];
         $listing = [];
@@ -154,19 +158,19 @@ class CareConsoleService
             $sortParams = [$sortField => $sortOrder];
             $patientsData = $this->array_msort($patientsData, $sortParams);
         }
-
-        $listing['patients'] = $patientsData;
-
+        
         if ($ulimit != -1) {
-            $listing['patients'] = Careconsole::filterPatientByDaysPendings($llimit, $ulimit, $patientsData);
+            $patientsData = Careconsole::filterPatientByDaysPendings($llimit, $ulimit, $patientsData);
         }
-
+        
+        $patientsData = $this->paginateResults($patientsData);
+        
+        $listing['patients'] = $patientsData;
+        
+       
         $listing['headers'] = $headerData;
-        $listing['lastpage'] = 0;
-        if (method_exists($patients, 'lastPage')) {
-            $listing['lastpage'] = $patients->lastPage();
-        }
-
+        $listing['lastpage'] = $this->countChunk;
+        
         return $listing;
     }
 
@@ -189,6 +193,7 @@ class CareConsoleService
         if ($sortOrder == '') {
             $sortOrder = 'SORT_ASC';
         }
+        
         $headerData = [];
         $patientsData = [];
         $listing = [];
@@ -223,15 +228,13 @@ class CareConsoleService
             $sortParams = [$sortField => $sortOrder];
             $patientsData = $this->array_msort($patientsData, $sortParams);
         }
-
+        
+        $patientsData = $this->paginateResults($patientsData);
+        
         $listing['patients'] = $patientsData;
-        $listing['headers'] = $headerData;
-
-        $listing['lastpage'] = 0;
-        if (method_exists($patients, 'lastPage')) {
-            $listing['lastpage'] = $patients->lastPage();
-        }
-
+        $listing['headers']  = $headerData;
+        $listing['lastpage'] = $this->countChunk;
+        
         return $listing;
     }
 
@@ -260,7 +263,7 @@ class CareConsoleService
                 break;
             case 'phone':
                 $patient = Patient::find($patient['patient_id']);
-                if($patient){
+                if ($patient) {
                     return $patient->getPhone();
                 }
                 return false;
@@ -326,8 +329,15 @@ class CareConsoleService
         $colarr = array();
         foreach ($cols as $col => $order) {
             $colarr[$col] = array();
+            
+            $isDate = Helper::validateDate($array[0][$col]);
+            
             foreach ($array as $k => $row) {
-                $colarr[$col]['_' . $k] = strtolower($row[$col]);
+                if ($isDate) {
+                    $colarr[$col]['_' . $k] = strtotime($row[$col]);
+                } else {
+                    $colarr[$col]['_' . $k] = strtolower($row[$col]);
+                }
             }
         }
         $eval = 'array_multisort(';
@@ -363,5 +373,45 @@ class CareConsoleService
             //moved patient back into console
             $this->ActionService->userAction(34, '-1', null, 'moved to console', $console->id, '');
         }
+    }
+    
+    public function setPage($pageNum)
+    {
+        $pageNum = (int) $pageNum;
+        $pageNum = $pageNum - 1;
+        
+        
+        if (!$pageNum || $pageNum < 0) {
+            $pageNum = 0;
+        }
+            
+        $this->pageNum =  $pageNum;
+    }
+    
+    public function getPage()
+    {
+        $pageNum = $this->pageNum;
+        
+        if (!$pageNum || $pageNum < 0) {
+            return 0;
+        }
+        
+        return $this->pageNum;
+    }
+
+    public function paginateResults($data)
+    {
+        $defaultPage = config('constants.default_careconsole_paginate');
+        $page = $this->getPage();
+        $Chunks = array_chunk($data, $defaultPage);
+        $countChunk = sizeof($Chunks);
+        
+        $this->countChunk = $countChunk;
+        
+        if (isset($Chunks[$page])) {
+            return $Chunks[$page];
+        }
+         
+        return [];
     }
 }

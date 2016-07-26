@@ -171,6 +171,11 @@ return [
          * CCDA Service Providers...
          */
 		myocuhub\Providers\CCDAServiceProvider::class,
+
+        /*
+         * Helpers
+         */
+        myocuhub\Providers\HelperServiceProvider::class,
     ],
 
     /*
@@ -227,7 +232,8 @@ return [
         'Voice' => myocuhub\Facades\Voice::class,
         'Sms' => myocuhub\Facades\Sms::class,
         'SES' => myocuhub\Facades\SES::class,
-		'MyCCDA' => myocuhub\Facades\CCDAFacade::class,
+        'MyCCDA' => myocuhub\Facades\CCDAFacade::class,
+		'Helper' => myocuhub\Facades\Helper::class,
     ],
 
 ];
