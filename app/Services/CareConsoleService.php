@@ -329,9 +329,12 @@ class CareConsoleService
         $colarr = array();
         foreach ($cols as $col => $order) {
             $colarr[$col] = array();
+            $isDate = false;
             
-            $isDate = Helper::validateDate($array[0][$col]);
-            
+            if(isset($array[0][$col]))
+            {
+                $isDate = Helper::validateDate($array[0][$col]);
+            }
             foreach ($array as $k => $row) {
                 if ($isDate) {
                     $colarr[$col]['_' . $k] = strtotime($row[$col]);
