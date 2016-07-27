@@ -161,8 +161,8 @@ class AnnouncementController extends Controller
                 if($announcement == null){
                     continue;
                 }
-                $announcementArchive->read = 1;
-                $announcementArchive->save();
+                $announcement->read = 1;
+                $announcement->save();
             }
             else {
                 break;
