@@ -176,6 +176,14 @@ return [
          * Helpers
          */
         myocuhub\Providers\HelperServiceProvider::class,
+
+        /*
+         * PDF Service Providers
+         */
+
+        Barryvdh\Snappy\ServiceProvider::class,
+
+
     ],
 
     /*
@@ -234,6 +242,7 @@ return [
         'SES' => myocuhub\Facades\SES::class,
         'MyCCDA' => myocuhub\Facades\CCDAFacade::class,
 		'Helper' => myocuhub\Facades\Helper::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
     ],
 
 ];

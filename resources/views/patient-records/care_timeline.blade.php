@@ -1,11 +1,12 @@
 <div class="timeline_section">
-    <?php $i=0; ?> @foreach($progress as $status)
+    <?php $i=0; ?>
+    @foreach($progress as $status)
     <div class="row">
         <div class="col-xs-1"> </div>
         <div class="col-xs-2">
             <p class="date_left">
-                {{ $status['date'][0].', '. $status['date'][2] }}
-                <br> {{ $status['date'][1] }}
+                {{ $status['date'][0].', '. $status['date'][1] }}
+                <br> {{ $status['date'][2] }}
             </p>
         </div>
         <div class="col-xs-1">
@@ -16,30 +17,30 @@
                 </ul>
             </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-6 set_default_padding">
             <div class="data_right">
                 <span data-toggle="collapse" data-target="#{{'left'.$i}}" class="patient_status arial_bold">{{$status['name']}}
-                    </span>
+                </span>
                 <div class="row collapse" id="{{ 'left'.$i }}">
                     <div class="col-xs-12 ">
                         <div class="timeline_notes">
 
-							@if($status['name'] == 'Create Record' )
+                            @if($status['name'] == 'Create Record' )
 
-							<div class="row note_item">
-								<div class="col-xs-12">
-									<p>Log Recorded for that action</p>
-								</div>
-							</div>
-							<div class="row note_item">
-								<div class="col-xs-12">
-									<a href="#a" target="_blank">{{ $status['notes'][0] }}</a>
-								</div>
-							</div>
+                            <div class="row note_item">
+                                <div class="col-xs-12">
+                                    <p>Log Recorded for that action</p>
+                                </div>
+                            </div>
+                            <div class="row note_item">
+                                <div class="col-xs-12">
+                                    <a href="{{'show_records/'.$status['contact_history_id']}}" target="_blank">{{ $status['notes'][0] }}</a>
+                                </div>
+                            </div>
 
 
-							@elseif(sizeOf($status['notes']) == 1)
-                            	{{ $status['notes'][0] }}
+                            @elseif(sizeOf($status['notes']) == 1)
+                            {{ $status['notes'][0] }}
 
                             @elseif($status['notes'] > 1)
                             <div class="row note_item">
@@ -73,14 +74,15 @@
             </div>
         </div>
     </div>
-    <?php $i++; ?> @endforeach
+    <?php $i++; ?>
+    @endforeach
 </div>
 <div class="show_more_section">
     <div class="row">
         <div class="col-xs-2"></div>
         <div class="col-xs-3">
-			@if(sizeOf($progress) == $getResults)
-			<p class="show_more_text" data-id="{{$patientID}}" data-result="{{$getResults}}" >Show More</p>
+            @if(sizeOf($progress) == $getResults)
+            <p class="show_more_text" data-id="{{$patientID}}" data-result="{{$getResults}}" >Show More</p>
             @endif
         </div>
 

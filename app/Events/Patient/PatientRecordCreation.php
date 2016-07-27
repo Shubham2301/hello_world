@@ -10,6 +10,8 @@ class PatientRecordCreation extends Event
 {
     use SerializesModels;
 
+    private $contactHistoryID;
+
     /**
      * Create a new event instance.
      *
@@ -22,6 +24,9 @@ class PatientRecordCreation extends Event
         $this->setAction($action);
         $this->setDescription($discription);
         $this->setIp($data['ip']);
+
+        $this->setContactHistoryID($data['contact_history_id']);
+
     }
 
     /**
@@ -32,5 +37,14 @@ class PatientRecordCreation extends Event
     public function broadcastOn()
     {
         return [];
+    }
+
+    public function getContactHistoryID()
+    {
+        return $this->contactHistoryID;
+    }
+
+    public function setContactHistoryID($id){
+        $this->contactHistoryID = $id;
     }
 }

@@ -152,6 +152,10 @@ class SESMessaging extends SES
 
     private static function prepareContent($view, $appt)
     {
+        if(!view()->exists($view))
+        {
+            return $view;
+        }
         return view($view)->with('appt', $appt)->render();
     }
 }

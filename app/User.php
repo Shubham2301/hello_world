@@ -268,4 +268,9 @@ CanResetPasswordContract
     {
         return $this->level == 1;
     }
+
+    public function getName()
+    {
+        return $this->lastname . ', ' . $this->firstname;
+    }
 }

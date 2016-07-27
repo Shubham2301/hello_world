@@ -26,6 +26,7 @@ class EventServiceProvider extends ServiceProvider {
 		],
 		'myocuhub\Events\Patient\PatientRecordCreation' => [
             'myocuhub\Listeners\AuditListener',
+            'myocuhub\Listeners\Patient\SendRecordWithEmail',
         ],
 	];
 

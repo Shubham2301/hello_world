@@ -405,7 +405,7 @@ class ActionService
 			{
 				$actions[$i]['result'] = false;
 			}
-
+            $actions[$i]['contact_history_id'] = $contact['contact_history_id'];
             $i++;
         }
 

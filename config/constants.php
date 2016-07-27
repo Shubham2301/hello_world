@@ -33,6 +33,11 @@ return [
             'subject' => 'How was your Appointment',
             'view' => 'emails.post-appointment-patient'
         ],
+
+        'send_record_provider' => [
+            'subject' => 'New health record created',
+            'view' => 'You have created a new health record'
+        ],
     ],
     'language' => [
         'english' => 1,
@@ -61,6 +66,11 @@ return [
             'toxml' => public_path() . '/js/toxml.js ',
             'stylesheet' => public_path() . '/lib/xslt/CDA.xsl',
         ],
+
+        'pdf' =>[
+            'temp_dir' =>base_path() . '/temp_ccda/',
+            'ext' => '.pdf',
+        ]
     ],
     'fpc_mandatory_fields' => [
       'birthdate' => [
@@ -91,4 +101,5 @@ return [
     'date_time_format' => 'F j Y, g:i a',
     'date_format' => 'm/d/Y',
     'db_date_format' => 'Y-m-d h:i:s',
+    'schedule_notes_delimiter' => '</br>',
 ];
