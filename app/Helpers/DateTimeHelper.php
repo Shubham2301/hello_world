@@ -7,7 +7,7 @@ trait DateTimeHelper{
 
     public function validateDate($date, $format = null)
     {
-    	$format = ($format == null) ?: config('constants.date_time_format');
+    	$format = ($format) ?: config('constants.date_time_format');
         $dateInFormat = DateTime::createFromFormat($format, $date);
         return $dateInFormat && $dateInFormat->format($format) == $date;
     }

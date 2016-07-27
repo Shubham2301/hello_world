@@ -313,6 +313,9 @@ class CareConsoleService
             case 'email':
                 return $patient['email'];
                 break;
+            case 'special-request':
+                return $patient['special_request'] ?: '-';
+                break;    
             default:
                 return '-';
                 break;
@@ -329,9 +332,12 @@ class CareConsoleService
         $colarr = array();
         foreach ($cols as $col => $order) {
             $colarr[$col] = array();
+            $isDate = false;
             
-            $isDate = Helper::validateDate($array[0][$col]);
-            
+            if(isset($array[0][$col]))
+            {
+                $isDate = Helper::validateDate($array[0][$col]);
+            }
             foreach ($array as $k => $row) {
                 if ($isDate) {
                     $colarr[$col]['_' . $k] = strtotime($row[$col]);
@@ -369,9 +375,7 @@ class CareConsoleService
         $patients = Careconsole::getRecallPatientsToMove($networkID);
         foreach ($patients as $patient) {
             $console = Careconsole::find($patient['id']);
-
-            //moved patient back into console
-            $this->ActionService->userAction(34, '-1', null, 'moved to console', $console->id, '');
+            $this->ActionService->userAction(34, '-1', null, 'Moved patient to Contact Pending from Recall', '', $console->id, '');
         }
     }
     
