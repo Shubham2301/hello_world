@@ -152,24 +152,23 @@ class AnnouncementController extends Controller
     {
         $userID = Auth::user()->id;
         $i = 0;
-        while(1){
+
+        while(true){
             if($request->input($i)){
                 $announcementId = $request->input($i);
+                $i++;
                 $announcement = AnnouncementUser::where('user_id', '=', $userID)->where('announcement_id', '=', $announcementId)->first();
                 if($announcement == null){
-                    $announcement = new AnnouncementUser;
-                    $announcement->user_id = $userID;
-                    $announcement->announcement_id = $announcementId;
-                    $announcementArchive->save();
+                    continue;
                 }
                 $announcementArchive->read = 1;
                 $announcementArchive->save();
-                $i++;
             }
-            else
+            else {
                 break;
+            }
         }
-        return(json_encode('1'));
+        return json_encode("true");
     }
 
     /**
