@@ -559,7 +559,7 @@ class Careconsole extends Model
             ->where('import_history.network_id', $networkID)
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
-            ->whereRaw('datediff(`recall_date`, CURRENT_TIMESTAMP) = 1')
+            ->whereRaw('datediff(`recall_date`, CURRENT_TIMESTAMP) <= 1')
            ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
