@@ -313,6 +313,9 @@ class CareConsoleService
             case 'email':
                 return $patient['email'];
                 break;
+            case 'special-request':
+                return $patient['special_request'] ?: '-';
+                break;    
             default:
                 return '-';
                 break;
