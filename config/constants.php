@@ -49,6 +49,8 @@ return [
         'General Eye Exam',
         'ABIorVTeval',
         'UnknownEncounterReschedule',
+        'Glaucoma Evaluation',
+        'Cataract Evaluation',
     ],
     'paths' => [
         'ccda'=>[
