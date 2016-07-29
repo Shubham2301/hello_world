@@ -12,10 +12,11 @@ class UserPolicy
     public function administration(){
     	$user = Auth::user();
     	try {
-    		return ($user->isSuperAdmin() || $user->hasRole('patient-admin'));
+    		return ($user->isSuperAdmin() || $user->hasRole('user-admin'));
     	} catch (Exception $e) {
     		Log::error($e);
     	}
+    	return false;
     }
 
 }

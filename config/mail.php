@@ -121,4 +121,7 @@ return [
 
 	'pretend' => false,
 
+	'templates' => [
+		'welcome-patients-on-import' => 'Welcome Patients on Import'
+	]
 ];

@@ -46,6 +46,20 @@
                             </div>
                             <div class="col-md-2"></div>
                         </div>
+                        <div class="row input_row">
+                            <div class="col-md-3 form-group">
+                                <label for="exampleInputFile"><strong style="padding-left:3em;" >Mail</strong></label>
+                            </div>
+                            <div class="col-md-7">
+                                <select name="template" id="template" class="form-control">
+                                    <option value="-1">Select Mail Template</option>
+                                    @foreach(Helper::mandrillTemplates() as $template_slug => $template_name)
+                                    <option value="{{ $template_slug }}">{{ $template_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
                         <a href="/import/format/xlsx"><div style="color:#000;text-decoration: underline; padding-left:3em;">Download Excel Format</div></a>
                         <div style="color:#FF7777; padding-left:3em;">* Max upload limit 5,000 patients.</div>
                     </div>

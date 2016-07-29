@@ -4,6 +4,7 @@
 /public/images/users/
 /public/images/temp/
 /vendor
+composer.lock
 /node_modules
 Homestead.yaml
 Homestead.json

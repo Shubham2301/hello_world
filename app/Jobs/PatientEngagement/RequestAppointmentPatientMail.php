@@ -25,7 +25,7 @@ class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQ
     {
         $this->setPatient($patient);
         $this->setStage('request_appointment');
-        $this->setType('mail');
+        $this->setType('email');
         $this->message = $message;
     }
 
