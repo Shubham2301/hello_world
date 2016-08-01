@@ -30,6 +30,10 @@ class ContactHistory extends Model
         return $this->belongsTo('myocuhub\Models\CareconsoleStage', 'previous_stage');
     }
 
+    public function appointments() {
+        return $this->belongsTo('myocuhub\Models\Appointment', 'appointment_id');
+    }
+
     public static function getContactHistory($consoleID){
         return self::where('console_id', $consoleID)
             ->leftjoin('actions', 'contact_history.action_id', '=', 'actions.id')

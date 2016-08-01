@@ -85,6 +85,7 @@ class AppointmentController extends Controller
             $contactHistory = new ContactHistory;
             $contactHistory->previous_stage = $careconsole->stage_id;
             $contactHistory->user_id = Auth::user()->id;
+            $contactHistory->appointment_id = $appointment->id;
 
             $careconsole->appointment_id = $appointment->id;
             $careconsole->stage_id = 2;

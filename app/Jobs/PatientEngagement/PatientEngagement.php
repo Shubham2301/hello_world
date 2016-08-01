@@ -10,6 +10,7 @@ use myocuhub\Events\PatientEngagementFailure;
 use myocuhub\Events\PatientEngagementSuccess;
 use myocuhub\Facades\Sms;
 use myocuhub\Jobs\Job;
+use Mandrill;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\MessageTemplate;
 use myocuhub\Patient;
@@ -71,7 +72,7 @@ class PatientEngagement extends Job{
     public function sendTemplate($attr){
         $response = (new MandrillService)->sendTemplate($attr);
         if($response) {
-            $this->successfulResponse([ 
+            $this->successfulResponse([
                     'at' => $attr['to']['email']
                 ]);
         } else {
