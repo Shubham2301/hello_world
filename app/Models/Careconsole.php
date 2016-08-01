@@ -566,19 +566,30 @@ class Careconsole extends Model
 
     public static function getReachRateData($networkID, $startDate, $endDate)
     {
-        return self::whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
-                $query->whereNotNull('user_id');
-                $query->where('contact_history.created_at', '>=', $startDate);
-                $query->where('contact_history.created_at', '<=', $endDate);
+        return self::where( function ($subquery) use ($startDate, $endDate) {
+                $subquery->whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
+                    $query->whereNotNull('user_id');
+                    $query->where('contact_activity_date', '>=', $startDate);
+                    $query->where('contact_activity_date', '<=', $endDate);
+                })
+                ->orWhereHas('importHistory', function ($query) use ($startDate, $endDate) {
+                    $query->where('created_at', '>=', $startDate);
+                    $query->where('created_at', '<=', $endDate);
+                });
             })
-            ->whereHas('importHistory', function ($query) use ($networkID) {
+            ->whereHas('importHistory', function ($query) use ($networkID, $startDate, $endDate) {
                 $query->where('network_id', $networkID);
             })
+            ->has('patient')
             ->with(['contactHistory' => function ($query) use ($startDate, $endDate) {
                 $query->whereNotNull('user_id');
+                $query->where('contact_activity_date', '>=', $startDate);
+                $query->where('contact_activity_date', '<=', $endDate);
+            }, 'contactHistory.action', 'contactHistory.actionResult', 'contactHistory.currentStage', 'contactHistory.previousStage', 'contactHistory.appointments'])
+            ->withCount(['importHistory' => function ($query) use ($startDate, $endDate) {
                 $query->where('created_at', '>=', $startDate);
                 $query->where('created_at', '<=', $endDate);
-            }, 'contactHistory.action', 'contactHistory.actionResult', 'contactHistory.currentStage', 'contactHistory.previousStage'])
+            }])
             ->get();
     }
 }

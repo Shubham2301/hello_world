@@ -236,5 +236,4 @@ class BulkImportController extends Controller
         $headers = [ 'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ];
         return response()->download($path, $name, $headers);
     }
-    
 }

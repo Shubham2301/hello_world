@@ -248,7 +248,7 @@ class Patient extends Model
         return $this->hasMany(PatientFile::class);
     }
 
-    public function careConsole(){
+    public function careConsole() {
         return $this->hasOne(Careconsole::class);
     }
 }

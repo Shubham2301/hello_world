@@ -1,5 +1,6 @@
 <?php 
 
+
 namespace myocuhub\Services\MandrillService;
 
 use Mandrill;
@@ -7,6 +8,7 @@ use Mandrill;
 /**:
 * Service for Mandrill API
 */
+
 class MandrillService
 {
 	private $mandrill;
@@ -25,12 +27,10 @@ class MandrillService
 		        'from_email' => $attr['from']['email'],
 		        'from_name' => $attr['from']['name'],
 		        'to' => [
-		        	[
 		        		'email' => $attr['to']['email'],
 		                'name' => $attr['to']['name'],
 		                'type' => 'to'
 	                ]
-		        ]
 		    ];
 		    $async = false;
 		    $result = $this->mandrill->messages->sendTemplate($template_name, $template_content, $message, $async);

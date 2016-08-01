@@ -95,7 +95,7 @@ class CareConsoleController extends Controller
 
         $overview['network_practices'] = Network::find(session('network-id'))->practices;
         $overview['appointment_types'] = $this->getAppointmentTypes();
-        
+
         $overview['request_for_appointment']['email'] = MessageTemplate::getTemplate('email', 'request_for_appointment', $networkID);
         $overview['request_for_appointment']['phone'] = nl2br(MessageTemplate::getTemplate('phone', 'request_for_appointment', $networkID), false);
         $overview['request_for_appointment']['sms'] = MessageTemplate::getTemplate('sms', 'request_for_appointment', $networkID);
@@ -109,9 +109,9 @@ class CareConsoleController extends Controller
     public function getDrilldownData(Request $request)
     {
         $stageID = $request->stage;
-        
+
         $this->CareConsoleService->setPage($request->page);
-        
+
         if ($stageID == '-1') {
             $stageID = 1;
         }
@@ -127,7 +127,7 @@ class CareConsoleController extends Controller
         } else {
             $listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder);
         }
-        
+
         $actions = $this->CareConsoleService->getActions($stageID);
         $controls = $this->CareConsoleService->getControls($stageID);
         $drilldown['controls'] = (sizeof($controls) === 0) ? '' : view('careconsole.controls')->with('controls', $controls)->render();
@@ -163,7 +163,7 @@ class CareConsoleController extends Controller
         $patientStage['id'] = $stage->id;
         $patientStage['name'] = $stage->display_name;
 
-        
+
         $actionName = Action::find($actionID)->display_name;
         $action = "Performed Action : '$actionName' on Console Entry : $consoleID in the Careconsole";
         $description = '';
@@ -274,7 +274,7 @@ class CareConsoleController extends Controller
             $provider = User::find($appointment->provider_id);
             $data['appointment_type'] = $appointment->appointmenttype;
         }
-        
+
         $data['special_request'] = ($patient->special_request != null && $patient->special_request != '') ? $patient->special_request : '-';
         $data['pcp'] = ($patient->pcp != null && $patient->pcp != '') ? $patient->pcp : '-';
         $data['scheduled_to'] = ($provider) ? $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname : '-';

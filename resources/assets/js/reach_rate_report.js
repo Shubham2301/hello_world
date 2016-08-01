@@ -29,13 +29,20 @@ $(document).ready(function () {
             getReport();
         }
     });
+    $('.drilldown_item').on('click', function() {
+        getReport($(this).find('.category_count').attr('id'));
+    });
+    $('.remove_filter').on('click', function() {
+        getReport();
+    });
 });
 
-function getReport() {
+function getReport(filter) {
 
     var formData = {
         start_date: $('#start_date').val(),
         end_date: $('#end_date').val(),
+        filter_option: filter,
     };
 
     $.ajax({
@@ -49,6 +56,10 @@ function getReport() {
                 $('.'+key).html(data[key]);
 
             }
+            if(data['filter_name'] == '')
+                $('.filter').addClass('no_filter');
+            else
+                $('.filter').removeClass('no_filter');
         },
         error: function () {
             alert('Error Refreshing');

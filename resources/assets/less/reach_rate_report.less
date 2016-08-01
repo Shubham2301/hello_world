@@ -4,10 +4,21 @@
 @import 'helper.less';
 .reports_container {
     background-color: #fff;
-    padding: 1em;
+    padding: 0 2em;
     color: #000;
     &>.row {
         margin: 0;
+        &.report_header_row {
+            margin-top: 1em;
+        }
+        &.report_filter_row {
+            margin: 1em 0;
+        }
+    }
+    .drilldown_item {
+        &:hover {
+            cursor: pointer;
+        }
     }
 }
 .content-right {
@@ -21,7 +32,7 @@
     display: flex;
     flex-wrap: wrap;
     &>div {
-        border: solid .5em #fff;
+        border: solid 1em #fff;
         padding: 1.5em 1em;
         background-color: #ebeced;
         &.white_bg {
@@ -54,37 +65,84 @@
 }
 .report_stage_data {
     margin: 2em 0;
-    &>.report_stage_header {
+    &>.stage_row {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
-        border-bottom: solid 2px @primary-blue;
-        &>.stage_header_title {
-            font-size: 1.2em;
+        flex-shrink: 0;
+        flex-wrap: wrap;
+        &>.left,
+        .right {
+            display: flex;
+            flex-shrink: 0;
+            flex-basis: 0;
+        }
+        &>.left {
+            flex-grow: 3;
+        }
+        &>.right {
+            flex-grow: 2;
         }
     }
-    &>.report_stage_content {
-        padding: .5em 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        &>.stage_content_subsection {
-            flex-grow: 1;
-            display: flex;
-            &.passed_stage {
+    &>.stage_header {
+        border-bottom: solid 2px @primary-blue;
+        &>.left {
+            font-size: 1.2em;
+            &>.heading,
+            &>.count {
+                display: flex;
+                flex-basis: 0;
                 justify-content: flex-start;
-                flex-grow: 1;
-                &>.row {
-                    flex-grow: 1;
+            }
+            &>.heading {
+                flex-grow: 2;
+            }
+            &>.count {
+                flex-grow: 3;
+            }
+        }
+        &>.right {
+            justify-content: flex-end;
+        }
+    }
+    &>.stage_content {
+        margin: .3em 0;
+        &>.left {
+            font-size: 1em;
+            &>.title,
+            &>.count {
+                display: flex;
+                flex-basis: 0;
+                justify-content: flex-start;
+                &>img {
+                    margin: .4em;
+                    margin-bottom: auto;
                 }
             }
-            &.still_in_stage {
-                justify-content: flex-end;
-                flex-direction: column;
+            &>.title {
                 flex-grow: 2;
-                &>.row {
+            }
+            &>.count {
+                flex-grow: 3;
+            }
+        }
+        &>.right {
+            flex-direction: column;
+            &>.right_row {
+                display: flex;
+                &.section_break {
+                    border-bottom: 1px solid #000;
+                }
+                &>.right_row_section {
                     flex-grow: 1;
+                    flex-basis: 0;
+                    display: flex;
+                    &>img {
+                        margin: auto .1em;
+                        margin-right: .3em;
+                    }
+                    &.right_section_count {
+                        justify-content: center;
+                    }
                 }
             }
         }
@@ -101,4 +159,21 @@ hr {
 }
 .text_align_end {
     text-align: end;
+}
+.report_filter_row {
+    &>.filter {
+        padding: .1em .2em;
+        border: 1px solid #000;
+        border-radius: .5em;
+        display: inline-block;
+        &>.glyphicon {
+            cursor: pointer;
+        }
+        &>.filter_name {
+            padding: 0 .2em;
+        }
+        &.no_filter {
+            display: none;
+        }
+    }
 }

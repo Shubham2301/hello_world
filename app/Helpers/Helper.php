@@ -11,6 +11,6 @@ class Helper
 
 	function __construct()
 	{
-			
+
 	}
 }
