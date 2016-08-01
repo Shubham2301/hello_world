@@ -7,10 +7,10 @@ namespace myocuhub\Helpers;
 */
 class Helper
 {
-    use AppHelper, DemographicsHelper, MessagesHelper, DateTimeHelper;
+    use AppHelper, DemographicsHelper, MessagesHelper, DateTimeHelper, MandrillHelper;
 
 	function __construct()
 	{
-			
+
 	}
 }

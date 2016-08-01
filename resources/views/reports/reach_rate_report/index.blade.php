@@ -1,8 +1,8 @@
 @extends('layouts.master') @section('title', 'My Ocuhub - Reach Rate Report') @section('imports')
-<link rel="stylesheet" type="text/css" href="{{elixir('css/reports.css')}}">
-<link rel="stylesheet" type="text/css" href="{{elixir('css/reach_rate_report.css')}}">
-<script type="text/javascript" src="{{elixir('js/reach_rate_report.js')}}"></script>
-@endsection @section('sidebar')  @endsection @section('content') @if (Session::has('success'))
+<link rel="stylesheet" type="text/css" href="{{ elixir('css/reports.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ elixir('css/reach_rate_report.css') }}">
+<script type="text/javascript" src="{{ elixir('js/reach_rate_report.js') }}"></script>
+@endsection @section('sidebar') @endsection @section('content') @if (Session::has('success'))
 <div class="alert alert-success" id="flash-message">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <strong>
@@ -10,8 +10,11 @@
         </strong> {{ Session::pull('success') }}
 </div>
 @endif
-<div class="reports_container arial">
-    <div class="row">
+<div class="reports_container arial arial">
+    <div class="row report_filter_row">
+        <span class="filter no_filter"><span class="filter_name"></span><span class="glyphicon glyphicon-remove-circle    remove_filter"></span></span>
+    </div>
+    <div class="row report_header_row">
         <span class="arial_bold reports_header">Careconsole Reach Rate Report</span>
         <span class="timeline">
             <span>Timeline:</span>
@@ -23,41 +26,47 @@
     </div>
     <div class="report_summary row">
         <div class="col-sm-6 col-md-3 flex_col">
-            <span class="arial_bold flex_row summary_header">Total Patients</span>
-            <span class="flex_row summary_header category_count patient_count" id="patient_count"></span>
+            <span data-toggle="tooltip" title="Total number of patients that were present in the careconsole during this timeline. (Repeat patients are counted as a different patient)" data-placement="top">
+                <span class="arial_bold flex_row summary_header" >Total Patients</span>
+                <span class="flex_row summary_header category_count patient_count" id="patient_count"></span>
+            </span>
             <span class="section_separater"></span>
-            <span class="flex_row hide">
-                <span class="flex_col">
-                    <span class="arial_bold">Imported</span>
-                    <span class="category_count imported_patient" id="imported_patient"></span>
+            <span class="flex_row">
+                <span class="flex_col drilldown_item" data-toggle="tooltip" title="Number of patients added to the system during this time timeline" data-placement="bottom">
+                    <span class="arial_bold">New</span>
+                    <span class="category_count new_patient" id="new_patient"></span>
                 </span>
-                <span class="flex_col">
+                <span class="flex_col drilldown_item" data-toggle="tooltip" title="Number of patients already present in the system before this timeline" data-placement="bottom">
                     <span class="arial_bold">Existing</span>
                     <span class="category_count existing_patients" id="existing_patients"></span>
                 </span>
             </span>
         </div>
         <div class="col-sm-6 col-md-3 flex_col">
-            <span class="arial_bold flex_row summary_header">Completed</span>
-            <span class="flex_row summary_header category_count completed" id="completed"></span>
+            <span class="drilldown_item" data-toggle="tooltip" title="Number of patients that moved out of console as successful or dropout" data-placement="top">
+                <span class="arial_bold flex_row summary_header">Completed</span>
+                <span class="flex_row summary_header category_count completed" id="completed"></span>
+            </span>
             <span class="section_separater"></span>
             <span class="flex_row">
-                <span class="flex_col">
+                <span class="flex_col drilldown_item" data-toggle="tooltip" title="Number of patients marked successful in any stage of careconsole during this timeline" data-placement="bottom">
                     <span class="arial_bold">Success</span>
                     <span class="category_count success" id="success"></span>
                 </span>
-                <span class="flex_col">
+                <span class="flex_col drilldown_item" data-toggle="tooltip" title="Number of patients marked successful in any stage of careconsole or marked as 'already seen by outside dr', 'patient declined services', 'other reasons for declining', 'no need to schedule' or as 'no insurance' during this time timeline" data-placement="bottom">
                     <span class="arial_bold">Dropouts</span>
                     <span class="category_count dropout" id="dropout"></span>
                 </span>
             </span>
         </div>
         <div class="col-sm-6 col-md-3 flex_col">
-            <span class="arial_bold flex_row summary_header">Active Patients</span>
-            <span class="flex_row category_count summary_header active_patient" id="active_patient"></span>
+            <span class="drilldown_item" data-toggle="tooltip" title="Number of patients that did not get archived at the end of this timeline" data-placement="top">
+                <span class="arial_bold flex_row summary_header">Active Patients</span>
+                <span class="flex_row category_count summary_header active_patient" id="active_patient"></span>
+            </span>
         </div>
         <div class="col-sm-6 col-md-3 flex_col white_bg">
-            <span class="arial_bold flex_row">Pending Patients</span>
+            <span class="arial_bold flex_row">Pending Contact</span>
             <span class="flex_row category_count pending_patient" id="pending_patient"></span>
             <span class="section_separater"></span>
             <span class="arial_bold flex_row">Repeat Patients</span>
@@ -65,134 +74,174 @@
         </div>
     </div>
     <div class="report_stage_data">
-        <span class="report_stage_header">
-            <span class="stage_header_title">
-                <span class="arial_bold">Contact Attempted</span>
-                <span class="arial_bold category_count contact_attempted" id="contact_attempted"></span>
+        <span class="stage_header stage_row">
+            <span class="left arial_bold">
+                <span class="heading">
+                    Contact Attempted
+                </span>
+                <span class="count category_count contact_attempted" id="contact_attempted">
+                </span>
             </span>
-            <span>
-                <span class="arial_italic">Average days spent in this stage</span>
-                <span class="arial_italic category_count contact-status"></span>
-            </span>
-        </span>
-        <span class="report_stage_content">
-            <span class=" stage_content_subsection passed_stage">
-                <div class="row">
-                    <div class="col-xs-8 col-sm-6 col-md-5 col-lg-4"><img src="{{elixir('images/sidebar/green-dot.png')}}"> Reached</div>
-                    <div class="col-xs-4 category_count reached" id="reached"></div>
-                </div>
-            </span>
-            <span class=" stage_content_subsection still_in_stage">
-                <div>
-                    <div class="col-md-offset-4 col-sm-offset-2 col-sm-4 col-md-4 col-xs-6"></div>
-                    <div class="col-sm-3 col-md-2 col-xs-3 arial_italic">#patients</div>
-<!--                    <div class="col-sm-3 col-md-2 col-xs-3 arial_italic">#contacts</div>-->
-                </div>
-                <div>
-                    <div class="col-md-offset-4 col-sm-offset-2 col-sm-4 col-md-4 col-xs-6"><img src="{{elixir('images/sidebar/red-dot.png')}}"> Not Reached</div>
-                    <div class="col-sm-3 col-md-2 col-xs-3 category_count not_reached" id="not_reached"></div>
-<!--                    <div class="col-sm-3 col-md-2 col-xs-3 category_count">1000</div>-->
-                </div>
-<!--
-                <div>
-                    <div class="col-md-offset-4 col-sm-offset-2 col-sm-10 col-md-8 col-xs-12">
-                        <hr>
-                    </div>
-                </div>
-                <div>
-                    <div class="col-md-offset-4 col-sm-offset-2 col-sm-4 col-md-4 col-xs-6">Answering Machine</div>
-                    <div class="col-sm-3 col-md-2 col-xs-3 category_count">25</div>
-                    <div class="col-sm-3 col-md-2 col-xs-3 category_count">50</div>
-                </div>
-                <div>
-                    <div class="col-md-offset-4 col-sm-offset-2 col-sm-4 col-md-4 col-xs-6">No Response</div>
-                    <div class="col-sm-3 col-md-2 col-xs-3 category_count">300</div>
-                    <div class="col-sm-3 col-md-2 col-xs-3 category_count">600</div>
-                </div>
-                <div>
-                    <div class="col-md-offset-4 col-sm-offset-2 col-sm-4 col-md-4 col-xs-6">Others</div>
-                    <div class="col-sm-3 col-md-2 col-xs-3 category_count">175</div>
-                    <div class="col-sm-3 col-md-2 col-xs-3 category_count">350</div>
-                </div>
--->
+            <span class="right arial_italic">
+                <span class="days_in_stage">
+                    Avg. Time: <span class="contact_attempted_days"></span> days
+                </span>
             </span>
         </span>
-    </div>
-    <div class="report_stage_data">
-        <span class="report_stage_header">
-            <span class="stage_header_title">
-                <span class="arial_bold">Reached</span>
-                <span class="arial_bold category_count reached" id="reached"></span>
+        <span class="stage_content stage_row">
+            <span class="left">
+                <span class="title">
+                    <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Reached
+                </span>
+                <span class="count category_count reached" id="reached">
+                </span>
             </span>
-            <span>
-                <span class="arial_italic">Average days spent in this stage</span>
-                <span class="arial_italic category_count scheduled-for-appointment"></span>
-            </span>
-        </span>
-        <span class="report_stage_content">
-            <span class=" stage_content_subsection passed_stage">
-                <div class="row">
-                    <div class="col-xs-8 col-sm-7 col-lg-6"><img src="{{elixir('images/sidebar/green-dot.png')}}"> Appointment Scheduled</div>
-                    <div class="col-xs-4 category_count appointment_scheduled" id="appointment_scheduled"></div>
-                </div>
-            </span>
-            <span class=" stage_content_subsection still_in_stage">
-                <div>
-                    <div class="col-md-offset-6 col-sm-offset-2 col-sm-4 col-md-4 col-xs-6 text_align_end"><img src="{{elixir('images/sidebar/red-dot.png')}}"> Not Scheduled</div>
-                    <div class="col-sm-3 col-md-2 col-xs-3 category_count not_scheduled text_align_end" id="not_scheduled">500</div>
-                </div>
+            <span class="right">
+                <span class="right_row">
+                    <span class="right_row_section">
+                    </span>
+                    <span class="right_row_section right_section_count">
+                        #patients
+                    </span>
+                    <span class="right_row_section right_section_count">
+                        #contact
+                    </span>
+                </span>
+                <span class="right_row section_break">
+                    <span class="right_row_section">
+                        <img src="{{ elixir('images/sidebar/red-dot.png') }}"> Not Reached
+                    </span>
+                    <span class="right_row_section not_reached right_section_count category_count" id="not_reached">
+                    </span>
+                    <span class="right_row_section not_reached_attempts right_section_count category_count" id="not_reached_attempts">
+                    </span>
+                </span>
+                <span class="right_row">
+                    <span class="right_row_section">
+                        Unable to reach
+                    </span>
+                    <span class="right_row_section unable_to_reach right_section_count category_count" id="">
+                    </span>
+                    <span class="right_row_section unable_to_reach_attempts right_section_count category_count" id="">
+                    </span>
+                </span>
+                <span class="right_row">
+                    <span class="right_row_section">
+                        Hold for future
+                    </span>
+                    <span class="right_row_section hold_for_future right_section_count category_count" id="">
+                    </span>
+                    <span class="right_row_section hold_for_future_attempts right_section_count category_count" id="">
+                    </span>
+                </span>
             </span>
         </span>
     </div>
     <div class="report_stage_data">
-        <span class="report_stage_header">
-            <span class="stage_header_title">
-                <span class="arial_bold">Appointment Completed</span>
-                <span class="arial_bold category_count appointment_completed" id="appointment_completed"></span>
+        <span class="stage_header stage_row">
+            <span class="left arial_bold">
+                <span class="heading">
+                    Reached
+                </span>
+                <span class="count category_count reached" id="reached">
+                </span>
             </span>
-            <span>
-                <span class="arial_italic">Average days spent in this stage</span>
-                <span class="arial_italic category_count exam-report"></span>
+            <span class="right arial_italic">
+                <span class="days_in_stage">
+                    Avg. Time: <span class="reached_days"></span> days
+                </span>
             </span>
         </span>
-        <span class="report_stage_content">
-            <span class=" stage_content_subsection passed_stage">
-                <div class="row">
-                    <div class="col-xs-8 col-sm-7 col-lg-6"><img src="{{elixir('images/sidebar/green-dot.png')}}"> Show</div>
-                    <div class="col-xs-4 category_count show" id="show"></div>
-                </div>
+        <span class="stage_content stage_row">
+            <span class="left">
+                <span class="title">
+                    <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Appointment Scheduled
+                </span>
+                <span class="count category_count appointment_scheduled" id="appointment_scheduled">
+                </span>
             </span>
-            <span class=" stage_content_subsection still_in_stage">
-                <div>
-                    <div class="col-md-offset-6 col-sm-offset-2 col-sm-4 col-md-4 col-xs-6 text_align_end"><img src="{{elixir('images/sidebar/red-dot.png')}}"> No Show</div>
-                    <div class="col-sm-3 col-md-2 col-xs-3 category_count no_show text_align_end" id="no_show"></div>
-                </div>
+            <span class="right">
+                <span class="right_row">
+                    <span class="right_row_section">
+                        <img src="{{ elixir('images/sidebar/red-dot.png') }}"> Not Scheduled
+                    </span>
+                    <span class="right_row_section not_scheduled right_section_count category_count"  id="not_scheduled">
+                    </span>
+                    <span class="right_row_section">
+                    </span>
+                </span>
             </span>
         </span>
     </div>
     <div class="report_stage_data">
-        <span class="report_stage_header">
-            <span class="stage_header_title">
-                <span class="arial_bold">Show</span>
-                <span class="arial_bold category_count show" id="show"></span>
+        <span class="stage_header stage_row">
+            <span class="left arial_bold">
+                <span class="heading">
+                    Appointment Completed
+                </span>
+                <span class="count category_count appointment_completed" id="appointment_completed">
+                </span>
             </span>
-            <span>
-                <span class="arial_italic">Average days spent in this stage</span>
-                <span class="arial_italic category_count finalization"></span>
+            <span class="right arial_italic">
+                <span class="days_in_stage">
+                    Avg. Time: <span class="appointment_completed_days"></span> days
+                </span>
             </span>
         </span>
-        <span class="report_stage_content">
-            <span class=" stage_content_subsection passed_stage">
-                <div class="row">
-                    <div class="col-xs-8 col-sm-7 col-lg-6"><img src="{{elixir('images/sidebar/green-dot.png')}}"> Reports</div>
-                    <div class="col-xs-4 category_count reports" id="reports"></div>
-                </div>
+        <span class="stage_content stage_row">
+            <span class="left">
+                <span class="title">
+                    <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Show
+                </span>
+                <span class="count category_count show" id="show">
+                </span>
             </span>
-            <span class=" stage_content_subsection still_in_stage">
-                <div>
-                    <div class="col-md-offset-6 col-sm-offset-2 col-sm-4 col-md-4 col-xs-6 text_align_end"><img src="{{elixir('images/sidebar/red-dot.png')}}"> No Reports</div>
-                    <div class="col-sm-3 col-md-2 col-xs-3 category_count no_reports text_align_end" id="no_reports"></div>
-                </div>
+            <span class="right">
+                <span class="right_row">
+                    <span class="right_row_section">
+                        <img src="{{ elixir('images/sidebar/red-dot.png') }}"> No Show
+                    </span>
+                    <span class="right_row_section no_show right_section_count category_count"  id="no_show">
+                    </span>
+                    <span class="right_row_section">
+                    </span>
+                </span>
+            </span>
+        </span>
+    </div>
+    <div class="report_stage_data">
+        <span class="stage_header stage_row">
+            <span class="left arial_bold">
+                <span class="heading">
+                    Show
+                </span>
+                <span class="count category_count show" id="show">
+                </span>
+            </span>
+            <span class="right arial_italic">
+                <span class="days_in_stage">
+                    Avg. Time: <span class="show_days"></span> days
+                </span>
+            </span>
+        </span>
+        <span class="stage_content stage_row">
+            <span class="left">
+                <span class="title">
+                    <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Reports
+                </span>
+                <span class="count category_count reports" id="reports">
+                </span>
+            </span>
+            <span class="right">
+                <span class="right_row">
+                    <span class="right_row_section">
+                        <img src="{{ elixir('images/sidebar/red-dot.png') }}"> No Reports
+                    </span>
+                    <span class="right_row_section no_reports right_section_count category_count"  id="no_reports">
+                    </span>
+                    <span class="right_row_section">
+                    </span>
+                </span>
             </span>
         </span>
     </div>

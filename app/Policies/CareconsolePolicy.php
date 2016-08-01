@@ -14,7 +14,6 @@ class CareconsolePolicy
     public function accessConsole(){
     	$user = Auth::user();
     	$careconsoleStages = Network::find(User::getNetwork($user->id)->network_id)->careconsoleStages;
-
-    	return ($user->checkUserLevel('Network') && sizeof($careconsoleStages) > 0);
+    	return ($user->checkUserLevel('Network') && sizeof($careconsoleStages) > 0 && $user->hasRole('care-console'));
     }
 }

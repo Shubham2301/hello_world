@@ -10,6 +10,7 @@ use Faker\Factory as Faker;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Jobs\PatientEngagement\ImportPatientMail;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\EngagementPreference;
 use myocuhub\Models\ImportHistory;
@@ -66,6 +67,7 @@ class BulkImportController extends Controller
     public function importPatientsXlsx(Request $request)
     {
         $networkID = $request->network_id;
+        $template = $request->template;
         $new_patients = 0;
         $old_patients = 0;
 
@@ -117,7 +119,7 @@ class BulkImportController extends Controller
             $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'), function($reader){
                     $reader->setDateColumns(array('birthdate'));
                     $reader->formatDates(true, 'Y-m-d');
-            })->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request) {
+            })->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request, $template) {
                 foreach ($results as $data) {
                     $patients = [];
                     if (array_filter($data->toArray())) {
@@ -196,6 +198,11 @@ class BulkImportController extends Controller
                             $careconsole->stage_updated_at = $date->format('Y-m-d H:i:s');
                             $careconsole->entered_console_at = $date->format('Y-m-d H:i:s');
                             $careconsole->save();
+
+                            if ($template != '-1') {
+                                dispatch((new ImportPatientMail($patient, $template))->onQueue('email'));
+                            }
+
                             $action = "new patient ($patient->id) created and added to console ($careconsole->id) ";
                             $description = '';
                             $filename = basename(__FILE__);
@@ -229,5 +236,4 @@ class BulkImportController extends Controller
         $headers = [ 'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ];
         return response()->download($path, $name, $headers);
     }
-
 }

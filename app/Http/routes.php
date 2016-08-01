@@ -207,6 +207,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('uploadpatientfiles', 'Patient\PatientFilesController@upload');
     Route::get('/getfileuploadview', 'Patient\PatientFilesController@getFileUploadView');
     Route::get('downloadpatientfile/{id}', 'Patient\PatientFilesController@downloadFile');
+
+    Route::group(['middleware' => 'role:patient-record'], function () {
     Route::get('records', 'Patient\PatientController@getPatientRecordView');
     Route::get('webform', 'Patient\PatientController@getWebFormIndex');
     Route::get('createrecord/{name}', 'Patient\PatientController@createRecord');
@@ -214,6 +216,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('patientlistforcreaterecord', 'Patient\PatientController@PatientListForCreateRecord');
     Route::get('patientlistforshowrecord', 'Patient\PatientController@PatientListForShowRecord');
     Route::get('getcaretimeline', 'Patient\PatientController@getCareTimeLine');
+    Route::get('/show_records/{id}', 'Patient\PatientController@printRecord');
+    });
 
     Route::resource('report/reach_rate_report', 'Reports\ReachRateController');
     Route::get('/report/reach_rate_report/show', 'Reports\ReachRateController@show');

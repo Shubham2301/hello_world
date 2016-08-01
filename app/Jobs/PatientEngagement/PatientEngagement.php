@@ -10,9 +10,11 @@ use myocuhub\Events\PatientEngagementFailure;
 use myocuhub\Events\PatientEngagementSuccess;
 use myocuhub\Facades\Sms;
 use myocuhub\Jobs\Job;
+use Mandrill;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\MessageTemplate;
 use myocuhub\Patient;
+use myocuhub\Services\MandrillService\MandrillService;
 
 class PatientEngagement extends Job{
 
@@ -30,15 +32,15 @@ class PatientEngagement extends Job{
     {
         try {
             $message = Sms::send($phone, $message);
-            event(new PatientEngagementSuccess([
-                'action' =>  'Engaged ' . $this->getPatient()->name . ' by SMS at'. $phone,
-                ]));
+            $this->successfulResponse([
+                    'at' => $phone
+                ]);
         } catch (Exception $e) {
             Log::error($e);
-            event(new PatientEngagementFailure([
-                'action' =>  'Application Exception in engaging patient : ' . $this->getPatient()->getName() . ' by ' . $this->getType() . ' on ' . $this->getStage() . ' at ' . $phone,
-                'description' => $e->getMessage()
-                ]));
+            $this->failedResponse([
+                    'at' => $phone,
+                    'error' => $e->getMessage()
+                ]);
         }
     }
 
@@ -53,23 +55,46 @@ class PatientEngagement extends Job{
                 $m->from($attr['from']['email'], $attr['from']['name']);
                 $m->to($attr['to']['email'], $attr['to']['name'])->subject($attr['subject']);
             });
-            event(new PatientEngagementSuccess([
-                'action' =>  'Engaged patient : ' . $this->getPatient()->getName() . ' by ' . $this->getType() . ' on ' . $this->getStage() . ' at ' . $attr['to']['email'],
-                ]));
+            $this->successfulResponse([
+                    'at' => $attr['to']['email']
+                ]);
             return true;
         } catch (Exception $e) {
             Log::error($e);
-            event(new PatientEngagementFailure([
-                'action' =>  'Application Exception in engaging patient : ' . $this->getPatient()->getName() . ' by ' . $this->getType() . ' on ' . $this->getStage() . ' at ' . $attr['to']['email'],
-                'description' => $e->getMessage()
-                ]));
+            $this->failedResponse([
+                    'at' => $attr['to']['email'],
+                    'error' => $e->getMessage()
+                ]);
         }
-
+        return false;
     }
 
-    public function auditMessage()
-    {
-        return 'Ocuhub Scheduler sent Post Appointment SMS to : ';
+    public function sendTemplate($attr){
+        $response = (new MandrillService)->sendTemplate($attr);
+        if($response) {
+            $this->successfulResponse([
+                    'at' => $attr['to']['email']
+                ]);
+        } else {
+            $this->failedResponse([
+                    'at' => $attr['to']['email'],
+                    'error' => $e->getMessage()
+                ]);
+        }
+        return $response;
+    }
+
+    public function failedResponse($attr){
+        event(new PatientEngagementFailure([
+                'action' =>  'Application Exception in engaging patient : ' . $this->getPatient()->getName() . ' by ' . $this->getType() . ' on ' . $this->getStage() . ' at ' . $attr['at'],
+                'description' => $attr['error']
+                ]));
+    }
+
+    public function successfulResponse($attr){
+        event(new PatientEngagementSuccess([
+                'action' =>  'Engaged patient : ' . $this->getPatient()->getName() . ' by ' . $this->getType() . ' on ' . $this->getStage() . ' at ' . $attr['at'],
+                ]));
     }
 
     public function getContent(){

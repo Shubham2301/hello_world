@@ -12,7 +12,7 @@ trait AppHelper{
 		$config = array_flip(config($expression));
         foreach ($config as $key => $value) {
                $config[$key] = ucfirst($value);
-        } 
+        }
         return $config;
 	}
 

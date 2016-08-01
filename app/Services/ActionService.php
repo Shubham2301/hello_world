@@ -133,6 +133,7 @@ class ActionService
                     $contact->previous_stage = $console->stage_id;
                     $contact->days_in_prev_stage = $date_diff;
                     $contact->days_in_current_stage = 0;
+                    $contact->appointment_id = $appointment->id;
                     $console->appointment_id = $appointment->id;
                     $console->stage_id = 2;
                     $console->recall_date = null;
@@ -197,6 +198,7 @@ class ActionService
                     $contact->previous_stage = $console->stage_id;
                     $contact->days_in_prev_stage = $date_diff;
                     $contact->days_in_current_stage = 0;
+                    $contact->appointment_id = $appointment->id;
                     $console->appointment_id = $appointment->id;
                     $console->stage_id = 2;
                     $console->recall_date = null;
@@ -279,6 +281,7 @@ class ActionService
                 $contact->previous_stage = $console->stage_id;
                 $contact->days_in_prev_stage = $date_diff;
                 $contact->days_in_current_stage = 0;
+                $contact->appointment_id = $appointment->id;
                 $console->stage_id = 4;
                 $date = new DateTime();
                 $console->stage_updated_at = $date->format('Y-m-d H:i:s');
@@ -293,6 +296,7 @@ class ActionService
                 $contact->previous_stage = $console->stage_id;
                 $contact->days_in_prev_stage = $date_diff;
                 $contact->days_in_current_stage = 0;
+                $contact->appointment_id = $appointment->id;
                 $console->stage_id = 3;
                 $date = new DateTime();
                 $console->stage_updated_at = $date->format('Y-m-d H:i:s');
@@ -307,6 +311,7 @@ class ActionService
                 $contact->previous_stage = $console->stage_id;
                 $contact->days_in_prev_stage = $date_diff;
                 $contact->days_in_current_stage = 0;
+                $contact->appointment_id = $appointment->id;
                 $console->stage_id = 3;
                 $date = new DateTime();
                 $console->stage_updated_at = $date->format('Y-m-d H:i:s');
@@ -314,9 +319,6 @@ class ActionService
                 break;
             case 'data-received':
                 $console = Careconsole::find($consoleID);
-                $contact->previous_stage = $console->stage_id;
-                $contact->days_in_prev_stage = $date_diff;
-                $contact->days_in_current_stage = 0;
                 $console->stage_id = 5;
                 $date = new DateTime();
                 $console->stage_updated_at = $date->format('Y-m-d H:i:s');
@@ -325,6 +327,10 @@ class ActionService
                 $kpi = Kpi::where('name', 'ready-to-be-completed')->first();
                 $appointment->appointment_status = $kpi['id'];
                 $appointment->save();
+                $contact->previous_stage = $console->stage_id;
+                $contact->days_in_prev_stage = $date_diff;
+                $contact->days_in_current_stage = 0;
+                $contact->appointment_id = $appointment->id;
                 break;
             case 'mark-as-priority':
                 $console = Careconsole::find($consoleID);
@@ -405,7 +411,7 @@ class ActionService
 			{
 				$actions[$i]['result'] = false;
 			}
-
+            $actions[$i]['contact_history_id'] = $contact['contact_history_id'];
             $i++;
         }
 

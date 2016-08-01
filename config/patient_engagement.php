@@ -12,6 +12,7 @@ return [
 		'request_for_appointment' => 1,
 		'confirm_appointment' => 2,
 		'post_appointment' => 3,
+		'post_import' => 4,
 	],
 
 	'language' => [

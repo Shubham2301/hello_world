@@ -16,6 +16,8 @@ use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Action;
 use Auth;
 use DateTime;
+use PDF;
+
 
 trait PatientRecordsTrait
 {
@@ -38,8 +40,10 @@ trait PatientRecordsTrait
         return view('web-forms.create', [ 'template' => $template]);
     }
 
-    public function printRecord(Request $request)
+    public function printRecord($contactHistoryID)
     {
+        $pdf = $this->createPDF($contactHistoryID);
+        return $pdf->inline();
     }
 
     public function getPatientRecordView(Request $request)
@@ -61,15 +65,25 @@ trait PatientRecordsTrait
             'content' => json_encode($request->all())
         ];
 
-        PatientRecord::create($data);
-        $this->createContactHistory($data['patient_id'], $data['web_form_template_id']);
+        $record =  PatientRecord::create($data);
+
+        $patientID = $data['patient_id'];
+        $templateID = $data['web_form_template_id'];
+
+        $contactHistoryID =  $this->createContactHistory($patientID, $templateID);
+
+        $record->contact_history_id = $contactHistoryID;
+        $record->save();
 
         $request->session()->put('success', 'Record created successfully');
+
         event(new PatientRecordCreation(
             [
                 'template_id' => $request->template_id,
                 'patient_id' => $request->patient_id,
-                'ip'   => $request->getClientIp()
+                'ip'   => $request->getClientIp(),
+                'contact_history_id' => $contactHistoryID,
+
             ]
         ));
         return redirect('/webform');
@@ -101,7 +115,7 @@ trait PatientRecordsTrait
         $i = 0 ;
         foreach ($dataArray as $data) {
             $dataArray[$i]['date'] = explode(" ", $data['date']);
-            $dataArray[$i]['notes'] = explode("</br>", $data['notes']);
+            $dataArray[$i]['notes'] = explode(config('constants.schedule_notes_delimiter'), $data['notes']);
 
             if ($i > $getResult) {
                 break;
@@ -128,25 +142,42 @@ trait PatientRecordsTrait
         $progress = $this->changeValuesInArray($progress, $getResult);
 
         return view('patient-records.care_timeline')
-        ->with('progress', $progress)
-        ->with('getResults', $getResult)
-        ->with('patientID', $patientID)
-        ->render();
+            ->with('progress', $progress)
+            ->with('getResults', $getResult)
+            ->with('patientID', $patientID)
+            ->render();
     }
 
-    public function createContactHistory($paientID, $templateID)
+    public function createContactHistory($patientID, $templateID)
     {
         $actionID = Action::where('name', 'create-record')->first()->id;
         $templateName = WebFormTemplate::find($templateID)->display_name;
         $contactDate = new DateTime();
-        $patient = Patient::find($paientID);
+        $patient = Patient::find($patientID);
         $consoleID = $patient->careConsole->id;
         $contactHistory = new ContactHistory;
         $contactHistory->user_id = Auth::user()->id;
         $contactHistory->action_id = $actionID;
         $contactHistory->notes = $templateName;
         $contactHistory->console_id = $consoleID;
-        $contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:i:s');
+        $contactHistory->contact_activity_date = $contactDate->format(config('constants.db_date_format'));
         $contactHistory->save();
+
+        return $contactHistory->id;
+    }
+
+    public function CreatePDF($contactHistoryID){
+
+        $record = ContactHistory::find($contactHistoryID)->record;
+        $patientID = $record->patient_id;
+        $patient = Patient::find($patientID);
+
+        $recordData = json_decode($record->content, true);
+
+        $data['patient'] = $patient;
+        $data['record'] = $recordData;
+        $html = view('patient-records.print')->with('data', $data);
+        $pdf = PDF::loadHtml($html);
+        return $pdf;
     }
 }

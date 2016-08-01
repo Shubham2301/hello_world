@@ -29,8 +29,8 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
      */
     public function __construct(Patient $patient, Appointment $appt)
     {
-        //dd('asdasd');
-	$this->setPatient($patient);
+
+        $this->setPatient($patient);
         $this->setAppt($appt);
         $this->setStage('confirm_appointment');
         $this->setType('email');

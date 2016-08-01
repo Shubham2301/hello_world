@@ -115,7 +115,7 @@ class CareConsoleService
         if ($sortOrder == '') {
             $sortOrder = 'SORT_ASC';
         }
-            
+
         $headerData = [];
         $patientsData = [];
         $listing = [];
@@ -158,19 +158,19 @@ class CareConsoleService
             $sortParams = [$sortField => $sortOrder];
             $patientsData = $this->array_msort($patientsData, $sortParams);
         }
-        
+
         if ($ulimit != -1) {
             $patientsData = Careconsole::filterPatientByDaysPendings($llimit, $ulimit, $patientsData);
         }
-        
+
         $patientsData = $this->paginateResults($patientsData);
-        
+
         $listing['patients'] = $patientsData;
-        
-       
+
+
         $listing['headers'] = $headerData;
         $listing['lastpage'] = $this->countChunk;
-        
+
         return $listing;
     }
 
@@ -193,7 +193,7 @@ class CareConsoleService
         if ($sortOrder == '') {
             $sortOrder = 'SORT_ASC';
         }
-        
+
         $headerData = [];
         $patientsData = [];
         $listing = [];
@@ -228,13 +228,13 @@ class CareConsoleService
             $sortParams = [$sortField => $sortOrder];
             $patientsData = $this->array_msort($patientsData, $sortParams);
         }
-        
+
         $patientsData = $this->paginateResults($patientsData);
-        
+
         $listing['patients'] = $patientsData;
         $listing['headers']  = $headerData;
         $listing['lastpage'] = $this->countChunk;
-        
+
         return $listing;
     }
 
@@ -315,7 +315,7 @@ class CareConsoleService
                 break;
             case 'special-request':
                 return $patient['special_request'] ?: '-';
-                break;    
+                break;
             default:
                 return '-';
                 break;
@@ -333,7 +333,7 @@ class CareConsoleService
         foreach ($cols as $col => $order) {
             $colarr[$col] = array();
             $isDate = false;
-            
+
             if(isset($array[0][$col]))
             {
                 $isDate = Helper::validateDate($array[0][$col]);
@@ -378,28 +378,28 @@ class CareConsoleService
             $this->ActionService->userAction(34, '-1', null, 'Moved patient to Contact Pending from Recall', '', $console->id, '');
         }
     }
-    
+
     public function setPage($pageNum)
     {
         $pageNum = (int) $pageNum;
         $pageNum = $pageNum - 1;
-        
-        
+
+
         if (!$pageNum || $pageNum < 0) {
             $pageNum = 0;
         }
-            
+
         $this->pageNum =  $pageNum;
     }
-    
+
     public function getPage()
     {
         $pageNum = $this->pageNum;
-        
+
         if (!$pageNum || $pageNum < 0) {
             return 0;
         }
-        
+
         return $this->pageNum;
     }
 
@@ -409,13 +409,13 @@ class CareConsoleService
         $page = $this->getPage();
         $Chunks = array_chunk($data, $defaultPage);
         $countChunk = sizeof($Chunks);
-        
+
         $this->countChunk = $countChunk;
-        
+
         if (isset($Chunks[$page])) {
             return $Chunks[$page];
         }
-         
+
         return [];
     }
 }
