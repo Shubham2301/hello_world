@@ -465,7 +465,15 @@ class UserController extends Controller
     {
         $roles = Role::all();
         $roleArray = array();
+
+        $user = Auth::user();
+
         foreach ($roles as $role) {
+
+            if (!$user->isSuperAdmin() && $role->name == 'patient-record' ) {
+                continue;
+            }
+
             $roleArray[$role->name] = $role->display_name;
         }
         return $roleArray;
