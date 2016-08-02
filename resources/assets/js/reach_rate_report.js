@@ -1,4 +1,8 @@
+var reportResult = [];
+var config = [];
+
 $(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
     var cur_date = new Date();
     var set_start_date = new Date(cur_date.getTime());
     $('#start_date').datetimepicker({
@@ -29,11 +33,8 @@ $(document).ready(function () {
             getReport();
         }
     });
-    $('.drilldown_item').on('click', function() {
-        getReport($(this).find('.category_count').attr('id'));
-    });
-    $('.remove_filter').on('click', function() {
-        getReport();
+    $('.patient_list').on('click', function () {
+        getPatientList($(this).attr('id'));
     });
 });
 
@@ -46,20 +47,18 @@ function getReport(filter) {
     };
 
     $.ajax({
-        url: '/report/reach_rate_report/show',
+        url: '/report/reach_report/show',
         type: 'GET',
         data: $.param(formData),
         contentType: 'application/json',
         async: false,
         success: function (data) {
             for (var key in data) {
-                $('.'+key).html(data[key]);
+                $('.' + key).html(data[key]);
 
             }
-            if(data['filter_name'] == '')
-                $('.filter').addClass('no_filter');
-            else
-                $('.filter').removeClass('no_filter');
+            reportResult = data['report_data'];
+            config = data['config'];
         },
         error: function () {
             alert('Error Refreshing');
@@ -67,4 +66,109 @@ function getReport(filter) {
         cache: false,
         processData: false
     });
+}
+
+function getPatientList(metricName) {
+    var content = '';
+    reportResult.forEach(function (result) {
+        switch (metricName) {
+            case 'contact_attempted':
+                if ("reached" in result || "not_reached" in result)
+                    content += '<li>' + result.patient_name + '</li>';
+                break;
+            case 'reached':
+                if ("reached" in result)
+                    content += '<li>' + result.patient_name + '</li>';
+                break;
+            case 'not_reached':
+                if ("not_reached" in result && !("reached" in result))
+                    content += '<li>' + result.patient_name + '</li>';
+                break;
+            case 'appointment_scheduled':
+                if ("appointment_scheduled" in result)
+                    content += '<li>' + result.patient_name + '</li>';
+                break;
+            case 'not_scheduled':
+                if ("reached" in result && !("appointment_scheduled" in result))
+                    content += '<li>' + result.patient_name + '</li>';
+                break;
+            case 'appointment_completed':
+                if ("appointment_completed" in result)
+                    content += '<li>' + result.patient_name + '</li>';
+                break;
+            case 'show':
+                if ("appointment_completed" in result) {
+                    if (result.appointment_completed == config.appointment_completed.show)
+                        content += '<li>' + result.patient_name + '</li>';
+                }
+                break;
+            case 'no_show':
+                if ("appointment_completed" in result) {
+                    if (result.appointment_completed == config.appointment_completed.no_show)
+                        content += '<li>' + result.patient_name + '</li>';
+                }
+                break;
+            case 'exam_report':
+                if ("reports" in result || ("appointment_completed" in result && result.appointment_completed == config.appointment_completed.show))
+                    content += '<li>' + result.patient_name + '</li>';
+                break;
+            case 'reports':
+                if ("reports" in result)
+                    content += '<li>' + result.patient_name + '</li>';
+                break;
+            case 'no_reports':
+                if ("appointment_completed" in result) {
+                    if ((result.appointment_completed == config.appointment_completed.show) && !("reports" in result))
+                        content += '<li>' + result.patient_name + '</li>';
+                }
+                break;
+            case 'pending_patient':
+                if (!("reached" in result) || !("not_reached" in result)) {
+                    if ((result.patient_type == config.patient_type.new) || ("repeat_count" in result))
+                        content += '<li>' + result.patient_name + '</li>';
+                }
+                break;
+            case 'patient_count':
+                content += '<li>' + result.patient_name + '</li>';
+                break;
+            case 'new_patient':
+                if ("patient_type" in result) {
+                    if (result.patient_type == config.patient_type.new)
+                        content += '<li>' + result.patient_name + '</li>';
+                }
+                break;
+            case 'existing_patients':
+                if ("patient_type" in result) {
+                    if (result.patient_type == config.patient_type.old)
+                        content += '<li>' + result.patient_name + '</li>';
+                }
+                break;
+            case 'completed':
+                if ("archived" in result) {
+                    content += '<li>' + result.patient_name + '</li>';
+                }
+                break;
+            case 'success':
+                if ("archived" in result) {
+                    if (result.archived == config.archive.success)
+                        content += '<li>' + result.patient_name + '</li>';
+                }
+                break;
+            case 'dropout':
+                if ("archived" in result) {
+                    if (result.archived == config.archive.dropout)
+                        content += '<li>' + result.patient_name + '</li>';
+                }
+                break;
+            case 'active_patient':
+                if (!("archived" in result)) {
+                    content += '<li>' + result.patient_name + '</li>';
+                }
+            default:
+                break;
+        }
+        $('ul.patient_listing').html(content);
+
+    });
+    $('#patientList').modal('show');
 }

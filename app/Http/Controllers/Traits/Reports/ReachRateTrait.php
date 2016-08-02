@@ -37,6 +37,9 @@ trait ReachRateTrait
             $history['archived'] = 0;
             $history['unarchived'] = 0;
 
+            $results[$patient_count]['patient_name'] = $careconsole->patient->firstname.' '.$careconsole->patient->lastname;
+            $results[$patient_count]['patient_id'] = $careconsole->patient->id;
+
             if($careconsole->import_history_count != 0)
                 $results[$patient_count]['patient_type'] = config('reports.patient_type.new');
             else
@@ -79,6 +82,9 @@ trait ReachRateTrait
                             $patient_count++;
                             $results[$patient_count]['repeat_count'] = 1;
                             $results[$patient_count]['patient_type'] = $results[$patient_count - 1]['patient_type'];
+                            $results[$patient_count]['patient_name'] = $careconsole->patient->firstname.' '.$careconsole->patient->lastname;
+                            $results[$patient_count]['patient_id'] = $careconsole->patient->id;
+
                         }
                         $history['unarchived']++;
                         break;
@@ -156,7 +162,7 @@ trait ReachRateTrait
         return $results;
     }
 
-    public function renderResult($results, $filter) {
+    public function renderResult($results) {
 
         $daysInStage = [
             'pending' => [
@@ -202,46 +208,13 @@ trait ReachRateTrait
             'show' => 0,
             'no_show' => 0,
             'cancelled' => 0,
+            'exam_report' => 0,
             'reports' => 0,
             'no_reports' => 0,
-            'filter_name' => ''
+            'config' => config('reports'),
         );
 
-        foreach($results as $result) {
-
-            switch($filter) {
-                case 'new_patient':
-                    $reportMetrics['filter_name'] = 'New Patients';
-                    if($result['patient_type'] != config('reports.patient_type.new'))
-                        continue 2;
-                    break;
-                case 'existing_patients':
-                    $reportMetrics['filter_name'] = 'Existing Patients';
-                    if($result['patient_type'] != config('reports.patient_type.old'))
-                        continue 2;
-                    break;
-                case 'completed':
-                    $reportMetrics['filter_name'] = 'Completed Patients';
-                    if(!array_key_exists('archived', $result))
-                        continue 2;
-                    break;
-                case 'success':
-                    $reportMetrics['filter_name'] = 'Successful Patients';
-                    if(!(array_key_exists('archived', $result) && $result['archived'] == config('reports.archive.success')))
-                        continue 2;
-                    break;
-                case 'dropout':
-                    $reportMetrics['filter_name'] = 'Dropout Patients';
-                    if(!(array_key_exists('archived', $result) && $result['archived'] == config('reports.archive.dropout')))
-                        continue 2;
-                    break;
-                case 'active_patient':
-                    $reportMetrics['filter_name'] = 'Active Patients';
-                    if(array_key_exists('archived', $result))
-                        continue 2;
-                    break;
-                default:
-            }
+        foreach($results as $key => $result) {
 
             $reportMetrics['patient_count']++;
             $result['patient_type'] == config('reports.patient_type.new') ? $reportMetrics['new_patient']++ : $reportMetrics['existing_patients']++;
@@ -251,11 +224,16 @@ trait ReachRateTrait
             } else {
                 $reportMetrics['active_patient']++;
             }
+
             if(array_key_exists('repeat_count', $result))
                 $reportMetrics['repeat_count']++;
+
             if(array_key_exists('reached', $result)) {
                 $reportMetrics['reached']++;
                 $reportMetrics['contact_attempted']++;
+
+                if(!(array_key_exists('appointment_scheduled', $result)))
+                    $reportMetrics['not_scheduled']++;
             } else if(array_key_exists('not_reached', $result)) {
                 $reportMetrics['not_reached']++;
                 $reportMetrics['not_reached_attempts'] += $result['not_reached'];
@@ -269,18 +247,26 @@ trait ReachRateTrait
                     $reportMetrics['hold_for_future_attempts'] += $result['hold_for_future'];
                 }
             } else {
-                if($result['patient_type'] == config('reports.patient_type.new') || array_key_exists('repeat_count', $result))
-                    $reportMetrics['pending_patient']++;
+                $reportMetrics['pending_patient']++;
             }
+
             if(array_key_exists('appointment_scheduled', $result)) {
                 $reportMetrics['appointment_scheduled']++;
             }
+
             if(array_key_exists('appointment_completed', $result)) {
                 $reportMetrics['appointment_completed']++;
                 $result['appointment_completed'] == config('reports.appointment_completed.show') ? $reportMetrics['show']++ : $reportMetrics['no_show']++;
+                if($result['appointment_completed'] == config('reports.appointment_completed.show') && !(array_key_exists('reports', $result))) {
+                    $reportMetrics['no_reports']++;
+                    $reportMetrics['exam_report']++;
+                }
+
             }
+
             if(array_key_exists('reports', $result)) {
                 $reportMetrics['reports']++;
+                $reportMetrics['exam_report']++;
             }
 
             if(array_key_exists('pending_stage_change', $result)) {
@@ -302,9 +288,6 @@ trait ReachRateTrait
 
         }
 
-        $reportMetrics['not_scheduled'] = $reportMetrics['reached'] - $reportMetrics['appointment_scheduled'];
-        $reportMetrics['no_reports'] = $reportMetrics['show'] - $reportMetrics['reports'];
-
         $reportMetrics['contact_attempted_days'] = $daysInStage['pending']['numOfDays'] != 0 ? ceil($daysInStage['pending']['sumOfDays']/$daysInStage['pending']['numOfDays']) : '-';
 
         $reportMetrics['reached_days'] = $daysInStage['contact_attempted']['numOfDays'] != 0 ? ceil($daysInStage['contact_attempted']['sumOfDays']/$daysInStage['contact_attempted']['numOfDays']) : '-';
@@ -313,9 +296,10 @@ trait ReachRateTrait
 
         $reportMetrics['show_days'] = $daysInStage['appt_completed']['numOfDays'] != 0 ? ceil($daysInStage['appt_completed']['sumOfDays']/$daysInStage['appt_completed']['numOfDays']) : '-';
 
+        $reportMetrics['report_data'] = array_values($results);
+
         return $reportMetrics;
     }
-
 
     public function setStartDate($startDate)
     {

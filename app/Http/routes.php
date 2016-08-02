@@ -219,6 +219,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/show_records/{id}', 'Patient\PatientController@printRecord');
     });
 
-    Route::resource('report/reach_rate_report', 'Reports\ReachRateController');
-    Route::get('/report/reach_rate_report/show', 'Reports\ReachRateController@show');
+    Route::resource('report/reach_report', 'Reports\ReachRateController');
+    Route::get('/report/reach_report/show', 'Reports\ReachRateController@show');
 });

@@ -590,6 +590,7 @@ class Careconsole extends Model
                 $query->where('created_at', '>=', $startDate);
                 $query->where('created_at', '<=', $endDate);
             }])
+            ->with('patient')
             ->get();
     }
 }

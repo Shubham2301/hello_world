@@ -192,7 +192,7 @@ class PatientController extends Controller
             $insuranceCarrier = new PatientInsurance;
             $insuranceCarrier->insurance_carrier = $request->input('insurance_carrier');
             $insuranceCarrier->subscriber_name = $request->input('subscriber_name');
-            $insuranceCarrier->subscriber_birthdate = Helper::formatDate($request->input('subscriber_birthdate'), config('constants.db_date_format'));
+            $insuranceCarrier->subscriber_birthdate = ($request->input('subscriber_birthdate') == '') ? null : Helper::formatDate($request->input('subscriber_birthdate'), config('constants.db_date_format'));
             $insuranceCarrier->subscriber_id = $request->input('subscriber_id');
             $insuranceCarrier->subscriber_relation = $request->input('subscriber_relation');
             $insuranceCarrier->insurance_group_no = $request->input('insurance_group_no');
@@ -365,12 +365,11 @@ class PatientController extends Controller
         if ($insuranceCarrier) {
             $data['insurance_carrier'] = $insuranceCarrier->insurance_carrier;
             $data['subscriber_name'] = $insuranceCarrier->subscriber_name;
-            $data['subscriber_birthdate'] = Helper::formatDate($insuranceCarrier->subscriber_birthdate, config('constants.date_format'));
+            $data['subscriber_birthdate'] = ($insuranceCarrier->subscriber_birthdate == null) ? '' : Helper::formatDate($insuranceCarrier->subscriber_birthdate, config('constants.date_format'));
             $data['subscriber_id'] = $insuranceCarrier->subscriber_id;
             $data['subscriber_relation'] = $insuranceCarrier->subscriber_relation;
             $data['insurance_group_no'] = $insuranceCarrier->insurance_group_no;
         }
-
 
         return view('patient.admin')
         ->with('data', $data);
@@ -443,7 +442,7 @@ class PatientController extends Controller
 
             $insuranceCarrier->insurance_carrier = $request->input('insurance_carrier');
             $insuranceCarrier->subscriber_name = $request->input('subscriber_name');
-            $insuranceCarrier->subscriber_birthdate = Helper::formatDate($request->input('subscriber_birthdate'), config('constants.db_date_format'));
+            $insuranceCarrier->subscriber_birthdate = ($request->input('subscriber_birthdate') == '') ? null : Helper::formatDate($request->input('subscriber_birthdate'), config('constants.db_date_format'));
             $insuranceCarrier->subscriber_id = $request->input('subscriber_id');
             $insuranceCarrier->subscriber_relation = $request->input('subscriber_relation');
             $insuranceCarrier->insurance_group_no = $request->input('insurance_group_no');
@@ -614,7 +613,7 @@ class PatientController extends Controller
         if ($insuranceCarrier) {
             $data['insurance_carrier'] = $insuranceCarrier->insurance_carrier;
             $data['subscriber_name'] = $insuranceCarrier->subscriber_name;
-            $data['subscriber_birthdate'] = Helper::formatDate($insuranceCarrier->subscriber_birthdate, config('constants.date_format'));
+            $data['subscriber_birthdate'] = ($insuranceCarrier->subscriber_birthdate == null) ? '' : Helper::formatDate($insuranceCarrier->subscriber_birthdate, config('constants.date_format'));
             $data['subscriber_id'] = $insuranceCarrier->subscriber_id;
             $data['subscriber_relation'] = $insuranceCarrier->subscriber_relation;
             $data['insurance_group_no'] = $insuranceCarrier->insurance_group_no;

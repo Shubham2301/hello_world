@@ -15,11 +15,6 @@
             margin: 1em 0;
         }
     }
-    .drilldown_item {
-        &:hover {
-            cursor: pointer;
-        }
-    }
 }
 .content-right {
     padding: 0;
@@ -160,20 +155,31 @@ hr {
 .text_align_end {
     text-align: end;
 }
-.report_filter_row {
-    &>.filter {
-        padding: .1em .2em;
-        border: 1px solid #000;
-        border-radius: .5em;
-        display: inline-block;
-        &>.glyphicon {
-            cursor: pointer;
+.patient_list {
+    cursor: pointer;
+}
+.modal-footer {
+    display: flex;
+    justify-content: center;
+}
+.modal-body {
+    max-height: 250px;
+    overflow-y: auto;
+}
+ul.patient_listing {
+    color: #4d4d4d;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    &>li {
+        text-align: center;
+        padding: .2em 0;
+        cursor: pointer;
+        &:hover {
+            color: #000;
         }
-        &>.filter_name {
-            padding: 0 .2em;
-        }
-        &.no_filter {
-            display: none;
+        &:nth-child(odd) {
+            background: #e3e3e3;
         }
     }
 }
