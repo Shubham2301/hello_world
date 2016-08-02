@@ -63,7 +63,7 @@ class ReachRateController extends Controller
 
         $report_data = $this->generateReport();
 
-        $result = $this->renderResult($report_data, $filter);
+        $result = $this->renderResult($report_data);
 
         return($result);
     }
