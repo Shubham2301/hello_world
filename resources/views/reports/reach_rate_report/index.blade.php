@@ -1,4 +1,4 @@
-@extends('layouts.master') @section('title', 'My Ocuhub - Reach Rate Report') @section('imports')
+@extends('layouts.master') @section('title', 'My Ocuhub - Reach Report') @section('imports')
 <link rel="stylesheet" type="text/css" href="{{ elixir('css/reports.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ elixir('css/reach_rate_report.css') }}">
 <script type="text/javascript" src="{{ elixir('js/reach_rate_report.js') }}"></script>
@@ -12,7 +12,7 @@
 @endif
 <div class="reports_container arial arial">
     <div class="row report_header_row">
-        <span class="arial_bold reports_header">Careconsole Reach Rate Report</span>
+        <span class="arial_bold reports_header">Care Console Reach Report</span>
         <span class="timeline">
             <span>Timeline:</span>
             <span>

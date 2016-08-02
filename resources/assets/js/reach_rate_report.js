@@ -47,7 +47,7 @@ function getReport(filter) {
     };
 
     $.ajax({
-        url: '/report/reach_rate_report/show',
+        url: '/report/reach_report/show',
         type: 'GET',
         data: $.param(formData),
         contentType: 'application/json',
