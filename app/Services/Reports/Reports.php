@@ -547,17 +547,18 @@ class Reports
         $result = array();
         $result['type'] = $type;
         $countPractice = array_count_values($referredBy);
+        arsort($countPractice);
         $referredBy = array_unique($referredBy);
         $i = 0;
         $total = 0;
-        foreach ($referredBy as $referred) {
-            if ($referred == '') {
+        foreach ($countPractice as $key => $count) {
+            if ($count == 0) {
                 continue;
             }
 
-            $result['data'][$i]['name'] = $referred;
-            $result['data'][$i]['count'] = $countPractice[$referred];
-            $total += $countPractice[$referred];
+            $result['data'][$i]['name'] = $key;
+            $result['data'][$i]['count'] = $count;
+            $total += $count;
             $i++;
         }
         $result['total'] = $total;
@@ -593,17 +594,38 @@ class Reports
         $diseases = array_unique($diseases);
         $i = 0;
         $temp = array();
-        foreach ($diseases as $disease) {
-            $result[$i]['name'] = $disease;
 
+        $sortedDisease = array();
+        foreach ($diseases as $disease) {
+            $sortedDisease[$disease] = count($severities[$disease]);
+        }
+        arsort($sortedDisease);
+
+        foreach ($sortedDisease as $disease => $totalCount) {
+            $result[$i]['name'] = $disease;
+            $result[$i]['total'] = $totalCount;
             $countSeverities = array_count_values($severities[$disease]);
             $temp = array_unique($severities[$disease]);
-            $j = 0;
             foreach ($temp as $severity) {
-                $result[$i]['severity'][$j]['type'] = $severity;
-                $result[$i]['severity'][$j]['count'] = $countSeverities[$severity];
-                $j++;
+                $severity = trim($severity);
+                switch (strtolower($severity)) {
+                    case 'mild':
+                        $result[$i]['severity']['mild'] = isset($result[$i]['severity']['mild']) ? $result[$i]['severity']['mild'] + $countSeverities[$severity] : $countSeverities[$severity];
+                        break;
+                    case 'moderate':
+                        $result[$i]['severity']['moderate'] = isset($result[$i]['severity']['moderate']) ? $result[$i]['severity']['moderate'] + $countSeverities[$severity] : $countSeverities[$severity];
+                        break;
+                    case 'severe':
+                        $result[$i]['severity']['severe'] = isset($result[$i]['severity']['severe']) ? $result[$i]['severity']['severe'] + $countSeverities[$severity] : $countSeverities[$severity];
+                        break;
+                    default:
+                        break;
+                }
             }
+
+            $result[$i]['severity']['mild'] = isset($result[$i]['severity']['mild']) ? $result[$i]['severity']['mild'] : '-';
+            $result[$i]['severity']['moderate'] = isset($result[$i]['severity']['moderate']) ? $result[$i]['severity']['moderate'] : '-';
+            $result[$i]['severity']['severe'] = isset($result[$i]['severity']['severe']) ? $result[$i]['severity']['severe'] : '-';
             $i++;
         }
 
@@ -664,18 +686,19 @@ class Reports
         $result = array();
         $result['type'] = $type;
         $countPractice = array_count_values($referredTo);
+        arsort($countPractice);
         $referredTo = array_unique($referredTo);
         $i = 0;
         $total = 0;
-        foreach ($referredTo as $referred) {
-            if ($referred == 0) {
+        foreach ($countPractice as $key => $count) {
+            if ($count == 0) {
                 continue;
             }
 
-            $result['data'][$i]['id'] = $referred;
-            $result['data'][$i]['name'] = $referredToName[$referred];
-            $result['data'][$i]['count'] = $countPractice[$referred];
-            $total += $countPractice[$referred];
+            $result['data'][$i]['id'] = $key;
+            $result['data'][$i]['name'] = $referredToName[$key];
+            $result['data'][$i]['count'] = $count;
+            $total += $count;
             $i++;
         }
         $result['total'] = $total;

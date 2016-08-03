@@ -146,11 +146,20 @@
                 <div class="section_separator print_page_break"></div>
                 <div class="report_section">
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-4">
                             <p class="report_sub_header">Disease Type</p>
                         </div>
-                        <div class="col-xs-6">
-                            <p class="report_sub_header">Scale</p>
+                        <div class="col-xs-2">
+                            <p class="report_sub_header sub_section text-center">Mild</p>
+                        </div>
+                        <div class="col-xs-2">
+                            <p class="report_sub_header sub_section text-center">Moderate</p>
+                        </div>
+                        <div class="col-xs-2">
+                            <p class="report_sub_header sub_section text-center">Severe</p>
+                        </div>
+                        <div class="col-xs-2">
+                            <p class="report_sub_header sub_section text-center">Total</p>
                         </div>
                     </div>
                     <div class="separator"></div>

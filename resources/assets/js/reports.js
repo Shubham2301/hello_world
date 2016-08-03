@@ -14,7 +14,7 @@ function resetFilter() {
         "appointment_status": "none",
         "disease_type": "none",
         "severity_scale": "none",
-        "archive_data":"none",
+        "archive_data": "none",
         "incomming_referrals": {
             "appointment_type": "none",
             "referred_by": {
@@ -555,16 +555,12 @@ function renderDiseaseType(data) {
         name = data[i].name;
         id = name.replace(/\s/g, '');
 
-        content += '<div class="col-xs-12 remove-padding"><div class="col-xs-6 drilldown_item" data-type="disease_type" data-id="' + data[i].name + '" data-meta="' + data[i].name + '"><p class="report_content_label">' + data[i].name + '</p></div><div class="col-xs-4"><select class="select_dropdown select_severity" data-id="' + data[i].name + '">';
-        for (var j = 0; j < data[i].severity.length; j++) {
-            if (data[i].count == 0) {
-                continue;
-            }
-            content += '<option value="' + data[i].severity[j].count + '">' + data[i].severity[j].type + '</option>';
-        }
-
-
-        content += '</select></div><div class="col-xs-2 drilldown_item ' + disable + '" id="disease_type_' + id + '" data-type="severity_scale" data-id="' + data[i].name + '" data-meta="' + data[i].severity[0].type + '"><p class="report_content_value">' + data[i].severity[0].count + '</p></div></div>';
+        content += '<div class="col-xs-12 remove-padding" style="color:#4d4d4d;"><div class="col-xs-4 drilldown_item" data-type="disease_type" data-id="' + data[i].name + '" data-meta="' + data[i].name + '"><p class="report_content_label">' + data[i].name + '</p></div>';
+        content += '<div class="col-xs-2 text-center">' + data[i].severity.mild + '</div>';
+        content += '<div class="col-xs-2 text-center">' + data[i].severity.moderate + '</div>';
+        content += '<div class="col-xs-2 text-center">' + data[i].severity.severe + '</div>';
+        content += '<div class="col-xs-2 text-center">' + data[i].total + '</div>';
+        content += '</div>';
     }
 
     $('#disease_type').html(content);

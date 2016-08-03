@@ -133,26 +133,42 @@ class SendAppointmentRequestEmail
 			return false;
 		}
 
-		$attr = [
-			'from' => [
-				'name' => config('constants.support.email_name'),
-				'email' => config('constants.support.email_id'),
-			],
-			'to' => [
-				'name' => $location->name,
-				'email' => $location->email,
-			],
-			'subject' => config('constants.message_views.request_appointment_provider.subject'),
-			'body' =>'',
-			'view' => config('constants.message_views.request_appointment_provider.view'),
-			'appt' => $appt,
-			'attachments' => [],
-		];
+
+
+        $attr = [
+            'from' => [
+                'name' => config('constants.support.email_name'),
+                'email'=> config('constants.support.email_id')
+            ],
+            'to' => [
+                'name' => $location->locationname,
+                'email' => $location->email,
+            ],
+            'subject' => config('constants.message_views.request_appointment_provider.subject'),
+            'body' =>'',
+            'view' => config('constants.message_views.request_appointment_provider.view'),
+            'appt' => $appt,
+            'attachments' => [],
+        ];
 
 		/**
          * Add Check for SES Email here.
          */
-		if (SES::isDirectID($location->email)) {
+        if (SES::isDirectID($location->email)) {
+
+            $loggedInUser = Auth::user();
+
+            if(SES::isDirectID($loggedInUser->sesemail))
+            {
+                $attr['from']['name']  = $loggedInUser->name;
+                $attr['from']['email']  = $loggedInUser->sesemail;
+            }
+
+            else{
+                $attr['from']['email']  = config('constants.support.ses.email.id');
+                $attr['from']['name']  = config('constants.support.ses.email.display_name');
+            }
+
 			/**
              * Generate CCDA file and send email via SES to Provider
              */

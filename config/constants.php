@@ -8,6 +8,12 @@ return [
         'phone' => '844-605-8243',
         'contact_form' => 'www.ocuhub.com/contact',
         'application_error' => 'applicationerror@ocuhub.com',
+        'ses' => [
+            'email' =>[
+                'id'=>'Admin2@direct.ocuhub.com',
+                'display_name' => 'Support OcuHub'
+            ]
+        ]
     ],
     'production_url' => 'https://myocuhub.com',
     'message_type' => [
