@@ -1,15 +1,4 @@
 <div>
-     <div class="row">
-        <div class="col-xs-4">
-            <h9></h9>
-        </div>
-        <div class="col-xs-4">
-            <h9 style= "padding-left: 21%;">OS</h9>
-        </div>
-        <div class="col-xs-4">
-            <h9 style= "padding-left: 21%;">OD</h9>
-        </div>
-    </div>
 
     <div class="web-form-section" style="height:26em;" >
 		<form action="/save_records" id="patient_record_form" method="POST">
@@ -19,6 +8,22 @@
             <?php $i=1; ?>
             @foreach(array_chunk($template['rows'], 5) as $chunk)
             <div class = "form_chunk_{{$i}} form_chunk {{($i != 1)? '':'active'}} " data-index = "{{$i}}">
+
+                <div class="row config('webforms.class.header')">
+                    @foreach($template['header_row']['cols'] as $col)
+                    <div class="col-xs-12 col-sm-{{ 12/sizeof($template['header_row']['cols']) }} {{ config('webforms.class.col')}}">
+                        @foreach($col['elements'] as $element)
+
+                        @if($element['type'] == 'p')
+                        <p style="{{$element['style']}}" >{{$element['display-name']}}</p>
+                        @endif
+
+                        @endforeach
+                    </div>
+                    @endforeach
+
+              </div>
+
                <?php  $i++; ?>
                 @foreach($chunk as $row)
                     <div class="row {{ config('webforms.class.row') }} " style="margin-top:1em;">
