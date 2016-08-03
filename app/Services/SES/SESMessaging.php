@@ -69,7 +69,10 @@ class SESMessaging extends SES
             //prepare arguments
             $args = [
                 'action'        => 'sendMessage',
-                'email_to'      =>  $attr['to']['email'],
+                'to_email'      =>  $attr['to']['email'],
+                'to_name'       =>  $attr['to']['name'],
+                'from_email'    =>  $attr['from']['email'],
+                'from_name'     =>  $attr['from']['name'],
                 'subject'       =>  $attr['subject'],
                 'body'          =>  addslashes($attr['body']),
                 'attachments'   =>  addslashes($attachments),
