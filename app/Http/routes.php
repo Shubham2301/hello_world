@@ -43,8 +43,6 @@ Route::post('auth/resendotp', 'Auth\TwoFactorAuthController@resendOTP');
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('test', 'DirectMail\TestController@test');
-
     Route::get('writeback', 'Appointment\WriteBackController@index');
 
     Route::get('editprofile', 'Admin\UserController@editProfile');
