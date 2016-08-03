@@ -141,7 +141,7 @@ class SendAppointmentRequestEmail
                 'email'=> config('constants.support.email_id')
             ],
             'to' => [
-                'name' => $location->name,
+                'name' => $location->locationname,
                 'email' => $location->email,
             ],
             'subject' => config('constants.message_views.request_appointment_provider.subject'),
