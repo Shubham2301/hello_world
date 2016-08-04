@@ -22,7 +22,8 @@
                     <p> Patient Name:<span class="unit_input_text" style="width:40%;">{{$data['patient']['firstname'].' '.$data['patient']['lastname']}}</span></p>
                 </div>
                 <div class="col-xs-4">
-                    <p> Date:<span class="unit_input_text" > {{$data['record']['creation_date']}}   </span></p>
+                    <p> Date:<span class="unit_input_text" >
+                    {{ (isset($data['record']['creation_date']))?$data['record']['creation_date']:'' }}   </span></p>
                 </div>
 
             </div>
@@ -135,7 +136,7 @@
             <p>
                 <span class="unit_input_text" style="width:35%;">{{$data['record']['od_pupils_mm']}}</span>
                 <span>mm&nbsp;&nbsp;OD</span>
-                <span class="unit_input_text" style="width:35%;">{{$data['record']['os_pupils_mm']}}</span>
+                <span class="unit_input_text" style="width:25%;">{{$data['record']['os_pupils_mm']}}</span>
                 <span>mm&nbsp;&nbsp;OS</span>
             </p>
         </div>
@@ -310,7 +311,7 @@
                         <div class="col-xs-4">
                             <p>IOL</p>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-7">
                             <p>
                                 <span class = "{{(isset($data['record']['od_iol']) && $data['record']['od_iol'] =='centered')?'active_wrap_field':''}}">centered </span>
                             /
