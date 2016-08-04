@@ -16,7 +16,7 @@
             <a href="downloadpatientfile/{{ $file->id }}" target="_blank" class="file_name" > {{ $file->display_name }}</a>
         </div>
     </div>
-@endforeach 
+@endforeach
 
 @foreach($records as $record )
     <div class="patient_file_item row" data-id="{{ $record->id }}">

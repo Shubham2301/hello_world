@@ -26,7 +26,6 @@ class PatientRecordCreation extends Event
         $this->setAction($action);
         $this->setDescription($discription);
         $this->setIp($data['ip']);
-        
         $this->setPatientID($data['patient_id']);
         $this->setTemplateID($data['template_id']);
 

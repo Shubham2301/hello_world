@@ -22,43 +22,50 @@
                     <p> Patient Name:<span class="unit_input_text" style="width:40%;">{{$data['patient']['firstname'].' '.$data['patient']['lastname']}}</span></p>
                 </div>
                 <div class="col-xs-4">
-                    <p> Date:<span class="unit_input_text" style="width;">
-                        {{ (isset($data['record']['os_surgery_date']))?$data['record']['os_surgery_date']:'' }}   </span></p>
+                    <p> Date:<span class="unit_input_text" > {{$data['record']['creation_date']}}   </span></p>
                 </div>
 
             </div>
 
             <div class="row default_row_margin">
                 <div class="col-xs-3">
-                    <p> DOB:<span class="unit_input_text" style="">{{$data['patient']['birthdate']}}</span></p>
+                    <p> DOB:<span class="unit_input_text">{{$data['patient']['birthdate']}}</span></p>
                 </div>
                 <div class="col-xs-4">
                     <p>Cataract Extraction/ IOL</p>
                 </div>
                 <div class="col-xs-5">
                     <p>
-                        OD on <span class="unit_input_text" style="">12</span>/<span class="unit_input_text" style="">12</span>/<span class="unit_input_text" style="">12</span> 1 Day 2 Weeks 4 Weeks or
-                        <span class="unit_input_text" style="">12</span>
+                        OD on <span class="unit_input_text">{{$data['record']['od_cataract_date']}}  </span>
+                        <span class = "{{(isset($data['record']['od_cataract_iol_unit']) && $data['record']['od_cataract_iol_unit'] =='1 day')?'active_wrap_field':''}}">1 Day </span>
+
+                        <span class = "{{(isset($data['record']['od_cataract_iol_unit']) && $data['record']['od_cataract_iol_unit'] =='1 week')?'active_wrap_field':''}}">2 Weeks </span>
+
+                        <span class = "{{( isset($data['record']['od_cataract_iol_unit']) && $data['record']['od_cataract_iol_unit'] =='4 weeks')?'active_wrap_field':''}}">4 Weeks </span>
+
+                        or<span class="unit_input_text">
+                        {{$data['record']['od_cataract_iol_unit_other']}} </span>
                     </p>
                     <br>
                     <p>
-                        OS on <span class="unit_input_text" style="">12</span>/<span class="unit_input_text" style="">12</span>/<span class="unit_input_text" style="">12</span> 1 Day 2 Weeks 4 Weeks or
-                        <span class="unit_input_text" style="">12</span>
+                        OS on <span class="unit_input_text">{{$data['record']['os_cataract_date']}} </span>
+                        <span class = "{{(isset($data['record']['os_cataract_iol_unit']) && $data['record']['os_cataract_iol_unit'] =='1 day')?'active_wrap_field':''}}"> 1 Day </span>
+                        <span class = "{{(isset($data['record']['os_cataract_iol_unit']) && $data['record']['os_cataract_iol_unit'] =='1 week')?'active_wrap_field':''}}"> 2 Weeks </span>
+                        <span class = "{{(isset($data['record']['os_cataract_iol_unit']) && $data['record']['os_cataract_iol_unit'] =='4 weeks')?'active_wrap_field':''}}"> 4 Weeks </span>
+                        or<span class="unit_input_text" >{{$data['record']['os_cataract_iol_unit_other']}}</span>
                     </p>
                 </div>
             </div>
 
             <div class="row default_row_margin">
                 <div class="col-xs-12">
-                    <p> CC:<span class="unit_input_text" style="width:96%;">
-                        {{ (isset($data['record']['os_cc-history'][0]))?$data['record']['os_cc-history'][0]:'' }}
-                    </span></p>
+                    <p> CC:<span class="unit_input_text" style="width:96%;">{{ $data['record']['cc-history']  }}</span></p>
                 </div>
             </div>
 
             <div class="row default_row_margin">
                 <div class="col-xs-12">
-                    <p> OCULAR MEDS:<span class="unit_input_text" style="width:87%;"></span></p>
+                    <p> OCULAR MEDS:<span class="unit_input_text" style="width:87%;">{{ $data['record']['ocular_meds']  }}</span></p>
                 </div>
             </div>
 
@@ -73,22 +80,19 @@
                     <span style="font-weight:bold;text-align:center;font-size:1.5em;"> Vsc </span>
                 </div>
                 <div class="col-xs-5">
-                    <p style="">
-                        OD <span class="unit_input_text" style="width:40%;">
-                        {{ (isset($data['record']['os_va_sc']))?$data['record']['os_va_sc']:'' }}
-                        </span> Ph <span class="unit_input_text" style="width:40%;"></span>
+                    <p>
+                        OD <span class="unit_input_text" style="width:40%;">{{$data['record']['od_vsc_pre']}}</span> Ph <span class="unit_input_text" style="width:40%;">{{$data['record']['od_vsc_ph']}}</span>
                     </p>
                     <p>
-                        OS <span class="unit_input_text" style="width:40%;">
-                        {{ (isset($data['record']['od_va_sc']))?$data['record']['od_va_sc']:'' }}
-                        </span> Ph <span class="unit_input_text" style="width:40%;"></span>
+                        OS <span class="unit_input_text" style="width:40%;">{{$data['record']['os_vsc_pre']}}</span> Ph <span class="unit_input_text" style="width:40%;">{{ $data['record']['os_vsc_ph'] }}</span>
                     </p>
                 </div>
-                <div class="col-xs-6" 4 <p style="">
-                OD <span class="unit_input_text" style="width:43%">asd</span> Ph <span class="unit_input_text" style="width:44%;">asd</span>
+                <div class="col-xs-6" >
+                <p style="">
+                    OD <span class="unit_input_text" style="width:43%">{{$data['record']['od_vsc_pre']}}</span> Ph <span class="unit_input_text" style="width:44%;">{{$data['record']['od_vsc_ph']}}</span>
                 </p>
-            <p>
-                OS <span class="unit_input_text" style="width:43%;">asd</span> Ph <span class="unit_input_text" style="width:44%">asd</span>
+
+                    OS <span class="unit_input_text" style="width:43%;">{{$data['record']['os_vsc_pre']}}</span> Ph <span class="unit_input_text" style="width:44%">{{ $data['record']['os_vsc_ph'] }}</span>
             </p>
         </div>
         </div>
@@ -99,15 +103,15 @@
         </div>
         <div class="col-xs-6">
             <p style="">
-                OD <span class="unit_input_text" style="width:26%;"></span>&nbsp;- &nbsp;<span class="unit_input_text" style="width:26%;"></span>&nbsp;X &nbsp;<span class="unit_input_text" style="width:26%;">
+                OD <span class="unit_input_text" style="width:26%;">{{$data['record']['od_mrx_pre']}}</span>&nbsp;- &nbsp;<span class="unit_input_text" style="width:26%;">{{$data['record']['od_mrx_-']}}</span>&nbsp;X &nbsp;<span class="unit_input_text" style="width:26%;">{{$data['record']['od_mrx_x']}}</span>
                 </p>
             <p style="">
-                OS <span class="unit_input_text" style="width:26%;"></span>&nbsp;- &nbsp;<span class="unit_input_text" style="width:26%;"></span>&nbsp;X &nbsp;<span class="unit_input_text" style="width:26%;">
+                OS <span class="unit_input_text" style="width:26%;">{{$data['record']['os_mrx_pre']}}</span>&nbsp;- &nbsp;<span class="unit_input_text" style="width:26%;">{{$data['record']['os_mrx_-']}}</span>&nbsp;X &nbsp;<span class="unit_input_text" style="width:26%;">{{$data['record']['os_mrx_x']}}</span>
                 </p>
         </div>
         <div class="col-xs-2">
-            <p>20/<span class="unit_input_text" style="width:79%;"></span></p>
-            <p>20/<span class="unit_input_text" style="width:79%;"></span></p>
+            <p>20/<span class="unit_input_text" style="width:79%;">{{$data['record']['od_mrx_20/']}}</span></p>
+            <p>20/<span class="unit_input_text" style="width:79%;">{{$data['record']['os_mrx_20/']}}</span></p>
         </div>
         <div class="col-xs-1">
             <p style="text-align:center;font-size:1.5em;margin-top:0.6em;"> ADD++ </p>
@@ -119,7 +123,7 @@
             <p><span style="font-weight:bold;">External</span></p>
         </div>
         <div class="col-xs-11">
-            <p> <span class="unit_input_text" style="width:100%;">asd</span> </p>
+            <p> <span class="unit_input_text" style="width:100%;">{{$data['record']['external']}}</span> </p>
         </div>
     </div>
 
@@ -129,16 +133,19 @@
         </div>
         <div class="col-xs-5">
             <p>
-                <span class="unit_input_text" style="width:35%;">asd</span>
+                <span class="unit_input_text" style="width:35%;">{{$data['record']['od_pupils_mm']}}</span>
                 <span>mm&nbsp;&nbsp;OD</span>
-                <span class="unit_input_text" style="width:35%;">asd</span>
+                <span class="unit_input_text" style="width:35%;">{{$data['record']['os_pupils_mm']}}</span>
+                <span>mm&nbsp;&nbsp;OS</span>
             </p>
         </div>
         <div class="col-xs-3">
-            <p> <span> reactive</span> / <span> non-reactive</span> </p>
+            <p> <span class = "{{(isset($data['record']['os_pupils_effect']) && $data['record']['os_pupils_effect'] =='reactive')?'active_wrap_field':''}}" > reactive</span> / <span class = "{{(isset($data['record']['os_pupils_effect']) && $data['record']['os_pupils_effect'] =='non-reactive')?'active_wrap_field':''}}"> non-reactive</span> </p>
         </div>
         <div class="col-xs-3">
-            <p><span style="font-weight:bold;">APD&nbsp;&nbsp;</span><span>present</span> / <span>absent</span35</p>
+            <p><span style="font-weight:bold;">APD&nbsp;&nbsp;</span>
+                <span class = "{{(isset($data['record']['os_pupils_attend']) && $data['record']['os_pupils_attend'] =='present')?'active_wrap_field':''}}">present</span> /
+                <span class = "{{(isset($data['record']['os_pupils_attend']) && $data['record']['os_pupils_attend'] =='absent')?'active_wrap_field':''}}">absent</span></p>
                 </div>
         </div>
 
@@ -147,7 +154,7 @@
                 <p><span style="font-weight:bold;">EOM</span></p>
             </div>
             <div class="col-xs-11">
-                <p>full / restricted (describe) <span class="unit_input_text" style="width:75%;">asd</span> </p>
+                <p>full / restricted (describe) <span class="unit_input_text" style="width:75%;">{{$data['record']['eom']}}</span> </p>
             </div>
         </div>
 
@@ -156,13 +163,13 @@
                 <p><span style="font-weight:bold;">CVF</span></p>
             </div>
             <div class="col-xs-11">
-                <p>full to confrontation / restricted (describe) <span class="unit_input_text" style="width:60%;">asd</span> </p>
+                <p>full to confrontation / restricted (describe) <span class="unit_input_text" style="width:60%;">{{$data['record']['cvf']}}</span> </p>
             </div>
         </div>
 
         <div class="row default_row_margin">
             <div class="col-xs-12">
-                <p><span class="unit_input_text" style="width:100%;">asd</span></p>
+                <p><span class="unit_input_text" style="width:100%;"></span></p>
             </div>
         </div>
 
@@ -182,7 +189,10 @@
                             <p>Wound</p>
                         </div>
                         <div class="col-xs-6">
-                            <p>intact / dehisced</p>
+                            <p>
+                                <span class = "{{(isset($data['record']['od_wound_state']) && $data['record']['od_wound_state'] =='intact')?'active_wrap_field':''}}">intact </span>
+                            /
+                                <span class = "{{(isset($data['record']['od_wound_state']) && $data['record']['od_wound_state'] =='dehisced')?'active_wrap_field':''}}">dehisced </span></p>
                         </div>
                     </div>
 
@@ -198,11 +208,15 @@
                                 </div>
                                 <div class="col-xs-8">
                                     <p>
-                                        <span class="active_wrap_field">0</span>
-                                        <span>1+</span>
-                                        <span>2+</span>
-                                        <span>3+</span>
-                                        <span class="active_wrap_field" >4+</span>
+                                        <span class="{{ (isset($data['record']['od_comea_edema']) && in_array('0', $data['record']['od_comea_edema']))?'active_wrap_field' :''}}">0</span>
+
+                                        <span class="{{ (isset($data['record']['od_comea_edema']) && in_array('1', $data['record']['od_comea_edema']))?'active_wrap_field' :''}}">1+</span>
+
+                                        <span class="{{ (isset($data['record']['od_comea_edema']) && in_array('2', $data['record']['od_comea_edema']))?'active_wrap_field' :''}}">2+</span>
+
+                                        <span class="{{ (isset($data['record']['od_comea_edema']) && in_array('3', $data['record']['od_comea_edema']))?'active_wrap_field' :''}}">3+</span>
+
+                                        <span class="{{ (isset($data['record']['od_comea_edema']) && in_array('4', $data['record']['od_comea_edema']))?'active_wrap_field' :''}}" >4+</span>
                                     </p>
                                 </div>
                             </div>
@@ -211,11 +225,16 @@
                                     folds
                                 </div>
                                 <div class="col-xs-8">
-                                    <p> <span>0</span>
-                                        <span>1+</span>
-                                        <span>2+</span>
-                                        <span>3+</span>
-                                        <span>4+</span>
+                                    <p>
+                                        <span class="{{ (isset($data['record']['od_comea_folds']) && in_array('0', $data['record']['od_comea_folds']))?'active_wrap_field' :''}}">0</span>
+
+                                        <span class="{{ (isset($data['record']['od_comea_folds']) && in_array('1', $data['record']['od_comea_folds']))?'active_wrap_field' :''}}">1+</span>
+
+                                        <span class="{{ (isset($data['record']['od_comea_folds']) && in_array('2', $data['record']['od_comea_folds']))?'active_wrap_field' :''}}">2+</span>
+
+                                        <span class="{{ (isset($data['record']['od_comea_folds']) && in_array('3', $data['record']['od_comea_folds']))?'active_wrap_field' :''}}">3+</span>
+
+                                        <span class="{{ (isset($data['record']['od_comea_folds']) && in_array('4', $data['record']['od_comea_folds']))?'active_wrap_field' :''}}">4+</span>
                                     </p>
                                 </div>
                             </div>
@@ -233,11 +252,16 @@
                                     cells
                                 </div>
                                 <div class="col-xs-8">
-                                    <p><span>0</span>
-                                        <span>1+</span>
-                                        <span>2+</span>
-                                        <span>3+</span>
-                                        <span>4+</span>
+                                    <p>
+                                        <span class="{{ (isset($data['record']['od_a-c_cell']) && in_array('0', $data['record']['od_a-c_cell']))?'active_wrap_field' :''}}" >0</span>
+
+                                        <span class="{{ (isset($data['record']['od_a-c_cell']) && in_array('1', $data['record']['od_a-c_cell']))?'active_wrap_field' :''}}">1+</span>
+
+                                        <span class="{{ (isset($data['record']['od_a-c_cell']) && in_array('2', $data['record']['od_a-c_cell']))?'active_wrap_field' :''}}">2+</span>
+
+                                        <span class="{{ (isset($data['record']['od_a-c_cell']) && in_array('3', $data['record']['od_a-c_cell']))?'active_wrap_field' :''}}">3+</span>
+
+                                        <span class="{{ (isset($data['record']['od_a-c_cell']) && in_array('4', $data['record']['od_a-c_cell']))?'active_wrap_field' :''}}">4+</span>
                                     </p>
                                 </div>
                             </div>
@@ -246,11 +270,16 @@
                                     Flare
                                 </div>
                                 <div class="col-xs-8">
-                                    <p> <span>0</span>
-                                        <span>1+</span>
-                                        <span>2+</span>
-                                        <span>3+</span>
-                                        <span>4+</span>
+                                    <p>
+                                        <span class="{{ (isset($data['record']['od_a-c_flare']) && in_array('0', $data['record']['od_a-c_flare']))?'active_wrap_field' :''}}">0</span>
+
+                                        <span class="{{ (isset($data['record']['od_a-c_flare']) && in_array('1', $data['record']['od_a-c_flare']))?'active_wrap_field' :''}}">1+</span>
+
+                                        <span class="{{ (isset($data['record']['od_a-c_flare']) && in_array('2', $data['record']['od_a-c_flare']))?'active_wrap_field' :''}}">2+</span>
+
+                                        <span class="{{ (isset($data['record']['od_a-c_flare']) && in_array('3', $data['record']['od_a-c_flare']))?'active_wrap_field' :''}}">3+</span>
+
+                                        <span class="{{ (isset($data['record']['od_a-c_flare']) && in_array('4', $data['record']['od_a-c_flare']))?'active_wrap_field' :''}}">4+</span>
                                     </p>
                                 </div>
                             </div>
@@ -265,12 +294,12 @@
                         <div class="col-xs-8">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    pupil
+                                    <span class = "{{(isset($data['record']['od_iris']) && $data['record']['od_iris'] =='pupil')?'active_wrap_field':''}}">pupil</span>
                                 </div>
                                 <div class="col-xs-8">
-                                    <p><span>round</span>
+                                    <p><span class = "{{(isset($data['record']['od_iris']) && $data['record']['od_iris'] =='round')?'active_wrap_field':''}}" >round</span>
                                         <span>/</span>
-                                        <span>dyscoric</span>
+                                        <span class = "{{(isset($data['record']['od_iris']) && $data['record']['od_iris'] =='dyscoric')?'active_wrap_field':''}}">dyscoric</span>
                                     </p>
                                 </div>
                             </div>
@@ -282,7 +311,11 @@
                             <p>IOL</p>
                         </div>
                         <div class="col-xs-6">
-                            <p><span class="active_wrap_field">centered </span> / <span>decentered</span></p>
+                            <p>
+                                <span class = "{{(isset($data['record']['od_iol']) && $data['record']['od_iol'] =='centered')?'active_wrap_field':''}}">centered </span>
+                            /
+                                <span class = "{{(isset($data['record']['od_iol']) && $data['record']['od_iol'] =='decentered')?'active_wrap_field':''}}">decentered</span>
+                            </p>
                         </div>
                     </div>
 
@@ -293,7 +326,7 @@
                         <div class="col-xs-8">
                             <div class="row">
                                 <div class="col-xs-6" style="padding-right:0;">
-                                    clear / fibrotic
+                                    <span>clear </span>  / <span>fibrotic</span>
                                 </div>
                                 <div class="col-xs-5" style="padding-left:0; padding-right:0;">
                                     <p><span>1+</span>
@@ -313,7 +346,10 @@
                         <div class="col-xs-9">
                             <div class="row">
                                 <div class="col-xs-12" style="padding-right:0;">
-                                    <span>clear</span> / <span>NS</span> / <span>cortical PSC</span> / <span>aphakic</span>
+                                    <span class = "{{(isset($data['record']['od_lens']) && $data['record']['od_lens'] =='clear')?'active_wrap_field':''}}">clear</span> /
+                                    <span class = "{{(isset($data['record']['od_lens']) && $data['record']['od_lens'] =='ns')?'active_wrap_field':''}}">NS</span> /
+                                    <span class = "{{(isset($data['record']['od_lens']) && $data['record']['od_lens'] =='cortical psc')?'active_wrap_field':''}}">cortical PSC</span> /
+                                    <span class = "{{(isset($data['record']['od_lens']) && $data['record']['od_lens'] =='aphakic')?'active_wrap_field':''}}">aphakic</span>
                                 </div>
                             </div>
                         </div>
@@ -329,7 +365,7 @@
                                 <div class="col-xs-1">
                                 </div>
                                 <div class="col-xs-11">
-                                    <p>Tapp<span class="unit_input_text" style="width:80%;">asd</span></p>
+                                    <p>Tapp<span class="unit_input_text" style="width:80%;">{{$data['record']['od_fundus_impression_tap']}}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -353,7 +389,12 @@
                             <p>Wound</p>
                         </div>
                         <div class="col-xs-6">
-                            <p>intact / dehisced</p>
+                            <p>
+
+                                <span class = "{{(isset($data['record']['os_wound_state']) && $data['record']['os_wound_state'] =='intact')?'active_wrap_field':''}}">intact</span> /
+
+
+                                <span class = "{{(isset($data['record']['os_wound_state']) && $data['record']['os_wound_state'] =='dehisced')?'active_wrap_field':''}}">dehisced </span></p>
                         </div>
                     </div>
 
@@ -368,11 +409,17 @@
                                     edema
                                 </div>
                                 <div class="col-xs-8">
-                                    <p><span>0</span>
-                                        <span>1+</span>
-                                        <span>2+</span>
-                                        <span>3+</span>
-                                        <span>4+</span>
+                                    <p>
+
+                                        <span class="{{ (isset($data['record']['os_comea_edema']) && in_array('0', $data['record']['os_comea_edema']))?'active_wrap_field' :''}}">0</span>
+
+                                        <span class="{{ (isset($data['record']['os_comea_edema']) && in_array('1', $data['record']['os_comea_edema']))?'active_wrap_field' :''}}">1+</span>
+
+                                        <span class="{{ (isset($data['record']['os_comea_edema']) && in_array('2', $data['record']['os_comea_edema']))?'active_wrap_field' :''}}">2+</span>
+
+                                        <span class="{{ (isset($data['record']['os_comea_edema']) && in_array('3', $data['record']['os_comea_edema']))?'active_wrap_field' :''}}">3+</span>
+
+                                        <span class="{{ (isset($data['record']['os_comea_edema']) && in_array('4', $data['record']['os_comea_edema']))?'active_wrap_field' :''}}">4+</span>
                                     </p>
                                 </div>
                             </div>
@@ -381,11 +428,17 @@
                                     folds
                                 </div>
                                 <div class="col-xs-8">
-                                    <p> <span>0</span>
-                                        <span>1+</span>
-                                        <span>2+</span>
-                                        <span>3+</span>
-                                        <span>4+</span>
+                                    <p>
+                                        <span class="{{ (isset($data['record']['os_comea_folds']) && in_array('0', $data['record']['os_comea_folds']))?'active_wrap_field' :''}}">0</span>
+
+                                        <span class="{{ (isset($data['record']['os_comea_folds']) && in_array('1', $data['record']['os_comea_folds']))?'active_wrap_field' :''}}">1+</span>
+
+                                        <span class="{{ (isset($data['record']['os_comea_folds']) && in_array('2', $data['record']['os_comea_folds']))?'active_wrap_field' :''}}">2+</span>
+
+                                        <span class="{{ (isset($data['record']['os_comea_folds']) && in_array('3', $data['record']['os_comea_folds']))?'active_wrap_field' :''}}">3+</span>
+
+                                        <span class="{{ (isset($data['record']['os_comea_folds']) && in_array('4', $data['record']['os_comea_folds']))?'active_wrap_field' :''}}">4+</span>
+
                                     </p>
                                 </div>
                             </div>
@@ -403,11 +456,17 @@
                                     cells
                                 </div>
                                 <div class="col-xs-8">
-                                    <p><span>0</span>
-                                        <span>1+</span>
-                                        <span>2+</span>
-                                        <span>3+</span>
-                                        <span>4+</span>
+                                    <p>
+
+                                        <span class="{{ (isset($data['record']['os_a-c_cell']) && in_array('0', $data['record']['os_a-c_cell']))?'active_wrap_field' :''}}">0</span>
+
+                                        <span class="{{ (isset($data['record']['os_a-c_cell']) && in_array('1', $data['record']['os_a-c_cell']))?'active_wrap_field' :''}}">1+</span>
+
+                                        <span class="{{ (isset($data['record']['os_a-c_cell']) && in_array('2', $data['record']['os_a-c_cell']))?'active_wrap_field' :''}}">2+</span>
+
+                                        <span class="{{ (isset($data['record']['os_a-c_cell']) && in_array('3', $data['record']['os_a-c_cell']))?'active_wrap_field' :''}}">3+</span>
+
+                                        <span class="{{ (isset($data['record']['os_a-c_cell']) && in_array('4', $data['record']['os_a-c_cell']))?'active_wrap_field' :''}}">4+</span>
                                     </p>
                                 </div>
                             </div>
@@ -416,11 +475,16 @@
                                     Flare
                                 </div>
                                 <div class="col-xs-8">
-                                    <p> <span>0</span>
-                                        <span>1+</span>
-                                        <span>2+</span>
-                                        <span>3+</span>
-                                        <span>4+</span>
+                                    <p>
+                                        <span class="{{ (isset($data['record']['os_a-c_flare']) && in_array('0', $data['record']['os_a-c_flare']))?'active_wrap_field' :''}}">0</span>
+
+                                        <span class="{{ (isset($data['record']['os_a-c_flare']) && in_array('1', $data['record']['os_a-c_flare']))?'active_wrap_field' :''}}">1+</span>
+
+                                        <span class="{{ (isset($data['record']['os_a-c_flare']) && in_array('2', $data['record']['os_a-c_flare']))?'active_wrap_field' :''}}">2+</span>
+
+                                        <span class="{{ (isset($data['record']['os_a-c_flare']) && in_array('3', $data['record']['os_a-c_flare']))?'active_wrap_field' :''}}">3+</span>
+
+                                        <span class="{{ (isset($data['record']['os_a-c_flare']) && in_array('4', $data['record']['os_a-c_flare']))?'active_wrap_field' :''}}">4+</span>
                                     </p>
                                 </div>
                             </div>
@@ -435,12 +499,12 @@
                         <div class="col-xs-8">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    pupil
+                                    <span class = "{{(isset($data['record']['os_iris']) && $data['record']['os_iris'] =='pupil')?'active_wrap_field':''}}">  pupil</span>
                                 </div>
                                 <div class="col-xs-8">
-                                    <p><span>round</span>
+                                    <p><span class = "{{(isset($data['record']['os_iris']) && $data['record']['os_iris'] =='round')?'active_wrap_field':''}}">round</span>
                                         <span>/</span>
-                                        <span>dyscoric</span>
+                                        <span class = "{{(isset($data['record']['os_iris']) && $data['record']['os_iris'] =='dyscoric')?'active_wrap_field':''}}">dyscoric</span>
                                     </p>
                                 </div>
                             </div>
@@ -452,9 +516,17 @@
                             <p>IOL</p>
                         </div>
                         <div class="col-xs-6">
-                            <p>centered / decentered</p>
+                            <p>
+
+                                <span class = "{{(isset($data['record']['os_iol']) && $data['record']['os_iol'] =='centered')?'active_wrap_field':''}}">centered</span>
+
+                            /
+
+
+                                <span class = "{{(isset($data['record']['os_iol']) && $data['record']['os_iol'] =='decentered')?'active_wrap_field':''}}">decentered </span></p>
                         </div>
                     </div>
+
 
                     <div class="row">
                         <div class="col-xs-4">
@@ -463,7 +535,7 @@
                         <div class="col-xs-8">
                             <div class="row">
                                 <div class="col-xs-6" style="padding-right:0;">
-                                    clear / fibrotic
+                                    <span>clear</span> / <span>fibrotic</span>
                                 </div>
                                 <div class="col-xs-5" style="padding-left:0; padding-right:0;">
                                     <p> <span>1+</span>
@@ -482,8 +554,14 @@
                         </div>
                         <div class="col-xs-9">
                             <div class="row">
-                                <div class="col-xs-12" style="padding-right:0;">
-                                    <span>clear</span> / <span>NS</span> / <span>cortical PSC</span> / <span>aphakic</span>
+        <div class="col-xs-12" style="padding-right:0;">
+            <span class = "{{(isset($data['record']['os_lens']) && $data['record']['os_lens'] =='clear')?'active_wrap_field':''}}">clear</span>
+                                    /
+            <span class = "{{(isset($data['record']['os_lens']) && $data['record']['os_lens'] =='ns')?'active_wrap_field':''}}">NS</span>
+                                    /
+            <span class = "{{(isset($data['record']['os_lens']) && $data['record']['os_lens'] =='cortical psc')?'active_wrap_field':''}}">cortical PSC</span>
+                                    /
+            <span class = "{{(isset($data['record']['os_lens']) && $data['record']['os_lens'] =='aphakic')?'active_wrap_field':''}}">aphakic</span>
                                 </div>
                             </div>
                         </div>
@@ -499,7 +577,7 @@
                                 <div class="col-xs-1">
                                 </div>
                                 <div class="col-xs-11">
-                                    <p>Tapp<span class="unit_input_text" style="width:80%;">asd</span></p>
+                                    <p>Tapp<span class="unit_input_text" style="width:80%;">{{$data['record']['os_fundus_impression_tap']}}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -515,26 +593,26 @@
                 <p><span style="font-weight:bold;">Plan</span></p>
             </div>
             <div class="col-xs-3" style="padding-right:0px;">
-                <p>Antibiotic <span class="unit_input_text" style="width:60%;"></span></p>
-                <p>Steroid <span class="unit_input_text" style="width:60%;"></span></p>
+                <p>Antibiotic <span class="unit_input_text" style="width:60%;">{{$data['record']['od_plan_antibiotic']}}</span></p>
+                <p>Steroid <span class="unit_input_text" style="width:60%;">{{$data['record']['os_plan_steroid']}}</span></p>
             </div>
             <div class="col-xs-4" style="padding-left:0px;">
                 <p style="maring-bottom:0px;">OD <span class="unit_input_text" style="width:60%;"></span>/Other</p>
                 <p>OS </p>
             </div>
             <div class="col-xs-3">
-                <p style="maring-bottom:0px;">OD <span class="unit_input_text" style="width:40%;"></span></p>
+                <p style="maring-bottom:0px;">OD <span class="unit_input_text" style="width:40%;">{{$data['record']['od_plan_other']}}</span></p>
                 <p>OS </p>
             </div>
         </div>
 
         <div class="row default_row_margin">
             <div class="col-xs-6" style="padding-right:0px;">
-                <p><span style="font-weight:bold;">Next Exam</span><span class="unit_input_text" style="width:75%;"></span> &nbsp;&nbsp;at</p>
+                <p><span style="font-weight:bold;">Next Exam</span><span class="unit_input_text" style="width:75%;">{{$data['record']['next_exam_date']}}</span> &nbsp;&nbsp;at</p>
                 <p style="margin-left: 34%;margin-top: -1em;font-style: italic;">(date)</p>
             </div>
             <div class="col-xs-6" style="padding-left:0px;">
-                <p> <span class="unit_input_text" style="width:90%;"></span> &nbsp;&nbsp;</p>
+                <p> <span class="unit_input_text" style="width:90%;">{{$data['record']['next_exam_office']}}</span> &nbsp;&nbsp;</p>
                 <p style="margin-left: 34%;margin-top: -1em;font-style: italic;">(office name)</p>
             </div>
         </div>
@@ -544,7 +622,7 @@
                 <p><span style="font-weight:bold;">Signature</span> <span class="unit_input_text" style="width:80%;"></span> &nbsp;&nbsp;</p>
             </div>
             <div class="col-xs-6" style="padding-left:0px;">
-                <p> O.D. Print Name<span class="unit_input_text" style="width:72%;"></span> &nbsp;&nbsp;</p>
+                <p> O.D. Print Name<span class="unit_input_text" style="width:72%;">{{$data['record']['od_print_name']}}</span> &nbsp;&nbsp;</p>
             </div>
         </div>
 

@@ -34,10 +34,11 @@ trait PatientRecordsTrait
         return view('web-forms.show', [ 'template' => $record->template, 'record' => $record->content]);
     }
 
-    public function createRecord($name)
+    public function createRecord($templateName, $patientID)
     {
-        $template = WebFormTemplate::get($name);
-        return view('web-forms.create', [ 'template' => $template]);
+        $patient = Patient::find($patientID);
+        $template = WebFormTemplate::get($templateName);
+        return view('web-forms.create', [ 'template' => $template, 'patient' => $patient]);
     }
 
     public function printRecord($contactHistoryID)
@@ -68,16 +69,14 @@ trait PatientRecordsTrait
         ];
 
         $record =  PatientRecord::create($data);
-
         $patientID = $data['patient_id'];
+
         $templateID = $data['web_form_template_id'];
 
         $contactHistoryID =  $this->createContactHistory($patientID, $templateID);
 
         $record->contact_history_id = $contactHistoryID;
         $record->save();
-
-        $request->session()->put('success', 'Record created successfully');
 
         event(new PatientRecordCreation(
             [
@@ -88,6 +87,7 @@ trait PatientRecordsTrait
 
             ]
         ));
+        $request->session()->put('success', 'Record created successfully');
         return redirect('/webform');
     }
 
@@ -149,6 +149,7 @@ trait PatientRecordsTrait
             ->with('patientID', $patientID)
             ->render();
     }
+
 
     public function createContactHistory($patientID, $templateID)
     {

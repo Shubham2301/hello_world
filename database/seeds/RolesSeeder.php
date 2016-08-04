@@ -64,6 +64,26 @@ class RolesSeeder extends Seeder
 	            'display_name' => 'Administrators',
 	            'description' => 'Administrators are super users who can do anything.',
 	        ],
+            [
+                'name' => 'provider-admin',
+                'display_name' => 'Provider Admin',
+                'description' => 'A member of this role can create and manage provider',
+            ],
+
+            [
+                'name' => 'direct-mail',
+                'display_name' => 'Direct Mail'
+            ],
+
+            [
+                'name' => 'reports',
+                'display_name' => 'Reports'
+            ],
+
+            [
+                'name' => 'patient-record',
+                'display_name' => 'Patient Record'
+            ],
         ]);
     }
 }

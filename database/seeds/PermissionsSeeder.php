@@ -104,6 +104,55 @@ class PermissionsSeeder extends Seeder
 	            'display_name' => 'Bulk Import',
 	            'description' => 'Can bulk import patients/practices',
 	        ],
+
+            [
+                'name' => 'add-patient',
+                'display_name' => 'Add Patients',
+                'description' => 'Can add patients',
+            ],
+
+            [
+                'name' => 'edit-patient',
+                'display_name' => 'Edit Patients',
+                'description' => 'Can edit patients',
+            ],
+
+            [
+                'name' => 'delete-patient',
+                'display_name' => 'Delete Patients',
+                'description' => 'Can delete patients',
+            ],
+
+            [
+                'name' => 'edit-topic',
+                'display_name' => 'Edit Topic',
+                'description' => 'User will be able to edit topic',
+            ],
+
+            [
+                'name' => 'delete-topic',
+                'display_name' => 'Delete Topic',
+                'description' => 'User will be able to delete topic',
+            ],
+
+            [
+                'name' => 'view-reports',
+                'display_name' => 'View Reports',
+                'description' => 'Can view reports',
+            ],
+
+            [
+                'name' => 'access-directmail',
+                'display_name' => 'Access Directmail',
+                'description' => 'Can view Directmail',
+            ],
+            [
+                'name' => 'access-records',
+                'display_name' => 'Access PatientRecords',
+                'description' => 'Can view Patient Records',
+            ],
+
+
         ]);
     }
 }

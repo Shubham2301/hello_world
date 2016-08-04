@@ -8,7 +8,13 @@
 @section('content')
 @include('patient-records.header')
 
-<div class="row listing_section">
+<div class="row listing_section active">
+    <div class="col-xs-5">
+        <div  class="patient_listing_section">
+        </div>
+    </div>
+    <div class="col-xs-7 care_timeline">
+    </div>
 
 </div>
 

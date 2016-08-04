@@ -73,7 +73,7 @@ class SendRecordWithEmail
             ];
 
             return SES::send($attr);
-            
+
         }catch (Exception $e) {
             Log::error($e);
             return false;

@@ -56,6 +56,10 @@ $(document).ready(function () {
         }
     });
 
+    $('.patient_record').addClass('active');
+
+    $('.care_timeline').html(defaultCareTimeline());
+
 });
 
 
@@ -81,8 +85,8 @@ function getPatients(formData, page) {
         contentType: 'text/html',
         async: false,
         success: function success(e) {
-            $('.listing_section').html(e);
-            $('.listing_section').addClass('active');
+            $('.patient_listing_section').html(e);
+            $('.patient_listing_section').addClass('active');
             var content = defaultCareTimeline();
             $('.care_timeline').html(content);
             if ($('#patient_id').val()) {

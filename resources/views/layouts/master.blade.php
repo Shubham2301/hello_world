@@ -44,6 +44,7 @@
                 </div>
                 @include('layouts.alert')
                 @include('layouts.timeout')
+                @include('layouts.confirm')
             </div>
             <div class="row height footer no_print hidden-xs">
                 @section('footer')

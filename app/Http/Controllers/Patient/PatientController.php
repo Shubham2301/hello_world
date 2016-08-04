@@ -531,6 +531,7 @@ class PatientController extends Controller
             $data[$i]['name'] = $patient->getName();
             $i++;
         }
+
         $data[0]['total'] = $patients->total();
         $data[0]['lastpage'] = $patients->lastPage();
         $data[0]['currentpage'] = $patients->currentPage();
@@ -543,13 +544,13 @@ class PatientController extends Controller
             $data[0]['nextpage'] = $data[0]['currentpage'];
         }
 
-        if($countResult > $data[0]['total'])
-        {
-            $countResult = $data[0]['total'];
-        }
 
+        $currentResult = ($data[0]['previouspage']*$countResult)?:1;
 
-        $data[0]['result_count_info'] = $data[0]['previouspage']*$countResult.'-'.$data[0]['currentpage']*$countResult.' of '.$data[0]['total'];
+        $upperResult = ($data[0]['currentpage']*$countResult < $data[0]['total'])?$data[0]['currentpage']*$countResult:$data[0]['total'];
+
+        $data[0]['current_result'] = $currentResult;
+        $data[0]['upper_result'] = $upperResult;
 
         return json_encode($data);
     }

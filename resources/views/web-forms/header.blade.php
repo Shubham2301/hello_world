@@ -4,7 +4,7 @@
 		<span class="search_input_box">
 			<input type="text" class="arial_italic" id="search_patient_input" placeholder="search" data-id ="">
 			<img src="{{URL::asset('images/sidebar/search-icon.png')}}" class="seacrh_icon" id="search_patient_button">
-			<img src="{{URL::asset('images/close-active.png')}}" class="seacrh_icon" id="remove_patient_button">
+			<img src="{{URL::asset('images/close-natural.png')}}" class="seacrh_icon" id="remove_patient_button">
 		</span>
 
     </div>

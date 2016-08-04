@@ -40,8 +40,8 @@ class ContactHistory extends Model
             ->leftjoin('action_results', 'contact_history.action_result_id', '=', 'action_results.id')
             ->leftjoin('careconsole', 'contact_history.console_id', '=', 'careconsole.id')
             ->select(DB::raw('contact_history.*, actions.*, careconsole.*, action_results.name as result_name, action_results.display_name as result_display_name, action_results.id as result_id, contact_history.id as contact_history_id'))
-            ->orderBy('contact_activity_date','decs')
-            ->get(['*', 'contact_history.id']);
+            ->orderBy('contact_history.created_at','decs')
+            ->get();
 
     }
 

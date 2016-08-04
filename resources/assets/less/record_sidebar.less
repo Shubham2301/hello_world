@@ -1,0 +1,67 @@
+.record_sidebar_button {
+    display: flex;
+    flex-direction: row;
+    border-radius: 0.5em;
+    padding: 0;
+    overflow-x: hidden;
+    color: #4d4d4d;
+    margin-top: 1em;
+    cursor: pointer;
+    box-shadow: 0 1px 1px #898989;
+    .gradient(#f0f2f5,
+        #e0e3e6);
+    &.active,
+    &.active:hover {
+        background-color: #d2d3d5;
+        .gradient(#d2d3d5,
+            #d2d3d5);
+        box-shadow: 0 1px 1px #d2d3d5;
+        cursor: auto;
+        color: #4d4d4d;
+        text-decoration: none;
+    }
+    &:hover {
+        background-color: #f0f2f5;
+        .gradient(#f0f2f5,
+            #f0f2f5);
+        box-shadow: 0 1px 1px #898989;
+        color: #4d4d4d;
+        text-decoration: none;
+    }
+    &:active {
+        background-color: #d2d3d5;
+        .gradient(#d2d3d5,
+            #d2d3d5);
+        box-shadow: 0 1px 1px #d2d3d5;
+    }
+    &>.record_sidebar_image {
+        flex-grow: 1;
+        flex-basis: 0;
+        flex-direction: row;
+        justify-content: center;
+        &>span {
+            display: flex;
+            flex-basis: 0;
+            flex-grow: 1;
+            justify-content: center;
+        }
+    }
+    &>.record_sidebar_text {
+        display: flex;
+        flex-grow: 3;
+        flex-basis: 0;
+        flex-direction: row;
+        justify-content: center;
+        border-left: 1px solid #b3b3b3;
+        margin: .2em 0;
+        padding: 0 .2em 0 .4em;
+        &>.text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-right: auto;
+            flex-basis: 0;
+            flex-grow: 10;
+        }
+    }
+}

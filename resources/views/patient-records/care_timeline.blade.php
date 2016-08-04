@@ -5,7 +5,7 @@
         <div class="col-xs-1"> </div>
         <div class="col-xs-2">
             <p class="date_left">
-                {{ $status['date'][0].', '. $status['date'][1] }}
+                {{ $status['date'][1].', '. $status['date'][0] }}
                 <br> {{ $status['date'][2] }}
             </p>
         </div>
@@ -19,7 +19,8 @@
         </div>
         <div class="col-xs-6 set_default_padding">
             <div class="data_right">
-                <span data-toggle="collapse" data-target="#{{'left'.$i}}" class="patient_status arial_bold">{{$status['name']}}
+                <span data-toggle="collapse" data-target="#{{'left'.$i}}" class="patient_status arial_bold">
+                {{ ($status['name'] == 'Create Record')?$status['record_name']: $status['name'] }}
                 </span>
                 <div class="row collapse" id="{{ 'left'.$i }}">
                     <div class="col-xs-12 ">
@@ -82,7 +83,7 @@
         <div class="col-xs-2"></div>
         <div class="col-xs-3">
             @if(sizeOf($progress) == $getResults)
-            <p class="show_more_text" data-id="{{$patientID}}" data-result="{{$getResults}}" >Show More</p>
+            <p class="show_more_text arial" data-id="{{$patientID}}" data-result="{{$getResults}}" >Show More</p>
             @endif
         </div>
 

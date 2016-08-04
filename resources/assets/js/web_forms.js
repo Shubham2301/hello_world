@@ -30,14 +30,16 @@ $(document).ready(function() {
     });
 
     $('.search_input_box').on('click', '#remove_patient_button', function() {
-        var r = confirm("All data will be lost");
-        if (r == true) {
-            $(this).hide();
-            $('.section').removeClass('active');
-            $('.search_section').addClass('active');
-            $('#search_patient_button').show();
-            $('#search_patient_input').prop('readonly', false);
-            $('.select_form_dropdown').find('p').hide();
+        var removeBtnObj = this;
+
+        if ($('.form_section').hasClass('active')) {
+            showModalConfirmDialog('all data will be lost if you change patients', function(outcome) {
+                if (outcome) {
+                    unSelectPatient(removeBtnObj);
+                }
+            });
+        } else {
+            unSelectPatient(removeBtnObj);
         }
     });
 
@@ -45,7 +47,16 @@ $(document).ready(function() {
         var name = $(this).attr('value');
         templateID = $(this).attr('data-id');
         $('.form_name').text($(this).text());
-        showWebForm(name);
+
+        if ($('.form_section').hasClass('active')) {
+            showModalConfirmDialog('all data will be lost if you change forms', function(outcome) {
+                if (outcome) {
+                    showWebForm(name);
+                }
+            });
+        } else {
+            showWebForm(name);
+        }
     });
 
     $(document).keypress(function(e) {
@@ -56,55 +67,66 @@ $(document).ready(function() {
         }
     });
 
-    $('.form_section').on('click', '#previous_btn',  function() {
+    $('.form_section').on('click', '#previous_btn', function() {
 
-        var  dataid =   $('.form_chunk.active').attr('data-index');
+        var dataid = $('.form_chunk.active').attr('data-index');
         $('#continue_btn').show();
         dataid--;
 
-        if(dataid+'' === "1") {
-           $(this).hide();
-        }
-        else {
-           $(this).show();
+        if (dataid.toString() === "1") {
+            $(this).hide();
+        } else {
+            $(this).show();
         }
 
         $('.form_chunk').removeClass('active');
-        $('.form_chunk_'+dataid).addClass('active');
+        $('.form_chunk_' + dataid).addClass('active');
 
     });
 
-    $('.form_section').on('click', '#continue_btn' , function() {
-        var  dataid =   $('.form_chunk.active').attr('data-index');
+    $('.form_section').on('click', '#continue_btn', function() {
+        var dataid = $('.form_chunk.active').attr('data-index');
         $('#previous_btn').show();
         dataid++;
-        console.log(dataid );
-        console.log($('#count_form_sections').val());
-        if(dataid+'' === $('#count_form_sections').val())
-        {
+        if (dataid.toString() === $('#count_form_sections').val()) {
             $(this).hide();
-        }
-        else
-        {
+        } else {
             $(this).show();
         }
         $('.form_chunk').removeClass('active');
-        $('.form_chunk_'+dataid).addClass('active');
+        $('.form_chunk_' + dataid).addClass('active');
     });
 
-    $('.form_section').on('click', '.tgl_text', function () {
-          var isd = $(this).find('.tgl').prop('checked');
-          if(isd)
-          {
+    $('.form_section').on('click', '.tgl_text', function() {
+        var isChecked = $(this).find('.tgl').prop('checked');
+        if (isChecked) {
             $(this).addClass('checkfiled');
-          }
-          else{
+        } else {
             $(this).removeClass('checkfiled');
-          }
+        }
+    });
+
+    $('.form_section').on('click', '.tgl_radio', function() {
+        var name = $(this).find('.tgl').attr('name');
+        var selectedRadioObjarry = $('input[name=' + name + ']');
+
+        $.each(selectedRadioObjarry, function(key, obj) {
+            obj = $(obj);
+            if ($(obj).prop('checked')) {
+
+                obj.parent().addClass('checkfiled');
+            } else {
+                obj.parent().removeClass('checkfiled');
+
+            }
+
+        });
+
     });
 
     $('.form_section').on('click', '#create_record', savePatientRecord);
 
+    $('.health_record').addClass('active');
 });
 
 var templateID = 0;
@@ -142,9 +164,10 @@ function getPatients(formData, page) {
 }
 
 function showWebForm(name) {
+    var patientID = $('#search_patient_input').attr('data-id');
 
     $.ajax({
-        url: '/createrecord/' + name,
+        url: '/createrecord/' + name + '/' + patientID,
         type: 'GET',
         data: '',
         contentType: 'text/html',
@@ -155,7 +178,7 @@ function showWebForm(name) {
             $('.form_section').html(e);
             $('.form_section').addClass('active');
             $('.field_date').datetimepicker({
-                format: 'YYYY-MM-DD'
+                format: 'MM/DD/YYYY'
             });
         },
         error: function error() {
@@ -167,9 +190,40 @@ function showWebForm(name) {
     });
 }
 
-function savePatientRecord(){
-    var myform = document.getElementById("patient_record_form");
+function savePatientRecord() {
+    var recordForm = document.getElementById("patient_record_form");
     $('#patient_id').val($('#search_patient_input').attr('data-id'));
     $('#template_id').val(templateID);
-    myform.submit();
+    $('.form_footer').hide();
+    $('#footer_loader_section').show();
+    recordForm.submit();
+}
+
+function showModalConfirmDialog(msg, handler) {
+    $('p.alert_message>.msg').text(msg);
+    var clicked = false;
+    $('#confirm').modal('show');
+    var result = false;
+    $('.alert').on('click', '.confirm_yes', function() {
+        if (!clicked) {
+            handler(true);
+        }
+        clicked = true;
+    });
+    $('.alert').on('click', '.confirm_no', function() {
+        if (!clicked) {
+
+            handler(false);
+        }
+        clicked = true;
+    });
+}
+
+function unSelectPatient(removeBtnObj) {
+    $(removeBtnObj).hide();
+    $('.section').removeClass('active');
+    $('.search_section').addClass('active');
+    $('#search_patient_button').show();
+    $('#search_patient_input').prop('readonly', false);
+    $('.select_form_dropdown').find('p').hide();
 }
