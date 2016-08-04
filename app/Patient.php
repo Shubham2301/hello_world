@@ -12,6 +12,7 @@ use myocuhub\Models\PracticeUser;
 use myocuhub\Network;
 use myocuhub\Models\PatientFile;
 use myocuhub\Models\Careconsole;
+use myocuhub\Models\PatientRecord;
 
 class Patient extends Model
 {
@@ -252,5 +253,9 @@ class Patient extends Model
 
     public function careConsole() {
         return $this->hasOne(Careconsole::class);
+    }
+
+    public function records() {
+        return $this->hasMany(PatientRecord::class);
     }
 }

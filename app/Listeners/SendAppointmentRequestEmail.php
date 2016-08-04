@@ -24,9 +24,13 @@ use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
 use myocuhub\User;
+use myocuhub\Http\Controllers\Traits\PatientRecords\PatientRecordsTrait;
+
+use myocuhub\Events\Patient\CreateAttachmentFailure;
 
 class SendAppointmentRequestEmail
 {
+    use PatientRecordsTrait;
 	/**
      * Create the event listener.
      *
@@ -175,7 +179,7 @@ class SendAppointmentRequestEmail
 			try {
 				$patientID = $attr['appt']['patient_id'];
 				if ($appt['send_ccda']) {
-					$attr['attachments'] = $this->getSelectedFiles($attr['appt']['selectedfiles'],  $patientID);
+					$attr['attachments'] = $this->createAttachments($attr['appt']['selectedfiles'],  $patientID);
 				}
 				return  SES::send($attr);
 			} catch (Exception $e) {
@@ -210,22 +214,26 @@ class SendAppointmentRequestEmail
 		return true;
 	}
 
-	public function getSelectedFiles($fileString, $patientID)
+    public function createAttachments($fileString, $patientID)
 	{
-		$data = explode( ',', $fileString );
-		$data = array_unique($data);
+        $filearray = json_decode($fileString, true);
+
+        $patientFiles = array_unique($filearray['patient_files']);
+
+        $patientRecords = array_unique($filearray['patient_records']);
+
 		$paths = [];
 
-		if (in_array("CCDA", $data)) {
+        if (in_array("CCDA", $patientFiles)) {
 			$paths[] = MyCCDA::generateXml($patientID, true) ?: '';
-			$key = array_search('CCDA', $data);
-			array_splice($data, $key, 1);
+            $key = array_search('CCDA', $patientFiles);
+            array_splice($patientFiles, $key, 1);
 		}
 
-		for($i=0; $i<sizeOf($data); $i++)
+        for($i=0; $i<sizeOf($patientFiles); $i++)
 		{
 			try{
-				$file = PatientFile::find($data[$i]);
+                $file = PatientFile::find($patientFiles[$i]);
 				$tempFileName =config('constants.paths.ccda.temp_ccda'). $file->display_name . '.' . $file->extension;
 
 				$fileContent =Storage::get($file->treepath . '/' . $file->name . '.' . $file->extension);
@@ -233,15 +241,44 @@ class SendAppointmentRequestEmail
 				$myfile = fopen($tempFileName, "w");
 				$ss = fwrite($myfile, $fileContent);
 				$paths[] = $tempFileName;
+
 			}catch (Exception $e) {
-				Log::error($e);
-				$action = 'Application Exception in fetching files for  patient ID '. $patientID;
-				$description = '';
-				$filename = basename(__FILE__);
-				$ip = '';
-				Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+                Log::error($e);
+
+                event(new CreateAttachmentFailure(
+                    [
+                        'patientID' =>  $patientID,
+                        'description' => $e->getMessage()
+                    ]
+
+                ));
 			}
 		}
+
+
+        for($i=0; $i<sizeOf($patientRecords); $i++)
+        {
+            try{
+
+                $pdfObj = $this->createPDF($patientRecords[$i]);
+
+                $PDFPaths = config('constants.paths.pdf');
+                $tempFileName = $PDFPaths['temp_dir'].'record-'.$patientRecords[$i].$PDFPaths['ext'];
+                $pdfObj->save($tempFileName);
+                $paths[] = $tempFileName;
+
+            }catch (Exception $e) {
+                Log::error($e);
+
+                event(new CreateAttachmentFailure(
+                    [
+                        'patientID' =>  $patientID,
+                        'description' => $e->getMessage()
+                    ]
+
+                ));
+            }
+        }
 		return $paths;
 	}
 }

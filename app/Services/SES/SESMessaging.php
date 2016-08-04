@@ -66,6 +66,7 @@ class SESMessaging extends SES
             $attr['body'] = ($content)?: $attr['body'];
             $attachments = json_encode($attr['attachments'], JSON_FORCE_OBJECT);
 
+
             //prepare arguments
             $args = [
                 'action'        => 'sendMessage',

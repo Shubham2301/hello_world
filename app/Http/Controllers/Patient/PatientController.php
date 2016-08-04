@@ -306,7 +306,14 @@ class PatientController extends Controller
             $patientData['ccda_date'] = (new DateTime($ccda->created_at))->format('F j Y');
         }
 
-        $patientData['files'] =  $patient->files;
+
+        $files = $patient->files;
+        $records = $patient->records;
+
+        $patientData['files'] = view('patient.show_files')->with('files', $files)
+            ->with('records', $records)
+            ->with('patientID', $id)
+            ->render();
 
         $response = [
             'result' => true,

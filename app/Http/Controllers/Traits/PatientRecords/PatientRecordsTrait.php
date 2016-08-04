@@ -178,7 +178,7 @@ trait PatientRecordsTrait
 
         $data['patient'] = $patient;
         $data['record'] = $recordData;
-        $html = view('patient-records.print')->with('data', $data);
+        $html = view('patient-records.print')->with('data', $data)->render();
         $pdf = PDF::loadHtml($html);
         return $pdf;
     }

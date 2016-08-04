@@ -790,11 +790,21 @@ function getNearByProviders(formData) {
 }
 
 function checkselectedfiles() {
-    var $inputs = $('.selected_files');
-    var $files = $('#selected_patient_files').val().split(',');
-    $inputs.each(function() {
-        console.log($(this).val());
-        if ($files.indexOf($(this).val() + "") > -1) {
+
+    var fileList = $('.selected_files');
+    var recordList = $('.selected_records');
+    var files = $.parseJSON($('#selected_patient_files').val());
+    var patientFiles = files.patient_files;
+    var patientRecords = files.patient_records;
+
+    fileList.each(function() {
+        if (patientFiles.indexOf($(this).val().toString()) != -1) {
+            $(this).prop('checked', true);
+        }
+    });
+
+    recordList.each(function() {
+        if (patientRecords.indexOf($(this).val().toString()) != -1) {
             $(this).prop('checked', true);
         }
     });
