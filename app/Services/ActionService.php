@@ -416,8 +416,11 @@ class ActionService
             if($contact['name'] =='create-record')
             {
                 $record = ContactHistory::find($contact['contact_history_id'])->record;
-                $actions[$i]['record_name'] = $record->template->display_name . ' - '.$record->created_at;
-
+                $actions[$i]['record_name']= '';
+                if($record)
+                {
+                    $actions[$i]['record_name'] = $record->template->display_name . ' - '.$record->created_at;
+                }
             }
 
             $i++;

@@ -30,7 +30,7 @@
 
             <div class="row default_row_margin">
                 <div class="col-xs-3">
-                    <p> DOB:<span class="unit_input_text">{{$data['patient']['birthdate']}}</span></p>
+                    <p> DOB:<span class="unit_input_text">{{date('m/d/Y', strtotime($data['patient']['birthdate']))}}</span></p>
                 </div>
                 <div class="col-xs-4">
                     <p>Cataract Extraction/ IOL</p>
