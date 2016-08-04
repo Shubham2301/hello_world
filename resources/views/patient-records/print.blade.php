@@ -22,7 +22,8 @@
                     <p> Patient Name:<span class="unit_input_text" style="width:40%;">{{$data['patient']['firstname'].' '.$data['patient']['lastname']}}</span></p>
                 </div>
                 <div class="col-xs-4">
-                    <p> Date:<span class="unit_input_text" style="width;"> {{$data['record']['os_surgery_date']}}   </span></p>
+                    <p> Date:<span class="unit_input_text" style="width;">
+                        {{ (isset($data['record']['os_surgery_date']))?$data['record']['os_surgery_date']:'' }}   </span></p>
                 </div>
 
             </div>
@@ -49,7 +50,9 @@
 
             <div class="row default_row_margin">
                 <div class="col-xs-12">
-                    <p> CC:<span class="unit_input_text" style="width:96%;">{{ $data['record']['os_cc-history'][0]  }}</span></p>
+                    <p> CC:<span class="unit_input_text" style="width:96%;">
+                        {{ (isset($data['record']['os_cc-history'][0]))?$data['record']['os_cc-history'][0]:'' }}
+                    </span></p>
                 </div>
             </div>
 
@@ -71,10 +74,14 @@
                 </div>
                 <div class="col-xs-5">
                     <p style="">
-                        OD <span class="unit_input_text" style="width:40%;">{{$data['record']['os_va_sc']}}</span> Ph <span class="unit_input_text" style="width:40%;"></span>
+                        OD <span class="unit_input_text" style="width:40%;">
+                        {{ (isset($data['record']['os_va_sc']))?$data['record']['os_va_sc']:'' }}
+                        </span> Ph <span class="unit_input_text" style="width:40%;"></span>
                     </p>
                     <p>
-                        OS <span class="unit_input_text" style="width:40%;">{{$data['record']['od_va_sc']}}</span> Ph <span class="unit_input_text" style="width:40%;"></span>
+                        OS <span class="unit_input_text" style="width:40%;">
+                        {{ (isset($data['record']['od_va_sc']))?$data['record']['od_va_sc']:'' }}
+                        </span> Ph <span class="unit_input_text" style="width:40%;"></span>
                     </p>
                 </div>
                 <div class="col-xs-6" 4 <p style="">
