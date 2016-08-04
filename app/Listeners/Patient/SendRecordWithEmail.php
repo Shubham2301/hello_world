@@ -2,16 +2,18 @@
 
 namespace myocuhub\Listeners\Patient;
 
-use myocuhub\Events\Patient\PatientRecordCreation;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Auth;
-use SES;
 use DateTime;
 use Event;
-use Log;
 use Exception;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Log;
+use SES;
+use myocuhub\Events\Patient\PatientRecordCreation;
 use myocuhub\Http\Controllers\Traits\PatientRecords\PatientRecordsTrait;
+use myocuhub\Models\WebFormTemplate;
+use myocuhub\Patient;
 class SendRecordWithEmail
 {
     use PatientRecordsTrait;
@@ -33,24 +35,21 @@ class SendRecordWithEmail
      */
     public function handle(PatientRecordCreation $event)
     {
+
         $contactHistoryID = $event->getContactHistoryID();
-        $this->sendRecordToProvider($contactHistoryID);
-    }
+        $patientName = Patient::find($event->getPatientID())->getName();
+        $templateName = WebFormTemplate::find($event->getTemplateID())->name;
+        $currentUser = Auth::user();
+        $PDFPaths = config('constants.paths.pdf');
 
+        if(!SES::isDirectID($currentUser->sesemail))
+        {
+            return false;
+        }
 
-    private function sendRecordToProvider($contactHistoryID) {
         try{
 
-            $currentUser = Auth::user();
-
-            if(!SES::isDirectID($currentUser->sesemail))
-            {
-                return false;
-            }
-
             $pdfObj = $this->createPDF($contactHistoryID);
-
-            $PDFPaths = config('constants.paths.pdf');
             $fileName = $PDFPaths['temp_dir'].'record-'.$contactHistoryID.$PDFPaths['ext'];
 
             $path = [];
@@ -66,20 +65,19 @@ class SendRecordWithEmail
                     'name' =>  $currentUser->getName(),
                     'email' => $currentUser->sesemail,
                 ],
-                'subject' => config('constants.message_views.send_record_provider.subject'),
-                'body' =>'',
+                'subject' => "$templateName : $patientName",
+                'body' =>"Attached is the $templateName for $patientName. Please forward this patient document as required.",
                 'view' => config('constants.message_views.send_record_provider.view'),
                 'attachments' => $path,
                 'appt' => [],
             ];
 
             return SES::send($attr);
-
+            
         }catch (Exception $e) {
             Log::error($e);
             return false;
         }
-
-
     }
+
 }
