@@ -58,8 +58,8 @@ class SendRecordWithEmail
 
             $attr = [
                 'from' => [
-                    'name' => config('constants.support.email_name'),
-                    'email' => config('constants.support.email_id'),
+                    'name' => config('constants.support.ses.email.display_name'),
+                    'email' => config('constants.support.ses.email.id'),
                 ],
                 'to' => [
                     'name' =>  $currentUser->getName(),
