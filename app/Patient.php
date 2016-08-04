@@ -104,7 +104,9 @@ class Patient extends Model
                             ->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
                             ->orWhere('country', 'LIKE', '%' . $filter['value'] . '%');
                             break;
-
+                        case 'id':
+                            $query->Where('patients.id', $filter['value']);
+                            break;
                         case 'all':
                             $query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
                             ->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')

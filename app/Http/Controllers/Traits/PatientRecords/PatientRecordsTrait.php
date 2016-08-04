@@ -48,7 +48,9 @@ trait PatientRecordsTrait
 
     public function getPatientRecordView(Request $request)
     {
-        return view('patient-records.index');
+        $patient = array();
+        $patient['id'] = $request->patient_id;
+        return view('patient-records.index')->with('patient', $patient);
     }
 
     public function getWebFormIndex(Request $request)

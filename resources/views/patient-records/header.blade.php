@@ -9,6 +9,7 @@
             <input type="text" class="arial_italic" id="search_patient_input" placeholder="search" data-id ="">
             <img src="{{URL::asset('images/sidebar/search-icon.png')}}" class="seacrh_icon" id="search_patient_button">
         </span>
+        <input type="hidden" value="{{ $patient['id'] }}" id="patient_id">
     </div>
     <div class="col-xs-6 col-sm-6">
 		<span>

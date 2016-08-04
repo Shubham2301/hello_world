@@ -5,7 +5,7 @@
 .reports_container {
     background-color: #fff;
     padding: 0 2em;
-    color: #000;
+    color: @font-color-black-hover;
     &>.row {
         margin: 0;
         &.report_header_row {
@@ -56,7 +56,7 @@
 }
 .section_separater {
     margin: .5em;
-    border-top: solid 1px #4d4d4d;
+    border-top: solid 1px @font-color-black;
 }
 .report_stage_data {
     margin: 2em 0;
@@ -125,7 +125,7 @@
             &>.right_row {
                 display: flex;
                 &.section_break {
-                    border-bottom: 1px solid #000;
+                    border-bottom: 1px solid @font-color-black-hover;
                 }
                 &>.right_row_section {
                     flex-grow: 1;
@@ -147,7 +147,7 @@ hr {
     margin-top: 5px;
     margin-bottom: 5px;
     border: 0;
-    border-top: 1px solid #4d4d4d;
+    border-top: 1px solid @font-color-black;
 }
 .show {
     display: inline-block!important;
@@ -167,7 +167,7 @@ hr {
     overflow-y: auto;
 }
 ul.patient_listing {
-    color: #4d4d4d;
+    color: @font-color-black;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -175,11 +175,15 @@ ul.patient_listing {
         text-align: center;
         padding: .2em 0;
         cursor: pointer;
-        &:hover {
-            color: #000;
-        }
         &:nth-child(odd) {
             background: #e3e3e3;
+        }
+        &>a {
+            color: @font-color-black;
+            text-decoration: none;
+            &:hover {
+                color: @font-color-black-hover;
+            }
         }
     }
 }

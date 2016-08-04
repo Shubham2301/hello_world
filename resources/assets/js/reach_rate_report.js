@@ -71,98 +71,99 @@ function getReport(filter) {
 function getPatientList(metricName) {
     var content = '';
     reportResult.forEach(function (result) {
+        var patientListItem = '<li><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></li>';
         switch (metricName) {
             case 'contact_attempted':
                 if ("reached" in result || "not_reached" in result)
-                    content += '<li>' + result.patient_name + '</li>';
+                    content += patientListItem;
                 break;
             case 'reached':
                 if ("reached" in result)
-                    content += '<li>' + result.patient_name + '</li>';
+                    content += patientListItem;
                 break;
             case 'not_reached':
                 if ("not_reached" in result && !("reached" in result))
-                    content += '<li>' + result.patient_name + '</li>';
+                    content += patientListItem;
                 break;
             case 'appointment_scheduled':
                 if ("appointment_scheduled" in result)
-                    content += '<li>' + result.patient_name + '</li>';
+                    content += patientListItem;
                 break;
             case 'not_scheduled':
                 if ("reached" in result && !("appointment_scheduled" in result))
-                    content += '<li>' + result.patient_name + '</li>';
+                    content += patientListItem;
                 break;
             case 'appointment_completed':
                 if ("appointment_completed" in result)
-                    content += '<li>' + result.patient_name + '</li>';
+                    content += patientListItem;
                 break;
             case 'show':
                 if ("appointment_completed" in result) {
                     if (result.appointment_completed == config.appointment_completed.show)
-                        content += '<li>' + result.patient_name + '</li>';
+                        content += patientListItem;
                 }
                 break;
             case 'no_show':
                 if ("appointment_completed" in result) {
                     if (result.appointment_completed == config.appointment_completed.no_show)
-                        content += '<li>' + result.patient_name + '</li>';
+                        content += patientListItem;
                 }
                 break;
             case 'exam_report':
                 if ("reports" in result || ("appointment_completed" in result && result.appointment_completed == config.appointment_completed.show))
-                    content += '<li>' + result.patient_name + '</li>';
+                    content += patientListItem;
                 break;
             case 'reports':
                 if ("reports" in result)
-                    content += '<li>' + result.patient_name + '</li>';
+                    content += patientListItem;
                 break;
             case 'no_reports':
                 if ("appointment_completed" in result) {
                     if ((result.appointment_completed == config.appointment_completed.show) && !("reports" in result))
-                        content += '<li>' + result.patient_name + '</li>';
+                        content += patientListItem;
                 }
                 break;
             case 'pending_patient':
                 if (!("reached" in result) || !("not_reached" in result)) {
                     if ((result.patient_type == config.patient_type.new) || ("repeat_count" in result))
-                        content += '<li>' + result.patient_name + '</li>';
+                        content += patientListItem;
                 }
                 break;
             case 'patient_count':
-                content += '<li>' + result.patient_name + '</li>';
+                content += patientListItem;
                 break;
             case 'new_patient':
                 if ("patient_type" in result) {
                     if (result.patient_type == config.patient_type.new)
-                        content += '<li>' + result.patient_name + '</li>';
+                        content += patientListItem;
                 }
                 break;
             case 'existing_patients':
                 if ("patient_type" in result) {
                     if (result.patient_type == config.patient_type.old)
-                        content += '<li>' + result.patient_name + '</li>';
+                        content += patientListItem;
                 }
                 break;
             case 'completed':
                 if ("archived" in result) {
-                    content += '<li>' + result.patient_name + '</li>';
+                    content += patientListItem;
                 }
                 break;
             case 'success':
                 if ("archived" in result) {
                     if (result.archived == config.archive.success)
-                        content += '<li>' + result.patient_name + '</li>';
+                        content += patientListItem;
                 }
                 break;
             case 'dropout':
                 if ("archived" in result) {
                     if (result.archived == config.archive.dropout)
-                        content += '<li>' + result.patient_name + '</li>';
+                        content += patientListItem;
                 }
                 break;
             case 'active_patient':
                 if (!("archived" in result)) {
-                    content += '<li>' + result.patient_name + '</li>';
+                    content += patientListItem;
                 }
             default:
                 break;
