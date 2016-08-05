@@ -305,7 +305,8 @@
     <div class="modal-dialog alert">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="action_modal_title" id="action_header" style="color:#4d4d4d;text-align:center;margin:0;">Patient List</h4>
+                <h4 class="action_modal_title reach_report_patient_list arial_bold" id="action_header">Patient List</h4>
+                <span class="report_patient_list_header"></span>
             </div>
             <div class="modal-body">
                 <ul class="patient_listing">

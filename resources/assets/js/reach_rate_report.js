@@ -34,6 +34,8 @@ $(document).ready(function () {
         }
     });
     $('.patient_list').on('click', function () {
+        var header = $(this).text();
+        $('.action_modal_title.reach_report_patient_list').text($.trim(header));
         getPatientList($(this).attr('id'));
     });
 });
@@ -70,32 +72,55 @@ function getReport(filter) {
 
 function getPatientList(metricName) {
     var content = '';
+    var headerContent = '';
     reportResult.forEach(function (result) {
-        var patientListItem = '<li><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></li>';
+        var patientListItem = '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span></li>';
         switch (metricName) {
             case 'contact_attempted':
-                if ("reached" in result || "not_reached" in result)
-                    content += patientListItem;
+                headerContent = '<span>Name</span><span>Request Received</span><span>Contact Attempts</span><span>Days Pending</span>';
+                if ("reached" in result || "not_reached" in result) {
+                    var requestReceived = result.request_received || '-';
+                    var contactAttempts = result.contact_attempts || '-';
+                    var daysPending = result.reached_stage_change || '-';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + requestReceived + '</span><span>' + contactAttempts + '</span><span>' + daysPending + '</span></li>';
+                }
                 break;
             case 'reached':
-                if ("reached" in result)
-                    content += patientListItem;
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
+                if ("reached" in result) {
+                    var scheduledToPractice = result.scheduled_to_practice || '-';
+                    var scheduledToProvider = result.scheduled_to_provider || '-';
+                    var scheduledFor = result.scheduled_for || '-';
+                    var appointmentType = result.appointment_type || '-';
+                    var scheduledOn = result.scheduled_on || '-';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
+                }
                 break;
             case 'not_reached':
-                if ("not_reached" in result && !("reached" in result))
+                if ("not_reached" in result && !("reached" in result)) {
                     content += patientListItem;
+                }
                 break;
             case 'appointment_scheduled':
-                if ("appointment_scheduled" in result)
+                if ("appointment_scheduled" in result) {
                     content += patientListItem;
+                }
                 break;
             case 'not_scheduled':
-                if ("reached" in result && !("appointment_scheduled" in result))
+                if ("reached" in result && !("appointment_scheduled" in result)) {
                     content += patientListItem;
+                }
                 break;
             case 'appointment_completed':
-                if ("appointment_completed" in result)
-                    content += patientListItem;
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Appointment Type</span><span>Days Pending</span>';
+                if ("appointment_completed" in result) {
+                    var scheduledToPractice = result.scheduled_to_practice || '-';
+                    var scheduledToProvider = result.scheduled_to_provider || '-';
+                    var scheduledFor = result.scheduled_for || '-';
+                    var appointmentType = result.appointment_type || '-';
+                    var daysPending = result.show_stage_change || '-';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + appointmentType + '</span><span>' + daysPending + '</span></li>';
+                }
                 break;
             case 'show':
                 if ("appointment_completed" in result) {
@@ -110,8 +135,13 @@ function getPatientList(metricName) {
                 }
                 break;
             case 'exam_report':
-                if ("reports" in result || ("appointment_completed" in result && result.appointment_completed == config.appointment_completed.show))
-                    content += patientListItem;
+                headerContent = '<span>Name</span><span>PCP</span><span>Scheduled For</span><span>Days Pending</span>';
+                if ("reports" in result || ("appointment_completed" in result && result.appointment_completed == config.appointment_completed.show)) {
+                    var daysPending = result.days_in_stage_before_archive || '-';
+                    var scheduledFor = result.scheduled_for || '-';
+                    var pcpName = result.pcp_name || '-';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + pcpName + '</span><span>' + scheduledFor + '</span><span>' + daysPending + '</span></li>';
+                }
                 break;
             case 'reports':
                 if ("reports" in result)
@@ -168,8 +198,15 @@ function getPatientList(metricName) {
             default:
                 break;
         }
-        $('ul.patient_listing').html(content);
-
     });
-    $('#patientList').modal('show');
+    $('ul.patient_listing').html(content);
+    $('.report_patient_list_header').html(headerContent);
+    if (headerContent != '') {
+        $('.modal-dialog').addClass('wide_modal_dialog');
+    } else {
+        $('.modal-dialog').removeClass('wide_modal_dialog');
+    }
+    if (content != '') {
+        $('#patientList').modal('show');
+    }
 }
