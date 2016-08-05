@@ -1,6 +1,6 @@
 <div class="patient_file_item row">
     <div class="col-xs-1">
-        <input type="checkbox" value="CCDA" class="selected_files" style="margin-top:6px;" />
+        <input type="checkbox" value="CCDA" class="selected_files file_checkbox" checked />
     </div>
     <div class="col-xs-9">
         <a href="/download/ccda/{{ $patientID }}" target="_blank" class="file_name" >CCDA</a>
