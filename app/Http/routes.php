@@ -43,8 +43,6 @@ Route::post('auth/resendotp', 'Auth\TwoFactorAuthController@resendOTP');
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('test', 'DirectMail\TestController@test');
-
     Route::get('writeback', 'Appointment\WriteBackController@index');
 
     Route::get('editprofile', 'Admin\UserController@editProfile');
@@ -211,7 +209,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'role:patient-record'], function () {
     Route::get('records', 'Patient\PatientController@getPatientRecordView');
     Route::get('webform', 'Patient\PatientController@getWebFormIndex');
-    Route::get('createrecord/{name}', 'Patient\PatientController@createRecord');
+    Route::get('createrecord/{name}/{patient_id}', 'Patient\PatientController@createRecord');
     Route::post('save_records', 'Patient\PatientController@savePatientRecord');
     Route::get('patientlistforcreaterecord', 'Patient\PatientController@PatientListForCreateRecord');
     Route::get('patientlistforshowrecord', 'Patient\PatientController@PatientListForShowRecord');

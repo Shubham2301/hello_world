@@ -218,11 +218,15 @@ class AppointmentController extends Controller
         $data['schedule-patient'] = true;
 		$data['selectedfiles'] = $request->selectedfiles;
 
-		$filearray = explode( ',', $request->selectedfiles);
-		$filearray = array_unique($filearray);
-        $data['count_files'] = sizeOf($filearray);
+        $filearray = json_decode($data['selectedfiles'], true);
 
-        if($request->selectedfiles == ''){
+        $patientFiles = array_unique($filearray['patient_files']);
+        $patientRecords = array_unique($filearray['patient_records']);
+
+
+        $data['count_files'] = sizeOf($patientFiles) + sizeOf($patientRecords);
+
+        if(sizeOf($patientFiles) == 0 && sizeOf($patientRecords)==0){
             $data['count_files'] = 0;
         }
 

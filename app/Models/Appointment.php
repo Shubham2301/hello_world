@@ -13,6 +13,22 @@ class Appointment extends Model {
      */
     protected $fillable = ['provider_id', 'practice_id', 'location_id', 'patient_id', 'network_id', 'appointmenttype_key', 'appointmenttype', 'start_datetime'];
 
+    /**
+     * @return mixed
+     */
+    public function provider()
+    {
+        return $this->belongsTo('myocuhub\User', 'provider_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function practice()
+    {
+        return $this->belongsTo('myocuhub\Models\Practice', 'practice_id');
+    }
+
 	public static function schedule($attributes){
 
 		$appointment = Appointment::create($attributes);

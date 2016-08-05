@@ -5,7 +5,7 @@
 .reports_container {
     background-color: #fff;
     padding: 0 2em;
-    color: #000;
+    color: @font-color-black-hover;
     &>.row {
         margin: 0;
         &.report_header_row {
@@ -56,7 +56,7 @@
 }
 .section_separater {
     margin: .5em;
-    border-top: solid 1px #4d4d4d;
+    border-top: solid 1px @font-color-black;
 }
 .report_stage_data {
     margin: 2em 0;
@@ -125,7 +125,7 @@
             &>.right_row {
                 display: flex;
                 &.section_break {
-                    border-bottom: 1px solid #000;
+                    border-bottom: 1px solid @font-color-black-hover;
                 }
                 &>.right_row_section {
                     flex-grow: 1;
@@ -147,7 +147,7 @@ hr {
     margin-top: 5px;
     margin-bottom: 5px;
     border: 0;
-    border-top: 1px solid #4d4d4d;
+    border-top: 1px solid @font-color-black;
 }
 .show {
     display: inline-block!important;
@@ -166,20 +166,57 @@ hr {
     max-height: 250px;
     overflow-y: auto;
 }
+.modal-header {
+    padding-bottom: .5em;
+    color: @font-color-black;
+    text-align: center;
+    &>.reach_report_patient_list {
+        margin: 0;
+    }
+}
+.modal-dialog {
+    width: 40%;
+    &.wide_modal_dialog {
+        width: 60%;
+    }
+}
 ul.patient_listing {
-    color: #4d4d4d;
+    color: @font-color-black;
     list-style-type: none;
     margin: 0;
     padding: 0;
     &>li {
         text-align: center;
         padding: .2em 0;
-        cursor: pointer;
-        &:hover {
-            color: #000;
-        }
         &:nth-child(odd) {
             background: #e3e3e3;
         }
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        &>span {
+            flex-basis: 0;
+            flex-grow: 1;
+            &>a {
+                color: @font-color-black;
+                text-decoration: none;
+                &:hover {
+                    color: @font-color-black-hover;
+                }
+            }
+        }
+    }
+}
+.report_patient_list_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 1em;
+    .arial_bold;
+    &>span {
+        color: @font-color-black;
+        flex-basis: 0;
+        flex-grow: 1;
+        text-align: center;
     }
 }

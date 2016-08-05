@@ -1,18 +1,27 @@
 @extends('layouts.sidebar-mini')
 @section('siderbar-title')
-Files Exchange
+Patient Records
 @endsection
 @section('sidebar-content')
-<ul class="sidebar_item_list">
-	<li class="admin_sidebar_menu_item">
-		<a class="sidebar_button_subsection subsection_admin_title practices" href="/records" id="button_active" >
-			<span style="color:#4d4d4d">Patient Records</span>
-		</a>
-	</li>
-	<li class="admin_sidebar_menu_item">
-		<a class="sidebar_button_subsection subsection_admin_title users" href="/webform" id="button_active">
-			<span style="color:#4d4d4d">Health Records</span>
-		</a>
-	</li>
-</ul>
+
+<div class="sidebar_item_list">
+    <a class="record_sidebar_button patient_record" href="/records">
+        <span class="record_sidebar_image">
+            <span>
+                <img src="{{elixir('images/sidebar/records-patient.png')}}">
+            </span>
+        </span>
+        <span class="record_sidebar_text">
+            <span class="text">Patient Records</span>
+        </span>
+    </a>
+    <a class="record_sidebar_button health_record" href="/webform">
+        <span class="record_sidebar_image">
+            <span><img src="{{elixir('images/sidebar/records-health.png')}}"></span>
+        </span>
+        <span class="record_sidebar_text">
+            <span class="text">Health Records</span>
+        </span>
+    </a>
+</div>
 @endsection

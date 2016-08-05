@@ -1,11 +1,10 @@
-<div class="col-xs-5">
-    <div style="margin:4em;">
+
         <div class="row search_list_header">
             <div style="margin-bottom:2em;">
                 <span style="float:left; padding-left:1em;" class="arial">Name</span>
                 <span style="float:right;padding-right:1em;" class="arial" id="pagination">
 					<img src="{{URL::asset('images/sidebar/left-active.png')}}" alt="" id="paginate_left" data-index="{{$patients[0]['previouspage']}}">
-					<span> {{$patients[0]['result_count_info']}} </span>
+                    <span> {{ $patients[0]['current_result'].'-'. $patients[0]['upper_result'] .' of '.$patients[0]['total'] }} </span>
                 <img src="{{URL::asset('images/sidebar/right-active.png')}}" alt="" id="paginate_right" data-index="{{$patients[0]['nextpage']}}">
                 </span>
             </div>
@@ -55,7 +54,5 @@
             </div>
             @endforeach
         </div>
-    </div>
-</div>
-<div class="col-xs-7 care_timeline">
-</div>
+
+

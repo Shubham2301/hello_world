@@ -17,8 +17,10 @@
     @include('web-forms.header')
 </div>
 
-<div class="content-section active" style="padding-left: 2em;">
-	<div class="search_section section active" id="search_listing">
+
+<div class="content-section active">
+
+    <div class="search_section section active" id="search_listing">
 
     </div>
 

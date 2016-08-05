@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Jobs\Job;
 use myocuhub\Patient;
+use myocuhub\Services\MandrillService\MandrillService;
 
 class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQueue
 {
@@ -34,44 +35,43 @@ class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQ
 
         $user = Auth::user();
 
-        $attr = [
-            'email' => $this->getPatient()->email,
-            'name' => $this->getPatient()->getName(),
-            'sent_by_name' => $user->name,
-            'sent_by_email'=> $user->email,
-            'network_id' => session('network-id'),
-            'message' => $this->message,
-        ];
-
-        if($attr['message'] == ''){
+        if($this->message == ''){
             return;
         }
 
-        $this->sendRequest($attr);
+        $template = (new MandrillService)->templateInfo('contact-patient-template');
 
-    }
+        $attr = [
+            'from' => [
+                'name' => config('constants.support.email_name'),
+                'email' => config('constants.support.email_id'),
+            ],
+            'to' => [
+                'name' => $this->getPatient()->getName(),
+                'email' => $this->getPatient()->email,
+            ],
+            'subject' => 'Request for Appointment',
+            'template' => $template['slug'],
+            'vars' => [
+                    [
+                        'name' => 'patientname',
+                        'content' => $this->getPatient()->getName()
+                    ],
+                    [
+                        'name' => 'contactmessage',
+                        'content' => $this->message
+                    ],
+                    [
+                        'name' => 'sendername',
+                        'content' => $user->name
+                    ],
+                    [
+                        'name' => 'senderemail',
+                        'content' => $user->email
+                    ]
+            ]
+        ];
 
-    private function sendRequest($attr){
-
-        if(Validator::make($attr, ['email' => 'email'])->fails()){
-            return false;
-        }
-
-        try {
-            $mailToProvider = Mail::send('emails.appt-request-patient', ['data' => $attr], function ($m) use ($attr) {
-                $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to($attr['email'], $attr['name'])->subject('Request for Appointment');
-            });
-            return true;
-        } catch (Exception $e) {
-            Log::error($e);
-            $action = 'Application Exception in sending Appointment Request email to patient '. $data['email'];
-            $description = '';
-            $filename = basename(__FILE__);
-            $ip = '';
-            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-            return false;
-        }
-        return true;
+        $this->sendTemplate($attr);
     }
 }

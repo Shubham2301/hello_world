@@ -2,6 +2,8 @@
 @import 'fonts.less';
 @import 'media.less';
 @import 'helper.less';
+@import 'record_sidebar.less';
+
 .search_input_box {
     display: -moz-box;         /* OLD - Firefox 19 */
     display: -ms-flexbox;      /* TWEENER - IE 10 */
@@ -78,6 +80,8 @@
         display: -webkit-flex;
         display: flex;
         overflow-y: auto;
+        flex-grow: 1;
+        flex-basis: 0px;
     }
 }
 
@@ -143,6 +147,7 @@
     flex-direction: column;
     font-size: 0.8em;
     margin-top: 2em;
+    flex-flow: 1;
 }
 
 .date_left {
@@ -171,30 +176,46 @@
 }
 
 .show_more_section {
-    flex-grow: 2;
+    flex-grow: 1;
     &:p {
         font-size: 5px;
     }
 }
 
 .timeline_section {
-    flex-grow: 3;
+    flex-grow: 9;
     overflow-y: auto;
     overflow-x: hidden;
-    margin-bottom: 3em;
     padding-top: 1em;
+    flex-basis: 0px;
 }
 
 .item_info_section {
     margin-top: 1em;
 }
+
 .show_more_text{
     cursor: pointer;
     text-align: center;
     padding-left: 13px;
+    margin: 1em;
+    font-size: 1em;
+    font-weight: bold;
 }
 
 .set_default_padding{
     padding-left: 0;
     padding-right: 0;
+}
+
+.patient_listing_section {
+   display: none;
+    margin:4em;
+    &.active{
+        display: block;
+    }
+}
+
+#search_patient_button{
+    background-color: #fff;
 }

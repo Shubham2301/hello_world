@@ -28,6 +28,10 @@ class EventServiceProvider extends ServiceProvider {
             'myocuhub\Listeners\AuditListener',
             'myocuhub\Listeners\Patient\SendRecordWithEmail',
         ],
+
+        'myocuhub\Events\Patient\CreateAttachmentFailure' => [
+            'myocuhub\Listeners\AuditListener',
+        ],
 	];
 
     /**

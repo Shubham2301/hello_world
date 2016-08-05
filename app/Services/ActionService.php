@@ -412,7 +412,19 @@ class ActionService
 				$actions[$i]['result'] = false;
 			}
             $actions[$i]['contact_history_id'] = $contact['contact_history_id'];
+
+            if($contact['name'] =='create-record')
+            {
+                $record = ContactHistory::find($contact['contact_history_id'])->record;
+                $actions[$i]['record_name']= '';
+                if($record)
+                {
+                    $actions[$i]['record_name'] = $record->template->display_name . ' - '.$record->created_at;
+                }
+            }
+
             $i++;
+
         }
 
         $date = new \DateTime();

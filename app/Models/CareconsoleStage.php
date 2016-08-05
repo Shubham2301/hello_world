@@ -3,6 +3,7 @@
 namespace myocuhub\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class CareconsoleStage extends Model {
 	public function kpi() {
@@ -28,6 +29,8 @@ class CareconsoleStage extends Model {
 	}
 	public function actions() {
 		return $this->hasMany('myocuhub\Models\StageAction', 'stage_id')
-		            ->leftJoin('actions', 'stage_action.action_id', '=', 'actions.id');
+		            ->leftJoin('actions', 'stage_action.action_id', '=', 'actions.id')
+		            ->orderBy(DB::raw('ISNULL(stage_action.order), stage_action.order'), 'ASC')
+		            ->orderBy('actions.display_name');
 	}
 }

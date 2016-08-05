@@ -34,10 +34,11 @@ trait PatientRecordsTrait
         return view('web-forms.show', [ 'template' => $record->template, 'record' => $record->content]);
     }
 
-    public function createRecord($name)
+    public function createRecord($templateName, $patientID)
     {
-        $template = WebFormTemplate::get($name);
-        return view('web-forms.create', [ 'template' => $template]);
+        $patient = Patient::find($patientID);
+        $template = WebFormTemplate::get($templateName);
+        return view('web-forms.create', [ 'template' => $template, 'patient' => $patient]);
     }
 
     public function printRecord($contactHistoryID)
@@ -48,7 +49,9 @@ trait PatientRecordsTrait
 
     public function getPatientRecordView(Request $request)
     {
-        return view('patient-records.index');
+        $patient = array();
+        $patient['id'] = $request->patient_id;
+        return view('patient-records.index')->with('patient', $patient);
     }
 
     public function getWebFormIndex(Request $request)
@@ -66,16 +69,14 @@ trait PatientRecordsTrait
         ];
 
         $record =  PatientRecord::create($data);
-
         $patientID = $data['patient_id'];
+
         $templateID = $data['web_form_template_id'];
 
         $contactHistoryID =  $this->createContactHistory($patientID, $templateID);
 
         $record->contact_history_id = $contactHistoryID;
         $record->save();
-
-        $request->session()->put('success', 'Record created successfully');
 
         event(new PatientRecordCreation(
             [
@@ -86,6 +87,7 @@ trait PatientRecordsTrait
 
             ]
         ));
+        $request->session()->put('success', 'Record created successfully');
         return redirect('/webform');
     }
 
@@ -148,6 +150,7 @@ trait PatientRecordsTrait
             ->render();
     }
 
+
     public function createContactHistory($patientID, $templateID)
     {
         $actionID = Action::where('name', 'create-record')->first()->id;
@@ -176,7 +179,7 @@ trait PatientRecordsTrait
 
         $data['patient'] = $patient;
         $data['record'] = $recordData;
-        $html = view('patient-records.print')->with('data', $data);
+        $html = view('patient-records.print')->with('data', $data)->render();
         $pdf = PDF::loadHtml($html);
         return $pdf;
     }

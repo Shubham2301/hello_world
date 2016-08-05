@@ -21,16 +21,25 @@ class MandrillService
 	public function sendTemplate($attr){
 		try {
 		    $template_name = $attr['template'];
-		    $template_content = [];
+		    $template_content = [
+		    ];
 		    $message = [
 		        'subject' => $attr['subject'],
 		        'from_email' => $attr['from']['email'],
 		        'from_name' => $attr['from']['name'],
 		        'to' => [
-		        		'email' => $attr['to']['email'],
-		                'name' => $attr['to']['name'],
-		                'type' => 'to'
-	                ]
+		        		[
+			        		'email' => $attr['to']['email'],
+			                'name' => $attr['to']['name'],
+			                'type' => 'to'
+		                ]
+	                ],
+	            'merge_vars' => [
+		            [
+		                "rcpt" => $attr['to']['email'],
+		                'vars' => $attr['vars']
+		    		]
+        		]
 		    ];
 		    $async = false;
 		    $result = $this->mandrill->messages->sendTemplate($template_name, $template_content, $message, $async);

@@ -63,8 +63,9 @@ class SESMessaging extends SES
 
         try {
             $content = self::prepareContent($attr['view'], $attr['appt']);
-            $attr['body'] = $content;
+            $attr['body'] = ($content)?: $attr['body'];
             $attachments = json_encode($attr['attachments'], JSON_FORCE_OBJECT);
+
 
             //prepare arguments
             $args = [
@@ -157,7 +158,7 @@ class SESMessaging extends SES
     {
         if(!view()->exists($view))
         {
-            return $view;
+            return false;
         }
         return view($view)->with('appt', $appt)->render();
     }

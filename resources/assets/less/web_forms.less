@@ -2,10 +2,12 @@
 @import 'fonts.less';
 @import 'media.less';
 @import 'helper.less';
+@import 'record_sidebar.less';
 
 .select_form_dropdown {
-    margin-left: 11em;
     font-size: 1.5em;
+    float: right;
+    margin-right: 2em;
 	&>p {
 		padding-top: 20px;
 		cursor: pointer;
@@ -30,6 +32,8 @@
 
 .form_footer {
 	border-top:1px solid #fff;
+    flex-basis: 0px;
+    flex-grow: 1;
 }
 
 .unit_input_text{
@@ -38,6 +42,7 @@
 	border-bottom: 1px solid #fff;
 	width:10%;
 	margin: 1px;
+    display: inline-block;
 }
 
 .input_checkbox{
@@ -92,7 +97,10 @@
 .form_section {
 	display: none;
 	&.active{
-		display: block;
+		display: flex;
+        margin-top:1em;
+        flex-grow: 1;
+        flex-direction: column;
 	}
 }
 .form_chunk {
@@ -111,6 +119,7 @@
   cursor:pointer;
   border-radius:5px;
   padding:1px;
+  padding-top:4px;
   &:hover {
   border:1px solid #f4f4f4;
   }
@@ -137,4 +146,75 @@
     margin-top: -4px;
     cursor: pointer;
     display:none;
+}
+
+.tgl_radio {
+    color: #0071bc;
+    background-color:transparent;
+    cursor:pointer;
+    border-radius:5px;
+    padding:1px;
+    padding-top:4px;
+    &:hover {
+        border:1px solid #f4f4f4;
+    }
+    &.checkfiled {
+        color: #0071bc;
+        font-style: normal;
+        background-color:#fff;
+        border-radius:5px;
+        padding:1px;
+        cursor:pointer;
+    }
+}
+
+.heath_record_view {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.web_form_section {
+    flex-grow: 6;
+    flex-basis: 0px;
+    padding-left: 2em;
+}
+
+.content-section.active{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.web_form_row {
+    margin-top:1em;
+}
+
+.category_name{
+    padding: 0px;
+    font-weight: bold;
+    color: #000;
+    margin-top:1em;
+}
+
+.footer_loader{
+    width: 2em;
+    height: 2em;
+    color: white;
+    transform: translate(-50%, -50%);
+    opacity: 0.7;
+    border: 0.25em solid #00b6f1;
+    border-radius: 50%;
+    -webkit-animation: borderScale 2s infinite ease-in-out;
+    animation: borderScale 2s infinite ease-in-out;
+    top: 50%;
+    left: 100%;
+    z-index:12;
+    margin-left:48%;
+    margin-top: 1.5em;
+}
+#footer_loader_section {
+    border-top:1px solid #fff;
+    flex-basis: 0px;
+    flex-grow: 1;
 }
