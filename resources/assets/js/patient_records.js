@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+    $('.care_timeline').html(defaultCareTimeline());
+
     $('#search_patient_input').val($('#patient_id').val());
 
     if ($('#search_patient_input').val()) {
@@ -58,7 +61,7 @@ $(document).ready(function () {
 
     $('.patient_record').addClass('active');
 
-    $('.care_timeline').html(defaultCareTimeline());
+
 
 });
 
