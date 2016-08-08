@@ -19,7 +19,13 @@
         <strong><i class="fa fa-check-circle fa-lg fa-fw"></i> Failure. &nbsp;</strong>
         {{ Session::pull('no_direct_mail') }}
     </div>
+    @elseif (Session::has('disable_directmail'))
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ Session::pull('disable_directmail') }}
+    </div>
     @else
+
     <div class="content-section active" id="directmail-console">
 
 

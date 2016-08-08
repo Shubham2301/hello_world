@@ -14,118 +14,131 @@ use myocuhub\Models\ImpersonationAudit;
 use myocuhub\Services\SES\SESConnect;
 use myocuhub\User;
 
-class DirectMailController extends Controller {
-	private $sesConnect;
+class DirectMailController extends Controller
+{
+    private $sesConnect;
 
-	public function __construct(SESConnect $sesConnect) {
-		$this->sesConnect = $sesConnect;
-	}
+    public function __construct(SESConnect $sesConnect)
+    {
+        $this->sesConnect = $sesConnect;
+    }
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function index(Request $request) {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
 
-		if (session('impersonation-logged-in') != '' && session('impersonation-logged-in') != Auth::user()->id && session('impersonation-logged-in-time') != '' && session('impersonation-logged-in-time') != Auth::user()->last_login_time) {
-			$audit = new ImpersonationAudit;
+        if (session('impersonation-logged-in') != '' && session('impersonation-logged-in') != Auth::user()->id && session('impersonation-logged-in-time') != '' && session('impersonation-logged-in-time') != Auth::user()->last_login_time) {
+            $audit = new ImpersonationAudit;
 
-			$audit->user_impersonated_id = session('impersonation-id');
-			$audit->logged_in_user_id = Auth::user()->id;
-			$audit->action = 'END IMPERSONATION';
+            $audit->user_impersonated_id = session('impersonation-id');
+            $audit->logged_in_user_id = Auth::user()->id;
+            $audit->action = 'END IMPERSONATION';
 
-			session(['impersonation-logged-in-time' => '']);
-			session(['impersonation-logged-in' => '']);
-			session(['impersonation-id' => '']);
-			session(['impersonation-name' => '']);
+            session(['impersonation-logged-in-time' => '']);
+            session(['impersonation-logged-in' => '']);
+            session(['impersonation-id' => '']);
+            session(['impersonation-name' => '']);
 
-			$audit->save();
-		} else {
-			$action = 'Accessed Directmail';
-	        $description = '';
-	        $filename = basename(__FILE__);
-	        $ip = $request->getClientIp();
-	        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-		}
+            $audit->save();
+        } else {
+            $action = 'Accessed Directmail';
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        }
 
-		$ses = $this->sesConnect->getDirectMail();
+        $ses = $this->sesConnect->getDirectMail();
 
-		if (!$ses['direct_mail_str']) {
-			$request->session()->flash('no_direct_mail', 'You do not have a direct mail access. If you feel this is in error, please contact the OcuHub administrator for assistance.');
-		}
-		$data = array();
-		$data['direct-mail'] = true;
+        if (!$ses['direct_mail_str']) {
+            $request->session()->flash('no_direct_mail', 'You do not have a direct mail access. If you feel this is in error, please contact the OcuHub administrator for assistance.');
+        }
+        $data = array();
+        $data['direct-mail'] = true;
 
-		$impersonation = $this->sesConnect->getImpersonationScope();
+        $impersonation = $this->sesConnect->getImpersonationScope();
 
-		return view('directmail.index')->with('ses', $ses)->with('data', $data)->with('impersonation', $impersonation);
+        /**
+         * Disable SES
+         */
+        if (env('SES_MODE') == 'disable') {
+            $request->session()->flash('disable_directmail', 'SES Directmail is temporarily down. We are working out to resolve the issue.');
+        }
 
-	}
+        return view('directmail.index')->with('ses', $ses)->with('data', $data)->with('impersonation', $impersonation);
 
-	public function beginImpersonate(Request $request) {
+    }
 
-		if (!$this->sesConnect->checkScope($request->impersonateuser)) {
-			$request->session()->flash('no_direct_mail', 'You do not have access rights to impersonate this user.');
-		} else {
-			$audit = new ImpersonationAudit;
+    public function beginImpersonate(Request $request)
+    {
 
-			session(['impersonation-id' => $request->impersonateuser]);
-			session(['impersonation-logged-in-time' => Auth::user()->last_login_time]);
-			session(['impersonation-logged-in' => Auth::user()->id]);
-			session(['impersonation-name' => User::find($request->impersonateuser)->name]);
+        if (!$this->sesConnect->checkScope($request->impersonateuser)) {
+            $request->session()->flash('no_direct_mail', 'You do not have access rights to impersonate this user.');
+        } else {
+            $audit = new ImpersonationAudit;
 
-			$audit->user_impersonated_id = $request->impersonateuser;
-			$audit->logged_in_user_id = Auth::user()->id;
-			$audit->action = 'BEGIN IMPERSONATION';
+            session(['impersonation-id' => $request->impersonateuser]);
+            session(['impersonation-logged-in-time' => Auth::user()->last_login_time]);
+            session(['impersonation-logged-in' => Auth::user()->id]);
+            session(['impersonation-name' => User::find($request->impersonateuser)->name]);
 
-			$audit->save();
-		}
+            $audit->user_impersonated_id = $request->impersonateuser;
+            $audit->logged_in_user_id = Auth::user()->id;
+            $audit->action = 'BEGIN IMPERSONATION';
 
-		return redirect('directmail');
+            $audit->save();
+        }
 
-	}
+        return redirect('directmail');
 
-	public function endImpersonate() {
-		$audit = new ImpersonationAudit;
+    }
 
-		$audit->user_impersonated_id = session('impersonation-id');
-		$audit->logged_in_user_id = Auth::user()->id;
-		$audit->action = 'END IMPERSONATION';
+    public function endImpersonate()
+    {
+        $audit = new ImpersonationAudit;
 
-		session(['impersonation-logged-in-time' => '']);
-		session(['impersonation-logged-in' => '']);
-		session(['impersonation-id' => '']);
-		session(['impersonation-name' => '']);
+        $audit->user_impersonated_id = session('impersonation-id');
+        $audit->logged_in_user_id = Auth::user()->id;
+        $audit->action = 'END IMPERSONATION';
 
-		$audit->save();
+        session(['impersonation-logged-in-time' => '']);
+        session(['impersonation-logged-in' => '']);
+        session(['impersonation-id' => '']);
+        session(['impersonation-name' => '']);
 
-		return redirect('directmail');
-	}
+        $audit->save();
 
-	public function logClientError(Request $request){
+        return redirect('directmail');
+    }
 
-		try {
-			$user = Auth::user();
-			if($user == null){
-				return json_encode(['result' => 'Invalid User']);
-			}
+    public function logClientError(Request $request)
+    {
 
-			if(Auth::user()->id != 62){
-				return json_encode(['result' => 'Invalid User']);
-			}
+        try {
+            $user = Auth::user();
+            if ($user == null) {
+                return json_encode(['result' => 'Invalid User']);
+            }
 
-			$report = $request->report;
-			$context = $request->context;
-			File::append(base_path() . '/storage/logs/ses-client.log',  "\n" . $context . $report);
+            if (Auth::user()->id != 62) {
+                return json_encode(['result' => 'Invalid User']);
+            }
 
-			return json_encode(['result' => 'Error Logged']);
+            $report = $request->report;
+            $context = $request->context;
+            File::append(base_path() . '/storage/logs/ses-client.log', "\n" . $context . $report);
 
-		} catch (Exception $e) {
-			Log::error($e);
-			return json_encode(['result' => 'Exception in logging error. Ouch!!']);
-		}
+            return json_encode(['result' => 'Error Logged']);
 
-	}
+        } catch (Exception $e) {
+            Log::error($e);
+            return json_encode(['result' => 'Exception in logging error. Ouch!!']);
+        }
+
+    }
 
 }
