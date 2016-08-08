@@ -35,7 +35,7 @@
                             </div>
                             <div class="row note_item">
                                 <div class="col-xs-12">
-                                    <a href="{{'show_records/'.$status['contact_history_id']}}" target="_blank">{{ $status['notes'][0] }}</a>
+                                    <a href="{{'/show_records/'.$status['contact_history_id']}}" target="_blank">{{ $status['notes'][0] }}</a>
                                 </div>
                             </div>
 
