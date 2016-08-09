@@ -20,6 +20,12 @@
                 <input type="text" class="date_selector" id="end_date">
             </span>
         </span>
+        <br>
+        <span class="referred_by_dropdown">
+            <span>Referred By</span>
+            <select class="referred_by_practice_list">
+            </select>
+        </span>
     </div>
     <div class="report_summary row">
         <div class="col-sm-6 col-md-3 flex_col">
@@ -33,7 +39,7 @@
             </span>
             <span class="section_separater"></span>
             <span class="flex_row">
-                <span class="flex_col drilldown_item" data-toggle="tooltip" title="Number of patients added to the system during this time timeline" data-placement="bottom">
+                <span class="flex_col" data-toggle="tooltip" title="Number of patients added to the system during this time timeline" data-placement="bottom">
                     <span class="arial_bold">
                         <span class="patient_list" id="new_patient">
                             New
@@ -41,7 +47,7 @@
                     </span>
                     <span class="category_count new_patient"></span>
                 </span>
-                <span class="flex_col drilldown_item" data-toggle="tooltip" title="Number of patients already present in the system before this timeline" data-placement="bottom">
+                <span class="flex_col" data-toggle="tooltip" title="Number of patients already present in the system before this timeline" data-placement="bottom">
                     <span class="arial_bold">
                         <span class="patient_list" id="existing_patients">
                             Existing
@@ -52,7 +58,7 @@
             </span>
         </div>
         <div class="col-sm-6 col-md-3 flex_col">
-            <span class="drilldown_item" data-toggle="tooltip" title="Number of patients that moved out of console as successful or dropout" data-placement="top">
+            <span class="" data-toggle="tooltip" title="Number of patients that moved out of console as successful or dropout" data-placement="top">
                 <span class="arial_bold flex_row summary_header">
                     <span class="patient_list" id="completed">
                         Completed
@@ -62,7 +68,7 @@
             </span>
             <span class="section_separater"></span>
             <span class="flex_row">
-                <span class="flex_col drilldown_item" data-toggle="tooltip" title="Number of patients marked successful in any stage of careconsole during this timeline" data-placement="bottom">
+                <span class="flex_col" data-toggle="tooltip" title="Number of patients marked successful in any stage of careconsole during this timeline" data-placement="bottom">
                     <span class="arial_bold">
                         <span class="patient_list" id="success">
                             Success
@@ -70,7 +76,7 @@
                     </span>
                     <span class="category_count success"></span>
                 </span>
-                <span class="flex_col drilldown_item" data-toggle="tooltip" title="Number of patients marked successful in any stage of careconsole or marked as 'already seen by outside dr', 'patient declined services', 'other reasons for declining', 'no need to schedule' or as 'no insurance' during this time timeline" data-placement="bottom">
+                <span class="flex_col" data-toggle="tooltip" title="Number of patients marked successful in any stage of careconsole or marked as 'already seen by outside dr', 'patient declined services', 'other reasons for declining', 'no need to schedule' or as 'no insurance' during this time timeline" data-placement="bottom">
                     <span class="arial_bold">
                         <span class="patient_list" id="dropout">
                             Dropouts
@@ -81,7 +87,7 @@
             </span>
         </div>
         <div class="col-sm-6 col-md-3 flex_col">
-            <span class="drilldown_item" data-toggle="tooltip" title="Number of patients that did not get archived at the end of this timeline" data-placement="top">
+            <span class="" data-toggle="tooltip" title="Number of patients that did not get archived at the end of this timeline" data-placement="top">
                 <span class="arial_bold flex_row summary_header">
                     <span class="patient_list" id="active_patient">
                         Active Patients

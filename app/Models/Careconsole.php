@@ -38,7 +38,7 @@ class Careconsole extends Model
      */
     public function referralHistory()
     {
-        return $this->hasMany('myocuhub\Models\ReferralHistory');
+        return $this->belongsTo('myocuhub\Models\ReferralHistory', 'referral_id');
     }
 
     /**
@@ -48,6 +48,7 @@ class Careconsole extends Model
     {
         return $this->hasOne('myocuhub\Models\Appointments');
     }
+
     /**
      * @return mixed
      */
@@ -591,6 +592,7 @@ class Careconsole extends Model
                 $query->where('created_at', '<=', $endDate);
             }])
             ->with('patient')
+            ->with('referralHistory')
             ->get();
     }
 }
