@@ -3,8 +3,8 @@
 		<div>
 			<div style="width: 50%;display: inline-block;margin-bottom:1em;">
 				@if( Auth::check() && session('user-level') == 2 )
-            	<img src="{{ config('constants.production_url').'/images/networks/network_'. Auth::user()->getNetwork(Auth::user()->id)->id .'.png'}}" style="width:10em" alt="">
-            	@endif
+				<img src="{{ config('constants.production_url').'/images/networks/network_'. Auth::user()->getNetwork(Auth::user()->id)->id .'.png'}}" style="width:10em" alt="">
+				@endif
 			</div>
 			<div style="width: 49%;display: inline-block;margin-bottom:1em;">
 				<p style="display: inline-block;margin:0;font-weight: bold;float: right;font-size: 130%;colo:#333">{{ $appt['practice_name'] }}</p>
@@ -36,13 +36,12 @@
 				<div style="width: 100%;display: block;margin-bottom:1em">
 					<div style="position: absolute;color:#333;font-weight:bold;display:inline-block;width:20%;position: absolute;">
 						<span>DETAILS</span>
-
 					</div>
 					<div style="color:#4d4d4d;display:inline-block;width:30%;border-left: solid 4px rgba(0, 113, 188, 0.4);padding-left: 1em;margin-left:20%;">
-						 <span style="font-weight:bold">Email</span><br>
+						<span style="font-weight:bold">Email</span><br>
 						{{ $appt['patient_email'] }} <br>
 						<br>
-						 <span style="font-weight:bold">Date Of Birth</span><br>
+						<span style="font-weight:bold">Date Of Birth</span><br>
 						{{ $appt['patient_dob'] }} <br>
 						<br>
 						<span style="font-weight:bold">Phone</span><br>
@@ -56,6 +55,11 @@
 						<span style="font-weight:bold">SSN</span><br>
 						{{ $appt['patient_ssn'] }} <br>
 						<br>
+						@if($appt['patient_pcp'] != '')
+						<span style="font-weight:bold">PCP</span><br>
+						{{ $appt['patient_pcp'] }} <br>
+						<br>
+						@endif
 					</div>
 				</div>
 				<div style="width: 100%;display: inline-block;">
@@ -70,13 +74,12 @@
 				<div style="width: 100%;display: block;margin:1em 0;">
 					<div style="position: absolute;color:#333;font-weight:bold;display:inline-block;width:20%;position: absolute;">
 						<span>INSURANCE <br>DETAILS</span>
-
 					</div>
 					<div style="color:#4d4d4d;display:inline-block;width:30%;border-left: solid 4px rgba(0, 113, 188, 0.4);padding-left: 1em;margin-left:20%;">
-						 <span style="font-weight:bold">Insurance Carrier</span><br>
+						<span style="font-weight:bold">Insurance Carrier</span><br>
 						{{ $appt['insurance_carrier'] }} <br>
 						<br>
-						 <span style="font-weight:bold">Subscriber Name</span><br>
+						<span style="font-weight:bold">Subscriber Name</span><br>
 						{{ $appt['subscriber_name'] }} <br>
 						<br>
 						<span style="font-weight:bold">Group</span><br>
@@ -99,7 +102,6 @@
 		</div>
 		<div>
 			<div style="width: 35%;display: inline-block;margin-bottom:1em;">
-
 			</div>
 			<div style="width: 30%;display: inline-block;margin:3em 0;text-align:center">
 				<img src="{{ config('constants.production_url').'/images/ocuhub-logo.png' }}" style="width:10em" alt="">
