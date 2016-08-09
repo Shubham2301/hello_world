@@ -4,6 +4,14 @@ $(document).ready(function () {
         loadAllUsers();
         getLandingPageByRole();
     }
+    
+    $('#user_type').on('change', function () {
+        if ($(this).val() == $('#usertype_provider_id').val()) {
+            $('#provider_type').show();
+        } else {
+            $('#provider_type').hide();
+        }
+    })
 
     $('.profile_img_upload').on('change', function () {
         if ($(this).val() != '')
