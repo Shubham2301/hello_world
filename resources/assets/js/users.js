@@ -4,7 +4,7 @@ $(document).ready(function () {
         loadAllUsers();
         getLandingPageByRole();
     }
-    
+
     $('#user_type').on('change', function () {
         if ($(this).val() == $('#usertype_provider_id').val()) {
             $('#provider_type').show();

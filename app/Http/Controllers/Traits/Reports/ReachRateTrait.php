@@ -38,6 +38,8 @@ trait ReachRateTrait
             $history = array();
             $history['archived'] = 0;
             $history['unarchived'] = 0;
+            $history['move_to_recall'] = 0;
+            $history['back_to_console'] = 0;
 
             foreach ($careconsole->contactHistory as $contactHistory) {
 
@@ -94,8 +96,25 @@ trait ReachRateTrait
                         $results[$patient_count]['scheduled_on'] = $scheduled_on->format('Y-m-d');
                         break;
                     case 'move-to-console':
+                        if(($history['back_to_console'] == $history['move_to_recall'] && $history['back_to_console'] != 0) || $history['back_to_console'] < $history['move_to_recall']) {
+                            $patient_count++;
+                            $results[$patient_count]['repeat_count'] = 1;
+                            $results[$patient_count]['patient_type'] = $results[$patient_count - 1]['patient_type'];
+                            $results[$patient_count]['patient_name'] = $careconsole->patient->firstname.' '.$careconsole->patient->lastname;
+                            $results[$patient_count]['patient_id'] = $careconsole->patient->id;
+
+                            if($careconsole->import_history_count != 0) {
+                                $results[$patient_count]['patient_type'] = config('reports.patient_type.new');
+                            }
+                            else {
+                                $results[$patient_count]['patient_type'] = config('reports.patient_type.old');
+                            }
+
+                        }
+                        $history['back_to_console']++;
                         break;
                     case 'recall-later':
+                        $history['move_to_recall']++;
                         break;
                     case 'unarchive':
                         if(($history['unarchived'] == $history['archived'] && $history['unarchived'] != 0) || $history['unarchived'] < $history['archived']) {
@@ -104,6 +123,13 @@ trait ReachRateTrait
                             $results[$patient_count]['patient_type'] = $results[$patient_count - 1]['patient_type'];
                             $results[$patient_count]['patient_name'] = $careconsole->patient->getName();
                             $results[$patient_count]['patient_id'] = $careconsole->patient->id;
+
+                            if($careconsole->import_history_count != 0) {
+                                $results[$patient_count]['patient_type'] = config('reports.patient_type.new');
+                            }
+                            else {
+                                $results[$patient_count]['patient_type'] = config('reports.patient_type.old');
+                            }
 
                         }
                         $history['unarchived']++;
@@ -119,9 +145,13 @@ trait ReachRateTrait
                             $action_date = new DateTime($contactHistory->contact_activity_date);
                             $interval = $action_date->diff($appt_date);
                             $date_diff = $interval->format('%a');
-                            $results[$patient_count]['appt_scheduled_stage_change'] = $date_diff;
+
+                            if ($date_diff >= 0) {
+                                $results[$patient_count]['appt_scheduled_stage_change'] = $date_diff;
+                            }
                             $results[$patient_count]['scheduled_to_practice'] = $contactHistory->appointments->provider->name;
                             $results[$patient_count]['scheduled_to_provider'] = $contactHistory->appointments->practice->name;
+
                             $results[$patient_count]['scheduled_for'] = $appt_date->format('Y-m-d');
                             $results[$patient_count]['appointment_type'] = $contactHistory->appointments->appointmenttype;
                         }
@@ -159,7 +189,7 @@ trait ReachRateTrait
                     case 'remove-priority':
                         break;
                     case 'annual-exam':
-
+                        $history['move_to_recall']++;
                         break;
                     case 'refer-to-specialist':
                     case 'highrisk-contact-pcp':

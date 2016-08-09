@@ -1,4 +1,4 @@
-@extends('layouts.master') @section('title', 'My Ocuhub - Reach Report') @section('imports')
+@extends('layouts.master') @section('title', 'Reach Report') @section('imports')
 <link rel="stylesheet" type="text/css" href="{{ elixir('css/reports.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ elixir('css/reach_rate_report.css') }}">
 <script type="text/javascript" src="{{ elixir('js/reach_rate_report.js') }}"></script>
@@ -120,7 +120,7 @@
                 </span>
             </span>
             <span class="right arial_italic">
-                <span class="days_in_stage">
+                <span class="days_in_stage" data-toggle="tooltip" title="Average number of days taken make the first contact attempt with patient" data-placement="left">
                     Avg. Time: <span class="contact_attempted_days"></span> days
                 </span>
             </span>
@@ -190,7 +190,7 @@
                 </span>
             </span>
             <span class="right arial_italic">
-                <span class="days_in_stage">
+                <span class="days_in_stage" data-toggle="tooltip" title="Average number of days taken for the patient to get scheduled after the first contact attempt" data-placement="left">
                     Avg. Time: <span class="reached_days"></span> days
                 </span>
             </span>
@@ -232,7 +232,7 @@
                 </span>
             </span>
             <span class="right arial_italic">
-                <span class="days_in_stage">
+                <span class="days_in_stage" data-toggle="tooltip" title="Average number of days taken to update the appointment status as 'kept-appointment' after the completion of appointment" data-placement="left">
                     Avg. Time: <span class="appointment_completed_days"></span> days
                 </span>
             </span>
@@ -274,7 +274,7 @@
                 </span>
             </span>
             <span class="right arial_italic">
-                <span class="days_in_stage">
+                <span class="days_in_stage" data-toggle="tooltip" title="Average number of days taken to mark patient as 'successful' after receiving their reports" data-placement="left">
                     Avg. Time: <span class="show_days"></span> days
                 </span>
             </span>
