@@ -89,7 +89,6 @@ class Patient extends Model
                             ->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
                             ->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
                             break;
-
                         case 'ssn':
                             $query->where('lastfourssn', $filter['value']);
                             break;
@@ -97,7 +96,9 @@ class Patient extends Model
                             $query->where('email', 'LIKE', '%' . $filter['value'] . '%');
                             break;
                         case 'phone':
-                            $query->where('cellphone', 'LIKE', '%' . $filter['value'] . '%');
+                            $query->where('cellphone', 'LIKE', '%' . $filter['value'] . '%')
+                            ->orWhere('workphone', 'LIKE', '%' . $filter['value'] . '%')
+                            ->orWhere('homephone', 'LIKE', '%' . $filter['value'] . '%');
                             break;
                         case 'address':
                             $query->where('city', 'LIKE', '%' . $filter['value'] . '%')
@@ -106,7 +107,10 @@ class Patient extends Model
                             ->orWhere('country', 'LIKE', '%' . $filter['value'] . '%');
                             break;
                         case 'id':
-                            $query->Where('patients.id', $filter['value']);
+                            $query->where('patients.id', $filter['value']);
+                            break;
+                        case 'subscriber_id':
+                            $query->where('patient_insurance.subscriber_id', 'LIKE', '%' . $filter['value'] . '%');
                             break;
                         case 'all':
                             $query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
@@ -118,13 +122,17 @@ class Patient extends Model
                             ->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
                             ->orWhere('country', 'LIKE', '%' . $filter['value'] . '%')
                             ->orWhere('cellphone', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('email', 'LIKE', '%' . $filter['value'] . '%');
-
+                            ->orWhere('workphone', 'LIKE', '%' . $filter['value'] . '%')
+                            ->orWhere('homephone', 'LIKE', '%' . $filter['value'] . '%')
+                            ->orWhere('email', 'LIKE', '%' . $filter['value'] . '%')
+                            ->orWhere('patient_insurance.subscriber_id', 'LIKE', '%' . $filter['value'] . '%');
                             break;
                     }
                 });
             }
         });
+
+        $query->leftjoin('patient_insurance', 'patients.id', '=', 'patient_insurance.patient_id');
 
         if (session('user-level') == 1) {
             $query
@@ -164,11 +172,22 @@ class Patient extends Model
         return self::query()
             ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
+            ->leftjoin('patient_insurance', 'patients.id', '=', 'patient_insurance.patient_id')
             ->where('import_history.network_id', session('network-id'))
             ->where(function ($query) use ($name) {
                 $query->where('firstname', 'LIKE', '%' . $name . '%')
                 ->orWhere('middlename', 'LIKE', '%' . $name . '%')
-                ->orWhere('lastname', 'LIKE', '%' . $name . '%');
+                ->orWhere('lastname', 'LIKE', '%' . $name . '%')
+                ->orWhere('lastfourssn', 'LIKE', '%' . $name . '%')
+                ->orWhere('city', 'LIKE', '%' . $name . '%')
+                ->orWhere('addressline1', 'LIKE', '%' . $name . '%')
+                ->orWhere('addressline2', 'LIKE', '%' . $name . '%')
+                ->orWhere('country', 'LIKE', '%' . $name . '%')
+                ->orWhere('cellphone', 'LIKE', '%' . $name . '%')
+                ->orWhere('workphone', 'LIKE', '%' . $name . '%')
+                ->orWhere('homephone', 'LIKE', '%' . $name . '%')
+                ->orWhere('email', 'LIKE', '%' . $name . '%')
+                ->orWhere('patient_insurance.subscriber_id', 'LIKE', '%' . $name . '%');
             })
             ->get(['*', 'patients.id']);
     }

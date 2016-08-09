@@ -29,6 +29,7 @@
                     <li value="email">Email</li>
                     <li value="phone">Phone</li>
                     <li value="address">Address</li>
+                    <li value="subscriber_id">Subscriber ID</li>
                 </ul>
             </div>
         </div>
@@ -54,7 +55,7 @@
             <button id="open_patient_form" type="button" class="btn add-btn">Add New</button>
             @endcan
             <span class="search_input_box">
-                <input type="text" class="arial_italic" id="search_patient_input" placeholder="search">
+                <input type="text" class="arial_italic" id="search_patient_input" placeholder="search" data-toggle="tooltip" title="Search using patient name, phone number, SSN, address, email, country or Insurance Subscriber ID" data-placement="bottom">
                 <img src="{{asset('images/sidebar/search-icon.png')}}" class="admin_seacrh_icon" id="search_patient_button">
             </span>
             <img src="{{URL::asset('images/close-white-small.png')}}" id="refresh_patients">

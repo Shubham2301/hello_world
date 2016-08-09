@@ -18,7 +18,7 @@
 				@endcan
 				<span class="overview_header arial_bold">Overview</span>
 				<div class="search" id="care_console_search">
-					<input type="text" id="search_data">
+					<input type="text" id="search_data"   data-toggle="tooltip" title="Search using patient name, phone number, SSN, address, email, country or Insurance Subscriber ID" data-placement="left">
 					<span class="active" aria-hidden="true" id="search_bar_open">
 						<img src="{{elixir('images/sidebar/left-natural.png')}}" class="left_natural active_img">
 						<img src="{{elixir('images/sidebar/left-active.png')}}" class="left_active active_img">

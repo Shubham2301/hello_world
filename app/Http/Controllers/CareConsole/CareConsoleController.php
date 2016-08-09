@@ -181,8 +181,17 @@ class CareConsoleController extends Controller
     {
         if (session('user-level') == 1) {
             $practices = Patient::where('firstname', 'LIKE', '%' . $tosearchdata['value'] . '%')
+                ->leftjoin('patient_insurance', 'patients.id', '=', 'patient_insurance.patient_id')
                 ->orWhere('middlename', 'LIKE', '%' . $tosearchdata['value'] . '%')
                 ->orWhere('lastname', 'LIKE', '%' . $tosearchdata['value'] . '%')
+                ->orWhere('lastfourssn', 'LIKE', '%' . $tosearchdata['value'] . '%')
+                ->orWhere('city', 'LIKE', '%' . $tosearchdata['value'] . '%')
+                ->orWhere('addressline1', 'LIKE', '%' . $tosearchdata['value'] . '%')
+                ->orWhere('addressline2', 'LIKE', '%' . $tosearchdata['value'] . '%')
+                ->orWhere('country', 'LIKE', '%' . $tosearchdata['value'] . '%')
+                ->orWhere('cellphone', 'LIKE', '%' . $tosearchdata['value'] . '%')
+                ->orWhere('email', 'LIKE', '%' . $tosearchdata['value'] . '%')
+                ->orWhere('patient_insurance.subscriber_id', 'LIKE', '%' . $tosearchdata['value'] . '%')
                 ->get(['*', 'patients.id']);
         } else {
             $patients = Patient::getPatientsByName($request->name, session('network-id'));
