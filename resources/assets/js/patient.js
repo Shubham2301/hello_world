@@ -47,7 +47,7 @@ $(document).ready(function () {
             $('.no_item_found').removeClass('active');
             if (val != '') {
                 var searchdata = [];
-                searchType = 'name';
+                searchType = 'all';
                 searchValue = val;
                 searchdata.push({
                     "type": searchType,
@@ -368,8 +368,8 @@ function showPatientInfo(data) {
         $('.lastseen_content').css("cursor", "default");
     }
     $('.patient_section').show();
-	$('.show_in_provider_patient').show();
-	$('.show_in_patient').show();
+    $('.show_in_provider_patient').show();
+    $('.show_in_patient').show();
     fillPatientData(data);
     $('.patient_table_content').removeClass('active');
 }
@@ -504,9 +504,9 @@ function getOptionContent(type, value) {
 
 function selectProvider(id) {
 
-	var filesIDs = getSelectedFiles();
+    var filesIDs = getSelectedFiles();
 
-	$('#selected_patient_files').val(filesIDs);
+    $('#selected_patient_files').val(filesIDs);
     $('#form_patient_id').val(id);
     $('#form_select_provider').submit();
 }

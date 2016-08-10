@@ -9,6 +9,7 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\ContactHistory;
+use myocuhub\Patients;
 use myocuhub\User;
 use Datetime;
 use DateInterval;
@@ -37,19 +38,25 @@ trait ReachRateTrait
             $history = array();
             $history['archived'] = 0;
             $history['unarchived'] = 0;
+            $history['move_to_recall'] = 0;
+            $history['back_to_console'] = 0;
 
-            $results[$patient_count]['patient_name'] = $careconsole->patient->firstname.' '.$careconsole->patient->lastname;
-            $results[$patient_count]['patient_id'] = $careconsole->patient->id;
-            $results[$patient_count]['pcp_name'] = $careconsole->patient->pcp;
+            foreach ($careconsole->contactHistory as $contactHistory) {
 
-            if($careconsole->import_history_count != 0)
-                $results[$patient_count]['patient_type'] = config('reports.patient_type.new');
-            else
-                $results[$patient_count]['patient_type'] = config('reports.patient_type.old');
+                $results[$patient_count]['patient_name'] = $careconsole->patient->getName();
+                $results[$patient_count]['patient_id'] = $careconsole->patient->id;
+                $results[$patient_count]['pcp_name'] = $careconsole->patient->pcp;
+                $results[$patient_count]['referred_by_practice'] = $careconsole->referralHistory->referred_by_practice;
 
-            foreach ($careconsole->contactHistory as $contact_history) {
+                if($careconsole->import_history_count != 0) {
+                    $results[$patient_count]['patient_type'] = config('reports.patient_type.new');
+                }
+                else {
+                    $results[$patient_count]['patient_type'] = config('reports.patient_type.old');
+                }
 
-                switch ($contact_history->action->name) {
+
+                switch ($contactHistory->action->name) {
                     case 'request-patient-email':
                         break;
                     case 'request-patient-phone':
@@ -61,9 +68,9 @@ trait ReachRateTrait
                     case 'contact-attempted-by-mail':
                     case 'contact-attempted-by-other':
                         if(!isset($results[$patient_count]['not_reached']) && !isset($results[$patient_count]['reached'])) {
-                            $results[$patient_count]['pending_stage_change'] = $contact_history->days_in_current_stage;
-                            $date = new DateTime($contact_history->contact_activity_date);
-                            $date = $date->sub(new DateInterval('P'.$contact_history->days_in_current_stage.'D'));
+                            $results[$patient_count]['pending_stage_change'] = $contactHistory->days_in_current_stage;
+                            $date = new DateTime($contactHistory->contact_activity_date);
+                            $date = $date->sub(new DateInterval('P'.$contactHistory->days_in_current_stage.'D'));
                             $results[$patient_count]['request_received'] = $date->format('Y-m-d');
                         }
                         $results[$patient_count]['contact_attempts'] = isset($results[$patient_count]['contact_attempts']) ? $results[$patient_count]['contact_attempts'] + 1 : 1;
@@ -78,74 +85,102 @@ trait ReachRateTrait
                     case 'manually-reschedule':
                         $results[$patient_count]['appointment_scheduled'] = isset($results[$patient_count]['appointment_scheduled']) ? $results[$patient_count]['appointment_scheduled'] + 1 : 1;
                         $results[$patient_count]['reached'] = isset($results[$patient_count]['reached']) ? $results[$patient_count]['reached'] + 1 : 1;
-                        if(isset($contact_history->appointments)) {
-                            $scheduled_for = new DateTime($contact_history->appointments->start_datetime);
-                            $results[$patient_count]['scheduled_to_practice'] = $contact_history->appointments->provider->name;
-                            $results[$patient_count]['scheduled_to_provider'] = $contact_history->appointments->practice->name;
+                        if(isset($contactHistory->appointments)) {
+                            $scheduled_for = new DateTime($contactHistory->appointments->start_datetime);
+                            $results[$patient_count]['scheduled_to_practice'] = $contactHistory->appointments->provider->name;
+                            $results[$patient_count]['scheduled_to_provider'] = $contactHistory->appointments->practice->name;
                             $results[$patient_count]['scheduled_for'] = $scheduled_for->format('Y-m-d');
-                            $results[$patient_count]['appointment_type'] = $contact_history->appointments->appointmenttype;
+                            $results[$patient_count]['appointment_type'] = $contactHistory->appointments->appointmenttype;
                         }
-                        $scheduled_on = new DateTime($contact_history->contact_activity_date);
+                        $scheduled_on = new DateTime($contactHistory->contact_activity_date);
                         $results[$patient_count]['scheduled_on'] = $scheduled_on->format('Y-m-d');
                         break;
                     case 'move-to-console':
-                        break;
-                    case 'recall-later':
-                        break;
-                    case 'unarchive':
-                        if(($history['unarchived'] == $history['archived'] && $history['unarchived'] != 0) || $history['unarchived'] < $history['archived']) {
+                        if(($history['back_to_console'] == $history['move_to_recall'] && $history['back_to_console'] != 0) || $history['back_to_console'] < $history['move_to_recall']) {
                             $patient_count++;
                             $results[$patient_count]['repeat_count'] = 1;
                             $results[$patient_count]['patient_type'] = $results[$patient_count - 1]['patient_type'];
                             $results[$patient_count]['patient_name'] = $careconsole->patient->firstname.' '.$careconsole->patient->lastname;
                             $results[$patient_count]['patient_id'] = $careconsole->patient->id;
 
+                            if($careconsole->import_history_count != 0) {
+                                $results[$patient_count]['patient_type'] = config('reports.patient_type.new');
+                            }
+                            else {
+                                $results[$patient_count]['patient_type'] = config('reports.patient_type.old');
+                            }
+
+                        }
+                        $history['back_to_console']++;
+                        break;
+                    case 'recall-later':
+                        $history['move_to_recall']++;
+                        break;
+                    case 'unarchive':
+                        if(($history['unarchived'] == $history['archived'] && $history['unarchived'] != 0) || $history['unarchived'] < $history['archived']) {
+                            $patient_count++;
+                            $results[$patient_count]['repeat_count'] = 1;
+                            $results[$patient_count]['patient_type'] = $results[$patient_count - 1]['patient_type'];
+                            $results[$patient_count]['patient_name'] = $careconsole->patient->getName();
+                            $results[$patient_count]['patient_id'] = $careconsole->patient->id;
+
+                            if($careconsole->import_history_count != 0) {
+                                $results[$patient_count]['patient_type'] = config('reports.patient_type.new');
+                            }
+                            else {
+                                $results[$patient_count]['patient_type'] = config('reports.patient_type.old');
+                            }
+
                         }
                         $history['unarchived']++;
                         break;
                     case 'archive':
                         $history['archived']++;
-                        $results[$patient_count]['days_in_stage_before_archive'] = $contact_history->days_in_current_stage;
+                        $results[$patient_count]['days_in_stage_before_archive'] = $contactHistory->days_in_current_stage;
                         break;
                     case 'kept-appointment':
                         $results[$patient_count]['appointment_completed'] = config('reports.appointment_completed.show');
-                        if(isset($contact_history->appointments)) {
-                            $appt_date = new DateTime($contact_history->appointments->start_datetime);
-                            $action_date = new DateTime($contact_history->contact_activity_date);
+                        if(isset($contactHistory->appointments)) {
+                            $appt_date = new DateTime($contactHistory->appointments->start_datetime);
+                            $action_date = new DateTime($contactHistory->contact_activity_date);
                             $interval = $action_date->diff($appt_date);
                             $date_diff = $interval->format('%a');
-                            $results[$patient_count]['appt_scheduled_stage_change'] = $date_diff;
-                            $results[$patient_count]['scheduled_to_practice'] = $contact_history->appointments->provider->name;
-                            $results[$patient_count]['scheduled_to_provider'] = $contact_history->appointments->practice->name;
+
+                            if ($date_diff >= 0) {
+                                $results[$patient_count]['appt_scheduled_stage_change'] = $date_diff;
+                            }
+                            $results[$patient_count]['scheduled_to_practice'] = $contactHistory->appointments->provider->name;
+                            $results[$patient_count]['scheduled_to_provider'] = $contactHistory->appointments->practice->name;
+
                             $results[$patient_count]['scheduled_for'] = $appt_date->format('Y-m-d');
-                            $results[$patient_count]['appointment_type'] = $contact_history->appointments->appointmenttype;
+                            $results[$patient_count]['appointment_type'] = $contactHistory->appointments->appointmenttype;
                         }
                         break;
                     case 'no-show':
                         $results[$patient_count]['appointment_completed'] = config('reports.appointment_completed.no_show');
-                        if(isset($contact_history->appointments)) {
-                            $scheduled_for = new DateTime($contact_history->appointments->start_datetime);
-                            $results[$patient_count]['scheduled_to_practice'] = $contact_history->appointments->provider->name;
-                            $results[$patient_count]['scheduled_to_provider'] = $contact_history->appointments->practice->name;
+                        if(isset($contactHistory->appointments)) {
+                            $scheduled_for = new DateTime($contactHistory->appointments->start_datetime);
+                            $results[$patient_count]['scheduled_to_practice'] = $contactHistory->appointments->provider->name;
+                            $results[$patient_count]['scheduled_to_provider'] = $contactHistory->appointments->practice->name;
                             $results[$patient_count]['scheduled_for'] = $scheduled_for->format('Y-m-d');
-                            $results[$patient_count]['appointment_type'] = $contact_history->appointments->appointmenttype;
+                            $results[$patient_count]['appointment_type'] = $contactHistory->appointments->appointmenttype;
                         }
                         break;
                     case 'cancelled':
                         $results[$patient_count]['appointment_completed'] = config('reports.appointment_completed.no_show');
-                        if(isset($contact_history->appointments)) {
-                            $scheduled_for = new DateTime($contact_history->appointments->start_datetime);
-                            $results[$patient_count]['scheduled_to_practice'] = $contact_history->appointments->provider->name;
-                            $results[$patient_count]['scheduled_to_provider'] = $contact_history->appointments->practice->name;
+                        if(isset($contactHistory->appointments)) {
+                            $scheduled_for = new DateTime($contactHistory->appointments->start_datetime);
+                            $results[$patient_count]['scheduled_to_practice'] = $contactHistory->appointments->provider->name;
+                            $results[$patient_count]['scheduled_to_provider'] = $contactHistory->appointments->practice->name;
                             $results[$patient_count]['scheduled_for'] = $scheduled_for->format('Y-m-d');
-                            $results[$patient_count]['appointment_type'] = $contact_history->appointments->appointmenttype;
+                            $results[$patient_count]['appointment_type'] = $contactHistory->appointments->appointmenttype;
                         }
                         break;
                     case 'data-received':
                         $results[$patient_count]['reports'] = 1;
-                        $results[$patient_count]['show_stage_change'] = $contact_history->days_in_prev_stage;
-                        if(isset($contact_history->appointments)) {
-                            $scheduled_for = new DateTime($contact_history->appointments->start_datetime);
+                        $results[$patient_count]['show_stage_change'] = $contactHistory->days_in_prev_stage;
+                        if(isset($contactHistory->appointments)) {
+                            $scheduled_for = new DateTime($contactHistory->appointments->start_datetime);
                             $results[$patient_count]['scheduled_for'] = $scheduled_for->format('Y-m-d');
                         }
                         break;
@@ -154,7 +189,7 @@ trait ReachRateTrait
                     case 'remove-priority':
                         break;
                     case 'annual-exam':
-
+                        $history['move_to_recall']++;
                         break;
                     case 'refer-to-specialist':
                     case 'highrisk-contact-pcp':
@@ -162,8 +197,8 @@ trait ReachRateTrait
                         break;
                 }
 
-                if($contact_history->actionResult) {
-                    switch ($contact_history->actionResult->name) {
+                if($contactHistory->actionResult) {
+                    switch ($contactHistory->actionResult->name) {
                         case 'mark-as-priority':
                             break;
                         case 'already-seen-by-outside-dr':
@@ -200,7 +235,7 @@ trait ReachRateTrait
         return $results;
     }
 
-    public function renderResult($results) {
+    public function renderResult($results, $filter) {
 
         $daysInStage = [
             'pending' => [
@@ -221,6 +256,8 @@ trait ReachRateTrait
             ]
         ];
 
+        $referredBy = array();
+        $i = 0;
 
         $reportMetrics = array(
             'patient_count' => 0,
@@ -250,10 +287,21 @@ trait ReachRateTrait
             'reports' => 0,
             'no_reports' => 0,
             'config' => config('reports'),
+            'referred_by_practice' => array(),
         );
 
         foreach($results as $key => $result) {
 
+            if(array_key_exists('referred_by_practice', $result)) {
+                $referredBy[$i] = $result['referred_by_practice'];
+                $i++;
+            }
+
+            if($filter != '') {
+                if(array_key_exists('referred_by_practice', $result) ? $result['referred_by_practice'] != $filter : true) {
+                    continue;
+                }
+            }
             $reportMetrics['patient_count']++;
             $result['patient_type'] == config('reports.patient_type.new') ? $reportMetrics['new_patient']++ : $reportMetrics['existing_patients']++;
             if(array_key_exists('archived', $result)) {
@@ -287,7 +335,9 @@ trait ReachRateTrait
                     $reportMetrics['hold_for_future_attempts'] += $result['hold_for_future'];
                 }
             } else {
-                $reportMetrics['pending_patient']++;
+                if($result['patient_type'] == config('reports.patient_type.new') || array_key_exists('repeat_count', $result)) {
+                    $reportMetrics['pending_patient']++;
+                }
             }
 
             if(array_key_exists('appointment_scheduled', $result)) {
@@ -337,6 +387,16 @@ trait ReachRateTrait
         $reportMetrics['show_days'] = $daysInStage['appt_completed']['numOfDays'] != 0 ? ceil($daysInStage['appt_completed']['sumOfDays']/$daysInStage['appt_completed']['numOfDays']) : '-';
 
         $reportMetrics['report_data'] = array_values($results);
+
+        foreach($referredBy as $key => $referral) {
+            if($referral == null || $referral == '') {
+                unset($referredBy[$key]);
+            }
+        }
+
+        $countReferred = array_count_values($referredBy);
+
+        $reportMetrics['referred_by_practice'] = $countReferred;
 
         return $reportMetrics;
     }

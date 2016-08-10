@@ -1,8 +1,8 @@
 var reportResult = [];
 var config = [];
+var filter = '';
 
 $(document).ready(function () {
-    $('[data-toggle="tooltip"]').tooltip();
     var cur_date = new Date();
     var set_start_date = new Date(cur_date.getTime());
     $('#start_date').datetimepicker({
@@ -38,6 +38,10 @@ $(document).ready(function () {
         $('.action_modal_title.reach_report_patient_list').text($.trim(header));
         getPatientList($(this).attr('id'));
     });
+    $('.referred_by_practice_list').on('change', function () {
+        filter = $(this).val();
+        getReport(filter);
+    });
 });
 
 function getReport(filter) {
@@ -61,6 +65,19 @@ function getReport(filter) {
             }
             reportResult = data['report_data'];
             config = data['config'];
+
+            var dropdownContent = '';
+            var referredBy = data['referred_by_practice'];
+
+            dropdownContent += '<option value="">All</option>';
+            for (var referredByPractice in referredBy) {
+                if(referredByPractice == filter)
+                    dropdownContent += '<option value="' + referredByPractice + '" selected>' + referredByPractice + '</option>';
+                else
+                    dropdownContent += '<option value="' + referredByPractice + '">' + referredByPractice + '</option>';
+            }
+            $('.referred_by_practice_list').html(dropdownContent);
+
         },
         error: function () {
             alert('Error Refreshing');
@@ -74,6 +91,13 @@ function getPatientList(metricName) {
     var content = '';
     var headerContent = '';
     reportResult.forEach(function (result) {
+
+        if (filter != '') {
+            if (result['referred_by_practice'] ? result['referred_by_practice'] != filter : true) {
+                return;
+            }
+        }
+
         var patientListItem = '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span></li>';
         switch (metricName) {
             case 'contact_attempted':
@@ -154,7 +178,7 @@ function getPatientList(metricName) {
                 }
                 break;
             case 'pending_patient':
-                if (!("reached" in result) || !("not_reached" in result)) {
+                if (!("reached" in result) && !("not_reached" in result)) {
                     if ((result.patient_type == config.patient_type.new) || ("repeat_count" in result))
                         content += patientListItem;
                 }

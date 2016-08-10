@@ -24,7 +24,7 @@
             <input type="checkbox" value="{{ $record->contact_history_id }}" class="selected_records file_checkbox"/>
         </div>
         <div class="col-xs-10">
-            <a href="show_records/{{ $record->contact_history_id }}" target="_blank" class="file_name" >
+            <a href="/show_records/{{ $record->contact_history_id }}" target="_blank" class="file_name" >
                 {{ $record->template->display_name . ' - '.$record->created_at }}
             </a>
         </div>

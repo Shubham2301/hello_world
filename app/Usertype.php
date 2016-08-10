@@ -15,8 +15,14 @@ class Usertype extends Model
 
     public function users()
     {
-    	return $this->hasMany(User::class);
+        return $this->hasMany(User::class);
     }
 
+    public static function getID($name)
+    {
+        return self::where('name', $name)
+            ->first()
+            ->id;
+    }
 
 }

@@ -11,6 +11,7 @@ use myocuhub\Models\Menu;
 use myocuhub\Models\NetworkUser;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeUser;
+use myocuhub\Models\ProviderType;
 use myocuhub\Models\UserLevel;
 use myocuhub\Network;
 use myocuhub\Role;
@@ -29,7 +30,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(!policy(new User)->administration()){
+        if (!policy(new User)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -47,7 +48,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        if(!policy(new User)->administration()){
+        if (!policy(new User)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -73,11 +74,11 @@ class UserController extends Controller
         $menu_options = Menu::find([1, 2, 3, 4, 5]);
         $menuData = [];
         foreach ($menu_options as $menu_option) {
-            //          if ($menu_option->id != 3 && $menu_option->id != 5) {
-//              $menuData[$menu_option->id] = $menu_option->display_name;
-//          }
-            if($menu_option->landing_page != 0)
+
+            if ($menu_option->landing_page != 0) {
                 $menuData[$menu_option->id] = $menu_option->display_name;
+            }
+
         }
 
         $networkPractices = [];
@@ -100,7 +101,20 @@ class UserController extends Controller
             $user['practice_id'] = User::getPractice(Auth::user()->id)->id;
         }
         $user['password_required'] = 'required';
-        return view('admin.users.create')->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels])->with('data', $data)->with('user', $user)->with('networks', $networkData)->with('menuoption', $menuData)->with('practices', $practices);
+
+        $providerTypes = ProviderType::indexed();
+
+        return view('admin.users.create')->with([
+            'userTypes' => $userTypes,
+            'roles' => $roles,
+            'userLevels' => $userLevels,
+            'providerTypes' => $providerTypes,
+            'user' => $user,
+            'networks' => $networkData,
+            'menuoption' => $menuData,
+            'practices' => $practices,
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -111,7 +125,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if(!policy(new User)->administration()){
+        if (!policy(new User)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -123,14 +137,11 @@ class UserController extends Controller
 
         $user = new User;
 
-        // Save the User information
         $user->title = $request->input('title');
         $user->firstname = $request->input('firstname');
         $user->middlename = $request->input('middlename');
         $user->lastname = $request->input('lastname');
         $user->password = bcrypt(str_random(12));
-        // TODO
-        // Auto generate password
         if ($request->input('password') != '') {
             $user->password = bcrypt($request->input('password'));
         }
@@ -149,6 +160,7 @@ class UserController extends Controller
         $user->level = $request->input('userlevel');
         $user->acc_key = $request->input('acc_key');
         $user->speciality = $request->input('speciality');
+        $user->provider_type_id = $request->input('provider_type_id') ?: null;
 
         $user->two_factor_auth = $request->input('two_factor_auth') ? $request->input('two_factor_auth') : 0;
         $roles = array();
@@ -196,7 +208,7 @@ class UserController extends Controller
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-        
+
         return redirect('administration/users');
 
     }
@@ -240,7 +252,7 @@ class UserController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        if(!policy(new User)->administration()){
+        if (!policy(new User)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -276,8 +288,10 @@ class UserController extends Controller
 
             $menuData = [];
             foreach ($menu_options as $menu_option) {
-                if($menu_option->landing_page != 0)
+                if ($menu_option->landing_page != 0) {
                     $menuData[$menu_option->id] = $menu_option->display_name;
+                }
+
             }
             $user['network_id'] = '';
             $user_network = NetworkUser::where('user_id', '=', $id)->first();
@@ -303,8 +317,22 @@ class UserController extends Controller
             foreach ($networkPractices as $practice) {
                 $practices[$practice->id] = $practice->name;
             }
-            $user['password_required']='';
-            return view('admin.users.create')->with('user', $user)->with(['userTypes' => $userTypes, 'roles' => $roles, 'userLevels' => $userLevels, 'menuoption' => $menuData])->with('data', $data)->with('networks', $networkData)->with('practices', $practices);
+            $user['password_required'] = '';
+
+            $providerTypes = ProviderType::indexed();
+
+            return view('admin.users.create')
+                ->with([
+                    'userTypes' => $userTypes,
+                    'providerTypes' => $providerTypes,
+                    'roles' => $roles,
+                    'userLevels' => $userLevels,
+                    'menuoption' => $menuData,
+                    'data' => $data,
+                    'networks' => $networkData,
+                    'practices' => $practices,
+                    'user' => $user,
+                ]);
         }
     }
 
@@ -317,7 +345,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(!policy(new User)->administration()){
+        if (!policy(new User)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -346,8 +374,10 @@ class UserController extends Controller
         $user->usertype_id = $request->input('usertype');
         $user->level = $request->input('userlevel');
         $user->acc_key = $request->input('acc_key');
-        $user->two_factor_auth = $request->input('two_factor_auth');
+        $user->two_factor_auth = $request->input('two_factor_auth') ?: null;
         $user->speciality = $request->input('speciality');
+        $user->provider_type_id = $request->input('provider_type_id') ?: null;
+
         $menuID = $request->input('landing_page');
         if ($menuID != '') {
             $user->menu_id = $menuID;
@@ -380,9 +410,9 @@ class UserController extends Controller
             $remove_roles = array_diff($previous_roles_id, $new_roles_id);
             foreach ($remove_roles as $remove_role) {
                 $delete_role = Role_user::where('user_id', '=', $user->id)
-                                    ->where('role_id', '=', $remove_role)
-                                    ->delete();
-                                    
+                    ->where('role_id', '=', $remove_role)
+                    ->delete();
+
                 $key = array_search($remove_role, $remove_roles);
                 unset($remove_roles[$key]);
             }
@@ -414,7 +444,7 @@ class UserController extends Controller
         $network_user = NetworkUser::where('user_id', $id)->update($userData);
 
         $action = 'updated user profile ';
-        if ($password != ''){
+        if ($password != '') {
             $action .= 'and reset password ';
         }
         $action .= 'of id ' . $id;
@@ -434,7 +464,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
-        if(!policy(new User)->administration()){
+        if (!policy(new User)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -470,7 +500,7 @@ class UserController extends Controller
 
         foreach ($roles as $role) {
 
-            if (!$user->isSuperAdmin() && $role->name == 'patient-record' ) {
+            if (!$user->isSuperAdmin() && $role->name == 'patient-record') {
                 continue;
             }
 
@@ -524,9 +554,7 @@ class UserController extends Controller
         }
 
         $data = [];
-//      $data[0]['total'] = $users->total();
-//      $data[0]['lastpage'] = $users->lastPage();
-//      $data[0]['currentPage'] = $users->currentPage();
+
         $i = 0;
         foreach ($users as $user) {
             if ((session('user-level') == 3 || session('user-level') == 4) && $user->practice_id != User::getPractice($userID)->id) {
@@ -575,14 +603,14 @@ class UserController extends Controller
             'title' => 'sometimes|max:255',
             'body' => 'sometimes|required',
             'password' => 'sometimes|same:password_confirmation',
-            'email' => 'sometimes|email|unique:users,email,'.$userID,
+            'email' => 'sometimes|email|unique:users,email,' . $userID,
             'sesemail' => 'sometimes|email',
             'sesemail' => 'sometimes|email',
             'address1' => 'sometimes|max:120',
             'address2' => 'sometimes|max:120',
             'city' => 'sometimes|max:20',
             'state' => 'sometimes|max:20',
-            'zip' => 'sometimes|numeric'
+            'zip' => 'sometimes|numeric',
         ];
         return $validationRules;
     }
@@ -590,8 +618,8 @@ class UserController extends Controller
     public function getLandingPagebyRole(Request $request)
     {
         $menuData = [];
-        $menuData['care-console'] = ['6' ,'Care Console'];
-        $menuData['administrator']      = ['7' ,'Administration'];
+        $menuData['care-console'] = ['6', 'Care Console'];
+        $menuData['administrator'] = ['7', 'Administration'];
 
         return json_encode($menuData);
     }
