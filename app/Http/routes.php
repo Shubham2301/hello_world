@@ -218,5 +218,6 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::resource('report/reach_report', 'Reports\ReachRateController');
-    Route::get('/report/reach_report/show', 'Reports\ReachRateController@show');
+
+    Route::resource('report/call_center', 'Reports\CallCenterController');
 });

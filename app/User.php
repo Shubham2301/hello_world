@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use myocuhub\Models\UserLevel;
+use myocuhub\Models\NetworkUser;
 use myocuhub\User;
 use Illuminate\Support\Facades\DB;
 use myocuhub\Http\Controllers\Traits\TwoFactorAuthenticatable;
@@ -45,6 +46,11 @@ CanResetPasswordContract
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    public function network()
+    {
+        return $this->hasOne(NetworkUser::class, 'user_id');
     }
 
     public function hasRole($role)
@@ -83,6 +89,11 @@ CanResetPasswordContract
     public function usertype()
     {
         return $this->belongsTo(Usertype::class);
+    }
+
+    public function contactHistory()
+    {
+        return $this->hasMany('myocuhub\Models\ContactHistory', 'user_id');
     }
 
     public static function providers($filters)
@@ -272,5 +283,27 @@ CanResetPasswordContract
     public function getName()
     {
         return $this->lastname . ', ' . $this->firstname;
+    }
+
+    public static function getCareConsoledata($networkID, $startDate, $endDate) {
+
+        return self::whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
+                $query->whereNotNull('user_id');
+                $query->where('contact_activity_date', '>=', $startDate);
+                $query->where('contact_activity_date', '<=', $endDate);
+            })
+            ->whereHas('contactHistory.careconsole.importHistory', function ($query) use ($networkID) {
+                $query->where('network_id', $networkID);
+            })
+            ->has('contactHistory.careconsole.patient')
+            ->with([
+                'contactHistory',
+                'contactHistory.action',
+                'contactHistory.actionResult',
+                'contactHistory.currentStage',
+                'contactHistory.previousStage',
+                'contactHistory.appointments',
+            ])
+            ->get();
     }
 }
