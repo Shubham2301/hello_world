@@ -249,6 +249,7 @@ class PatientController extends Controller
 
         $patientData['referred_to_practice_user'] = '';
         $patientData['referred_to_practice'] = '';
+        $patientData['referred_to_practice_user_type'] = '';
 
         if ($previousProvider['id'] !== null) {
             $patientData['referred_to_practice_user'] = $previousProvider['title'] . ' ' . $previousProvider['lastname'] . ', ' . $previousProvider['firstname'];
