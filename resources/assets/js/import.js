@@ -450,7 +450,13 @@ function fillPatientData(data) {
     $('.action-btns').removeClass('active');
     $('#import_patients').hide();
 
-    $('.lastseen_content').html('<p class="patient_dropdown_data">' + data.referred_to_practice_user + '</p><p class="patient_dropdown_data">' + data.referred_to_practice + '</p>');
+    var lastSeenBy = '';
+    lastSeenBy +='<p class="patient_dropdown_data">' + data.referred_to_practice_user + '</p>';
+    if(data.referred_to_practice_user_type.length > 0){
+        lastSeenBy += '<p class="patient_dropdown_data">' + data.referred_to_practice_user_type + '</p>';
+    }
+    lastSeenBy +='<p class="patient_dropdown_data">' + data.referred_to_practice + '</p>';
+    $('.lastseen_content').html(lastSeenBy);
 
     $('.insurance_provider_content').html('<p class="patient_dropdown_data">' + data.insurance + '</p>');
     if (data.referred_to_practice_user == '' && data.referred_to_practice == '')

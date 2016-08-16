@@ -14,14 +14,12 @@ use myocuhub\Models\Careconsole;
 use myocuhub\Models\Ccda;
 use myocuhub\Models\EngagementPreference;
 use myocuhub\Models\ImportHistory;
-use myocuhub\Models\MessageTemplate;
-use myocuhub\Models\PatientFile;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticePatient;
 use myocuhub\Models\PracticeUser;
+use myocuhub\Models\ProviderType;
 use myocuhub\Models\ReferralHistory;
-use myocuhub\Models\WebFormTemplate;
 use myocuhub\Patient;
 use myocuhub\User;
 
@@ -45,7 +43,7 @@ class PatientController extends Controller
             $data['action'] = $request->input('action');
         }
         $practicedata = Practice::all()->lists('name', 'id')->toArray();
-        return view('patient.index')->with('data', $data)->with(['practice_data'=> $practicedata]);
+        return view('patient.index')->with('data', $data)->with(['practice_data' => $practicedata]);
     }
 
     /**
@@ -56,7 +54,7 @@ class PatientController extends Controller
     public function create(Request $request)
     {
 
-        if(!policy(new Patient)->administration()){
+        if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -75,14 +73,14 @@ class PatientController extends Controller
         }
 
         return view('patient.admin')
-        ->with('data', $data);
+            ->with('data', $data);
 
     }
 
     public function createByAdmin()
     {
 
-        if(!policy(new Patient)->administration()){
+        if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -106,7 +104,7 @@ class PatientController extends Controller
     public function store(Request $request)
     {
 
-        if(!policy(new Patient)->administration()){
+        if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -150,7 +148,7 @@ class PatientController extends Controller
             $patient->city = $request->input('city');
             $patient->zip = $request->input('zip');
             $patientDob = new Datetime($request->input('birthdate'));
-            $patient->birthdate = ($request->input('birthdate') == '')? null : $patientDob->format('Y-m-d H:i:s');
+            $patient->birthdate = ($request->input('birthdate') == '') ? null : $patientDob->format('Y-m-d H:i:s');
             $patient->preferredlanguage = $request->input('preferredlanguage');
             $patient->cellphone = $request->input('cellphone');
             $patient->homephone = $request->input('homephone');
@@ -200,7 +198,7 @@ class PatientController extends Controller
             $insuranceCarrier->save();
 
             if (session('user-level') == 3) {
-                $practiceUser= PracticeUser::where('user_id', $userID)->first();
+                $practiceUser = PracticeUser::where('user_id', $userID)->first();
                 if ($practiceUser) {
                     $practicePatient = new PracticePatient;
                     $practicePatient->patient_id = $patient->id;
@@ -208,7 +206,6 @@ class PatientController extends Controller
                     $practicePatient->save();
                 }
             }
-
 
             $action = "new patient ($patient->id) created and added to console ($careconsole->id) ";
             $description = '';
@@ -239,7 +236,7 @@ class PatientController extends Controller
 
         $response = [
             'result' => false,
-            'patient_data' => $patientData
+            'patient_data' => $patientData,
         ];
         try {
             $patient = Patient::findOrFail($id);
@@ -255,6 +252,7 @@ class PatientController extends Controller
 
         if ($previousProvider['id'] !== null) {
             $patientData['referred_to_practice_user'] = $previousProvider['title'] . ' ' . $previousProvider['lastname'] . ', ' . $previousProvider['firstname'];
+            $patientData['referred_to_practice_user_type'] = $previousProvider['provider_type_id'] ? ProviderType::getName($previousProvider['provider_type_id']) : '';
             $patientData['referred_to_practice'] = $previousProvider['name'];
         }
 
@@ -269,21 +267,22 @@ class PatientController extends Controller
                 }
                 if ($referral_history->referred_by_provider) {
                     $patientData['referred_by_provider'] = $referral_history->referred_by_provider;
+                    $patientData['referred_by_provider'] = $referral_history->referred_by_provider;
                 }
             } catch (Exception $e) {
             }
         }
 
         if (isset($insurance)) {
-            $patientData['insurance'] = $insurance->insurance_carrier  ?: '';
+            $patientData['insurance'] = $insurance->insurance_carrier ?: '';
         }
 
         $patientData['firstname'] = $patient->firstname ?: '';
-        $patientData['lastname'] = $patient->lastname  ?: '';
-        $patientData['email'] = $patient->email  ?: '-';
-        $patientData['lastfourssn'] = $patient->lastfourssn  ?: '-';
-        $patientData['addressline1'] = $patient->addressline1  ?: '';
-        $patientData['addressline2'] = $patient->addressline2  ?: '';
+        $patientData['lastname'] = $patient->lastname ?: '';
+        $patientData['email'] = $patient->email ?: '-';
+        $patientData['lastfourssn'] = $patient->lastfourssn ?: '-';
+        $patientData['addressline1'] = $patient->addressline1 ?: '';
+        $patientData['addressline2'] = $patient->addressline2 ?: '';
         $patientData['city'] = $patient->city ?: '';
         $patientData['id'] = $patient->id ?: '';
         $patientData['cellphone'] = $patient->cellphone ?: '';
@@ -294,7 +293,7 @@ class PatientController extends Controller
             $patientData['birthdate'] = '-';
         } else {
             $birthdate = new DateTime($patient->birthdate);
-            $patientData['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
+            $patientData['birthdate'] = ($patient->birthdate && (bool) strtotime($patient->birthdate)) ? $birthdate->format('F j Y') : '-';
         }
 
         $ccda = Ccda::where('patient_id', $id)->orderBy('created_at', 'desc')->first();
@@ -306,7 +305,6 @@ class PatientController extends Controller
             $patientData['ccda_date'] = (new DateTime($ccda->created_at))->format('F j Y');
         }
 
-
         $files = $patient->files;
         $records = $patient->records;
 
@@ -317,7 +315,7 @@ class PatientController extends Controller
 
         $response = [
             'result' => true,
-            'patient_data' => $patientData
+            'patient_data' => $patientData,
         ];
         return json_encode($response);
     }
@@ -331,7 +329,7 @@ class PatientController extends Controller
     public function edit($id)
     {
 
-        if(!policy(new Patient)->administration()){
+        if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -362,13 +360,13 @@ class PatientController extends Controller
                 $data['severity'] = $referralHistory->severity;
             }
         }
-        $preference =  EngagementPreference::where('patient_id', $id)->first();
+        $preference = EngagementPreference::where('patient_id', $id)->first();
         $data['engagement_preference'] = null;
         if ($preference) {
             $data['engagement_preference'] = $preference->type;
         }
-        
-        $insuranceCarrier =  PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
+
+        $insuranceCarrier = PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
         if ($insuranceCarrier) {
             $data['insurance_carrier'] = $insuranceCarrier->insurance_carrier;
             $data['subscriber_name'] = $insuranceCarrier->subscriber_name;
@@ -379,7 +377,7 @@ class PatientController extends Controller
         }
 
         return view('patient.admin')
-        ->with('data', $data);
+            ->with('data', $data);
     }
 
     /**
@@ -392,11 +390,10 @@ class PatientController extends Controller
     public function update(Request $request, $id)
     {
 
-        if(!policy(new Patient)->administration()){
+        if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-
 
         $patient = Patient::find($id);
         if ($patient) {
@@ -455,7 +452,7 @@ class PatientController extends Controller
             $insuranceCarrier->insurance_group_no = $request->input('insurance_group_no');
             $insuranceCarrier->save();
 
-            $preference =  EngagementPreference::where('patient_id', $id)->first();
+            $preference = EngagementPreference::where('patient_id', $id)->first();
             if ($preference == null) {
                 $preference = new EngagementPreference;
                 $preference->patient_id = $id;
@@ -473,38 +470,36 @@ class PatientController extends Controller
             return redirect('/administration/patients');
         }
 
-        $path = 'patients?referraltype_id=' . $request->input('referraltype_id') . '&action=' . $request->input('action').'&patient_id='.$id;
+        $path = 'patients?referraltype_id=' . $request->input('referraltype_id') . '&action=' . $request->input('action') . '&patient_id=' . $id;
         return redirect($path);
     }
 
     public function destroy(Request $request)
     {
 
-        if(!policy(new Patient)->administration()){
+        if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-
 
         if (!$request->input() || $request->input() === '' || sizeof($request->input()) < 1) {
             return;
         }
         $patient = Patient::whereIn('id', $request->input())->delete();
-        $action = 'delete'.sizeof($request->input()) . 'patients';
+        $action = 'delete' . sizeof($request->input()) . 'patients';
         $description = '';
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-        return ;
+        return;
     }
 
     public function search(Request $request)
     {
         $filters = json_decode($request->input('data'), true);
-        $sortInfo =json_decode($request->input('tosort'), true);
+        $sortInfo = json_decode($request->input('tosort'), true);
         $countResult = config('constants.default_paginate_result');
-        if($request->has('countresult'))
-        {
+        if ($request->has('countresult')) {
             $countResult = $request->countresult;
         }
 
@@ -526,7 +521,7 @@ class PatientController extends Controller
                 $data[$i]['birthdate'] = '-';
             } else {
                 $birthdate = new DateTime($patient->birthdate);
-                $data[$i]['birthdate'] = ($patient->birthdate && (bool)strtotime($patient->birthdate))? $birthdate->format('F j Y') : '-';
+                $data[$i]['birthdate'] = ($patient->birthdate && (bool) strtotime($patient->birthdate)) ? $birthdate->format('F j Y') : '-';
             }
             $data[$i]['name'] = $patient->getName();
             $i++;
@@ -538,16 +533,14 @@ class PatientController extends Controller
         $data[0]['nextpage'] = $data[0]['currentpage'] + 1;
         $data[0]['previouspage'] = $data[0]['currentpage'] - 1;
 
-
-        if($data[0]['nextpage'] > $data[0]['lastpage']) {
+        if ($data[0]['nextpage'] > $data[0]['lastpage']) {
 
             $data[0]['nextpage'] = $data[0]['currentpage'];
         }
 
+        $currentResult = ($data[0]['previouspage'] * $countResult) ?: 1;
 
-        $currentResult = ($data[0]['previouspage']*$countResult)?:1;
-
-        $upperResult = ($data[0]['currentpage']*$countResult < $data[0]['total'])?$data[0]['currentpage']*$countResult:$data[0]['total'];
+        $upperResult = ($data[0]['currentpage'] * $countResult < $data[0]['total']) ? $data[0]['currentpage'] * $countResult : $data[0]['total'];
 
         $data[0]['current_result'] = $currentResult;
         $data[0]['upper_result'] = $upperResult;
@@ -558,7 +551,7 @@ class PatientController extends Controller
     public function administration(Request $request)
     {
 
-        if(!policy(new Patient)->administration()){
+        if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -574,11 +567,10 @@ class PatientController extends Controller
     public function editFromReferral(Request $request)
     {
 
-        if(!policy(new Patient)->administration()){
+        if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-
 
         $id = $request->input('patient_id');
         $data = array();
@@ -611,13 +603,13 @@ class PatientController extends Controller
             }
         }
 
-        $preference =  EngagementPreference::where('patient_id', $id)->first();
+        $preference = EngagementPreference::where('patient_id', $id)->first();
         $data['engagement_preference'] = null;
         if ($preference) {
             $data['engagement_preference'] = $preference->type;
         }
 
-        $insuranceCarrier =  PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
+        $insuranceCarrier = PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
         if ($insuranceCarrier) {
             $data['insurance_carrier'] = $insuranceCarrier->insurance_carrier;
             $data['subscriber_name'] = $insuranceCarrier->subscriber_name;
@@ -655,11 +647,10 @@ class PatientController extends Controller
     public function updateDemographics(Request $request)
     {
 
-        if(!policy(new Patient)->administration()){
+        if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-
 
         $data = $request->all();
         $patient_id = $data['patient_id'];
