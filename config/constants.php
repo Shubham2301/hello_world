@@ -117,4 +117,10 @@ return [
     'date_format' => 'm/d/Y',
     'db_date_format' => 'Y-m-d h:i:s',
     'schedule_notes_delimiter' => '</br>',
+
+    'user_levels'=>[
+        'network' => 'Network',
+        'practice' => 'Practice',
+        'location' => 'Location',
+    ]
 ];

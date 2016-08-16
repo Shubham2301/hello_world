@@ -12,6 +12,7 @@ use myocuhub\Models\PracticeNetwork;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Network;
 use myocuhub\User;
+use Auth;
 
 class PracticeController extends Controller
 {
@@ -38,7 +39,7 @@ class PracticeController extends Controller
      */
     public function create()
     {
-        if(!policy(new Practice)->administration()){
+        if (!policy(new Practice)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -66,7 +67,7 @@ class PracticeController extends Controller
      */
     public function store(Request $request)
     {
-        if(!policy(new Practice)->administration()){
+        if (!policy(new Practice)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -146,7 +147,7 @@ class PracticeController extends Controller
      */
     public function edit($id, $location)
     {
-        if(!policy(new Practice)->administration()){
+        if (!policy(new Practice)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -173,7 +174,7 @@ class PracticeController extends Controller
      */
     public function update(Request $request)
     {
-        if(!policy(new Practice)->administration()){
+        if (!policy(new Practice)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -189,7 +190,7 @@ class PracticeController extends Controller
         $practice->save();
 
         foreach ($locations as $location) {
-            if(isset($location['id'])){
+            if (isset($location['id'])) {
                 $practicelocation = PracticeLocation::find($location['id']);
             } else {
                 $practicelocation = new PracticeLocation;
@@ -237,7 +238,7 @@ class PracticeController extends Controller
      */
     public function destroy(Request $request)
     {
-        if(!policy(new Practice)->administration()){
+        if (!policy(new Practice)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -265,22 +266,21 @@ class PracticeController extends Controller
     {
         $tosearchdata = json_decode($request->input('data'), true);
 
-        if (session('user-level') == 1) {
+        if (Auth::user()->isSuperAdmin()) {
             $practices = Practice::where('name', 'like', '%' . $tosearchdata['value'] . '%')->get();
-        } else {
+        } elseif (Auth::user()->checkUserLevel(config('constants.user_levels.network'))) {
             $practices = Network::practicesByName($tosearchdata['value']);
+        } else {
+            $userID = Auth::user()->id;
+            $practices = Practice::getPracticeByUserID($userID);
         }
-
         $data = [];
-//      $data[0]['total'] = $practices->total();
-//      $data[0]['lastpage'] = $practices->lastPage();
-//      $data[0]['currentPage'] = $practices->currentPage();
         $i = 0;
         foreach ($practices as $practice) {
             $data[$i]['id'] = $practice->id;
             $data[$i]['name'] = $practice->name;
             $data[$i]['email'] = ($practice->email) ? $practice->email : '-';
-            $data[$i]['address'] = '4885 Olde Towne Parkway, Marietta, GA 30076';
+            $data[$i]['address'] = '';
             $data[$i]['locations'] = PracticeLocation::where('practice_id', $practice->id)->get();
             $i++;
         }
@@ -289,8 +289,7 @@ class PracticeController extends Controller
 
     public function administration(Request $request)
     {
-
-        if(!policy(new Practice)->administration()){
+        if (!policy(new Practice)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -301,7 +300,7 @@ class PracticeController extends Controller
 
     public function removelocation(Request $request)
     {
-        if(!policy(new Practice)->administration()){
+        if (!policy(new Practice)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -310,6 +309,7 @@ class PracticeController extends Controller
 
         return json_encode($data);
     }
+
     public function practiceUsers(Request $request)
     {
         $practiceId = $request->id;
@@ -324,20 +324,21 @@ class PracticeController extends Controller
 
         return json_encode($users);
     }
+
     public function getReferringPracticeSuggestions(Request $request)
     {
         $searchString = $request->practice;
         $practices = Practice::where('name', 'LIKE', ''.$searchString.'%');
 
-        if(session('user-level') > 1){
-            $practices = $practices->leftjoin('practice_network', 'practices.id', '=','practice_network.practice_id')
+        if (session('user-level') > 1) {
+            $practices = $practices->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
                 ->where('practice_network.network_id', session('network-id'));
         }
 
         $practices = $practices->pluck('practices.name')->toArray();
 
         $fromReferring = ReferralHistory::where('referred_by_practice', 'LIKE', ''.$searchString.'%');
-        if(session('user-level') > 1){
+        if (session('user-level') > 1) {
             $fromReferring = $fromReferring->where('network_id', session('network-id'));
         }
         $fromReferring = $fromReferring->pluck('referred_by_practice')->toArray();
@@ -351,8 +352,8 @@ class PracticeController extends Controller
         return json_encode($data);
     }
 
-    public function getPracticesByNetwork($networkID){
-
+    public function getPracticesByNetwork($networkID)
+    {
         $networkPractices = Network::find($networkID)->practices()->get(['practices.id', 'practices.name']);
         $practices = [];
         foreach ($networkPractices as $practice) {
