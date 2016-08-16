@@ -571,17 +571,18 @@ class Reports
 
         $result = array();
         $countTypes = array_count_values($appointmentTypes);
+        arsort($countTypes);
         $appointmentTypes = array_unique($appointmentTypes);
         $i = 0;
         $total = 0;
-        foreach ($appointmentTypes as $type) {
-            if ($type == '') {
+        foreach ($countTypes as $key => $count) {
+            if ($count == 0) {
                 continue;
             }
 
-            $result[$i]['name'] = $type;
-            $result[$i]['count'] = $countTypes[$type];
-            $total += $countTypes[$type];
+            $result[$i]['name'] = $key;
+            $result[$i]['count'] = $count;
+            $total += $count;
             $i++;
         }
         return $result;
@@ -663,17 +664,18 @@ class Reports
 
         $result = array();
         $countTypes = array_count_values($insuranceTypes);
+        arsort($countTypes);
         $insuranceTypes = array_unique($insuranceTypes);
         $i = 0;
         $total = 0;
-        foreach ($insuranceTypes as $type) {
-            if ($type == '') {
+        foreach ($countTypes as $key => $count) {
+            if ($count == 0) {
                 continue;
             }
 
-            $result[$i]['name'] = $type;
-            $result[$i]['count'] = $countTypes[$type];
-            $total += $countTypes[$type];
+            $result[$i]['name'] = $key;
+            $result[$i]['count'] = $count;
+            $total += $count;
             $i++;
         }
         return $result;
