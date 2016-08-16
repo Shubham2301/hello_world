@@ -19,6 +19,7 @@ use myocuhub\Services\ActionService;
 use myocuhub\Services\CareConsoleService;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
+use myocuhub\Facades\Helper;
 
 class CareConsoleController extends Controller
 {
@@ -297,10 +298,18 @@ class CareConsoleController extends Controller
     {
         $data = [];
         $patient = Patient::find($request->patientID);
+        $console = Careconsole::where('patient_id', $request->patientID)->first();
         $data['patient_id'] = $request->patientID;
-        $data['name'] = $patient->lastname . ', ' . $patient->firstname;
-        $data['phone'] = ($patient->cellphone) ? $patient->cellphone : (($patient->homephone) ? $patient->homephone : $patient->workphone);
-        $data['email'] = $patient->email;
+        $data['name'] = $this->CareConsoleService->getPatientFieldValue($patient, 'full-name');
+        $data['phone'] = $this->CareConsoleService->getPatientFieldValue($patient, 'phone');
+        $data['email'] = $this->CareConsoleService->getPatientFieldValue($patient, 'email');
+        $data['special_request'] = $this->CareConsoleService->getPatientFieldValue($patient, 'special-request');
+        $data['pcp'] = $this->CareConsoleService->getPatientFieldValue($patient, 'pcp');
+        $data['dob'] = $this->CareConsoleService->getPatientFieldValue($patient, 'dob');
+        $data['address'] = $this->CareConsoleService->getPatientFieldValue($patient, 'address');
+        $data['last_scheduled_to'] = $this->CareConsoleService->getPatientFieldValue($patient, 'last-scheduled-to');
+        $data['insurance'] = $this->CareConsoleService->getPatientFieldValue($patient, 'insurance-carrier');
+        $data['referred_by'] = $this->CareConsoleService->getPatientFieldValue($console, 'referral-history');
 
         return json_encode($data);
     }

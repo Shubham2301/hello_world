@@ -171,6 +171,7 @@ $(document).ready(function() {
 
 
         $('#action_name').val($(this).attr('data-name'));
+        $('.modal-dialog').removeClass('wide-modal');
 
         switch ($(this).attr('data-name')) {
             case 'reschedule':
@@ -181,6 +182,8 @@ $(document).ready(function() {
                 $('#form_action_request_phone').show();
                 $('.form_action_patient_phone').html(patientPhone);
                 $('.form_action_patient_name').html(patientName);
+                getPatientContactData(data['patient_id']);
+                $('.modal-dialog').addClass('wide-modal');
                 $('#form_action_notes').hide();
                 showActionModel(data);
                 break;
@@ -247,6 +250,7 @@ $(document).ready(function() {
         var patientPhone = ($(".action_dropdownmenu[data-patientid=" + data['patient_id'] + "]").attr('data-patient-phone') == '') ? '-' : $(".action_dropdownmenu[data-patientid=" + data['patient_id'] + "]").attr('data-patient-phone');
 
         $('#action_name').val($(this).attr('data-name'));
+        $('.modal-dialog').removeClass('wide-modal');
 
         switch ($(this).attr('data-name')) {
             case 'reschedule':
@@ -263,6 +267,8 @@ $(document).ready(function() {
             case 'request-patient-email':
                 $('#form_action_request_email').show();
                 $('.form_action_patient_email_id').html(patientEmail);
+                getPatientContactData(data['patient_id']);
+                $('.modal-dialog').addClass('wide-modal');
                 $('#form_action_notes').hide();
                 showActionModel(data);
                 break;
@@ -346,6 +352,7 @@ $(document).ready(function() {
         });
 
         $('#action_name').val($(this).attr('data-name'));
+        $('.modal-dialog').removeClass('wide-modal');
 
         switch ($(this).attr('data-name')) {
             case 'reschedule':
@@ -356,6 +363,8 @@ $(document).ready(function() {
                 $('#form_action_request_phone').show();
                 $('.form_action_patient_phone').html(patientPhone);
                 $('.form_action_patient_name').html(patientName);
+                getPatientContactData(data['patient_id']);
+                $('.modal-dialog').addClass('wide-modal');
                 $('#form_action_notes').hide();
                 showActionModel(data);
                 break;
@@ -700,6 +709,7 @@ function action() {
         showDate = false;
 
         $('#action_name').val('contact-attempted-by-phone');
+        $('.modal-dialog').removeClass('wide-modal');
 
         showActionModel(data);
 
@@ -1157,4 +1167,41 @@ function referredByPracticeSuggestions(searchValue) {
     } else {
         $('.practice_suggestions').removeClass('active');
     }
+}
+
+function getPatientContactData (patientID) {
+     var formData = {
+        'patientID': patientID
+    };
+
+    $.ajax({
+        url: '/careconsole/patient_info',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function success(e) {
+            var data = $.parseJSON(e);
+            if (data.length === 0) {
+                return;
+            }
+            $('.contact_by_phone_data').find('.special_request').text(data.special_request);
+            $('.contact_by_phone_data').find('.pcp').text(data.pcp);
+            $('.contact_by_phone_data').find('.email').text(data.email);
+            $('.contact_by_phone_data').find('.scheduled_to').text(data.scheduled_to);
+            $('.contact_by_phone_data').find('.appointment_date').text(data.appointment_date);
+            $('.contact_by_phone_data').find('.dob').text(data.dob);
+            $('.contact_by_phone_data').find('.address').text(data.address);
+            $('.contact_by_phone_data').find('.insurance').text(data.insurance);
+            $('.contact_by_phone_data').find('.referred_by').text(data.referred_by);
+            $('.contact_by_phone_data').find('.last_scheduled_to').text(data.last_scheduled_to);
+        },
+        error: function error() {
+            $('p.alert_message').text('Error:');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+
+    });
 }
