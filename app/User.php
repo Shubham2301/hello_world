@@ -137,6 +137,13 @@ CanResetPasswordContract
                             case 'specialty':
                                 $query->where('speciality', 'LIKE', '%' . $filter['value'] . '%');
                                 break;
+                            case 'provider_types':
+                                foreach ($filter['value'] as $type) {
+                                    $query->where('provider_type_id', null)
+                                        ->orWhere('provider_type_id', $type);
+                                }
+
+                                break;
                             case 'all':
                                 $query->where('practices.name', 'LIKE', '%' . $filter['value'] . '%')
                                     ->orWhere('practice_location.city', 'LIKE', '%' . $filter['value'] . '%')

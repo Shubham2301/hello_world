@@ -16,6 +16,15 @@ class ProviderType extends Model
         return $indexed;
     }
 
+    public static function indexedAbbr()
+    {
+        $providerTypes = self::orderBy('name')->get(['id', 'abbr']);
+        foreach ($providerTypes as $type) {
+            $indexed[$type->id] = $type->abbr;
+        }
+        return $indexed;
+    }
+
     public static function notSet()
     {
         return 'Unlisted';

@@ -550,16 +550,21 @@ function getProviders(formData) {
     $('.practice_info').removeClass('active');
     $('.appointment_type_not_found').hide();
     var tojson = JSON.stringify(formData);
-    var show_specialist = {
+    var showSpecialist = {
         show: $('#show_specialist').prop('checked'),
         referraltype_id: $('#form_referraltype_id').val()
     }
+    var providerTypes = [];
+    $("input:checkbox[name=provider_types]:checked").each(function(){
+        providerTypes.push($(this).val());
+    });
     $.ajax({
         url: '/providers/search',
         type: 'GET',
         data: $.param({
             data: tojson,
-            show_specialist: show_specialist
+            show_specialist: showSpecialist,
+            provider_types: providerTypes
         }),
         contentType: 'text/html',
         async: false,

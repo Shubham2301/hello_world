@@ -166,6 +166,14 @@ class ProviderController extends Controller
             }
         }
 
+        if ($request->has('provider_types')) {
+            $providerTypes = $request->provider_types;
+            $filters[] = [
+                'type' => 'provider_types',
+                'value' => $providerTypes,
+            ];
+        }
+
         $providers = User::providers($filters);
         $data = [];
         $i = 0;
