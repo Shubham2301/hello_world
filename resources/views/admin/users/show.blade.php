@@ -53,26 +53,30 @@
                 </div>
 
 				<div class="row row_content_margin">
+                <div class="col-xs-6">
+                        <p><span class="bold arial_bold">Network/Practice</span>
+                            <br><span class="user_detail_info"> {{ $data['network'] }} </span> </p>
+                    </div>
                     <div class="col-xs-6">
                         <p><span class="bold arial_bold">User Type</span>
                             <br><span class="user_detail_info">{{ $data['usertype'] }}</span></p>
-                    </div>
-                    <div class="col-xs-6">
-                        <p><span class="bold arial_bold">Network/Practice</span>
-                            <br><span class="user_detail_info"> {{ $data['network'] }} </span> </p>
                     </div>
                 </div>
 
 				<div class="row row_content_margin">
                     <div class="col-xs-6">
-						<p><span class="bold arial_bold" >Roles</span><br>
-
+                        <p><span class="bold arial_bold" >Roles</span><br>
                                 @foreach ($data['Roles'] as $roles)
                                 <sapn class='arial'>{{ $roles['display_name'] }}</span><br>
                                 @endforeach
-
                         </p>
                     </div>
+                    @if($data['usertype'] == 'Provider')
+                    <div class="col-xs-6">
+                        <p><span class="bold arial_bold">Provider Type</span>
+                            <br><span class="user_detail_info">{{ $data['provider_type'] }}</span></p>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -1,4 +1,3 @@
-<!-- TODO: Add pagination to patient list to avoid scrolling of elements -->
 <div class="row content-row-margin practice_list"></div>
 <div class="row content-row-margin no_item_found">
     <p>No results found matching :</p>
@@ -14,20 +13,30 @@
             <p id="openModel" class="arial_bold preference" data-toggle="modal" data-target="#provider_preferences">Provider Preferences</p>
         </div>
         <div class="col-sm-8 col-xs-6">
-            <p class="bold arial_bold" id="practice_name">Opthalmic Consultants of Long Island</p>
+            <p class="bold arial_bold" id="practice_name"></p>
             <hr class="practice_name_underline">
             <div class="row provider_info_row">
                 <div class="col-sm-6 col-xs-12">
-                    <p><span class="bold arial_bold">Doctor Name</span>
-                        <br><span class="provider_detail_text arial" id="provider_name"></span></p>
-					<p><span class="bold arial_bold">Specialty </span>
-                        <br><span class="provider_detail_text arial" id="speciality"></span></p>
+                    <p>
+                        <span class="bold arial_bold">Doctor Name</span>
+                        <br>
+                        <span class="provider_detail_text arial" id="provider_name"></span>
+                    </p>
+                    <p>
+                        <span class="bold arial_bold">Provider Type</span>
+                        <br>
+                        <span class="provider_detail_text arial" id="provider_type"></span>
+                    </p>
+					<p>
+                        <span class="bold arial_bold">Specialty</span>
+                        <br>
+                        <span class="provider_detail_text arial" id="speciality"></span>
+                    </p>
                     <p>
                         <span id="ins_list" class="ins_list"></span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax ins_list">
                         <span id="ins_selected"></span>
                         </span>
                     </p>
-
                 </div>
                 <div class="col-sm-6 col-xs-12">
                     <p>

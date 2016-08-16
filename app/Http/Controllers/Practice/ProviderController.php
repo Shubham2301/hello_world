@@ -11,7 +11,7 @@ use myocuhub\Http\Controllers\Controller;
 use myocuhub\Http\Controllers\Traits\ValidateFPCRequestParams;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
-use myocuhub\Models\PracticeLocation;
+use myocuhub\Models\ProviderType;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\ReferralType;
@@ -111,6 +111,7 @@ class ProviderController extends Controller
         $data['practice_name'] = $practice_name;
         $data['practice_id'] = $practice_id;
         $data['provider'] = $provider;
+        $data['provider_type'] = ProviderType::getName($provider->provider_type_id);
         $data['locations'] = $practice_locations;
         return json_encode($data);
     }
@@ -159,28 +160,28 @@ class ProviderController extends Controller
                 $referraltypeID = $request->show_specialist['referraltype_id'];
                 $referraltype = ReferralType::find($referraltypeID);
                 $filters[] = [
-                    'type' =>'specialty',
-                    'value' => $referraltype->display_name
+                    'type' => 'specialty',
+                    'value' => $referraltype->display_name,
                 ];
             }
         }
-        
+
         $providers = User::providers($filters);
         $data = [];
         $i = 0;
 
         foreach ($providers as $provider) {
             if (!$provider->id || !$provider->user_id) {
-                //TODO : check for providers based on entity_type instead of manual check in controller
-
                 continue;
             }
 
-            $data[$i]['provider_id'] = $provider->user_id;
+            $data[$i]['id'] = $provider->user_id;
             $data[$i]['practice_id'] = $provider->id;
-            $data[$i]['provider_name'] = $provider->firstname . ' ' . $provider->lastname;
+            $data[$i]['name'] = $provider->getName();
+            $data[$i]['speciality'] = $provider->speciality ?: 'Unlisted';
+            $data[$i]['provider_type'] = ProviderType::getName($provider->provider_type_id);
             $data[$i]['practice_name'] = $provider->name;
-            $data[$i]['practice_speciality'] = $provider->speciality;
+            $data[$i]['location_name'] = $provider->locationname;
             $i++;
         }
 
@@ -190,15 +191,11 @@ class ProviderController extends Controller
     public function getAppointmentTypes(Request $request)
     {
         $providerInfo = array();
-
         $providerKey = $request->input('provider_id');
         $locationKey = $request->input('location_id');
-
         $providerInfo['LocKey'] = $locationKey;
         $providerInfo['AcctKey'] = $providerKey;
-
         $apptTypes = WebScheduling4PC::getApptTypes($providerInfo);
-
 
         if (!isset($apptTypes->GetApptTypesResult->ApptType)) {
             $action = 'No data received for Provider = ' . $providerKey . ' Location = ' . $locationKey;
@@ -209,7 +206,7 @@ class ProviderController extends Controller
             return json_encode($apptTypes);
         }
 
-        $aptAsJson=  json_encode($apptTypes);
+        $aptAsJson = json_encode($apptTypes);
         $aptAsArray = json_decode($aptAsJson, true);
 
         if (!array_key_exists('ApptType', $aptAsArray['GetApptTypesResult'])) {
@@ -219,8 +216,8 @@ class ProviderController extends Controller
         $checkaptFormat = array_key_exists(0, $aptAsArray['GetApptTypesResult']['ApptType']);
 
         if (!$checkaptFormat) {
-            $data['ApptTypeName'] =  $aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeName'];
-            $data['ApptTypeKey'] =  $aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeKey'];
+            $data['ApptTypeName'] = $aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeName'];
+            $data['ApptTypeKey'] = $aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeKey'];
             unset($aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeKey']);
             unset($aptAsArray['GetApptTypesResult']['ApptType']['ApptTypeName']);
             $aptAsArray['GetApptTypesResult']['ApptType'][0] = $data;
@@ -307,11 +304,12 @@ class ProviderController extends Controller
                 continue;
             }
             $data[$i]['id'] = $provider->provider_id;
-            $data[$i]['name'] = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+            $data[$i]['name'] = $provider->getName();
             $data[$i]['practice_id'] = $provider->practice_id;
             $data[$i]['practice_name'] = $provider->name;
-            $data[$i]['speciality'] = $provider->speciality;
-            $data[$i]['location_address'] = $provider->addressline1;
+            $data[$i]['speciality'] = $provider->speciality ?: 'Unlisted';
+            $data[$i]['provider_type'] = ProviderType::getName($provider->provider_type_id);
+            $data[$i]['location_name'] = $provider->locationname;
             $i++;
         }
         return json_encode($data);
@@ -329,11 +327,11 @@ class ProviderController extends Controller
         $lat = $patientLocation['latitude'];
         $lng = $patientLocation['longitude'];
         $providers = [];
-        if ($lat !='') {
+        if ($lat != '') {
             $providers = User::getNearByProviders($lat, $lng, 50);
         }
         $data = [];
-        $i =0;
+        $i = 0;
         foreach ($providers as $provider) {
             if ($i > 20) {
                 break;
@@ -342,12 +340,13 @@ class ProviderController extends Controller
                 continue;
             }
             $data[$i]['id'] = $provider->user_id;
-            $data[$i]['name'] = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+            $data[$i]['name'] = $provider->getName();
             $data[$i]['practice_id'] = $provider->practice_id;
             $data[$i]['practice_name'] = $provider->name;
-            $data[$i]['speciality'] = $provider->speciality;
-            $data[$i]['location_address'] = $provider->addressline1.' '.$provider->state;
-            $data[$i]['distance'] = number_format((float)$provider->distance, 2, '.', '').' Miles';
+            $data[$i]['speciality'] = $provider->speciality ?: 'Unlisted';
+            $data[$i]['location_name'] = $provider->locationname;
+            $data[$i]['provider_type'] = ProviderType::getName($provider->provider_type_id);
+            $data[$i]['distance'] = number_format((float) $provider->distance, 2, '.', '') . ' Miles';
             $i++;
         }
         return json_encode($data);
@@ -356,7 +355,7 @@ class ProviderController extends Controller
     public function getReferringProviderSuggestions(Request $request)
     {
         $searchString = $request->provider;
-        $providers = User::where('name', 'LIKE', ''.$searchString.'%')->where('usertype_id', 1);
+        $providers = User::where('name', 'LIKE', '' . $searchString . '%')->where('usertype_id', 1);
 
         if (session('user-level') > 1) {
             $providers = $providers->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
@@ -364,7 +363,7 @@ class ProviderController extends Controller
         }
 
         $providers = $providers->pluck('users.name')->toArray();
-        $fromReferring = ReferralHistory::where('referred_by_provider', 'LIKE', ''.$searchString.'%');
+        $fromReferring = ReferralHistory::where('referred_by_provider', 'LIKE', '' . $searchString . '%');
         if (session('user-level') > 1) {
             $fromReferring = $fromReferring->where('network_id', session('network-id'));
         }
@@ -373,7 +372,7 @@ class ProviderController extends Controller
         $data = [];
         $i = 0;
         foreach ($suggestions as $key => $value) {
-            $data[$i]= $value;
+            $data[$i] = $value;
             $i++;
         }
         return json_encode($data);

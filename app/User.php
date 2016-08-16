@@ -9,11 +9,11 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
-use myocuhub\Models\UserLevel;
-use myocuhub\Models\NetworkUser;
-use myocuhub\User;
 use Illuminate\Support\Facades\DB;
 use myocuhub\Http\Controllers\Traits\TwoFactorAuthenticatable;
+use myocuhub\Models\NetworkUser;
+use myocuhub\Models\ProviderType;
+use myocuhub\Models\UserLevel;
 
 class User extends Model implements AuthenticatableContract,
 AuthorizableContract,
@@ -48,11 +48,6 @@ CanResetPasswordContract
         return $this->belongsToMany(Role::class);
     }
 
-    public function network()
-    {
-        return $this->hasOne(NetworkUser::class, 'user_id');
-    }
-
     public function hasRole($role)
     {
         if (is_string($role)) {
@@ -61,8 +56,9 @@ CanResetPasswordContract
 
         return !!$role->intersect($this->roles)->count();
     }
-    
-    public function administrationAccess(){
+
+    public function administrationAccess()
+    {
         return ($this->hasRole('user-admin') || $this->hasRole('patient-admin') || $this->hasRole('practice-admin') || $this->isSuperAdmin());
     }
 
@@ -81,7 +77,8 @@ CanResetPasswordContract
         return $this->belongsTo(Models\UserLevel::class);
     }
 
-    public function checkUserLevel($level){
+    public function checkUserLevel($level)
+    {
         $userlevel = UserLevel::find($this->level);
         return $userlevel->name == $level;
     }
@@ -91,9 +88,19 @@ CanResetPasswordContract
         return $this->belongsTo(Usertype::class);
     }
 
-    public function contactHistory()
+    public function network()
     {
-        return $this->hasMany('myocuhub\Models\ContactHistory', 'user_id');
+        return $this->hasOne(NetworkUser::class, 'user_id');
+    }
+
+    public function providerType()
+    {
+        return $this->belongsTo(ProviderType::class);
+    }
+
+    public function providerTypeName()
+    {
+        return $this->providerType ? $this->providerType->name : self::notSet();
     }
 
     public static function providers($filters)
@@ -150,7 +157,7 @@ CanResetPasswordContract
                 }
             })
             ->groupBy('users.id');
-            
+
         if (session('user-level') == 1) {
             return $query
                 ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
@@ -163,6 +170,11 @@ CanResetPasswordContract
         }
     }
 
+    public function contactHistory()
+    {
+        return $this->hasMany('myocuhub\Models\ContactHistory', 'user_id');
+    }
+
     public static function practiceUserById($practice_id)
     {
         return self::query()
@@ -172,7 +184,7 @@ CanResetPasswordContract
             ->where('active', '1')
             ->get(['*', 'users.*']);
     }
-    
+
     public static function networkUserById($network_id)
     {
         return self::query()
@@ -252,26 +264,26 @@ CanResetPasswordContract
             ->get(['users.id', 'users.name', 'users.sesemail']);
     }
 
-    public static function getNearByProviders($lat, $lng, $range=10)
+    public static function getNearByProviders($lat, $lng, $range = 10)
     {
-        $query =  self::query()
-        ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
-        ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
-        ->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
-        ->where('usertype_id', 1)
-        ->where('active', '1')
-        ->select(DB::raw('*, ( 3959 * acos( cos( radians('.$lat.') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$lng.') ) + sin( radians('.$lat.') ) * sin( radians( latitude ) ) ) ) AS distance'))
-        ->having('distance', '<=', $range)
-        ->orderBy('distance', 'ASC');
+        $query = self::query()
+            ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
+            ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
+            ->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
+            ->where('usertype_id', 1)
+            ->where('active', '1')
+            ->select(DB::raw('*, ( 3959 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
+            ->having('distance', '<=', $range)
+            ->orderBy('distance', 'ASC');
         if (session('user-level') == 1) {
             return $query
-            ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
-            ->get();
+                ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
+                ->get();
         } else {
             return $query
-            ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
-            ->where('practice_network.network_id', session('network-id'))
-            ->get();
+                ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
+                ->where('practice_network.network_id', session('network-id'))
+                ->get();
         }
     }
 
@@ -285,13 +297,14 @@ CanResetPasswordContract
         return $this->lastname . ', ' . $this->firstname;
     }
 
-    public static function getCareConsoledata($networkID, $startDate, $endDate) {
+    public static function getCareConsoledata($networkID, $startDate, $endDate)
+    {
 
         return self::whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
-                $query->whereNotNull('user_id');
-                $query->where('contact_activity_date', '>=', $startDate);
-                $query->where('contact_activity_date', '<=', $endDate);
-            })
+            $query->whereNotNull('user_id');
+            $query->where('contact_activity_date', '>=', $startDate);
+            $query->where('contact_activity_date', '<=', $endDate);
+        })
             ->whereHas('contactHistory.careconsole.importHistory', function ($query) use ($networkID) {
                 $query->where('network_id', $networkID);
             })
@@ -306,4 +319,5 @@ CanResetPasswordContract
             ])
             ->get();
     }
+
 }

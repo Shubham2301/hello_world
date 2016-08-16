@@ -229,6 +229,12 @@ class UserController extends Controller
             $data['usertype'] = $user->usertype->name;
         }
 
+        if ($user->providerType) {
+            $data['provider_type'] = $user->providerType->name;
+        } else {
+            $data['provider_type'] = ProviderType::notSet();
+        }
+
         $data['network'] = ' ';
         if (User::getNetwork($userID)) {
             $data['network'] = User::getNetwork($userID)->name;
