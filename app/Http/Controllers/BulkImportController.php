@@ -10,6 +10,7 @@ use Faker\Factory as Faker;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Facades\Helper;
 use myocuhub\Jobs\PatientEngagement\ImportPatientMail;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\EngagementPreference;
@@ -150,7 +151,7 @@ class BulkImportController extends Controller
                         $patients['addressline2'] = isset($data['address_2']) ? $data['address_2'] : '';
                         $patients['city'] = isset($data['city']) ? $data['city'] : '';
                         $patients['zip'] = isset($data['zip']) ? $data['zip'] : '';
-                        $patients['gender'] = isset($data['gender']) ? $data['gender'] : '';
+                        $patients['gender'] = isset($data['gender']) ? Helper::getGenderIndex($data['gender']) : '';
                         $patients['special_request'] = isset($data['special_request']) ? $data['special_request'] : '';
                         $patients['pcp'] = isset($data['primary_care_physician']) ? $data['primary_care_physician'] : '';
 

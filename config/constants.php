@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return [
 
@@ -9,11 +9,11 @@ return [
         'contact_form' => 'www.ocuhub.com/contact',
         'application_error' => 'applicationerror@ocuhub.com',
         'ses' => [
-            'email' =>[
-                'id'=>'Admin2@direct.ocuhub.com',
-                'display_name' => 'Support OcuHub'
-            ]
-        ]
+            'email' => [
+                'id' => 'Admin2@direct.ocuhub.com',
+                'display_name' => 'Support OcuHub',
+            ],
+        ],
     ],
     'production_url' => 'https://myocuhub.com',
     'message_type' => [
@@ -29,29 +29,35 @@ return [
     'message_views' => [
         'request_appointment_provider' => [
             'subject' => 'Request for Appointment',
-            'view' => 'emails.appt-confirmation-provider'
+            'view' => 'emails.appt-confirmation-provider',
         ],
         'request_appointment_patient' => [
             'subject' => 'Appointment has been scheduled',
-            'view' => 'emails.appt-confirmation-patient'
+            'view' => 'emails.appt-confirmation-patient',
         ],
         'post_appointment_patient' => [
             'subject' => 'How was your Appointment',
-            'view' => 'emails.post-appointment-patient'
+            'view' => 'emails.post-appointment-patient',
         ],
 
         'send_record_provider' => [
             'subject' => 'New health record created',
-            'view' => 'You have created a new health record'
+            'view' => 'You have created a new health record',
         ],
     ],
     'language' => [
         'english' => 1,
-        'spanish' => 2
+        'spanish' => 2,
     ],
     'gender' => [
         'male' => 'M',
-        'female' => 'F'
+        'female' => 'F',
+    ],
+    'gender_variations' => [
+        'male' => 'M',
+        'm' => 'M',
+        'female' => 'F',
+        'f' => 'F',
     ],
     'appointment_types' => [
         'ABIorVTeval',
@@ -64,49 +70,49 @@ return [
         'UnknownEncounterReschedule',
     ],
     'paths' => [
-        'ccda'=>[
+        'ccda' => [
             'temp_ccda' => base_path() . '/temp_ccda/',
             'temp_json' => base_path() . '/temp_ccda/temp_json/',
-            'default_ccda' => public_path() .'/lib/ccda/patient-demographics.json',
+            'default_ccda' => public_path() . '/lib/ccda/patient-demographics.json',
             'tojson' => public_path() . '/js/tojson.js ',
             'toxml' => public_path() . '/js/toxml.js ',
             'stylesheet' => public_path() . '/lib/xslt/CDA.xsl',
         ],
 
-        'pdf' =>[
-            'temp_dir' =>base_path() . '/temp_ccda/',
+        'pdf' => [
+            'temp_dir' => base_path() . '/temp_ccda/',
             'ext' => '.pdf',
-        ]
+        ],
     ],
     'fpc_mandatory_fields' => [
-      'birthdate' => [
-        'display_name' => 'Date of Birth',
-        'field_name'  => 'birthdate',
-        'type' => 'field_date'
-      ],
+        'birthdate' => [
+            'display_name' => 'Date of Birth',
+            'field_name' => 'birthdate',
+            'type' => 'field_date',
+        ],
     ],
     'two_factor_auth' => [
         'validity_limit' => 5,
     ],
     'provider_list_display_limit' => '5',
     'practice_location_display_limit' => '3',
-    'btn_urls' =>[
-      'from_schedule'=> [
-         'back_btn' => 'back_to_select_patient_btn',
-         'save_url' => '/administration/patients/add'
-      ],
-      'from_admin' =>[
-          'back_btn' => 'back_to_admin_patient_btn',
-          'save_url' => '/administration/patients/add'
+    'btn_urls' => [
+        'from_schedule' => [
+            'back_btn' => 'back_to_select_patient_btn',
+            'save_url' => '/administration/patients/add',
+        ],
+        'from_admin' => [
+            'back_btn' => 'back_to_admin_patient_btn',
+            'save_url' => '/administration/patients/add',
 
-        ]
+        ],
     ],
     'default_paginate_result' => 20,
     'default_timeline_result' => 5,
     'default_careconsole_paginate' => 50,
-    'date_time_format'=>[
-        'date_time'=>'F j Y, g:i a',
-        'date_only' => 'F j Y'
+    'date_time_format' => [
+        'date_time' => 'F j Y, g:i a',
+        'date_only' => 'F j Y',
     ],
     'date_format' => 'm/d/Y',
     'db_date_format' => 'Y-m-d h:i:s',

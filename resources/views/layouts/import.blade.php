@@ -42,7 +42,7 @@
                                 </span>
 								<span class="xlsx_file_filename filename"></span>
                                 <input type='hidden' id='clear_image_path' value="{{asset('images/close-natural.png')}}">
-                                
+
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -54,7 +54,7 @@
                             <div class="col-md-7">
                                 <select name="template" id="template" class="form-control">
                                     <option value="-1">Select Mail Template</option>
-                                    @foreach(Helper::mandrillTemplates() as $template_slug => $template_name)
+                                    @foreach(Helper::mandrillTemplates('bulk-import') as $template_slug => $template_name)
                                     <option value="{{ $template_slug }}">{{ $template_name }}</option>
                                     @endforeach
                                 </select>

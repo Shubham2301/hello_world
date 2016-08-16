@@ -4,10 +4,12 @@ namespace myocuhub\Helpers;
 
 use myocuhub\Services\MandrillService\MandrillService;
 
-trait MandrillHelper{
+trait MandrillHelper
+{
 
-	public static function mandrillTemplates(){  
-        return (new MandrillService)->templates();
+    public static function mandrillTemplates($label = '')
+    {
+        return (new MandrillService)->templates($label);
     }
 
 }
