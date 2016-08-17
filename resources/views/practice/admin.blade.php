@@ -22,6 +22,15 @@
 </div>
 @endif
 
+@if (Session::has('warning'))
+<div class="alert alert-warning" id="flash-message">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>
+            <i class="fa fa-check-circle fa-lg fa-fw"></i> Warning. &nbsp;
+        </strong> {{ Session::pull('warning') }}
+</div>
+@endif
+
 <div class="content-section active side_padding">
     @include('practice.search')
 </div>
