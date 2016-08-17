@@ -2,21 +2,21 @@
 
 namespace myocuhub\Http\Controllers\Reports;
 
-use myocuhub\Http\Controllers\Traits\Reports\ReachRateTrait;
+use myocuhub\Http\Controllers\Traits\Reports\CallCenterTrait;
 
 use Auth;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Careconsole;
-use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\ContactHistory;
 use myocuhub\User;
 use Datetime;
+use myocuhub\Facades\Helper;
 
-class ReachRateController extends Controller
+class CallCenterController extends Controller
 {
 
-    use ReachRateTrait;
+    use CallCenterTrait;
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +25,7 @@ class ReachRateController extends Controller
 
     public function index()
     {
-        return view('reports.reach_rate_report.index');
+        return view('reports.call_center_report.index');
     }
 
     /**
@@ -38,14 +38,10 @@ class ReachRateController extends Controller
     {
         $this->setStartDate($request->start_date);
         $this->setEndDate($request->end_date);
-        $filter = $request->filter_option;
 
         $report_data = $this->generateReport();
 
-        $result = $this->renderResult($report_data, $filter);
-
-        return($result);
+        return $report_data;
     }
-
 
 }

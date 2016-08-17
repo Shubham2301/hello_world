@@ -396,7 +396,6 @@ function getPatientInfo(formData) {
 
 }
 
-//function that is used to fill the information about the patient
 function fillPatientInfo(data) {
     $('.selected_patient_name').text(data.lastname + ', ' + data.firstname);
     $('.provider_section').show();
@@ -405,14 +404,16 @@ function fillPatientInfo(data) {
 }
 
 
-//function that displays the previous providers of the patients
 function showPreviousProvider(providers) {
-    //var provider_list = new Array("1", "John Doe", "Becker Eye", "4885 Olde Towne Parkway", "Eyes");
-
     var content = '';
     if (providers.length > 0) {
         providers.forEach(function (provider) {
-            content += '<div class="col-xs-12 list_seperator previous_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '"><div class="row"><div class="col-xs-12 arial_bold">' + provider.practice_name + '</div><div class="col-xs-6 arial">' + provider.name + '<br>' + provider.speciality + '</div><div class="col-xs-6 arial">' + provider.location_address + '</div></div></div>';
+            content += '<div class="row list_seperator previous_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '">';
+            content += '<div class="col-xs-12 arial_bold provider_list_title">' + provider.name + '</div>';
+            content += '<div class="col-xs-4 arial">Speciality - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
+            content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br>Location - ' + provider.location_name +'</div>';
+            content += '<div class="col-xs-4 arial"></div>';
+            content += '</div>';
         });
         $('.previous_provider_patient_list').html(content);
     } else {
@@ -428,7 +429,12 @@ function showProviderNear(providers) {
     var content = '';
     if (providers.length > 0) {
         providers.forEach(function (provider) {
-            content += '<div class="col-xs-12 list_seperator nearby_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '"><div class="row"><div class="col-xs-5 "><span class="arial_bold">' + provider.name + '</span><br><span class="arial">' + provider.practice_name + '<br>' + provider.speciality + '</span></div><div class="col-xs-4 arial">' + provider.location_address + '</div><div class="col-xs-3 arial"><span style ="color:black;">Distance - ' + provider.distance + '</span></div></div></div>';
+            content += '<div class="row list_seperator nearby_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '">';
+            content += '<div class="col-xs-12 arial_bold provider_list_title">' + provider.name + '</div>';
+            content += '<div class="col-xs-4 arial">Speciality - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
+            content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br>Location - ' + provider.location_name +'</div>';
+            content += '<div class="col-xs-4 arial"><span style ="color:black;">Distance - ' + provider.distance + '</span></div>';
+            content += '</div>';
         });
         $('.provider_near_patient_list').html(content);
     } else {
@@ -544,25 +550,38 @@ function getProviders(formData) {
     $('.practice_info').removeClass('active');
     $('.appointment_type_not_found').hide();
     var tojson = JSON.stringify(formData);
-    var show_specialist = {
+    var showSpecialist = {
         show: $('#show_specialist').prop('checked'),
         referraltype_id: $('#form_referraltype_id').val()
     }
+    var providerTypes = [];
+    $("input:checkbox[name=provider_types]:checked").each(function(){
+        providerTypes.push($(this).val());
+    });
     $.ajax({
         url: '/providers/search',
         type: 'GET',
         data: $.param({
             data: tojson,
-            show_specialist: show_specialist
+            show_specialist: showSpecialist,
+            provider_types: providerTypes
         }),
         contentType: 'text/html',
         async: false,
         success: function (e) {
-            var practices = $.parseJSON(e);
-            var content = '<p>' + practices.length + ' results found</p>';
-            if (practices.length > 0) {
-                practices.forEach(function (practice) {
-                    content += '<div class="col-xs-12 practice_list_item" data-id="' + practice.provider_id + '"  practice-id="' + practice.practice_id + '" ><div class="row content-row-margin"><div class="col-xs-12 arial_bold provider_list_title">' + practice.provider_name + ' </div><div class="col-xs-6 provider_list_detail"> ' + practice.practice_name + ' </div><div class="col-xs-6 provider_list_detail">' + practice.practice_speciality + '' + '<br> ' + '' + ' </div></div></div>';
+            var providers = $.parseJSON(e);
+            var content = '<p>' + providers.length + ' results found</p>';
+            if (providers.length > 0) {
+                providers.forEach(function (provider) {
+
+                    content += '<div class="col-xs-12 list_seperator practice_list_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '">';
+                    content += '<div class="row content-row-margin">';
+                    content += '<div class="col-xs-12 arial_bold provider_list_title">' + provider.name + '</div>';
+                    content += '<div class="col-xs-4 arial">Speciality - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
+                    content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br>Location - ' + provider.location_name +'</div>';
+                    content += '<div class="col-xs-4 arial"></div>';
+                    content += '</div>';
+                    content += '</div>';
                 });
             }
             $('.practice_list').html(content);

@@ -21,7 +21,7 @@
     </div>
     <div class="col-xs-12 ">
         <div class="row">
-            <div class="col-xs-9 search_filter">
+            <div class="col-xs-4 search_filter">
                 <!--
                 <div class="search_filter_item">
                 <span class="item_type">name</span>:
@@ -30,7 +30,15 @@
                 </div>
                 -->
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-8 right-align">
+               @foreach(\myocuhub\Models\ProviderType::indexedAbbr() as $key => $value)
+               <p class="show_specialist arial">
+                   <span>
+                       {!! Form::checkbox('provider_types', $key, null, array('id' => 'provider_type_'.$key, 'class' => 'provider_type_filters')); !!}
+                   </span>
+                   {{ $value }}
+                </p>
+               @endforeach
                 <p class="show_specialist arial"><span><input type="checkbox" name = "show_specialist"  id="show_specialist" value = "true"></span>Show only specialists</p>
             </div>
         </div>

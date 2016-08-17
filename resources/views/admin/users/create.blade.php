@@ -64,7 +64,7 @@
                                     <div class="col-xs-12 col-sm-6">
                                         <input type="hidden" value="{{ \myocuhub\Usertype::getID('Provider') }}" id="usertype_provider_id">
                                         {!! Form::select('usertype', $userTypes, $user['usertype_id'], array('class' => ' add_user_input', 'placeholder' => 'Select User Types*', 'id' => 'user_type', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'User Type', 'data-placement' => 'right')) !!}
-                                        {!! Form::select('provider_type_id', $providerTypes, $user['provider_type_id'], array('class' => 'add_user_input', 'placeholder' => 'Select Provider Type', 'id' => 'provider_type', 'data-toggle' => 'tooltip', 'title' => 'User Type', 'data-placement' => 'right' , 'style' => ($user['usertype_id'] == \myocuhub\Usertype::getID('Provider')) ? 'display:inline-block' : 'display:none' )) !!}
+                                        {!! Form::select('provider_type_id', $providerTypes, $user['provider_type_id'], array('class' => 'add_user_input', 'placeholder' => 'Select Provider Type', 'id' => 'provider_type', 'data-toggle' => 'tooltip', 'title' => 'Provider Type', 'data-placement' => 'right' , 'style' => ($user['usertype_id'] == \myocuhub\Usertype::getID('Provider')) ? 'display:inline-block' : 'display:none' )) !!}
                                         {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => ' add_user_input', 'placeholder' => 'Select User Levels*', 'id' => 'user_level', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'User Level', 'data-placement' => 'right')) !!}
 
                                         @if(session('user-level') == 1)

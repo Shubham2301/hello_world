@@ -30,6 +30,7 @@ elixir(function (mix) {
     mix.less(['web_forms.less'], 'public/css/web_forms.css');
     mix.less(['web_forms_print.less'], 'public/css/web_forms_print.css');
     mix.less(['patient_records.less'], 'public/css/patient_records.css');
+    mix.less(['call_center.less'], 'public/css/call_center.css');
     mix.babel(['main.js', 'announcements.js'], 'public/js/main.js');
     mix.babel(['sesconnect.js'], 'public/js/sesconnect.js');
     mix.babel(['referraltype.js'], 'public/js/referraltype.js');
@@ -51,6 +52,7 @@ elixir(function (mix) {
     mix.babel(['session_timeout.js'], 'public/js/session_timeout.js');
     mix.babel(['web_forms.js'], 'public/js/web_forms.js');
     mix.babel(['patient_records.js'], 'public/js/patient_records.js');
+    mix.babel(['call_center.js'], 'public/js/call_center.js');
 
     mix.version(['css/style.css',
                 'css/directmail.css',
@@ -62,7 +64,6 @@ elixir(function (mix) {
                 'css/careconsole.css',
                 'css/networks.css',
                 'css/file_exchange.css',
-                'css/announcements.css',
 				'css/users.css',
 				'css/reporting.css',
 				'css/reports.css',
@@ -70,6 +71,7 @@ elixir(function (mix) {
                 'css/web_forms.css',
                 'css/web_forms_print.css',
                 'css/patient_records.css',
+                'css/call_center.css',
                 'js/main.js',
                 'js/sesconnect.js',
                 'js/referraltype.js',
@@ -89,6 +91,7 @@ elixir(function (mix) {
                 'js/audit.js',
                 'js/web_forms.js',
                 'js/patient_records.js',
+                 'js/call_center.js',
                 'images/*'
                 ]);
 });

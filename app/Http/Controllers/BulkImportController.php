@@ -10,6 +10,7 @@ use Faker\Factory as Faker;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Facades\Helper;
 use myocuhub\Jobs\PatientEngagement\ImportPatientMail;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\EngagementPreference;
@@ -119,14 +120,14 @@ class BulkImportController extends Controller
             $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'), function($reader){
                     $reader->setDateColumns(array('birthdate'));
                     $reader->formatDates(true, 'Y-m-d');
-            })->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request, $template) {
+            })->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request, $template, &$import_result) {
                 foreach ($results as $data) {
                     $patients = [];
                     if (array_filter($data->toArray())) {
                         if($i == 0){
                             if(!(count(array_intersect_key(array_flip($format), $data->toArray())) === count($format))){
                                 $import_result['exception'] = 'Incorrect .xlsx format';
-                                return json_encode($import_result);
+                                return ;
                             }
                         }
 						$patients['firstname'] = isset($data['first_name']) ? $data['first_name'] : '';
@@ -150,7 +151,7 @@ class BulkImportController extends Controller
                         $patients['addressline2'] = isset($data['address_2']) ? $data['address_2'] : '';
                         $patients['city'] = isset($data['city']) ? $data['city'] : '';
                         $patients['zip'] = isset($data['zip']) ? $data['zip'] : '';
-                        $patients['gender'] = isset($data['gender']) ? $data['gender'] : '';
+                        $patients['gender'] = isset($data['gender']) ? Helper::getGenderIndex($data['gender']) : '';
                         $patients['special_request'] = isset($data['special_request']) ? $data['special_request'] : '';
                         $patients['pcp'] = isset($data['primary_care_physician']) ? $data['primary_care_physician'] : '';
 

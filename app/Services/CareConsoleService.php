@@ -15,6 +15,8 @@ use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
 use DateTime;
 use Helper;
+use myocuhub\Models\PatientInsurance;
+use myocuhub\Models\ReferralHistory;
 
 class CareConsoleService
 {
@@ -315,6 +317,37 @@ class CareConsoleService
                 break;
             case 'special-request':
                 return $patient['special_request'] ?: '-';
+                break;
+            case 'pcp':
+                return $patient['pcp'] ?: '-';
+                break;
+            case 'dob':
+                return Helper::formatDate($patient['birthdate'], config('constants.date_time_format.date_only')) ?: '-';
+                break;
+            case 'address':
+                $address = '';
+                $address = $patient['addressline1'];
+                $address = ($address != '') ? $address . ' ' . $patient['addressline2'] : $patient['addressline2'];
+                return ($address != '') ? $address : '-';
+                break;
+            case 'insurance-carrier':
+                $insurance = PatientInsurance::where('patient_id', $patient['id'])->first();
+                $insuranceCarrier = '';
+                if(isset($insurance)) {
+                    $insuranceCarrier = ($insurance->insurance_carrier != '') ? $insurance->insurance_carrier : '-';
+                }
+                return $insuranceCarrier ?: '-';
+                break;
+            case 'referral-history':
+                $referralHistory = ReferralHistory::find($patient['referral_id']);
+                $referredBy = '';
+                if(isset($referralHistory->referred_by_provider)) {
+                    $referredBy = $referralHistory->referred_by_provider;
+                }
+                if(isset($referralHistory->referred_by_practice)) {
+                    $referredBy = ($referredBy != '') ?  $referredBy . ' ' . $referralHistory->referred_by_practice : $referralHistory->referred_by_practice;
+                }
+                return $referredBy ?: '-';
                 break;
             default:
                 return '-';
