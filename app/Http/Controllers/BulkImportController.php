@@ -120,14 +120,14 @@ class BulkImportController extends Controller
             $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'), function($reader){
                     $reader->setDateColumns(array('birthdate'));
                     $reader->formatDates(true, 'Y-m-d');
-            })->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request, $template) {
+            })->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request, $template, &$import_result) {
                 foreach ($results as $data) {
                     $patients = [];
                     if (array_filter($data->toArray())) {
                         if($i == 0){
                             if(!(count(array_intersect_key(array_flip($format), $data->toArray())) === count($format))){
                                 $import_result['exception'] = 'Incorrect .xlsx format';
-                                return json_encode($import_result);
+                                return ;
                             }
                         }
 						$patients['firstname'] = isset($data['first_name']) ? $data['first_name'] : '';

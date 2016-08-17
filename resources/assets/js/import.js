@@ -264,6 +264,15 @@ function importPatients() {
         type: 'POST',
         success: function(dataofconfirm) {
             var patients = $.parseJSON(dataofconfirm);
+            if(patients.exception != "")
+            {
+                $('.dismiss_button').trigger('click');
+                $('p.alert_message').text('Error: Please provide a valid XLSX file.');
+                $('#alert').modal('show');
+                return;
+
+
+            }
             var content = '<span class="total_import">You have imported ' + patients.total + ' patients </span> </br><span style="color:#4d4d4d;"> New patients </span><span class="new_patient">' + patients.patients_added + '</span></br><span style="color:#4d4d4d;"> Already existing patients </span><span class="old_patient">' + patients.already_exist + '</span>';
 
             $('.success_message').html(content);
