@@ -575,7 +575,7 @@ function getProviders(formData) {
                 providers.forEach(function (provider) {
 
                     content += '<div class="col-xs-12 list_seperator practice_list_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '">';
-                    content += '<div class="row content-row-margin">'; 
+                    content += '<div class="row content-row-margin">';
                     content += '<div class="col-xs-12 arial_bold provider_list_title">' + provider.name + '</div>';
                     content += '<div class="col-xs-4 arial">Speciality - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
                     content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br>Location - ' + provider.location_name +'</div>';

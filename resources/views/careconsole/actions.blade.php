@@ -139,58 +139,47 @@
                             <div class="col-md-1"></div>
                         </div>
                         <div id="form_action_request_email" style="display:none">
-                            <div class="row input_row">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2 form-group">
-                                    <p><span class="arial_bold" style="color:black;padding-left:1em;">To</span></p>
-                                    <p><span class="arial_bold" style="color:black;padding-left:1em;">Subject</span></p>
+                            <div class="row" style="margin:0 .5em;">
+                                <div class="col-md-3 patient_contact_request_info hide" style="color:#4d4d4d;padding:0;">
                                 </div>
-                                <div class="col-md-7 form-group">
-                                    <p style="color:black;" class="form_action_patient_email_id"></p>
-                                    <p style="color:black;">Request For Appointment</p>
+                                <div class="col-md-12 contact_request_section">
+                                    <div class="row input_row">
+                                        <div class="col-md-4 form-group"style="padding:0;">
+                                            <p style="display:flex;">
+                                                <span class="glyphicon glyphicon-circle-arrow-left open_patient_detail_modal" style="color:#4d4d4d; font-size:1.2em;cursor:pointer; margin-right:.1em;"></span>
+                                                <span class="arial_bold" style="color:black;">To</span>
+                                            </p>
+                                            <p><span class="arial_bold" style="color:black;padding-left:1em;">Subject</span></p>
+                                        </div>
+                                        <div class="col-md-8 form-group">
+                                            <p style="color:black;" class="form_action_patient_email_id"></p>
+                                            <p style="color:black;">Request For Appointment</p>
+                                        </div>
+                                    </div>
+                                    <div class="row input_row">
+                                        <div class="col-md-12 form-group">
+                                            <textarea class="form-control" name="request_email" id="request_email" rows="8">{{ $overview['request_for_appointment']['email'] }}</textarea>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-1"></div>
-                            </div>
-                            <div class="row input_row">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-10 form-group">
-                                    <textarea class="form-control" name="request_email" id="request_email" rows="8">{{ $overview['request_for_appointment']['email'] }}</textarea>
-                                </div>
-                                <div class="col-md-1"></div>
                             </div>
                         </div>
                         <div id="form_action_request_phone" style="display:none">
-                            <div class="row">
-                                <div class="col-md-3 contact_by_phone_data" style="color:#000;">
-                                    <span class="arial_bold">Patient Details</span><br><br>
-                                    <span class="arial_bold">Email</span><br>
-                                    <span class="arial email"></span><br>
-                                    <span class="arial_bold">Date of Birth</span><br>
-                                    <span class="arial dob"></span><br>
-                                    <span class="arial_bold">Last Seen By</span><br>
-                                    <span class="arial last_scheduled_to"></span><br>
-                                    <span class="arial_bold">Insurance Provider</span><br>
-                                    <span class="arial insurance"></span><br>
-                                    <span class="arial_bold">Special Request</span><br>
-                                    <span class="arial special_request"></span><br>
-                                    <span class="arial_bold">PCP</span><br>
-                                    <span class="arial special_request"></span><br>
-                                    <span class="arial_bold">Home Address</span><br>
-                                    <span class="arial address"></span><br>
-                                    <span class="arial_bold">Referred By</span><br>
-                                    <span class="arial referred_by"></span><br>
+                            <div class="row" style="margin:0 .5em;">
+                                <div class="col-md-3 patient_contact_request_info hide" style="color:#4d4d4d;padding:0;">
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-12 contact_request_section">
                                     <div class="row input_row">
-                                        <div class="col-md-5 form-group">
+                                        <div class="col-md-6 form-group" style="display:flex;flex-direction:row;padding:0;">
+                                            <span class="glyphicon glyphicon-circle-arrow-left open_patient_detail_modal" style="color:#4d4d4d; font-size:1.5em; margin-right:.5em;cursor:pointer;"></span>
                                             <p class="form_action_patient_name" style="color:black;"></p>
                                         </div>
-                                        <div class="col-md-5 form-group">
+                                        <div class="col-md-6 form-group">
                                             <p style="color:black;text-align:right" class="form_action_patient_phone"></p>
                                         </div>
                                     </div>
                                     <div class="row input_row">
-                                        <div class="col-md-10 form-group" style="padding:0;">
+                                        <div class="col-md-12 form-group" style="padding:0;">
                                             <p class="" style="color: rgba(0,0,0,0.8);border: solid 1px #eaeaea;padding: 1em;max-height:400px;overflow-y:scroll;" name="request_phone" id="request_phone">{!! $overview['request_for_appointment']['phone'] !!}</p>
                                         </div>
                                     </div>
@@ -198,22 +187,25 @@
                             </div>
                         </div>
                         <div id="form_action_request_sms" style="display:none">
-                            <div class="row input_row">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-5 form-group">
-                                    <p class="form_action_patient_name" style="color:black;"></p>
+                            <div class="row" style="margin:0 .5em;">
+                                <div class="col-md-3 patient_contact_request_info hide" style="color:#4d4d4d;padding:0;">
                                 </div>
-                                <div class="col-md-5 form-group">
-                                    <p style="color:black;text-align:right" class="form_action_patient_phone"></p>
+                                <div class="col-md-12 contact_request_section">
+                                    <div class="row input_row">
+                                        <div class="col-md-6 form-group" style="display:flex;flex-direction:row;padding:0;">
+                                            <span class="glyphicon glyphicon-circle-arrow-left open_patient_detail_modal" style="color:#4d4d4d; font-size:1.2em; margin-right:.2em;cursor:pointer;"></span>
+                                            <p class="form_action_patient_name" style="color:black;"></p>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <p style="color:black;text-align:right" class="form_action_patient_phone"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row input_row">
+                                        <div class="col-md-12 form-group">
+                                            <textarea class="form-control" name="request_sms" id="request_sms" rows="8">{{ $overview['request_for_appointment']['sms'] }}</textarea>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-1"></div>
-                            </div>
-                            <div class="row input_row">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-10 form-group">
-                                    <textarea class="form-control" name="request_sms" id="request_sms" rows="8">{{ $overview['request_for_appointment']['sms'] }}</textarea>
-                                </div>
-                                <div class="col-md-1"></div>
                             </div>
                         </div>
                     </div>
