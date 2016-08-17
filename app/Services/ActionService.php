@@ -221,6 +221,20 @@ class ActionService
                 $console->save();
 
                 break;
+
+            case 'move-to-contact-status':
+                $console = Careconsole::find($consoleID);
+                $contact->previous_stage = $console->stage_id;
+                $contact->days_in_prev_stage = $date_diff;  
+                $contact->days_in_current_stage = 0; 
+                $console->stage_id = 1; 
+                $console->recall_date = null; 
+                $console->archived_date = null; 
+                $date = new DateTime();
+                $console->stage_updated_at = $date->format('Y-m-d H:i:s');
+                $console->save();
+                break;
+
             case 'move-to-console':
                 $console = Careconsole::find($consoleID);
                 $contact->previous_stage = $console->stage_id;
