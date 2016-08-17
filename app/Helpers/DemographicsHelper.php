@@ -2,11 +2,13 @@
 
 namespace myocuhub\Helpers;
 
-trait DemographicsHelper{
+trait DemographicsHelper
+{
 
-	public static function languages(){
-		return self::invertConfig('constants.language');
-	}
+    public static function languages()
+    {
+        return self::invertConfig('constants.language');
+    }
 
 	public static function genders(){
 		return self::invertConfig('constants.gender');
@@ -17,5 +19,4 @@ trait DemographicsHelper{
         return config("constants.gender_variations.$gender");
 
 	}
-
 }

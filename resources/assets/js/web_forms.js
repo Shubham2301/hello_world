@@ -127,6 +127,7 @@ $(document).ready(function() {
     $('.form_section').on('click', '#create_record', savePatientRecord);
 
     $('.health_record').addClass('active');
+
 });
 
 var templateID = 0;
@@ -180,6 +181,13 @@ function showWebForm(name) {
             $('.field_date').datetimepicker({
                 format: 'MM/DD/YYYY'
             });
+
+            $('.sigPad').signaturePad(
+                {
+                    bgColour : 'transparent',
+                    drawOnly : true
+                }
+            );
         },
         error: function error() {
             $('p.alert_message').text('Error searching');

@@ -43,7 +43,9 @@
                 <div class="row {{ config('webforms.class.row') }} ">
                     @foreach($row['cols'] as $col)
                     <div class="col-xs-12 col-sm-{{ 12/sizeof($row['cols']) }} {{ config('webforms.class.col')}}">
-                        @foreach($col['elements'] as $element) @if($element['type'] == 'full_length_input')
+                        @foreach($col['elements'] as $element)
+
+                        @if($element['type'] == 'full_length_input')
                         <div class="row">
                             <div class="col-xs-4">
                                 <p>{{ $element['display-name'] }}</p>
@@ -83,8 +85,8 @@
                             </span>
                       </span>
 
-                        @if(isset($element['direction']) && $element['direction'] != "H" )
-                        <br>
+                            @if(isset($element['direction']) && $element['direction'] != "H" )
+                            <br>
                         @endif
 
 
@@ -99,7 +101,9 @@
 
                         @if(isset($element['direction']) && $element['direction'] == "H" )
                         </br>
-                        @endif @elseif($element['type']=='input:multi:checkbox:wrap')
+                            @endif
+
+                        @elseif($element['type']=='input:multi:checkbox:wrap')
 
                         <div class="row">
                             <div class="col-xs-3">
@@ -133,15 +137,38 @@
                             </span>
                         </span>
 
-                    @elseif($element['type']=='input:radio:wrap')
-                    <label class="tgl_radio" style="{{isset($element['style'])?$element['style']:''}}">
+
+                        @elseif($element['type'] == 'signature')
+                        <div class="row">
+                            <div class="col-xs-4">
+                            <p>{{ $element['display-name'] }}</p>
+                            </div>
+                            <div class="col-xs-7">
+                                <div id="signature" class="sigPad">
+                                    <div class="sig sigWrapper">
+                                        <div class="typed"></div>
+                                        <canvas class="pad" width="198" height="55"></canvas>
+                                        <input type="hidden" name="sigoutput" class="output">
+                                    </div>
+                                    <ul class="sigNav">
+                                        <li class="clearButton"><a href="#clear">Clear</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @elseif($element['type']=='input:radio:wrap')
+                        <label class="tgl_radio" style="{{isset($element['style'])?$element['style']:''}}">
                         <input type=radio name="{{$element['id']}}" id="{{$element['id']}}" class="tgl" value="{{isset($element['value'])? $element['value']:''}}"> {{$element['display-name']}}
                     </label>
 
-                    @if(isset($element['direction']) && $element['direction'] == "H" )
-                    </br>
-                @endif
-                        @endif @endforeach
+                            @if(isset($element['direction']) && $element['direction'] == "H" )
+                            </br>
+                            @endif
+                        @endif
+
+                    @endforeach
                     </div>
                     @endforeach
                 </div>
@@ -153,7 +180,6 @@
 
         </form>
     </div>
-
     <div class="row form_footer">
         <div class="col-xs-4 btn text-left">
             <p id="previous_btn" style="display:none;">Previous</p>
