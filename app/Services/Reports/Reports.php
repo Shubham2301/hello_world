@@ -4,13 +4,14 @@ namespace myocuhub\Services\Reports;
 
 use Auth;
 use Datetime;
+use Helper;
 use Illuminate\Support\Facades\DB;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
+use myocuhub\Models\Practice;
+use myocuhub\Models\PracticeUser;
 use myocuhub\Network;
 use myocuhub\User;
-use myocuhub\Models\PracticeUser;
-use myocuhub\Models\Practice;
 
 class Reports
 {
@@ -56,12 +57,10 @@ class Reports
 
     public function __construct()
     {
-
     }
 
     public function getTotalReferred()
     {
-
         return Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('careconsole.created_at', '>=', $this->getStartDate())
@@ -74,7 +73,6 @@ class Reports
 
     public function getPendingToBeCalled()
     {
-
         return Careconsole::where('stage_id', 1)
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
@@ -94,7 +92,6 @@ class Reports
 
     public function getContactStatistics()
     {
-
         $contact['phone']['count'] = 0;
 
         /**
@@ -112,14 +109,12 @@ class Reports
             ->count();
 
         foreach ($contactHistory as $contact) {
-
         }
         return;
     }
 
     public function getReferredTo()
     {
-
         $history = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
@@ -139,7 +134,7 @@ class Reports
             $practices[] = $key['name'];
         }
         $result['total'] = sizeof($practices);
-        $result['practices'] = array_count_values($practices);
+        $result['practices'] = Helper::arrayCountCaseInsensitiveValues($practices);
 
         return $result;
     }
@@ -162,17 +157,14 @@ class Reports
             ->count();
         if (session('user-level') == 2) {
             $network_name = Network::find(session('network-id'))->name;
-            $result['scheduled_seen'][1] = 'Seen by '. $network_name .' doctor';
-        }
-        elseif (session('user-level') == 3) {
+            $result['scheduled_seen'][1] = 'Seen by ' . $network_name . ' doctor';
+        } elseif (session('user-level') == 3) {
             $practiceID = PracticeUser::where('user_id', '=', Auth::user()->id)->first();
             $practice = Practice::find($practiceID->practice_id);
-            $result['scheduled_seen'][1] = 'Seen by '. $practice->name .' doctor';
-        }
-        else {
+            $result['scheduled_seen'][1] = 'Seen by ' . $practice->name . ' doctor';
+        } else {
             $result['scheduled_seen'][1] = 'Seen by doctor';
         }
-
 
         $result['scheduled_not_seen'][0] = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
@@ -231,7 +223,6 @@ class Reports
     }
     public function getReferredBy()
     {
-
         $history = Careconsole::query()
             ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
             ->where('import_history.network_id', session('network-id'))
@@ -250,7 +241,7 @@ class Reports
         }
 
         $result['total'] = sizeof($practices);
-        $result['practices'] = array_count_values($practices);
+        $result['practices'] = Helper::arrayCountCaseInsensitiveValues($practices);
 
         if (isset($result['practices']['Other'])) {
             $other = $result['practices']['Other'];
@@ -267,14 +258,12 @@ class Reports
         $appointmentTypeResult['scheduled_seen'][0] = 0;
         if (session('user-level') == 2) {
             $network_name = Network::find(session('network-id'))->name;
-            $appointmentTypeResult['scheduled_seen'][1] = 'Seen by '. $network_name .' doctor';
-        }
-        elseif (session('user-level') == 3) {
+            $appointmentTypeResult['scheduled_seen'][1] = 'Seen by ' . $network_name . ' doctor';
+        } elseif (session('user-level') == 3) {
             $practiceID = PracticeUser::where('user_id', '=', Auth::user()->id)->first();
             $practice = Practice::find($practiceID->practice_id);
-            $appointmentTypeResult['scheduled_seen'][1] = 'Seen by '. $practice->name .' doctor';
-        }
-        else {
+            $appointmentTypeResult['scheduled_seen'][1] = 'Seen by ' . $practice->name . ' doctor';
+        } else {
             $appointmentTypeResult['scheduled_seen'][1] = 'Seen by doctor';
         }
         $appointmentTypeResult['scheduled_seen'][2] = 'scheduled_seen';
@@ -294,15 +283,17 @@ class Reports
         foreach ($results as $result) {
             switch ($result->stage_id) {
                 case 2:
-                    if($result->archived_date != null)
+                    if ($result->archived_date != null) {
                         $appointmentTypeResult['scheduled_not_seen'][0]++;
+                    }
                     break;
                 case 4:
-                    if($result->archived_date != null)
+                    if ($result->archived_date != null) {
                         $appointmentTypeResult['scheduled_seen'][0]++;
+                    }
                     break;
                 case 5:
-                    if($result->archived_date != null) {
+                    if ($result->archived_date != null) {
                         $appointmentTypeResult['scheduled_seen'][0]++;
                         $appointmentTypeResult['patients_ran_through'][0]++;
                     }
@@ -377,24 +368,21 @@ class Reports
 
     public function getAgeBreakdown($age)
     {
-
         if ($age >= 65) {
             return 'category5';
-        } else if ($age >= 55 && $age <= 64) {
+        } elseif ($age >= 55 && $age <= 64) {
             return 'category4';
-        } else if ($age >= 45 && $age <= 54) {
+        } elseif ($age >= 45 && $age <= 54) {
             return 'category3';
-        } else if ($age >= 35 && $age <= 44) {
+        } elseif ($age >= 35 && $age <= 44) {
             return 'category2';
-        } else if ($age < 35) {
+        } elseif ($age < 35) {
             return 'category1';
         }
-
     }
 
     public function initAgeBreakdown()
     {
-
         $ages = [];
         $result = [];
 
@@ -414,7 +402,6 @@ class Reports
 
     public function getReportingData($filters)
     {
-
         $query = $this->buildReportsQuery($filters);
         $results = $this->execReportsQuery($query);
 
@@ -442,7 +429,6 @@ class Reports
         $gender['female'] = 0;
 
         foreach ($results as $result) {
-
             switch ($result->stage_id) {
                 case 1:
                     if ($result->contact_attempts == 0 || $result->contact_attempts == null) {
@@ -473,16 +459,16 @@ class Reports
 
             if ($result->referred_to_practice_id != null) {
                 $referredToPractice[] = $result->referred_to_practice_id;
-                $referredToPracticeName[$result->referred_to_practice_id] =  $this->cleanName($result->referred_to_practice);
+                $referredToPracticeName[$result->referred_to_practice_id] = $this->cleanName($result->referred_to_practice);
             }
             if ($result->referred_to_provider_id != null) {
                 $referredToPracticeUser[] = $result->referred_to_provider_id;
-                $referredToPracticeUserName[$result->referred_to_provider_id] =  $this->cleanName($result->referred_to_provider);
+                $referredToPracticeUserName[$result->referred_to_provider_id] = $this->cleanName($result->referred_to_provider);
             }
 
             if ($result->gender == 'Male' || $result->gender == 'M') {
                 $gender['male']++;
-            } else if ($result->gender == 'Female' || $result->gender == 'F') {
+            } elseif ($result->gender == 'Female' || $result->gender == 'F') {
                 $gender['female']++;
             }
 
@@ -501,8 +487,8 @@ class Reports
                 $result->severity = 'NA';
             }
 
-            $severities[$this->cleanName($result->disease_type)][] =  $this->cleanName($result->severity);
-            $diseases[] =  $this->cleanName($result->disease_type);
+            $severities[$this->cleanName($result->disease_type)][] = $this->cleanName($result->severity);
+            $diseases[] = $this->cleanName($result->disease_type);
 
             if ($result->referred_by_provider != '' && $result->referred_by_provider != null) {
                 $referredByDoctor[] = $this->cleanName($result->referred_by_provider);
@@ -515,17 +501,16 @@ class Reports
             if ($result->insurance_carrier != '' && $result->insurance_carrier != null) {
                 $insuranceTypes[] = $this->cleanName($result->insurance_carrier);
             }
-
         }
 
         if ($filters['referred_to']['type'] == 'practice_user' || $filters['referred_to']['type'] == 'practice') {
             $networkData['referred_to'] = $this->formatReferredTo('practice_user', $referredToPracticeUser, $referredToPracticeUserName);
-        } else if ($filters['referred_to']['type'] == 'none') {
+        } elseif ($filters['referred_to']['type'] == 'none') {
             $networkData['referred_to'] = $this->formatReferredTo('practice', $referredToPractice, $referredToPracticeName);
         }
         if ($filters['incomming_referrals']['referred_by']['type'] == 'practice_user' || $filters['incomming_referrals']['referred_by']['type'] == 'practice') {
             $networkData['referred_by'] = $this->formatReferredBy('practice_user', $referredByDoctor);
-        } else if ($filters['incomming_referrals']['referred_by']['type'] == 'none') {
+        } elseif ($filters['incomming_referrals']['referred_by']['type'] == 'none') {
             $networkData['referred_by'] = $this->formatReferredBy('practice', $referredByHospital);
         }
 
@@ -546,7 +531,7 @@ class Reports
     {
         $result = array();
         $result['type'] = $type;
-        $countPractice = array_count_values($referredBy);
+        $countPractice = Helper::arrayCountCaseInsensitiveValues($referredBy);
         arsort($countPractice);
         $referredBy = array_unique($referredBy);
         $i = 0;
@@ -563,14 +548,12 @@ class Reports
         }
         $result['total'] = $total;
         return $result;
-
     }
 
     public function formatAppointmentType($appointmentTypes)
     {
-
         $result = array();
-        $countTypes = array_count_values($appointmentTypes);
+        $countTypes = Helper::arrayCountCaseInsensitiveValues($appointmentTypes);
         arsort($countTypes);
         $appointmentTypes = array_unique($appointmentTypes);
         $i = 0;
@@ -590,7 +573,6 @@ class Reports
 
     public function formatDiseaseType($severities, $diseases)
     {
-
         $result = array();
         $diseases = array_unique($diseases);
         $i = 0;
@@ -605,7 +587,7 @@ class Reports
         foreach ($sortedDisease as $disease => $totalCount) {
             $result[$i]['name'] = $disease;
             $result[$i]['total'] = $totalCount;
-            $countSeverities = array_count_values($severities[$disease]);
+            $countSeverities = Helper::arrayCountCaseInsensitiveValues($severities[$disease]);
             $temp = array_unique($severities[$disease]);
             foreach ($temp as $severity) {
                 $severity = trim($severity);
@@ -661,9 +643,8 @@ class Reports
 
     public function formatInsuranceType($insuranceTypes)
     {
-
         $result = array();
-        $countTypes = array_count_values($insuranceTypes);
+        $countTypes = Helper::arrayCountCaseInsensitiveValues($insuranceTypes);
         arsort($countTypes);
         $insuranceTypes = array_unique($insuranceTypes);
         $i = 0;
@@ -679,15 +660,13 @@ class Reports
             $i++;
         }
         return $result;
-
     }
 
     public function formatReferredTo($type, $referredTo, $referredToName)
     {
-
         $result = array();
         $result['type'] = $type;
-        $countPractice = array_count_values($referredTo);
+        $countPractice = Helper::arrayCountCaseInsensitiveValues($referredTo);
         arsort($countPractice);
         $referredTo = array_unique($referredTo);
         $i = 0;
@@ -751,16 +730,14 @@ class Reports
 
     public function buildQueryFilters($filters)
     {
-
         $networkID = session('network-id');
         $userId = Auth::user()->id;
         $startDate = $this->getStartDate();
         $endDate = $this->getEndDate();
 
-
         $queryFilters = " and `import_history`.`network_id` = $networkID ";
 
-        if(session('user-level') == 3 || session('user-level') == 4){
+        if (session('user-level') == 3 || session('user-level') == 4) {
             $practice = User::getPractice($userId);
             $patientsReferredToPractice = " `practices`.`id` = $practice->id ";
             $patientsAddedByPractice = " `practice_patient`.`practice_id` = $practice->id ";
@@ -860,16 +837,16 @@ class Reports
         }
 
         if ($filters['disease_type'] != 'none') {
-            if ($filters['disease_type'] != 'NA'){
+            if ($filters['disease_type'] != 'NA') {
                 $queryFilters .= ' and `referral_history`.`disease_type` = "' . $filters['disease_type'] . '"';
             } else {
                 $queryFilters .= ' and `referral_history`.`disease_type` IS NULL';
             }
             if ($filters['severity_scale'] != 'none') {
                 if ($filters['severity_scale'] != 'NA') {
-                $queryFilters .= ' and `referral_history`.`severity` = "' . $filters['severity_scale'] . '"';
+                    $queryFilters .= ' and `referral_history`.`severity` = "' . $filters['severity_scale'] . '"';
                 } else {
-                $queryFilters .= ' and `referral_history`.`severity` IS NULL';
+                    $queryFilters .= ' and `referral_history`.`severity` IS NULL';
                 }
             }
         }
@@ -907,8 +884,8 @@ class Reports
         return $result;
     }
 
-    public function cleanName($name){
+    public function cleanName($name)
+    {
         return trim($name);
     }
-
 }
