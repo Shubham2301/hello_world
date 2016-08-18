@@ -45,9 +45,7 @@
     display: inline-block;
 }
 
-.input_checkbox{
-	margin-left: 1em;
-}
+
 
 .search_section {
 	display: none;
@@ -66,32 +64,28 @@
 }
 
 .search_input_box {
-	display: flex;
-	flex-direction: row;
-	background-color: @font-color-4;
-	border: 2px solid @font-color-4;
-	font-size: 1em;
-	width: 50%;
-	margin:1em;
-	&>input,
-	&>input:focus {
-		width: 100%;
-		border: none;
-		padding: 6px 12px;
-		color: #66c7eb;
-		outline: none;
-		background-color: @font-color-4;
-		&::placeholder{
-			color: #b2e3f5;
-		}
-	}
-	&>span {
-		position: absolute;
-	}
-}
-
-#search_patient_button {
-	cursor: pointer;
+    display: -moz-box;         /* OLD - Firefox 19 */
+    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    background-color: #f6f6f6;
+    margin-left: 2em;
+    width: 50%;
+    margin-top: 1em;
+    ;
+    font-size: 1em;
+    &>input, &>input:focus {
+        width: 100%;
+        border: none;
+        padding: 6px 12px;
+        color: #4d4d4d;
+        outline: none;
+    }
+    &>span {
+        color: #0071bc;
+        position: absolute;
+    }
 }
 
 .form_section {
@@ -120,6 +114,7 @@
   border-radius:5px;
   padding:1px;
   padding-top:4px;
+  border:1px solid transparent;
   &:hover {
   border:1px solid #f4f4f4;
   }
@@ -155,6 +150,7 @@
     border-radius:5px;
     padding:1px;
     padding-top:4px;
+    border:1px solid transparent;
     &:hover {
         border:1px solid #f4f4f4;
     }
@@ -192,8 +188,8 @@
 
 .category_name{
     padding: 0px;
-    font-weight: bold;
-    color: #000;
+    font-weight: 700;
+    color: #fff;
     margin-top:1em;
 }
 
@@ -218,3 +214,63 @@
     flex-basis: 0px;
     flex-grow: 1;
 }
+
+.add_user_input {
+    display: block;
+    color: #fff;
+    background-color: @font-color-4;
+    border: 2px solid @font-color-4;
+    margin: 1em;
+    width: 60%;
+    border-radius: .2em;
+    font-size: 1.1em;
+    &::placeholder {
+        color: #b2e3f5;
+    }
+    &:focus {
+        border: 2px solid #fff;
+        color: #66c7eb;
+        box-shadow: 0px 0px 2px #fff;
+    }
+}
+
+.web_form_header {
+    border-bottom:1px solid #fff;
+    padding-bottom:1em;
+}
+
+.input_checkbox {
+    display: none;
+}
+
+.input_checkbox_lable {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding-left: 1.5em;
+    margin-right: 1em;
+    font-size: 1em;
+    font-weight: normal;
+    &::before {
+        content: "";
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        position: absolute;
+        left: 0;
+        bottom: 0.1em;
+        background-color: #0193d7;
+        border-radius: 0.2em;
+        box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+    }
+
+    &.active::before {
+        content: "\2713";
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+        font-size: 1em;
+        color: white;
+        text-align: center;
+        line-height: 1em;
+    }
+}
+

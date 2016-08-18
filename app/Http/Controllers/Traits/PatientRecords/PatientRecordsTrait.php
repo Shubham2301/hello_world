@@ -97,10 +97,7 @@ trait PatientRecordsTrait
     {
         $patients = $this->search($request);
         $patients = json_decode($patients, true);
-        if (!array_key_exists('id', $patients[0])) {
-            return 'No result found';
-        }
-        return (sizeof($patients) === 0) ? 'No patient found' : view('web-forms.search_patient')->with('patients', $patients)->render();
+        return view('web-forms.search_patient')->with('patients', $patients)->render();
     }
 
     public function PatientListForShowRecord(Request $request)

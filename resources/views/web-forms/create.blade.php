@@ -68,10 +68,14 @@
                         {!! Form::text($element['id'], '', array('class' => 'other_option_input', 'placeholder' => $element['display-name'], 'id' => $element['id'] , 'data-toggle' => 'tooltip', 'title' => $element['display-name'], 'data-placement' => 'right')) !!}
 
                         @elseif($element['type'] == 'input:checkbox')
+                        <div>
+                            <label class= "input_checkbox_lable">
+                               {!! Form::checkbox($element['id'], ($element['display-name'] != "")?$element['display-name'] :true, null, array('id' =>     $element['id'], 'class' => 'input_checkbox')); !!}
+                                <sapn> {{ $element['display-name'] }}</sapn>
+                             </label>
+                        </div>
 
-                        {!! Form::checkbox($element['id'], $element['display-name'], null, array('id' => $element['id'], 'class' => 'user_roles input_checkbox ')); !!} {!! Form::label($element['display-name'], $element['display-name']); !!}
 
-                        <br>
                         @elseif($element['type'] == 'input:unit_box')
 
                         <span>
@@ -91,17 +95,17 @@
 
 
                         @elseif($element['type'] == 'p:category')
-                        <p class="{{config('webforms.category_name')}}">{{ $element['display-name'] }}</p>
+                        <p class="{{config('webforms.class.category_name')}}">{{ $element['display-name'] }}</p>
 
                         @elseif($element['type'] == 'h1')
-                        <h1>{{ $element['display-name'] }}</h1> @elseif($element['type']=='input:checkbox:wrap')
+                        <h1>{{ $element['display-name'] }}</h1>
+
+                        @elseif($element['type']=='input:checkbox:wrap')
                         <label class="tgl_text" style="{{isset($element['style'])?$element['style']:''}}">
                             <input type=checkbox name="{{$element['id']}}" id="{{$element['id']}}" class="tgl" value="{{isset($element['value'])? $element['value']:''}}"> {{$element['display-name']}}
                         </label>
 
-                        @if(isset($element['direction']) && $element['direction'] == "H" )
-                        </br>
-                            @endif
+                        @if(isset($element['direction']) && $element['direction'] == "H" )</br>@endif
 
                         @elseif($element['type']=='input:multi:checkbox:wrap')
 
@@ -145,7 +149,7 @@
                             </div>
                             <div class="col-xs-7">
                                 <div id="signature" class="sigPad">
-                                    <div class="sig sigWrapper">
+                                    <div class="sig sigWrapper" style="border-color:#f5f5f5">
                                         <div class="typed"></div>
                                         <canvas class="pad" width="198" height="55"></canvas>
                                         <input type="hidden" name="sigoutput" class="output">

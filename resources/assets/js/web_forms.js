@@ -106,10 +106,28 @@ $(document).ready(function() {
         }
     });
 
-    $('.form_section').on('click', '.tgl_radio', function() {
+    $('.form_section').on('click', '.tgl_radio', function(event) {
         var name = $(this).find('.tgl').attr('name');
         var selectedRadioObjarry = $('input[name=' + name + ']');
+        var isChecked = $(this).find('.tgl').prop('checked');
 
+        if (event.target.tagName != "LABEL") {
+            if (isCheckedAgain) {
+                $(this).find('.tgl').prop('checked', false);
+                $(this).removeClass('checkfiled');
+                isCheckedAgain = false;
+            }
+            return
+        }
+
+        if (isChecked) {
+            isCheckedAgain = true;
+            return;
+        }
+
+        isCheckedAgain = false;
+
+        $(this).find('.tgl').prop('checked', true);
         $.each(selectedRadioObjarry, function(key, obj) {
             obj = $(obj);
             if ($(obj).prop('checked')) {
@@ -128,9 +146,19 @@ $(document).ready(function() {
 
     $('.health_record').addClass('active');
 
+    $('.form_section').on('click', '.input_checkbox_lable', function() {
+        var isChecked = $(this).find('.input_checkbox').prop('checked');
+        if (isChecked) {
+            $(this).addClass('active');
+        } else {
+            $(this).removeClass('active');
+        }
+    });
+
 });
 
 var templateID = 0;
+var isCheckedAgain = false;
 
 function getPatients(formData, page) {
     var tojson = JSON.stringify(formData);
@@ -182,12 +210,10 @@ function showWebForm(name) {
                 format: 'MM/DD/YYYY'
             });
 
-            $('.sigPad').signaturePad(
-                {
-                    bgColour : 'transparent',
-                    drawOnly : true
-                }
-            );
+            $('.sigPad').signaturePad({
+                bgColour: 'transparent',
+                drawOnly: true
+            });
         },
         error: function error() {
             $('p.alert_message').text('Error searching');
