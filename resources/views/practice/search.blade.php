@@ -1,7 +1,7 @@
 <div class="row content-row-margin active top_margin practice_action_header">
     <div class="practice_action">
 		<p class="page_title arial_bold">Practices</p>
-        @if(Auth::user()->checkUserLevel('Practice'))
+        @if(Auth::user()->checkUserLevel('Network') || Auth::user()->checkUserLevel('Ocuhub'))
         <button id='open_practice_form' type="button" class="btn add-btn">Add New</button>
         @endif
         <span class="search_input_box">
