@@ -1,7 +1,9 @@
 <div class="row content-row-margin active top_margin practice_action_header">
     <div class="practice_action">
 		<p class="page_title arial_bold">Practices</p>
-        <button id="open_practice_form" type="button" class="btn add-btn" >Add New</button>
+        @if(Auth::user()->checkUserLevel('Practice'))
+        <button id='open_practice_form' type="button" class="btn add-btn">Add New</button>
+        @endif
         <span class="search_input_box">
             <input type="text" class="arial_italic" id="search_practice_input" placeholder="search">
             <img src="{{elixir('images/sidebar/search-icon.png')}}" class="admin_seacrh_icon" id="search_practice_button">

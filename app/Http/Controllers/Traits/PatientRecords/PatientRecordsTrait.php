@@ -181,8 +181,10 @@ trait PatientRecordsTrait
 
         $data['patient'] = $patient;
         $data['record'] = $recordData;
-        $data['signature'] = Helper::sigJsonToImage($data['record']['sigoutput']);
-
+        $data['signature'] = '';
+        if(isset($data['record']['sigoutput'])){
+            $data['signature'] = Helper::sigJsonToImage($data['record']['sigoutput']);
+        }
         $html = view('patient-records.print')->with('data', $data)->render();
         $pdf = PDF::loadHtml($html);
         return $pdf;
