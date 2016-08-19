@@ -18,7 +18,7 @@ Administration
     @endif
     @if(Auth::user()->isSuperAdmin() || Auth::user()->hasRole('practice-admin'))
     <li class="admin_sidebar_menu_item">
-        <a class="sidebar_button_subsection subsection_admin_add" href="/administration/practices/create">
+        <a class="sidebar_button_subsection subsection_admin_add {{ Auth::user()->checkUserLevel('Practice') ? 'disabled' : '' }}" href="{{ Auth::user()->checkUserLevel('Practice') ? '#' : '/administration/practices/create' }}">
             <span class="img_not_hover"><img src="{{ elixir('images/sidebar/admin-practice-icon.png') }}" ></span>
             <span class="img_on_hover"><img src="{{ elixir('images/sidebar/admin-practice-icon-hover.png') }}" ></span>
             <span class="add_text">add<span class="arial_bold" style="color:#7e6551;">+</span></span>
@@ -42,6 +42,7 @@ Administration
     @endif
     @if(Auth::user()->isSuperAdmin() ||  Auth::user()->hasRole('user-admin') )
     <li class="admin_sidebar_menu_item">
+
         <a class="sidebar_button_subsection subsection_admin_add" href="/administration/users/create">
             <span class="img_not_hover"><img src="{{ elixir('images/sidebar/admin-user-icon.png') }}" ></span>
             <span class="img_on_hover"><img src="{{ elixir('images/sidebar/admin-user-icon-hover.png') }}" ></span>
