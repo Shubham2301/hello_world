@@ -6,7 +6,6 @@ ini_set('max_execution_time', 3600);
 
 use Auth;
 use Event;
-use Faker\Factory as Faker;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
@@ -77,7 +76,7 @@ class BulkImportController extends Controller
         $import_result['patients_added'] = 0;
         $import_result['already_exist'] = 0;
         $import_result['exception'] = '';
-        
+
         $format = [
             'first_name',
             'middle_name',
@@ -117,31 +116,32 @@ class BulkImportController extends Controller
             $importHistory->save();
 
             // $excels = Excel::load($request->file('patient_xlsx'))->get();
-            $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'), function($reader){
-                    $reader->setDateColumns(array('birthdate'));
-                    $reader->formatDates(true, 'Y-m-d');
+            $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'), function ($reader) {
+                $reader->setDateColumns(array('birthdate'));
+                $reader->formatDates(true, 'Y-m-d');
             })->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request, $template, &$import_result) {
                 foreach ($results as $data) {
                     $patients = [];
                     if (array_filter($data->toArray())) {
-                        if($i == 0){
-                            if(!(count(array_intersect_key(array_flip($format), $data->toArray())) === count($format))){
+                        if ($i == 0) {
+                            if (!(count(array_intersect_key(array_flip($format), $data->toArray())) === count($format))) {
                                 $import_result['exception'] = 'Incorrect .xlsx format';
-                                return ;
+                                return;
                             }
                         }
-						$patients['firstname'] = isset($data['first_name']) ? $data['first_name'] : '';
-						$patients['lastname'] = isset($data['last_name']) ? $data['last_name'] : '';
-                        $patients['lastfourssn'] = isset($data['ssn_last_digits']) ? $data['ssn_last_digits'] : null ;
-						$patients['birthdate'] = (isset($data['birthdate'])&& $data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : '0000-00-00 00:00:00';
-                        $patients['preferredlanguage'] = isset($data['language']) ? $data['language'] : '';
+                        $patients['firstname'] = isset($data['first_name']) ? $data['first_name'] : '';
+                        $patients['lastname'] = isset($data['last_name']) ? $data['last_name'] : '';
+                        $patients['lastfourssn'] = isset($data['ssn_last_digits']) ? $data['ssn_last_digits'] : null;
+                        $patients['birthdate'] = (isset($data['birthdate']) && $data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : '0000-00-00 00:00:00';
+                        $language = config('patient_engagement.language.' . strtolower($data['language']));
+                        $patients['preferredlanguage'] = isset($language) ? $language : '';
                         $patient = Patient::where($patients)->first();
 
                         if ($patient) {
                             $old_patients = $old_patients + 1;
                             continue;
                         }
-						$patients['middlename'] = isset($data['middle_name']) ? $data['middle_name'] : '';
+                        $patients['middlename'] = isset($data['middle_name']) ? $data['middle_name'] : '';
 
                         $patients['cellphone'] = isset($data['cellphone']) ? $data['cellphone'] : '';
                         $patients['homephone'] = isset($data['homephone']) ? $data['homephone'] : '';
@@ -150,6 +150,7 @@ class BulkImportController extends Controller
                         $patients['addressline1'] = isset($data['address_1']) ? $data['address_1'] : '';
                         $patients['addressline2'] = isset($data['address_2']) ? $data['address_2'] : '';
                         $patients['city'] = isset($data['city']) ? $data['city'] : '';
+                        $patients['state'] = isset($data['state']) ? $data['state'] : '';
                         $patients['zip'] = isset($data['zip']) ? $data['zip'] : '';
                         $patients['gender'] = isset($data['gender']) ? Helper::getGenderIndex($data['gender']) : '';
                         $patients['special_request'] = isset($data['special_request']) ? $data['special_request'] : '';
@@ -180,20 +181,20 @@ class BulkImportController extends Controller
                             }
 
                             $insuranceCarrier = PatientInsurance::create([
-                                    'patient_id' => $patient->id,
-                                    'insurance_carrier' => $data['insurance_carrier'],
-                                    'subscriber_name' => $data['subscriber_name'],
-                                    'subscriber_id' => $data['subscriber_id'],
-                                    'subscriber_birthdate' => $data['subscriber_dob'],
-                                    'insurance_group_no' => $data['group_no'],
-                                    'subscriber_relation' => $data['relation_to_patient']
-                                ]);
+                                'patient_id' => $patient->id,
+                                'insurance_carrier' => $data['insurance_carrier'],
+                                'subscriber_name' => $data['subscriber_name'],
+                                'subscriber_id' => $data['subscriber_id'],
+                                'subscriber_birthdate' => $data['subscriber_dob'],
+                                'insurance_group_no' => $data['group_no'],
+                                'subscriber_relation' => $data['relation_to_patient'],
+                            ]);
 
                             $engagementPreference = EngagementPreference::create([
-                                    'patient_id' => $patient->id,
-                                    'type' => config('patient_engagement.type.' . strtolower($data['preferred_method_of_contact'])),
-                                    'language' => config('patient_engagement.language.' . strtolower($data['language'])),
-                                ]);
+                                'patient_id' => $patient->id,
+                                'type' => config('patient_engagement.type.' . strtolower($data['preferred_method_of_contact'])),
+                                'language' => config('patient_engagement.language.' . strtolower($data['language'])),
+                            ]);
 
                             $date = new \DateTime();
                             $careconsole->stage_updated_at = $date->format('Y-m-d H:i:s');
@@ -231,10 +232,11 @@ class BulkImportController extends Controller
         return "try again";
     }
 
-    public function downloadBulkImportFormat(Request $request){
+    public function downloadBulkImportFormat(Request $request)
+    {
         $name = 'Ocuhub Patient Import Format.xlsx';
         $path = base_path() . '/public/formats/patient-xlxs-import.xlsx';
-        $headers = [ 'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ];
+        $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
         return response()->download($path, $name, $headers);
     }
 }
