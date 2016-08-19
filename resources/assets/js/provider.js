@@ -150,7 +150,10 @@ $(document).ready(function () {
     $('.search_filter').on('click', '.remove_option', function () {
         $(this).parent().remove();
         $("#search_practice_button").trigger("click");
+    });
 
+    $('.provider_type_filters').on('click', function () {
+        $("#search_practice_button").trigger("click");
     });
 
 
@@ -577,7 +580,7 @@ function getProviders(formData) {
                     content += '<div class="row content-row-margin">';
                     content += '<div class="col-xs-12 arial_bold provider_list_title">' + provider.name + '</div>';
                     content += '<div class="col-xs-4 arial">Speciality - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
-                    content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br>Location - ' + provider.location_name +'</div>';
+                    content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br></div>';
                     content += '<div class="col-xs-4 arial"></div>';
                     content += '</div>';
                     content += '</div>';
