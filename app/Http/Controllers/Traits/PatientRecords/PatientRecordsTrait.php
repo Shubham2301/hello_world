@@ -17,7 +17,7 @@ use myocuhub\Models\Action;
 use Auth;
 use DateTime;
 use PDF;
-
+use Helper;
 
 trait PatientRecordsTrait
 {
@@ -44,7 +44,9 @@ trait PatientRecordsTrait
     public function printRecord($contactHistoryID)
     {
         $pdf = $this->createPDF($contactHistoryID);
+
         return $pdf->inline();
+
     }
 
     public function getPatientRecordView(Request $request)
@@ -179,6 +181,10 @@ trait PatientRecordsTrait
 
         $data['patient'] = $patient;
         $data['record'] = $recordData;
+        $data['signature'] = '';
+        if(isset($data['record']['sigoutput'])){
+            $data['signature'] = Helper::sigJsonToImage($data['record']['sigoutput']);
+        }
         $html = view('patient-records.print')->with('data', $data)->render();
         $pdf = PDF::loadHtml($html);
         return $pdf;

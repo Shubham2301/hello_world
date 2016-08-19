@@ -83,6 +83,8 @@ return [
             'temp_dir' => base_path() . '/temp_ccda/',
             'ext' => '.pdf',
         ],
+
+        'signature_files' => public_path().'/lib/digital-signature/',
     ],
     'fpc_mandatory_fields' => [
         'birthdate' => [

@@ -51,10 +51,17 @@ class PracticeController extends Controller
         $data['location_index'] = -1;
         $data['network_id'] = session('network-id');
         $networkData = [];
-        $networks = Network::all()->sortBy("name");
-        foreach ($networks as $network) {
-            $networkData[$network->id] = $network->name;
+        if(session('network-id')) {
+            $networkId = session('network-id');
+            $networkData[$networkId] = Network::find($networkId)->name;
         }
+        else {
+            $networks = Network::all()->sortBy("name");
+            foreach ($networks as $network) {
+                $networkData[$network->id] = $network->name;
+            }
+        }
+
 
         return view('practice.create')->with('data', $data)->with('networks', $networkData);
     }
@@ -104,10 +111,14 @@ class PracticeController extends Controller
 
             $practicelocation->save();
         }
-        $practiceNetwork = new PracticeNetwork;
-        $practiceNetwork->practice_id = $practice->id;
-        $practiceNetwork->network_id = $practicedata[0]['practice_network'];
-        $practiceNetwork->save();
+        if(isset($practicedata[0]['practice_network'])) {
+            $practiceNetwork = new PracticeNetwork;
+            $practiceNetwork->practice_id = $practice->id;
+            $practiceNetwork->network_id = $practicedata[0]['practice_network'];
+            $practiceNetwork->save();
+        } else {
+            session()->flash('warning', 'Practice added without network information! Please contact occuhub support.');
+        }
         $action = 'new practice created';
         $description = '';
         $filename = basename(__FILE__);
@@ -158,10 +169,18 @@ class PracticeController extends Controller
         $data['location_index'] = $location;
         $data['edit'] = true;
         $network = PracticeNetwork::where('practice_id', $id)->first();
-        $data['network_id'] = isset($network->network_id) ? $network->network_id :  null ;
+        $data['network_id'] = $network ? $network->network_id :  null ;
         $networkData = [];
-        $networks = Network::find($network->network_id);
-        $networkData[$networks->id] = $networks->name;
+        if($network) {
+            $networks = Network::find($network->network_id);
+            $networkData[$networks->id] = $networks->name;
+        }
+        else {
+            $networks = Network::all()->sortBy("name");
+            foreach ($networks as $network) {
+                $networkData[$network->id] = $network->name;
+            }
+        }
         return view('practice.create')->with('data', $data)->with('networks', $networkData);
     }
 
@@ -188,6 +207,14 @@ class PracticeController extends Controller
         $practice->name = $practicename;
         $practice->email = $practiceemail;
         $practice->save();
+
+        $practiceNetwork = PracticeNetwork::where('practice_id', $practiceid)->first();
+        if(!$practiceNetwork) {
+            $practiceNetwork = new PracticeNetwork;
+            $practiceNetwork->practice_id = $practiceid;
+            $practiceNetwork->network_id = $practicedata[0]['practice_network'];
+            $practiceNetwork->save();
+        }
 
         foreach ($locations as $location) {
             if (isset($location['id'])) {

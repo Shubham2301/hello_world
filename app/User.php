@@ -271,7 +271,7 @@ CanResetPasswordContract
             ->get(['users.id', 'users.name', 'users.sesemail']);
     }
 
-    public static function getNearByProviders($lat, $lng, $range = 10)
+    public static function getNearByProviders($lat, $lng, $range = 10, $providerTypes)
     {
         $query = self::query()
             ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
@@ -282,6 +282,12 @@ CanResetPasswordContract
             ->select(DB::raw('*, ( 3959 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
             ->having('distance', '<=', $range)
             ->orderBy('distance', 'ASC');
+
+        foreach ($providerTypes as $type) {
+            $query->where('users.provider_type_id', null)
+                ->orWhere('users.provider_type_id', $type);
+        }
+
         if (session('user-level') == 1) {
             return $query
                 ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')

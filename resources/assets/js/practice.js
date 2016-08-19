@@ -507,7 +507,7 @@ function createPractice(formData) {
             window.location = "/administration/practices";
         },
         error: function error() {
-            $('p.alert_message').text('Error searching');
+            $('p.alert_message').text('Error creating practices');
             $('#alert').modal('show');
         },
         cache: false,

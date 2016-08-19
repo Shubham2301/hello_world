@@ -730,8 +730,12 @@
         </div>
 
         <div class="row default_row_margin">
-            <div class="col-xs-6" style="padding-right:0px;">
-                <p><span style="font-weight:bold;">Signature</span> <span class="unit_input_text" style="width:80%;"></span> &nbsp;&nbsp;</p>
+            <div class="col-xs-6">
+                <p><span style="font-weight:bold;">Signature</span>
+                   <span class="unit_input_text" style="width:80%;">
+                       <img src="data:image/png;base64,{{$data['signature']}}" alt="" class="signature_image">
+                    </span> &nbsp;&nbsp;
+                </p>
             </div>
             <div class="col-xs-6" style="padding-left:0px;">
                 <p> O.D. Print Name<span class="unit_input_text" style="width:72%;">
