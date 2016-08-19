@@ -153,7 +153,10 @@ $(document).ready(function () {
     });
 
     $('.provider_type_filters').on('click', function () {
-        $("#search_practice_button").trigger("click");
+        $('#search_practice_button').trigger('click');
+        if ($('.provider_near_patient_list').hasClass('active')) {
+            getNearByProviders();
+        }
     });
 
 
@@ -199,11 +202,7 @@ $(document).ready(function () {
     $('.provider_near_patient').on('click', function () {
         $('.provider_near_patient_list').toggleClass("active");
         if ($('.provider_near_patient_list').hasClass("active")) {
-            var id = $('#form_patient_id').attr('value');
-            var formData = {
-                'patient_id': id
-            };
-            getNearByProviders(formData);
+            getNearByProviders();
         } else {
             $('.provider_near').removeClass('glyphicon-chevron-down');
             $('.provider_near').addClass('glyphicon-chevron-right');
@@ -784,11 +783,23 @@ function getPreviousProviders(formData) {
 
 }
 
-function getNearByProviders(formData) {
+function getNearByProviders() {
+
+    var providerTypes = [];
+    $("input:checkbox[name=provider_types]:checked").each(function(){
+        providerTypes.push($(this).val());
+    });
+
+    var formData = {
+        'patient_id': $('#form_patient_id').attr('value'),
+        'provider_types': providerTypes
+    };
+
     if (nearByProviders.length > 0) {
         showProviderNear(nearByProviders);
         return;
     }
+    
     $.ajax({
         url: '/providers/nearby',
         type: 'GET',

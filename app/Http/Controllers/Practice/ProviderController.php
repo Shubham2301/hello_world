@@ -332,11 +332,13 @@ class ProviderController extends Controller
             return $patientLocation['error'];
         }
 
+        $providerTypes = $request->has('provider_types') ? $request->provider_types : [];
+
         $lat = $patientLocation['latitude'];
         $lng = $patientLocation['longitude'];
         $providers = [];
         if ($lat != '') {
-            $providers = User::getNearByProviders($lat, $lng, 50);
+            $providers = User::getNearByProviders($lat, $lng, 50, $providerTypes);
         }
         $data = [];
         $i = 0;
