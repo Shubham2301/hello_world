@@ -49,6 +49,7 @@ class AppointmentController extends Controller
         $providerID = $request->input('provider_id');
         $locationID = $request->input('location_id');
         $practiceID = $request->input('practice_id');
+        $actionResultID = $request->has('action_result_id') ? $request->input('action_result_id') : '' ;
         $referralTypeID = $request->input('referraltype_id');
         $appointmentType = $request->input('appointment_type');
         $appointmentTypeKey = $request->input('appointment_type_key');
@@ -113,7 +114,7 @@ class AppointmentController extends Controller
             }
 
             $contactHistory->action_id = 9;
-            $contactHistory->action_result_id = 14;
+            $contactHistory->action_result_id = $actionResultID;
             $contactHistory->notes = $notes;
             $contactHistory->console_id = $careconsole->id;
             $contactHistory->contact_activity_date = $contactDate->format('Y-m-d H:i:s');
@@ -196,6 +197,9 @@ class AppointmentController extends Controller
         $providerKey = $request->input('provider_acc_key');
         $referraltype_id = $request->input('referraltype_id');
         $action = $request->input('action');
+        if ($request->has('action_result_id')) {
+            $actionResultID = $request->input('action_result_id');
+        }
 
         $data = [];
         $data['location_code'] = $locationKey;
@@ -217,6 +221,9 @@ class AppointmentController extends Controller
         $data['patient_name'] = $patient->firstname . ' ' . $patient->lastname;
         $data['schedule-patient'] = true;
 		$data['selectedfiles'] = $request->selectedfiles;
+        if(isset($actionResultID)) {
+            $data['action_result_id'] = $actionResultID;
+        }
 
         $filearray = json_decode($data['selectedfiles'], true);
 

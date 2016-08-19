@@ -19,11 +19,9 @@ return [
 
     'call_center_report' => [
         'graph_legends' => [
-            'X' => '',
-            'Phone' => '#22b573',
-            'Email' => '#0071bc',
-            'Mail' => '#ff1d25',
-            'Others' => '#f7931e',
+            'Date' => '',
+            'Scheduled' => '#22b573',
+            'Attempted' => '#0071bc',
         ],
     ],
 ];

@@ -38,9 +38,9 @@ class CallCenterController extends Controller
     {
         $this->setStartDate($request->start_date);
         $this->setEndDate($request->end_date);
+        $filter = $request->filter_option;
 
-        $report_data = $this->generateReport();
-
+        $report_data = $this->generateReport($filter);
         return $report_data;
     }
 
