@@ -69,7 +69,6 @@ trait PatientRecordsTrait
             'patient_id' => $request->patient_id,
             'content' => json_encode($request->all())
         ];
-
         $record =  PatientRecord::create($data);
         $patientID = $data['patient_id'];
 
@@ -79,7 +78,6 @@ trait PatientRecordsTrait
 
         $record->contact_history_id = $contactHistoryID;
         $record->save();
-
         event(new PatientRecordCreation(
             [
                 'template_id' => $request->template_id,
@@ -168,7 +166,8 @@ trait PatientRecordsTrait
         return $contactHistory->id;
     }
 
-    public function CreatePDF($contactHistoryID){
+    public function CreatePDF($contactHistoryID)
+    {
 
         $record = ContactHistory::find($contactHistoryID)->record;
         $patientID = $record->patient_id;
@@ -178,9 +177,13 @@ trait PatientRecordsTrait
 
         $data['patient'] = $patient;
         $data['record'] = $recordData;
-        $data['signature'] = Helper::sigJsonToImage($data['record']['sigoutput']);
+        $data['signature'] = '';
+        if (isset($data['record']['sigoutput']) && $data['record']['sigoutput'] != '') {
+            $data['signature'] = Helper::sigJsonToImage($data['record']['sigoutput']);
+        }
+        $printView = $record->template->print_view;
+        $html = view('patient-records.prints.'.$printView)->with('data', $data)->render();
 
-        $html = view('patient-records.print')->with('data', $data)->render();
         $pdf = PDF::loadHtml($html);
         return $pdf;
     }

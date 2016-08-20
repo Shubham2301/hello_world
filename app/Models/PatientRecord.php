@@ -17,7 +17,7 @@ class PatientRecord extends Model
 
 	public function template(){
         return $this->belongsTo('myocuhub\Models\WebFormTemplate', 'web_form_template_id')
-                    ->select(array('id', 'display_name'));
+            ->select(array('id', 'display_name', 'print_view'));
 	}
 
 
