@@ -10,6 +10,7 @@ use Datetime;
 use DateInterval;
 use Auth;
 use myocuhub\Facades\Helper;
+use myocuhub\Models\Careconsole;
 
 trait CallCenterTrait
 {
@@ -17,7 +18,7 @@ trait CallCenterTrait
     protected $startDate;
     protected $endDate;
 
-    public function generateReport() {
+    public function generateReport($filter) {
 
         $user = Auth::user();
         $network = $user->network;
@@ -29,80 +30,123 @@ trait CallCenterTrait
         $userData = User::getCareConsoledata($network->network_id, $this->getStartDate(), $this->getEndDate());
 
         foreach($userData as $user) {
-            $results['user'][$user->id]['name'] = $user->name;
+            $userReportData = array();
+            $userReportData['name'] = $user->name;
+            $userReportData['id'] = $user->id;
+            $userReportData['email'] = 0;
+            $userReportData['phone'] = 0;
+            $userReportData['sms'] = 0;
+            $userReportData['total'] = 0;
+
             foreach($user->contactHistory as $ContactHistory) {
                 $activityDate = Helper::formatDate($ContactHistory->contact_activity_date, config('constants.date_format'));
                 switch ($ContactHistory->action->name) {
                     case 'request-patient-email':
+                        $userReportData['email']++;
+                        $userReportData['total']++;
                         break;
                     case 'request-patient-phone':
+                        $userReportData['phone']++;
+                        $userReportData['total']++;
                         break;
                     case 'request-patient-sms':
-                        break;
-                    case 'contact-attempted-by-phone':
-                        $results['user'][$user->id]['phone'] = isset($results['user'][$user->id]['phone']) ? $results['user'][$user->id]['phone'] + 1 : 1;
-                        $graphData[$activityDate]['phone'] = isset($graphData[$activityDate]['phone']) ? $graphData[$activityDate]['phone'] + 1 : 1;
-                        break;
-                    case 'contact-attempted-by-email':
-                        $results['user'][$user->id]['email'] = isset($results['user'][$user->id]['email']) ? $results['user'][$user->id]['email'] + 1 : 1;
-                        $graphData[$activityDate]['email'] = isset($graphData[$activityDate]['email']) ? $graphData[$activityDate]['email'] + 1 : 1;
-                        break;
-                    case 'contact-attempted-by-mail':
-                        $results['user'][$user->id]['mail'] = isset($results['user'][$user->id]['mail']) ? $results['user'][$user->id]['mail'] + 1 : 1;
-                        $graphData[$activityDate]['mail'] = isset($graphData[$activityDate]['mail']) ? $graphData[$activityDate]['mail'] + 1 : 1;
-                        break;
-                    case 'contact-attempted-by-other':
-                        $results['user'][$user->id]['other'] = isset($results['user'][$user->id]['other']) ? $results['user'][$user->id]['other'] + 1 : 1;
-                        $graphData[$activityDate]['other'] = isset($graphData[$activityDate]['other']) ? $graphData[$activityDate]['other'] + 1 : 1;
-                        break;
-                    case 'patient-notes':
-                    case 'requested-data':
-
+                        $userReportData['sms']++;
+                        $userReportData['total']++;
                         break;
                     case 'schedule':
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
-                    case 'move-to-console':
-                    case 'recall-later':
-                    case 'unarchive':
-                    case 'archive':
-                    case 'kept-appointment':
-                    case 'no-show':
-                    case 'cancelled':
-                    case 'data-received':
-                    case 'mark-as-priority':
-                    case 'remove-priority':
-                    case 'annual-exam':
-                    case 'refer-to-specialist':
-                    case 'highrisk-contact-pcp':
+                        if(isset($ContactHistory->actionResult) && $ContactHistory->actionResult->name != 'incoming-call') {
+                            $userReportData['phone']++;
+                            $userReportData['total']++;
+                        }
+                        break;
                     default:
                         break;
                 }
 
-                if($ContactHistory->actionResult) {
-                    switch ($ContactHistory->actionResult->name) {
-                        case 'mark-as-priority':
-                        case 'already-seen-by-outside-dr':
-                        case 'patient-declined-services':
-                        case 'other-reasons-for-declining':
-                        case 'no-need-to-schedule':
-                        case 'no-insurance':
-                        case 'unable-to-reach':
-                        case 'hold-for-future':
-                        case 'success':
-                        case 'dropout':
-                        default:
-                            break;
-                    }
+            }
+            $results['user'][$user->id] = $userReportData;
+        }
+
+        $patientData = Careconsole::getCallCenterReportData($network->network_id, $this->getStartDate(), $this->getEndDate(), $filter['userID']);
+
+        $results['graphData'] = $this->getGraphData($patientData);
+        $results['graphColumn'] = config('reports.call_center_report.graph_legends');
+        return $results;
+
+    }
+
+    public function getGraphData ($patientData) {
+
+        $graphData = array();
+
+        $overviewData = array();
+
+        $comparisonData = $this->graphArray();
+
+        foreach ($patientData as $patient) {
+            $lastContactType = 'phone';
+            foreach ($patient->contactHistory as $contactHistory) {
+
+                $activityDate = Helper::formatDate($contactHistory->contact_activity_date, 'Ymd');
+
+                if(!isset($overviewData[$activityDate])) {
+                    $overviewData[$activityDate] = $this->graphArray();
+                    $overviewData[$activityDate]['date'] = Helper::formatDate($contactHistory->contact_activity_date, 'Y-m-d');
+                }
+
+                switch ($contactHistory->action->name) {
+                    case 'request-patient-email':
+                        $overviewData[$activityDate]['attempt']['email']++;
+                        $overviewData[$activityDate]['attempt']['all']++;
+                        $comparisonData['attempt']['email']++;
+                        $lastContactType = 'email';
+                        break;
+                    case 'request-patient-phone':
+                        $overviewData[$activityDate]['attempt']['phone']++;
+                        $overviewData[$activityDate]['attempt']['all']++;
+                        $comparisonData['attempt']['phone']++;
+                        $lastContactType = 'phone';
+                        break;
+                    case 'request-patient-sms':
+                        $overviewData[$activityDate]['attempt']['sms']++;
+                        $overviewData[$activityDate]['attempt']['all']++;
+                        $comparisonData['attempt']['sms']++;
+                        $lastContactType = 'sms';
+                        break;
+                    case 'schedule':
+                    case 'reschedule':
+                    case 'manually-schedule':
+                    case 'manually-reschedule':
+                        if(isset($contactHistory->actionResult) && $contactHistory->actionResult->name == 'incoming-call') {
+                            $overviewData[$activityDate]['scheduled'][$lastContactType]++;
+                            $overviewData[$activityDate]['scheduled']['all']++;
+                            $comparisonData['scheduled'][$lastContactType]++;
+                        }
+                        else {
+                            $overviewData[$activityDate]['scheduled']['phone']++;
+                            $overviewData[$activityDate]['attempt']['phone']++;
+                            $overviewData[$activityDate]['scheduled']['all']++;
+                            $overviewData[$activityDate]['attempt']['all']++;
+                            $comparisonData['scheduled']['phone']++;
+                            $comparisonData['attempt']['phone']++;
+                        }
+                        $lastContactType = 'phone';
+                        break;
+                    default:
+                        break;
                 }
             }
-
         }
-        $results['graphData'] = $graphData;
-        $results['graphColumn'] = config('reports.call_center_report.graph_legends');
 
-        return $results;
+        ksort($overviewData);
+
+        $graphData['overview'] = $overviewData;
+        $graphData['comparison'] = $comparisonData;
+
+        return $graphData;
 
     }
 
@@ -124,5 +168,27 @@ trait CallCenterTrait
     public function getEndDate()
     {
         return $this->endDate;
+    }
+
+    public function graphArray() {
+
+        $graph = array();
+        $graph = [
+                'attempt' => [
+                    'phone' => 0,
+                    'sms' => 0,
+                    'email' => 0,
+                    'all' => 0,
+                ],
+                'scheduled' => [
+                    'phone' => 0,
+                    'sms' => 0,
+                    'email' => 0,
+                    'all' => 0,
+                ],
+                'date' => '',
+            ];
+        return $graph;
+
     }
 }

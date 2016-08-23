@@ -16,13 +16,16 @@
 <div class="content-section content-section-scheduling active" id="practice_section">
     {!! Form::open(array('url' => '/appointments', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
     @if(array_key_exists('referraltype_id', $data))
-    {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!}
+        {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!}
     @endif
     @if(array_key_exists('action', $data))
-    {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
+        {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
+    @endif
+    @if(array_key_exists('action_result_id', $data))
+        {!! Form::hidden('action_result_id', $data['action_result_id'], array('id' => 'form_action_result_id')) !!}
     @endif
     @if(array_key_exists('patient_id', $data))
-    {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patient_id')) !!}
+        {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patient_id')) !!}
     @endif
     {!! Form::hidden('provider_id', '', array('id' => 'form_provider_id')) !!}
     {!! Form::hidden('provider_acc_key', '', array('id' => 'form_provider_acc_key')) !!}

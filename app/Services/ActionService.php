@@ -134,6 +134,7 @@ class ActionService
                     $contact->days_in_prev_stage = $date_diff;
                     $contact->days_in_current_stage = 0;
                     $contact->appointment_id = $appointment->id;
+
                     $console->appointment_id = $appointment->id;
                     $console->stage_id = 2;
                     $console->recall_date = null;
@@ -199,6 +200,7 @@ class ActionService
                     $contact->days_in_prev_stage = $date_diff;
                     $contact->days_in_current_stage = 0;
                     $contact->appointment_id = $appointment->id;
+
                     $console->appointment_id = $appointment->id;
                     $console->stage_id = 2;
                     $console->recall_date = null;

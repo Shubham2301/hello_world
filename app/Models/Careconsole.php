@@ -595,4 +595,38 @@ class Careconsole extends Model
             ->with('referralHistory')
             ->get();
     }
+
+    public static function getCallCenterReportData($networkID, $startDate, $endDate, $userID = null)
+    {
+        return self::where( function ($subquery) use ($startDate, $endDate) {
+                $subquery->whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
+                    $query->whereNotNull('user_id');
+                    $query->where('contact_activity_date', '>=', $startDate);
+                    $query->where('contact_activity_date', '<=', $endDate);
+                });
+            })
+            ->whereHas('importHistory', function ($query) use ($networkID) {
+                $query->where('network_id', $networkID);
+            })
+            ->has('patient')
+            ->with(['contactHistory' => function ($query) use ($startDate, $endDate, $userID) {
+                $query->whereNotNull('user_id');
+                $query->where('contact_activity_date', '>=', $startDate);
+                $query->where('contact_activity_date', '<=', $endDate);
+                if($userID) {
+                    $query->where('user_id', $userID);
+                }
+                $query->whereHas('action', function ($q) {
+                    $q->where('name', 'schedule');
+                    $q->orwhere('name', 'reschedule');
+                    $q->orwhere('name', 'manually-reschedule');
+                    $q->orwhere('name', 'manually-schedule');
+                    $q->orwhere('name', 'request-patient-email');
+                    $q->orwhere('name', 'request-patient-phone');
+                    $q->orwhere('name', 'request-patient-sms');
+                });
+            }, 'contactHistory.action', 'contactHistory.actionResult'])
+            ->get();
+    }
+
 }

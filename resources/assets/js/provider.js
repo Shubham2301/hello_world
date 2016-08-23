@@ -794,11 +794,6 @@ function getNearByProviders() {
         'patient_id': $('#form_patient_id').attr('value'),
         'provider_types': providerTypes
     };
-
-    if (nearByProviders.length > 0) {
-        showProviderNear(nearByProviders);
-        return;
-    }
     
     $.ajax({
         url: '/providers/nearby',

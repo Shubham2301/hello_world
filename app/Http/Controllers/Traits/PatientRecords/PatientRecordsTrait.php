@@ -178,12 +178,12 @@ trait PatientRecordsTrait
         $data['patient'] = $patient;
         $data['record'] = $recordData;
         $data['signature'] = '';
+
         if (isset($data['record']['sigoutput']) && $data['record']['sigoutput'] != '') {
             $data['signature'] = Helper::sigJsonToImage($data['record']['sigoutput']);
         }
         $printView = $record->template->print_view;
         $html = view('patient-records.prints.'.$printView)->with('data', $data)->render();
-
         $pdf = PDF::loadHtml($html);
         return $pdf;
     }

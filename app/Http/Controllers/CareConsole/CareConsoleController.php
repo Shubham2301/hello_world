@@ -307,7 +307,7 @@ class CareConsoleController extends Controller
         $data['pcp'] = $this->CareConsoleService->getPatientFieldValue($patient, 'pcp');
         $data['dob'] = $this->CareConsoleService->getPatientFieldValue($patient, 'dob');
         $data['address'] = $this->CareConsoleService->getPatientFieldValue($patient, 'address');
-        $data['last_scheduled_to'] = $this->CareConsoleService->getPatientFieldValue($patient, 'last-scheduled-to');
+        $data['last_seen_by'] = $this->CareConsoleService->getPatientFieldValue($patient, 'last-scheduled-to');
         $data['insurance'] = $this->CareConsoleService->getPatientFieldValue($patient, 'insurance-carrier');
         $data['referred_by'] = $this->CareConsoleService->getPatientFieldValue($console, 'referral-history');
 

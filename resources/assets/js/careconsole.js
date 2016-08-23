@@ -193,10 +193,6 @@ $(document).ready(function () {
         $('.modal-dialog').removeClass('wide-modal');
 
         switch ($(this).attr('data-name')) {
-            case 'reschedule':
-            case 'schedule':
-                window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).parent().attr('data-patientid');
-                break;
             case 'request-patient-phone':
                 $('#form_action_request_phone').show();
                 $('.form_action_patient_phone').html(patientPhone);
@@ -273,10 +269,6 @@ $(document).ready(function () {
         $('.modal-dialog').removeClass('wide-modal');
 
         switch ($(this).attr('data-name')) {
-            case 'reschedule':
-            case 'schedule':
-                window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
-                break;
             case 'request-patient-phone':
                 $('#form_action_request_phone').show();
                 $('.form_action_patient_phone').html(patientPhone);
@@ -376,10 +368,6 @@ $(document).ready(function () {
         $('.modal-dialog').removeClass('wide-modal');
 
         switch ($(this).attr('data-name')) {
-            case 'reschedule':
-            case 'schedule':
-                window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $(this).attr('data-patientid');
-                break;
             case 'request-patient-phone':
                 $('#form_action_request_phone').show();
                 $('.form_action_patient_phone').html(patientPhone);
@@ -717,28 +705,34 @@ function action() {
         return;
     }
 
+    var actionName = $('#action_name').val();
 
-    if ($('#action_id').val() == 36) {
-        var data = [];
-        data['patient_id'] = $('#action_patient_id').val();
-        data['action_id'] = 1;
-        data['console_id'] = $('#action_console_id').val();
-        data['stage_id'] = $('#action_stage_id').val();
-        data['action_header'] = "Contact attempted by phone";
+    switch (actionName) {
+        case 'reschedule':
+        case 'schedule':
+            window.location = "/providers?referraltype_id=6&action=careconsole&patient_id=" + $('#action_patient_id').val() + "&action_result_id=" + $('#action_result_id').val();
+            break;
+        case 'request-patient-phone':
+            performAction();
+            var data = [];
+            data['patient_id'] = $('#action_patient_id').val();
+            data['action_id'] = 1;
+            data['console_id'] = $('#action_console_id').val();
+            data['stage_id'] = $('#action_stage_id').val();
+            data['action_header'] = 'Contact attempted by phone';
 
-        show_patient = true;
-        clearActionFields();
-        showDate = false;
+            show_patient = true;
+            clearActionFields();
+            showDate = false;
 
-        $('#action_name').val('contact-attempted-by-phone');
-        $('.modal-dialog').removeClass('wide-modal');
+            $('#action_name').val('contact-attempted-by-phone');
 
-        showActionModel(data);
+            showActionModel(data);
 
-    } else {
-
-        performAction();
-
+            break;
+        default:
+            performAction();
+            break;
     }
 }
 
@@ -771,19 +765,21 @@ function performAction() {
         cache: false,
         async: false,
         success: function success(e) {
-            var stage = $.parseJSON(e);
-            $('#actionModal').modal('hide');
-            if (show_patient && bucketName == '') {
-                showStageData(stage.id, stage.name);
-            } else if (show_patient && bucketName != '') {
-                currentPage = 1;
-                bucketData(bucketName);
+            if ($('#action_id').val() != 36) {
+                var stage = $.parseJSON(e);
+                $('#actionModal').modal('hide');
+                if (show_patient && bucketName == '') {
+                    showStageData(stage.id, stage.name);
+                } else if (show_patient && bucketName != '') {
+                    currentPage = 1;
+                    bucketData(bucketName);
+                }
+                show_patient = true;
+                $('#action_notes').html('');
+                $('#action_notes').val('');
+                $('#action_result_id').val(0);
+                $('#recall_date').val('');
             }
-            show_patient = true;
-            $('#action_notes').html('');
-            $('#action_notes').val('');
-            $('#action_result_id').val(0);
-            $('#recall_date').val('');
         },
         error: function error() {
             $('p.alert_message').text('Error:');
@@ -1217,7 +1213,7 @@ function getPatientContactData(patientID) {
                 return;
             }
 
-            content = '<div class="form-group"><h4 class="">Patient Details</h4><p><span class="arial_bold">Email</span><br><span class="arial">' + data.email + '</span><br></p><p><span class="arial_bold">Date of Birth</span><br><span class="arial">' + data.dob + '</span><br></p><p><span class="arial_bold">Last Seen By</span><br><span class="arial">' + data.scheduled_to + '</span><br></p><p><span class="arial_bold">Insurance Provider</span><br><span class="arial">' + data.insurance + '</span><br></p><p><span class="arial_bold">Special Request</span><br><span class="arial">' + data.special_request + '</span><br></p><p><span class="arial_bold">PCP</span><br><span class="arial">' + data.pcp + '</span><br></p><p><span class="arial_bold">Home Address</span><br><span class="arial">' + data.address + '</span><br></p><span class="arial_bold">Referred By</span><br><span class="arial">' + data.referred_by + '</span><br>';
+            content = '<div class="form-group"><h4 class="">Patient Details</h4><p><span class="arial_bold">Email</span><br><span class="arial">' + data.email + '</span><br></p><p><span class="arial_bold">Date of Birth</span><br><span class="arial">' + data.dob + '</span><br></p><p><span class="arial_bold">Last Seen By</span><br><span class="arial">' + data.last_seen_by + '</span><br></p><p><span class="arial_bold">Insurance Provider</span><br><span class="arial">' + data.insurance + '</span><br></p><p><span class="arial_bold">Special Request</span><br><span class="arial">' + data.special_request + '</span><br></p><p><span class="arial_bold">PCP</span><br><span class="arial">' + data.pcp + '</span><br></p><p><span class="arial_bold">Home Address</span><br><span class="arial">' + data.address + '</span><br></p><span class="arial_bold">Referred By</span><br><span class="arial">' + data.referred_by + '</span><br>';
 
         },
         error: function error() {
