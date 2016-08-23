@@ -74,6 +74,7 @@ function scheduleAppointment() {
     var appointment_type_name = $('#form_appointment_type_name').val();
     var provider_acc_key = $('#form_provider_acc_key').val();
     var location_code = $('#form_location_code').val();
+    var form_action_result_id = $('#form_action_result_id').val();
 
     var formData = {
         'patient_id': patient_id,
@@ -86,6 +87,7 @@ function scheduleAppointment() {
         'appointment_type': appointment_type_name,
         'appointment_type_key': appointment_type_key,
         'appointment_time': appointment_time,
+        'form_action_result_id': form_action_result_id,
         'send_ccda_file': $('#send_ccda_checkbox').prop('checked'),
         'selectedfiles': $('#selected_patient_files').val()
     };
