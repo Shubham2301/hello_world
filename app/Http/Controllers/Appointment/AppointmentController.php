@@ -49,7 +49,7 @@ class AppointmentController extends Controller
         $providerID = $request->input('provider_id');
         $locationID = $request->input('location_id');
         $practiceID = $request->input('practice_id');
-        $actionResultID = $request->has('action_result_id') ? $request->input('action_result_id') : '' ;
+        $actionResultID = $request->has('action_result_id') ? $request->input('action_result_id') : null ;
         $referralTypeID = $request->input('referraltype_id');
         $appointmentType = $request->input('appointment_type');
         $appointmentTypeKey = $request->input('appointment_type_key');
