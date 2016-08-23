@@ -48,6 +48,16 @@ CanResetPasswordContract
         return $this->belongsToMany(Role::class);
     }
 
+    public function userNetwork()
+    {
+        return $this->hasOne(NetworkUser::class);
+    }
+
+    public function userRoles()
+    {
+        return $this->hasMany(Role_user::class);
+    }
+
     public function hasRole($role)
     {
         if (is_string($role)) {
@@ -312,18 +322,27 @@ CanResetPasswordContract
 
     public static function getCareConsoledata($networkID, $startDate, $endDate)
     {
-
-        return self::whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
-            $query->whereNotNull('user_id');
-            $query->where('contact_activity_date', '>=', $startDate);
-            $query->where('contact_activity_date', '<=', $endDate);
-        })
-            ->whereHas('contactHistory.careconsole.importHistory', function ($query) use ($networkID) {
+        return self::whereHas('userNetwork', function ($query) use ($networkID) {
                 $query->where('network_id', $networkID);
             })
-            ->has('contactHistory.careconsole.patient')
-            ->with([
-                'contactHistory',
+            ->whereHas('userRoles', function ($query) {
+                $query->where('role_id', 12);
+            })
+            ->with(['contactHistory' => function ($query) use ($startDate, $endDate) {
+                $query->whereNotNull('user_id');
+                $query->where('contact_activity_date', '>=', $startDate);
+                $query->where('contact_activity_date', '<=', $endDate);
+                $query->where('contact_activity_date', '<=', $endDate);
+                $query->whereHas('action', function ($q) {
+                    $q->where('name', 'schedule');
+                    $q->orwhere('name', 'reschedule');
+                    $q->orwhere('name', 'manually-reschedule');
+                    $q->orwhere('name', 'manually-schedule');
+                    $q->orwhere('name', 'request-patient-email');
+                    $q->orwhere('name', 'request-patient-phone');
+                    $q->orwhere('name', 'request-patient-sms');
+                });
+                },
                 'contactHistory.action',
                 'contactHistory.actionResult',
                 'contactHistory.currentStage',

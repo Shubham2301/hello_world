@@ -6,7 +6,7 @@
     background-color: @background-color-1;
     padding: 0 2em;
     flex-grow: 1;
-    color: @font-color-black-hover;
+    color: @font-color-black;
     &>.row {
         margin: 0;
         &.report_header_row {
@@ -35,4 +35,59 @@
     &>.user_listing {
         padding: .1em 0;
     }
+}
+.overview_controls {
+    list-style: none;
+    padding-left: 0;
+    .arial;
+    &>li {
+        cursor: pointer;
+        color: @font-color-black;
+        padding: .1em 0;
+        &:hover,
+        &.active {
+            color: @font-color-black-hover;
+            .arial_bold;
+        }
+    }
+}
+.user_listing {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2em;
+    &>li {
+        padding: .2em 0;
+        &:nth-child(odd) {
+            background: @background-color-2;
+        }
+        &.drilldown_item {
+            cursor: pointer;
+            &:hover {
+                .arial_bold;
+            }
+        }
+    }
+}
+.filter_section {
+    margin-top: .7em;
+    display: inline-block;
+    padding: .2em;
+    border: 1px solid @font-color-black;
+    border-radius: .5em;
+    &>.remove_filter {
+        margin-left: .3em;
+        cursor: pointer;
+    }
+}
+.overview_graph_control {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+}
+.graph_row {
+    margin: 2em 0;
+    display: flex;
 }

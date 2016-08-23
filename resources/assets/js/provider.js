@@ -412,7 +412,7 @@ function showPreviousProvider(providers) {
         providers.forEach(function (provider) {
             content += '<div class="row list_seperator previous_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '">';
             content += '<div class="col-xs-12 arial_bold provider_list_title">' + provider.name + '</div>';
-            content += '<div class="col-xs-4 arial">Speciality - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
+            content += '<div class="col-xs-4 arial">Specialty - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
             content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br>Location - ' + provider.location_name +'</div>';
             content += '<div class="col-xs-4 arial"></div>';
             content += '</div>';
@@ -433,7 +433,7 @@ function showProviderNear(providers) {
         providers.forEach(function (provider) {
             content += '<div class="row list_seperator nearby_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '">';
             content += '<div class="col-xs-12 arial_bold provider_list_title">' + provider.name + '</div>';
-            content += '<div class="col-xs-4 arial">Speciality - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
+            content += '<div class="col-xs-4 arial">Specialty - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
             content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br>Location - ' + provider.location_name +'</div>';
             content += '<div class="col-xs-4 arial"><span style ="color:black;">Distance - ' + provider.distance + '</span></div>';
             content += '</div>';
@@ -578,7 +578,7 @@ function getProviders(formData) {
                     content += '<div class="col-xs-12 list_seperator practice_list_item" data-id="' + provider.id + '" practice-id="' + provider.practice_id + '">';
                     content += '<div class="row content-row-margin">';
                     content += '<div class="col-xs-12 arial_bold provider_list_title">' + provider.name + '</div>';
-                    content += '<div class="col-xs-4 arial">Speciality - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
+                    content += '<div class="col-xs-4 arial">Specialty - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
                     content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br></div>';
                     content += '<div class="col-xs-4 arial"></div>';
                     content += '</div>';

@@ -42,6 +42,9 @@ class ProviderController extends Controller
         if ($request->has('action')) {
             $data['action'] = $request->input('action');
         }
+        if ($request->has('action_result_id')) {
+            $data['action_result_id'] = $request->input('action_result_id');
+        }
         if ($request->has('patient_id')) {
             $data['patient_id'] = $request->input('patient_id');
         }
