@@ -124,5 +124,10 @@ return [
         'network' => 'Network',
         'practice' => 'Practice',
         'location' => 'Location',
+    ],
+
+    'providerNearPatient' => [
+        'providerRadius' => 150,
+        'providerNumber' => 5,
     ]
 ];

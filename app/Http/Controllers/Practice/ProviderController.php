@@ -341,12 +341,12 @@ class ProviderController extends Controller
         $lng = $patientLocation['longitude'];
         $providers = [];
         if ($lat != '') {
-            $providers = User::getNearByProviders($lat, $lng, 50, $providerTypes);
+            $providers = User::getNearByProviders($lat, $lng, config('constants.providerNearPatient.providerRadius'), $providerTypes);
         }
         $data = [];
         $i = 0;
         foreach ($providers as $provider) {
-            if ($i > 20) {
+            if ($i > config('cconstants.providerNearPatient.providerNumber')) {
                 break;
             }
             if (!$provider->user_id || !$provider->practice_id) {
