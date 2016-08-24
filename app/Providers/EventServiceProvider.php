@@ -32,6 +32,10 @@ class EventServiceProvider extends ServiceProvider {
         'myocuhub\Events\Patient\CreateAttachmentFailure' => [
             'myocuhub\Listeners\AuditListener',
         ],
+
+        'myocuhub\Events\SESAPIServiceFailure' => [
+            'myocuhub\Listeners\AuditListener',
+        ],
 	];
 
     /**
