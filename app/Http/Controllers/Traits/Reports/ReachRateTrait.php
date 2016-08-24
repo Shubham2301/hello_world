@@ -9,17 +9,25 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\ContactHistory;
+use myocuhub\Services\CareConsoleService;
 use myocuhub\Patients;
 use myocuhub\User;
 use Datetime;
 use DateInterval;
 use Auth;
+use myocuhub\Facades\Helper;
 
 trait ReachRateTrait
 {
 
     protected $startDate;
     protected $endDate;
+    private $CareConsoleService;
+
+    public function __construct(CareConsoleService $CareConsoleService)
+    {
+        $this->CareConsoleService = $CareConsoleService;
+    }
 
     public function generateReport()
     {
@@ -34,27 +42,15 @@ trait ReachRateTrait
         $patient_count = 0;
 
         foreach ($careconsole_data as $careconsole) {
-
             $history = array();
             $history['archived'] = 0;
             $history['unarchived'] = 0;
             $history['move_to_recall'] = 0;
             $history['back_to_console'] = 0;
 
+            $results[$patient_count] = $this->fillPatientDetail($careconsole, 'patient_data');
+            $results[$patient_count]['request_received'] = Helper::formatDate($careconsole->created_at, config('constants.date_format'));
             foreach ($careconsole->contactHistory as $contactHistory) {
-
-                $results[$patient_count]['patient_name'] = $careconsole->patient->getName();
-                $results[$patient_count]['patient_id'] = $careconsole->patient->id;
-                $results[$patient_count]['pcp_name'] = $careconsole->patient->pcp;
-                $results[$patient_count]['referred_by_practice'] = $careconsole->referralHistory->referred_by_practice;
-
-                if($careconsole->import_history_count != 0) {
-                    $results[$patient_count]['patient_type'] = config('reports.patient_type.new');
-                }
-                else {
-                    $results[$patient_count]['patient_type'] = config('reports.patient_type.old');
-                }
-
 
                 switch ($contactHistory->action->name) {
                     case 'request-patient-email':
@@ -86,31 +82,17 @@ trait ReachRateTrait
                         $results[$patient_count]['appointment_scheduled'] = isset($results[$patient_count]['appointment_scheduled']) ? $results[$patient_count]['appointment_scheduled'] + 1 : 1;
                         $results[$patient_count]['reached'] = isset($results[$patient_count]['reached']) ? $results[$patient_count]['reached'] + 1 : 1;
                         if(isset($contactHistory->appointments)) {
-                            $scheduled_for = new DateTime($contactHistory->appointments->start_datetime);
-                            $results[$patient_count]['scheduled_to_practice'] = $contactHistory->appointments->provider->name;
-                            $results[$patient_count]['scheduled_to_provider'] = $contactHistory->appointments->practice->name;
-                            $results[$patient_count]['scheduled_for'] = $scheduled_for->format('Y-m-d');
-                            $results[$patient_count]['appointment_type'] = $contactHistory->appointments->appointmenttype;
+                            $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
                         }
-                        $scheduled_on = new DateTime($contactHistory->contact_activity_date);
-                        $results[$patient_count]['scheduled_on'] = $scheduled_on->format('Y-m-d');
+                        $results[$patient_count]['scheduled_on'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
                         break;
                     case 'move-to-console':
                         if(($history['back_to_console'] == $history['move_to_recall'] && $history['back_to_console'] != 0) || $history['back_to_console'] < $history['move_to_recall']) {
                             $patient_count++;
                             $results[$patient_count]['repeat_count'] = 1;
-                            $results[$patient_count]['patient_type'] = $results[$patient_count - 1]['patient_type'];
-                            $results[$patient_count]['patient_name'] = $careconsole->patient->firstname.' '.$careconsole->patient->lastname;
-                            $results[$patient_count]['patient_id'] = $careconsole->patient->id;
-
-                            if($careconsole->import_history_count != 0) {
-                                $results[$patient_count]['patient_type'] = config('reports.patient_type.new');
-                            }
-                            else {
-                                $results[$patient_count]['patient_type'] = config('reports.patient_type.old');
-                            }
-
+                            $results[$patient_count] += $this->fillPatientDetail($careconsole, 'patient_data');
                         }
+                        $results[$patient_count]['request_received'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
                         $history['back_to_console']++;
                         break;
                     case 'recall-later':
@@ -120,18 +102,9 @@ trait ReachRateTrait
                         if(($history['unarchived'] == $history['archived'] && $history['unarchived'] != 0) || $history['unarchived'] < $history['archived']) {
                             $patient_count++;
                             $results[$patient_count]['repeat_count'] = 1;
-                            $results[$patient_count]['patient_type'] = $results[$patient_count - 1]['patient_type'];
-                            $results[$patient_count]['patient_name'] = $careconsole->patient->getName();
-                            $results[$patient_count]['patient_id'] = $careconsole->patient->id;
-
-                            if($careconsole->import_history_count != 0) {
-                                $results[$patient_count]['patient_type'] = config('reports.patient_type.new');
-                            }
-                            else {
-                                $results[$patient_count]['patient_type'] = config('reports.patient_type.old');
-                            }
-
+                            $results[$patient_count] += $this->fillPatientDetail($careconsole, 'patient_data');
                         }
+                        $results[$patient_count]['request_received'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
                         $history['unarchived']++;
                         break;
                     case 'archive':
@@ -149,39 +122,26 @@ trait ReachRateTrait
                             if ($date_diff >= 0) {
                                 $results[$patient_count]['appt_scheduled_stage_change'] = $date_diff;
                             }
-                            $results[$patient_count]['scheduled_to_practice'] = $contactHistory->appointments->provider->name;
-                            $results[$patient_count]['scheduled_to_provider'] = $contactHistory->appointments->practice->name;
-
-                            $results[$patient_count]['scheduled_for'] = $appt_date->format('Y-m-d');
-                            $results[$patient_count]['appointment_type'] = $contactHistory->appointments->appointmenttype;
+                            $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
                         }
                         break;
                     case 'no-show':
                         $results[$patient_count]['appointment_completed'] = config('reports.appointment_completed.no_show');
                         if(isset($contactHistory->appointments)) {
-                            $scheduled_for = new DateTime($contactHistory->appointments->start_datetime);
-                            $results[$patient_count]['scheduled_to_practice'] = $contactHistory->appointments->provider->name;
-                            $results[$patient_count]['scheduled_to_provider'] = $contactHistory->appointments->practice->name;
-                            $results[$patient_count]['scheduled_for'] = $scheduled_for->format('Y-m-d');
-                            $results[$patient_count]['appointment_type'] = $contactHistory->appointments->appointmenttype;
+                            $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
                         }
                         break;
                     case 'cancelled':
                         $results[$patient_count]['appointment_completed'] = config('reports.appointment_completed.no_show');
                         if(isset($contactHistory->appointments)) {
-                            $scheduled_for = new DateTime($contactHistory->appointments->start_datetime);
-                            $results[$patient_count]['scheduled_to_practice'] = $contactHistory->appointments->provider->name;
-                            $results[$patient_count]['scheduled_to_provider'] = $contactHistory->appointments->practice->name;
-                            $results[$patient_count]['scheduled_for'] = $scheduled_for->format('Y-m-d');
-                            $results[$patient_count]['appointment_type'] = $contactHistory->appointments->appointmenttype;
+                            $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
                         }
                         break;
                     case 'data-received':
                         $results[$patient_count]['reports'] = 1;
                         $results[$patient_count]['show_stage_change'] = $contactHistory->days_in_prev_stage;
                         if(isset($contactHistory->appointments)) {
-                            $scheduled_for = new DateTime($contactHistory->appointments->start_datetime);
-                            $results[$patient_count]['scheduled_for'] = $scheduled_for->format('Y-m-d');
+                            $results[$patient_count]['scheduled_for'] = Helper::formatDate($contactHistory->appointments->start_datetime, config('constants.date_format'));
                         }
                         break;
                     case 'mark-as-priority':
@@ -207,8 +167,8 @@ trait ReachRateTrait
                         case 'no-need-to-schedule':
                         case 'no-insurance':
                             $history['archived']++;
-                            $results[$patient_count]['archived'] = config('reports.archive.dropout');
                             $results[$patient_count]['reached'] = isset($results[$patient_count]['reached']) ? $results[$patient_count]['reached'] + 1 : 1;
+                            $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'archive_data');
                             break;
                         case 'unable-to-reach':
                             $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
@@ -218,14 +178,23 @@ trait ReachRateTrait
                             $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
                             $results[$patient_count]['hold_for_future'] = isset($results[$patient_count]['hold_for_future']) ? $results[$patient_count]['hold_for_future'] + 1 : 1;
                             break;
+                        case 'incorrect-data':
+                            $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
+                            $results[$patient_count]['incorrect_data'] = isset($results[$patient_count]['incorrect_data']) ? $results[$patient_count]['incorrect_data'] + 1 : 1;
+                            break;
                         case 'success':
                             $results[$patient_count]['archived'] = config('reports.archive.success');
+                            $results[$patient_count]['archive_reason'] = 'Marked Success';
+                            $results[$patient_count]['archive_date'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
                             break;
                         case 'dropout':
                             $results[$patient_count]['archived'] = config('reports.archive.dropout');
+                            $results[$patient_count]['archive_reason'] = 'Marked Dropout';
+                            $results[$patient_count]['archive_date'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
                             break;
                         default:
                             break;
+
                     }
                 }
             }
@@ -277,8 +246,15 @@ trait ReachRateTrait
             'unable_to_reach_attempts' => 0,
             'hold_for_future' => 0,
             'hold_for_future_attempts' => 0,
+            'incorrect_data' => 0,
+            'incorrect_data_attempts' => 0,
             'appointment_scheduled' => 0,
             'not_scheduled' => 0,
+            'no_need_to_schedule' => 0,
+            'patient_declined_service' => 0,
+            'already_seen_by_outside_dr' => 0,
+            'no_insurance' => 0,
+            'other_reason_for_declining' => 0,
             'appointment_completed' => 0,
             'show' => 0,
             'no_show' => 0,
@@ -292,7 +268,11 @@ trait ReachRateTrait
 
         foreach($results as $key => $result) {
 
-            if(array_key_exists('referred_by_practice', $result)) {
+            if (empty($result)) {
+                continue;
+            }
+
+            if(array_key_exists('referred_by_practice', $result) && $result['referred_by_practice'] != '-') {
                 $referredBy[$i] = $result['referred_by_practice'];
                 $i++;
             }
@@ -303,7 +283,9 @@ trait ReachRateTrait
                 }
             }
             $reportMetrics['patient_count']++;
+
             $result['patient_type'] == config('reports.patient_type.new') ? $reportMetrics['new_patient']++ : $reportMetrics['existing_patients']++;
+
             if(array_key_exists('archived', $result)) {
                 $reportMetrics['completed']++;
                 $result['archived'] == config('reports.archive.success') ? $reportMetrics['success']++ : $reportMetrics['dropout']++;
@@ -321,6 +303,25 @@ trait ReachRateTrait
 
                 if(!(array_key_exists('appointment_scheduled', $result))) {
                     $reportMetrics['not_scheduled']++;
+                    if(array_key_exists('archive_reason', $result)) {
+                        switch ($result['archive_reason']) {
+                            case 'Already seen by outside doctor':
+                                $reportMetrics['already_seen_by_outside_dr']++;
+                                break;
+                            case 'Patient declined service':
+                                $reportMetrics['patient_declined_service']++;
+                                break;
+                            case 'Other reasons for declining':
+                                $reportMetrics['other_reason_for_declining']++;
+                                break;
+                            case 'No need to schedule':
+                                $reportMetrics['no_need_to_schedule']++;
+                                break;
+                            case 'No insurance':
+                                $reportMetrics['no_insurance']++;
+                                break;
+                        }
+                    }
                 }
             } else if(array_key_exists('not_reached', $result)) {
                 $reportMetrics['not_reached']++;
@@ -333,6 +334,10 @@ trait ReachRateTrait
                 if(array_key_exists('hold_for_future', $result)) {
                     $reportMetrics['hold_for_future']++;
                     $reportMetrics['hold_for_future_attempts'] += $result['hold_for_future'];
+                }
+                if(array_key_exists('incorrect_data', $result)) {
+                    $reportMetrics['incorrect_data']++;
+                    $reportMetrics['incorrect_data_attempts'] += $result['incorrect_data'];
                 }
             } else {
                 if($result['patient_type'] == config('reports.patient_type.new') || array_key_exists('repeat_count', $result)) {
@@ -403,8 +408,7 @@ trait ReachRateTrait
 
     public function setStartDate($startDate)
     {
-        $date = new Datetime($startDate);
-        $this->startDate = $date->format('Y-m-d 00:00:00');
+        $this->startDate = Helper::formatDate($startDate, config('constants.db_date_format'));
     }
 
     public function getStartDate()
@@ -414,13 +418,62 @@ trait ReachRateTrait
 
     public function setEndDate($endDate)
     {
-        $date = new Datetime($endDate);
-        $date->modify("+1 days");
-        $this->endDate = $date->format('Y-m-d 00:00:00');
+        $this->endDate = Helper::formatDate($endDate, config('constants.db_date_format'));
     }
 
     public function getEndDate()
     {
         return $this->endDate;
+    }
+
+    public function fillPatientDetail($requestData, $option = null) {
+
+        $patientInfo = array();
+
+        switch ($option) {
+
+            case 'patient_data':
+                $patientInfo['patient_name'] = $this->CareConsoleService->getPatientFieldValue($requestData->patient, 'full-name');
+                $patientInfo['patient_id'] = $requestData->patient->id;
+                $patientInfo['pcp_name'] = $this->CareConsoleService->getPatientFieldValue($requestData->patient, 'pcp');
+                $patientInfo['dob'] = $this->CareConsoleService->getPatientFieldValue($requestData->patient, 'dob');
+                $patientInfo['referred_by_practice'] = $this->CareConsoleService->getPatientFieldValue($requestData, 'referred-by-practice');
+                if($requestData->import_history_count != 0) {
+                    $patientInfo['patient_type'] = config('reports.patient_type.new');
+                }
+                else {
+                    $patientInfo['patient_type'] = config('reports.patient_type.old');
+                }
+                break;
+            case 'appointment_data':
+                $patientInfo['scheduled_to_practice'] = isset($requestData->appointments->provider) ? $requestData->appointments->provider->name : '-';
+                $patientInfo['scheduled_to_provider'] = isset($requestData->appointments->practice) ? $requestData->appointments->practice->name : '-';
+                $patientInfo['scheduled_for'] = Helper::formatDate($requestData->appointments->start_datetime, config('constants.date_format'));
+                $patientInfo['appointment_type'] = $requestData->appointments->appointmenttype;
+                break;
+            case 'archive_data':
+                $patientInfo['archived'] = config('reports.archive.dropout');
+                $patientInfo['archive_date'] = Helper::formatDate($requestData->contact_activity_date, config('constants.date_format'));
+                switch ($requestData->actionResult->name) {
+                case 'already-seen-by-outside-dr':
+                    $patientInfo['archive_reason'] = 'Already seen by outside doctor';
+                    break;
+                case 'patient-declined-services':
+                    $patientInfo['archive_reason'] = 'Patient declined service';
+                    break;
+                case 'other-reasons-for-declining':
+                    $patientInfo['archive_reason'] = 'Other reasons for declining';
+                    break;
+                case 'no-need-to-schedule':
+                    $patientInfo['archive_reason'] = 'No need to schedule';
+                    break;
+                case 'no-insurance':
+                    $patientInfo['archive_reason'] = 'No insurance';
+                    break;
+                }
+                break;
+            default:
+        }
+        return $patientInfo;
     }
 }

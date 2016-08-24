@@ -313,7 +313,7 @@ class CareConsoleService
                 return $lastScheduledTo;
                 break;
             case 'email':
-                return $patient['email'];
+                return $patient['email'] ?: '-';
                 break;
             case 'special-request':
                 return $patient['special_request'] ?: '-';
@@ -322,7 +322,7 @@ class CareConsoleService
                 return $patient['pcp'] ?: '-';
                 break;
             case 'dob':
-                return Helper::formatDate($patient['birthdate'], config('constants.date_time_format.date_only')) ?: '-';
+                return Helper::formatDate($patient['birthdate'], config('constants.date_format')) ?: '-';
                 break;
             case 'address':
                 $address = '';
@@ -349,6 +349,9 @@ class CareConsoleService
                 }
                 return $referredBy ?: '-';
                 break;
+            case 'referred-by-practice':
+                $referralHistory = ReferralHistory::find($patient['referral_id']);
+                return $referralHistory->referred_by_practice ?: '-';
             default:
                 return '-';
                 break;

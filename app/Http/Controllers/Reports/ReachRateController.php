@@ -12,6 +12,8 @@ use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\ContactHistory;
 use myocuhub\User;
 use Datetime;
+use myocuhub\Services\CareConsoleService;
+use myocuhub\Facades\Helper;
 
 class ReachRateController extends Controller
 {
