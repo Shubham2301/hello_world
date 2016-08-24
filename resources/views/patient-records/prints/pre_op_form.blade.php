@@ -5,6 +5,7 @@
 <div class="pdf_header" style="">
     <img src="{{asset('images/web-forms/catpostop-header.png')}}" alt="" style="">
 </div>
+
 <div class="patient_info_section">
 
     <div class="row default_row_margin">
@@ -255,8 +256,10 @@
     </div>
 
     <div class="row default_row_margin">
+
     <div class="col-xs-5">
         <div style="border:1px solid #000; padding-left:4px;">
+
             <div class="row">
                 <div class="col-xs-12">
                     <p style="font-weight:bold;">SLE</p>
@@ -384,7 +387,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-xs-4">
                     <p>IOL
@@ -405,15 +407,12 @@
                     </p>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-xs-4">
                     <p>Posterior Capsule</p>
 
                     @php
-                    $posteriorCapsule => [ '1+', '2+', '3+', '4+' ]
-
-
+                    $posteriorCapsule = [ '1+', '2+', '3+', '4+' ]
                     @endphp
 
                 </div>
@@ -432,13 +431,12 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-xs-3">
                     <p>Lens</p>
 
                     @php
-                    $lens => [
+                    $lens = [
                         'clear' => 'clear',
                         'ns' => 'NS',
                         'cortical psc' => 'cortical PSC',
@@ -455,14 +453,12 @@
                            @foreach($lens as $name => $value )
 
                             <span class="{{(isset($data['record']['od_lens']) && $data['record']['od_lens'] == $name)?'active_wrap_field':''}}"> {{ $value }}</span>
-
                            @endforeach
                            <span>/</span>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-xs-4">
                     <p style="font-weight:bold; font-size:1em;">FUNDUS IMPRESSION
@@ -683,9 +679,7 @@
             </div>
         </div>
     </div>
-
-
-</div>
+    </div>
 
     <div class="row default_row_margin">
     <div class="col-xs-1">
@@ -746,5 +740,6 @@
             </span> &nbsp;&nbsp;</p>
     </div>
 </div>
+
 </div>
 @endsection
