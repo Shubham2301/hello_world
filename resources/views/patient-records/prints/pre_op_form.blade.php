@@ -212,12 +212,41 @@
         </p>
     </div>
     <div class="col-xs-3">
-        <p> <span class="{{(isset($data['record']['os_pupils_effect']) && $data['record']['os_pupils_effect'] =='reactive')?'active_wrap_field':''}}"> reactive</span> / <span class="{{(isset($data['record']['os_pupils_effect']) && $data['record']['os_pupils_effect'] =='non-reactive')?'active_wrap_field':''}}"> non-reactive</span> </p>
+
+        @php
+        $pupils = [
+            'reaction' => [
+                'reactive' => 'reactive',
+                'non-reactive' => 'non-reactive',
+            ],
+
+            'apd' => [
+                'present' => 'present',
+                'absent' => 'absent',
+            ]
+        ]
+        @endphp
+        <p>
+          @foreach($pupils['reaction'] as $name => $value)
+            <span class="{{(isset($data['record']['os_pupils_effect']) && $data['record']['os_pupils_effect'] == $name)?'active_wrap_field':''}}"> {{ $value }}
+            </span>
+            <span>/</span>
+          @endforeach
+        </p>
     </div>
     <div class="col-xs-3">
+
+       @php
+
+       @endphp
+
+
         <p><span style="font-weight:bold;">APD&nbsp;&nbsp;</span>
-            <span class="{{(isset($data['record']['os_pupils_attend']) && $data['record']['os_pupils_attend'] =='present')?'active_wrap_field':''}}">present</span> /
-            <span class="{{(isset($data['record']['os_pupils_attend']) && $data['record']['os_pupils_attend'] =='absent')?'active_wrap_field':''}}">absent</span>
+            @foreach($pupils['apd'] as $name => $value)
+                <span class="{{(isset($data['record']['os_pupils_attend']) && $data['record']['os_pupils_attend'] == $name)?'active_wrap_field':''}}"> {{ $value }}
+                </span>
+                <span>/</span>
+            @endforeach
         </p>
     </div>
 </div>
