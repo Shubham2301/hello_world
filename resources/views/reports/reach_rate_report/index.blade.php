@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="{{ elixir('css/reports.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ elixir('css/reach_rate_report.css') }}">
 <script type="text/javascript" src="{{ elixir('js/reach_rate_report.js') }}"></script>
-@endsection @section('sidebar') @endsection @section('content') @if (Session::has('success'))
+@endsection @section('sidebar') @include('reports.sidebar') @endsection @section('content') @if (Session::has('success'))
 <div class="alert alert-success" id="flash-message">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <strong>

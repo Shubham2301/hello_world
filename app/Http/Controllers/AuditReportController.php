@@ -39,7 +39,7 @@ class AuditReportController extends Controller
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
         $data['audit_report'] = true;
-        return view('reporting.audit')->with('data', $data);
+        return view('admin.reporting.audit')->with('data', $data);
     }
 
     public function getReports(Request $request)

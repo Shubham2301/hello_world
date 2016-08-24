@@ -6,14 +6,14 @@ use myocuhub\Http\Controllers\Traits\Reports\CallCenterTrait;
 
 use Auth;
 use Illuminate\Http\Request;
-use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Controllers\Reports\ReportController;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\User;
 use Datetime;
 use myocuhub\Facades\Helper;
 
-class CallCenterController extends Controller
+class CallCenterController extends ReportController
 {
 
     use CallCenterTrait;
@@ -23,9 +23,15 @@ class CallCenterController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('reports.call_center_report.index');
+        if (!policy(new ReportController)->accessCallCenterReport()) {
+            $request->session()->flash('failure', 'Unauthorized Access to the Report. Please contact your administrator.');
+            return redirect('/referraltype');
+        }
+
+        $data['call-center'] = true;
+        return view('reports.call_center_report.index')->with('data', $data);
     }
 
     /**
