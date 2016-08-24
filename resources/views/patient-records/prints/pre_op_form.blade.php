@@ -269,15 +269,12 @@
                         </div>
                         <div class="col-xs-8">
                             <p>
-                                <span class="{{ (isset($data['record']['od_comea_edema']) && in_array('0', $data['record']['od_comea_edema']))?'active_wrap_field' :''}}">0</span>
+                                @for($i = 0; $i < config('print_records.edema_upper_limit'); $i++)
+                                   <span class="{{ (isset($data['record']['od_comea_edema']) && in_array($i, $data['record']['od_comea_edema'] ))?'active_wrap_field' :''}}" >
+                                   {{ ($i==0)? $i: $i.'+' }}
+                                   </span>
 
-                                <span class="{{ (isset($data['record']['od_comea_edema']) && in_array('1', $data['record']['od_comea_edema']))?'active_wrap_field' :''}}">1+</span>
-
-                                <span class="{{ (isset($data['record']['od_comea_edema']) && in_array('2', $data['record']['od_comea_edema']))?'active_wrap_field' :''}}">2+</span>
-
-                                <span class="{{ (isset($data['record']['od_comea_edema']) && in_array('3', $data['record']['od_comea_edema']))?'active_wrap_field' :''}}">3+</span>
-
-                                <span class="{{ (isset($data['record']['od_comea_edema']) && in_array('4', $data['record']['od_comea_edema']))?'active_wrap_field' :''}}">4+</span>
+                                @endfor
                             </p>
                         </div>
                     </div>
@@ -287,15 +284,12 @@
                         </div>
                         <div class="col-xs-8">
                             <p>
-                                <span class="{{ (isset($data['record']['od_comea_folds']) && in_array('0', $data['record']['od_comea_folds']))?'active_wrap_field' :''}}">0</span>
 
-                                <span class="{{ (isset($data['record']['od_comea_folds']) && in_array('1', $data['record']['od_comea_folds']))?'active_wrap_field' :''}}">1+</span>
-
-                                <span class="{{ (isset($data['record']['od_comea_folds']) && in_array('2', $data['record']['od_comea_folds']))?'active_wrap_field' :''}}">2+</span>
-
-                                <span class="{{ (isset($data['record']['od_comea_folds']) && in_array('3', $data['record']['od_comea_folds']))?'active_wrap_field' :''}}">3+</span>
-
-                                <span class="{{ (isset($data['record']['od_comea_folds']) && in_array('4', $data['record']['od_comea_folds']))?'active_wrap_field' :''}}">4+</span>
+                                @for($i = 0; $i < config('print_records.edema_upper_limit'); $i++)
+                                   <span class="{{ (isset($data['record']['od_comea_folds']) && in_array($i, $data['record']['od_comea_folds'] ))?'active_wrap_field' :''}}" >
+                                    {{ ($i==0)? $i: $i.'+' }}
+                                   </span>
+                                @endfor
                             </p>
                         </div>
                     </div>
@@ -312,15 +306,11 @@
                         </div>
                         <div class="col-xs-8">
                             <p>
-                                <span class="{{ (isset($data['record']['od_a-c_cell']) && in_array('0', $data['record']['od_a-c_cell']))?'active_wrap_field' :''}}">0</span>
-
-                                <span class="{{ (isset($data['record']['od_a-c_cell']) && in_array('1', $data['record']['od_a-c_cell']))?'active_wrap_field' :''}}">1+</span>
-
-                                <span class="{{ (isset($data['record']['od_a-c_cell']) && in_array('2', $data['record']['od_a-c_cell']))?'active_wrap_field' :''}}">2+</span>
-
-                                <span class="{{ (isset($data['record']['od_a-c_cell']) && in_array('3', $data['record']['od_a-c_cell']))?'active_wrap_field' :''}}">3+</span>
-
-                                <span class="{{ (isset($data['record']['od_a-c_cell']) && in_array('4', $data['record']['od_a-c_cell']))?'active_wrap_field' :''}}">4+</span>
+                                @for($i = 0; $i < config('print_records.edema_upper_limit'); $i++)
+                                    <span class="{{ (isset($data['record']['od_a-c_cell']) && in_array($i, $data['record']['od_a-c_cell'] ))?'active_wrap_field' :''}}" >
+                                {{ ($i==0)? $i: $i.'+' }}
+                                </span>
+                                @endfor
                             </p>
                         </div>
                     </div>
@@ -330,15 +320,11 @@
                         </div>
                         <div class="col-xs-8">
                             <p>
-                                <span class="{{ (isset($data['record']['od_a-c_flare']) && in_array('0', $data['record']['od_a-c_flare']))?'active_wrap_field' :''}}">0</span>
-
-                                <span class="{{ (isset($data['record']['od_a-c_flare']) && in_array('1', $data['record']['od_a-c_flare']))?'active_wrap_field' :''}}">1+</span>
-
-                                <span class="{{ (isset($data['record']['od_a-c_flare']) && in_array('2', $data['record']['od_a-c_flare']))?'active_wrap_field' :''}}">2+</span>
-
-                                <span class="{{ (isset($data['record']['od_a-c_flare']) && in_array('3', $data['record']['od_a-c_flare']))?'active_wrap_field' :''}}">3+</span>
-
-                                <span class="{{ (isset($data['record']['od_a-c_flare']) && in_array('4', $data['record']['od_a-c_flare']))?'active_wrap_field' :''}}">4+</span>
+                                    @for($i = 0; $i < config('print_records.edema_upper_limit'); $i++)
+                                     <span class="{{ (isset($data['record']['od_a-c_flare']) && in_array($i, $data['record']['od_a-c_flare'] ))?'active_wrap_field' :''}}" >
+                                        {{ ($i==0)? $i: $i.'+' }}
+                                    </span>
+                                    @endfor
                             </p>
                         </div>
                     </div>
@@ -472,15 +458,11 @@
                         <div class="col-xs-8">
                             <p>
 
-                                <span class="{{ (isset($data['record']['os_comea_edema']) && in_array('0', $data['record']['os_comea_edema']))?'active_wrap_field' :''}}">0</span>
-
-                                <span class="{{ (isset($data['record']['os_comea_edema']) && in_array('1', $data['record']['os_comea_edema']))?'active_wrap_field' :''}}">1+</span>
-
-                                <span class="{{ (isset($data['record']['os_comea_edema']) && in_array('2', $data['record']['os_comea_edema']))?'active_wrap_field' :''}}">2+</span>
-
-                                <span class="{{ (isset($data['record']['os_comea_edema']) && in_array('3', $data['record']['os_comea_edema']))?'active_wrap_field' :''}}">3+</span>
-
-                                <span class="{{ (isset($data['record']['os_comea_edema']) && in_array('4', $data['record']['os_comea_edema']))?'active_wrap_field' :''}}">4+</span>
+                                @for($i = 0; $i < config('print_records.edema_upper_limit'); $i++)
+                                    <span class="{{ (isset($data['record']['os_comea_edema']) && in_array($i, $data['record']['os_comea_edema'] ))?'active_wrap_field' :''}}" >
+                                {{ ($i==0)? $i: $i.'+' }}
+                                </span>
+                                @endfor
                             </p>
                         </div>
                     </div>
@@ -490,16 +472,11 @@
                         </div>
                         <div class="col-xs-8">
                             <p>
-                                <span class="{{ (isset($data['record']['os_comea_folds']) && in_array('0', $data['record']['os_comea_folds']))?'active_wrap_field' :''}}">0</span>
-
-                                <span class="{{ (isset($data['record']['os_comea_folds']) && in_array('1', $data['record']['os_comea_folds']))?'active_wrap_field' :''}}">1+</span>
-
-                                <span class="{{ (isset($data['record']['os_comea_folds']) && in_array('2', $data['record']['os_comea_folds']))?'active_wrap_field' :''}}">2+</span>
-
-                                <span class="{{ (isset($data['record']['os_comea_folds']) && in_array('3', $data['record']['os_comea_folds']))?'active_wrap_field' :''}}">3+</span>
-
-                                <span class="{{ (isset($data['record']['os_comea_folds']) && in_array('4', $data['record']['os_comea_folds']))?'active_wrap_field' :''}}">4+</span>
-
+                                @for($i = 0; $i < config('print_records.edema_upper_limit'); $i++)
+                                    <span class="{{ (isset($data['record']['os_comea_folds']) && in_array($i, $data['record']['os_comea_folds'] ))?'active_wrap_field' :''}}" >
+                                {{ ($i==0)? $i: $i.'+' }}
+                                </span>
+                                @endfor
                             </p>
                         </div>
                     </div>
@@ -519,15 +496,11 @@
                         <div class="col-xs-8">
                             <p>
 
-                                <span class="{{ (isset($data['record']['os_a-c_cell']) && in_array('0', $data['record']['os_a-c_cell']))?'active_wrap_field' :''}}">0</span>
-
-                                <span class="{{ (isset($data['record']['os_a-c_cell']) && in_array('1', $data['record']['os_a-c_cell']))?'active_wrap_field' :''}}">1+</span>
-
-                                <span class="{{ (isset($data['record']['os_a-c_cell']) && in_array('2', $data['record']['os_a-c_cell']))?'active_wrap_field' :''}}">2+</span>
-
-                                <span class="{{ (isset($data['record']['os_a-c_cell']) && in_array('3', $data['record']['os_a-c_cell']))?'active_wrap_field' :''}}">3+</span>
-
-                                <span class="{{ (isset($data['record']['os_a-c_cell']) && in_array('4', $data['record']['os_a-c_cell']))?'active_wrap_field' :''}}">4+</span>
+                                @for($i = 0; $i < config('print_records.edema_upper_limit'); $i++)
+                                    <span class="{{ (isset($data['record']['os_a-c_cell']) && in_array($i, $data['record']['os_a-c_cell'] ))?'active_wrap_field' :''}}" >
+                                    {{ ($i==0)? $i: $i.'+' }}
+                                    </span>
+                                @endfor
                             </p>
                         </div>
                     </div>
@@ -537,15 +510,11 @@
                         </div>
                         <div class="col-xs-8">
                             <p>
-                                <span class="{{ (isset($data['record']['os_a-c_flare']) && in_array('0', $data['record']['os_a-c_flare']))?'active_wrap_field' :''}}">0</span>
-
-                                <span class="{{ (isset($data['record']['os_a-c_flare']) && in_array('1', $data['record']['os_a-c_flare']))?'active_wrap_field' :''}}">1+</span>
-
-                                <span class="{{ (isset($data['record']['os_a-c_flare']) && in_array('2', $data['record']['os_a-c_flare']))?'active_wrap_field' :''}}">2+</span>
-
-                                <span class="{{ (isset($data['record']['os_a-c_flare']) && in_array('3', $data['record']['os_a-c_flare']))?'active_wrap_field' :''}}">3+</span>
-
-                                <span class="{{ (isset($data['record']['os_a-c_flare']) && in_array('4', $data['record']['os_a-c_flare']))?'active_wrap_field' :''}}">4+</span>
+                                @for($i = 0; $i < config('print_records.edema_upper_limit'); $i++)
+                                        <span class="{{ (isset($data['record']['os_a-c_flare']) && in_array($i, $data['record']['os_a-c_flare'] ))?'active_wrap_field' :''}}" >
+                                        {{ ($i==0)? $i: $i.'+' }}
+                                        </span>
+                                @endfor
                             </p>
                         </div>
                     </div>

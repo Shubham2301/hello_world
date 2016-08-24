@@ -17,30 +17,30 @@
         </div>
     </div>
 
-    <div class="row remove_padding_margin" style="border:1px solid #000;margin-left:4em;margin-right:4em;">
+    <div class="row remove_padding_margin" style="margin-left:4em;margin-right:4em;">
 
         <div class="col-xs-6 remove_padding_margin">
 
-            <div class="row remove_padding_margin" style="border-bottom:1px solid #000;border-right:1px solid #000">
-                <div class="col-xs-11 remove_padding_margin">
+            <div class="row remove_padding_margin">
+                <div class="col-xs-11 remove_padding_margin" style="border:1px solid #000; border-right:0;">
                     <p style="align:left;">Diagnosis:</p>
                 </div>
-                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000;background-color: darkseagreen;border-bottom:1px solid #000;">
-                    <p> OD</p>
+                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000; background-color:darkseagreen; border-right:0;">
+                    <p style=""> OD</p>
                 </div>
             </div>
 
-            <div class="row remove_padding_margin" style="border-right:2px solid #000">
+            <div class="row remove_padding_margin" style="">
 
-                <div class="col-xs-1 remove_padding_margin">
-                    <p></p>
+                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000;">
+                    <p>&nbsp;</p>
                 </div>
 
-                <div class="col-xs-10 remove_padding_margin" style="border-left:2px solid #000;border-bottom:2px solid #000;">
-                    <p style="margin-left:2em;">Non diagnostic retinopathy:</p>
+                <div class="col-xs-10 remove_padding_margin" style="border:1px solid #000;border-top:0;border-right:0">
+                    <p style="padding-left:1em;">Non diagnostic retinopathy:</p>
                 </div>
 
-                <div class="col-xs-1 remove_padding_margin" style="border-left:2px solid #000;border-bottom:1px solid #000;background-color: darkseagreen;">
+                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000;background-color: darkseagreen;">
                     <p style="">
                         @if(isset($data['record']['od_NDR']))
                         <span class="glyphicon glyphicon-ok" style="padding-top:1px;"></span> @else &nbsp; @endif
@@ -48,17 +48,17 @@
                 </div>
             </div>
 
-            <div class="row remove_padding_margin" style="border-right:2px solid #000">
+            <div class="row remove_padding_margin" >
 
-                <div class="col-xs-1 remove_padding_margin">
-                    <p></p>
+                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000" >
+                    <p>&nbsp;</p>
                 </div>
 
                 <div class="col-xs-10 remove_padding_margin" style="border-left:1px solid #000;">
-                    <p style="margin-left:2em;">Non-proliferative diabetic retinopathy:</p>
+                    <p style="padding-left:1em;">Non-proliferative diabetic retinopathy:</p>
                 </div>
 
-                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000;background-color: darkseagreen;">
+                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000;background-color: darkseagreen;">
                     <p>
                         &nbsp;
                     </p>
@@ -66,13 +66,13 @@
 
             </div>
 
-            <div class="row remove_padding_margin" style="border-right:1px solid #000">
+            <div class="row remove_padding_margin" style="">
 
-                <div class="col-xs-1 remove_padding_margin">
-                    <p></p>
+                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000">
+                    <p>&nbsp;</p>
                 </div>
 
-                <div class="col-xs-10 remove_padding_margin" style="border-left:1px solid #000;border-bottom:1px solid #000;">
+                <div class="col-xs-10 remove_padding_margin" style="border-left:1px solid #000;">
                     <div>
                        
                         @if(!isset($data['record']['od_NPDR']))
@@ -96,26 +96,26 @@
                     </div>
                 </div>
 
-                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000;
-                    background-color: darkseagreen; border-bottom:1px solid #000;">
+                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000;
+                        background-color: darkseagreen;border-top:0;">
                     <p>&nbsp;</p>
                 </div>
             </div>
 
-            <div class="row remove_padding_margin" style="border-right:1px solid #000">
+            <div class="row remove_padding_margin" >
 
-                <div class="col-xs-1 remove_padding_margin">
-                    <p></p>
+                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000">
+                    <p> &nbsp;</p>
                 </div>
 
-                <div class="col-xs-10 remove_padding_margin" style="border-left:1px solid #000;border-bottom:1px solid #000;">
+                <div class="col-xs-10 remove_padding_margin" style="border:1px solid #000;border-right:0; border-bottom:0;">
                     <p style="margin-left:2em;">Proliferative diabetic retinopathy</p>
                 </div>
 
-                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000;background-color: darkseagreen;border-bottom: 1px solid #000; padding-top:1px;">
+                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000;background-color: darkseagreen; ">
                     <p> 
                         @if(isset($data['record']['od_PDR']))
-                        <span class="glyphicon glyphicon-ok" style="padding-top:1px;"></span>
+                        <span class="glyphicon glyphicon-ok" style=""></span>
                         @else
                         &nbsp;
                         @endif 
@@ -123,17 +123,19 @@
                 </div>
             </div>
 
-            <div class="row remove_padding_margin" style="border-right:1px solid #000">
+            <div class="row remove_padding_margin" >
 
-                <div class="col-xs-1 remove_padding_margin">
-                    <p></p>
+                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000">
+                    <p>
+                        &nbsp;
+                    </p>
                 </div>
 
-                <div class="col-xs-10 remove_padding_margin" style="border-left:1px solid #000">
+                <div class="col-xs-10 remove_padding_margin" style="border:1px solid #000; border-bottom:0; border-right:0;">
                     <p style="margin-left:2em;">Clinically significant macular edema:</p>
                 </div>
 
-                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000;background-color: darkseagreen; border-bottom:1px solid #000;">
+                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000; background-color: darkseagreen;">
                     <p>  @if(isset($data['record']['od_CSME']))
                         <span class="glyphicon glyphicon-ok" style="padding-top:1px;"></span>
                         @else
@@ -145,12 +147,15 @@
             </div>
 
         </div>
+        
+        
+        
 
         <div class="col-xs-6 remove_padding_margin">
 
-            <div class="row remove_padding_margin" style="border-right:1px solid #000">
+            <div class="row remove_padding_margin" style="border:1px solid #000">
 
-                <div class="col-xs-1 remove_padding_margin" style="border-right:1px solid #000;background-color: darkseagreen; border-bottom:1px solid #000">
+                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000;background-color: darkseagreen; border-left:0;border-top:0;">
                     <p> OS</p>
                 </div>
 
@@ -170,7 +175,7 @@
                 <?php $data['record']['os_Plan'] = []; ?>
                 @endif
                
-                <div class="col-xs-1 remove_padding_margin" style="border-right:1px solid #000;background-color: darkseagreen; border-bottom:1px solid #000; padding-top:1px;">
+                <div class="col-xs-1 remove_padding_margin" style="border-right:1px solid #000;background-color: darkseagreen; border-bottom:1px solid #000;">
                     <p> @if(isset($data['record']['os_NDR']))
                         <span class="glyphicon glyphicon-ok" style="padding-top:1px;"></span> @else &nbsp; @endif
                         </p>
@@ -227,10 +232,9 @@
 
             </div>
 
-            <div class="row remove_padding_margin" style="border-bottom:2px solid #000;border-right:2px solid #000">
-                <div class="col-xs-1 remove_padding_margin" style="border-right:1px solid #000;background-color: darkseagreen;">
+            <div class="row remove_padding_margin" style="border-right:2px solid #000">
+                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000;background-color: darkseagreen;">
                     <p> 
-                    
                         @if(isset($data['record']['os_CSME']))
                         <span class="glyphicon glyphicon-ok" style="padding-top:1px;"></span> @else &nbsp; @endif
                     </p>  
@@ -249,6 +253,8 @@
                 </div>
             </div>
         </div>
+        
+        
     </div>
 
     <div class="row remove_padding_margin" style="border:2px solid #000;margin-left:4em;margin-right:4em;">
