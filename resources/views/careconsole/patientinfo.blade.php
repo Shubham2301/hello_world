@@ -11,6 +11,9 @@
         <p>
             <span class="patient_phone"></span>
         </p>
+        <p>
+            <span class="patient_timezone"></span>
+        </p>
     </div>
     <div class="patient_import_info ">
         <p class="info_header arial_bold">Special Request</p>

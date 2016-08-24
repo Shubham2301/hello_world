@@ -81,14 +81,17 @@
                         <div class="row content-row-margin">
                             <div class="col-sm-6 col-xs-12">
                                 {!! Form::text('address_1', $data['addressline1'], array('class' => 'add_patient_input', 'name' => 'addressline1', 'placeholder' => 'Address 1', 'id' => 'addressline1', 'data-toggle' => 'tooltip', 'title' => 'Address Line 1', 'data-placement' => 'right')) !!}
-                                {!! Form::text('address_2', $data['addressline2'], array('class' => 'add_patient_input', 'name' => 'addressline2', 'placeholder' => 'Address 2', 'id' => 'addressline2', 'data-toggle' => 'tooltip', 'title' => 'Address Line 2', 'data-placement' => 'right')) !!}
                                 {!! Form::text('City', $data['city'], array('class' => 'add_patient_input', 'name' => 'city', 'placeholder' => 'City', 'id' => 'city', 'data-toggle' => 'tooltip', 'title' => 'City', 'data-placement' => 'right')) !!}
-                                {!! Form::text('State', $data['state'], array('class' => 'add_patient_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state', 'data-toggle' => 'tooltip', 'title' => 'State', 'data-placement' => 'right')) !!}
                                 {!! Form::text('Zip', $data['zip'], array('class' => 'add_patient_input', 'name' => 'zip', 'placeholder' => 'ZIP', 'id' => 'zip', 'data-toggle' => 'tooltip', 'title' => 'ZIP', 'data-placement' => 'right')) !!}
                                 @if(!$data['admin'])
                                 {!! Form::hidden('referraltype_id', $data['referraltype_id'], array('name' => 'referraltype_id' , 'id' => 'form_referraltype_id')) !!}
                                 {!! Form::hidden('action', $data['action'], array('name' => 'action' , 'id' => 'form_action')) !!}
                                 @endif
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                {!! Form::text('address_2', $data['addressline2'], array('class' => 'add_patient_input', 'name' => 'addressline2', 'placeholder' => 'Address 2', 'id' => 'addressline2', 'data-toggle' => 'tooltip', 'title' => 'Address Line 2', 'data-placement' => 'right')) !!}
+                                {!! Form::text('State', $data['state'], array('class' => 'add_patient_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state', 'data-toggle' => 'tooltip', 'title' => 'State', 'data-placement' => 'right')) !!}
+                                {!! Form::select('timezone', Helper::timezones(), Helper::ifExists('timezone', $data), array('class' => 'add_patient_input', 'placeholder' => 'Timezone', 'id' => 'timezone', 'data-toggle' => 'tooltip', 'title' => 'Timezone', 'data-placement' => 'right')) !!}
                             </div>
                         </div>
                     </div>
