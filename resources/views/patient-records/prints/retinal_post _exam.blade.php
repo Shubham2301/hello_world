@@ -5,7 +5,7 @@
     <div class="row">
 
         <div class="col-xs-6">
-            <p style="margin-left:4em;"> Patient Name:<span class="unit_input_text">{{$data['patient']['firstname'].' '.$data['patient']['lastname']}}</span></p>
+            <p style="margin-left:4em;"> Patient Name:<span class="unit_input_text">{{ $data['patient']['firstname'].' '.$data['patient']['lastname'] }}</span></p>
         </div>
 
         <div class="col-xs-2">
@@ -83,14 +83,14 @@
                         @endif
                         <p style="margin-left:2em;">
                             <span><input type="checkbox" 
-                                {{ (in_array("Mild", array_merge($data['record']['od_NPDR'],$data['record']['os_NPDR'])))?'checked':''}}>
+                                {{ (in_array("Mild", array_merge($data['record']['od_NPDR'],$data['record']['os_NPDR'])))?'checked':'' }}>
                            Mild
                             </span>
                             <span>
-                                <input type="checkbox" {{  (in_array("Moderate", array_merge($data['record']['od_NPDR'],$data['record']['os_NPDR'])))?'checked':''}}> Moderate
+                                <input type="checkbox" {{  (in_array("Moderate", array_merge($data['record']['od_NPDR'],$data['record']['os_NPDR'])))?'checked':'' }}> Moderate
                             </span>
                             <span>
-                                <input type="checkbox" {{  (in_array("Severe", array_merge($data['record']['od_NPDR'],$data['record']['os_NPDR'])))?'checked':''}}> Severe
+                                <input type="checkbox" {{  (in_array("Severe", array_merge($data['record']['od_NPDR'],$data['record']['os_NPDR'])))?'checked':'' }}> Severe
                             </span>
                         </p>
                     </div>
@@ -178,7 +178,7 @@
 
                 <div class="col-xs-11 remove_padding_margin">
                     <p style="margin-left:2em;">
-                        <input type="checkbox" {{ (in_array("Monitor", array_merge($data['record']['od_Plan'],$data['record']['os_Plan'])))?'checked':''}} > Monitor
+                        <input type="checkbox" {{ (in_array("Monitor", array_merge($data['record']['od_Plan'],$data['record']['os_Plan'])))?'checked':'' }} > Monitor
                     </p>
                 </div>
 

@@ -3,62 +3,59 @@
 @import 'media.less';
 @import 'helper.less';
 @import 'record_sidebar.less';
-
 .select_form_dropdown {
     font-size: 1.5em;
     float: right;
     margin-right: 2em;
-	&>p {
-		padding-top: 20px;
-		cursor: pointer;
-	}
-	&>ul{
-		width:13em;
-        background-color: #ebeced;
-        border-radius: 3px;
+    &>p {
+        padding-top: 20px;
+        cursor: pointer;
+    }
+    &>ul {
+        width: 13em;
+        background-color: @light-gray;
+        border-radius: 0.2em;
         text-align: left;
-		&>li {
-			color: #4d4d4d;
-			padding: 0.25em 0.5em;
-			cursor: pointer;
+        &>li {
+            color: @font-color-black;
+            padding: 0.25em 0.5em;
+            cursor: pointer;
             &:hover {
-                background-color: #fff;
+                background-color: @font-color-1;
             }
-		}
-	}
+        }
+    }
 }
 
-.header_patient_name{
-	padding : 3px;
-	width: 60%;
+.header_patient_name {
+    padding: 0.2em;
+    width: 60%;
 }
 
 .form_footer {
-	border-top:1px solid #fff;
+    border-top: 1px solid @font-color-1;
     flex-basis: 0px;
     flex-grow: 1;
 }
 
-.unit_input_text{
-	background-color:transparent;
-	border: none;
-	border-bottom: 1px solid #fff;
-	width:10%;
-	margin: 1px;
+.unit_input_text {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid @font-color-1;
+    width: 10%;
+    margin: 1px;
     display: inline-block;
 }
 
-
-
 .search_section {
-	display: none;
-	&.active{
-		display: block;
-	}
+    display: none;
+    &.active {
+        display: block;
+    }
 }
 
 .patient_list_item {
-   border-bottom: 1px solid;
+    border-bottom: 1px solid;
     opacity: 0.9;
     cursor: pointer;
     &:hover {
@@ -67,8 +64,10 @@
 }
 
 .search_input_box {
-    display: -moz-box;         /* OLD - Firefox 19 */
-    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -moz-box;
+    /* OLD - Firefox 19 */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
     display: -webkit-flex;
     display: flex;
     flex-direction: row;
@@ -81,8 +80,8 @@
     &>input, &>input:focus {
         width: 100%;
         border: none;
-        padding: 6px 12px;
-        color: #4d4d4d;
+        padding: 0.4em 1.5em;
+        color: @font-color-black;
         outline: none;
     }
     &>span {
@@ -92,48 +91,50 @@
 }
 
 .form_section {
-	display: none;
-	&.active{
-		display: flex;
-        margin-top:1em;
+    display: none;
+    &.active {
+        display: flex;
+        margin-top: 1em;
         flex-grow: 1;
         flex-direction: column;
-	}
+    }
 }
+
 .form_chunk {
-	display:none;
-	&.active {
-	display:block;
-	}
+    display: none;
+    &.active {
+        display: block;
+    }
 }
+
 .tgl {
-	display:none;
+    display: none;
 }
 
 .tgl_text {
-  color: #0071bc;
-  background-color:transparent;
-  cursor:pointer;
-  border-radius:5px;
-  padding:1px;
-  padding-top:4px;
-  border:1px solid transparent;
-  &:hover {
-  border:1px solid #f4f4f4;
-  }
- &.checkfiled {
     color: #0071bc;
-    font-style: normal;
-    background-color:#fff;
-    border-radius:5px;
-    padding:1px;
-    cursor:pointer;
-  }
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 1px;
+    padding-top: 4px;
+    border: 1px solid transparent;
+    &:hover {
+        border: 1px solid #f4f4f4;
+    }
+    &.checkfiled {
+        color: #0071bc;
+        font-style: normal;
+        background-color: @font-color-1;
+        border-radius: 0.4em;
+        padding: 1px;
+        cursor: pointer;
+    }
 }
 
 .other_option_input {
-  background-color:transparent;
-  border:1px solid #fff;
+    background-color: transparent;
+    border: 1px solid @font-color-1;
 }
 
 #remove_patient_button {
@@ -143,27 +144,27 @@
     padding-top: 9px;
     margin-top: -4px;
     cursor: pointer;
-    display:none;
+    display: none;
 }
 
 .tgl_radio {
     color: #0071bc;
-    background-color:transparent;
-    cursor:pointer;
-    border-radius:5px;
-    padding:1px;
-    padding-top:4px;
-    border:1px solid transparent;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 1px;
+    padding-top: 4px;
+    border: 1px solid transparent;
     &:hover {
-        border:1px solid #f4f4f4;
+        border: 1px solid #f4f4f4;
     }
     &.checkfiled {
         color: #0071bc;
         font-style: normal;
-        background-color:#fff;
-        border-radius:5px;
-        padding:1px;
-        cursor:pointer;
+        background-color: @font-color-1;
+        border-radius: 5px;
+        padding: 1px;
+        cursor: pointer;
     }
 }
 
@@ -179,24 +180,24 @@
     padding-left: 2em;
 }
 
-.content-section.active{
+.content-section.active {
     display: flex;
     flex-grow: 1;
     flex-direction: column;
 }
 
 .web_form_row {
-    margin-top:1em;
+    margin-top: 1em;
 }
 
-.category_name{
+.category_name {
     padding: 0px;
-    font-weight: 700;
-    color: #fff;
-    margin-top:1em;
+    font-weight: @default-font-weight;
+    color: @font-color-1;
+    margin-top: 1em;
 }
 
-.footer_loader{
+.footer_loader {
     width: 2em;
     height: 2em;
     color: white;
@@ -208,19 +209,20 @@
     animation: borderScale 2s infinite ease-in-out;
     top: 50%;
     left: 100%;
-    z-index:12;
-    margin-left:48%;
+    z-index: 12;
+    margin-left: 48%;
     margin-top: 1.5em;
 }
+
 #footer_loader_section {
-    border-top:1px solid #fff;
+    border-top: 1px solid @font-color-1;
     flex-basis: 0px;
     flex-grow: 1;
 }
 
 .add_user_input {
     display: block;
-    color: #fff;
+    color: @font-color-1;
     background-color: @font-color-4;
     border: 2px solid @font-color-4;
     margin: 1em;
@@ -231,15 +233,15 @@
         color: #b2e3f5;
     }
     &:focus {
-        border: 2px solid #fff;
+        border: 2px solid @font-color-1;
         color: #66c7eb;
-        box-shadow: 0px 0px 2px #fff;
+        box-shadow: 0px 0px 2px @font-color-1;
     }
 }
 
 .web_form_header {
-    border-bottom:1px solid #fff;
-    padding-bottom:1em;
+    border-bottom: 1px solid @font-color-1;
+    padding-bottom: 1em;
 }
 
 .input_checkbox {
@@ -262,18 +264,16 @@
         position: absolute;
         left: 0;
         bottom: 0.1em;
-        background-color: #0193d7;
+        background-color: @font-color-4;
         border-radius: 0.2em;
         box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
     }
-
     &.active::before {
         content: "\2713";
         text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
         font-size: 1em;
-        color: white;
+        color: @font-color-1;
         text-align: center;
         line-height: 1em;
     }
 }
-
