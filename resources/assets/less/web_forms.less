@@ -267,6 +267,44 @@
         background-color: @font-color-4;
         border-radius: 0.2em;
         box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+        top:0;
+        margin-top:0.2em;
+    }
+    &.active::before {
+        content: "\2713";
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+        font-size: 1em;
+        color: @font-color-1;
+        text-align: center;
+        line-height: 1em;
+    }
+}
+
+.radio_checkbox{
+    display: none;
+}
+
+.radio_checkbox_lable {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding-left: 1.5em;
+    margin-right: 1em;
+    font-size: 1em;
+    font-weight: normal;
+    &::before {
+        content: "";
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        position: absolute;
+        left: 0;
+        bottom: 0.1em;
+        background-color: @font-color-4;
+        border-radius: 0.2em;
+        box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+        top:0;
+        margin-top:0.2em;
     }
     &.active::before {
         content: "\2713";

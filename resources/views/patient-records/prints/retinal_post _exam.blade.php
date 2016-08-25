@@ -76,22 +76,30 @@
                     <div>
                        
                         @if(!isset($data['record']['od_NPDR']))
-                        <?php $data['record']['od_NPDR'] = []; ?>
+                        <?php $data['record']['od_NPDR'] = ''; ?>
                         @endif
                         @if(!isset($data['record']['os_NPDR']))
-                        <?php $data['record']['os_NPDR'] = []; ?>
+                        <?php $data['record']['os_NPDR'] = ''; ?>
                         @endif
+                        @php
+
+                        $npdr =  [
+                            'mild' => 'Mild',
+                            'moderate' => 'Moderate',
+                            'severe' => 'Severe'
+                        ]
+
+                        @endphp
+                        
                         <p style="margin-left:2em;">
-                            <span><input type="checkbox" 
-                                {{ (in_array("Mild", array_merge($data['record']['od_NPDR'],$data['record']['os_NPDR'])))?'checked':'' }}>
-                           Mild
-                            </span>
-                            <span>
-                                <input type="checkbox" {{  (in_array("Moderate", array_merge($data['record']['od_NPDR'],$data['record']['os_NPDR'])))?'checked':'' }}> Moderate
-                            </span>
-                            <span>
-                                <input type="checkbox" {{  (in_array("Severe", array_merge($data['record']['od_NPDR'],$data['record']['os_NPDR'])))?'checked':'' }}> Severe
-                            </span>
+                           
+                            @foreach( $npdr as $name => $value)
+                                <span>
+                                    <input type="checkbox" 
+                                       {{ ( $data['record']['os_NPDR'] === $name || $data['record']['od_NPDR'] === $name  )?'checked':'' }}>
+                                       {{ $value }}
+                                </span>
+                            @endforeach
                         </p>
                     </div>
                 </div>
@@ -147,10 +155,6 @@
             </div>
 
         </div>
-        
-        
-        
-
         <div class="col-xs-6 remove_padding_margin">
 
             <div class="row remove_padding_margin" style="border:1px solid #000">
@@ -168,36 +172,33 @@
             <div class="row remove_padding_margin" style="border-right:1px solid #000">
 
                
-                @if(!isset($data['record']['od_Plan']))
-                <?php $data['record']['od_Plan'] = []; ?>
+                @if(!isset($data['record']['plan']))
+                <?php $data['record']['plan'] = ''; ?>
                 @endif
-                @if(!isset($data['record']['os_Plan']))
-                <?php $data['record']['os_Plan'] = []; ?>
-                @endif
+              
                
                 <div class="col-xs-1 remove_padding_margin" style="border-right:1px solid #000;background-color: darkseagreen; border-bottom:1px solid #000;">
                     <p> @if(isset($data['record']['os_NDR']))
                         <span class="glyphicon glyphicon-ok" style="padding-top:1px;"></span> @else &nbsp; @endif
                         </p>
                 </div>
-
+                
                 <div class="col-xs-11 remove_padding_margin">
                     <p style="margin-left:2em;">
-                        <input type="checkbox" {{ (in_array("Monitor", array_merge($data['record']['od_Plan'],$data['record']['os_Plan'])))?'checked':'' }} > Monitor
+                        <input type="checkbox" {{ ($data['record']['plan'] === 'monitor')?'checked':'' }} > Monitor
                     </p>
                 </div>
-
             </div>
-
+           
             <div class="row remove_padding_margin" style="border-right:2px solid #000">
 
                 <div class="col-xs-1 remove_padding_margin" style="border-right:1px solid #000;background-color: darkseagreen;border-bottom:1px solid #000;">
                     <p>&nbsp;</p>
                 </div>
-
+                
                 <div class="col-xs-11 remove_padding_margin" style="border-bottom:1px solid #000;">
                     <p style="margin-left:2em;">
-                        <input type="checkbox" {{ (in_array("Additional testing/ treatement recommendations", array_merge($data['record']['od_Plan'],$data['record']['os_Plan'])))?'checked':''}}  > Additional testing/ treatement recommendations
+                    <input type="checkbox" {{ ($data['record']['plan'] === 'additional-testing')?'checked':'' }} > Additional testing/ treatement recommendations
                     </p>
                 </div>
 
@@ -240,23 +241,35 @@
                     </p>  
                 </div>
                 <div class="col-xs-11 remove_padding_margin">
+                    @if(!isset($data['record']['ORR']))
+                    <?php $data['record']['ORR'] = ''; ?>
+                    @endif
+                   
+                    @php
+                        $orr =  [
+                            'no' => 'No',
+                            'yes' => 'Yes',
+                            
+                        ]
+                        
+                    @endphp
+                   
                     <p style="margin-left:2em;">
-<span class="{{ (isset($data['record']['ORR']) && 'yes'=== $data['record']['ORR'])?'active_wrap_field' :''}}"> Yes</span>
-
-<span class=" {{ (isset($data['record']['ORR']) && 'no' === $data['record']['ORR'])?'active_wrap_field' :''}}"> NO</span>
+                           
+                            @foreach($orr as $name => $value)
+                                <span class="{{ ($name === $data['record']['ORR'])?'active_wrap_field' :''}}"> {{ $value }}</span>
+                           
+                            @endforeach
                        
-                        @if((isset($data['record']['ORR']) && 'yes' === $data['record']['ORR']))
-                        <span class=""> Name of Md</span>
-                        <span class="unit_input_text">{{ $data['record']['ORR-MD'] }}</span>
-                        @endif
+                            @if('yes' === $data['record']['ORR'])
+                            <span class=""> Name of Md</span>
+                            <span class="unit_input_text">{{ $data['record']['ORR-MD'] }}</span>
+                            @endif
                     </p>
                 </div>
             </div>
-        </div>
-        
-        
+        </div> 
     </div>
-
     <div class="row remove_padding_margin" style="border:2px solid #000;margin-left:4em;margin-right:4em;">
         <div class="col-xs-3 remove_padding_margin">
             <p>Doctor Signature</p>

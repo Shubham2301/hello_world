@@ -7,7 +7,7 @@
 
 
 
-            <?php $i=1; ?> @foreach(array_chunk($template['rows'], 5) as $chunk)
+            <?php $i=1; ?> @foreach(array_chunk($template['rows'], 6) as $chunk)
             <div class="form_chunk_{{$i}} form_chunk {{($i != 1)? '':'active'}} " data-index="{{$i}}">
                @if($i ==1)
                 <div class="row">
@@ -37,8 +37,6 @@
                     </div>
                     @endforeach
                 </div>
-
-
                 <?php $i++; ?> @foreach($chunk as $row)
                 <div class="row {{ config('webforms.class.row') }} ">
                     @foreach($row['cols'] as $col)
@@ -69,12 +67,21 @@
 
                         @elseif($element['type'] == 'input:checkbox')
                         <div>
+                           <p>
                             <label class= "input_checkbox_lable">
                                {!! Form::checkbox($element['id'], ($element['display-name'] != "")?$element['display-name'] :true, null, array('id' =>     $element['id'], 'class' => 'input_checkbox')); !!}
                                 <sapn> {{ $element['display-name'] }}</sapn>
                              </label>
+                            </p>
                         </div>
 
+                        @elseif($element['type'] == 'input:radio_checkbox')
+                        <div>
+                            <label class= "radio_checkbox_lable">
+                                {!! Form::radio($element['id'], ($element['value'] != "")?$element['value'] :true, null, array('id' =>     $element['id'], 'class' => 'radio_checkbox')); !!}
+                                <sapn> {{ $element['display-name'] }}</sapn>
+                            </label>
+                        </div>
 
                         @elseif($element['type'] == 'input:unit_box')
 
@@ -149,9 +156,9 @@
                             </div>
                             <div class="col-xs-7">
                                 <div id="signature" class="sigPad">
-                                    <div class="sig sigWrapper" style="border-color:#f5f5f5">
+                                    <div class="sig sigWrapper">
                                         <div class="typed"></div>
-                                        <canvas class="pad" width="198" height="55"></canvas>
+                                        <canvas class="pad" width="380" height="100"></canvas>
                                         <input type="hidden" name="sigoutput" class="output">
                                     </div>
                                     <ul class="sigNav">
@@ -161,11 +168,10 @@
                             </div>
                         </div>
 
-
                         @elseif($element['type']=='input:radio:wrap')
                         <label class="tgl_radio" style="{{isset($element['style'])?$element['style']:''}}">
                         <input type=radio name="{{$element['id']}}" id="{{$element['id']}}" class="tgl" value="{{isset($element['value'])? $element['value']:''}}"> {{$element['display-name']}}
-                    </label>
+                        </label>
 
                             @if(isset($element['direction']) && $element['direction'] == "H" )
                             </br>

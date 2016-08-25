@@ -117,7 +117,7 @@ $(document).ready(function() {
                 $(this).removeClass('checkfiled');
                 isCheckedAgain = false;
             }
-            return
+            return;
         }
 
         if (isChecked) {
@@ -153,6 +153,42 @@ $(document).ready(function() {
         } else {
             $(this).removeClass('active');
         }
+    });
+
+    $('.form_section').on('click', '.radio_checkbox_lable', function(event) {
+        var name = $(this).find('.radio_checkbox').attr('name');
+        var selectedRadioObjarry = $('input[name=' + name + ']');
+        var isChecked = $(this).find('.radio_checkbox').prop('checked');
+
+        if (event.target.tagName != "LABEL") {
+            if (isCheckedAgain) {
+                $(this).find('.radio_checkbox').prop('checked', false);
+                $(this).removeClass('active');
+                isCheckedAgain = false;
+            }
+            return;
+        }
+
+        if (isChecked) {
+            isCheckedAgain = true;
+            return;
+        }
+
+        isCheckedAgain = false;
+
+        $(this).find('.radio_checkbox').prop('checked', true);
+        $.each(selectedRadioObjarry, function(key, obj) {
+            obj = $(obj);
+            if ($(obj).prop('checked')) {
+
+                obj.parent().addClass('active');
+            } else {
+                obj.parent().removeClass('active');
+
+            }
+
+        });
+
     });
 
 });
@@ -211,9 +247,12 @@ function showWebForm(name) {
             });
 
             $('.sigPad').signaturePad({
-                bgColour: 'transparent',
-                drawOnly: true
+                bgColour: '#fff',
+                drawOnly: true,
+                lineWidth: 0,
             });
+
+            changeTheSizeOfPad();
         },
         error: function error() {
             $('p.alert_message').text('Error searching');
@@ -260,4 +299,14 @@ function unSelectPatient(removeBtnObj) {
     $('#search_patient_button').show();
     $('#search_patient_input').prop('readonly', false);
     $('.select_form_dropdown').find('p').hide();
+}
+
+function changeTheSizeOfPad()
+{
+    $('.sigWrapper').css({
+        "height":"120px",
+        "padding":"10px",
+    });
+
+    $('.sigPad').css('width', '400px');
 }
