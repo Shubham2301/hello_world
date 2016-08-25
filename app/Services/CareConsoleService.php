@@ -3,20 +3,20 @@
 namespace myocuhub\Services;
 
 use Auth;
+use DateTime;
+use Helper;
 use myocuhub\Models\Action;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
+use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
+use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
-use DateTime;
-use Helper;
-use myocuhub\Models\PatientInsurance;
-use myocuhub\Models\ReferralHistory;
 
 class CareConsoleService
 {
@@ -158,7 +158,7 @@ class CareConsoleService
 
         if ($sortField != '' && in_array($sortField, $fields)) {
             $sortParams = [$sortField => $sortOrder];
-            $patientsData = $this->array_msort($patientsData, $sortParams);
+            $patientsData = $this->arrayMsort($patientsData, $sortParams);
         }
 
         if ($ulimit != -1) {
@@ -168,7 +168,6 @@ class CareConsoleService
         $patientsData = $this->paginateResults($patientsData);
 
         $listing['patients'] = $patientsData;
-
 
         $listing['headers'] = $headerData;
         $listing['lastpage'] = $this->countChunk;
@@ -228,13 +227,13 @@ class CareConsoleService
         }
         if ($sortField != '' && in_array($sortField, $fields)) {
             $sortParams = [$sortField => $sortOrder];
-            $patientsData = $this->array_msort($patientsData, $sortParams);
+            $patientsData = $this->arrayMsort($patientsData, $sortParams);
         }
 
         $patientsData = $this->paginateResults($patientsData);
 
         $listing['patients'] = $patientsData;
-        $listing['headers']  = $headerData;
+        $listing['headers'] = $headerData;
         $listing['lastpage'] = $this->countChunk;
 
         return $listing;
@@ -333,7 +332,7 @@ class CareConsoleService
             case 'insurance-carrier':
                 $insurance = PatientInsurance::where('patient_id', $patient['id'])->first();
                 $insuranceCarrier = '';
-                if(isset($insurance)) {
+                if (isset($insurance)) {
                     $insuranceCarrier = ($insurance->insurance_carrier != '') ? $insurance->insurance_carrier : '-';
                 }
                 return $insuranceCarrier ?: '-';
@@ -341,11 +340,11 @@ class CareConsoleService
             case 'referral-history':
                 $referralHistory = ReferralHistory::find($patient['referral_id']);
                 $referredBy = '';
-                if(isset($referralHistory->referred_by_provider)) {
+                if (isset($referralHistory->referred_by_provider)) {
                     $referredBy = $referralHistory->referred_by_provider;
                 }
-                if(isset($referralHistory->referred_by_practice)) {
-                    $referredBy = ($referredBy != '') ?  $referredBy . ' ' . $referralHistory->referred_by_practice : $referralHistory->referred_by_practice;
+                if (isset($referralHistory->referred_by_practice)) {
+                    $referredBy = ($referredBy != '') ? $referredBy . ' ' . $referralHistory->referred_by_practice : $referralHistory->referred_by_practice;
                 }
                 return $referredBy ?: '-';
                 break;
@@ -364,15 +363,14 @@ class CareConsoleService
      * @param $cols
      * @return mixed
      */
-    public function array_msort($array, $cols)
+    public function arrayMsort($array, $cols)
     {
         $colarr = array();
         foreach ($cols as $col => $order) {
             $colarr[$col] = array();
             $isDate = false;
 
-            if(isset($array[0][$col]))
-            {
+            if (isset($array[0][$col])) {
                 $isDate = Helper::validateDate($array[0][$col]);
             }
             foreach ($array as $k => $row) {
@@ -421,12 +419,11 @@ class CareConsoleService
         $pageNum = (int) $pageNum;
         $pageNum = $pageNum - 1;
 
-
         if (!$pageNum || $pageNum < 0) {
             $pageNum = 0;
         }
 
-        $this->pageNum =  $pageNum;
+        $this->pageNum = $pageNum;
     }
 
     public function getPage()
