@@ -283,7 +283,8 @@ class CareConsoleController extends Controller
             $provider = User::find($appointment->provider_id);
             $data['appointment_type'] = $appointment->appointmenttype;
         }
-        $data['timezone'] = $patient->timezone->getName();
+        $timezone = $patient->timezone;
+        $data['timezone'] = ($timezone) ? $timezone->getName() : null;
         $data['special_request'] = ($patient->special_request != null && $patient->special_request != '') ? $patient->special_request : '-';
         $data['pcp'] = ($patient->pcp != null && $patient->pcp != '') ? $patient->pcp : '-';
         $data['scheduled_to'] = ($provider) ? $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname : '-';
@@ -309,7 +310,8 @@ class CareConsoleController extends Controller
         $data['last_seen_by'] = $this->CareConsoleService->getPatientFieldValue($patient, 'last-scheduled-to');
         $data['insurance'] = $this->CareConsoleService->getPatientFieldValue($patient, 'insurance-carrier');
         $data['referred_by'] = $this->CareConsoleService->getPatientFieldValue($console, 'referral-history');
-        $data['timezone'] = $patient->timezone->getName();
+        $timezone = $patient->timezone;
+        $data['timezone'] = ($timezone) ? $timezone->getName() : null;
 
         return json_encode($data);
     }
