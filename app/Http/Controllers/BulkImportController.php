@@ -117,7 +117,7 @@ class BulkImportController extends Controller
 
             // $excels = Excel::load($request->file('patient_xlsx'))->get();
             $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'), function ($reader) {
-                $reader->setDateColumns(array('birthdate'));
+                $reader->setDateColumns(array('birthdate', 'subscriber_dob'));
                 $reader->formatDates(true, 'Y-m-d');
             })->chunk(250, function ($results) use (&$old_patients, &$i, &$format, &$new_patients, $importHistory, $request, $template, &$import_result) {
                 foreach ($results as $data) {
@@ -132,7 +132,7 @@ class BulkImportController extends Controller
                         $patients['firstname'] = isset($data['first_name']) ? $data['first_name'] : '';
                         $patients['lastname'] = isset($data['last_name']) ? $data['last_name'] : '';
                         $patients['lastfourssn'] = isset($data['ssn_last_digits']) ? $data['ssn_last_digits'] : null;
-                        $patients['birthdate'] = (isset($data['birthdate']) && $data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : '0000-00-00 00:00:00';
+                        $patients['birthdate'] = (isset($data['birthdate']) && $data['birthdate']) ? Helper::formatDate($data['birthdate'], config('constants.db_date_format')) : '0000-00-00 00:00:00';
                         $language = config('patient_engagement.language.' . strtolower($data['language']));
                         $patients['preferredlanguage'] = isset($language) ? $language : '';
                         $patient = Patient::where($patients)->first();
@@ -185,7 +185,7 @@ class BulkImportController extends Controller
                                 'insurance_carrier' => $data['insurance_carrier'],
                                 'subscriber_name' => $data['subscriber_name'],
                                 'subscriber_id' => $data['subscriber_id'],
-                                'subscriber_birthdate' => $data['subscriber_dob'],
+                                'subscriber_birthdate' => (isset($data['subscriber_dob']) && $data['subscriber_dob']) ? Helper::formatDate($data['subscriber_dob'], config('constants.db_date_format')) : '0000-00-00 00:00:00',
                                 'insurance_group_no' => $data['group_no'],
                                 'subscriber_relation' => $data['relation_to_patient'],
                             ]);

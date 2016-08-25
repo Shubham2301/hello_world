@@ -186,14 +186,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/patient/destroy', 'Patient\PatientController@destroy');
     Route::get('/patient/editfromreferral', 'Patient\PatientController@editFromReferral');
 
-    Route::resource('reports', 'ReportingController');
-    Route::get('reports/generate', 'ReportingController@generateReports');
-
-    Route::resource('careconsole_reports', 'ReportsController');
-    Route::get('careconsole_reports/show', 'ReportsController@show');
+    Route::resource('/report/careconsole_reports', 'ReportsController');
     Route::get('/cleanupphones', 'ScriptsController@cleanUpPhoneNumbers');
     Route::get('getlandingpages', 'Admin\UserController@getLandingPagebyRole');
     Route::get('/administration', 'HomeController@administration');
+    Route::get('/report', 'HomeController@report');
     Route::get('/referredbyproviders', 'Practice\ProviderController@getReferringProviderSuggestions');
     Route::get('/referredbypractice', 'Practice\PracticeController@getReferringPracticeSuggestions');
     Route::get('/savereferredby', 'Patient\PatientController@saveReferredbyDetails');
@@ -217,7 +214,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/show_records/{id}', 'Patient\PatientController@printRecord');
     });
 
-    Route::resource('report/reach_report', 'Reports\ReachRateController');
+    Route::resource('/report/reach_report', 'Reports\ReachRateController');
 
-    Route::resource('report/call_center', 'Reports\CallCenterController');
+    Route::resource('/report/call_center', 'Reports\CallCenterController');
 });

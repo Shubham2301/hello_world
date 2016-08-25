@@ -46,7 +46,6 @@ elixir(function (mix) {
     mix.babel(['toxml.js'], 'public/js/toxml.js');
     mix.babel(['file_exchange.js'], 'public/js/file_exchange.js');
     mix.babel(['users.js'], 'public/js/users.js');
-    mix.babel(['reporting.js'], 'public/js/reporting.js');
     mix.babel(['reports.js'], 'public/js/reports.js');
     mix.babel(['reach_rate_report.js'], 'public/js/reach_rate_report.js');
     mix.babel(['session_timeout.js'], 'public/js/session_timeout.js');
@@ -84,7 +83,6 @@ elixir(function (mix) {
                 'js/networks.js',
                 'js/file_exchange.js',
 				'js/users.js',
-				'js/reporting.js',
 				'js/reports.js',
 				'js/reach_rate_report.js',
                 'js/session_timeout.js',

@@ -5,7 +5,7 @@
 .select_dropdown {
     background-color: #ffffff;
     border: none;
-    color: #4d4d4d;
+    color: @font-color-black;
     background-image: none;
 }
 .report_header {
@@ -19,7 +19,7 @@
             margin-left: 1em;
         }
         &>input {
-            color: #4d4d4d;
+            color: @font-color-black;
             border: none;
             width: 8em;
             margin: 0 .5em;
@@ -68,7 +68,7 @@
 @font-color-1: #000000;
 @font-color-2: #00a99d;
 @font-color-3: @primary-color;
-@font-color-4: #4d4d4d;
+@font-color-4: @font-color-black;
 @font-color-5: #333333;
 @font-color-6: #ffffff;
 @font-size: 12px;
@@ -106,7 +106,7 @@
     &.sub_section {
         .arial;
         font-size: 1em;
-        color: #4d4d4d;
+        color: @font-color-black;
     }
 }
 .report_section_header {
@@ -301,7 +301,7 @@ Historical Report
     border-top: 1px solid #ddd;
     border-right: 1px solid #ddd;
     border-left: 1px solid #ddd;
-    color: #4d4d4d;
+    color: @font-color-black;
 }
 .date_selector {
     border-radius: .8em;
@@ -353,33 +353,33 @@ p.date_selector {
     display: flex;
     flex-direction: row;
     border-radius: 5px;
-    padding: 0;
+    padding: .2em;
     overflow-x: hidden;
-    color: #4d4d4d;
+    color: @font-color-black;
     margin-top: 1em;
     cursor: pointer;
     box-shadow: 0 1px 1px #898989;
-    .gradient(#f0f2f5,
-    #e0e3e6);
+    .gradient(#f0f2f5, #e0e3e6);
     &.active,
     &.active:hover {
         background-color: #d2d3d5;
-        .gradient(#d2d3d5,
-        #d2d3d5);
+        .gradient(#d2d3d5, #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
         cursor: auto;
     }
     &:hover {
         background-color: #f0f2f5;
-        .gradient(#f0f2f5,
-        #f0f2f5);
+        .gradient(#f0f2f5, #f0f2f5);
         box-shadow: 0 1px 1px #898989;
+        text-decoration: none;
+        color: @font-color-black;
     }
     &:active {
         background-color: #d2d3d5;
-        .gradient(#d2d3d5,
-        #d2d3d5);
+        .gradient(#d2d3d5, #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
+        text-decoration: none;
+        color: @font-color-black;
     }
     &>.report_sidebar_image {
         flex-grow: 1;

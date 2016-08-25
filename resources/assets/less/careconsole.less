@@ -619,16 +619,19 @@ p.no_of_patients {
         opacity: 0.95;
         transition: opacity .5s;
     }
+    .patient_timezone {
+        font-size: 0.9em;
+    }
     .history_item {
         font-size: 0.9em;
         width: 100%;
         cursor: pointer;
         &.active {
-            color: #00a1e4;
+            color: @font-color-9;
         }
     }
     .contact_notes {
-        border: 1px solid #00a1e4;
+        border: 1px solid @font-color-9;
         font-style: italic;
         font-size: 0.9em;
         height: 11em;

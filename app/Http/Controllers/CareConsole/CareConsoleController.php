@@ -13,13 +13,13 @@ use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\MessageTemplate;
 use myocuhub\Models\Practice;
+use myocuhub\Models\Timezone;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
 use myocuhub\Services\CareConsoleService;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
-use myocuhub\Facades\Helper;
 
 class CareConsoleController extends Controller
 {
@@ -164,7 +164,6 @@ class CareConsoleController extends Controller
         $patientStage['id'] = $stage->id;
         $patientStage['name'] = $stage->display_name;
 
-
         $actionName = Action::find($actionID)->display_name;
         $action = "Performed Action : '$actionName' on Console Entry : $consoleID in the Careconsole";
         $description = '';
@@ -284,7 +283,8 @@ class CareConsoleController extends Controller
             $provider = User::find($appointment->provider_id);
             $data['appointment_type'] = $appointment->appointmenttype;
         }
-
+        $timezone = $patient->timezone;
+        $data['timezone'] = ($timezone) ? $timezone->getName() : '';
         $data['special_request'] = ($patient->special_request != null && $patient->special_request != '') ? $patient->special_request : '-';
         $data['pcp'] = ($patient->pcp != null && $patient->pcp != '') ? $patient->pcp : '-';
         $data['scheduled_to'] = ($provider) ? $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname : '-';
@@ -310,6 +310,8 @@ class CareConsoleController extends Controller
         $data['last_seen_by'] = $this->CareConsoleService->getPatientFieldValue($patient, 'last-scheduled-to');
         $data['insurance'] = $this->CareConsoleService->getPatientFieldValue($patient, 'insurance-carrier');
         $data['referred_by'] = $this->CareConsoleService->getPatientFieldValue($console, 'referral-history');
+        $timezone = $patient->timezone;
+        $data['timezone'] = ($timezone) ? $timezone->getName() : '';
 
         return json_encode($data);
     }

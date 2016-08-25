@@ -5,10 +5,10 @@ namespace myocuhub\Http\Controllers;
 use Event;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
-use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Controllers\Reports\ReportController;
 use myocuhub\Services\Reports\Reports;
 
-class ReportsController extends Controller
+class ReportsController extends ReportController
 {
     private $Reports;
 
@@ -23,7 +23,15 @@ class ReportsController extends Controller
      */
     public function index(Request $request)
     {
+        if (!policy(new ReportController)->accessCareconsoleReport()) {
+            $request->session()->flash('failure', 'Unauthorized Access to the Report. Please contact your administrator.');
+            return redirect('/');
+        }
+
         $data['reports'] = true;
+
+        $type = $request->type ?: 'real_time';
+        $data[$type] = true;
 
         $action = 'Patients Reports Accessed';
         $description = '';

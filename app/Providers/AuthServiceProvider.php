@@ -20,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
         'myocuhub\Models\Practice' => 'myocuhub\Policies\PracticePolicy',
         'myocuhub\Network' => 'myocuhub\Policies\NetworkPolicy',
         'myocuhub\Models\Careconsole' => 'myocuhub\Policies\CareconsolePolicy',
+        'myocuhub\Http\Controllers\Reports\ReportController' => 'myocuhub\Policies\ReportPolicy',
     ];
 
     /**

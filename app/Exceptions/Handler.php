@@ -2,18 +2,15 @@
 
 namespace myocuhub\Exceptions;
 
-use Auth;
 use Exception;
-use Mail;
-use myocuhub\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-
 
 class Handler extends ExceptionHandler
 {
+
     /**
      * A list of the exception types that should not be reported.
      *
@@ -34,22 +31,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if(!$e instanceof NotFoundHttpException) {
-            // preserving the Exception object, required for calling the partent::report() method
-            $message = $e;
-            if(Auth::user()){
-                $message = 'Exception for User ID: ' . Auth::user()->id . ' with email id: ' . Auth::user()->email . ' <br> ' . $message;
-            }
- 
-            $maillogs = env('MAIL_ERRORLOG', false);
-            
-            if($maillogs) {
-                Mail::raw($message, function ($m) {
-                        $m->from( config('constants.support.email_id'), config('constants.support.email_name'));
-                        $m->to(env('MAIL_ERRORLOG_TO', config('constants.support.application_error')), 'Application Error')->subject('Exception generated in the system');
-                });
-            }
-        }
+        (new FreshDeskHandler($e))->report();
         return parent::report($e);
     }
 

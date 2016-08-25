@@ -5,6 +5,7 @@ namespace myocuhub\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Controllers\Reports\ReportController;
 use myocuhub\Models\Menu;
 use myocuhub\Patient;
 use myocuhub\Role_user;
@@ -132,6 +133,19 @@ class HomeController extends Controller
         }
 
         $request->session()->flash('failure', 'You do not have any administrative roles assigned. Please contact your admin for support');
+        return redirect($redirectURL);
+    }
+
+    public function report(Request $request)
+    {
+        $redirectURL = '/referraltype';
+
+        if (policy(new ReportController)->accessCareconsoleReport()) {
+            $redirectURL = '/report/careconsole_reports';
+            return redirect($redirectURL);
+        }
+
+        $request->session()->flash('failure', 'You do not have any report roles assigned. Please contact your admin for support');
         return redirect($redirectURL);
     }
 }

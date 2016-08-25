@@ -6,22 +6,26 @@ $(document).ready(function () {
     var cur_date = new Date();
     var set_start_date = new Date(cur_date.getTime());
     $('#start_date').datetimepicker({
-        defaultDate: set_start_date.setDate(cur_date.getDate() - 30),
+        defaultDate: set_start_date.setDate(cur_date.getDate() - 31),
         format: 'MM/DD/YYYY',
         maxDate: cur_date,
     });
+    set_start_date = new Date(cur_date.getTime());
     $('#end_date').datetimepicker({
         defaultDate: cur_date,
         format: 'MM/DD/YYYY',
         maxDate: cur_date,
+        minDate: set_start_date.setDate(cur_date.getDate() - 30),
     });
     getReport();
     var old_start_date = $('#start_date').val();
     var old_end_date = $('#end_date').val();
     $('#start_date').datetimepicker().on('dp.hide', function (ev) {
         var start_date = $('#start_date').val();
+        $('#end_date').data("DateTimePicker").minDate(new Date(start_date));
         if (start_date != old_start_date) {
             old_start_date = $('#start_date').val();
+            filter = '';
             getReport();
         }
     });
@@ -30,12 +34,13 @@ $(document).ready(function () {
         $('#start_date').data("DateTimePicker").maxDate(new Date(end_date));
         if (end_date != old_end_date) {
             old_end_date = $('#end_date').val();
+            filter = '';
             getReport();
         }
     });
     $('.patient_list').on('click', function () {
-        var header = $(this).text();
-        $('.action_modal_title.reach_report_patient_list').text($.trim(header));
+        var header = $(this).attr('data-name');
+        $('.action_modal_title.reach_report_patient_list').text(header);
         getPatientList($(this).attr('id'));
     });
     $('.referred_by_practice_list').on('change', function () {
@@ -178,13 +183,15 @@ function getPatientList(metricName) {
                 }
                 break;
             case 'pending_patient':
+                headerContent = '<span>Name</span><span>Request Received</span>';
                 if (!("reached" in result) && !("not_reached" in result)) {
                     if ((result.patient_type == config.patient_type.new) || ("repeat_count" in result))
-                        content += patientListItem;
+                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.request_received  + '</span></li>';
                 }
                 break;
             case 'patient_count':
-                content += patientListItem;
+                headerContent = '<span>Name</span><span>Date of Birth</span>';
+                content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.dob  + '</span></li>';
                 break;
             case 'new_patient':
                 if ("patient_type" in result) {
@@ -199,20 +206,23 @@ function getPatientList(metricName) {
                 }
                 break;
             case 'completed':
+                headerContent = '<span>Name</span><span>Date Archived</span><span>Reason for archiving</span>';
                 if ("archived" in result) {
-                    content += patientListItem;
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date  + '</span><span>' + result.archive_reason  + '</span></li>';
                 }
                 break;
             case 'success':
+                headerContent = '<span>Name</span><span>Date Archived</span><span>Reason for archiving</span>';
                 if ("archived" in result) {
                     if (result.archived == config.archive.success)
-                        content += patientListItem;
+                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date  + '</span><span>' + result.archive_reason  + '</span></li>';
                 }
                 break;
             case 'dropout':
+                headerContent = '<span>Name</span><span>Date Archived</span><span>Reason for archiving</span>';
                 if ("archived" in result) {
                     if (result.archived == config.archive.dropout)
-                        content += patientListItem;
+                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date  + '</span><span>' + result.archive_reason  + '</span></li>';
                 }
                 break;
             case 'active_patient':
