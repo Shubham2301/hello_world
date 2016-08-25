@@ -13,6 +13,7 @@
 @endif
 <input type="hidden" id="from_admin" value="{{$data['admin']}}" >
 <input type="hidden" id="select_previous" value="{{$data['previous_selected']}}" >
+<input type="hidden" id="provider_radius" value="{{ config('constants.providerNearPatient.providerRadius') }}" >
 <div class="content-section content-section-scheduling active" id="practice_section">
     {!! Form::open(array('url' => '/appointments', 'method' => 'GET', 'id' => 'form_select_provider')) !!}
     @if(array_key_exists('referraltype_id', $data))

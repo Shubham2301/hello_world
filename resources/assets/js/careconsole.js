@@ -941,6 +941,7 @@ function setPatientRecords(consoleID) {
             }
             $('.patient_records_info').find('.patient_name').text(data.name);
             $('.patient_records_info').find('.patient_phone').text(data.phone);
+            $('.patient_records_info').find('.patient_timezone').text(data.timezone);
             $('.patient_records_info').find('.special_request').text(data.special_request);
             $('.patient_records_info').find('.pcp').text(data.pcp);
             $('.patient_records_info').find('.scheduled_to').text(data.scheduled_to);
@@ -1213,7 +1214,7 @@ function getPatientContactData(patientID) {
                 return;
             }
 
-            content = '<div class="form-group"><h4 class="">Patient Details</h4><p><span class="arial_bold">Email</span><br><span class="arial">' + data.email + '</span><br></p><p><span class="arial_bold">Date of Birth</span><br><span class="arial">' + data.dob + '</span><br></p><p><span class="arial_bold">Last Seen By</span><br><span class="arial">' + data.last_seen_by + '</span><br></p><p><span class="arial_bold">Insurance Provider</span><br><span class="arial">' + data.insurance + '</span><br></p><p><span class="arial_bold">Special Request</span><br><span class="arial">' + data.special_request + '</span><br></p><p><span class="arial_bold">PCP</span><br><span class="arial">' + data.pcp + '</span><br></p><p><span class="arial_bold">Home Address</span><br><span class="arial">' + data.address + '</span><br></p><span class="arial_bold">Referred By</span><br><span class="arial">' + data.referred_by + '</span><br>';
+            content = '<div class="form-group"><h4 class="">Patient Details</h4><p><span class="arial_bold">Email</span><br><span class="arial">' + data.email + '</span><br></p><p><span class="arial_bold">Timezone</span><br><span class="arial">' + data.timezone + '</span><br></p><p><span class="arial_bold">Date of Birth</span><br><span class="arial">' + data.dob + '</span><br></p><p><span class="arial_bold">Last Seen By</span><br><span class="arial">' + data.last_seen_by + '</span><br></p><p><span class="arial_bold">Insurance Provider</span><br><span class="arial">' + data.insurance + '</span><br></p><p><span class="arial_bold">Special Request</span><br><span class="arial">' + data.special_request + '</span><br></p><p><span class="arial_bold">PCP</span><br><span class="arial">' + data.pcp + '</span><br></p><p><span class="arial_bold">Home Address</span><br><span class="arial">' + data.address + '</span><br></p><span class="arial_bold">Referred By</span><br><span class="arial">' + data.referred_by + '</span><br>';
 
         },
         error: function error() {

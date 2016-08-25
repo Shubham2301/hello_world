@@ -7,6 +7,10 @@ $(document).ready(function () {
 
     window.history.pushState("disable forward navigation", "Provider-forward-disable", "");
 
+    setTimeout(function() {
+        $('.provider_near_patient').trigger('click');
+    },10);
+
     $('.dropdown-menu li').click(function () {
         $('#search_practice_input_type').text($(this).text());
         $('#search_practice_input_type').attr('value', $(this).attr('value'));
@@ -440,7 +444,7 @@ function showProviderNear(providers) {
         });
         $('.provider_near_patient_list').html(content);
     } else {
-        $('.provider_near_patient_list').html('No provider found within 50 Miles');
+        $('.provider_near_patient_list').html('No provider found within ' + $('#provider_radius').val() + ' Miles');
     }
     $('.provider_near').removeClass('glyphicon-chevron-right');
     $('.provider_near').addClass('glyphicon-chevron-down');

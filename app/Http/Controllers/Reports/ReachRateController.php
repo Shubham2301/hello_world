@@ -6,14 +6,16 @@ use myocuhub\Http\Controllers\Traits\Reports\ReachRateTrait;
 
 use Auth;
 use Illuminate\Http\Request;
-use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Controllers\Reports\ReportController;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\ContactHistory;
 use myocuhub\User;
 use Datetime;
+use myocuhub\Services\CareConsoleService;
+use myocuhub\Facades\Helper;
 
-class ReachRateController extends Controller
+class ReachRateController extends ReportController
 {
 
     use ReachRateTrait;
@@ -23,9 +25,15 @@ class ReachRateController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('reports.reach_rate_report.index');
+        if (!policy(new ReportController)->accessReachReport()) {
+            $request->session()->flash('failure', 'Unauthorized Access to the Report. Please contact your administrator.');
+            return redirect('/referraltype');
+        }
+        $data['reach_report'] = true;
+        return view('reports.reach_rate_report.index')->with('data', $data);
+
     }
 
     /**

@@ -4,15 +4,15 @@ namespace myocuhub;
 
 use Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientMail;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientPhone;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientSMS;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use myocuhub\Models\Careconsole;
+use myocuhub\Models\PatientFile;
+use myocuhub\Models\PatientRecord;
 use myocuhub\Models\PracticeUser;
 use myocuhub\Network;
-use myocuhub\Models\PatientFile;
-use myocuhub\Models\Careconsole;
-use myocuhub\Models\PatientRecord;
 
 class Patient extends Model
 {
@@ -22,27 +22,27 @@ class Patient extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-    'title',
-    'firstname',
-    'middlename',
-    'lastname',
-    'workphone',
-    'homephone',
-    'cellphone',
-    'email',
-    'addressline1',
-    'addressline2',
-    'city',
-    'zip',
-    'lastfourssn',
-    'birthdate',
-    'gender',
-    'insurancecarrier',
-    'country',
-    'preferredlanguage',
-    'state',
-    'special_request',
-    'pcp'
+        'title',
+        'firstname',
+        'middlename',
+        'lastname',
+        'workphone',
+        'homephone',
+        'cellphone',
+        'email',
+        'addressline1',
+        'addressline2',
+        'city',
+        'zip',
+        'lastfourssn',
+        'birthdate',
+        'gender',
+        'insurancecarrier',
+        'country',
+        'preferredlanguage',
+        'state',
+        'special_request',
+        'pcp',
     ];
 
     public function getPhone()
@@ -60,7 +60,8 @@ class Patient extends Model
         return $phone;
     }
 
-    public function getName(){
+    public function getName()
+    {
         return $this->lastname . ', ' . $this->firstname;
     }
 
@@ -76,7 +77,7 @@ class Patient extends Model
             'patients.addressline1',
             'patients.addressline2',
             'patients.city',
-            'patients.birthdate'
+            'patients.birthdate',
         ];
 
         $query = self::where(function ($query) use ($filters) {
@@ -86,8 +87,8 @@ class Patient extends Model
                     switch ($filter['type']) {
                         case 'name':
                             $query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
+                                ->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
                             break;
                         case 'ssn':
                             $query->where('lastfourssn', $filter['value']);
@@ -97,14 +98,14 @@ class Patient extends Model
                             break;
                         case 'phone':
                             $query->where('cellphone', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('workphone', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('homephone', 'LIKE', '%' . $filter['value'] . '%');
+                                ->orWhere('workphone', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('homephone', 'LIKE', '%' . $filter['value'] . '%');
                             break;
                         case 'address':
                             $query->where('city', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('country', 'LIKE', '%' . $filter['value'] . '%');
+                                ->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('country', 'LIKE', '%' . $filter['value'] . '%');
                             break;
                         case 'id':
                             $query->where('patients.id', $filter['value']);
@@ -114,18 +115,18 @@ class Patient extends Model
                             break;
                         case 'all':
                             $query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('lastfourssn', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('city', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('country', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('cellphone', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('workphone', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('homephone', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('email', 'LIKE', '%' . $filter['value'] . '%')
-                            ->orWhere('patient_insurance.subscriber_id', 'LIKE', '%' . $filter['value'] . '%');
+                                ->orWhere('middlename', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('lastfourssn', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('city', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('addressline1', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('addressline2', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('country', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('cellphone', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('workphone', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('homephone', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('email', 'LIKE', '%' . $filter['value'] . '%')
+                                ->orWhere('patient_insurance.subscriber_id', 'LIKE', '%' . $filter['value'] . '%');
                             break;
                     }
                 });
@@ -143,7 +144,7 @@ class Patient extends Model
                 ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
                 ->where('import_history.network_id', session('network-id'));
         } else {
-            $practiceUser= PracticeUser::where('user_id', Auth::user()->id)->first();
+            $practiceUser = PracticeUser::where('user_id', Auth::user()->id)->first();
             $query
                 ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
                 ->leftjoin('practice_patient', 'patients.id', '=', 'practice_patient.patient_id')
@@ -151,20 +152,20 @@ class Patient extends Model
         }
 
         if (!isset($sortInfo['order'])) {
-            $sortInfo['order']='SORT_ASC';
-            $sortInfo['field']='lastname';
+            $sortInfo['order'] = 'SORT_ASC';
+            $sortInfo['field'] = 'lastname';
         } elseif (!$sortInfo['order']) {
-            $sortInfo['order']='SORT_ASC';
-            $sortInfo['field']='lastname';
+            $sortInfo['order'] = 'SORT_ASC';
+            $sortInfo['field'] = 'lastname';
         }
 
         $toSort['SORT_ASC'] = 'asc';
         $toSort['SORT_DESC'] = 'desc';
 
         return
-            $query
+        $query
             ->orderBy($sortInfo['field'], $toSort[$sortInfo['order']])
-			->paginate($countResult, $columns);
+            ->paginate($countResult, $columns);
     }
 
     public static function getPatientsByName($name)
@@ -176,18 +177,18 @@ class Patient extends Model
             ->where('import_history.network_id', session('network-id'))
             ->where(function ($query) use ($name) {
                 $query->where('firstname', 'LIKE', '%' . $name . '%')
-                ->orWhere('middlename', 'LIKE', '%' . $name . '%')
-                ->orWhere('lastname', 'LIKE', '%' . $name . '%')
-                ->orWhere('lastfourssn', 'LIKE', '%' . $name . '%')
-                ->orWhere('city', 'LIKE', '%' . $name . '%')
-                ->orWhere('addressline1', 'LIKE', '%' . $name . '%')
-                ->orWhere('addressline2', 'LIKE', '%' . $name . '%')
-                ->orWhere('country', 'LIKE', '%' . $name . '%')
-                ->orWhere('cellphone', 'LIKE', '%' . $name . '%')
-                ->orWhere('workphone', 'LIKE', '%' . $name . '%')
-                ->orWhere('homephone', 'LIKE', '%' . $name . '%')
-                ->orWhere('email', 'LIKE', '%' . $name . '%')
-                ->orWhere('patient_insurance.subscriber_id', 'LIKE', '%' . $name . '%');
+                    ->orWhere('middlename', 'LIKE', '%' . $name . '%')
+                    ->orWhere('lastname', 'LIKE', '%' . $name . '%')
+                    ->orWhere('lastfourssn', 'LIKE', '%' . $name . '%')
+                    ->orWhere('city', 'LIKE', '%' . $name . '%')
+                    ->orWhere('addressline1', 'LIKE', '%' . $name . '%')
+                    ->orWhere('addressline2', 'LIKE', '%' . $name . '%')
+                    ->orWhere('country', 'LIKE', '%' . $name . '%')
+                    ->orWhere('cellphone', 'LIKE', '%' . $name . '%')
+                    ->orWhere('workphone', 'LIKE', '%' . $name . '%')
+                    ->orWhere('homephone', 'LIKE', '%' . $name . '%')
+                    ->orWhere('email', 'LIKE', '%' . $name . '%')
+                    ->orWhere('patient_insurance.subscriber_id', 'LIKE', '%' . $name . '%');
             })
             ->get(['*', 'patients.id']);
     }
@@ -221,11 +222,18 @@ class Patient extends Model
             ->get();
     }
 
-    public function engagementPreference(){
+    public function engagementPreference()
+    {
         return $this->hasOne('myocuhub\Models\EngagementPreference');
     }
 
-    public function engagePatient($appt){
+    public function timezone()
+    {
+        return $this->belongsTo('myocuhub\Models\Timezone');
+    }
+
+    public function engagePatient($appt)
+    {
         switch ($appt['patient_preference']) {
             case config('patient_engagement.type.sms'):
                 dispatch((new PostAppointmentPatientSMS($appt))->onQueue('sms'));
@@ -240,22 +248,23 @@ class Patient extends Model
         }
     }
 
-    public function network(){
+    public function network()
+    {
         $network = $this->where('patients.id', $this->id)
-                    ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
-                    ->leftjoin('import_history', 'careconsole.import_id' , '=' , 'import_history.id')
-                    ->first(['import_history.network_id']);
+            ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
+            ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
+            ->first(['import_history.network_id']);
         return Network::find($network['network_id']);
     }
-    
+
     public function getLocation()
     {
-        $address = urlencode($this->addressline1.' '.$this->addressline2.' '.$this->city.' '.$this->state.' '.$this->zip.' '.$this->country);
+        $address = urlencode($this->addressline1 . ' ' . $this->addressline2 . ' ' . $this->city . ' ' . $this->state . ' ' . $this->zip . ' ' . $this->country);
         $data = [];
         $data['latitude'] = '';
         $data['longitude'] = '';
         try {
-            $patientLocation = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')), true);
+            $patientLocation = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&key=' . env('MAP_API_KEY')), true);
         } catch (\Exception $e) {
             $data['error'] = $e->getMessage();
         }
@@ -270,11 +279,13 @@ class Patient extends Model
         return $this->hasMany(PatientFile::class);
     }
 
-    public function careConsole() {
+    public function careConsole()
+    {
         return $this->hasOne(Careconsole::class);
     }
 
-    public function records() {
+    public function records()
+    {
         return $this->hasMany(PatientRecord::class);
     }
 }

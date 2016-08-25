@@ -210,8 +210,7 @@ function removeFilter(name) {
 
 $(document).ready(function () {
 
-    $('.historical_section').hide();
-    $('.sidebar_historical').on('click', function () {
+    if ($('.sidebar_historical').hasClass('active')) {
         $("#population_report_options").collapse('hide');
         $('.expandable_sidebar').removeClass('active');
         $('.expandable_sidebar_historical').addClass('active');
@@ -222,11 +221,7 @@ $(document).ready(function () {
         $('.realtime_section').hide();
         $('.historical_section').show();
         $('.filter_remove').parent().remove();
-        resetFilter();
-        clearHtml();
-        getReport();
-    });
-    $('.sidebar_realtime').on('click', function () {
+    } else if ($('.sidebar_realtime').hasClass('active')) {
         $('.expandable_sidebar').addClass('active');
         $('.expandable_sidebar_historical').removeClass('active');
         $('.realtime_header').addClass('active');
@@ -236,11 +231,8 @@ $(document).ready(function () {
         $('.historical_section').hide();
         $('.realtime_section').show();
         $('.filter_remove').parent().remove();
-        resetFilter();
-        clearHtml();
-        getReport();
         $("#population_report_options").collapse('show');
-    });
+    };
     $("li").click(function () {
         $(this.parentNode).children("li").removeClass("active");
         $(this).addClass("active");
@@ -276,7 +268,6 @@ $(document).ready(function () {
     });
     resetFilter();
     getReport();
-    $("#population_report_options").collapse('show');
     var old_start_date = $('#start_date').val();
     var old_end_date = $('#end_date').val();
     $('#start_date').datetimepicker().on('dp.hide', function (ev) {
@@ -327,7 +318,7 @@ function getReport() {
     };
 
     $.ajax({
-        url: '/careconsole_reports/show',
+        url: '/report/careconsole_reports/show',
         type: 'GET',
         data: $.param(formData),
         contentType: 'application/json',
