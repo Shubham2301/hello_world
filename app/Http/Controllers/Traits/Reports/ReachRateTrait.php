@@ -81,6 +81,7 @@ trait ReachRateTrait
                     case 'manually-reschedule':
                         $results[$patient_count]['appointment_scheduled'] = isset($results[$patient_count]['appointment_scheduled']) ? $results[$patient_count]['appointment_scheduled'] + 1 : 1;
                         $results[$patient_count]['reached'] = isset($results[$patient_count]['reached']) ? $results[$patient_count]['reached'] + 1 : 1;
+                        $results[$patient_count]['reached_stage_change'] = $contactHistory->days_in_prev_stage;
                         if(isset($contactHistory->appointments)) {
                             $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
                         }
@@ -284,7 +285,9 @@ trait ReachRateTrait
             }
             $reportMetrics['patient_count']++;
 
-            $result['patient_type'] == config('reports.patient_type.new') ? $reportMetrics['new_patient']++ : $reportMetrics['existing_patients']++;
+            if (isset($result['patient_type'])) {
+                $result['patient_type'] == config('reports.patient_type.new') ? $reportMetrics['new_patient']++ : $reportMetrics['existing_patients']++;
+            }
 
             if(array_key_exists('archived', $result)) {
                 $reportMetrics['completed']++;
@@ -446,8 +449,8 @@ trait ReachRateTrait
                 }
                 break;
             case 'appointment_data':
-                $patientInfo['scheduled_to_practice'] = isset($requestData->appointments->provider) ? $requestData->appointments->provider->name : '-';
-                $patientInfo['scheduled_to_provider'] = isset($requestData->appointments->practice) ? $requestData->appointments->practice->name : '-';
+                $patientInfo['scheduled_to_provider'] = isset($requestData->appointments->provider) ? $requestData->appointments->provider->name : '-';
+                $patientInfo['scheduled_to_practice'] = isset($requestData->appointments->practice) ? $requestData->appointments->practice->name : '-';
                 $patientInfo['scheduled_for'] = Helper::formatDate($requestData->appointments->start_datetime, config('constants.date_format'));
                 $patientInfo['appointment_type'] = $requestData->appointments->appointmenttype;
                 break;

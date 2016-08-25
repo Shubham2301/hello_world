@@ -29,7 +29,7 @@
     </div>
     <div class="report_summary row">
         <div class="col-sm-6 col-md-3 flex_col">
-            <span data-toggle="tooltip" title="Total number of patients that were present in the careconsole during this timeline. (Repeat patients are counted as a different patient)" data-placement="top">
+            <span data-toggle="tooltip" title="Total number of patients that were present in the careconsole during this timeline upon which some actions were taken. (Repeat patients are counted as a different patient)" data-placement="top">
                 <span class="arial_bold flex_row summary_header" >
                     <span class="patient_list" id="patient_count" data-name="Total Patients">
                         Total Patients
