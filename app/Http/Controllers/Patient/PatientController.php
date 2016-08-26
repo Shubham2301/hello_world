@@ -156,7 +156,7 @@ class PatientController extends Controller
             $patient->state = $request->input('state');
             $patient->pcp = $request->input('pcp');
             $patient->special_request = $request->input('special_request');
-            $patient->timezone_id = $request->input('timezone');
+            $patient->timezone_id = $request->input('timezone_id');
             $patient->save();
 
             $importHistory = new ImportHistory;
@@ -416,7 +416,7 @@ class PatientController extends Controller
             $patient->zip = $request->zip;
             $patient->pcp = $request->pcp;
             $patient->special_request = $request->special_request;
-            $patient->timezone_id = $request->timezone;
+            $patient->timezone_id = $request->timezone_id;
 
             $dob = new DateTime($request->birthdate);
             $patient->birthdate = $dob->format('Y-m-d 00:00:00');
