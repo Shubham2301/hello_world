@@ -346,7 +346,7 @@ class ProviderController extends Controller
         $data = [];
         $i = 0;
         foreach ($providers as $provider) {
-            if ($i > config('cconstants.providerNearPatient.providerNumber')) {
+            if ($i >= config('constants.providerNearPatient.providerNumber')) {
                 break;
             }
             if (!$provider->user_id || !$provider->practice_id) {
