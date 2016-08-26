@@ -1,0 +1,25 @@
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
+.reports_container {
+    background-color: @background-color-1;
+    padding: 0 2em;
+    flex-grow: 1;
+    color: @font-color-black;
+    &>.row {
+        margin: 0;
+        &.report_header_row {
+            margin-top: 1em;
+        }
+        &.report_filter_row {
+            margin: 1em 0;
+        }
+    }
+}
+.content-right {
+    padding: 0;
+}
+.reports_header {
+    font-size: 1.4em;
+}

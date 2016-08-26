@@ -217,4 +217,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/report/reach_report', 'Reports\ReachRateController');
 
     Route::resource('/report/call_center', 'Reports\CallCenterController');
+
+    Route::resource('/report/billing', 'Reports\BillingController');
 });
