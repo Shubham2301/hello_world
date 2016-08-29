@@ -1,9 +1,14 @@
-
 @extends('patient-records.prints.master')
 
+@section('imports')
+
+<link rel="stylesheet" type="text/css" href="{{ public_path('/css/pre_op_form.css') }}">
+
+@endsection
+
 @section('content')
-<div class="pdf_header" style="">
-    <img src="{{asset('images/web-forms/catpostop-header.png')}}" alt="" style="">
+<div class="pdf_header" >
+    <img src="{{asset('images/web-forms/catpostop-header.png')}}">
 </div>
 
 <div class="patient_info_section">
@@ -89,7 +94,7 @@
 
     <div class="row default_row_margin">
         <div class="col-xs-1">
-            <span style="font-weight:bold;text-align:center;font-size:1.5em;"> Vsc </span>
+            <span class="vsc_header"> Vsc </span>
         </div>
         <div class="col-xs-5">
             <p>
@@ -112,7 +117,7 @@
             </p>
         </div>
         <div class="col-xs-6">
-            <p style="">
+            <p>
                 OD <span class="unit_input_text" style="width:43%">
 
                 {{ (isset($data['record']['od_vsc_pre']))? $data['record']['od_vsc_pre']:''  }}
@@ -136,7 +141,7 @@
 
     <div class="row default_row_margin border_box_input">
     <div class="col-xs-1">
-        <p style="font-weight:bold;text-align:center;font-size:1.5em;margin-top:0.6em;"> MRX </p>
+        <p class="mrx_header"> MRX </p>
     </div>
     <div class="col-xs-6">
         <p style="">
@@ -154,7 +159,7 @@
 
             </span>
         </p>
-        <p style="">
+        <p>
             OS <span class="unit_input_text" style="width:26%;">
             {{ (isset($data['record']['os_mrx_pre']))? $data['record']['os_mrx_pre'] :''  }}
 
@@ -176,13 +181,13 @@
             </span></p>
     </div>
     <div class="col-xs-1">
-        <p style="text-align:center;font-size:1.5em;margin-top:0.6em;"> ADD++ </p>
+        <p class="mrx_header"> ADD++ </p>
     </div>
 </div>
 
     <div class="row default_row_margin">
         <div class="col-xs-1">
-            <p><span style="font-weight:bold;">External</span></p>
+            <p><span class="text_bold">External</span></p>
         </div>
         <div class="col-xs-11">
             <p>
@@ -195,7 +200,7 @@
 
     <div class="row default_row_margin">
     <div class="col-xs-1">
-        <p><span style="font-weight:bold;">Pupils</span></p>
+        <p><span class="text_bold">Pupils</span></p>
     </div>
     <div class="col-xs-5">
         <p>
@@ -241,7 +246,7 @@
        @endphp
 
 
-        <p><span style="font-weight:bold;">APD&nbsp;&nbsp;</span>
+        <p><span class="text_bold">APD&nbsp;&nbsp;</span>
             @foreach($pupils['apd'] as $name => $value)
                 <span class="{{(isset($data['record']['os_pupils_attend']) && $data['record']['os_pupils_attend'] == $name)?'active_wrap_field':''}}"> {{ $value }}
                 </span>
@@ -253,7 +258,7 @@
 
     <div class="row default_row_margin">
     <div class="col-xs-1">
-        <p><span style="font-weight:bold;">EOM</span></p>
+        <p><span class="text_bold">EOM</span></p>
     </div>
     <div class="col-xs-11">
         <p>full / restricted (describe) <span class="unit_input_text" style="width:75%;">
@@ -267,7 +272,7 @@
 
     <div class="row default_row_margin">
     <div class="col-xs-1">
-        <p><span style="font-weight:bold;">CVF</span></p>
+        <p><span class="text_bold">CVF</span></p>
     </div>
     <div class="col-xs-11">
         <p>full to confrontation / restricted (describe) <span class="unit_input_text" style="width:60%;">
@@ -287,16 +292,16 @@
     <div class="row default_row_margin">
 
     <div class="col-xs-5">
-        <div style="border:1px solid #000; padding-left:4px;">
+        <div class="box_border">
 
             <div class="row">
                 <div class="col-xs-12">
-                    <p style="font-weight:bold;">SLE</p>
+                    <p class="text_bold">SLE</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-4">
-                    <p>Wound</p>
+                    <p class="group_text">Wound</p>
                 </div>
                 <div class="col-xs-6">
                    @php
@@ -316,7 +321,7 @@
             <div class="row">
 
                 <div class="col-xs-4">
-                    <p>cornea</p>
+                    <p class="group_text">cornea</p>
                 </div>
                 <div class="col-xs-8">
                     <div class="row">
@@ -353,7 +358,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-4">
-                    <p>A/C</p>
+                    <p class="group_text">A/C</p>
                 </div>
                 <div class="col-xs-8">
                     <div class="row">
@@ -388,7 +393,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-4">
-                    <p>Iris</p>
+                    <p class="group_text">Iris</p>
 
                     @php
                         $Iris =  [
@@ -418,7 +423,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-4">
-                    <p>IOL
+                    <p class="group_text">IOL </p>
                         @php
 
                         $IOL =  [
@@ -426,7 +431,7 @@
                             'decentered' => 'decentered',
                         ]
                         @endphp
-                    </p>
+
                 </div>
                 <div class="col-xs-7">
                     <p>
@@ -438,7 +443,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-4">
-                    <p>Posterior Capsule</p>
+                    <p class="group_text">Posterior Capsule</p>
 
                     @php
                     $posteriorCapsule = [ '1+', '2+', '3+', '4+' ]
@@ -447,10 +452,10 @@
                 </div>
                 <div class="col-xs-8">
                     <div class="row">
-                        <div class="col-xs-6" style="padding-right:0;">
+                        <div class="col-xs-6 no_right_padding">
                             <span>clear </span> / <span>fibrotic</span>
                         </div>
-                        <div class="col-xs-5" style="padding-left:0; padding-right:0;">
+                        <div class="col-xs-5 no_right_padding no_left_padding" >
                             <p>
                                 @for($i =0; $i < sizeof($posteriorCapsule); $i++)
                                   <span> {{ $posteriorCapsule[$i] }} </span>
@@ -462,7 +467,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-3">
-                    <p>Lens</p>
+                    <p class="group_text">Lens</p>
 
                     @php
                     $lens = [
@@ -477,7 +482,7 @@
                 </div>
                 <div class="col-xs-9">
                     <div class="row">
-                        <div class="col-xs-12" style="padding-right:0;">
+                        <div class="col-xs-12 no_right_padding">
 
                            @foreach($lens as $name => $value )
 
@@ -490,7 +495,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-4">
-                    <p style="font-weight:bold; font-size:1em;">FUNDUS IMPRESSION
+                    <p class="group_text">FUNDUS IMPRESSION
                     </p>
                 </div>
                 <div class="col-xs-8">
@@ -513,18 +518,18 @@
     </div>
     <div class="col-xs-1"></div>
     <div class="col-xs-5">
-        <div style="border:1px solid; padding-left:4px;">
+        <div class="box_border">
 
             <div class="row">
                 <div class="col-xs-12">
-                    <p style="font-weight:bold;">SLE</p>
+                    <p class="text_bold">SLE</p>
                 </div>
 
             </div>
 
             <div class="row">
                 <div class="col-xs-4">
-                    <p>Wound</p>
+                    <p class="group_text">Wound</p>
                 </div>
                 <div class="col-xs-6">
                     <p>
@@ -539,7 +544,7 @@
             <div class="row">
 
                 <div class="col-xs-4">
-                    <p>cornea</p>
+                    <p class="group_text">cornea</p>
                 </div>
                 <div class="col-xs-8">
                     <div class="row">
@@ -577,7 +582,7 @@
             <div class="row">
 
                 <div class="col-xs-4">
-                    <p>A/C</p>
+                    <p class="group_text">A/C</p>
                 </div>
                 <div class="col-xs-8">
                     <div class="row">
@@ -615,7 +620,7 @@
             <div class="row">
 
                 <div class="col-xs-4">
-                    <p>Iris</p>
+                    <p class="group_text">Iris</p>
                 </div>
                 <div class="col-xs-8">
                     <div class="row">
@@ -636,7 +641,7 @@
 
             <div class="row">
                 <div class="col-xs-4">
-                    <p>IOL</p>
+                    <p class="group_text">IOL</p>
                 </div>
                 <div class="col-xs-6">
                     <p>
@@ -653,14 +658,14 @@
 
             <div class="row">
                 <div class="col-xs-4">
-                    <p>Posterior Capsule</p>
+                    <p class="group_text">Posterior Capsule</p>
                 </div>
                 <div class="col-xs-8">
                     <div class="row">
-                        <div class="col-xs-6" style="padding-right:0;">
+                        <div class="col-xs-6 no_right_padding">
                             <span>clear</span> / <span>fibrotic</span>
                         </div>
-                        <div class="col-xs-5" style="padding-left:0; padding-right:0;">
+                        <div class="col-xs-5 no-padding" >
                             <p>
                                @for($i =0; $i < sizeof($posteriorCapsule); $i++)
                                  <span> {{ $posteriorCapsule[$i] }} </span>
@@ -673,11 +678,11 @@
 
             <div class="row">
                 <div class="col-xs-3">
-                    <p>Lens</p>
+                    <p class="group_text">Lens</p>
                 </div>
                 <div class="col-xs-9">
                     <div class="row">
-                        <div class="col-xs-12" style="padding-right:0;">
+                        <div class="col-xs-12 no_right_padding">
 
                             @foreach($lens as $name => $value )
                             <span class="{{(isset($data['record']['os_lens']) && $data['record']['os_lens'] == $name)?'active_wrap_field':''}}"> {{ $value }}</span>
@@ -690,7 +695,7 @@
 
             <div class="row">
                 <div class="col-xs-4">
-                    <p style="font-weight:bold; font-size:1em;">FUNDUS IMPRESSION
+                    <p class="group_text">FUNDUS IMPRESSION
                     </p>
                 </div>
                 <div class="col-xs-8">
@@ -712,9 +717,9 @@
 
     <div class="row default_row_margin">
     <div class="col-xs-1">
-        <p><span style="font-weight:bold;">Plan</span></p>
+        <p><span class="text_bold">Plan</span></p>
     </div>
-    <div class="col-xs-3" style="padding-right:0px;">
+        <div class="col-xs-3 no_right_padding">
         <p>Antibiotic <span class="unit_input_text" style="width:60%;">
             {{ (isset($data['record']['od_plan_antibiotic']))?$data['record']['od_plan_antibiotic'] :''  }}
             </span></p>
@@ -723,12 +728,12 @@
             {{ (isset($data['record']['os_plan_steroid']))?$data['record']['os_plan_steroid'] :''  }}
             </span></p>
     </div>
-    <div class="col-xs-4" style="padding-left:0px;">
-        <p style="maring-bottom:0px;">OD <span class="unit_input_text" style="width:60%;"></span>/Other</p>
+    <div class="col-xs-4 no_left_padding" >
+        <p class= "no_bottom_margin">OD <span class="unit_input_text" style="width:60%;"></span>/Other</p>
         <p>OS </p>
     </div>
     <div class="col-xs-3">
-        <p style="maring-bottom:0px;">OD <span class="unit_input_text" style="width:40%;">
+        <p class= "no_bottom_margin">OD <span class="unit_input_text" style="width:40%;">
             {{ (isset($data['record']['od_plan_other']))?$data['record']['od_plan_other'] :''  }}
 
             </span></p>
@@ -737,32 +742,32 @@
 </div>
 
     <div class="row default_row_margin">
-    <div class="col-xs-6" style="padding-right:0px;">
-        <p><span style="font-weight:bold;">Next Exam</span><span class="unit_input_text" style="width:75%;">
+        <div class="col-xs-6 no_right_padding" >
+            <p><span class="text_bold">Next Exam</span><span class="unit_input_text" style="width:75%;">
 
             {{ (isset($data['record']['next_exam_date']))?$data['record']['next_exam_date'] :''  }}
 
             </span> &nbsp;&nbsp;at</p>
-        <p style="margin-left: 34%;margin-top: -1em;font-style: italic;">(date)</p>
+            <p class="show_hint">(date)</p>
     </div>
-    <div class="col-xs-6" style="padding-left:0px;">
+        <div class="col-xs-6 no_left_padding" >
         <p> <span class="unit_input_text" style="width:90%;">
 
             {{ (isset($data['record']['next_exam_office']))?$data['record']['next_exam_office'] :''  }}
             </span> &nbsp;&nbsp;</p>
-        <p style="margin-left: 34%;margin-top: -1em;font-style: italic;">(office name)</p>
+        <p class="show_hint">(office name)</p>
     </div>
 </div>
 
     <div class="row default_row_margin">
     <div class="col-xs-6">
-        <p><span style="font-weight:bold;">Signature</span>
+        <p><span class="text_bold">Signature</span>
             <span class="unit_input_text" style="width:80%;">
                 <img src="data:image/png;base64,{{$data['signature']}}" alt="" class="signature_image">
             </span> &nbsp;&nbsp;
         </p>
     </div>
-    <div class="col-xs-6" style="padding-left:0px;">
+        <div class="col-xs-6 no_left_padding" >
         <p> O.D. Print Name<span class="unit_input_text" style="width:72%;">
             {{ (isset($data['record']['od_print_name']))?$data['record']['od_print_name'] :''  }}
 

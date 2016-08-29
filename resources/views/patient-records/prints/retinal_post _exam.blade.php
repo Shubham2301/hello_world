@@ -1,78 +1,84 @@
-@extends('patient-records.prints.master') @section('content')
-<div style="height:20em;"></div>
+@extends('patient-records.prints.master')
 
-<div>
-    <div class="row">
+@section('imports')
+
+<link rel="stylesheet" type="text/css" href="{{ public_path('/css/retinal_post_exam.css') }}">
+
+@endsection
+ 
+@section('content')
+<div class="move_to_center"></div>
+
+<div >
+    <div class="row remove_padding_margin default_margin">
 
         <div class="col-xs-6">
-            <p style="margin-left:4em;"> Patient Name:<span class="unit_input_text">{{ $data['patient']['firstname'].' '.$data['patient']['lastname'] }}</span></p>
+            <p class="main_info_text"> Patient Name:<span class="unit_input_text">{{ $data['patient']['firstname'].' '.$data['patient']['lastname'] }}</span></p>
         </div>
 
         <div class="col-xs-2">
-            <p>Exam performed </p>
+            <p></p>
         </div>
 
         <div class="col-xs-4">
-            <p>Date :{{ date('Y-m-d') }}</p>
+            <p class="main_info_text">Exam performed :{{ date('Y-m-d') }}</p>
         </div>
     </div>
 
-    <div class="row remove_padding_margin" style="margin-left:4em;margin-right:4em;">
+    <div class="row remove_padding_margin default_margin">
 
         <div class="col-xs-6 remove_padding_margin">
 
             <div class="row remove_padding_margin">
-                <div class="col-xs-11 remove_padding_margin" style="border:1px solid #000; border-right:0;">
-                    <p style="align:left;">Diagnosis:</p>
+                <div class="col-xs-11 remove_padding_margin default_border no_right_border">
+                    <p  class="cat_info_text">Diagnosis:</p>
                 </div>
-                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000; background-color:darkseagreen; border-right:0;">
+                <div class="col-xs-1 remove_padding_margin default_border no_right_border box_background_color">
                     <p style=""> OD</p>
                 </div>
             </div>
 
-            <div class="row remove_padding_margin" style="">
+            <div class="row remove_padding_margin">
 
-                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000;">
+                <div class="col-xs-1 remove_padding_margin default_border " >
                     <p>&nbsp;</p>
                 </div>
 
-                <div class="col-xs-10 remove_padding_margin" style="border:1px solid #000;border-top:0;border-right:0">
-                    <p style="padding-left:1em;">Non diagnostic retinopathy:</p>
+                <div class="col-xs-10 remove_padding_margin default_border no_right_border no_top_border">
+                    <p class="default_left_padding">Non diagnostic retinopathy:</p>
                 </div>
 
-                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000;background-color: darkseagreen;">
-                    <p style="">
+                <div class="col-xs-1 remove_padding_margin default_border box_background_color">
+                    <p>
                         @if(isset($data['record']['od_NDR']))
-                        <span class="glyphicon glyphicon-ok" style="padding-top:1px;"></span> @else &nbsp; @endif
+                        <span class="glyphicon glyphicon-ok"></span> @else &nbsp; @endif
                     </p>
                 </div>
             </div>
 
             <div class="row remove_padding_margin" >
 
-                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000" >
+                <div class="col-xs-1 remove_padding_margin default_border" >
                     <p>&nbsp;</p>
                 </div>
 
-                <div class="col-xs-10 remove_padding_margin" style="border-left:1px solid #000;">
-                    <p style="padding-left:1em;">Non-proliferative diabetic retinopathy:</p>
+                <div class="col-xs-10 remove_padding_margin default_border">
+                    <p class="default_left_padding">Non-proliferative diabetic retinopathy:</p>
                 </div>
 
-                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000;background-color: darkseagreen;">
-                    <p>
-                        &nbsp;
-                    </p>
+                <div class="col-xs-1 remove_padding_margin default_border box_background_color">
+                    <p>&nbsp;</p>
                 </div>
 
             </div>
 
             <div class="row remove_padding_margin" style="">
 
-                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000">
+                <div class="col-xs-1 remove_padding_margin default_border">
                     <p>&nbsp;</p>
                 </div>
 
-                <div class="col-xs-10 remove_padding_margin" style="border-left:1px solid #000;">
+                <div class="col-xs-10 remove_padding_margin default_border" >
                     <div>
                        
                         @if(!isset($data['record']['od_NPDR']))
@@ -91,7 +97,7 @@
 
                         @endphp
                         
-                        <p style="margin-left:2em;">
+                        <p class="default_left_margin">
                            
                             @foreach( $npdr as $name => $value)
                                 <span>
@@ -104,23 +110,22 @@
                     </div>
                 </div>
 
-                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000;
-                        background-color: darkseagreen;border-top:0;">
+                <div class="col-xs-1 remove_padding_margin default_border box_background_color no_top_border">
                     <p>&nbsp;</p>
                 </div>
             </div>
 
             <div class="row remove_padding_margin" >
 
-                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000">
+                <div class="col-xs-1 remove_padding_margin default_border">
                     <p> &nbsp;</p>
                 </div>
 
-                <div class="col-xs-10 remove_padding_margin" style="border:1px solid #000;border-right:0; border-bottom:0;">
-                    <p style="margin-left:2em;">Proliferative diabetic retinopathy</p>
+                <div class="col-xs-10 remove_padding_margin default_border no_right_border no_bottom_border">
+                    <p class="default_left_margin">Proliferative diabetic retinopathy</p>
                 </div>
 
-                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000;background-color: darkseagreen; ">
+                <div class="col-xs-1 remove_padding_margin default_border box_background_color">
                     <p> 
                         @if(isset($data['record']['od_PDR']))
                         <span class="glyphicon glyphicon-ok" style=""></span>
@@ -133,19 +138,19 @@
 
             <div class="row remove_padding_margin" >
 
-                <div class="col-xs-1 remove_padding_margin" style="border-left:1px solid #000">
+                <div class="col-xs-1 remove_padding_margin default_border">
                     <p>
                         &nbsp;
                     </p>
                 </div>
 
-                <div class="col-xs-10 remove_padding_margin" style="border:1px solid #000; border-bottom:0; border-right:0;">
-                    <p style="margin-left:2em;">Clinically significant macular edema:</p>
+                <div class="col-xs-10 remove_padding_margin default_border no_bottom_border no_right_border">
+                    <p class="default_left_margin">Clinically significant macular edema:</p>
                 </div>
 
-                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000; background-color: darkseagreen;">
+                <div class="col-xs-1 remove_padding_margin default_border box_background_color">
                     <p>  @if(isset($data['record']['od_CSME']))
-                        <span class="glyphicon glyphicon-ok" style="padding-top:1px;"></span>
+                        <span class="glyphicon glyphicon-ok"></span>
                         @else
                         &nbsp;
                         @endif 
@@ -157,19 +162,19 @@
         </div>
         <div class="col-xs-6 remove_padding_margin">
 
-            <div class="row remove_padding_margin" style="border:1px solid #000">
+            <div class="row remove_padding_margin default_border">
 
-                <div class="col-xs-1 remove_padding_margin" style="border:1px solid #000;background-color: darkseagreen; border-left:0;border-top:0;">
+                <div class="col-xs-1 remove_padding_margin default_border box_background_color no_top_border no_left_border" >
                     <p> OS</p>
                 </div>
 
                 <div class="col-xs-11 remove_padding_margin">
-                    <p style="align:left;">Plan</p>
+                    <p class="cat_info_text">Plan</p>
                 </div>
 
             </div>
 
-            <div class="row remove_padding_margin" style="border-right:1px solid #000">
+            <div class="row remove_padding_margin default_border" >
 
                
                 @if(!isset($data['record']['plan']))
@@ -177,20 +182,20 @@
                 @endif
               
                
-                <div class="col-xs-1 remove_padding_margin" style="border-right:1px solid #000;background-color: darkseagreen; border-bottom:1px solid #000;">
+                <div class="col-xs-1 remove_padding_margin default_border box_background_color">
                     <p> @if(isset($data['record']['os_NDR']))
-                        <span class="glyphicon glyphicon-ok" style="padding-top:1px;"></span> @else &nbsp; @endif
+                        <span class="glyphicon glyphicon-ok"></span> @else &nbsp; @endif
                         </p>
                 </div>
                 
                 <div class="col-xs-11 remove_padding_margin">
-                    <p style="margin-left:2em;">
+                    <p class="default_left_margin">
                         <input type="checkbox" {{ ($data['record']['plan'] === 'monitor')?'checked':'' }} > Monitor
                     </p>
                 </div>
             </div>
            
-            <div class="row remove_padding_margin" style="border-right:2px solid #000">
+            <div class="row remove_padding_margin default_border">
 
                 <div class="col-xs-1 remove_padding_margin" style="border-right:1px solid #000;background-color: darkseagreen;border-bottom:1px solid #000;">
                     <p>&nbsp;</p>
