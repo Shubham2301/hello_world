@@ -30,6 +30,40 @@
                 </span>
             </span>
         </div>
+        <div class="row arial_bold text-left">
+            <span class="graph_row">
+                <span class="graph_column">
+                    <span class="overall_patient_text">% of patients <span class="green_text">scheduled</span> vs <span class="red_text">not scheduled</span></span>
+                    <span class="graph_section" id="overall_patient"></span>
+                </span>
+            </span>
+            <span class="graph_row">
+                <span class="graph_column">
+                    <span>Average Contact per day per user</span>
+                    <span class="graph_section" id="overall_patient2"></span>
+                </span>
+                <span class="graph_column">
+                    <span>Average patients reached per day per user</span>
+                    <span class="graph_section" id="overall_patient3"></span>
+                </span>
+                <span class="graph_column">
+                    <span>Average scheduled appointments per day per user</span>
+                    <span class="graph_section" id="overall_patient4"></span>
+                </span>
+                <span class="graph_column">
+                    <span>% of patients <span class="green_text">scheduled</span> vs <span class="red_text">dropped</span></span>
+                    <span class="graph_section" id="overall_patient5"></span>
+                </span>
+                <span class="graph_column">
+                    <span>% of patients <span class="green_text">kept appointment</span> vs <span class="red_text">missed</span></span>
+                    <span class="graph_section" id="overall_patient6"></span>
+                </span>
+                <span class="graph_column">
+                    <span>% of patients <span class="green_text">received reports</span> vs <span class="red_text">report pending</span></span>
+                    <span class="graph_section" id="overall_patient7"></span>
+                </span>
+            </span>
+        </div>
     </div>
 @endsection
 @section('mobile_sidebar_content')

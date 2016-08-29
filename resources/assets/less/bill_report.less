@@ -23,3 +23,30 @@
 .reports_header {
     font-size: 1.4em;
 }
+.graph_row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-flow: wrap;
+    &>.graph_column {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2em;
+        background-color: #f5f5f5;
+        padding: 1em;
+        width: 250px;
+        margin: 1em 0;
+        cursor: pointer;
+        &>.overall_patient_text {
+            margin-bottom: 1em;
+        }
+    }
+}
+.green_text {
+    color: #22b573;
+}
+.red_text {
+    color: #ff1d25;
+}
