@@ -547,6 +547,7 @@ class PatientController extends Controller
 
         $data[0]['current_result'] = $currentResult;
         $data[0]['upper_result'] = $upperResult;
+        $data[0]['search_value'] = (isset($filters[0]['value']))?$filters[0]['value']:'';
 
         return json_encode($data);
     }
