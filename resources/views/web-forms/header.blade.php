@@ -1,4 +1,4 @@
-<div class="row" style="border-bottom:1px solid #fff">
+<div class="row web_form_header">
 
     <div class="col-xs-6 col-sm-6">
 		<span class="search_input_box">
