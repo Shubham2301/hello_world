@@ -30,7 +30,6 @@ trait CallCenterTrait
         $userData = User::getCareConsoledata($network->network_id, $this->getStartDate(), $this->getEndDate());
 
         foreach($userData as $user) {
-            $lastContactType = 'phone';
             $userReportData = array();
             $userReportData['name'] = $user->name;
             $userReportData['id'] = $user->id;
@@ -46,32 +45,24 @@ trait CallCenterTrait
                     case 'contact-attempted-by-email':
                         $userReportData['email']++;
                         $userReportData['total']++;
-                        $lastContactType = 'email';
                         break;
                     case 'request-patient-phone':
                     case 'contact-attempted-by-phone':
                         $userReportData['phone']++;
                         $userReportData['total']++;
-                        $lastContactType = 'phone';
                         break;
                     case 'request-patient-sms':
                         $userReportData['sms']++;
                         $userReportData['total']++;
-                        $lastContactType = 'sms';
                         break;
                     case 'schedule':
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
-                        if(isset($ContactHistory->actionResult) && $ContactHistory->actionResult->name == 'incoming-call') {
-                            $userReportData[$lastContactType]++;
-                            $userReportData['total']++;
-                        }
-                        else {
+                        if(!isset($ContactHistory->actionResult) || $ContactHistory->actionResult->name != 'incoming-call') {
                             $userReportData['phone']++;
                             $userReportData['total']++;
                         }
-                        $lastContactType = 'phone';
                         break;
                     default:
                         break;
