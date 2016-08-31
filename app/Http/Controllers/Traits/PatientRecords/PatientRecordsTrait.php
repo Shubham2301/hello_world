@@ -18,6 +18,7 @@ use Auth;
 use DateTime;
 use PDF;
 use Helper;
+use myocuhub\Network;
 
 trait PatientRecordsTrait
 {
@@ -58,7 +59,7 @@ trait PatientRecordsTrait
 
     public function getWebFormIndex(Request $request)
     {
-        $forms = WebFormTemplate::all();
+        $forms = Network::find(session('network-id'))->webForms;
         return view('web-forms.index', ['forms' => $forms]);
     }
 
