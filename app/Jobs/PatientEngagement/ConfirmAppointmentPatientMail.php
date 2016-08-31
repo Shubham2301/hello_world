@@ -7,15 +7,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Jobs\Job;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
+use myocuhub\Services\MandrillService\MandrillService;
 use myocuhub\User;
 
 class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQueue
@@ -43,9 +40,9 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
      */
     public function handle()
     {
-	$appointment = $this->getAppt();
+        $appointment = $this->getAppt();
         $appt = [];
-	
+
         $practice = Practice::find($appointment->practice_id);
         $loggedInUser = Auth::user();
         $network = User::getNetwork($loggedInUser->id);
@@ -57,23 +54,90 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
         $apptStartdate = new DateTime($appointment->start_datetime);
         $patientDob = new DateTime($patient->birthdate);
 
-        $appt = [
-            'user_name' => $loggedInUser->name ?: '',
-            'user_network' => $network->name ?: '',
-            'user_email' => $loggedInUser->email ?: '',
-            'user_phone' => $loggedInUser->cellphone ?: '',
-            'appt_type' => $appointmentType ?: '',
-            'provider_name' => $provider->title.' '.$provider->firstname.' '.$provider->lastname,
-            'location_name' => $location->locationname ?: '',
-            'location_address' => ($location->addressline1 ?: '') . ', ' . ($location->addressline2 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: ''),
-            'practice_name' => $practice->name  ?: '',
-            'practice_phone' => $location->phone  ?: '',
-            'appt_startdate' => $apptStartdate->format('F d, Y'),
-            'appt_starttime' => $apptStartdate->format('h i A'),
-            'patient_id' => $patient->id  ?: '',
-            'patient_name' => $patient->title.' '.$patient->firstname.' '.$patient->lastname,
-            'patient_email' => $patient->email  ?: '',
+        $vars = [
+            [
+                'name' => 'USERNAME',
+                'content' => $loggedInUser->name ?: '',
+            ],
+            [
+                'name' => 'USERNETWORK',
+                'content' => $network->name ?: '',
+            ],
+            [
+                'name' => 'APPTTYPE',
+                'content' => $appointmentType ?: '',
+            ],
+            [
+                'name' => 'PROVIDERNAME',
+                'content' => $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname,
+            ],
+            [
+                'name' => 'LOCATIONNAME',
+                'content' => $location->locationname ?: '',
+            ],
+            [
+                'name' => 'LOCATIONADDRESS',
+                'content' => ($location->addressline1 ?: '') . ', ' . ($location->addressline2 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: ''),
+            ],
+            [
+                'name' => 'PRACTICENAME',
+                'content' => $practice->name ?: '',
+            ],
+            [
+                'name' => 'PRACTICEPHONE',
+                'content' => $location->phone ?: '',
+            ],
+            [
+                'name' => 'APPTSTARTDATE',
+                'content' => $apptStartdate->format('F d, Y'),
+            ],
+            [
+                'name' => 'APPTSTARTTIME',
+                'content' => $apptStartdate->format('h i A'),
+            ],
+            [
+                'name' => 'PATIENTID',
+                'content' => $patient->id ?: '',
+            ],
+            [
+                'name' => 'PATIENTNAME',
+                'content' => $patient->title . ' ' . $patient->firstname . ' ' . $patient->lastname,
+            ],
+            [
+                'name' => 'PATIENTEMAIL',
+                'content' => $patient->email ?: '',
+            ],
         ];
+
+        $template = (new MandrillService)->templateInfo('Email to patients');
+
+        if ($location->special_instructions) {
+            $vars[] = [
+                'name' => 'SPECIALINSTRUCTIONS',
+                'content' => $location->special_instructions,
+            ];
+        }
+
+        if ($loggedInUser->email) {
+            $vars[] = [
+                'name' => 'USEREMAIL',
+                'content' => $loggedInUser->email,
+            ];
+        }
+
+        if ($loggedInUser->cellphone) {
+            $vars[] = [
+                'name' => 'USEREPHONE',
+                'content' => $loggedInUser->cellphone,
+            ];
+        }
+
+        if (Auth::check() && session('user-level') == 2) {
+            $vars[] = [
+                'name' => 'NETWORKLOGO',
+                'content' => config('constants.production_url') . '/images/networks/network_' . Auth::user()->getNetwork(Auth::user()->id)->id . '.png',
+            ];
+        }
 
         $attr = [
             'from' => [
@@ -84,11 +148,12 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
                 'name' => $patient->getName(),
                 'email' => $patient->email,
             ],
-            'subject' => config('constants.message_views.request_appointment_patient.subject'),
-            'body' =>'',
-            'view' => config('constants.message_views.request_appointment_patient.view'),
-            'attr' => $appt,
+            'subject' => 'Appointment has been scheduled',
+            'template' => $template['slug'],
+            'vars' => $vars,
         ];
-        $this->sendEmail($attr);
+
+        $this->sendTemplate($attr);
+
     }
 }
