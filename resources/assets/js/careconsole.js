@@ -1047,7 +1047,7 @@ function showActionModel(data) {
     if (results.length > 0) {
         var content = '<option value="0">Select Action Result</option>';
         results.forEach(function (result) {
-            if (result.action_result_id == 23) {
+            if (result.name == 'outgoing-call') {
                 content += '<option value="' + result.action_result_id + '" selected>' + result.display_name + '</option>';
             } else {
                 content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
