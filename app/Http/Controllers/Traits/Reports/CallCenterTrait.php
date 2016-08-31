@@ -30,6 +30,7 @@ trait CallCenterTrait
         $userData = User::getCareConsoledata($network->network_id, $this->getStartDate(), $this->getEndDate());
 
         foreach($userData as $user) {
+            $lastContactType = 'phone';
             $userReportData = array();
             $userReportData['name'] = $user->name;
             $userReportData['id'] = $user->id;
@@ -42,25 +43,35 @@ trait CallCenterTrait
                 $activityDate = Helper::formatDate($ContactHistory->contact_activity_date, config('constants.date_format'));
                 switch ($ContactHistory->action->name) {
                     case 'request-patient-email':
+                    case 'contact-attempted-by-email':
                         $userReportData['email']++;
                         $userReportData['total']++;
+                        $lastContactType = 'email';
                         break;
                     case 'request-patient-phone':
+                    case 'contact-attempted-by-phone':
                         $userReportData['phone']++;
                         $userReportData['total']++;
+                        $lastContactType = 'phone';
                         break;
                     case 'request-patient-sms':
                         $userReportData['sms']++;
                         $userReportData['total']++;
+                        $lastContactType = 'sms';
                         break;
                     case 'schedule':
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
-                        if(isset($ContactHistory->actionResult) && $ContactHistory->actionResult->name != 'incoming-call') {
+                        if(isset($ContactHistory->actionResult) && $ContactHistory->actionResult->name == 'incoming-call') {
+                            $userReportData[$lastContactType]++;
+                            $userReportData['total']++;
+                        }
+                        else {
                             $userReportData['phone']++;
                             $userReportData['total']++;
                         }
+                        $lastContactType = 'phone';
                         break;
                     default:
                         break;
@@ -99,12 +110,14 @@ trait CallCenterTrait
 
                 switch ($contactHistory->action->name) {
                     case 'request-patient-email':
+                    case 'contact-attempted-by-email':
                         $overviewData[$activityDate]['attempt']['email']++;
                         $overviewData[$activityDate]['attempt']['all']++;
                         $comparisonData['attempt']['email']++;
                         $lastContactType = 'email';
                         break;
                     case 'request-patient-phone':
+                    case 'contact-attempted-by-phone':
                         $overviewData[$activityDate]['attempt']['phone']++;
                         $overviewData[$activityDate]['attempt']['all']++;
                         $comparisonData['attempt']['phone']++;
