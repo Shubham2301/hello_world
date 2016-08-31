@@ -12,4 +12,5 @@ class NetworkWebForm extends Model
 	 * @var string
 	 */
 	protected $table = 'network_web_form';
+    protected $fillable = ['network_id', 'web_form_template_id'];
 }

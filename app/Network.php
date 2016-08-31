@@ -56,4 +56,10 @@ class Network extends Model {
 		$dummy_array = array_fill_keys(array_keys($network), null);
 		return array_combine($network, $dummy_array);
 	}
+
+    public function webForms() {
+        return $this->hasMany('myocuhub\Models\NetworkWebForm')
+            ->leftJoin('web_form_templates', 'network_web_form.web_form_template_id', '=', 'web_form_templates.id')
+            ->select('web_form_templates.id', 'web_form_templates.name', 'web_form_templates.display_name');
+    }
 }
