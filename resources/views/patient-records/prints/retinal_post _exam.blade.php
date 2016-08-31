@@ -270,9 +270,9 @@
     <div class="col-xs-2">
         <p class="signature_text"> Doctor Signature</p>
     </div>
-    <div class="col-xs-9 remove_padding_margin ">
+    <div class="col-xs-9">
      
-            <img src="data:image/png;base64,{{$data['signature']}}" alt="" class="signature_image">
+            <img src="data:image/png;base64,{{$data['signature']}}" alt="" class="signature_image" style="padding:0.5em;">
     
     </div>
 </div>
