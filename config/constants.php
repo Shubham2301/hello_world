@@ -128,6 +128,6 @@ return [
 
     'providerNearPatient' => [
         'providerRadius' => 150,
-        'providerNumber' => 5,
+        'providerNumber' => 20,
     ]
 ];
