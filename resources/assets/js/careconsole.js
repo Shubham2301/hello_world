@@ -1047,7 +1047,11 @@ function showActionModel(data) {
     if (results.length > 0) {
         var content = '<option value="0">Select Action Result</option>';
         results.forEach(function (result) {
-            content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
+            if (result.action_result_id == 23) {
+                content += '<option value="' + result.action_result_id + '" selected>' + result.display_name + '</option>';
+            } else {
+                content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
+            }
         });
         $('#action_result_id').html(content);
         $('#action_results').show();
