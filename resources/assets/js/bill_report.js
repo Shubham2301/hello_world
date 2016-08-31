@@ -4,11 +4,40 @@ google.charts.load('current', {
 
 var filterOptions = {};
 
-$(document).ready(function () {
+var graphData = {};
 
-    google.charts.setOnLoadCallback(drawVisualization);
-    google.charts.setOnLoadCallback(drawChart);
-    google.charts.setOnLoadCallback(drawCompareChart);
+var graphType = {};
+
+var graphColumn = {};
+
+var graphOption = {
+    vAxis: {
+        textPosition: 'none',
+        gridlines: {
+            color: '#f5f5f5',
+        },
+        baselineColor: '#f5f5f5',
+    },
+    hAxis: {
+        textPosition: 'none',
+        gridlines: {
+            color: '#f5f5f5',
+        },
+        baselineColor: '#f5f5f5',
+    },
+    chartArea: {
+        width: '100%',
+        height: '100%'
+    },
+    backgroundColor: '#f5f5f5',
+    width: 200,
+    height: 200,
+    legend: {
+        position: 'none'
+    }
+};
+
+$(document).ready(function () {
 
     var cur_date = new Date();
     var set_start_date = new Date(cur_date.getTime());
@@ -64,7 +93,13 @@ function getReport(filter) {
         contentType: 'application/json',
         async: false,
         success: function (data) {
+            graphData = data.timelineGraph;
+            graphType = data.graphType;
+            graphColumn = graphType.graphColumn;
 
+            google.charts.setOnLoadCallback(drawGoalChart);
+            google.charts.setOnLoadCallback(drawChart);
+            google.charts.setOnLoadCallback(drawCompareChart);
         },
         error: function () {
             alert('Error Refreshing');
@@ -74,31 +109,9 @@ function getReport(filter) {
     });
 }
 
-function drawVisualization() {
-    var data = google.visualization.arrayToDataTable([
-         ['Month', 'Average', 'Goal'],
-         ['2004/05', 195, 150],
-         ['2005/06', 135, 150],
-         ['2006/07', 157, 150],
-         ['2007/08', 139, 150],
-         ['2008/09', 136, 150]
-      ]);
+function drawGoalChart() {
 
     var options = {
-        vAxis: {
-            textPosition: 'none',
-            gridlines: {
-                color: '#f5f5f5',
-            },
-            baselineColor: '#f5f5f5',
-        },
-        hAxis: {
-            textPosition: 'none',
-            gridlines: {
-                color: '#f5f5f5',
-            },
-            baselineColor: '#f5f5f5',
-        },
         seriesType: 'area',
         series: {
             0: {
@@ -110,24 +123,51 @@ function drawVisualization() {
             }
         },
         fallingColors: 'cce3f2',
-        chartArea: {
-            width: '100%',
-            height: '100%'
-        },
-        backgroundColor: '#f5f5f5',
-        width: 200,
-        height: 200,
-        legend: {
-            position: 'none'
-        },
     };
 
-    var chart = new google.visualization.ComboChart(document.getElementById('overall_patient2'));
-    chart.draw(data, options);
-    var chart = new google.visualization.ComboChart(document.getElementById('overall_patient3'));
-    chart.draw(data, options);
-    var chart = new google.visualization.ComboChart(document.getElementById('overall_patient4'));
-    chart.draw(data, options);
+    $.extend(options, graphOption);
+
+
+
+    var types = graphType.goalGraph;
+
+    types.forEach(function (type) {
+
+        var data = new google.visualization.DataTable();
+
+        graphColumn[type].forEach(function (columnName) {
+            if (columnName == 'Date') {
+                data.addColumn('string', columnName);
+            } else {
+                data.addColumn('number', columnName);
+            }
+        });
+
+        for (var key in graphData) {
+            var temp = [];
+            temp.push(graphData[key]['date']);
+            switch (type) {
+                case 'avgContact':
+                    temp.push(graphData[key]['contactAttempted']);
+                    temp.push(2);
+                    break;
+                case 'avgReached':
+                    temp.push(graphData[key]['reached']);
+                    temp.push(2);
+                    break;
+                case 'avgScheduled':
+                    temp.push(graphData[key]['appointmentScheduled']);
+                    temp.push(2);
+                    break;
+            }
+
+            data.addRow(temp);
+
+        }
+
+        var chart = new google.visualization.ComboChart(document.getElementById(type));
+        chart.draw(data, options);
+    });
 }
 
 function drawChart() {
@@ -139,20 +179,6 @@ function drawChart() {
 
     var options = {
         isStacked: 'true',
-        vAxis: {
-            textPosition: 'none',
-            gridlines: {
-                color: '#f5f5f5',
-            },
-            baselineColor: '#f5f5f5',
-        },
-        hAxis: {
-            textPosition: 'none',
-            gridlines: {
-                color: '#f5f5f5',
-            },
-            baselineColor: '#f5f5f5',
-        },
         series: {
             0: {
                 color: '#22b573',
@@ -160,64 +186,60 @@ function drawChart() {
             1: {
                 color: '#ff1d25',
             }
-        },
-        chartArea: {
-            width: '100%',
-            height: '100%'
-        },
-        backgroundColor: '#f5f5f5',
-        width: 200,
-        height: 200,
-        legend: {
-            position: 'none'
-        },
+        }
     };
+
+    $.extend(options, graphOption);
 
     var chart = new google.visualization.AreaChart(document.getElementById('overall_patient'));
     chart.draw(data, options);
 }
 
 function drawCompareChart() {
-    var data = google.visualization.arrayToDataTable([
-          ['Year', 'Scheduled', 'Not Scheduled'],
-          ['2013', 700, 400],
-          ['2014', 70, 60],
-          ['2015', 60, 20],
-          ['2016', 30, 40]
-        ]);
 
     var options = {
-        vAxis: {
-            textPosition: 'none',
-            gridlines: {
-                color: '#f5f5f5',
-            },
-            baselineColor: '#f5f5f5',
-        },
         colors: ['#22b573', '#ff1d25'],
-        hAxis: {
-            textPosition: 'none',
-            gridlines: {
-                color: '#f5f5f5',
-            },
-            baselineColor: '#f5f5f5',
-        },
-        chartArea: {
-            width: '100%',
-            height: '100%'
-        },
-        backgroundColor: '#f5f5f5',
-        width: 200,
-        height: 200,
-        legend: {
-            position: 'none'
-        },
     };
 
-    var chart = new google.visualization.AreaChart(document.getElementById('overall_patient5'));
-    chart.draw(data, options);
-    var chart = new google.visualization.AreaChart(document.getElementById('overall_patient6'));
-    chart.draw(data, options);
-    var chart = new google.visualization.AreaChart(document.getElementById('overall_patient7'));
-    chart.draw(data, options);
+    $.extend(options, graphOption);
+
+    var types = graphType.compareGraph;
+
+    types.forEach(function (type) {
+
+        var data = new google.visualization.DataTable();
+
+        graphColumn[type].forEach(function (columnName) {
+            if (columnName == 'Date') {
+                data.addColumn('string', columnName);
+            } else {
+                data.addColumn('number', columnName);
+            }
+        });
+
+        for (var key in graphData) {
+            var temp = [];
+            temp.push(graphData[key]['date']);
+            switch (type) {
+                case 'scheduled_vs_dropped':
+                    temp.push(graphData[key]['appointmentScheduled']);
+                    temp.push(graphData[key]['dropped']);
+                    break;
+                case 'keptAppointment_vs_missed':
+                    temp.push(graphData[key]['keptAppointment']);
+                    temp.push(graphData[key]['missedAppointment']);
+                    break;
+                case 'receivedReport_vs_pending':
+                    temp.push(graphData[key]['reportsReceived']);
+                    temp.push(graphData[key]['reportsDue']);
+                    break;
+            }
+
+            data.addRow(temp);
+
+        }
+
+        var chart = new google.visualization.AreaChart(document.getElementById(type));
+        chart.draw(data, options);
+    });
 }
