@@ -12,7 +12,7 @@
 
 <div class="row remove_padding_margin default_margin">
 
-    <div class="col-xs-7">
+    <div class="col-xs-6">
         <p class="main_info_text"> Patient Name:<span class="unit_input_text">{{ $data['patient']['firstname'].' '.$data['patient']['lastname'] }}</span></p>
     </div>
 
@@ -20,13 +20,13 @@
         <p></p>
     </div>
 
-    <div class="col-xs-4">
+    <div class="col-xs-5">
         <p class="main_info_text">Exam performed :<span class="unit_input_text">{{ date('Y-m-d') }}</span></p>
     </div>
 </div>
 
-<div class="row default_margin default_border">
-    <div class="col-xs-6 update_col_default_padding">
+ <div class="row default_margin default_border default_fontsize">
+    <div class="col-xs-6 update_col_default_padding" >
 
         <div class="row">
             <div class="col-xs-1 border_bottom default_padding">
@@ -156,7 +156,7 @@
     </div>
 
 
-    <div class="col-xs-6">
+    <div class="col-xs-6" style="">
 
         <div class="row">
             <div class="col-xs-1 os_box_border default_padding">
@@ -270,9 +270,9 @@
         <p class="signature_text"> Doctor Signature</p>
     </div>
     <div class="col-xs-9 remove_padding_margin">
-        <span class="unit_input_text" style="width:80%;">
+     
             <img src="data:image/png;base64,{{$data['signature']}}" alt="" class="signature_image">
-        </span> &nbsp;&nbsp; 
+    
     </div>
 </div>
 
