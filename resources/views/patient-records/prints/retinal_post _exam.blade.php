@@ -3,7 +3,6 @@
 @section('imports')
 
 <link rel="stylesheet" type="text/css" href="{{ public_path('css/retinal_post_exam.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ elixir('css/retinal_post_exam.css') }}">
 
 @endsection
 
@@ -272,7 +271,7 @@
     </div>
     <div class="col-xs-9">
      
-            <img src="data:image/png;base64,{{$data['signature']}}" alt="" class="signature_image" style="padding:0.5em;">
+            <img src="data:image/png;base64,{{$data['signature']}}" alt="" class="signature_image">
     
     </div>
 </div>
