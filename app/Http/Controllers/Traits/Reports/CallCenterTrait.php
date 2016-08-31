@@ -42,10 +42,12 @@ trait CallCenterTrait
                 $activityDate = Helper::formatDate($ContactHistory->contact_activity_date, config('constants.date_format'));
                 switch ($ContactHistory->action->name) {
                     case 'request-patient-email':
+                    case 'contact-attempted-by-email':
                         $userReportData['email']++;
                         $userReportData['total']++;
                         break;
                     case 'request-patient-phone':
+                    case 'contact-attempted-by-phone':
                         $userReportData['phone']++;
                         $userReportData['total']++;
                         break;
@@ -57,7 +59,7 @@ trait CallCenterTrait
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
-                        if(isset($ContactHistory->actionResult) && $ContactHistory->actionResult->name != 'incoming-call') {
+                        if(!isset($ContactHistory->actionResult) || $ContactHistory->actionResult->name != 'incoming-call') {
                             $userReportData['phone']++;
                             $userReportData['total']++;
                         }
@@ -99,12 +101,14 @@ trait CallCenterTrait
 
                 switch ($contactHistory->action->name) {
                     case 'request-patient-email':
+                    case 'contact-attempted-by-email':
                         $overviewData[$activityDate]['attempt']['email']++;
                         $overviewData[$activityDate]['attempt']['all']++;
                         $comparisonData['attempt']['email']++;
                         $lastContactType = 'email';
                         break;
                     case 'request-patient-phone':
+                    case 'contact-attempted-by-phone':
                         $overviewData[$activityDate]['attempt']['phone']++;
                         $overviewData[$activityDate]['attempt']['all']++;
                         $comparisonData['attempt']['phone']++;
