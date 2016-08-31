@@ -25,7 +25,7 @@
     </div>
 </div>
 
- <div class="row default_margin default_border default_fontsize">
+ <div class="row default_margin default_border default_fontsize" >
     <div class="col-xs-6 update_col_default_padding" >
 
         <div class="row">
@@ -192,7 +192,7 @@
             </div>
             <div class="col-xs-11 default_padding">
                 <span>
-                    <input type="checkbox" {{ ($data['record']['plan'] === 'additional-testing')?'checked':'' }} > &nbsp; &nbsp; Additional testing/ treatement recommendations 
+                    <input type="checkbox" {{ ($data['record']['plan'] === 'additional-testing')?'checked':'' }}> &nbsp; Additional treatement recommendations 
                 </span>
             </div>
         </div>
@@ -269,7 +269,7 @@
     <div class="col-xs-2">
         <p class="signature_text"> Doctor Signature</p>
     </div>
-    <div class="col-xs-9 remove_padding_margin">
+    <div class="col-xs-9 remove_padding_margin ">
      
             <img src="data:image/png;base64,{{$data['signature']}}" alt="" class="signature_image">
     
