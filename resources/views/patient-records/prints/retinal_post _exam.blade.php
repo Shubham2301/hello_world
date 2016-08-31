@@ -3,6 +3,7 @@
 @section('imports')
 
 <link rel="stylesheet" type="text/css" href="{{ public_path('css/retinal_post_exam.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ elixir('css/retinal_post_exam.css') }}">
 
 @endsection
 
@@ -265,7 +266,7 @@
     </div>
 </div>
 
-<div class="row default_margin default_border" >
+<div class="row signature_box" >
     <div class="col-xs-2">
         <p class="signature_text"> Doctor Signature</p>
     </div>
