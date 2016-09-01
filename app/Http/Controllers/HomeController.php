@@ -144,8 +144,8 @@ class HomeController extends Controller
             $redirectURL = '/report/careconsole_reports';
             return redirect($redirectURL);
         }
-        else if (policy(new ReportController)->accessBillReport()) {
-            $redirectURL = '/report/billing';
+        else if (policy(new ReportController)->accessPerformanceReport()) {
+            $redirectURL = '/report/performance';
             return redirect($redirectURL);
         }
 

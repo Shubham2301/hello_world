@@ -74,7 +74,7 @@
             </span>
         </div>
         <div class="row no_data_received arial_bold" style="display:none;">
-            <h3>No data received! Please try other option</h3>
+            <h4>No data received! Please try other option</h4>
         </div>
     </div>
 @endsection
