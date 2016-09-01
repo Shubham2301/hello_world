@@ -7,6 +7,7 @@
     <script type="text/javascript" src="{{ elixir('js/bill_report.js') }}"></script>
 @endsection
 @section('sidebar')
+@include('reports.sidebar')
 @endsection
 @section('content')
     @if (Session::has('success'))
@@ -29,8 +30,16 @@
                     <input type="text" class="date_selector" id="end_date">
                 </span>
             </span>
+            <span>
+                <span>Network:</span>
+                <select class="network_selector" id="network">
+                    @foreach($networkData as $networkID => $network)
+                        <option value="{{ $networkID }}">{{ $network }}</option>
+                    @endforeach
+                </select>
+            </span>
         </div>
-        <div class="row arial_bold text-left">
+        <div class="row arial_bold text-left bill_graph_row">
             <span class="graph_row">
                 <span class="graph_column">
                     <span class="overall_patient_text">% of patients <span class="green_text">scheduled</span> vs <span class="red_text">not scheduled</span></span>
@@ -63,6 +72,9 @@
                     <span class="graph_section" id="receivedReport_vs_pending"></span>
                 </span>
             </span>
+        </div>
+        <div class="row no_data_received arial_bold" style="display:none;">
+            <h3>No data received! Please try other option</h3>
         </div>
     </div>
 @endsection

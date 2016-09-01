@@ -144,6 +144,10 @@ class HomeController extends Controller
             $redirectURL = '/report/careconsole_reports';
             return redirect($redirectURL);
         }
+        else if (policy(new ReportController)->accessBillReport()) {
+            $redirectURL = '/report/billing';
+            return redirect($redirectURL);
+        }
 
         $request->session()->flash('failure', 'You do not have any report roles assigned. Please contact your admin for support');
         return redirect($redirectURL);

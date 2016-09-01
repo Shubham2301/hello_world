@@ -10,6 +10,7 @@ use myocuhub\Http\Controllers\Reports\ReportController;
 use myocuhub\User;
 use Datetime;
 use myocuhub\Facades\Helper;
+use myocuhub\Network;
 
 class BillingController extends ReportController
 {
@@ -28,8 +29,13 @@ class BillingController extends ReportController
             return redirect('/referraltype');
         }
 
+        $networks = Network::all()->sortBy("name");
+        foreach ($networks as $network) {
+            $networkData[$network->id] = $network->name;
+        }
+
         $data['bill-report'] = true;
-        return view('reports.bill_report.index')->with('data', $data);
+        return view('reports.bill_report.index')->with('data', $data)->with('networkData', $networkData);
     }
 
     /**
@@ -42,8 +48,9 @@ class BillingController extends ReportController
     {
         $this->setStartDate($request->start_date);
         $this->setEndDate($request->end_date);
+        $network = $request->network;
 
-        $report_data = $this->generateReport();
+        $report_data = $this->generateReport($network);
         return $report_data;
     }
 

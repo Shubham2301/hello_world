@@ -11,6 +11,7 @@ use DateInterval;
 use Auth;
 use myocuhub\Facades\Helper;
 use myocuhub\Models\ContactHistory;
+use myocuhub\Models\CareConsole;
 
 trait BillingTrait
 {
@@ -18,13 +19,13 @@ trait BillingTrait
     protected $startDate;
     protected $endDate;
 
-    public function generateReport() {
-
-        $network = 9;
+    public function generateReport($network) {
 
         $timelineGraph = array();
 
         $reportResult = array();
+
+        $userCount = User::getCareCoordinatorCount($network);
 
         $contactList = ContactHistory::getBillingReportData($network, $this->getStartDate(), $this->getEndDate());
 
@@ -119,6 +120,16 @@ trait BillingTrait
 
         $reportResult['timelineGraph'] = $timelineGraph;
         $reportResult['graphType'] = $this->graphType();
+
+        $totalNetworkPatient = CareConsole::getTotalPatientCount($network);
+        $totalNotScheduledPatient = CareConsole::getStageCount($network, 1);
+
+        $overAllGraph = array();
+        $overAllGraph['total_patient'] = $totalNetworkPatient;
+        $overAllGraph['pending_patient'] = $totalNotScheduledPatient;
+        $overAllGraph['completed_patient'] = $totalNetworkPatient - $totalNotScheduledPatient;
+
+        $reportResult['overAllGraph'] = $overAllGraph;
 
         return $reportResult;
 

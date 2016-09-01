@@ -10,24 +10,22 @@ var graphType = {};
 
 var graphColumn = {};
 
+var overAllGraph = {};
+
 var graphOption = {
     vAxis: {
-        textPosition: 'none',
+        title: 'Patient Count',
         gridlines: {
             color: '#f5f5f5',
         },
         baselineColor: '#f5f5f5',
     },
     hAxis: {
-        textPosition: 'none',
+        title: 'Date',
         gridlines: {
             color: '#f5f5f5',
         },
         baselineColor: '#f5f5f5',
-    },
-    chartArea: {
-        width: '100%',
-        height: '100%'
     },
     backgroundColor: '#f5f5f5',
     width: 200,
@@ -76,6 +74,10 @@ $(document).ready(function () {
         }
     });
 
+    $(document).on('change', '#network', function () {
+        getReport()
+    });
+
 });
 
 function getReport(filter) {
@@ -83,6 +85,7 @@ function getReport(filter) {
     var formData = {
         start_date: $('#start_date').val(),
         end_date: $('#end_date').val(),
+        network: $('#network').val(),
         filter_option: filterOptions,
     };
 
@@ -95,11 +98,19 @@ function getReport(filter) {
         success: function (data) {
             graphData = data.timelineGraph;
             graphType = data.graphType;
+            overAllGraph = data.overAllGraph;
             graphColumn = graphType.graphColumn;
 
-            google.charts.setOnLoadCallback(drawGoalChart);
-            google.charts.setOnLoadCallback(drawChart);
-            google.charts.setOnLoadCallback(drawCompareChart);
+            if (overAllGraph.total_patient != 0) {
+                $('.bill_graph_row').show();
+                $('.no_data_received').hide();
+                google.charts.setOnLoadCallback(drawGoalChart);
+                google.charts.setOnLoadCallback(drawCompareChart);
+                google.charts.setOnLoadCallback(drawChart);
+            } else {
+                $('.bill_graph_row').hide();
+                $('.no_data_received').show();
+            }
         },
         error: function () {
             alert('Error Refreshing');
@@ -121,6 +132,10 @@ function drawGoalChart() {
                 type: 'line',
                 color: ['#4d4d4d'],
             }
+        },
+        chartArea: {
+            width: '70%',
+            height: '70%'
         },
         fallingColors: 'cce3f2',
     };
@@ -171,14 +186,15 @@ function drawGoalChart() {
 }
 
 function drawChart() {
-    var data = google.visualization.arrayToDataTable([
-          ['Year', 'Scheduled', 'Not Scheduled'],
-          ['2013', 1000, 170],
-          ['2014', 1000, 170]
-        ]);
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Count');
+    data.addColumn('number', 'Scheduled');
+    data.addColumn('number', 'Not Scheduled');
+
+    data.addRow(['Patients', overAllGraph.completed_patient, overAllGraph.pending_patient]);
 
     var options = {
-        isStacked: 'true',
+        isStacked: 'percent',
         series: {
             0: {
                 color: '#22b573',
@@ -186,12 +202,19 @@ function drawChart() {
             1: {
                 color: '#ff1d25',
             }
+        },
+        chartArea: {
+            width: '100%',
+            height: '100%'
+        },
+        bar: {
+            groupWidth: '100%'
         }
     };
 
     $.extend(options, graphOption);
 
-    var chart = new google.visualization.AreaChart(document.getElementById('overall_patient'));
+    var chart = new google.visualization.ColumnChart(document.getElementById('overall_patient'));
     chart.draw(data, options);
 }
 
@@ -199,6 +222,10 @@ function drawCompareChart() {
 
     var options = {
         colors: ['#22b573', '#ff1d25'],
+        chartArea: {
+            width: '70%',
+            height: '70%'
+        },
     };
 
     $.extend(options, graphOption);

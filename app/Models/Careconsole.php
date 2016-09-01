@@ -629,4 +629,13 @@ class Careconsole extends Model
             ->get();
     }
 
+    public static function getTotalPatientCount($networkID)
+    {
+        return self::whereHas('importHistory', function ($query) use ($networkID) {
+                $query->where('network_id', $networkID);
+            })
+            ->has('patient')
+            ->count();
+    }
+
 }
