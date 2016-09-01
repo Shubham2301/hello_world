@@ -1,0 +1,62 @@
+@import 'variables.less';
+@import 'fonts.less';
+@import 'media.less';
+@import 'helper.less';
+.reports_container {
+    background-color: @background-color-1;
+    padding: 0 2em;
+    flex-grow: 1;
+    color: @font-color-black;
+    &>.row {
+        margin: 0;
+        &.report_header_row {
+            margin-top: 1em;
+        }
+        &.report_filter_row {
+            margin: 1em 0;
+        }
+    }
+}
+.content-right {
+    padding: 0;
+}
+.reports_header {
+    font-size: 1.4em;
+}
+.graph_row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-flow: wrap;
+    &>.graph_column {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2em;
+        background-color: @graph_background;
+        padding: 1em;
+        width: 250px;
+        margin: 1em 0;
+        cursor: pointer;
+        &>.overall_patient_text {
+            margin-bottom: 1em;
+        }
+    }
+}
+.green_text {
+    color: @graph_green;
+}
+.red_text {
+    color: @graph_red;
+}
+.network_selector {
+    border-radius: .8em;
+    background: @dropdown_color;
+    border: solid 2px @dropdown_color;
+    cursor: pointer;
+    color: @font-color-black;
+    &:focus {
+        outline: none;
+    }
+}

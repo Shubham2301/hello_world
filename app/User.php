@@ -353,4 +353,15 @@ CanResetPasswordContract
             ->get();
     }
 
+    public static function getCareCoordinatorCount($networkID) {
+
+        return self::whereHas('userNetwork', function ($query) use ($networkID) {
+                $query->where('network_id', $networkID);
+            })
+            ->whereHas('userRoles', function ($query) {
+                $query->where('role_id', 12);
+            })
+            ->count();
+    }
+
 }
