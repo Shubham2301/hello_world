@@ -15,6 +15,7 @@ use myocuhub\Models\Appointment;
 use myocuhub\Models\MessageTemplate;
 use myocuhub\Patient;
 use myocuhub\Services\MandrillService\MandrillService;
+use myocuhub\Services\ICalService;
 
 class PatientEngagement extends Job{
 
@@ -147,5 +148,9 @@ class PatientEngagement extends Job{
         $this->patient = $patient;
 
         return $this;
+    }
+
+    public function createICal($attr){
+        return (new ICalService($attr));
     }
 }

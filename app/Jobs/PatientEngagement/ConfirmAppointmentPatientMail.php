@@ -139,6 +139,48 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
             ];
         }
 
+        if ($location->latitude) {
+            $vars[] = [
+                'name' => 'SHOWINMAP',
+                'content' => config('constants.google_map_url').'/'.$location->latitude.','.$location->longitude,
+            ];
+        }
+
+        $iCal = $this->createICal([
+            'event_name' => 'Appointment Confirmation',
+
+            'date_start' => new DateTime($appointment->start_datetime),
+
+            'date_end' => (new DateTime($appointment->start_datetime))->modify("+30 minutes"),
+
+            'user_name' => $loggedInUser->name,
+
+            'user_email' => $loggedInUser->email,
+
+            'provider_name' => $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname,
+
+            'provider_email' => $provider->email,
+
+            'location_email' => $location->email,
+
+            'patient_name' => $patient->getName(),
+
+            'patient_email' => $patient->email,
+
+            'address' => config('constants.google_map_url').'/'.$location->latitude.','.$location->longitude,
+
+            'timezone' => ($patient->timezone)?$patient->timezone->utc:config('constants.default_timezone'),
+
+        ]);
+
+        if ($iCal) {
+
+            $vars[] = [
+                'name' => 'CALENDER',
+                'content' => $iCal->googleCalenderLink(),
+            ];
+        }
+
         $attr = [
             'from' => [
                 'name' => config('constants.support.email_name'),
@@ -151,9 +193,17 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
             'subject' => 'Appointment has been scheduled',
             'template' => $template['slug'],
             'vars' => $vars,
+            'attachments' => [
+                [
+                    'content' => base64_encode($iCal->getICAL()),
+                    'type' => "text/calendar",
+                    'name' => 'appointment.ics',
+                ]
+            ]
         ];
 
         $this->sendTemplate($attr);
 
     }
+
 }

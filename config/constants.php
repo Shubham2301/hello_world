@@ -129,5 +129,9 @@ return [
     'providerNearPatient' => [
         'providerRadius' => 150,
         'providerNumber' => 20,
-    ]
+    ],
+
+    'google_map_url' => 'http://www.google.com/maps/place',
+
+    'default_timezone' => "UTC-5",
 ];
