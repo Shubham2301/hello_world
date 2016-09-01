@@ -38,13 +38,13 @@ Reporting
     </span>
   </a>
   @endif
-  @if(policy(new \myocuhub\Http\Controllers\Reports\ReportController)->accessBillReport())
-  <a href="/report/billing" class="report_sidebar_button {{ array_key_exists('bill-report', $data) ? 'active' : '' }}">
+  @if(policy(new \myocuhub\Http\Controllers\Reports\ReportController)->accessPerformanceReport())
+  <a href="/report/performance" class="report_sidebar_button {{ array_key_exists('performance-report', $data) ? 'active' : '' }}">
     <span class="report_sidebar_image">
       <span><img src="{{elixir('images/sidebar/reports-reachrate.png')}}"></span>
     </span>
     <span class="report_sidebar_text">
-      <span class="text">Billing Report</span>
+      <span class="text">Performance Report</span>
     </span>
   </a>
   @endif

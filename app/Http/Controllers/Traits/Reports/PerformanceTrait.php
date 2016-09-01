@@ -13,7 +13,7 @@ use myocuhub\Facades\Helper;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\CareConsole;
 
-trait BillingTrait
+trait PerformanceTrait
 {
 
     protected $startDate;
@@ -130,6 +130,7 @@ trait BillingTrait
         $overAllGraph['completed_patient'] = $totalNetworkPatient - $totalNotScheduledPatient;
 
         $reportResult['overAllGraph'] = $overAllGraph;
+        $reportResult['userCount'] = $userCount > 0 ? $userCount : 1;
 
         return $reportResult;
 

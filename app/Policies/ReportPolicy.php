@@ -28,7 +28,7 @@ class ReportPolicy
     	return $this->networkReportAccessPolicy();
     }
 
-    public function accessBillReport(){
+    public function accessPerformanceReport(){
         $user = Auth::user();
     	return ($user->checkUserLevel('Ocuhub'));
     }

@@ -2,7 +2,7 @@
 
 namespace myocuhub\Http\Controllers\Reports;
 
-use myocuhub\Http\Controllers\Traits\Reports\BillingTrait;
+use myocuhub\Http\Controllers\Traits\Reports\PerformanceTrait;
 
 use Auth;
 use Illuminate\Http\Request;
@@ -12,10 +12,10 @@ use Datetime;
 use myocuhub\Facades\Helper;
 use myocuhub\Network;
 
-class BillingController extends ReportController
+class PerformanceController extends ReportController
 {
 
-    use BillingTrait;
+    use PerformanceTrait;
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +24,7 @@ class BillingController extends ReportController
 
     public function index(Request $request)
     {
-        if (!policy(new ReportController)->accessBillReport()) {
+        if (!policy(new ReportController)->accessPerformanceReport()) {
             $request->session()->flash('failure', 'Unauthorized Access to the Report. Please contact your administrator.');
             return redirect('/referraltype');
         }
@@ -34,8 +34,8 @@ class BillingController extends ReportController
             $networkData[$network->id] = $network->name;
         }
 
-        $data['bill-report'] = true;
-        return view('reports.bill_report.index')->with('data', $data)->with('networkData', $networkData);
+        $data['performance-report'] = true;
+        return view('reports.performance.index')->with('data', $data)->with('networkData', $networkData);
     }
 
     /**

@@ -31,7 +31,7 @@ elixir(function (mix) {
     mix.less(['web_forms_print.less'], 'public/css/web_forms_print.css');
     mix.less(['patient_records.less'], 'public/css/patient_records.css');
     mix.less(['call_center.less'], 'public/css/call_center.css');
-    mix.less(['bill_report.less'], 'public/css/bill_report.css');
+    mix.less(['performance_report.less'], 'public/css/performance_report.css');
     mix.babel(['main.js', 'announcements.js'], 'public/js/main.js');
     mix.babel(['sesconnect.js'], 'public/js/sesconnect.js');
     mix.babel(['referraltype.js'], 'public/js/referraltype.js');
@@ -53,7 +53,7 @@ elixir(function (mix) {
     mix.babel(['web_forms.js'], 'public/js/web_forms.js');
     mix.babel(['patient_records.js'], 'public/js/patient_records.js');
     mix.babel(['call_center.js'], 'public/js/call_center.js');
-    mix.babel(['bill_report.js'], 'public/js/bill_report.js');
+    mix.babel(['performance_report.js'], 'public/js/performance_report.js');
 
     mix.version(['css/style.css',
                 'css/directmail.css',
@@ -73,7 +73,7 @@ elixir(function (mix) {
                 'css/web_forms_print.css',
                 'css/patient_records.css',
                 'css/call_center.css',
-                'css/bill_report.css',
+                'css/performance_report.css',
                 'js/main.js',
                 'js/sesconnect.js',
                 'js/referraltype.js',
@@ -93,7 +93,7 @@ elixir(function (mix) {
                 'js/web_forms.js',
                 'js/patient_records.js',
                  'js/call_center.js',
-                 'js/bill_report.js',
+                 'js/performance_report.js',
                 'images/*'
                 ]);
 });

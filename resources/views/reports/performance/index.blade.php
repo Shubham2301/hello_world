@@ -1,10 +1,10 @@
 @extends('layouts.master')
-@section('title', 'Billing Report')
+@section('title', 'Performance Report')
 @section('imports')
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <link rel="stylesheet" type="text/css" href="{{ elixir('css/reports.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ elixir('css/bill_report.css') }}">
-    <script type="text/javascript" src="{{ elixir('js/bill_report.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ elixir('css/performance_report.css') }}">
+    <script type="text/javascript" src="{{ elixir('js/performance_report.js') }}"></script>
 @endsection
 @section('sidebar')
 @include('reports.sidebar')
@@ -22,7 +22,7 @@
         <div class="row filter_row">
         </div>
         <div class="row report_header_row">
-            <span class="arial_bold reports_header">Care Console Billing Report</span>
+            <span class="arial_bold reports_header">Care Console Performance Report</span>
             <span class="timeline">
                 <span>Timeline:</span>
                 <span>

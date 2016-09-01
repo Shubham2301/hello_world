@@ -90,7 +90,7 @@ function getReport(filter) {
     };
 
     $.ajax({
-        url: '/report/billing/show',
+        url: '/report/performance/show',
         type: 'GET',
         data: $.param(formData),
         contentType: 'application/json',
@@ -104,9 +104,9 @@ function getReport(filter) {
             if (overAllGraph.total_patient != 0) {
                 $('.bill_graph_row').show();
                 $('.no_data_received').hide();
-                google.charts.setOnLoadCallback(drawGoalChart);
-                google.charts.setOnLoadCallback(drawCompareChart);
-                google.charts.setOnLoadCallback(drawChart);
+                drawGoalChart(data.userCount);
+                drawCompareChart(data.userCount);
+                drawOverallChart();
             } else {
                 $('.bill_graph_row').hide();
                 $('.no_data_received').show();
@@ -120,7 +120,7 @@ function getReport(filter) {
     });
 }
 
-function drawGoalChart() {
+function drawGoalChart(userCount) {
 
     var options = {
         seriesType: 'area',
@@ -157,21 +157,22 @@ function drawGoalChart() {
                 data.addColumn('number', columnName);
             }
         });
-
+        var i = 0;
         for (var key in graphData) {
             var temp = [];
+            i++;
             temp.push(graphData[key]['date']);
             switch (type) {
                 case 'avgContact':
-                    temp.push(graphData[key]['contactAttempted']);
+                    temp.push(Math.round(graphData[key]['contactAttempted']/userCount));
                     temp.push(2);
                     break;
                 case 'avgReached':
-                    temp.push(graphData[key]['reached']);
+                    temp.push(Math.round(graphData[key]['reached']/userCount));
                     temp.push(2);
                     break;
                 case 'avgScheduled':
-                    temp.push(graphData[key]['appointmentScheduled']);
+                    temp.push(Math.round(graphData[key]['appointmentScheduled']/userCount));
                     temp.push(2);
                     break;
             }
@@ -179,13 +180,13 @@ function drawGoalChart() {
             data.addRow(temp);
 
         }
-
+        options.hAxis.showTextEvery = i-1;
         var chart = new google.visualization.ComboChart(document.getElementById(type));
         chart.draw(data, options);
     });
 }
 
-function drawChart() {
+function drawOverallChart() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Count');
     data.addColumn('number', 'Scheduled');
@@ -218,7 +219,7 @@ function drawChart() {
     chart.draw(data, options);
 }
 
-function drawCompareChart() {
+function drawCompareChart(userCount) {
 
     var options = {
         colors: ['#22b573', '#ff1d25'],
@@ -249,16 +250,16 @@ function drawCompareChart() {
             temp.push(graphData[key]['date']);
             switch (type) {
                 case 'scheduled_vs_dropped':
-                    temp.push(graphData[key]['appointmentScheduled']);
-                    temp.push(graphData[key]['dropped']);
+                    temp.push(Math.round(graphData[key]['appointmentScheduled']/userCount));
+                    temp.push(Math.round(graphData[key]['dropped']/userCount));
                     break;
                 case 'keptAppointment_vs_missed':
-                    temp.push(graphData[key]['keptAppointment']);
-                    temp.push(graphData[key]['missedAppointment']);
+                    temp.push(Math.round(graphData[key]['keptAppointment']/userCount));
+                    temp.push(Math.round(graphData[key]['missedAppointment']/userCount));
                     break;
                 case 'receivedReport_vs_pending':
-                    temp.push(graphData[key]['reportsReceived']);
-                    temp.push(graphData[key]['reportsDue']);
+                    temp.push(Math.round(graphData[key]['reportsReceived']/userCount));
+                    temp.push(Math.round(graphData[key]['reportsDue']/userCount));
                     break;
             }
 
