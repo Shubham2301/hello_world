@@ -18,6 +18,7 @@ use Auth;
 use DateTime;
 use PDF;
 use Helper;
+use myocuhub\Network;
 
 trait PatientRecordsTrait
 {
@@ -58,7 +59,7 @@ trait PatientRecordsTrait
 
     public function getWebFormIndex(Request $request)
     {
-        $forms = WebFormTemplate::all();
+        $forms = Network::find(session('network-id'))->webForms;
         return view('web-forms.index', ['forms' => $forms]);
     }
 
@@ -69,7 +70,6 @@ trait PatientRecordsTrait
             'patient_id' => $request->patient_id,
             'content' => json_encode($request->all())
         ];
-
         $record =  PatientRecord::create($data);
         $patientID = $data['patient_id'];
 
@@ -79,7 +79,6 @@ trait PatientRecordsTrait
 
         $record->contact_history_id = $contactHistoryID;
         $record->save();
-
         event(new PatientRecordCreation(
             [
                 'template_id' => $request->template_id,
@@ -97,10 +96,7 @@ trait PatientRecordsTrait
     {
         $patients = $this->search($request);
         $patients = json_decode($patients, true);
-        if (!array_key_exists('id', $patients[0])) {
-            return 'No result found';
-        }
-        return (sizeof($patients) === 0) ? 'No patient found' : view('web-forms.search_patient')->with('patients', $patients)->render();
+        return view('web-forms.search_patient')->with('patients', $patients)->render();
     }
 
     public function PatientListForShowRecord(Request $request)
@@ -171,7 +167,8 @@ trait PatientRecordsTrait
         return $contactHistory->id;
     }
 
-    public function CreatePDF($contactHistoryID){
+    public function CreatePDF($contactHistoryID)
+    {
 
         $record = ContactHistory::find($contactHistoryID)->record;
         $patientID = $record->patient_id;
@@ -182,10 +179,12 @@ trait PatientRecordsTrait
         $data['patient'] = $patient;
         $data['record'] = $recordData;
         $data['signature'] = '';
-        if(isset($data['record']['sigoutput'])){
+
+        if (isset($data['record']['sigoutput']) && $data['record']['sigoutput'] != '') {
             $data['signature'] = Helper::sigJsonToImage($data['record']['sigoutput']);
         }
-        $html = view('patient-records.print')->with('data', $data)->render();
+        $printView = $record->template->print_view;
+        $html = view('patient-records.prints.'.$printView)->with('data', $data)->render();
         $pdf = PDF::loadHtml($html);
         return $pdf;
     }

@@ -91,7 +91,7 @@
                             <div class="col-sm-6 col-xs-12">
                                 {!! Form::text('address_2', $data['addressline2'], array('class' => 'add_patient_input', 'name' => 'addressline2', 'placeholder' => 'Address 2', 'id' => 'addressline2', 'data-toggle' => 'tooltip', 'title' => 'Address Line 2', 'data-placement' => 'right')) !!}
                                 {!! Form::text('State', $data['state'], array('class' => 'add_patient_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state', 'data-toggle' => 'tooltip', 'title' => 'State', 'data-placement' => 'right')) !!}
-                                {!! Form::select('timezone', Helper::timezones(), Helper::ifExists('timezone', $data), array('class' => 'add_patient_input', 'placeholder' => 'Timezone', 'id' => 'timezone', 'data-toggle' => 'tooltip', 'title' => 'Timezone', 'data-placement' => 'right')) !!}
+                                {!! Form::select('timezone_id', Helper::timezones(), Helper::ifExists('timezone_id', $data), array('class' => 'add_patient_input', 'placeholder' => 'Timezone', 'id' => 'timezone', 'data-toggle' => 'tooltip', 'title' => 'Timezone', 'data-placement' => 'right')) !!}
                             </div>
                         </div>
                     </div>

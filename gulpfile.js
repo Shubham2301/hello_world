@@ -32,6 +32,8 @@ elixir(function (mix) {
     mix.less(['patient_records.less'], 'public/css/patient_records.css');
     mix.less(['call_center.less'], 'public/css/call_center.css');
     mix.less(['performance_report.less'], 'public/css/performance_report.css');
+    mix.less(['pre_op_form.less'], 'public/css/pre_op_form.css');
+    mix.less(['retinal_post_exam.less'], 'public/css/retinal_post_exam.css');
     mix.babel(['main.js', 'announcements.js'], 'public/js/main.js');
     mix.babel(['sesconnect.js'], 'public/js/sesconnect.js');
     mix.babel(['referraltype.js'], 'public/js/referraltype.js');
@@ -74,6 +76,8 @@ elixir(function (mix) {
                 'css/patient_records.css',
                 'css/call_center.css',
                 'css/performance_report.css',
+                'css/pre_op_form.css',
+                'css/retinal_post_exam.css',
                 'js/main.js',
                 'js/sesconnect.js',
                 'js/referraltype.js',

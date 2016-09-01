@@ -148,11 +148,10 @@ CanResetPasswordContract
                                 $query->where('speciality', 'LIKE', '%' . $filter['value'] . '%');
                                 break;
                             case 'provider_types':
+                                $query->where('provider_type_id', null);
                                 foreach ($filter['value'] as $type) {
-                                    $query->where('provider_type_id', null)
-                                        ->orWhere('provider_type_id', $type);
+                                        $query->orWhere('provider_type_id', $type);
                                 }
-
                                 break;
                             case 'all':
                                 $query->where('practices.name', 'LIKE', '%' . $filter['value'] . '%')
@@ -293,9 +292,11 @@ CanResetPasswordContract
             ->having('distance', '<=', $range)
             ->orderBy('distance', 'ASC');
 
-        foreach ($providerTypes as $type) {
-            $query->where('users.provider_type_id', null)
-                ->orWhere('users.provider_type_id', $type);
+        if($providerTypes) {
+            $query->where('users.provider_type_id', null);
+            foreach ($providerTypes as $type) {
+                $query->orWhere('users.provider_type_id', $type);
+            }
         }
 
         if (session('user-level') == 1) {

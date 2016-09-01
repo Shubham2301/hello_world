@@ -4,7 +4,6 @@
 
 @section('imports')
 
-<link rel="stylesheet" type="text/css" href="{{elixir('css/users.css')}}">
 
 <link rel="stylesheet" type="text/css" href="{{elixir('css/web_forms.css')}}">
 
