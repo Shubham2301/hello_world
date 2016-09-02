@@ -171,6 +171,10 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
 
             'timezone' => ($patient->timezone)?$patient->timezone->utc:config('constants.default_timezone'),
 
+            'summary' => 'Appointment Confirmation',
+
+            'description' => 'Appointment has been scheduled with '. $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname. ' On '.$apptStartdate->format('F d, Y') ,
+
         ]);
 
         if ($iCal) {
