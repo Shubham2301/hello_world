@@ -105,6 +105,7 @@ trait CallCenterTrait
                         $overviewData[$activityDate]['attempt']['email']++;
                         $overviewData[$activityDate]['attempt']['all']++;
                         $comparisonData['attempt']['email']++;
+                        $comparisonData['attempt']['all']++;
                         $lastContactType = 'email';
                         break;
                     case 'request-patient-phone':
@@ -112,12 +113,14 @@ trait CallCenterTrait
                         $overviewData[$activityDate]['attempt']['phone']++;
                         $overviewData[$activityDate]['attempt']['all']++;
                         $comparisonData['attempt']['phone']++;
+                        $comparisonData['attempt']['all']++;
                         $lastContactType = 'phone';
                         break;
                     case 'request-patient-sms':
                         $overviewData[$activityDate]['attempt']['sms']++;
                         $overviewData[$activityDate]['attempt']['all']++;
                         $comparisonData['attempt']['sms']++;
+                        $comparisonData['attempt']['all']++;
                         $lastContactType = 'sms';
                         break;
                     case 'schedule':
@@ -136,6 +139,7 @@ trait CallCenterTrait
                             $overviewData[$activityDate]['attempt']['all']++;
                             $comparisonData['scheduled']['phone']++;
                             $comparisonData['attempt']['phone']++;
+                            $comparisonData['attempt']['all']++;
                         }
                         $lastContactType = 'phone';
                         break;

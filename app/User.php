@@ -333,7 +333,7 @@ CanResetPasswordContract
                 $query->whereNotNull('user_id');
                 $query->where('contact_activity_date', '>=', $startDate);
                 $query->where('contact_activity_date', '<=', $endDate);
-                $query->where('contact_activity_date', '<=', $endDate);
+                $query->has('careconsole.patient');
                 $query->whereHas('action', function ($q) {
                     $q->where('name', 'schedule');
                     $q->orwhere('name', 'reschedule');
