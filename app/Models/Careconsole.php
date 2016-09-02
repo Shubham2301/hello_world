@@ -624,9 +624,20 @@ class Careconsole extends Model
                     $q->orwhere('name', 'request-patient-email');
                     $q->orwhere('name', 'request-patient-phone');
                     $q->orwhere('name', 'request-patient-sms');
+                    $q->orwhere('name', 'contact-attempted-by-phone');
+                    $q->orwhere('name', 'contact-attempted-by-email');
                 });
             }, 'contactHistory.action', 'contactHistory.actionResult'])
             ->get();
+    }
+
+    public static function getTotalPatientCount($networkID)
+    {
+        return self::whereHas('importHistory', function ($query) use ($networkID) {
+                $query->where('network_id', $networkID);
+            })
+            ->has('patient')
+            ->count();
     }
 
 }

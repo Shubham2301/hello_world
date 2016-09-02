@@ -333,7 +333,7 @@ CanResetPasswordContract
                 $query->whereNotNull('user_id');
                 $query->where('contact_activity_date', '>=', $startDate);
                 $query->where('contact_activity_date', '<=', $endDate);
-                $query->where('contact_activity_date', '<=', $endDate);
+                $query->has('careconsole.patient');
                 $query->whereHas('action', function ($q) {
                     $q->where('name', 'schedule');
                     $q->orwhere('name', 'reschedule');
@@ -342,6 +342,8 @@ CanResetPasswordContract
                     $q->orwhere('name', 'request-patient-email');
                     $q->orwhere('name', 'request-patient-phone');
                     $q->orwhere('name', 'request-patient-sms');
+                    $q->orwhere('name', 'contact-attempted-by-phone');
+                    $q->orwhere('name', 'contact-attempted-by-email');
                 });
                 },
                 'contactHistory.action',
@@ -351,6 +353,17 @@ CanResetPasswordContract
                 'contactHistory.appointments',
             ])
             ->get();
+    }
+
+    public static function getCareCoordinatorCount($networkID) {
+
+        return self::whereHas('userNetwork', function ($query) use ($networkID) {
+                $query->where('network_id', $networkID);
+            })
+            ->whereHas('userRoles', function ($query) {
+                $query->where('role_id', 12);
+            })
+            ->count();
     }
 
 }

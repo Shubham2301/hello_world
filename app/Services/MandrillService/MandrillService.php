@@ -39,7 +39,8 @@ class MandrillService
 		                "rcpt" => $attr['to']['email'],
 		                'vars' => $attr['vars']
 		    		]
-        		]
+        		],
+                'attachments' => $attr['attachments'],
 		    ];
 		    $async = false;
 		    $result = $this->mandrill->messages->sendTemplate($template_name, $template_content, $message, $async);

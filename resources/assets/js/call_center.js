@@ -120,6 +120,10 @@ function getReport(filter) {
             graphData = data.graphData.overview;
             comparisonData = data.graphData.comparison;
             graphColumn = data.graphColumn;
+
+            for (var key in comparisonData.attempt) {
+                $('.total_count#' + key).text(comparisonData['attempt'][key]);
+            }
             google.charts.setOnLoadCallback(drawCallCenterGraph);
         },
         error: function () {

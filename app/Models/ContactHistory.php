@@ -60,4 +60,18 @@ class ContactHistory extends Model
     public function record(){
         return $this->hasOne(PatientRecord::class);
     }
+
+    public static function getBillingReportData($networkID, $startDate, $endDate) {
+
+        return self::where('contact_activity_date', '>=', $startDate)
+            ->where('contact_activity_date', '<=', $endDate)
+            ->whereHas('careconsole.importHistory', function ($query) use ($networkID) {
+                $query->where('network_id', $networkID);
+            })
+            ->has('careconsole.patient')
+            ->with('action')
+            ->with('actionResult')
+            ->get();
+
+    }
 }

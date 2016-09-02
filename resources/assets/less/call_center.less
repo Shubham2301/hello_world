@@ -11,6 +11,7 @@
         margin: 0;
         &.report_header_row {
             margin-top: 1em;
+            margin-bottom: 1em;
         }
         &.report_filter_row {
             margin: 1em 0;
@@ -27,13 +28,24 @@
     margin: 1em 0;
 }
 .user_data {
-    padding-top: 2em;
+    margin-top: 1em;
     &>.user_heading {
         border-bottom: 1px solid;
         padding: .2em 0;
     }
     &>.user_listing {
         padding: .1em 0;
+    }
+    &>.row {
+        margin: 0;
+        div {
+            padding: 0;
+        }
+    }
+    &>h4 {
+        padding-top: .5em;
+        border-top: 1px solid;
+        padding-bottom: 1em;
     }
 }
 .overview_controls {

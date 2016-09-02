@@ -6,7 +6,6 @@ use Auth;
 use DateTime;
 use Event;
 use Exception;
-use Illuminate\Support\Facades\Mail;
 use Log;
 use MyCCDA;
 use myocuhub\Events\AppointmentScheduled;
@@ -22,6 +21,7 @@ use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
+use myocuhub\Services\MandrillService\MandrillService;
 use myocuhub\User;
 use Storage;
 
@@ -152,9 +152,6 @@ class SendAppointmentRequestEmail
             'attachments' => [],
         ];
 
-        /**
-         * Add Check for SES Email here.
-         */
         if (SES::isDirectID($location->email)) {
 
             $loggedInUser = Auth::user();
@@ -167,9 +164,6 @@ class SendAppointmentRequestEmail
                 $attr['from']['name'] = config('constants.support.ses.email.display_name');
             }
 
-            /**
-             * Generate CCDA file and send email via SES to Provider
-             */
             try {
                 $patientID = $attr['appt']['patient_id'];
                 if ($appt['send_ccda']) {
@@ -181,15 +175,58 @@ class SendAppointmentRequestEmail
                 return false;
             }
         } else {
-            /**
-             * Send email via regular mail.
-             */
+
+            $mandrillService = new MandrillService;
+            $template = $mandrillService->templateInfo('Email to provider');
+
+            $vars = [];
+
+            foreach ($attr['appt'] as $key => $value) {
+                $vars[] = [
+                    'name' => str_replace('_', '', strtoupper($key)),
+                    'content' => $value,
+                ];
+            }
+
+            if ($location->special_instructions) {
+                $vars[] = [
+                    'name' => 'SPECIALINSTRUCTIONS',
+                    'content' => $location->special_instructions,
+                ];
+            }
+
+            $loggedInUser = Auth::user();
+
+            if ($loggedInUser->email) {
+                $vars[] = [
+                    'name' => 'USEREMAIL',
+                    'content' => $loggedInUser->email,
+                ];
+            }
+
+            if (Auth::check() && session('user-level') == 2) {
+                $vars[] = [
+                    'name' => 'NETWORKLOGO',
+                    'content' => config('constants.production_url') . '/images/networks/network_' . $loggedInUser->getNetwork($loggedInUser->id)->id . '.png',
+                ];
+            }
+
+            $appt = [
+                'from' => [
+                    'name' => $attr['from']['name'],
+                    'email' => $attr['from']['email'],
+                ],
+                'to' => [
+                    'name' => $attr['to']['name'],
+                    'email' => $attr['to']['email'],
+                ],
+                'subject' => $attr['subject'],
+                'template' => $template['slug'],
+                'vars' => $vars,
+            ];
 
             try {
-                $mailToProvider = Mail::send($attr['view'], ['appt' => $attr['appt']], function ($m) use ($attr) {
-                    $m->from($attr['from']['email'], $attr['from']['name']);
-                    $m->to($attr['to']['email'], $attr['to']['name'])->subject($attr['subject']);
-                });
+                $response = $mandrillService->sendTemplate($appt);
             } catch (Exception $e) {
                 Log::error($e);
                 $action = 'Application Exception in sending Appointment Request email to practice : ' . $location->email;
@@ -201,9 +238,6 @@ class SendAppointmentRequestEmail
                 return false;
             }
         }
-        /**
-         * If Practice Location has regular/ Non SES Email then send mail via Mandrill.
-         */
 
         return true;
     }
