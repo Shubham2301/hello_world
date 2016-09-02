@@ -624,6 +624,8 @@ class Careconsole extends Model
                     $q->orwhere('name', 'request-patient-email');
                     $q->orwhere('name', 'request-patient-phone');
                     $q->orwhere('name', 'request-patient-sms');
+                    $q->orwhere('name', 'contact-attempted-by-phone');
+                    $q->orwhere('name', 'contact-attempted-by-email');
                 });
             }, 'contactHistory.action', 'contactHistory.actionResult'])
             ->get();
