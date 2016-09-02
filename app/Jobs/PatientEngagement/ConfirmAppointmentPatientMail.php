@@ -43,6 +43,16 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
         $appointment = $this->getAppt();
         $appt = [];
 
+        $patient = Patient::find($appointment->patient_id);
+
+        if($patient == null){
+            return false;
+        }
+
+        if ($patient->email == null || $patient->email == '') {
+            return false;
+        }
+
         $practice = Practice::find($appointment->practice_id);
         $loggedInUser = Auth::user();
         $network = User::getNetwork($loggedInUser->id);
