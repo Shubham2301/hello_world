@@ -43,6 +43,7 @@ class Patient extends Model
         'state',
         'special_request',
         'pcp',
+        'timezone_id',
     ];
 
     public function getPhone()

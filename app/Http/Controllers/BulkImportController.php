@@ -17,6 +17,7 @@ use myocuhub\Models\ImportHistory;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\ReferralHistory;
+use myocuhub\Models\Timezone;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\User;
@@ -107,6 +108,7 @@ class BulkImportController extends Controller
             'language',
             'preferred_method_of_contact',
             'primary_care_physician',
+            'timezone',
         ];
 
         if ($request->hasFile('patient_xlsx')) {
@@ -115,7 +117,6 @@ class BulkImportController extends Controller
             $importHistory->network_id = $networkID;
             $importHistory->save();
 
-            // $excels = Excel::load($request->file('patient_xlsx'))->get();
             $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'), function ($reader) {
                 $reader->setDateColumns(array('birthdate', 'subscriber_dob'));
                 $reader->formatDates(true, 'Y-m-d');
@@ -125,7 +126,7 @@ class BulkImportController extends Controller
                     if (array_filter($data->toArray())) {
                         if ($i == 0) {
                             if (!(count(array_intersect_key(array_flip($format), $data->toArray())) === count($format))) {
-                                $import_result['exception'] = 'Incorrect .xlsx format';
+                                $import_result['exception'] = "Incorrect .xlsx format";
                                 return;
                             }
                         }
@@ -155,6 +156,8 @@ class BulkImportController extends Controller
                         $patients['gender'] = isset($data['gender']) ? Helper::getGenderIndex($data['gender']) : '';
                         $patients['special_request'] = isset($data['special_request']) ? $data['special_request'] : '';
                         $patients['pcp'] = isset($data['primary_care_physician']) ? $data['primary_care_physician'] : '';
+                        $timezone = isset($data['timezone']) ? Timezone::where('abbr', strtoupper(trim($data['timezone'])))->first() : null;
+                        $patients['timezone_id'] = $timezone ? $timezone['id'] : null;
 
                         $referralHistory = null;
 
