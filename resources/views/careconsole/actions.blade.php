@@ -153,7 +153,7 @@
                                         </div>
                                         <div class="col-md-8 form-group">
                                             <p style="color:black;" class="form_action_patient_email_id"></p>
-                                            <p style="color:black;">Request For Appointment</p>
+                                            <p style="color:black;">{{ $overview['request_for_appointment']['email_subject'] }}</p>
                                         </div>
                                     </div>
                                     <div class="row input_row">
