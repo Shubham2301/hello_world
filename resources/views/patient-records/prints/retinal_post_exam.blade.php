@@ -3,6 +3,7 @@
 @section('imports')
 
 <link rel="stylesheet" type="text/css" href="{{ public_path('css/retinal_post_exam.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ elixir('css/retinal_post_exam.css') }}">
 
 @endsection
 
@@ -12,20 +13,18 @@
 
 <div class="row remove_padding_margin default_margin">
 
-    <div class="col-xs-6">
+    <div class="col-xs-7">
         <p class="main_info_text"> Patient Name:<span class="unit_input_text">{{ $data['patient']['firstname'].' '.$data['patient']['lastname'] }}</span></p>
     </div>
 
-    <div class="col-xs-1">
-        <p></p>
-    </div>
-
     <div class="col-xs-5">
-        <p class="main_info_text">Exam performed :<span class="unit_input_text">{{ date('Y-m-d') }}</span></p>
+<p class="main_info_text">Exam performed :<span class="unit_input_text">{{ (isset($data['record']['creation_date']))?$data['record']['creation_date']:'' }}</span></p>
     </div>
 </div>
 
  <div class="row default_margin default_border default_fontsize" >
+
+
     <div class="col-xs-6 update_col_default_padding" >
 
         <div class="row">
@@ -49,9 +48,9 @@
             </div>
             <div class="col-xs-1 od_box_border default_padding">
                 <p> @if(isset($data['record']['od_NDR']))
-                    <span class="glyphicon glyphicon-ok"></span> 
-                    @else 
-                    &nbsp; 
+                    <span class="glyphicon glyphicon-ok"></span>
+                    @else
+                    &nbsp;
                     @endif
                 </p>
             </div>
@@ -113,12 +112,12 @@
                 <p> Proliferative diabetic retinopathy:</p>
             </div>
             <div class="col-xs-1 od_box_border default_padding">
-                <p> 
+                <p>
                     @if(isset($data['record']['od_PDR']))
                     <span class="glyphicon glyphicon-ok" style=""></span>
                     @else
                     &nbsp;
-                    @endif  
+                    @endif
                 </p>
             </div>
         </div>
@@ -127,11 +126,11 @@
             <div class="col-xs-1 default_padding">
                 <span> &nbsp;</span>
             </div>
-            <div class="col-xs-10 border_left no_bottom_border default_padding">
+            <div class="col-xs-10 border_left border_bottom default_padding">
                 <p> Clinically significant macular edema:</p>
             </div>
-            <div class="col-xs-1 od_box_border no_bottom_border default_padding">
-                <p>  
+            <div class="col-xs-1 od_box_border default_padding">
+                <p>
                     @if(isset($data['record']['od_CSME']))
                     <span class="glyphicon glyphicon-ok"></span>
                     @else
@@ -145,16 +144,49 @@
             <div class="col-xs-1 default_padding">
                 <span> &nbsp;</span>
             </div>
-            <div class="col-xs-10 border_left default_padding">
+            <div class="col-xs-10 border_left border_bottom default_padding">
+                <p> Cataract</p>
+            </div>
+            <div class="col-xs-1 od_box_border default_padding">
+                <p>   @if(isset($data['record']['od_cataract']))
+                        <span class="glyphicon glyphicon-ok" style=""></span>
+                      @else
+                        &nbsp;
+                      @endif
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-1 default_padding">
+                <span> &nbsp;</span>
+            </div>
+            <div class="col-xs-10 border_left  default_padding">
+                <p> Open Angle Glaucoma</p>
+            </div>
+            <div class="col-xs-1 od_box_border  default_padding">
+                <p>
+                    @if(isset($data['record']['od_OAG']))
+                    <span class="glyphicon glyphicon-ok" style=""></span>
+                    @else
+                    &nbsp;
+                    @endif
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-1 default_padding">
+                <span> &nbsp;</span>
+            </div>
+            <div class="col-xs-10 border_left  default_padding">
                 <p> &nbsp;</p>
             </div>
             <div class="col-xs-1 od_box_border no_bottom_border default_padding">
-                <p>  &nbsp; </p>
+                <p> &nbsp;</p>
             </div>
         </div>
 
     </div>
-
 
     <div class="col-xs-6" style="">
 
@@ -168,15 +200,15 @@
                 <?php $data['record']['plan'] = ''; ?>
                 @endif
             </div>
-        </div> 
+        </div>
 
         <div class="row">
             <div class="col-xs-1 os_box_border default_padding">
-                <p> 
+                <p>
                     @if(isset($data['record']['os_NDR']))
-                    <span class="glyphicon glyphicon-ok"></span> 
-                    @else 
-                    &nbsp; 
+                    <span class="glyphicon glyphicon-ok"></span>
+                    @else
+                    &nbsp;
                     @endif
                 </p>
             </div>
@@ -184,7 +216,7 @@
                 <span> <input type="checkbox" {{ ($data['record']['plan'] === 'monitor')?'checked':'' }} > &nbsp; &nbsp; Monitor
                 </span>
             </div>
-        </div> 
+        </div>
 
         <div class="row">
             <div class="col-xs-1 os_box_border no_bottom_border default_padding">
@@ -192,7 +224,7 @@
             </div>
             <div class="col-xs-11 default_padding">
                 <span>
-                    <input type="checkbox" {{ ($data['record']['plan'] === 'additional-testing')?'checked':'' }}> &nbsp; Additional treatement recommendations 
+                    <input type="checkbox" {{ ($data['record']['plan'] === 'additional-testing')?'checked':'' }}> &nbsp; Additional treatment recommendations
                 </span>
             </div>
         </div>
@@ -204,11 +236,17 @@
             <div class="col-xs-11 border_bottom default_padding">
                 <p class="blank_p_margin_bottom"> &nbsp;</p>
             </div>
-        </div> 
+        </div>
 
         <div class="row">
             <div class="col-xs-1 os_box_border default_padding">
-                <p> &nbsp;</p>
+                <p>
+                    @if(isset($data['record']['os_PDR']))
+                        <span class="glyphicon glyphicon-ok"></span>
+                    @else
+                        &nbsp;
+                    @endif
+                </p>
             </div>
             <div class="col-xs-11 border_bottom default_padding ">
                 <p class="default_p_margin_bottom">
@@ -218,8 +256,14 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-1 os_box_border no_bottom_border default_padding">
-                <p> &nbsp;</p>
+            <div class="col-xs-1 os_box_border  default_padding">
+                <p>
+                    @if(isset($data['record']['os_CSME']))
+                        <span class="glyphicon glyphicon-ok"></span>
+                    @else
+                        &nbsp;
+                    @endif
+                </p>
             </div>
             <div class="col-xs-11 no_bottom_border default_padding">
                 <p class="default_p_margin_bottom">
@@ -229,16 +273,16 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-1 os_box_border no_bottom_border default_padding">
-                <p>  
-                    @if(isset($data['record']['os_PDR']))
-                    <span class="glyphicon glyphicon-ok" style=""></span> 
-                    @else 
-                    &nbsp; 
+            <div class="col-xs-1 os_box_border  default_padding">
+                <p>
+                    @if(isset($data['record']['os_cataract']))
+                    <span class="glyphicon glyphicon-ok" style=""></span>
+                    @else
+                    &nbsp;
                     @endif
                 </p>
             </div>
-            <div class="col-xs-11 default_padding">
+            <div class="col-xs-11 default_padding border_bottom">
                 <p>
                     @if(!isset($data['record']['ORR']))
                     <?php $data['record']['ORR'] = ''; ?>
@@ -260,9 +304,53 @@
                     @endif
                 </p>
             </div>
-        </div>  
+        </div>
+
+        <div class="row">
+            <div class="col-xs-1 os_box_border  default_padding">
+                <p>
+                    @if(isset($data['record']['os_OAG']))
+                    <span class="glyphicon glyphicon-ok" style=""></span>
+                    @else
+                    &nbsp;
+                    @endif
+
+                </p>
+            </div>
+            <div class="col-xs-11 default_padding">
+                <p class="">Surgery referral </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-1 os_box_border no_bottom_border default_padding">
+                <p>  &nbsp;
+                </p>
+            </div>
+            <div class="col-xs-11 default_padding">
+                <p>
+                    @if(!isset($data['record']['surgery_referral']))
+                        <?php $data['record']['surgery_referral'] = ''; ?>
+                    @endif
+                    @php
+                        $surgeryReferral =  [
+                            'yes' => 'Yes',
+                            'no' => 'No',
+
+                        ]
+
+                    @endphp
+
+                    @foreach($surgeryReferral as $name => $value)
+                        <span class="{{ ($name === $data['record']['surgery_referral'])?'active_wrap_field' :''}}">     {{ $value }}
+                        </span>
+                    @endforeach
+                </p>
+            </div>
+        </div>
 
     </div>
+
 </div>
 
 <div class="row signature_box" >
@@ -270,9 +358,9 @@
         <p class="signature_text"> Doctor Signature</p>
     </div>
     <div class="col-xs-9">
-     
+
             <img src="data:image/png;base64,{{$data['signature']}}" alt="" class="signature_image">
-    
+
     </div>
 </div>
 

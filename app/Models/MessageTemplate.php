@@ -12,13 +12,17 @@ class MessageTemplate extends Model
     	return '';
     }
 
-    public static function getTemplate($type, $stage, $networkID){
+    public static function getTemplate($type, $stage, $networkID, $templatePart = 'message'){
 	$message = self::where('network_id', $networkID)
     		->where('type' , config('patient_engagement.type.'.$type))
 			->where('stage' , config('patient_engagement.stage.'.$stage))
-            ->first(['message']);
+            ->first(['message', 'subject']);
 	if ($message){
-        	return $message->message;
+            if($templatePart == 'message') {
+                return $message->message;
+            } else if ($templatePart == 'subject') {
+                return $message->subject;
+            }
         }
         return self::defaultTemplate();
     }

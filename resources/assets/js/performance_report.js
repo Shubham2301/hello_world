@@ -1,4 +1,7 @@
-google.charts.load('current', {
+google.load("visualization", "1", {
+    packages: ["corechart"]
+});
+google.charts.load('visualization', 'current', {
     'packages': ['corechart']
 });
 
@@ -164,15 +167,15 @@ function drawGoalChart(userCount) {
             temp.push(graphData[key]['date']);
             switch (type) {
                 case 'avgContact':
-                    temp.push(Math.round(graphData[key]['contactAttempted']/userCount));
+                    temp.push(Math.round(graphData[key]['contactAttempted'] / userCount));
                     temp.push(2);
                     break;
                 case 'avgReached':
-                    temp.push(Math.round(graphData[key]['reached']/userCount));
+                    temp.push(Math.round(graphData[key]['reached'] / userCount));
                     temp.push(2);
                     break;
                 case 'avgScheduled':
-                    temp.push(Math.round(graphData[key]['appointmentScheduled']/userCount));
+                    temp.push(Math.round(graphData[key]['appointmentScheduled'] / userCount));
                     temp.push(2);
                     break;
             }
@@ -180,7 +183,7 @@ function drawGoalChart(userCount) {
             data.addRow(temp);
 
         }
-        options.hAxis.showTextEvery = i-1;
+        options.hAxis.showTextEvery = i - 1;
         var chart = new google.visualization.ComboChart(document.getElementById(type));
         chart.draw(data, options);
     });
@@ -250,16 +253,16 @@ function drawCompareChart(userCount) {
             temp.push(graphData[key]['date']);
             switch (type) {
                 case 'scheduled_vs_dropped':
-                    temp.push(Math.round(graphData[key]['appointmentScheduled']/userCount));
-                    temp.push(Math.round(graphData[key]['dropped']/userCount));
+                    temp.push(Math.round(graphData[key]['appointmentScheduled'] / userCount));
+                    temp.push(Math.round(graphData[key]['dropped'] / userCount));
                     break;
                 case 'keptAppointment_vs_missed':
-                    temp.push(Math.round(graphData[key]['keptAppointment']/userCount));
-                    temp.push(Math.round(graphData[key]['missedAppointment']/userCount));
+                    temp.push(Math.round(graphData[key]['keptAppointment'] / userCount));
+                    temp.push(Math.round(graphData[key]['missedAppointment'] / userCount));
                     break;
                 case 'receivedReport_vs_pending':
-                    temp.push(Math.round(graphData[key]['reportsReceived']/userCount));
-                    temp.push(Math.round(graphData[key]['reportsDue']/userCount));
+                    temp.push(Math.round(graphData[key]['reportsReceived'] / userCount));
+                    temp.push(Math.round(graphData[key]['reportsDue'] / userCount));
                     break;
             }
 

@@ -187,13 +187,15 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
 
         ]);
 
-        if ($iCal) {
+        // disable google link
 
-            $vars[] = [
-                'name' => 'CALENDER',
-                'content' => $iCal->googleCalenderLink(),
-            ];
-        }
+        // if ($iCal) {
+
+        //     $vars[] = [
+        //         'name' => 'CALENDER',
+        //         'content' => $iCal->googleCalenderLink(),
+        //     ];
+        // }
 
         $attr = [
             'from' => [
@@ -208,11 +210,12 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
             'template' => $template['slug'],
             'vars' => $vars,
             'attachments' => [
-                [
-                    'content' => base64_encode($iCal->getICAL()),
-                    'type' => "text/calendar",
-                    'name' => 'appointment.ics',
-                ]
+               //disable ics attachments
+                // [
+                //     'content' => base64_encode($iCal->getICAL()),
+                //     'type' => "text/calendar",
+                //     'name' => 'appointment.ics',
+                // ]
             ]
         ];
 

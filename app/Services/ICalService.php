@@ -334,12 +334,10 @@ class ICalService
     public function getICAL()
     {
         $iCal = "BEGIN:VCALENDAR" . "\r\n";
-        $iCal .= "X-WR-CALNAME:". $this->getName() . "\r\n";
         $iCal .= "X-WR-TIMEZONE:".$this->getTimezoneICal() . "\r\n";
         $iCal .= 'VERSION:2.0' . "\r\n";
         $iCal .= "PRODID:" . $this->getName() . "\r\n";
         $iCal .= "CALSCALE:GREGORIAN " . "\r\n";
-        $iCal .= "METHOD:REQUEST " . "\r\n";
         $iCal .= "BEGIN:VEVENT" . "\r\n";
         $iCal .= "TZNAME:".$this->getTimezoneICal() . "\r\n";
         $iCal .= "DTSTART:" . $this->getDateStart() . "\r\n";
