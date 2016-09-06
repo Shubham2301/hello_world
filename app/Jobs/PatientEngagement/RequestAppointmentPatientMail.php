@@ -20,14 +20,15 @@ class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQ
 {
     use InteractsWithQueue, SerializesModels;
 
-    public $message;
+    public $message, $subject;
 
-    public function __construct(Patient $patient, $message)
+    public function __construct(Patient $patient, $message, $subject)
     {
         $this->setPatient($patient);
-        $this->setStage('request_appointment');
+        $this->setStage('request_for_appointment');
         $this->setType('email');
         $this->message = $message;
+        $this->subject = $subject;
     }
 
     public function handle()
@@ -50,7 +51,7 @@ class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQ
                 'name' => $this->getPatient()->getName(),
                 'email' => $this->getPatient()->email,
             ],
-            'subject' => 'Request for Appointment',
+            'subject' => $this->subject,
             'template' => $template['slug'],
             'vars' => [
                     [
@@ -69,7 +70,8 @@ class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQ
                         'name' => 'senderemail',
                         'content' => $user->email
                     ]
-            ]
+            ],
+            'attachments' => [],
         ];
 
         $this->sendTemplate($attr);

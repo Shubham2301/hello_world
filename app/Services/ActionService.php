@@ -16,6 +16,7 @@ use myocuhub\Models\Kpi;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
+use myocuhub\Models\MessageTemplate;
 
 class ActionService
 {
@@ -73,7 +74,8 @@ class ActionService
             case 'request-patient-email':
                 $console = Careconsole::find($consoleID);
                 $patient = Patient::find($console->patient_id);
-                dispatch((new RequestAppointmentPatientMail($patient, $message))->onQueue('mail'));
+                $subject = MessageTemplate::getTemplate('email', 'request_for_appointment', session('network-id'), 'subject') ?: 'Request For Appointment';
+                dispatch((new RequestAppointmentPatientMail($patient, $message, $subject))->onQueue('mail'));
                 break;
             case 'request-patient-phone':
                 break;
