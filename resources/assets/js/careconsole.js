@@ -730,6 +730,30 @@ function action() {
             showActionModel(data);
 
             break;
+        case 'contact-attempted-by-phone':
+        case 'contact-attempted-by-email':
+        case 'contact-attempted-by-mail':
+        case 'contact-attempted-by-other':
+            var selected = $('#action_result_id').find('option:selected');
+            performAction();
+            if (selected.data('name') == 'recall-later') {
+                var data = [];
+                data['patient_id'] = $('#action_patient_id').val();
+                data['action_id'] = 33;
+                data['console_id'] = $('#action_console_id').val();
+                data['stage_id'] = $('#action_stage_id').val();
+                data['action_header'] = 'Recall Later';
+
+                show_patient = true;
+                clearActionFields();
+                showDate = true;
+
+                $('#action_name').val('recall-later');
+                $('#form_recall_date').show();
+                $('#form_action_notes').hide();
+                showActionModel(data);
+            }
+            break;
         default:
             performAction();
             break;
@@ -765,20 +789,31 @@ function performAction() {
         cache: false,
         async: false,
         success: function success(e) {
-            if ($('#action_id').val() != 36) {
-                var stage = $.parseJSON(e);
-                $('#actionModal').modal('hide');
-                if (show_patient && bucketName == '') {
-                    showStageData(stage.id, stage.name);
-                } else if (show_patient && bucketName != '') {
-                    currentPage = 1;
-                    bucketData(bucketName);
-                }
-                show_patient = true;
-                $('#action_notes').html('');
-                $('#action_notes').val('');
-                $('#action_result_id').val(0);
-                $('#recall_date').val('');
+            switch ($('#action_name').val()) {
+                case 'request-patient-phone':
+                    break;
+                case 'contact-attempted-by-phone':
+                case 'contact-attempted-by-email':
+                case 'contact-attempted-by-mail':
+                case 'contact-attempted-by-other':
+                    var selected = $('#action_result_id').find('option:selected');
+                    if (selected.data('name') == 'recall-later') {
+                        break;
+                    }
+                default:
+                    var stage = $.parseJSON(e);
+                    $('#actionModal').modal('hide');
+                    if (show_patient && bucketName == '') {
+                        showStageData(stage.id, stage.name);
+                    } else if (show_patient && bucketName != '') {
+                        currentPage = 1;
+                        bucketData(bucketName);
+                    }
+                    show_patient = true;
+                    $('#action_notes').html('');
+                    $('#action_notes').val('');
+                    $('#action_result_id').val(0);
+                    $('#recall_date').val('');
             }
         },
         error: function error() {
@@ -1048,9 +1083,9 @@ function showActionModel(data) {
         var content = '<option value="0">Select Action Result</option>';
         results.forEach(function (result) {
             if (result.name == 'outgoing-call') {
-                content += '<option value="' + result.action_result_id + '" selected>' + result.display_name + '</option>';
+                content += '<option value="' + result.action_result_id + '" data-name="' + result.name + '" selected>' + result.display_name + '</option>';
             } else {
-                content += '<option value="' + result.action_result_id + '">' + result.display_name + '</option>';
+                content += '<option value="' + result.action_result_id + '" data-name="' + result.name + '">' + result.display_name + '</option>';
             }
         });
         $('#action_result_id').html(content);

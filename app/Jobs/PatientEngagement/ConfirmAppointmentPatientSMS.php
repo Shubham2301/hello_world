@@ -63,7 +63,7 @@ class ConfirmAppointmentPatientSMS extends PatientEngagement implements ShouldQu
             'user_email' => $loggedInUser->email ?: '',
             'user_phone' => $loggedInUser->cellphone ?: '',
             'appt_type' => $appointmentType ?: '',
-            'provider_name' => $provider->title.' '.$provider->firstname.' '.$provider->lastname,
+            'provider_name' => $provider->title.' '.$provider->name,
             'location_name' => $location->locationname ?: '',
             'location_address' => ($location->addressline1 ?: '') . ', ' . ($location->addressline2 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: ''),
             'practice_name' => $practice->name  ?: '',

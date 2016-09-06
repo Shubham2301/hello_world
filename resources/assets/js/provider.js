@@ -457,6 +457,7 @@ function showProviderInfo(data) {
     $('#form_provider_acc_key').val(data.provider['acc_key']);
     $('#zipcode').text(data.provider['zip']);
     $('#speciality').text(data.provider['speciality']);
+    $('#provider_type').text(data.provider_type);
     $('.schedule_button').attr('data-id', data.provider['id']);
     $('.schedule_button').attr('data-practice-id', data.practice_id);
     var locations = data.locations;
