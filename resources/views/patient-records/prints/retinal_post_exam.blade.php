@@ -28,13 +28,13 @@
     <div class="col-xs-6 update_col_default_padding" >
 
         <div class="row">
-            <div class="col-xs-1 border_bottom default_padding">
+            <div class="col-xs-1 border_bottom default_padding section_break">
                 <p class="cat_info_text">Diagnosis</p>
             </div>
-            <div class="col-xs-10 border_bottom default_padding">
+            <div class="col-xs-10 border_bottom default_padding section_break">
                 <p>&nbsp;</p>
             </div>
-            <div class="col-xs-1 od_box_border default_padding">
+            <div class="col-xs-1 od_box_border default_padding section_break">
                 <p>OD</p>
             </div>
         </div>
@@ -43,10 +43,10 @@
             <div class="col-xs-1 default_padding">
                 <span> &nbsp;</span>
             </div>
-            <div class="col-xs-10  border_left border_bottom default_padding">
-                <p> Non diagnostic retinopathy:</p>
+            <div class="col-xs-10  border_left border_bottom default_padding section_break">
+                <p> No diabetic retinopathy:</p>
             </div>
-            <div class="col-xs-1 od_box_border default_padding">
+            <div class="col-xs-1 od_box_border default_padding section_break">
                 <p> @if(isset($data['record']['od_NDR']))
                     <span class="glyphicon glyphicon-ok"></span>
                     @else
@@ -90,7 +90,7 @@
                 @endphp
 
             </div>
-            <div class="col-xs-10 border_left border_bottom default_padding npdr_padding">
+            <div class="col-xs-10 border_left  default_padding npdr_padding">
                 <p class="npdr_checkbox">
                     @foreach( $npdr as $name => $value)
                     <span>
@@ -99,11 +99,26 @@
                     @endforeach
                 </p>
             </div>
-            <div class="col-xs-1 od_box_border default_padding">
+            <div class="col-xs-1 od_box_border no_bottom_border default_padding">
                 <p class="blank_p_margin_bottom"> &nbsp;</p>
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-xs-1 default_padding">
+                <span> &nbsp;</span>
+            </div>
+            <div class="col-xs-10 border_left border_bottom default_padding npdr_padding">
+                <p class=>
+                  &nbsp;
+                </p>
+            </div>
+            <div class="col-xs-1 od_box_border default_padding">
+                <p class=""> &nbsp;</p>
+            </div>
+        </div>
+       
+       
         <div class="row">
             <div class="col-xs-1 default_padding">
                 <span> &nbsp;</span>
@@ -126,7 +141,7 @@
             <div class="col-xs-1 default_padding">
                 <span> &nbsp;</span>
             </div>
-            <div class="col-xs-10 border_left border_bottom default_padding">
+            <div class="col-xs-10 border_left default_padding">
                 <p> Clinically significant macular edema:</p>
             </div>
             <div class="col-xs-1 od_box_border default_padding">
@@ -139,62 +154,65 @@
                 </p>
             </div>
         </div>
+        
+        <div class="row">
+            <div class="col-xs-1 default_padding">
+                <span> &nbsp;</span>
+            </div>
+            <div class="col-xs-10 border_left border_bottom  default_padding section_break">
+                <p> &nbsp;</p>
+            </div>
+            <div class="col-xs-1 od_box_border  default_padding section_break">
+                <p> &nbsp;</p>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-xs-1 default_padding">
                 <span> &nbsp;</span>
             </div>
             <div class="col-xs-10 border_left border_bottom default_padding">
-                <p> Cataract</p>
-            </div>
-            <div class="col-xs-1 od_box_border default_padding">
-                <p>   @if(isset($data['record']['od_cataract']))
-                        <span class="glyphicon glyphicon-ok" style=""></span>
-                      @else
-                        &nbsp;
-                      @endif
-                </p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 default_padding">
-                <span> &nbsp;</span>
-            </div>
-            <div class="col-xs-10 border_left  default_padding">
                 <p> Open Angle Glaucoma</p>
             </div>
             <div class="col-xs-1 od_box_border  default_padding">
                 <p>
                     @if(isset($data['record']['od_OAG']))
-                    <span class="glyphicon glyphicon-ok" style=""></span>
+                    <span class="glyphicon glyphicon-ok" ></span>
                     @else
                     &nbsp;
                     @endif
                 </p>
             </div>
         </div>
+        
         <div class="row">
             <div class="col-xs-1 default_padding">
                 <span> &nbsp;</span>
             </div>
             <div class="col-xs-10 border_left  default_padding">
-                <p> &nbsp;</p>
+                <p> Cataract</p>
             </div>
             <div class="col-xs-1 od_box_border no_bottom_border default_padding">
-                <p> &nbsp;</p>
+                <p>   @if(isset($data['record']['od_cataract']))
+                    <span class="glyphicon glyphicon-ok"></span>
+                    @else
+                    &nbsp;
+                    @endif
+                </p>
             </div>
         </div>
+        
+   
 
     </div>
 
-    <div class="col-xs-6" style="">
+    <div class="col-xs-6">
 
         <div class="row">
-            <div class="col-xs-1 os_box_border default_padding">
+            <div class="col-xs-1 os_box_border default_padding section_break">
                 <p>OS</p>
             </div>
-            <div class="col-xs-11 default_padding">
+            <div class="col-xs-11 default_padding section_break ">
                 <p class="cat_info_text">Plan</p>
                 @if(!isset($data['record']['plan']))
                 <?php $data['record']['plan'] = ''; ?>
@@ -203,7 +221,7 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-1 os_box_border default_padding">
+            <div class="col-xs-1 os_box_border default_padding section_break">
                 <p>
                     @if(isset($data['record']['os_NDR']))
                     <span class="glyphicon glyphicon-ok"></span>
@@ -212,9 +230,9 @@
                     @endif
                 </p>
             </div>
-            <div class="col-xs-11 default_padding">
-                <span> <input type="checkbox" {{ ($data['record']['plan'] === 'monitor')?'checked':'' }} > &nbsp; &nbsp; Monitor
-                </span>
+            <div class="col-xs-11 default_padding section_break">
+                <p> <input type="checkbox" {{ ($data['record']['plan'] === 'monitor')?'checked':'' }} > &nbsp; &nbsp; Monitor
+                </p>
             </div>
         </div>
 
@@ -226,6 +244,23 @@
                 <span>
                     <input type="checkbox" {{ ($data['record']['plan'] === 'additional-testing')?'checked':'' }}> &nbsp; Additional treatment recommendations
                 </span>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-1 os_box_border no_bottom_border default_padding">
+                <p> &nbsp;
+                
+                    @if(!isset($data['record']['plan_input']))
+                    <?php $data['record']['plan_input'] = ''; ?>
+                    @endif
+                
+                </p>
+            </div>
+            <div class="col-xs-11 default_padding">
+                <p class="default_p_margin_bottom">
+                    <span class="unit_input_text plan_input {{ ($data['record']['plan_input'] === '')?'default':'' }}">{{($data['record']['plan'] === 'additional-testing')?$data['record']['plan_input']:''}}</span>
+                </p>
             </div>
         </div>
 
@@ -273,7 +308,7 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-1 os_box_border  default_padding">
+            <div class="col-xs-1 os_box_border  default_padding section_break">
                 <p>
                     @if(isset($data['record']['os_cataract']))
                     <span class="glyphicon glyphicon-ok" style=""></span>
@@ -282,7 +317,7 @@
                     @endif
                 </p>
             </div>
-            <div class="col-xs-11 default_padding border_bottom">
+            <div class="col-xs-11 default_padding border_bottom section_break">
                 <p>
                     @if(!isset($data['record']['ORR']))
                     <?php $data['record']['ORR'] = ''; ?>
@@ -299,7 +334,7 @@
                     </span>
                     @endforeach
                     @if('yes' === $data['record']['ORR'])
-                    <span class=""> Name of Md</span>
+                    <span class="padding_left"> Name of Md</span>
                     <span class="unit_input_text">{{ $data['record']['ORR-MD'] }}</span>
                     @endif
                 </p>
@@ -334,9 +369,8 @@
                     @endif
                     @php
                         $surgeryReferral =  [
-                            'yes' => 'Yes',
                             'no' => 'No',
-
+                            'yes' => 'Yes',
                         ]
 
                     @endphp
@@ -345,6 +379,10 @@
                         <span class="{{ ($name === $data['record']['surgery_referral'])?'active_wrap_field' :''}}">     {{ $value }}
                         </span>
                     @endforeach
+                    @if('yes' === $data['record']['surgery_referral'])
+                    <span class="padding_left"> Name of Md</span>
+                    <span class="unit_input_text">{{ (isset($data['record']['surgery_referral_md']))?$data['record']['surgery_referral_md']:'' }}</span>
+                    @endif
                 </p>
             </div>
         </div>
