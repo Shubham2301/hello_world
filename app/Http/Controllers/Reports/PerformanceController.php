@@ -48,9 +48,10 @@ class PerformanceController extends ReportController
     {
         $this->setStartDate($request->start_date);
         $this->setEndDate($request->end_date);
+        $filter = $request->filter_option;
         $network = $request->network;
 
-        $report_data = $this->generateReport($network);
+        $report_data = $this->generateReport($network, $filter['filterType']);
         return $report_data;
     }
 

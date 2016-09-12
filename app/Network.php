@@ -17,6 +17,15 @@ class Network extends Model {
 		            ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
 		            ->orderBy('practices.name');
 	}
+
+    /**
+     * @return mixed
+     */
+    public function goalNetwork()
+    {
+        return $this->hasMany('myocuhub\Models\GoalNetwork');
+    }
+
 	
 	public static function practicesByName($search) {
 		return self::where('networks.id', session('network-id'))

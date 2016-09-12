@@ -61,16 +61,42 @@ class ContactHistory extends Model
         return $this->hasOne(PatientRecord::class);
     }
 
-    public static function getBillingReportData($networkID, $startDate, $endDate) {
+    public static function getPerformanceReportData($networkID, $startDate, $endDate) {
 
         return self::where('contact_activity_date', '>=', $startDate)
             ->where('contact_activity_date', '<=', $endDate)
+            ->whereNotNull('user_id')
             ->whereHas('careconsole.importHistory', function ($query) use ($networkID) {
                 $query->where('network_id', $networkID);
             })
             ->has('careconsole.patient')
             ->with('action')
             ->with('actionResult')
+            ->with('users')
+            ->with('careconsole.patient')
+            ->with('appointments')
+            ->get();
+
+    }
+
+    public static function getPerformanceReportAppointmentData($networkID, $startDate, $endDate) {
+
+        return self::where( function ($subquery) use ($startDate, $endDate) {
+                $subquery->whereHas('appointments', function ($query) use ($startDate, $endDate) {
+                    $query->where('start_datetime', '>=', $startDate);
+                    $query->where('start_datetime', '<=', $endDate);
+                });
+            })
+            ->whereNotNull('user_id')
+            ->whereHas('careconsole.importHistory', function ($query) use ($networkID) {
+                $query->where('network_id', $networkID);
+            })
+            ->has('careconsole.patient')
+            ->with('action')
+            ->with('actionResult')
+            ->with('users')
+            ->with('careconsole.patient')
+            ->with('appointments')
             ->get();
 
     }

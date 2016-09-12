@@ -262,6 +262,9 @@ class CareConsoleService
             case 'full-name':
                 return $patient['lastname'] . ', ' . $patient['firstname'];
                 break;
+            case 'print-name':
+                return $patient['firstname'] . ' ' . $patient['lastname'];
+                break;
             case 'phone':
                 $patient = Patient::find($patient['patient_id']);
                 if ($patient) {
