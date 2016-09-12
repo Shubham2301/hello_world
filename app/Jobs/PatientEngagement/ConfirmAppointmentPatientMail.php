@@ -137,7 +137,7 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
 
         if ($loggedInUser->cellphone) {
             $vars[] = [
-                'name' => 'USEREPHONE',
+                'name' => 'USERPHONE',
                 'content' => $loggedInUser->cellphone,
             ];
         }

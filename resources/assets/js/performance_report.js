@@ -5,7 +5,11 @@ google.charts.load('visualization', 'current', {
     'packages': ['corechart']
 });
 
-var filterOptions = {};
+var filterOptions = {
+    'filterType': '',
+    'type': 'no_filter',
+    'filterHeader': '',
+};
 
 var graphData = {};
 
@@ -14,6 +18,10 @@ var graphType = {};
 var graphColumn = {};
 
 var overAllGraph = {};
+
+var drillDownData = {};
+
+var graphGoals = {};
 
 var graphOption = {
     vAxis: {
@@ -31,7 +39,7 @@ var graphOption = {
         baselineColor: '#f5f5f5',
     },
     backgroundColor: '#f5f5f5',
-    width: 200,
+    width: 250,
     height: 200,
     legend: {
         position: 'none'
@@ -78,7 +86,27 @@ $(document).ready(function () {
     });
 
     $(document).on('change', '#network', function () {
-        getReport()
+        resetFilter();
+        getReport();
+    });
+
+    $('.filter_row').on('click', '.remove_filter', function () {
+        resetFilter();
+        getReport();
+    });
+
+    $('.graph_column.clickable').on('click', function () {
+        filterOptions.filterType = $(this).find('.graph_section').attr('id');
+        filterOptions.filterHeader = $(this).attr('data-title');
+        var filterData = '<div class="filter_section">Graph: ' + filterOptions.filterHeader + '<span class="glyphicon glyphicon-remove-circle remove_filter"></span></div>';
+        filterOptions.type = 'graph_filter';
+        $('.performance_graph_row').hide();
+        $('.drilldown_section').show();
+        $('.filter_graph').attr('id', filterOptions.filterType);
+        $('.filter_row').html(filterData);
+        graphOption.width = 800;
+        graphOption.height = 300;
+        getReport();
     });
 
 });
@@ -102,16 +130,23 @@ function getReport(filter) {
             graphData = data.timelineGraph;
             graphType = data.graphType;
             overAllGraph = data.overAllGraph;
+            graphGoals = data.graph_goal;
+
             graphColumn = graphType.graphColumn;
 
             if (overAllGraph.total_patient != 0) {
-                $('.bill_graph_row').show();
+                if (filterOptions.filterType == '') {
+                    $('.performance_graph_row').show();
+                } else {
+                    drillDownData = data.drilldown;
+                    drawDrillDownTable();
+                }
                 $('.no_data_received').hide();
                 drawGoalChart(data.userCount);
                 drawCompareChart(data.userCount);
                 drawOverallChart();
             } else {
-                $('.bill_graph_row').hide();
+                $('.performance_graph_row').hide();
                 $('.no_data_received').show();
             }
         },
@@ -145,11 +180,13 @@ function drawGoalChart(userCount) {
 
     $.extend(options, graphOption);
 
-
-
     var types = graphType.goalGraph;
 
     types.forEach(function (type) {
+
+        if (filterOptions.filterType != '' && filterOptions.filterType != type) {
+            return true;
+        }
 
         var data = new google.visualization.DataTable();
 
@@ -168,28 +205,39 @@ function drawGoalChart(userCount) {
             switch (type) {
                 case 'avgContact':
                     temp.push(Math.round(graphData[key]['contactAttempted'] / userCount));
-                    temp.push(2);
+                    temp.push(graphGoals[type]);
                     break;
                 case 'avgReached':
                     temp.push(Math.round(graphData[key]['reached'] / userCount));
-                    temp.push(2);
+                    temp.push(graphGoals[type]);
                     break;
                 case 'avgScheduled':
                     temp.push(Math.round(graphData[key]['appointmentScheduled'] / userCount));
-                    temp.push(2);
+                    temp.push(graphGoals[type]);
                     break;
             }
 
             data.addRow(temp);
 
         }
-        options.hAxis.showTextEvery = i - 1;
-        var chart = new google.visualization.ComboChart(document.getElementById(type));
+        if (filterOptions.filterType != '' && filterOptions.filterType == type) {
+            options.chartArea.width = '85%';
+            options.chartArea.height = '70%';
+            options.hAxis.showTextEvery = 'automatic';
+        } else {
+            options.hAxis.showTextEvery = i - 1;
+        }
+
+        var chart = new google.visualization.ComboChart($('#' + type)[0]);
         chart.draw(data, options);
     });
 }
 
 function drawOverallChart() {
+
+    for (var key in overAllGraph) {
+        $('.' + key).text(overAllGraph[key]);
+    }
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Count');
     data.addColumn('number', 'Scheduled');
@@ -238,6 +286,10 @@ function drawCompareChart(userCount) {
 
     types.forEach(function (type) {
 
+        if (filterOptions.filterType != '' && filterOptions.filterType != type) {
+            return true;
+        }
+
         var data = new google.visualization.DataTable();
 
         graphColumn[type].forEach(function (columnName) {
@@ -270,7 +322,47 @@ function drawCompareChart(userCount) {
 
         }
 
-        var chart = new google.visualization.AreaChart(document.getElementById(type));
+        if (filterOptions.filterType != '' && filterOptions.filterType == type) {
+            options.chartArea.width = '85%';
+            options.chartArea.height = '70%';
+            options.hAxis.showTextEvery = 'automatic';
+        }
+
+        var chart = new google.visualization.AreaChart($('#' + type)[0]);
         chart.draw(data, options);
     });
+}
+
+function resetFilter() {
+    filterOptions = {
+        'filterType': '',
+        'type': 'no_filter',
+        'filterHeader': '',
+    };
+    graphOption.width = 250;
+    graphOption.height = 200;
+    $('.filter_row').html('');
+    $('.performance_graph_row').show();
+    $('.drilldown_section').hide();
+    drillDownData = {};
+    $('.filter_graph').attr('id', '');
+}
+
+function drawDrillDownTable() {
+    var content = '';
+    content += '<div class="row head_row arial_bold">'
+    for(var columnName in drillDownData.columns) {
+        content += '<span>' + drillDownData.columns[columnName] + '</span>';
+    }
+    content += '</div>';
+    content += '<div class="row drilldown_data_content arial">';
+    for (var row in drillDownData.data) {
+        content += '<div class="drilldown_data_row">';
+        for(var rowData in drillDownData.data[row]) {
+            content += '<span>' + drillDownData.data[row][rowData] + '</span>';
+        }
+        content += '</div>';
+    }
+    content += '<//div>';
+    $('.drilldown_data').html(content);
 }

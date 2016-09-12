@@ -15,6 +15,7 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Jobs\Job;
 use myocuhub\Patient;
 use myocuhub\Services\MandrillService\MandrillService;
+use DateTime;
 
 class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQueue
 {
@@ -40,6 +41,7 @@ class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQ
             return;
         }
 
+        $mailDate = new DateTime();
         $template = (new MandrillService)->templateInfo('contact-patient-template');
 
         $attr = [
@@ -56,7 +58,7 @@ class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQ
             'vars' => [
                     [
                         'name' => 'patientname',
-                        'content' => $this->getPatient()->getName()
+                        'content' => $this->getPatient()->getName('print_format')
                     ],
                     [
                         'name' => 'contactmessage',
@@ -69,6 +71,14 @@ class RequestAppointmentPatientMail extends PatientEngagement implements ShouldQ
                     [
                         'name' => 'senderemail',
                         'content' => $user->email
+                    ],
+                    [
+                        'name' => 'maildate',
+                        'content' => $mailDate->format('D F d, Y'),
+                    ],
+                    [
+                        'name' => 'mailtime',
+                        'content' => $mailDate->format('g:i a'),
                     ]
             ],
             'attachments' => [],

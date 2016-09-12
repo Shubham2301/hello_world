@@ -40,37 +40,41 @@
                 </select>
             </span>
         </div>
-        <div class="row arial_bold text-left bill_graph_row">
+        <div class="row arial_bold drilldown_section" style="display:none;">
+            <div class="filter_graph row" id=""></div>
+            <div class="row drilldown_data"></div>
+        </div>
+        <div class="row arial_bold text-left performance_graph_row">
             <span class="graph_row">
-                <span class="graph_column">
-                    <span class="overall_patient_text">% of patients <span class="green_text">scheduled</span> vs <span class="red_text">not scheduled</span></span>
+                <span class="graph_column" data-toggle="tooltip" title="Total patient for the network that are not in contact status stage vs the patient that are in contact status stage of careconsole" data-placement="bottom">
+                    <span class="overall_patient_text">% of patients <span class="green_text">scheduled(<span class="completed_patient"></span>)</span> vs <span class="red_text">not scheduled(<span class="pending_patient"></span>)</span></span>
                     <span class="graph_section" id="overall_patient"></span>
                 </span>
             </span>
             <span class="graph_row">
-                <span class="graph_column">
-                    <span>Average Contact per day per user</span>
-                    <span class="graph_section" id="avgContact"></span>
+                <span class="graph_column clickable" data-title="Average Contact per day per user" data-toggle="tooltip" title="Contacts made per day during the timeline divided by the number of care-coordinator" data-placement="top">
+                    <span class="graph_header">Average Contact per day per user</span>
+                    <span class="graph_section no_filter" id="avgContact"></span>
                 </span>
-                <span class="graph_column">
+                <span class="graph_column clickable" data-title="Average patients reached per day per user" data-toggle="tooltip" title="Total patients reached per day during the timeline divided by the number of care-coordinator" data-placement="top">
                     <span>Average patients reached per day per user</span>
-                    <span class="graph_section" id="avgReached"></span>
+                    <span class="graph_section no_filter" id="avgReached"></span>
                 </span>
-                <span class="graph_column">
+                <span class="graph_column clickable" data-title="Average scheduled appointments per day per user" data-toggle="tooltip" title="Total patients scheduled per day during the timeline divided by the number of care-coordinator" data-placement="top">
                     <span>Average scheduled appointments per day per user</span>
-                    <span class="graph_section" id="avgScheduled"></span>
+                    <span class="graph_section no_filter" id="avgScheduled"></span>
                 </span>
-                <span class="graph_column">
+                <span class="graph_column clickable" data-title="% of patients scheduled vs dropped" data-toggle="tooltip" title="Total patients scheduled vs total patient dropped per day during the timeline divided by the number of care-coordinator" data-placement="top">
                     <span>% of patients <span class="green_text">scheduled</span> vs <span class="red_text">dropped</span></span>
-                    <span class="graph_section" id="scheduled_vs_dropped"></span>
+                    <span class="graph_section no_filter" id="scheduled_vs_dropped"></span>
                 </span>
-                <span class="graph_column">
+                <span class="graph_column clickable" data-title="% of patients kept appointment vs missed" data-toggle="tooltip" title="Total patients marked as kept appointment vs total patient marked missed/cancelled appointment per day during the timeline divided by the number of care-coordinator (this graph is based on the appointment date)" data-placement="top">
                     <span>% of patients <span class="green_text">kept appointment</span> vs <span class="red_text">missed</span></span>
-                    <span class="graph_section" id="keptAppointment_vs_missed"></span>
+                    <span class="graph_section no_filter" id="keptAppointment_vs_missed"></span>
                 </span>
-                <span class="graph_column">
+                <span class="graph_column clickable" data-title="% of patients received reports vs report pending" data-toggle="tooltip" title="Total patients who received report vs total patient who completed appointment and were waiting for report per day during the timeline divided by the number of care-coordinator" data-placement="top">
                     <span>% of patients <span class="green_text">received reports</span> vs <span class="red_text">report pending</span></span>
-                    <span class="graph_section" id="receivedReport_vs_pending"></span>
+                    <span class="graph_section no_filter" id="receivedReport_vs_pending"></span>
                 </span>
             </span>
         </div>

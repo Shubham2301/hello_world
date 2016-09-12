@@ -61,8 +61,11 @@ class Patient extends Model
         return $phone;
     }
 
-    public function getName()
+    public function getName($type = 'system_format')
     {
+        if($type == 'print_format') {
+            return $this->firstname . ' ' . $this->lastname;
+        }
         return $this->lastname . ', ' . $this->firstname;
     }
 

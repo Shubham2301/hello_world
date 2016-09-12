@@ -12,7 +12,7 @@ $(document).ready(function () {
     });
 
     $("#form_add_networks").submit(function (event) {
-        if(!checkForm())
+        if (!checkForm())
             event.preventDefault();
     });
     $('#search_network_button').on('click', function () {
@@ -67,6 +67,14 @@ $(document).ready(function () {
 
     $('.network_search_content').on('mouseleave', '.action_dropdown', function () {
         $(this).attr('src', $('#dropdown_natural_img').val());
+    });
+
+    $('.enable_console').on('change', function () {
+        if ($(this).prop('checked')) {
+            $('.network_goals').show();
+        } else {
+            $('.network_goals').hide();
+        }
     });
 
 
@@ -205,6 +213,6 @@ function checkForm() {
             return false;
         }
     });
-    if(flag == 0)
+    if (flag == 0)
         return true;
 }

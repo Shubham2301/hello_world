@@ -15,6 +15,17 @@
         &.report_filter_row {
             margin: 1em 0;
         }
+        &.drilldown_section {
+            margin: 1em 0;
+            &>.filter_graph {
+                margin: 0;
+                display: flex;
+                justify-content: center;
+            }
+        }
+        &.report_filter_row {
+            margin: 1em 0;
+        }
     }
 }
 .content-right {
@@ -36,11 +47,13 @@
         margin-top: 2em;
         background-color: @graph_background;
         padding: 1em;
-        width: 250px;
+        width: 300px;
         margin: 1em 0;
-        cursor: pointer;
         &>.overall_patient_text {
             margin-bottom: 1em;
+        }
+        &.clickable {
+            cursor: pointer;
         }
     }
 }
@@ -58,5 +71,49 @@
     color: @font-color-black;
     &:focus {
         outline: none;
+    }
+}
+.filter_section {
+    margin-top: .7em;
+    display: inline-block;
+    padding: .2em;
+    border: 1px solid @font-color-black;
+    border-radius: .5em;
+    &>.remove_filter {
+        margin-left: .3em;
+        cursor: pointer;
+    }
+}
+.drilldown_data {
+    margin: 2em 0;
+    cursor: default;
+    &>.head_row {
+        display: flex;
+        flex-direction: row;
+        padding: .5em 0;
+        justify-content: space-around;
+        border-bottom: 2px solid #4d4d4d;
+        margin: 0;
+        &>span {
+            flex-grow: 1;
+            flex-basis: 0;
+        }
+    }
+    &>.drilldown_data_content {
+        margin: .5em 0 0 0;
+        max-height: 13em;
+        overflow-y: scroll;
+        &>.drilldown_data_row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            &:nth-child(even) {
+                background: #e3e3e3;
+            }
+            &>span {
+                flex-grow: 1;
+                flex-basis: 0;
+            }
+        }
     }
 }

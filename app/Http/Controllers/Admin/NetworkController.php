@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Network;
+use myocuhub\models\Goal;
+use myocuhub\models\GoalNetwork;
 
 class NetworkController extends Controller {
 
@@ -42,10 +44,19 @@ class NetworkController extends Controller {
         }
 
         $data = [];
-		$data = Network::getColumnNames();
+        $goalData = [];
+
+        $data = Network::getColumnNames();
+
+        $goals = Goal::all();
+        foreach($goals as $goal) {
+            $goalData[$goal->name] = $goal->display_name;
+            $data[$goal->name] = null;
+        }
+
         $data['id']= -1;
         $data['url']='/administration/network/add';
-        return view('admin.networks.create')->with('data', $data);
+        return view('admin.networks.create')->with('data', $data)->with('goalData', $goalData);
 	}
 	public function add(Request $request) {
 		if(!policy(new Network)->administration()){
@@ -68,6 +79,19 @@ class NetworkController extends Controller {
 			$network->enable_console =1;
 		}
 		$network->save();
+
+        if($request->has('enable_console')) {
+            $goals = Goal::all();
+            foreach($goals as $goal) {
+                if($request->has($goal->name)) {
+                    $goalNetwork = new GoalNetwork();
+                    $goalNetwork->goal_id = $goal->id;
+                    $goalNetwork->network_id = $network->id;
+                    $goalNetwork->value = $request->input($goal->name);
+                    $goalNetwork->save();
+                }
+            }
+        }
 
 		$action = 'New network created';
 		$description = '';
@@ -119,10 +143,22 @@ class NetworkController extends Controller {
         }
 
         $data = [];
-        $data = Network::find($id);
+        $network = Network::find($id);
+        $data = $network;
+
+        $goals = Goal::all();
+        foreach($goals as $goal) {
+            $goalData[$goal->name] = $goal->display_name;
+            $data[$goal->name] = null;
+        }
+
+        foreach($network->goalNetwork as $goal) {
+            $data[$goal->goal->name] = $goal->value;
+        }
+
         $data['id']=$id;
         $data['url']='/networks/update/'.$id;
-        return view('admin.networks.create')->with('data', $data);
+        return view('admin.networks.create')->with('data', $data)->with('goalData', $goalData);
 	}
 
 	/**
@@ -140,11 +176,35 @@ class NetworkController extends Controller {
 
         $network = Network::find($id);
         $network->update($request->input());
-		$network->enable_console =0;
+		$network->enable_console = 0;
 		if($request->has('enable_console')){
 			$network->enable_console =1;
 		}
 		$network->save();
+
+        if($request->has('enable_console')) {
+            $goals = Goal::all();
+            foreach($goals as $goal) {
+                if($request->has($goal->name)) {
+                    $goalNetwork = GoalNetwork::where('goal_id', $goal->id)->where('network_id', $network->id)->first();
+                    if($goalNetwork) {
+                        $goalNetwork->value = $request->input($goal->name);
+                        $goalNetwork->save();
+                    } else {
+                        $goalNetwork = new GoalNetwork();
+                        $goalNetwork->goal_id = $goal->id;
+                        $goalNetwork->network_id = $network->id;
+                        $goalNetwork->value = $request->input($goal->name);
+                        $goalNetwork->save();
+                    }
+                } else {
+                    $goalNetwork = GoalNetwork::where('goal_id', $goal->id)->where('network_id', $network->id)->delete();
+                }
+            }
+        } else {
+            $goalNetwork = GoalNetwork::where('network_id', $network->id)->delete();
+        }
+
 		$action = 'update network of id =' . $id;
 		$description = '';
 		$filename = basename(__FILE__);

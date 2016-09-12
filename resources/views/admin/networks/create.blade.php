@@ -49,9 +49,9 @@
 						<div class="col-sm-6 col-xs-12" style="color:#fff;">
 
                         	@if($data['enable_console'])
-							{!!Form::checkbox('enable_console',$data['enable_console'],true) !!}
+							{!!Form::checkbox('enable_console',$data['enable_console'],true, array('class' => 'enable_console')) !!}
 							@else
-							{!!Form::checkbox('enable_console') !!}
+							{!!Form::checkbox('enable_console', '1', false, array('class' => 'enable_console')) !!}
 							@endif
 							{!! Form::label('enable_console', 'Enable console for this network')!!}
                         </div>
@@ -80,6 +80,30 @@
                             {!! Form::text('Zip', $data['zip'], array('class' => 'add_network_input', 'name' => 'zip', 'placeholder' => 'ZIP', 'id' => 'zip', 'data-toggle' => 'tooltip', 'title' => 'ZIP', 'data-placement' => 'right')) !!}
                             {!! Form::text('state', $data['state'], array('class' => 'add_network_input', 'name' => 'state', 'placeholder' => 'State', 'id' => 'state', 'data-toggle' => 'tooltip', 'title' => 'State', 'data-placement' => 'right')) !!}
                             {!! Form::text('country', $data['country'], array('class' => 'add_network_input', 'name' => 'country', 'placeholder' => 'Country', 'id' => 'country', 'data-toggle' => 'tooltip', 'title' => 'Country', 'data-placement' => 'right')) !!}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default network_goals" style="{{ $data['enable_console'] ? 'display:block' : 'display:none' }}">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <span class="popover_text" data-content="">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+        Network Goal Details</a>
+                    </span>
+      </h4>
+            </div>
+            <div id="collapse3" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="row content-row-margin">
+                        <div class="col-sm-6 col-xs-12">
+                            @foreach($goalData as $key => $goal)
+                                {!! Form::text($key, $data[$key], array('class' => 'add_network_input', 'name' => $key, 'placeholder' => $goal, 'id' => $key, 'data-toggle' => 'tooltip', 'title' => $goal, 'data-placement' => 'right')) !!}
+                            @endforeach
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
 
                         </div>
                     </div>
