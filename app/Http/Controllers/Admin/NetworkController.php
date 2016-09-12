@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Network;
-use myocuhub\models\Goal;
-use myocuhub\models\GoalNetwork;
+use myocuhub\Models\Goal;
+use myocuhub\Models\GoalNetwork;
 
 class NetworkController extends Controller {
 
