@@ -7,13 +7,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
 use myocuhub\Events\PatientEngagementFailure;
 use myocuhub\Events\PatientEngagementSuccess;
 use myocuhub\Jobs\Job;
 use myocuhub\Models\Appointment;
 use myocuhub\Patient;
+use myocuhub\Services\MandrillService\MandrillService;
+use DateTime;
 
 class PostAppointmentPatientMail extends PatientEngagement implements ShouldQueue
 {
@@ -32,31 +32,56 @@ class PostAppointmentPatientMail extends PatientEngagement implements ShouldQueu
         
         $patient = $this->getPatient();
 
-        $to = [
-            'name' => $patient->getName(),
-            'email' => $patient->email
+        $message = $this->getContent();
+        $subject = $this->getContent('subject');
+
+        if($message == ''){
+            return;
+        }
+
+        $mailDate = new DateTime();
+        $template = (new MandrillService)->templateInfo('contact-patient-template');
+
+        $attr = [
+            'from' => [
+                'name' => config('constants.support.email_name'),
+                'email' => config('constants.support.email_id'),
+            ],
+            'to' => [
+                'name' => $patient->getName('print_format'),
+                'email' => $patient->email,
+            ],
+            'subject' => $subject,
+            'template' => $template['slug'],
+            'vars' => [
+                    [
+                        'name' => 'patientname',
+                        'content' => $patient->getName('print_format'),
+                    ],
+                    [
+                        'name' => 'contactmessage',
+                        'content' => $message,
+                    ],
+                    [
+                        'name' => 'sendername',
+                        'content' => config('constants.support.email_name'),
+                    ],
+                    [
+                        'name' => 'senderemail',
+                        'content' => config('constants.support.email_id'),
+                    ],
+                    [
+                        'name' => 'maildate',
+                        'content' => $mailDate->format('D F d, Y'),
+                    ],
+                    [
+                        'name' => 'mailtime',
+                        'content' => $mailDate->format('g:i a'),
+                    ]
+            ],
+            'attachments' => [],
         ];
 
-        $content = $this->getContent();
-        $message_config = 'constants.message_views.post_appointment_patient';
-        $subject = config("$message_config.subject");
-	
-        try {
-            $mail = Mail::send(config("$message_config.view"), ['content' => $content, 'to' => $to], function ($m) use ($to, $subject) {
-                $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
-                $m->to($to['email'], $to['name'])->subject($subject);
-            });
-            if($mail->getStatusCode() == "200"){
-                event(new PatientEngagementSuccess([
-                        'action' => 'Ocuhub Scheduler sent Post Appointment mail to : ' . $to['name'] . ' ' . $to['email'],
-                    ]));
-            }
-        } catch (Exception $e) {
-            Log::error($e);
-            event(new PatientEngagementFailure([
-                    'action' => 'Ocuhub Scheduler Failed to send Post Appointment mail to : ' . $to['name'] . ' ' . $to['email'],
-                    'description' => $e->getMessage()
-                ]));
-        }
+        $this->sendTemplate($attr);
     }
 }

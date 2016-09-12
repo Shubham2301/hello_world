@@ -98,8 +98,8 @@ class PatientEngagement extends Job{
                 ]));
     }
 
-    public function getContent(){
-        return MessageTemplate::getTemplate($this->getType(), $this->getStage(), $this->getPatient()->network()->id);
+    public function getContent($templatePart = 'message'){
+        return MessageTemplate::getTemplate($this->getType(), $this->getStage(), $this->getPatient()->network()->id, $templatePart);
     }
 
     public function getAppt()
