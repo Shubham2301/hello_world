@@ -7,9 +7,9 @@ $(document).ready(function () {
 
     window.history.pushState("disable forward navigation", "Provider-forward-disable", "");
 
-    setTimeout(function() {
+    setTimeout(function () {
         $('.provider_near_patient').trigger('click');
-    },10);
+    }, 10);
 
     $('.dropdown-menu li').click(function () {
         $('#search_practice_input_type').text($(this).text());
@@ -301,6 +301,34 @@ $(document).ready(function () {
         $("#search_practice_button").trigger("click");
     });
 
+    $('.preferences').on('click', function () {
+        if ($('#form_location_id').val() == '') {
+            $('#location_special_instruction').html('<p>Please select a location</p>');
+            $('#special_instruction').modal('show');
+        } else {
+            var formData = {
+                'location_id': $('#form_location_id').val(),
+            };
+            $.ajax({
+                url: '/providers/get_special_instruction',
+                type: 'GET',
+                data: $.param(formData),
+                contentType: 'text/html',
+                async: false,
+                success: function (e) {
+                    $('#location_special_instruction').html(e);
+                    $('#special_instruction').modal('show');
+                },
+                error: function () {
+                    $('p.alert_message').text('Error getting location instructions');
+                    $('#alert').modal('show');
+                },
+                cache: false,
+                processData: false
+            });
+        }
+    });
+
 });
 
 var selectPreviousProvider = false;
@@ -325,6 +353,8 @@ function clearHTML() {
     $('.availability').removeClass('active');
     $('.get_availability').addClass('hide');
     $('.appointment_type_not_found').hide();
+    $('#form_location_id').val('');
+    $('#form_location_code').val('');
 }
 
 function showPatientInfo() {
@@ -417,7 +447,7 @@ function showPreviousProvider(providers) {
             content += '<div class="row list_seperator previous_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '">';
             content += '<div class="col-xs-12 arial_bold provider_list_title">' + provider.name + '</div>';
             content += '<div class="col-xs-4 arial">Specialty - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
-            content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br>Location - ' + provider.location_name +'</div>';
+            content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br>Location - ' + provider.location_name + '</div>';
             content += '<div class="col-xs-4 arial"></div>';
             content += '</div>';
         });
@@ -438,7 +468,7 @@ function showProviderNear(providers) {
             content += '<div class="row list_seperator nearby_provider_item" data-id="' + provider.id + '" data-practiceid="' + provider.practice_id + '">';
             content += '<div class="col-xs-12 arial_bold provider_list_title">' + provider.name + '</div>';
             content += '<div class="col-xs-4 arial">Specialty - ' + provider.speciality + '<br>Provider Type - ' + provider.provider_type + '</div>'
-            content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br>Location - ' + provider.location_name +'</div>';
+            content += '<div class="col-xs-4 arial">Practice - ' + provider.practice_name + '<br>Location - ' + provider.location_name + '</div>';
             content += '<div class="col-xs-4 arial"><span style ="color:black;">Distance - ' + provider.distance + '</span></div>';
             content += '</div>';
         });
@@ -562,7 +592,7 @@ function getProviders(formData) {
         referraltype_id: $('#form_referraltype_id').val()
     }
     var providerTypes = [];
-    $("input:checkbox[name=provider_types]:checked").each(function(){
+    $("input:checkbox[name=provider_types]:checked").each(function () {
         providerTypes.push($(this).val());
     });
     $.ajax({
@@ -791,7 +821,7 @@ function getPreviousProviders(formData) {
 function getNearByProviders() {
 
     var providerTypes = [];
-    $("input:checkbox[name=provider_types]:checked").each(function(){
+    $("input:checkbox[name=provider_types]:checked").each(function () {
         providerTypes.push($(this).val());
     });
 
@@ -799,7 +829,7 @@ function getNearByProviders() {
         'patient_id': $('#form_patient_id').attr('value'),
         'provider_types': providerTypes
     };
-    
+
     $.ajax({
         url: '/providers/nearby',
         type: 'GET',

@@ -97,6 +97,13 @@ class PracticeController extends Controller
             $practicelocation->state = $location['state'];
             $practicelocation->zip = $location['zip'];
             $practicelocation->location_code = $location['location_code'];
+            if($location['special_instructions'] != ''){
+                $practicelocation->special_instructions = $location['special_instructions'];
+                $practicelocation->special_instructions_plain_text = $location['special_instructions_plain_text'];
+            } else {
+                $practicelocation->special_instructions = null;
+                $practicelocation->special_instructions_plain_text = null;
+            }
 
             $address = urlencode($practicelocation->addressline1.' '.$practicelocation->addressline1.' '.$practicelocation->city.' '.$practicelocation->zip.' '.$practicelocation->state);
 
@@ -233,6 +240,13 @@ class PracticeController extends Controller
             $practicelocation->state = $location['state'];
             $practicelocation->zip = $location['zip'];
             $practicelocation->location_code = $location['location_code'];
+            if($location['special_instructions'] != '') {
+                $practicelocation->special_instructions = $location['special_instructions'];
+                $practicelocation->special_instructions_plain_text = $location['special_instructions_plain_text'];
+            } else {
+                $practicelocation->special_instructions = null;
+                $practicelocation->special_instructions_plain_text = null;
+            }
             $practicelocation->save();
 
             $address = urlencode($practicelocation->addressline1.' '.$practicelocation->addressline1.' '.$practicelocation->city.' '.$practicelocation->zip.' '.$practicelocation->state);

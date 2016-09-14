@@ -7,6 +7,7 @@
     <script type="text/javascript" src="{{ elixir('js/call_center.js') }}"></script>
 @endsection
 @section('sidebar')
+@include('reports.sidebar')
 @endsection
 @section('content')
     @if (Session::has('success'))

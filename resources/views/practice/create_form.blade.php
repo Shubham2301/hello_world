@@ -66,15 +66,20 @@
                         <div class="col-sm-6 col-xs-12">
                             <input class="add_practice_input" id="locationname" type="text" placeholder="Location Name*" data-toggle="tooltip" title="Location Name" data-placement="right">
                             <input class="add_practice_input" id="location_code" type="text" placeholder="Location Code*"  data-toggle="tooltip" title="Location Code" data-placement="right">
+                            <input class="add_practice_input" id="location_email" type="text" placeholder="Notification Email*" data-toggle="tooltip" title="Notification Email" data-placement="right">
+							<input class="add_practice_input" id="phone" type="text" placeholder="Phone*"  data-toggle="tooltip" title="Phone" data-placement="right" pattern = "[^A-Za-z]+">
                             <input class="add_practice_input" id="addressline1" type="text" placeholder="Address*"  data-toggle="tooltip" title="Address" data-placement="right">
                             <input class="add_practice_input" id="city" type="text" placeholder="City*" data-toggle="tooltip" title="City" data-placement="right">
                             <input class="add_practice_input" id="state" type="text" placeholder="State*" data-toggle="tooltip" title="State" data-placement="right">
+                            <input class="add_practice_input" id="zip" type="text" placeholder="Zip*" data-toggle="tooltip" title="ZIP" data-placement="right">
                         </div>
                         <div class="col-sm-6 col-xs-12">
-                            <input class="add_practice_input" id="location_email" type="text" placeholder="Notification Email*" data-toggle="tooltip" title="Notification Email" data-placement="right">
-                            <input class="add_practice_input" id="zip" type="text" placeholder="Zip*" data-toggle="tooltip" title="ZIP" data-placement="right">
-							<input class="add_practice_input" id="phone" type="text" placeholder="Phone*"  data-toggle="tooltip" title="Phone" data-placement="right" pattern = "[^A-Za-z]+">
                             <input class="add_practice_input" id="addressline2" type="text" placeholder="AddressLine2" style="display:none;">
+                            <div class="special_instruction_lable">Special Instructions</div>
+                            <div class="special_instructions">
+                                <textarea id="special_instruction_text">
+                                </textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
