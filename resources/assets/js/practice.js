@@ -1,6 +1,10 @@
 'use strict';
+//$(document).ready(function () {
 
-$(document).ready(function () {
+window.onload = function () {
+    tinymce.init({
+        selector: 'textarea'
+    });
     loadAllPractices();
     if ($('#editmode').val() && $('#editmode').val() != "-1") {
         var val = $('#editmode').val();
@@ -305,7 +309,8 @@ $(document).ready(function () {
             $("#search_practice_button").trigger("click");
         }
     });
-});
+    //});
+}
 
 var locations = [];
 var currentPractice = [];
@@ -350,7 +355,9 @@ function getLocationData() {
                 "city": $('#city').val(),
                 "state": $('#state').val(),
                 "zip": $('#zip').val(),
-                "phone": $('#phone').val()
+                "phone": $('#phone').val(),
+                "special_instructions": tinyMCE.activeEditor.getContent(),
+                "special_instructions_plain_text": tinyMCE.activeEditor.getContent({format : 'text'}),
             });
         } else {
             $('p.alert_message').text('Please check the email format');
@@ -393,6 +400,7 @@ function setNewLocationField() {
     $('#state').val('');
     $('#zip').val('');
     $('#phone').val('');
+    tinymce.activeEditor.setContent('');
 }
 
 function loadAllPractices() {
@@ -525,6 +533,11 @@ function popupLocationFields(locationdata) {
     $('#state').val(locationdata['state']);
     $('#zip').val(locationdata['zip']);
     $('#phone').val(locationdata['phone']);
+    if (locationdata['special_instructions']) {
+        tinymce.activeEditor.setContent(locationdata['special_instructions']);
+    } else {
+        tinymce.activeEditor.setContent('');
+    }
 }
 
 function refreshAttributes() {
@@ -700,6 +713,8 @@ function updateLocationData(index) {
     locations[index]['state'] = $('#state').val();
     locations[index]['zip'] = $('#zip').val();
     locations[index]['phone'] = $('#phone').val();
+    locations[index]['special_instructions'] = tinyMCE.activeEditor.getContent();
+    locations[index]['special_instructions_plain_text'] = tinyMCE.activeEditor.getContent({format : 'text'});
 }
 
 function removeLocation(formData, location_dom) {

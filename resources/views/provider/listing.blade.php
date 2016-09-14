@@ -10,7 +10,7 @@
             <br>
             <p class="button_type_1" id="change_practice_button">Change Provider</p>
             <br>
-            <p id="openModel" class="arial_bold preference" data-toggle="modal" data-target="#provider_preferences">Provider Preferences</p>
+            <p id="" class="arial_bold preferences">Provider Preferences</p>
         </div>
         <div class="col-sm-8 col-xs-6">
             <p class="bold arial_bold" id="practice_name"></p>

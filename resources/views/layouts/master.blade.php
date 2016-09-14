@@ -19,6 +19,7 @@
         <script type="text/javascript" src="{{asset('lib/js/bootstrap.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('lib/js/moment.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('lib/js/bootstrap-datetimepicker.min.js')}}"></script>
+        <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 		<script type="text/javascript" src="{{elixir('js/session_timeout.js')}}"></script>
         <script type="text/javascript" src="{{elixir('js/main.js')}}"></script>
 

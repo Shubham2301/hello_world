@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('providers/openslots', 'Practice\ProviderController@getOpenSlots');
     Route::get('providers/previous', 'Practice\ProviderController@getPreviousProviders');
     Route::get('providers/nearby', 'Practice\ProviderController@getNearByProviders');
+    Route::get('providers/get_special_instruction', 'Practice\ProviderController@getSpecialInstruction');
 
     Route::group(['middleware' => 'role:direct-mail'], function () {
         Route::get('directmail/beginimpersonate', 'DirectMail\DirectMailController@beginImpersonate');

@@ -13,6 +13,7 @@ use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\ProviderType;
 use myocuhub\Models\ReferralHistory;
+use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
 use myocuhub\ReferralType;
 use myocuhub\User;
@@ -197,6 +198,15 @@ class ProviderController extends Controller
         }
 
         return json_encode($data);
+    }
+
+    public function getSpecialInstruction(Request $request) {
+        $locationID = $request->input('location_id');
+        $practiceLocation = PracticeLocation::find($locationID);
+        if($practiceLocation) {
+            return $practiceLocation->special_instructions ?: '<p>No special instructions specified for this location</p>';
+        }
+        return '<p>No data found!</p>';
     }
 
     public function getAppointmentTypes(Request $request)
