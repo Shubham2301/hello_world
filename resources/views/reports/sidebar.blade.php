@@ -38,10 +38,20 @@ Reporting
     </span>
   </a>
   @endif
+  @if(policy(new \myocuhub\Http\Controllers\Reports\ReportController)->accessCallCenterReport())
+  <a href="/report/call_center" class="report_sidebar_button {{ array_key_exists('call-center', $data) ? 'active' : '' }}">
+    <span class="report_sidebar_image">
+      <span><img src="{{elixir('images/sidebar/call-center-report.png')}}"></span>
+    </span>
+    <span class="report_sidebar_text">
+      <span class="text">Call Center Report</span>
+    </span>
+  </a>
+  @endif
   @if(policy(new \myocuhub\Http\Controllers\Reports\ReportController)->accessPerformanceReport())
   <a href="/report/performance" class="report_sidebar_button {{ array_key_exists('performance-report', $data) ? 'active' : '' }}">
     <span class="report_sidebar_image">
-      <span><img src="{{elixir('images/sidebar/reports-reachrate.png')}}"></span>
+      <span><img src="{{elixir('images/sidebar/performance-report.png')}}"></span>
     </span>
     <span class="report_sidebar_text">
       <span class="text">Performance Report</span>

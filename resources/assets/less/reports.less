@@ -361,7 +361,9 @@ p.date_selector {
     box-shadow: 0 1px 1px #898989;
     .gradient(#f0f2f5, #e0e3e6);
     &.active,
-    &.active:hover {
+    &.active:hover,
+    &.active:active,
+    &.active:focus{
         background-color: #d2d3d5;
         .gradient(#d2d3d5, #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
@@ -374,7 +376,8 @@ p.date_selector {
         text-decoration: none;
         color: @font-color-black;
     }
-    &:active {
+    &:active,
+    &:focus {
         background-color: #d2d3d5;
         .gradient(#d2d3d5, #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
