@@ -65,7 +65,7 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
         $patientDob = new DateTime($patient->birthdate);
 
         $practiceName = $practice->name ?: '';
-        $description = 'Thank you for your recent appointment request. Please remember final confirmation of the appointment will come from the practice.\n\nTo ensure you arrive at the appointment easily, you can use the link below: \nhttp://mapsdrivingdirections.org/12a/?query=google+maps ' . ($location->special_instructions_plain_text ? '\n\nWe are also providing some helpful notes that the practice has provided: \n\n' . $location->special_instructions_plain_text  .' ' : '') . '\n\nThank you. \n\nTo cancel or reschedule this appointment please email at '. $loggedInUser->email ?: 'support@ocuhub.com';
+        $description = 'Thank you for your recent appointment request. Please remember final confirmation of the appointment will come from the practice.\n\nTo ensure you arrive at the appointment easily, you can use the link below: \nhttp://mapsdrivingdirections.org/12a/?query=google+maps ' . ($location->special_instructions_plain_text ? '\n\nWe are also providing some helpful notes that the practice has provided: \n\n' . str_replace("\n","\\n",$location->special_instructions_plain_text)  .' ' : '') . '\n\nThank you. \n\nTo cancel or reschedule this appointment please email at '. $loggedInUser->email ?: 'support@ocuhub.com';
 
         $vars = [
             [
