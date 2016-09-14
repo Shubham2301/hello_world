@@ -64,6 +64,9 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
         $apptStartdate = new DateTime($appointment->start_datetime);
         $patientDob = new DateTime($patient->birthdate);
 
+        $practiceName = $practice->name ?: '';
+        $description = 'Thank you for your recent appointment request. Please remember final confirmation of the appointment will come from the practice.\n\nTo ensure you arrive at the appointment easily, you can use the link below: \nhttp://mapsdrivingdirections.org/12a/?query=google+maps ' . ($location->special_instructions_plain_text ? '\n\nWe are also providing some helpful notes that the practice has provided: \n\n' . $location->special_instructions_plain_text  .' ' : '') . '\n\nThank you. \n\nTo cancel or reschedule this appointment please email at '. $loggedInUser->email ?: 'support@ocuhub.com';
+
         $vars = [
             [
                 'name' => 'USERNAME',
@@ -157,7 +160,7 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
         }
 
         $iCal = $this->createICal([
-            'event_name' => 'Appointment Confirmation',
+            'event_name' => $appointmentType ? $appointmentType.' Appointment Confirmation' : 'Appointment Confirmation',
 
             'date_start' => new DateTime($appointment->start_datetime),
 
@@ -181,21 +184,19 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
 
             'timezone' => ($patient->timezone)?$patient->timezone->utc:config('constants.default_timezone'),
 
-            'summary' => 'Appointment Confirmation',
+            'summary' => ($practice->name ?: '') . ', ' . ($location->addressline1 ?: '') . ', ' . ($location->addressline2 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: '') . ', ' .($location->phone ?: ''),
 
-            'description' => 'Appointment has been scheduled with '. $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname. ' On '.$apptStartdate->format('F d, Y') ,
+            'description' => $description,
 
         ]);
 
-        // disable google link
+         if ($iCal) {
 
-        // if ($iCal) {
-
-        //     $vars[] = [
-        //         'name' => 'CALENDER',
-        //         'content' => $iCal->googleCalenderLink(),
-        //     ];
-        // }
+             $vars[] = [
+                 'name' => 'CALENDER',
+                 'content' => $iCal->googleCalenderLink(),
+             ];
+         }
 
         $attr = [
             'from' => [
@@ -210,12 +211,11 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
             'template' => $template['slug'],
             'vars' => $vars,
             'attachments' => [
-               //disable ics attachments
-                // [
-                //     'content' => base64_encode($iCal->getICAL()),
-                //     'type' => "text/calendar",
-                //     'name' => 'appointment.ics',
-                // ]
+                 [
+                     'content' => base64_encode($iCal->getICAL()),
+                     'type' => "text/calendar",
+                     'name' => 'appointment.ics',
+                 ]
             ]
         ];
 

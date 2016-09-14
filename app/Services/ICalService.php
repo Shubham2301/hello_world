@@ -522,7 +522,7 @@ class ICalService
         $link = 'https://www.google.com/calendar/render?action=TEMPLATE';
         $title = '&text='. str_replace(' ', '+', $this->getName());
         $dates = '&dates='.$this->getDateStart().'/'.$this->getDateEnd();
-        $discription = '&details='. str_replace(' ', '+', $this->getDescription());
+        $discription = '&details='. str_replace(' ', '+', str_replace("\\n", "%0A", $this->getDescription()));
         $location = '&location='. str_replace(' ', '+', $this->getAddress());
         return $link.$title.$dates.$discription.$location;
     }
