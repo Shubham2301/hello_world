@@ -299,10 +299,12 @@ CanResetPasswordContract
             ->orderBy('distance', 'ASC');
 
         if($providerTypes) {
-            $query->where('users.provider_type_id', null);
-            foreach ($providerTypes as $type) {
-                $query->orWhere('users.provider_type_id', $type);
-            }
+            $query->where(function ($innerQuery) use ($providerTypes) {
+                $innerQuery->where('users.provider_type_id', null);
+                foreach ($providerTypes as $type) {
+                    $innerQuery->orWhere('users.provider_type_id', $type);
+                }
+            });
         }
 
         if (session('user-level') == 1) {
