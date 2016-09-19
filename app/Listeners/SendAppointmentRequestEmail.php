@@ -223,6 +223,7 @@ class SendAppointmentRequestEmail
                 'subject' => $attr['subject'],
                 'template' => $template['slug'],
                 'vars' => $vars,
+                'attachments' => []
             ];
 
             try {
