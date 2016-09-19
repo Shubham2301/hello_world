@@ -38,4 +38,26 @@ class PatientPolicy
         return false;
     }
 
+    public function canUpdate($patientID) {
+        $user = Auth::user();
+        $patient = Patient::find($patientID);
+
+        try {
+            if (session('user-level') == 1) {
+                return true;
+            }
+            else if ((session('user-level') == 2) && $user->hasRole('patient-admin')) {
+                return ($user->userNetwork && $patient->careconsole->importHistory) ? $user->userNetwork->network_id == $patient->careconsole->importHistory->network_id : false;
+            }
+            else if (session('user-level') == 3 && $user->hasRole('patient-admin')) {
+                    return ($user->userPractice && $patient->practicePatient) ? $user->userPractice->practice_id == $patient->practicePatient->practice_id : false;
+            }
+        } catch (Exception $e) {
+    		Log::error($e);
+    	}
+
+        return false;
+
+    }
+
 }

@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Support\Facades\DB;
 use myocuhub\Http\Controllers\Traits\TwoFactorAuthenticatable;
 use myocuhub\Models\NetworkUser;
+use myocuhub\Models\PracticeUser;
 use myocuhub\Models\ProviderType;
 use myocuhub\Models\UserLevel;
 
@@ -51,6 +52,11 @@ CanResetPasswordContract
     public function userNetwork()
     {
         return $this->hasOne(NetworkUser::class);
+    }
+
+    public function userPractice()
+    {
+        return $this->hasOne(PracticeUser::class);
     }
 
     public function userRoles()
@@ -293,10 +299,12 @@ CanResetPasswordContract
             ->orderBy('distance', 'ASC');
 
         if($providerTypes) {
-            $query->where('users.provider_type_id', null);
-            foreach ($providerTypes as $type) {
-                $query->orWhere('users.provider_type_id', $type);
-            }
+            $query->where(function ($innerQuery) use ($providerTypes) {
+                $innerQuery->where('users.provider_type_id', null);
+                foreach ($providerTypes as $type) {
+                    $innerQuery->orWhere('users.provider_type_id', $type);
+                }
+            });
         }
 
         if (session('user-level') == 1) {

@@ -3,9 +3,8 @@
 	<span class="patient_section" style="display:none;">
 		<img src="{{asset('images/patient.png')}}" alt="">
 		<span class="show_in_patient" style="display:none;">
-		<br> @can('edit-patient')
+		<br>
 		<p class="edit_patient_button">Edit Patient</p>
-		@endcan
 		<p class="button_type_1" id="change_patient_button">Change Patient</p>
 		<br>
 		</span>

@@ -291,6 +291,8 @@ class PatientController extends Controller
         $patientData['workphone'] = $patient->workphone ?: '';
         $patientData['homephone'] = $patient->homephone ?: '';
 
+        $patientData['editable'] = policy(new Patient)->canUpdate($id);
+
         if ($patient->birthdate === '0000-00-00 00:00:00') {
             $patientData['birthdate'] = '-';
         } else {
@@ -331,7 +333,7 @@ class PatientController extends Controller
     public function edit($id)
     {
 
-        if (!policy(new Patient)->administration()) {
+        if (!policy(new Patient)->canUpdate($id)) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -501,12 +503,13 @@ class PatientController extends Controller
     {
         $filters = json_decode($request->input('data'), true);
         $sortInfo = json_decode($request->input('tosort'), true);
+        $requestSource = $request->input('requestSource');
         $countResult = config('constants.default_paginate_result');
         if ($request->has('countresult')) {
             $countResult = $request->countresult;
         }
 
-        $patients = Patient::getPatients($filters, $sortInfo, $countResult);
+        $patients = Patient::getPatients($filters, $sortInfo, $countResult, $requestSource);
 
         $data = [];
         $i = 0;
@@ -570,13 +573,13 @@ class PatientController extends Controller
 
     public function editFromReferral(Request $request)
     {
+        $id = $request->input('patient_id');
 
-        if (!policy(new Patient)->administration()) {
+        if (!policy(new Patient)->canUpdate($id)) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
 
-        $id = $request->input('patient_id');
         $data = array();
         $data = Patient::find($id);
         if (!$data) {
