@@ -363,6 +363,11 @@ function showPatientInfo(data) {
     $('#view_ccda').attr('data-href', '/show/ccda/' + data.id);
     $('.patient_admin_index_header').addClass('hide');
     $('.patient_admin_back').addClass('active');
+    if (data.editable) {
+        $('.edit_patient_button').show();
+    } else {
+        $('.edit_patient_button').hide();
+    }
     if ($('#from_admin').val()) {
         $('#change_patient_button').hide();
         $('.lastseen_content').css("cursor", "default");
@@ -419,7 +424,8 @@ function getPatients(formData, page) {
         type: 'GET',
         data: $.param({
             data: tojson,
-            tosort: sortInfo
+            tosort: sortInfo,
+            requestSource: window.location.pathname
         }),
         contentType: 'text/html',
         async: false,

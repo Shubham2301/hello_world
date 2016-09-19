@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Support\Facades\DB;
 use myocuhub\Http\Controllers\Traits\TwoFactorAuthenticatable;
 use myocuhub\Models\NetworkUser;
+use myocuhub\Models\PracticeUser;
 use myocuhub\Models\ProviderType;
 use myocuhub\Models\UserLevel;
 
@@ -51,6 +52,11 @@ CanResetPasswordContract
     public function userNetwork()
     {
         return $this->hasOne(NetworkUser::class);
+    }
+
+    public function userPractice()
+    {
+        return $this->hasOne(PracticeUser::class);
     }
 
     public function userRoles()

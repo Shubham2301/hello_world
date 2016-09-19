@@ -69,7 +69,7 @@ class Patient extends Model
         return $this->lastname . ', ' . $this->firstname;
     }
 
-    public static function getPatients($filters, $sortInfo = [], $countResult)
+    public static function getPatients($filters, $sortInfo = [], $countResult, $requestSource)
     {
         $columns = [
             'patients.id',
@@ -142,17 +142,17 @@ class Patient extends Model
         if (session('user-level') == 1) {
             $query
                 ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id');
-        } elseif (session('user-level') == 2) {
-            $query
-                ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
-                ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
-                ->where('import_history.network_id', session('network-id'));
-        } else {
+        } elseif (session('user-level') == 3 && $requestSource == '/administration/patients') {
             $practiceUser = PracticeUser::where('user_id', Auth::user()->id)->first();
             $query
                 ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
                 ->leftjoin('practice_patient', 'patients.id', '=', 'practice_patient.patient_id')
                 ->where('practice_patient.practice_id', $practiceUser['practice_id']);
+        } else {
+            $query
+                ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
+                ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
+                ->where('import_history.network_id', session('network-id'));
         }
 
         if (!isset($sortInfo['order'])) {
@@ -234,6 +234,11 @@ class Patient extends Model
     public function timezone()
     {
         return $this->belongsTo('myocuhub\Models\Timezone');
+    }
+
+    public function practicePatient()
+    {
+        return $this->hasOne('myocuhub\Models\PracticePatient');
     }
 
     public function engagePatient($appt)
