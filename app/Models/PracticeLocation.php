@@ -28,6 +28,7 @@ class PracticeLocation extends Model
     	$query->whereHas('practice.practiceUsers', function ($subquery) use ($providerTypes) {
         		$subquery->whereHas('user', function ($subquery) use ($providerTypes) {
         			$subquery->where('active', 1);
+        			$subquery->where('usertype_id', 1);
         			if($providerTypes) {
 	        			$subquery->where(function ($innerQuery) use ($providerTypes) {
 			                $innerQuery->where('provider_type_id', null);
@@ -45,6 +46,7 @@ class PracticeLocation extends Model
         $query->with(['practice.practiceUsers' => function ($subquery) use ($providerTypes) {
         	$subquery->whereHas('user', function ($subquery) use ($providerTypes) {
         		$subquery->where('active', 1);
+        		$subquery->where('usertype_id', 1);
         		if($providerTypes) {
 	        		$subquery->where(function ($innerQuery) use ($providerTypes) {
 			            $innerQuery->where('provider_type_id', null);
