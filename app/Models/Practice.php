@@ -14,6 +14,15 @@ class Practice extends Model
         return $this->hasMany('myocuhub\Models\PracticeLocation');
     }
 
+    public function practiceUsers()
+    {
+        return $this->hasMany('myocuhub\Models\PracticeUser');
+    }
+    public function practiceNetwork()
+    {
+        return $this->hasMany('myocuhub\Models\practiceNetwork');
+    }
+
     public static function getPracticeByUserID($userID)
     {
         return  self::query()

@@ -75,7 +75,7 @@
 <div class="row" style="margin:0;">
 <div class="patient_previous_information active">
     <div class="provider_near_patient arial_bold">
-        <p>Providers near the patient address&nbsp;<span class="glyphicon glyphicon-chevron-right provider_near"></span></p>
+        <p>Locations near the patient address&nbsp;<span class="glyphicon glyphicon-chevron-right provider_near"></span></p>
     </div>
     <div class="section_seperator">
     </div>

@@ -11,7 +11,12 @@ class PracticeUser extends Model
 
     public function practice()
     {
-        return $this->hasOne(Practice::class, 'id', 'practice_id');
+        return $this->belongsTo('myocuhub\Models\Practice');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('myocuhub\User');
     }
 }
 
