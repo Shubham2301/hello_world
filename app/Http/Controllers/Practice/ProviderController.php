@@ -349,31 +349,33 @@ class ProviderController extends Controller
 
         $lat = $patientLocation['latitude'];
         $lng = $patientLocation['longitude'];
+        $data = [];
+        $i = 0;
         $providers = [];
         if ($lat != '') {
             $locations = PracticeLocation::getNearByLocations($lat, $lng, config('constants.providerNearPatient.providerRadius'), $providerTypes);
-        }
-        $data = [];
-        $i = 0;
-        foreach($locations as $location) {
-            if ($i >= config('constants.providerNearPatient.providerNumber')) {
-                break;
+            foreach($locations as $location) {
+                if ($i >= config('constants.providerNearPatient.providerNumber')) {
+                    break;
+                }
+                $data[$i]['practice_name'] = $location->practice->name;
+                $data[$i]['location_name'] = $location->locationname;
+                $data[$i]['practice_id'] = $location->practice_id;
+                $data[$i]['location_id'] = $location->id;
+                $data[$i]['distance'] = number_format((float) $location->distance, 2, '.', '') . ' Miles';
+                $k = 0;
+                foreach ($location->practice->practiceUsers as $practiceUser) {
+                    $data[$i]['providers_list'][$k]['provider_name'] = $practiceUser->user->name;
+                    $data[$i]['providers_list'][$k]['provider_id'] = $practiceUser->user->id;
+                    $data[$i]['providers_list'][$k]['provider_type'] = ProviderType::getName($practiceUser->user->provider_type_id);
+                    $data[$i]['providers_list'][$k]['speciality'] = $practiceUser->user->speciality ?: 'Unlisted';
+                    $k++;
+                }
+                $i++;
             }
-            $data[$i]['practice_name'] = $location->practice->name;
-            $data[$i]['location_name'] = $location->locationname;
-            $data[$i]['practice_id'] = $location->practice_id;
-            $data[$i]['location_id'] = $location->id;
-            $data[$i]['distance'] = number_format((float) $location->distance, 2, '.', '') . ' Miles';
-            $k = 0;
-            foreach ($location->practice->practiceUsers as $practiceUser) {
-                $data[$i]['providers_list'][$k]['provider_name'] = $practiceUser->user->name;
-                $data[$i]['providers_list'][$k]['provider_id'] = $practiceUser->user->id;
-                $data[$i]['providers_list'][$k]['provider_type'] = ProviderType::getName($practiceUser->user->provider_type_id);
-                $data[$i]['providers_list'][$k]['speciality'] = $practiceUser->user->speciality ?: 'Unlisted';
-                $k++;
-            }
-            $i++;
         }
+
+
 
         return json_encode($data);
     }
