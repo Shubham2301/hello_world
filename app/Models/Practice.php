@@ -20,7 +20,7 @@ class Practice extends Model
     }
     public function practiceNetwork()
     {
-        return $this->hasMany('myocuhub\Models\practiceNetwork');
+        return $this->hasMany('myocuhub\Models\PracticeNetwork');
     }
 
     public static function getPracticeByUserID($userID)
