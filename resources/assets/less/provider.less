@@ -484,10 +484,10 @@ ul.location_list {
     color: #ebebeb;
 }
 .provider_location_name {
-        font-size: 1.3em;
-        color: #ebebeb;
-        padding: .5em 0;
-    }
+    font-size: 1.3em;
+    color: #ebebeb;
+    padding: .5em 0;
+}
 .provider_location_detail {
     font-size: 1em;
     font-size: #ebebeb;
@@ -497,8 +497,13 @@ ul.location_list {
     flex-direction: row;
     justify-content: flex-start;
     &>span {
-        flex-basis: 0;
-        flex-grow: 1;
+        flex: 1;
+        display: inherit;
+        &>span {
+            flex: 1;
+            display: inherit;
+            justify-content: flex-end;
+        }
     }
 }
 .panel-body {
@@ -528,6 +533,7 @@ ul.location_list {
 .panel-group.panel {
     margin: 1em 0;
 }
+
 /*
 ----------------------
 Mobile Styling

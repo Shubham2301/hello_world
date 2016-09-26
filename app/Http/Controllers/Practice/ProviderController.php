@@ -371,6 +371,7 @@ class ProviderController extends Controller
                     $data[$i]['providers_list'][$k]['speciality'] = $practiceUser->user->speciality ?: 'Unlisted';
                     $k++;
                 }
+                $data[$i]['provider_count'] = $k;
                 $i++;
             }
         }
