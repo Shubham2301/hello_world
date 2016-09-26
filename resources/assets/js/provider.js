@@ -603,7 +603,6 @@ function getProviders(formData) {
     var tojson = JSON.stringify(formData);
     var showSpecialist = {
         show: $('#show_specialist').prop('checked'),
-        referraltype_id: $('#form_referraltype_id').val()
     }
     var providerTypes = [];
     $("input:checkbox[name=provider_types]:checked").each(function () {

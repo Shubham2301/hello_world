@@ -161,11 +161,8 @@ class ProviderController extends Controller
         if ($request->has('show_specialist')) {
             $showSpecialist = $request->show_specialist['show'];
             if ($showSpecialist == 'true') {
-                $referraltypeID = $request->show_specialist['referraltype_id'];
-                $referraltype = ReferralType::find($referraltypeID);
                 $filters[] = [
                     'type' => 'specialty',
-                    'value' => $referraltype->display_name,
                 ];
             }
         }

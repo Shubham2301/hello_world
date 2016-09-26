@@ -151,7 +151,7 @@ CanResetPasswordContract
                                     ->orWhere('lastname', 'LIKE', '%' . $filter['value'] . '%');
                                 break;
                             case 'specialty':
-                                $query->where('speciality', 'LIKE', '%' . $filter['value'] . '%');
+                                $query->where('speciality', 'NOT LIKE', '');
                                 break;
                             case 'provider_types':
                                 $query->where('provider_type_id', null);
