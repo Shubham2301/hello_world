@@ -23,9 +23,6 @@
                 justify-content: center;
             }
         }
-        &.report_filter_row {
-            margin: 1em 0;
-        }
     }
 }
 .content-right {
@@ -114,6 +111,42 @@
                 flex-grow: 1;
                 flex-basis: 0;
             }
+        }
+    }
+}
+.filter_row {
+    display: flex;
+}
+.export_button {
+    margin-left: auto;
+    &:hover {
+        cursor: pointer;
+        border: 1px solid @background-color-4;
+        color: @background-color-4;
+    }
+}
+.performance_report_aggregation {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    color: @font-color-black;
+    margin-top: 1em;
+    cursor: default;
+    text-align: center;
+    background-color: #d2d3d5;
+    padding: .5em;
+    .gradient(#d2d3d5, #d2d3d5);
+    box-shadow: 0 1px 1px #d2d3d5;
+    &>.aggregation_row {
+        display: inherit;
+        flex-direction: row;
+        justify-content: center;
+        justify-content: space-between;
+        margin: .2em 0;
+        .arial;
+        &.title_section {
+            .arial_bold;
+            border-bottom: 1px solid @font-color-black;
         }
     }
 }

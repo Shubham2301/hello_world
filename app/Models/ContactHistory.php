@@ -81,11 +81,9 @@ class ContactHistory extends Model
 
     public static function getPerformanceReportAppointmentData($networkID, $startDate, $endDate) {
 
-        return self::where( function ($subquery) use ($startDate, $endDate) {
-                $subquery->whereHas('appointments', function ($query) use ($startDate, $endDate) {
-                    $query->where('start_datetime', '>=', $startDate);
-                    $query->where('start_datetime', '<=', $endDate);
-                });
+        return self::whereHas('appointments', function ($query) use ($startDate, $endDate) {
+                $query->where('start_datetime', '>=', $startDate);
+                $query->where('start_datetime', '<=', $endDate);
             })
             ->whereNotNull('user_id')
             ->whereHas('careconsole.importHistory', function ($query) use ($networkID) {
