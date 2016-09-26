@@ -219,5 +219,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/report/call_center', 'Reports\CallCenterController');
 
+    Route::get('/report/performance/generateReportExcel', 'Reports\PerformanceController@generateReportExcel');
     Route::resource('/report/performance', 'Reports\PerformanceController');
+
 });

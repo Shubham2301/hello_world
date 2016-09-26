@@ -57,6 +57,9 @@ Reporting
       <span class="text">Performance Report</span>
     </span>
   </a>
+  <div class="performance_report_aggregation">
+
+  </div>
   @endif
 </div>
 @endsection

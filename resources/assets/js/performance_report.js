@@ -95,10 +95,21 @@ $(document).ready(function () {
         getReport();
     });
 
+    $('.filter_row').on('click', '.export_button', function () {
+        var formData = {
+            start_date: $('#start_date').val(),
+            end_date: $('#end_date').val(),
+            network: $('#network').val(),
+            filter_option: filterOptions,
+        };
+        var query = $.param(formData);
+        window.location = '/report/performance/generateReportExcel?' + query;
+    });
+
     $('.graph_column.clickable').on('click', function () {
         filterOptions.filterType = $(this).find('.graph_section').attr('id');
         filterOptions.filterHeader = $(this).attr('data-title');
-        var filterData = '<div class="filter_section">Graph: ' + filterOptions.filterHeader + '<span class="glyphicon glyphicon-remove-circle remove_filter"></span></div>';
+        var filterData = '<div class="filter_section">Graph: ' + filterOptions.filterHeader + '<span class="glyphicon glyphicon-remove-circle remove_filter"></span></div><div class="filter_section export_button">Export</div>';
         filterOptions.type = 'graph_filter';
         $('.performance_graph_row').hide();
         $('.drilldown_section').show();
@@ -133,6 +144,7 @@ function getReport(filter) {
             graphGoals = data.graph_goal;
 
             graphColumn = graphType.graphColumn;
+            drawAggregationTable(data.reportAggregationData);
 
             if (overAllGraph.total_patient != 0) {
                 if (filterOptions.filterType == '') {
@@ -351,18 +363,30 @@ function resetFilter() {
 function drawDrillDownTable() {
     var content = '';
     content += '<div class="row head_row arial_bold">'
-    for(var columnName in drillDownData.columns) {
+    for (var columnName in drillDownData.columns) {
         content += '<span>' + drillDownData.columns[columnName] + '</span>';
     }
     content += '</div>';
     content += '<div class="row drilldown_data_content arial">';
     for (var row in drillDownData.data) {
         content += '<div class="drilldown_data_row">';
-        for(var rowData in drillDownData.data[row]) {
+        for (var rowData in drillDownData.data[row]) {
             content += '<span>' + drillDownData.data[row][rowData] + '</span>';
         }
         content += '</div>';
     }
     content += '<//div>';
     $('.drilldown_data').html(content);
+}
+
+function drawAggregationTable(data) {
+    var content = '';
+    content += '<span class="aggregation_row title_section">Report Data</span>';
+    for (var index in data) {
+        content += '<span class="aggregation_row">';
+        content += '<span class="aggregation_column">' + index + '</span>';
+        content += '<span class="aggregation_column">' + data[index] + '</span>';
+        content += '</span>';
+    }
+    $('.performance_report_aggregation').html(content);
 }

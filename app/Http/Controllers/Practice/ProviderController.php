@@ -349,29 +349,35 @@ class ProviderController extends Controller
 
         $lat = $patientLocation['latitude'];
         $lng = $patientLocation['longitude'];
-        $providers = [];
-        if ($lat != '') {
-            $providers = User::getNearByProviders($lat, $lng, config('constants.providerNearPatient.providerRadius'), $providerTypes);
-        }
         $data = [];
         $i = 0;
-        foreach ($providers as $provider) {
-            if ($i >= config('constants.providerNearPatient.providerNumber')) {
-                break;
+        $providers = [];
+        if ($lat != '') {
+            $locations = PracticeLocation::getNearByLocations($lat, $lng, config('constants.providerNearPatient.providerRadius'), $providerTypes);
+            foreach($locations as $location) {
+                if ($i >= config('constants.providerNearPatient.providerNumber')) {
+                    break;
+                }
+                $data[$i]['practice_name'] = $location->practice->name;
+                $data[$i]['location_name'] = $location->locationname;
+                $data[$i]['practice_id'] = $location->practice_id;
+                $data[$i]['location_id'] = $location->id;
+                $data[$i]['distance'] = number_format((float) $location->distance, 2, '.', '') . ' Miles';
+                $k = 0;
+                foreach ($location->practice->practiceUsers as $practiceUser) {
+                    $data[$i]['providers_list'][$k]['provider_name'] = $practiceUser->user->name;
+                    $data[$i]['providers_list'][$k]['provider_id'] = $practiceUser->user->id;
+                    $data[$i]['providers_list'][$k]['provider_type'] = ProviderType::getName($practiceUser->user->provider_type_id);
+                    $data[$i]['providers_list'][$k]['speciality'] = $practiceUser->user->speciality ?: 'Unlisted';
+                    $k++;
+                }
+                $data[$i]['provider_count'] = $k;
+                $i++;
             }
-            if (!$provider->user_id || !$provider->practice_id) {
-                continue;
-            }
-            $data[$i]['id'] = $provider->user_id;
-            $data[$i]['name'] = $provider->getName();
-            $data[$i]['practice_id'] = $provider->practice_id;
-            $data[$i]['practice_name'] = $provider->name;
-            $data[$i]['speciality'] = $provider->speciality ?: 'Unlisted';
-            $data[$i]['location_name'] = $provider->locationname;
-            $data[$i]['provider_type'] = ProviderType::getName($provider->provider_type_id);
-            $data[$i]['distance'] = number_format((float) $provider->distance, 2, '.', '') . ' Miles';
-            $i++;
         }
+
+
+
         return json_encode($data);
     }
 

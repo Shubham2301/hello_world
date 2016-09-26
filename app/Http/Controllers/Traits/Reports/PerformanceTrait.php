@@ -43,6 +43,18 @@ trait PerformanceTrait
             'receivedReport_vs_pending' => array(),
         ];
 
+        $reportAggregationData = [
+            'Users' => 0,
+            'Contact attempts' => 0,
+            'Reached' => 0,
+            'Scheduled' => 0,
+            'Dropped' => 0,
+            'Kept Appointment' => 0,
+            'Missed Appointment' => 0,
+            'Reports Received' => 0,
+            'Reports Pending' => 0,
+        ];
+
         $userCount = User::getCareCoordinatorCount($network);
 
         $contactList = ContactHistory::getPerformanceReportData($network, $this->getStartDate(), $this->getEndDate());
@@ -53,7 +65,7 @@ trait PerformanceTrait
 
             if(!isset($timelineGraph[$activityDate])) {
                 $timelineGraph[$activityDate] = $this->graphArray();
-                $timelineGraph[$activityDate]['date'] = Helper::formatDate($contact->contact_activity_date, 'Y-m-d');
+                $timelineGraph[$activityDate]['date'] = Helper::formatDate($contact->contact_activity_date, config('constants.date_format'));
             }
 
             switch ($contact->action->name) {
@@ -64,6 +76,7 @@ trait PerformanceTrait
                     case 'contact-attempted-by-email':
                     case 'contact-attempted-by-mail':
                     case 'contact-attempted-by-other':
+                        $reportAggregationData['Contact attempts']++;
                         $timelineGraph[$activityDate]['contactAttempted']++;
                         $drillDownData['avgContact'][] = [$this->fillDetailData($contact, 'contactDate'), $this->fillDetailData($contact, 'userName'), $this->fillDetailData($contact, 'patientName'), $this->fillDetailData($contact, 'actionResultName'), $this->fillDetailData($contact, 'actionName')];
                         break;
@@ -74,6 +87,7 @@ trait PerformanceTrait
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
+                        $reportAggregationData['Scheduled']++;
                         $timelineGraph[$activityDate]['appointmentScheduled']++;
                         $drillDownData['avgScheduled'][] = [
                             $this->fillDetailData($contact, 'contactDate'),
@@ -89,6 +103,8 @@ trait PerformanceTrait
                         ];
 
                         if(!isset($contact->actionResult->name) || $contact->actionResult->name != 'incoming-call') {
+                            $reportAggregationData['Reached']++;
+                            $reportAggregationData['Contact attempts']++;
                             $timelineGraph[$activityDate]['reached']++;
                             $timelineGraph[$activityDate]['contactAttempted']++;
                             $drillDownData['avgContact'][] = [
@@ -115,6 +131,7 @@ trait PerformanceTrait
                     case 'archive':
                         break;
                     case 'kept-appointment':
+                        $reportAggregationData['Reports Pending']++;
                         $timelineGraph[$activityDate]['reportsDue']++;
                         $drillDownData['receivedReport_vs_pending'][] = [
                             $this->fillDetailData($contact, 'appointmentDate'),
@@ -126,14 +143,9 @@ trait PerformanceTrait
                         break;
                     case 'no-show':
                     case 'cancelled':
-                        $drillDownData['scheduled_vs_dropped'][] = [
-                            $this->fillDetailData($contact, 'contactDate'),
-                            $this->fillDetailData($contact, 'userName'),
-                            $this->fillDetailData($contact, 'patientName'),
-                            $this->fillDetailData($contact, 'actionName')
-                        ];
                         break;
                     case 'data-received':
+                        $reportAggregationData['Reports Received']++;
                         $timelineGraph[$activityDate]['reportsReceived']++;
                         $drillDownData['receivedReport_vs_pending'][] = [
                             $this->fillDetailData($contact, 'appointmentDate'),
@@ -164,8 +176,17 @@ trait PerformanceTrait
                     case 'other-reasons-for-declining':
                     case 'no-need-to-schedule':
                     case 'no-insurance':
+                        $reportAggregationData['Reached']++;
+                        $reportAggregationData['Dropped']++;
                         $timelineGraph[$activityDate]['reached']++;
+                        $timelineGraph[$activityDate]['dropped']++;
                         $drillDownData['avgReached'][] = [
+                            $this->fillDetailData($contact, 'contactDate'),
+                            $this->fillDetailData($contact, 'userName'),
+                            $this->fillDetailData($contact, 'patientName'),
+                            $this->fillDetailData($contact, 'actionResultName')
+                        ];
+                        $drillDownData['scheduled_vs_dropped'][] = [
                             $this->fillDetailData($contact, 'contactDate'),
                             $this->fillDetailData($contact, 'userName'),
                             $this->fillDetailData($contact, 'patientName'),
@@ -181,7 +202,14 @@ trait PerformanceTrait
                     case 'success':
                         break;
                     case 'dropout':
+                        $reportAggregationData['Dropped']++;
                         $timelineGraph[$activityDate]['dropped']++;
+                        $drillDownData['scheduled_vs_dropped'][] = [
+                            $this->fillDetailData($contact, 'contactDate'),
+                            $this->fillDetailData($contact, 'userName'),
+                            $this->fillDetailData($contact, 'patientName'),
+                            $this->fillDetailData($contact, 'actionName')
+                        ];
                         break;
                     case 'incoming-call':
                         break;
@@ -202,10 +230,10 @@ trait PerformanceTrait
 
             if(!isset($timelineGraph[$activityDate])) {
                 $timelineGraph[$activityDate] = $this->graphArray();
-                $timelineGraph[$activityDate]['date'] = Helper::formatDate($apptContact->contact_activity_date, 'Y-m-d');
+                $timelineGraph[$activityDate]['date'] = Helper::formatDate($apptContact->contact_activity_date, config('constants.date_format'));
             }
 
-            switch ($contact->action->name) {
+            switch ($apptContact->action->name) {
                     case 'request-patient-email':
                     case 'request-patient-phone':
                     case 'request-patient-sms':
@@ -231,6 +259,7 @@ trait PerformanceTrait
                     case 'archive':
                         break;
                     case 'kept-appointment':
+                        $reportAggregationData['Kept Appointment']++;
                         $timelineGraph[$activityDate]['keptAppointment']++;
                         $drillDownData['keptAppointment_vs_missed'][] = [
                             $this->fillDetailData($apptContact, 'appointmentDate'),
@@ -242,6 +271,7 @@ trait PerformanceTrait
                         break;
                     case 'no-show':
                     case 'cancelled':
+                        $reportAggregationData['Missed Appointment']++;
                         $timelineGraph[$activityDate]['missedAppointment']++;
                         $drillDownData['keptAppointment_vs_missed'][] = [
                             $this->fillDetailData($apptContact, 'appointmentDate'),
@@ -298,6 +328,9 @@ trait PerformanceTrait
 
         $reportResult['overAllGraph'] = $overAllGraph;
         $reportResult['userCount'] = $userCount > 0 ? $userCount : 1;
+
+        $reportAggregationData['Users'] = $userCount;
+        $reportResult['reportAggregationData'] = $reportAggregationData;
 
         if($filterType != '') {
             $reportResult['drilldown'] = [
@@ -413,13 +446,13 @@ trait PerformanceTrait
                 $result = $this->CareConsoleService->getPatientFieldValue($requestData->careconsole->patient, 'print-name');
                 break;
             case 'practiceName':
-                $result = (isset($requestData->appointments) && isset($requestData->appointments->practice)) ? $requestData->appointments->practice->name : '';
+                $result = (isset($requestData->appointments) && isset($requestData->appointments->practice)) ? $requestData->appointments->practice->name : '-';
                 break;
             case 'appointementType':
-                $result = isset($requestData->appointments) ? $requestData->appointments->appointmenttype : '';
+                $result = isset($requestData->appointments) ? $requestData->appointments->appointmenttype : '-';
                 break;
             case 'appointmentDate':
-                $result = isset($requestData->appointments) ? Helper::formatDate($requestData->appointments->start_datetime, config('constants.date_format')) : '';
+                $result = isset($requestData->appointments) ? Helper::formatDate($requestData->appointments->start_datetime, config('constants.date_format')) : '-';
                 break;
             case 'typeOfContact':
                 break;
@@ -427,7 +460,7 @@ trait PerformanceTrait
                 $result = $requestData->action->display_name;
                 break;
             case 'actionResultName':
-                $result = $requestData->actionResult ? $requestData->actionResult->display_name : '';
+                $result = $requestData->actionResult ? $requestData->actionResult->display_name : '-';
                 break;
             default:
         }

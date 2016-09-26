@@ -286,39 +286,6 @@ CanResetPasswordContract
             ->get(['users.id', 'users.name', 'users.sesemail']);
     }
 
-    public static function getNearByProviders($lat, $lng, $range = 10, $providerTypes)
-    {
-        $query = self::query()
-            ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
-            ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
-            ->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
-            ->where('usertype_id', 1)
-            ->where('active', '1')
-            ->select(DB::raw('*, ( 3959 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
-            ->having('distance', '<=', $range)
-            ->orderBy('distance', 'ASC');
-
-        if($providerTypes) {
-            $query->where(function ($innerQuery) use ($providerTypes) {
-                $innerQuery->where('users.provider_type_id', null);
-                foreach ($providerTypes as $type) {
-                    $innerQuery->orWhere('users.provider_type_id', $type);
-                }
-            });
-        }
-
-        if (session('user-level') == 1) {
-            return $query
-                ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
-                ->get();
-        } else {
-            return $query
-                ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
-                ->where('practice_network.network_id', session('network-id'))
-                ->get();
-        }
-    }
-
     public function isSuperAdmin()
     {
         return $this->level == 1;
