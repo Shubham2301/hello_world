@@ -45,6 +45,16 @@ class SendRecordWithEmail
         $PDFPaths = config('constants.paths.pdf');
         $path = [];
 
+        try {
+            $pdfObj = $this->createPDF($contactHistoryID);
+            $fileName = $PDFPaths['temp_dir'].'record-'.$contactHistoryID.$PDFPaths['ext'];
+            $pdfObj->save($fileName);
+            $path[] = $fileName;
+        } catch (Exception $e) {
+            Log::error($e);
+            return false;
+        }
+
         $notificationUsers = array();
         $notificationUsers[] = Auth::user();
         $networkNotificationUser = WebFormNotification::where([
