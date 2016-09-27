@@ -481,7 +481,7 @@ function showProviderNear(locations) {
             content += '<div class="panel panel-default"><div class="panel-heading"><div class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#' + location.location_id + '"><div class="row provider_location_name arial_bold">' + location.location_name + '  <span class="glyphicon glyphicon-chevron-right"></span></div><div class="row provider_location_detail"><span>Practice Name: ' + location.practice_name + '</span><span><span>Distance: ' + location.distance + '</span><span>No. of Providers: ' + location.provider_count + '</span></span></div></a></div></div>';
             content += '<div id="' + location.location_id + '" class="panel-collapse collapse"><div class="panel-body">';
             location.providers_list.forEach(function (provider_detail) {
-                content += '<div class="row nearby_provider_item" data-id="' + provider_detail.provider_id + '" data-practiceid="' + location.practice_id + '"><div class="row arial_bold">' + provider_detail.provider_name + '</div><div class="row provider_details_section"><span>Provider Type: ' + provider_detail.provider_type + '</span><span>Speciality: ' + provider_detail.speciality + '</span></div></div>';
+                content += '<div class="row nearby_provider_item" data-id="' + provider_detail.provider_id + '" data-practiceid="' + location.practice_id + '"><div class="row arial_bold">' + provider_detail.provider_name + '</div><div class="row provider_details_section"><span>Provider Type: ' + provider_detail.provider_type + '</span><span>Specialty: ' + provider_detail.speciality + '</span></div></div>';
             });
             content += '</div></div></div>';
         });
@@ -603,7 +603,6 @@ function getProviders(formData) {
     var tojson = JSON.stringify(formData);
     var showSpecialist = {
         show: $('#show_specialist').prop('checked'),
-        referraltype_id: $('#form_referraltype_id').val()
     }
     var providerTypes = [];
     $("input:checkbox[name=provider_types]:checked").each(function () {

@@ -48,7 +48,7 @@ class PostAppointmentEngagement extends Command
                 $patient = Patient::find($appt['patient_id']);
                 $type = $appt['patient_preference'];
                 $stage = config('patient_engagement.stage.post_appointment');
-                if(policy($patient)->engage($patient, $type, $stage)) {
+                if($patient && policy($patient)->engage($patient, $type, $stage)) {
                     $patient->engagePatient($appt);
                 }
             }
