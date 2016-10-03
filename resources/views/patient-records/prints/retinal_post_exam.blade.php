@@ -2,8 +2,8 @@
 
 @section('imports')
 
-<link rel="stylesheet" type="text/css" href="{{ public_path('css/retinal_post_exam.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ elixir('css/retinal_post_exam.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ public_path('css/retinal_post_exam.css') }}">
 
 @endsection
 
@@ -22,371 +22,207 @@
     </div>
 </div>
 
- <div class="row default_margin default_border default_fontsize" >
+ <div class="row default_margin default_border default_fontsize section_break" >
 
 
-    <div class="col-xs-6 update_col_default_padding" >
-
-        <div class="row">
-            <div class="col-xs-1 border_bottom default_padding section_break">
-                <p class="cat_info_text">Diagnosis</p>
-            </div>
-            <div class="col-xs-10 border_bottom default_padding section_break">
-                <p>&nbsp;</p>
-            </div>
-            <div class="col-xs-1 od_box_border default_padding section_break">
-                <p>OD</p>
-            </div>
-        </div>
+    <div class="col-xs-6 update_col_default_padding diagnosis_column">
 
         <div class="row">
-            <div class="col-xs-1 default_padding">
-                <span> &nbsp;</span>
+            <div class="col-xs-12 border_bottom default_padding section_break">
+                <p class="cat_info_text no-margin">Diagnosis</p>
             </div>
-            <div class="col-xs-10  border_left border_bottom default_padding section_break">
-                <p> No diabetic retinopathy:</p>
+            <div class="col-xs-offset-1 col-xs-11  border_left border_bottom default_padding">
+                <div class="inline_element title">
+                    <p>No diabetic retinopathy: &nbsp; &nbsp;</p>
+                </div>
+                <div class="inline_element">
+                    <p class="no-margin">
+                        OD&nbsp;<input type="checkbox" {{ (isset($data['record']['od_NDR'])) ? 'checked' : '' }}>
+                    </p>
+                    <p class="no-margin">
+                        OS&nbsp;<input type="checkbox" {{ (isset($data['record']['os_NDR'])) ? 'checked' : '' }}>
+                    </p>
+                </div>
             </div>
-            <div class="col-xs-1 od_box_border default_padding section_break">
-                <p> @if(isset($data['record']['od_NDR']))
-                    <span class="glyphicon glyphicon-ok"></span>
-                    @else
-                    &nbsp;
-                    @endif
-                </p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 default_padding">
-                <span> &nbsp;</span>
-            </div>
-            <div class="col-xs-10 border_left no_bottom_border default_padding">
+            <div class="col-xs-offset-1 col-xs-11 border_left border_bottom default_padding">
                 <p> Non-proliferative diabetic retinopathy:</p>
-            </div>
-            <div class="col-xs-1 od_box_border no_bottom_border default_padding">
-                <p> &nbsp;</p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 default_padding">
-                <span> &nbsp;</span>
 
                 @if(!isset($data['record']['od_NPDR']))
-                <?php $data['record']['od_NPDR'] = ''; ?>
+                    <?php $data['record']['od_NPDR'] = ''; ?>
                 @endif
                 @if(!isset($data['record']['os_NPDR']))
-                <?php $data['record']['os_NPDR'] = ''; ?>
+                    <?php $data['record']['os_NPDR'] = ''; ?>
                 @endif
 
                 @php
 
                 $npdr =  [
-                'mild' => 'Mild',
-                'moderate' => 'Moderate',
-                'severe' => 'Severe'
+                    'mild' => 'Mild',
+                    'moderate' => 'Moderate',
+                    'severe' => 'Severe'
                 ]
 
                 @endphp
-
+                <div class="subsection_padding">
+                    <p class="npdr_checkbox">OD</p>
+                    <p class="npdr_checkbox">
+                        @foreach( $npdr as $name => $value)
+                        <span>
+                            <input type="checkbox" {{ ($data['record']['od_NPDR'] === $name) ? 'checked' : '' }}>&nbsp;{{ $value }}&nbsp;
+                        </span>
+                        @endforeach
+                    </p>
+                </div>
+                <div class="subsection_padding">
+                    <p class="npdr_checkbox">OS</p>
+                    <p class="npdr_checkbox">
+                        @foreach( $npdr as $name => $value)
+                        <span>
+                            <input type="checkbox" {{ ($data['record']['os_NPDR'] === $name) ? 'checked' : '' }}>&nbsp;{{ $value }}&nbsp;
+                        </span>
+                        @endforeach
+                    </p>
+                </div>
             </div>
-            <div class="col-xs-10 border_left  default_padding npdr_padding">
-                <p class="npdr_checkbox">
-                    @foreach( $npdr as $name => $value)
-                    <span>
-                        <input type="checkbox" {{ ( $data['record']['os_NPDR'] === $name || $data['record']['od_NPDR'] === $name  )?'checked':'' }}>&nbsp;&nbsp;{{ $value }}&nbsp;
-                    </span>
-                    @endforeach
-                </p>
+            <div class="col-xs-offset-1 col-xs-11 border_left border_bottom default_padding">
+                <div class="inline_element title">
+                    <p>Proliferative diabetic retinopathy: &nbsp; &nbsp;</p>
+                </div>
+                <div class="inline_element">
+                    <p class="no-margin">
+                        OD&nbsp;<input type="checkbox" {{ (isset($data['record']['od_PDR'])) ? 'checked' : '' }}>
+                    </p>
+                    <p class="no-margin">
+                        OS&nbsp;<input type="checkbox" {{ (isset($data['record']['os_PDR'])) ? 'checked' : '' }}>
+                    </p>
+                </div>
             </div>
-            <div class="col-xs-1 od_box_border no_bottom_border default_padding">
-                <p class="blank_p_margin_bottom"> &nbsp;</p>
+            <div class="col-xs-offset-1 col-xs-11 border_left default_padding border_bottom">
+                <div class="inline_element title">
+                    <p>Clinically significant macular edema: &nbsp; &nbsp;</p>
+                </div>
+                <div class="inline_element">
+                    <p class="no-margin">
+                        OD&nbsp;<input type="checkbox" {{ (isset($data['record']['od_CSME'])) ? 'checked' : '' }}>
+                    </p>
+                    <p class="no-margin">
+                        OS&nbsp;<input type="checkbox" {{ (isset($data['record']['os_CSME'])) ? 'checked' : '' }}>
+                    </p>
+                </div>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 default_padding">
-                <span> &nbsp;</span>
+            <div class="col-xs-offset-1 col-xs-11 border_left border_bottom default_padding">
+                <div class="inline_element title">
+                    <p>Open Angle Glaucoma: &nbsp; &nbsp;</p>
+                </div>
+                <div class="inline_element">
+                    <p class="no-margin">
+                        OD&nbsp;<input type="checkbox" {{ (isset($data['record']['od_OAG'])) ? 'checked' : '' }}>
+                    </p>
+                    <p class="no-margin">
+                        OS&nbsp;<input type="checkbox" {{ (isset($data['record']['os_OAG'])) ? 'checked' : '' }}>
+                    </p>
+                </div>
             </div>
-            <div class="col-xs-10 border_left border_bottom default_padding npdr_padding">
-                <p class=>
-                  &nbsp;
-                </p>
-            </div>
-            <div class="col-xs-1 od_box_border default_padding">
-                <p class=""> &nbsp;</p>
-            </div>
-        </div>
-       
-       
-        <div class="row">
-            <div class="col-xs-1 default_padding">
-                <span> &nbsp;</span>
-            </div>
-            <div class="col-xs-10 border_left border_bottom default_padding">
-                <p> Proliferative diabetic retinopathy:</p>
-            </div>
-            <div class="col-xs-1 od_box_border default_padding">
-                <p>
-                    @if(isset($data['record']['od_PDR']))
-                    <span class="glyphicon glyphicon-ok" style=""></span>
-                    @else
-                    &nbsp;
-                    @endif
-                </p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 default_padding">
-                <span> &nbsp;</span>
-            </div>
-            <div class="col-xs-10 border_left default_padding">
-                <p> Clinically significant macular edema:</p>
-            </div>
-            <div class="col-xs-1 od_box_border default_padding">
-                <p>
-                    @if(isset($data['record']['od_CSME']))
-                    <span class="glyphicon glyphicon-ok"></span>
-                    @else
-                    &nbsp;
-                    @endif
-                </p>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-xs-1 default_padding">
-                <span> &nbsp;</span>
-            </div>
-            <div class="col-xs-10 border_left border_bottom  default_padding section_break">
-                <p> &nbsp;</p>
-            </div>
-            <div class="col-xs-1 od_box_border  default_padding section_break">
-                <p> &nbsp;</p>
+            <div class="col-xs-offset-1 col-xs-11 border_left  default_padding">
+                <div class="inline_element title">
+                    <p>Cataract: &nbsp; &nbsp;</p>
+                </div>
+                <div class="inline_element">
+                    <p class="no-margin">
+                        OD&nbsp;<input type="checkbox" {{ (isset($data['record']['od_cataract'])) ? 'checked' : '' }}>
+                    </p>
+                    <p class="no-margin">
+                        OS&nbsp;<input type="checkbox" {{ (isset($data['record']['os_cataract'])) ? 'checked' : '' }}>
+                    </p>
+                </div>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-xs-1 default_padding">
-                <span> &nbsp;</span>
-            </div>
-            <div class="col-xs-10 border_left border_bottom default_padding">
-                <p> Open Angle Glaucoma</p>
-            </div>
-            <div class="col-xs-1 od_box_border  default_padding">
-                <p>
-                    @if(isset($data['record']['od_OAG']))
-                    <span class="glyphicon glyphicon-ok" ></span>
-                    @else
-                    &nbsp;
-                    @endif
-                </p>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-xs-1 default_padding">
-                <span> &nbsp;</span>
-            </div>
-            <div class="col-xs-10 border_left  default_padding">
-                <p> Cataract</p>
-            </div>
-            <div class="col-xs-1 od_box_border no_bottom_border default_padding">
-                <p>   @if(isset($data['record']['od_cataract']))
-                    <span class="glyphicon glyphicon-ok"></span>
-                    @else
-                    &nbsp;
-                    @endif
-                </p>
-            </div>
-        </div>
-        
-   
-
     </div>
 
     <div class="col-xs-6">
 
         <div class="row">
-            <div class="col-xs-1 os_box_border default_padding section_break">
-                <p>OS</p>
-            </div>
-            <div class="col-xs-11 default_padding section_break ">
-                <p class="cat_info_text">Plan</p>
+            <div class="col-xs-12 default_padding section_break ">
+                <p class="cat_info_text no-margin">Plan</p>
                 @if(!isset($data['record']['plan']))
                 <?php $data['record']['plan'] = ''; ?>
                 @endif
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 os_box_border default_padding section_break">
-                <p>
-                    @if(isset($data['record']['os_NDR']))
-                    <span class="glyphicon glyphicon-ok"></span>
-                    @else
-                    &nbsp;
-                    @endif
+            <div class="col-xs-12 default_padding section_break transparent">
+                <p class="no-margin"> <input type="checkbox" {{ ($data['record']['plan'] === 'monitor')?'checked':'' }} > &nbsp; &nbsp; Monitor
                 </p>
             </div>
-            <div class="col-xs-11 default_padding section_break">
-                <p> <input type="checkbox" {{ ($data['record']['plan'] === 'monitor')?'checked':'' }} > &nbsp; &nbsp; Monitor
-                </p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 os_box_border no_bottom_border default_padding">
-                <p> &nbsp;</p>
-            </div>
-            <div class="col-xs-11 default_padding">
+            <div class="col-xs-12 default_padding">
                 <span>
-                    <input type="checkbox" {{ ($data['record']['plan'] === 'additional-testing')?'checked':'' }}> &nbsp; Additional treatment recommendations
+                    <input type="checkbox" {{ ($data['record']['plan'] === 'additional-testing')?'checked':'' }}> &nbsp; &nbsp; Additional treatment recommendations
                 </span>
             </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-xs-1 os_box_border no_bottom_border default_padding">
-                <p> &nbsp;
-                
+            <div class="col-xs-12 default_padding">
+                <p class="no-margin">
                     @if(!isset($data['record']['plan_input']))
-                    <?php $data['record']['plan_input'] = ''; ?>
+                        <?php $data['record']['plan_input'] = ''; ?>
                     @endif
-                
-                </p>
-            </div>
-            <div class="col-xs-11 default_padding">
-                <p class="default_p_margin_bottom">
                     <span class="unit_input_text plan_input {{ ($data['record']['plan_input'] === '')?'default':'' }}">{{($data['record']['plan'] === 'additional-testing')?$data['record']['plan_input']:''}}</span>
                 </p>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 os_box_border default_padding">
-                <p class="blank_p_margin_bottom"> &nbsp;</p>
-            </div>
-            <div class="col-xs-11 border_bottom default_padding">
-                <p class="blank_p_margin_bottom"> &nbsp;</p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 os_box_border default_padding">
-                <p>
-                    @if(isset($data['record']['os_PDR']))
-                        <span class="glyphicon glyphicon-ok"></span>
-                    @else
-                        &nbsp;
-                    @endif
-                </p>
-            </div>
-            <div class="col-xs-11 border_bottom default_padding ">
-                <p class="default_p_margin_bottom">
+            <div class="col-xs-12 border_bottom default_padding transparent">
+                <p class="no-margin">
                     Follow up: <span class="unit_input_text">{{$data['record']['followup']}}</span> months
                 </p>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 os_box_border  default_padding">
-                <p>
-                    @if(isset($data['record']['os_CSME']))
-                        <span class="glyphicon glyphicon-ok"></span>
-                    @else
-                        &nbsp;
-                    @endif
-                </p>
-            </div>
-            <div class="col-xs-11 no_bottom_border default_padding">
-                <p class="default_p_margin_bottom">
+            <div class="col-xs-12 no_bottom_border default_padding">
+                <p class="no-margin">
                     Ophthalmology Retinal Referral
                 </p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 os_box_border  default_padding section_break">
-                <p>
-                    @if(isset($data['record']['os_cataract']))
-                    <span class="glyphicon glyphicon-ok" style=""></span>
-                    @else
-                    &nbsp;
-                    @endif
-                </p>
-            </div>
-            <div class="col-xs-11 default_padding border_bottom section_break">
-                <p>
-                    @if(!isset($data['record']['ORR']))
+                @if(!isset($data['record']['ORR']))
                     <?php $data['record']['ORR'] = ''; ?>
-                    @endif
-                    @php
+                @endif
+                @php
                     $orr =  [
-                    'no' => 'No',
-                    'yes' => 'Yes',
-
+                        'no' => 'No',
+                        'yes' => 'Yes',
                     ]
-                    @endphp
-                    @foreach($orr as $name => $value)
-                    <span class="{{ ($name === $data['record']['ORR'])?'active_wrap_field' :''}}">     {{ $value }}
-                    </span>
-                    @endforeach
-                    @if('yes' === $data['record']['ORR'])
-                    <span class="padding_left"> Name of Md</span>
-                    <span class="unit_input_text">{{ $data['record']['ORR-MD'] }}</span>
-                    @endif
-                </p>
+                @endphp
+                @foreach($orr as $name => $value)
+                    <p class="no-margin padding_left">
+                        <input type="checkbox" {{ ($name === $data['record']['ORR']) ? 'checked' : '' }}>
+                        {{ $value }}
+                    </p>
+                @endforeach
+                @if('yes' === $data['record']['ORR'])
+                    <p class="no-margin">
+                        <span class="padding_left"> Name of MD: </span>
+                        <span class="unit_input_text">{{ $data['record']['ORR-MD'] }}</span>
+                    </p>
+                @endif
+            </div>
+            <div class="col-xs-12 default_padding">
+                <p class="no-margin">Cataract Surgery referral </p>
+                @if(!isset($data['record']['surgery_referral']))
+                    <?php $data['record']['surgery_referral'] = ''; ?>
+                @endif
+                @php
+                    $surgeryReferral =  [
+                        'no' => 'No',
+                        'yes' => 'Yes',
+                    ]
+
+                @endphp
+
+                @foreach($surgeryReferral as $name => $value)
+                    <p class="no-margin padding_left">
+                        <input type="checkbox" {{ ($name === $data['record']['surgery_referral']) ? 'checked' : '' }}>
+                        {{ $value }}
+                    </p>
+                @endforeach
+                @if('yes' === $data['record']['surgery_referral'])
+                    <p class="no-margin">
+                        <span class="padding_left"> Name of MD: </span>
+                        <span class="unit_input_text">{{ (isset($data['record']['surgery_referral_md']))?$data['record']['surgery_referral_md']:'' }}</span>
+                    </p>
+                @endif
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-xs-1 os_box_border  default_padding">
-                <p>
-                    @if(isset($data['record']['os_OAG']))
-                    <span class="glyphicon glyphicon-ok" style=""></span>
-                    @else
-                    &nbsp;
-                    @endif
-
-                </p>
-            </div>
-            <div class="col-xs-11 default_padding">
-                <p class="">Surgery referral </p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-1 os_box_border no_bottom_border default_padding">
-                <p>  &nbsp;
-                </p>
-            </div>
-            <div class="col-xs-11 default_padding">
-                <p>
-                    @if(!isset($data['record']['surgery_referral']))
-                        <?php $data['record']['surgery_referral'] = ''; ?>
-                    @endif
-                    @php
-                        $surgeryReferral =  [
-                            'no' => 'No',
-                            'yes' => 'Yes',
-                        ]
-
-                    @endphp
-
-                    @foreach($surgeryReferral as $name => $value)
-                        <span class="{{ ($name === $data['record']['surgery_referral'])?'active_wrap_field' :''}}">     {{ $value }}
-                        </span>
-                    @endforeach
-                    @if('yes' === $data['record']['surgery_referral'])
-                    <span class="padding_left"> Name of Md</span>
-                    <span class="unit_input_text">{{ (isset($data['record']['surgery_referral_md']))?$data['record']['surgery_referral_md']:'' }}</span>
-                    @endif
-                </p>
-            </div>
-        </div>
-
     </div>
 
 </div>

@@ -9,4 +9,8 @@ class NetworkUser extends Model
 	protected $table = 'network_user';
 	protected $fillable = ['network_id', 'user_id'];
 
+	public function user() {
+        return $this->belongsTo('myocuhub\User');
+    }
+
 }

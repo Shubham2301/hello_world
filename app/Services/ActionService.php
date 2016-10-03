@@ -10,13 +10,14 @@ use myocuhub\Jobs\PatientEngagement\RequestAppointmentPatientSMS;
 use myocuhub\Models\Action;
 use myocuhub\Models\ActionResult;
 use myocuhub\Models\Appointment;
+use myocuhub\Models\AppointmentType;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
+use myocuhub\Models\MessageTemplate;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
-use myocuhub\Models\MessageTemplate;
 
 class ActionService
 {
@@ -144,6 +145,15 @@ class ActionService
                     $date = new DateTime();
                     $console->stage_updated_at = $date->format('Y-m-d H:i:s');
                     $console->update();
+
+                    $appointmentTypeName = strtolower(str_replace(' ', '_', trim($appointment->appointmenttype)));
+                    if ( !(AppointmentType::where('name', $appointmentTypeName)->first()) ) {
+                        $appointment_type = new AppointmentType();
+                        $appointment_type->name = $appointmentTypeName;
+                        $appointment_type->display_name = trim($appointment->appointmenttype);
+                        $appointment_type->type = 'ocuhub';
+                        $appointment_type->save();
+                    }
                 }
                     $referralHistory = new ReferralHistory;
                     $referralHistory->network_id  = session('network-id');
@@ -210,6 +220,15 @@ class ActionService
                     $date = new DateTime();
                     $console->stage_updated_at = $date->format('Y-m-d H:i:s');
                     $console->update();
+
+                    $appointmentTypeName = strtolower(str_replace(' ', '_', trim($appointment->appointmenttype)));
+                    if ( !(AppointmentType::where('name', $appointmentTypeName)->first()) ) {
+                        $appointment_type = new AppointmentType();
+                        $appointment_type->name = $appointmentTypeName;
+                        $appointment_type->display_name = trim($appointment->appointmenttype);
+                        $appointment_type->type = 'ocuhub';
+                        $appointment_type->save();
+                    }
                 }
 
                 $referralHistory = new ReferralHistory;

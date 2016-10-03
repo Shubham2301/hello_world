@@ -195,7 +195,7 @@
             <p id="previous_btn" style="display:none;">Previous</p>
         </div>
         <div class="col-xs-4 ">
-            <button class="btn btn-primary" type="button" id="create_record" data-id="" style="margin-top:8px;margin-left:20%;">Save</button>
+            <button class="btn btn-primary" type="button" id="create_record" data-id="" style="margin-top:8px;margin-left:20%;display:none;">Save</button>
         </div>
         <input type="hidden" value="{{$i-1}}" id="count_form_sections"></input>
         <div class="col-xs-4 btn text-right">

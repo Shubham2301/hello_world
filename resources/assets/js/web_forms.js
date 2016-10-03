@@ -71,6 +71,7 @@ $(document).ready(function() {
 
         var dataid = $('.form_chunk.active').attr('data-index');
         $('#continue_btn').show();
+        $('#create_record').hide();
         dataid--;
 
         if (dataid.toString() === "1") {
@@ -90,8 +91,10 @@ $(document).ready(function() {
         dataid++;
         if (dataid.toString() === $('#count_form_sections').val()) {
             $(this).hide();
+            $('#create_record').show();
         } else {
             $(this).show();
+            $('#create_record').hide();
         }
         $('.form_chunk').removeClass('active');
         $('.form_chunk_' + dataid).addClass('active');

@@ -9,18 +9,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use myocuhub\Events\AppointmentScheduled;
 use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Facades\SES;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Appointment;
+use myocuhub\Models\AppointmentType;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\PatientInsurance;
+use myocuhub\Models\PatientRecord;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
-use myocuhub\Facades\SES;
 class AppointmentController extends Controller
 {
     /**
@@ -50,6 +52,7 @@ class AppointmentController extends Controller
         $locationID = $request->input('location_id');
         $practiceID = $request->input('practice_id');
         $actionResultID = $request->has('action_result_id') ? $request->input('action_result_id') : null ;
+        $recordID = $request->has('record_id') ? $request->input('record_id') : null ;
         $referralTypeID = $request->input('referraltype_id');
         $appointmentType = $request->input('appointment_type');
         $appointmentTypeKey = $request->input('appointment_type_key');
@@ -73,6 +76,15 @@ class AppointmentController extends Controller
         }
 
         $apptStatus['appointment_saved'] = true;
+
+        $appointmentTypeName = strtolower(str_replace(' ', '_', trim($appointmentType)));
+        if ( !(AppointmentType::where('name', $appointmentTypeName)->first()) ) {
+            $appointment_type = new AppointmentType();
+            $appointment_type->name = $appointmentTypeName;
+            $appointment_type->display_name = trim($appointmentType);
+            $appointment_type->type = '4PC';
+            $appointment_type->save();
+        }
 
         $careconsole = Careconsole::where('patient_id', $patientID)->first();
 
@@ -140,6 +152,23 @@ class AppointmentController extends Controller
             $referralHistory->save();
         }
 
+        if ($recordID)
+        {
+            $record = PatientRecord::find($recordID);
+            $recordData = json_decode($record->content, true);
+            $provider = User::find($providerID);
+            if ($recordData['ORR'] == 'yes')
+            {
+                $recordData['ORR-MD'] = $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname;
+            }
+            else if ($recordData['surgery_referral'] == 'yes')
+            {
+                $recordData['surgery_referral_md'] = $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname;
+            }
+            $record->content = json_encode($recordData);
+            $record->save();
+        }
+
         $apptStatus['provider_email'] = $appointmentScheduled->getProviderEmailStatus();
         $apptStatus['patient_email'] = $appointmentScheduled->getPatientEmailStatus();
         $apptStatus['fpc_request'] = $appointmentScheduled->getFPCRequestStatus();
@@ -200,7 +229,9 @@ class AppointmentController extends Controller
         if ($request->has('action_result_id')) {
             $actionResultID = $request->input('action_result_id');
         }
-
+        if ($request->has('record_id')) {
+            $recordID = $request->input('record_id');
+        }
         $data = [];
         $data['location_code'] = $locationKey;
         $data['provider_acc_key'] = $providerKey;
@@ -223,6 +254,9 @@ class AppointmentController extends Controller
 		$data['selectedfiles'] = $request->selectedfiles;
         if(isset($actionResultID)) {
             $data['action_result_id'] = $actionResultID;
+        }
+        if(isset($recordID)) {
+            $data['record_id'] = $recordID;
         }
 
         $filearray = json_decode($data['selectedfiles'], true);

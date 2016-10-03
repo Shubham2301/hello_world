@@ -28,6 +28,9 @@
     @if(array_key_exists('patient_id', $data))
         {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patient_id')) !!}
     @endif
+    @if(array_key_exists('record_id', $data))
+        {!! Form::hidden('record_id', $data['record_id'], array('id' => 'form_record_id')) !!}
+    @endif
     {!! Form::hidden('provider_id', '', array('id' => 'form_provider_id')) !!}
     {!! Form::hidden('provider_acc_key', '', array('id' => 'form_provider_acc_key')) !!}
     {!! Form::hidden('practice_id', '', array('id' => 'form_practice_id')) !!}
