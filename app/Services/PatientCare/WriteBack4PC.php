@@ -2,7 +2,9 @@
 
 namespace myocuhub\Services\PatientCare;
 
+use Exception;
 use Datetime;
+use Illuminate\Support\Facades\Log;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\FPCWritebackAudit;
 use myocuhub\Models\PracticeLocation;
@@ -68,111 +70,119 @@ class WriteBack4PC extends PatientCare
             $provider = User::where('npi', $schedule['npi'])->first();
 
             foreach ($fpcAappts as $fpcAppt) {
-                $appt = Appointment::where('fpc_id', $fpcAppt->FPCApptID)->get();
-                $practiceLocation = PracticeLocation::where('location_code', $fpcAppt->LocK)->first();
-
-                if (!sizeof($appt)) {
-
-                    /**
-                     * Appointment was not scheduled by Ocuhub
-                     */
-
-                    $appt = new Appointment;
-                    $appt->practice_id = $practiceLocation->practice_id;
-                    $appt->location_id = $practiceLocation->id;
-                    $appt->provider_id = $provider->id;
-                    $appt->appointmenttype = $fpcAppt->ApptReason;
-                    $appt->fpc_id = $fpcAppt->FPCApptID;
-                    $date = new Datetime($fpcAppt->ApptStart);
-                    $appt->start_datetime = $date->format('Y-m-d H:i:s');
-                    $date = new Datetime($fpcAppt->ApptEnd);
-                    $appt->end_datetime = $date->format('Y-m-d H:i:s');
-                    if (!$network = User::getNetwork($provider->id)) {
-                        continue;
+                try {
+                    if(!is_array($fpcAappts)) {
+                        $fpcAppt = $fpcAappts;
                     }
-                    $appt->network_id = $network->id;
-                    $patient = Patient::where('fpc_id', $fpcAppt->PatientData->FPCPatientID)->first();
-                    if ($patient) {
+                    $appt = Appointment::where('fpc_id', $fpcAppt->FPCApptID)->get();
+                    $practiceLocation = PracticeLocation::where('location_code', $fpcAppt->LocK)->first();
+
+
+                    if (!sizeof($appt)) {
 
                         /**
-                         * Patient Exists in Ocuhub
+                         * Appointment was not scheduled by Ocuhub
                          */
 
+                        $appt = new Appointment;
+                        $appt->practice_id = $practiceLocation->practice_id;
+                        $appt->location_id = $practiceLocation->id;
+                        $appt->provider_id = $provider->id;
+                        $appt->appointmenttype = $fpcAppt->ApptReason;
+                        $appt->fpc_id = $fpcAppt->FPCApptID;
+                        $date = new Datetime($fpcAppt->ApptStart);
+                        $appt->start_datetime = $date->format('Y-m-d H:i:s');
+                        $date = new Datetime($fpcAppt->ApptEnd);
+                        $appt->end_datetime = $date->format('Y-m-d H:i:s');
+                        if (!$network = User::getNetwork($provider->id)) {
+                            continue;
+                        }
+                        $appt->network_id = $network->id;
+                        $patient = Patient::where('fpc_id', $fpcAppt->PatientData->FPCPatientID)->first();
+                        if ($patient) {
+
+                            /**
+                             * Patient Exists in Ocuhub
+                             */
+
+                            $appt->patient_id = $patient->id;
+                        } else {
+
+                            /**
+                             * Patient Does Not Exist in Ocuhub
+                             */
+
+                            $patient = new Patient;
+                            $patient->fpc_id = $fpcAppt->PatientData->FPCPatientID;
+                            $patient->title = $fpcAppt->PatientData->Title;
+                            $patient->firstname = $fpcAppt->PatientData->FirstName;
+                            $patient->lastname = $fpcAppt->PatientData->LastName;
+                            $patient->homephone = $fpcAppt->PatientData->Home;
+                            $patient->workphone = $fpcAppt->PatientData->Work;
+                            $patient->cellphone = $fpcAppt->PatientData->Cell;
+                            $patient->email = $fpcAppt->PatientData->Email;
+                            $patient->addressline1 = $fpcAppt->PatientData->Address1;
+                            $patient->addressline2 = $fpcAppt->PatientData->Address2;
+                            $patient->city = $fpcAppt->PatientData->City;
+                            $patient->state = $fpcAppt->PatientData->State;
+                            $patient->zip = $fpcAppt->PatientData->Zip;
+                            $patient->lastfourssn = $fpcAppt->PatientData->L4DSSN;
+                            $date = new Datetime($fpcAppt->PatientData->DOB);
+                            $patient->birthdate = $date->format('Y-m-d H:i:s');
+                            $patient->preferredlanguage = $fpcAppt->PatientData->PreferredLanguage;
+
+                            $patient->save();
+
+                            if ($patient) {
+                                $appt->patient_id = $patient->id;
+                            }
+                        }
+
                         $appt->patient_id = $patient->id;
+
+                        $appt->save();
+
+                        $audit = new FPCWritebackAudit;
+                        $audit->patient_id = $appt->patient_id;
+                        $audit->provider_id = $appt->provider_id;
+                        $audit->appointment_id = $appt->id;
+
+                        $audit->save();
+
                     } else {
 
                         /**
-                         * Patient Does Not Exist in Ocuhub
+                         * Appointment was scheduled by Ocuhub
                          */
 
-                        $patient = new Patient;
+                        $appt = Appointment::find($appt[0]['id']);
+                        $appt->practice_id = $practiceLocation->practice_id;
+                        $appt->location_id = $practiceLocation->id;
+                        $appt->provider_id = $provider->id;
+                        $appt->appointmenttype = $fpcAppt->ApptReason;
+                        $appt->fpc_id = $fpcAppt->FPCApptID;
+                        $date = new Datetime($fpcAppt->ApptStart);
+                        $appt->start_datetime = $date->format('Y-m-d H:i:s');
+                        $date = new Datetime($fpcAppt->ApptEnd);
+                        $appt->end_datetime = $date->format('Y-m-d H:i:s');
+
+                        $appt->save();
+
+                        $patient = Patient::find($appt->patient_id);
                         $patient->fpc_id = $fpcAppt->PatientData->FPCPatientID;
-                        $patient->title = $fpcAppt->PatientData->Title;
-                        $patient->firstname = $fpcAppt->PatientData->FirstName;
-                        $patient->lastname = $fpcAppt->PatientData->LastName;
-                        $patient->homephone = $fpcAppt->PatientData->Home;
-                        $patient->workphone = $fpcAppt->PatientData->Work;
-                        $patient->cellphone = $fpcAppt->PatientData->Cell;
-                        $patient->email = $fpcAppt->PatientData->Email;
-                        $patient->addressline1 = $fpcAppt->PatientData->Address1;
-                        $patient->addressline2 = $fpcAppt->PatientData->Address2;
-                        $patient->city = $fpcAppt->PatientData->City;
-                        $patient->state = $fpcAppt->PatientData->State;
-                        $patient->zip = $fpcAppt->PatientData->Zip;
-                        $patient->lastfourssn = $fpcAppt->PatientData->L4DSSN;
-                        $date = new Datetime($fpcAppt->PatientData->DOB);
-                        $patient->birthdate = $date->format('Y-m-d H:i:s');
-                        $patient->preferredlanguage = $fpcAppt->PatientData->PreferredLanguage;
 
                         $patient->save();
 
-                        if ($patient) {
-                            $appt->patient_id = $patient->id;
-                        }
+                        $audit = new FPCWritebackAudit;
+                        $audit->patient_id = $appt->patient_id;
+                        $audit->provider_id = $appt->provider_id;
+                        $audit->appointment_id = $appt->id;
+
+                        $audit->save();
+
                     }
-
-                    $appt->patient_id = $patient->id;
-
-                    $appt->save();
-
-                    $audit = new FPCWritebackAudit;
-                    $audit->patient_id = $appt->patient_id;
-                    $audit->provider_id = $appt->provider_id;
-                    $audit->appointment_id = $appt->id;
-
-                    $audit->save();
-
-                } else {
-
-                    /**
-                     * Appointment was scheduled by Ocuhub
-                     */
-
-                    $appt = Appointment::find($appt[0]['id']);
-                    $appt->practice_id = $practiceLocation->practice_id;
-                    $appt->location_id = $practiceLocation->id;
-                    $appt->provider_id = $provider->id;
-                    $appt->appointmenttype = $fpcAppt->ApptReason;
-                    $appt->fpc_id = $fpcAppt->FPCApptID;
-                    $date = new Datetime($fpcAppt->ApptStart);
-                    $appt->start_datetime = $date->format('Y-m-d H:i:s');
-                    $date = new Datetime($fpcAppt->ApptEnd);
-                    $appt->end_datetime = $date->format('Y-m-d H:i:s');
-
-                    $appt->save();
-
-                    $patient = Patient::find($appt->patient_id);
-                    $patient->fpc_id = $fpcAppt->PatientData->FPCPatientID;
-
-                    $patient->save();
-
-                    $audit = new FPCWritebackAudit;
-                    $audit->patient_id = $appt->patient_id;
-                    $audit->provider_id = $appt->provider_id;
-                    $audit->appointment_id = $appt->id;
-
-                    $audit->save();
-
+                } catch (Exception $e) {
+                    Log::error($e);
                 }
             }
         }
