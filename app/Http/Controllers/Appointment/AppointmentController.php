@@ -159,11 +159,11 @@ class AppointmentController extends Controller
             $provider = User::find($providerID);
             if ($recordData['ORR'] == 'yes')
             {
-                $recordData['ORR-MD'] = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+                $recordData['ORR-MD'] = $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname;
             }
             else if ($recordData['surgery_referral'] == 'yes')
             {
-                $recordData['surgery_referral_md'] = $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname ;
+                $recordData['surgery_referral_md'] = $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname;
             }
             $record->content = json_encode($recordData);
             $record->save();
