@@ -223,4 +223,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report/performance/generateReportExcel', 'Reports\PerformanceController@generateReportExcel');
     Route::resource('/report/performance', 'Reports\PerformanceController');
 
+    Route::resource('/report/user_report', 'Reports\UserReportController');
+
 });

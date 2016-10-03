@@ -58,7 +58,18 @@ Reporting
     </span>
   </a>
   <div class="performance_report_aggregation">
-
+  </div>
+  @endif
+  @if(policy(new \myocuhub\Http\Controllers\Reports\ReportController)->accessUserReport())
+  <a href="/report/user_report" class="report_sidebar_button {{ array_key_exists('user-report', $data) ? 'active' : '' }}">
+    <span class="report_sidebar_image">
+      <span><img src="{{elixir('images/sidebar/call-center-report.png')}}"></span>
+    </span>
+    <span class="report_sidebar_text">
+      <span class="text">User Report</span>
+    </span>
+  </a>
+  <div class="user_report_aggregation">
   </div>
   @endif
 </div>
