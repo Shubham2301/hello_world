@@ -34,7 +34,11 @@
                @foreach(\myocuhub\Models\ProviderType::indexedAbbr() as $key => $value)
                <p class="show_specialist arial">
                    <span>
-                       {!! Form::checkbox('provider_types', $key, null, array('id' => 'provider_type_'.$key, 'class' => 'provider_type_filters')); !!}
+                       @if (array_key_exists('provider_type_id', $data) && $key == $data['provider_type_id'])
+                           {!! Form::checkbox('provider_types', $key, true, array('id' => 'provider_type_'.$key, 'class' => 'provider_type_filters')); !!}
+                       @else
+                           {!! Form::checkbox('provider_types', $key, null, array('id' => 'provider_type_'.$key, 'class' => 'provider_type_filters')); !!}
+                       @endif
                    </span>
                    {{ $value }}
                 </p>

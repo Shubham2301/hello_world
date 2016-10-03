@@ -35,6 +35,9 @@
     @if(array_key_exists('action_result_id', $data))
         {!! Form::hidden('action_result_id', $data['action_result_id'], array('id' => 'form_action_result_id')) !!}
     @endif
+    @if(array_key_exists('record_id', $data))
+        {!! Form::hidden('record_id', $data['record_id'], array('id' => 'form_record_id')) !!}
+    @endif
     {!! Form::close() !!}
     <div class="appointment_section active" id="confirm-appointment">
         <button type="button" class="btn back-btn" id="back">Back</button><h3 class="center-align arial_bold">Schedule an appointment</h3>

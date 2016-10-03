@@ -12,6 +12,7 @@ use myocuhub\Models\PatientRecord;
 use myocuhub\Models\WebFormTemplate;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
+use myocuhub\Models\ProviderType;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Action;
 use Auth;
@@ -88,7 +89,29 @@ trait PatientRecordsTrait
 
             ]
         ));
+
         $request->session()->put('success', 'Record created successfully');
+
+        if( (WebFormTemplate::find($request->template_id)->name == 'Eye exam report') )
+        {
+            if (( ($request->has('ORR') && $request->ORR == 'yes') || ($request->has('surgery_referral') && $request->surgery_referral == 'yes')))
+            {
+                $specialRequest = ($request->has('ORR') && $request->ORR == 'yes') ? 'Ophthalmology Retinal Referral' : 'Cataract Surgery Referral';
+
+                $patient = Patient::find($data['patient_id']);
+                $patient->special_request = $specialRequest;
+                $patient->save();
+
+                if ( Network::find(session('network-id'))->enable_console == 1)
+                {
+                    $actionID = Action::where('name', 'move-to-contact-status')->first()->id;
+                    $movePatient = $this->ActionService->userAction($actionID, '-1', null, 'Moved patient to Contact Status', '', $patient->careConsole->id, '');
+                }
+
+                $providerTypeId = ProviderType::where('abbr', 'MD')->first()->id;
+                return redirect('/providers?referraltype_id=6&action=schedule_appointment&patient_id='.$data['patient_id'].'&provider_type_id='.$providerTypeId.'&record_id='.$record->id);
+            }
+        }
         return redirect('/webform');
     }
 

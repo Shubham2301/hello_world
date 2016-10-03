@@ -49,6 +49,12 @@ class ProviderController extends Controller
         if ($request->has('patient_id')) {
             $data['patient_id'] = $request->input('patient_id');
         }
+        if ($request->has('provider_type_id')) {
+            $data['provider_type_id'] = $request->input('provider_type_id');
+        }
+        if ($request->has('record_id')) {
+            $data['record_id'] = $request->input('record_id');
+        }
 
         $patientInsurance = PatientInsurance::where('patient_id', $data['patient_id'])->first();
 
