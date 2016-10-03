@@ -9,6 +9,7 @@ use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Action;
 use myocuhub\Models\Appointment;
+use myocuhub\Models\AppointmentType;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\MessageTemplate;
@@ -344,6 +345,11 @@ class CareConsoleController extends Controller
 
     public function getAppointmentTypes()
     {
-        return config('constants.appointment_types');
+        $appointmentTypes = AppointmentType::all();
+        $appointmentTypeList = [];
+        foreach ($appointmentTypes as $appointmentType) {
+            $appointmentTypeList[] = $appointmentType->display_name;
+        }
+        return $appointmentTypeList;
     }
 }

@@ -13,6 +13,7 @@ use myocuhub\Facades\SES;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Appointment;
+use myocuhub\Models\AppointmentType;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\PatientInsurance;
@@ -75,6 +76,15 @@ class AppointmentController extends Controller
         }
 
         $apptStatus['appointment_saved'] = true;
+
+        $appointmentTypeName = strtolower(str_replace(' ', '_', trim($appointmentType)));
+        if ( !(AppointmentType::where('name', $appointmentTypeName)->first()) ) {
+            $appointment_type = new AppointmentType();
+            $appointment_type->name = $appointmentTypeName;
+            $appointment_type->display_name = trim($appointmentType);
+            $appointment_type->type = '4PC';
+            $appointment_type->save();
+        }
 
         $careconsole = Careconsole::where('patient_id', $patientID)->first();
 

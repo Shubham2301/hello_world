@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('careconsole/bucketpatients', 'CareConsole\CareConsoleController@getBucketPatients');
         Route::get('/careconsole/patient/records', 'CareConsole\CareConsoleController@getPatientRecords');
         Route::get('/careconsole/patient_info', 'CareConsole\CareConsoleController@getPatientInfo');
+        Route::get('/careconsole/appointment_type', 'CareConsole\CareConsoleController@getAppointmentTypes');
         Route::resource('careconsole', 'CareConsole\CareConsoleController');
         Route::get('/careconsole/action/practiceproviders', 'CareConsole\CareConsoleController@practiceProviders');
     });

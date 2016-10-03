@@ -234,6 +234,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                updateAppointmentTypes();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -243,6 +244,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                updateAppointmentTypes();
                 showActionModel(data);
                 break;
             default:
@@ -309,6 +311,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                updateAppointmentTypes();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -318,6 +321,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                updateAppointmentTypes();
                 showActionModel(data);
                 break;
             default:
@@ -408,6 +412,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                updateAppointmentTypes();
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -417,6 +422,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_date').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                updateAppointmentTypes();
                 showActionModel(data);
                 break;
             default:
@@ -1266,4 +1272,29 @@ function getPatientContactData(patientID) {
     });
 
     $('.patient_contact_request_info').html(content);
+}
+
+function updateAppointmentTypes() {
+
+    var content = '<option value="">Appointment Type</option>';
+    $.ajax({
+        url: '/careconsole/appointment_type',
+        type: 'GET',
+        contentType: 'text/html',
+        async: false,
+        success: function success(appointmentTypes) {
+            for (var key in appointmentTypes) {
+                content += '<option value="' + appointmentTypes[key] + '">' + appointmentTypes[key] + '</option>';
+            }
+        },
+        error: function error() {
+            $('p.alert_message').text('Error:');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+
+    content += '<option value="-1">Not listed</option>';
+    $('#manual_appointment_appointment_type').html(content);
 }
