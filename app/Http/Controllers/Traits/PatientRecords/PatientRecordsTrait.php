@@ -92,7 +92,7 @@ trait PatientRecordsTrait
 
         $request->session()->put('success', 'Record created successfully');
 
-        if( (WebFormTemplate::find($request->template_id)->name == 'Eye exam report') )
+        if( (WebFormTemplate::find($request->template_id)->name == 'eye-exam-report') )
         {
             if (( ($request->has('ORR') && $request->ORR == 'yes') || ($request->has('surgery_referral') && $request->surgery_referral == 'yes')))
             {

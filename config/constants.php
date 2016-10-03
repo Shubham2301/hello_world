@@ -59,16 +59,6 @@ return [
         'female' => 'F',
         'f' => 'F',
     ],
-    'appointment_types' => [
-        'ABIorVTeval',
-        'Annual Eye Exam',
-        'Cataract Evaluation',
-        'Comprehensive Eye Exam',
-        'Diabetic Eye Exam',
-        'General Eye Exam',
-        'Glaucoma Evaluation',
-        'UnknownEncounterReschedule',
-    ],
     'paths' => [
         'ccda' => [
             'temp_ccda' => base_path() . '/temp_ccda/',
