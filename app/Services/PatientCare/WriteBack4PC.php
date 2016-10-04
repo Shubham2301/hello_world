@@ -156,29 +156,32 @@ class WriteBack4PC extends PatientCare
                          */
 
                         $appt = Appointment::find($appt[0]['id']);
-                        $appt->practice_id = $practiceLocation->practice_id;
-                        $appt->location_id = $practiceLocation->id;
-                        $appt->provider_id = $provider->id;
-                        $appt->appointmenttype = $fpcAppt->ApptReason;
-                        $appt->fpc_id = $fpcAppt->FPCApptID;
-                        $date = new Datetime($fpcAppt->ApptStart);
-                        $appt->start_datetime = $date->format('Y-m-d H:i:s');
-                        $date = new Datetime($fpcAppt->ApptEnd);
-                        $appt->end_datetime = $date->format('Y-m-d H:i:s');
 
-                        $appt->save();
+                        if ($appt->enable_writeback) {
+                            $appt->practice_id = $practiceLocation->practice_id;
+                            $appt->location_id = $practiceLocation->id;
+                            $appt->provider_id = $provider->id;
+                            $appt->appointmenttype = $fpcAppt->ApptReason;
+                            $appt->fpc_id = $fpcAppt->FPCApptID;
+                            $date = new Datetime($fpcAppt->ApptStart);
+                            $appt->start_datetime = $date->format('Y-m-d H:i:s');
+                            $date = new Datetime($fpcAppt->ApptEnd);
+                            $appt->end_datetime = $date->format('Y-m-d H:i:s');
 
-                        $patient = Patient::find($appt->patient_id);
-                        $patient->fpc_id = $fpcAppt->PatientData->FPCPatientID;
+                            $appt->save();
 
-                        $patient->save();
+                            $patient = Patient::find($appt->patient_id);
+                            $patient->fpc_id = $fpcAppt->PatientData->FPCPatientID;
 
-                        $audit = new FPCWritebackAudit;
-                        $audit->patient_id = $appt->patient_id;
-                        $audit->provider_id = $appt->provider_id;
-                        $audit->appointment_id = $appt->id;
+                            $patient->save();
 
-                        $audit->save();
+                            $audit = new FPCWritebackAudit;
+                            $audit->patient_id = $appt->patient_id;
+                            $audit->provider_id = $appt->provider_id;
+                            $audit->appointment_id = $appt->id;
+
+                            $audit->save();
+                        }
 
                     }
                 } catch (Exception $e) {

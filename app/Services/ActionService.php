@@ -128,6 +128,7 @@ class ActionService
                 $newNote = $scheduledTo . '</br>' . $appointment->start_datetime . '</br>' . $appointment->appointmenttype;
                 $updatedNote = $newNote.'</br></br>'. $notes;
                 $appointment->notes = $updatedNote;
+                $appointment->enable_writeback = 0;
 
                 $contact->notes = $updatedNote;
                 $contact->save();
@@ -203,6 +204,7 @@ class ActionService
                 $newNote = $scheduledTo . '</br>' . $appointment->start_datetime . '</br>' . $appointment->appointmenttype;
                 $updatedNote = $newNote.'</br></br>'. $notes;
                 $appointment->notes = $updatedNote;
+                $appointment->enable_writeback = 0;
 
                 $contact->notes = $updatedNote;
                 $contact->save();
