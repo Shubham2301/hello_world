@@ -66,7 +66,8 @@ class AppointmentController extends Controller
             'network_id' => $networkID,
             'appointmenttype_key' => $appointmentTypeKey,
             'appointmenttype' => $appointmentType,
-            'start_datetime' => $appointmentDateTime->format('Y-m-d H:i:s')
+            'start_datetime' => $appointmentDateTime->format('Y-m-d H:i:s'),
+            'enable_writeback' => 1
         ]);
         if (!$appointment) {
             return $apptStatus;
