@@ -90,8 +90,6 @@ trait PatientRecordsTrait
             ]
         ));
 
-        $request->session()->put('success', 'Record created successfully');
-
         if( (WebFormTemplate::find($request->template_id)->name == 'eye-exam-report') )
         {
             if (( ($request->has('ORR') && $request->ORR == 'yes') || ($request->has('surgery_referral') && $request->surgery_referral == 'yes')))
@@ -109,9 +107,12 @@ trait PatientRecordsTrait
                 }
 
                 $providerTypeId = ProviderType::where('abbr', 'MD')->first()->id;
+
+                $request->session()->put('success', 'Record created successfully. Please schedule an appointment to refer the patient to an MD. The name of provider to which the appointment is scheduled will be automatically updated in the record.');
                 return redirect('/providers?referraltype_id=6&action=schedule_appointment&patient_id='.$data['patient_id'].'&provider_type_id='.$providerTypeId.'&record_id='.$record->id);
             }
         }
+        $request->session()->put('success', 'Record created successfully');
         return redirect('/webform');
     }
 
