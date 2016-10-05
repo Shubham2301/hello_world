@@ -127,6 +127,8 @@ CanResetPasswordContract
             ->leftjoin('practice_location', 'practice_user.practice_id', '=', 'practice_location.practice_id')
             ->where('usertype_id', 1)
             ->where('active', '1')
+            ->whereNull('practices.deleted_at')
+            ->whereNull('practice_location.deleted_at')
             ->where(function ($query) use ($filters) {
                 foreach ($filters as $filter) {
                     $query->where(function ($query) use ($filter) {
@@ -234,24 +236,30 @@ CanResetPasswordContract
             ->first();
     }
 
-    public static function getUsersByName($search_val)
+    public static function getUsersByName($search_val, $filter = null)
     {
         return self::query()
             ->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
             ->where('network_user.network_id', session('network-id'))
-            ->where(function ($query) use ($search_val) {
-                $query->where(function ($query) use ($search_val) {
+            ->where(function ($query) use ($search_val, $filter) {
+                if (!$filter) {
+                    $query->where(function ($query) use ($search_val) {
+                        $query->where('firstname', 'LIKE', '%' . $search_val . '%')
+                            ->where('active', '=', '1');
+                        })
+                        ->orWhere(function ($query) use ($search_val) {
+                            $query->where('middlename', 'LIKE', '%' . $search_val . '%')
+                                ->where('active', '=', '1');
+                        })
+                        ->orWhere(function ($query) use ($search_val) {
+                            $query->where('lastname', 'LIKE', '%' . $search_val . '%')
+                                ->where('active', '=', '1');
+                        });
+                } else {
                     $query->where('firstname', 'LIKE', '%' . $search_val . '%')
-                        ->where('active', '=', '1');
-                })
-                    ->orWhere(function ($query) use ($search_val) {
-                        $query->where('middlename', 'LIKE', '%' . $search_val . '%')
-                            ->where('active', '=', '1');
-                    })
-                    ->orWhere(function ($query) use ($search_val) {
-                        $query->where('lastname', 'LIKE', '%' . $search_val . '%')
-                            ->where('active', '=', '1');
-                    });
+                        ->orwhere('middlename', 'LIKE', '%' . $search_val . '%')
+                        ->orwhere('lastname', 'LIKE', '%' . $search_val . '%');
+                }
             });
     }
 

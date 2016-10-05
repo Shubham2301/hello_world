@@ -533,7 +533,11 @@ class UserController extends Controller
         $tosearchdata = json_decode($request->input('data'), true);
         if (session('user-level') == 1) {
             $search_val = $tosearchdata['value'];
-            $users = User::where('active', '=', '1')
+            $users = User::where(function ($query) use ($tosearchdata) {
+                    if (!$tosearchdata['include_deactivated']) {
+                        $query->where('active', '=', '1');
+                    }
+                })
                 ->where(function ($query) use ($search_val) {
                     $query->where('firstname', 'LIKE', '%' . $search_val . '%')
                         ->orWhere('middlename', 'LIKE', '%' . $search_val . '%')
@@ -541,7 +545,7 @@ class UserController extends Controller
                 })
                 ->get();
         } elseif (session('user-level') == 2) {
-            $users = User::getUsersByName($tosearchdata['value'])->get();
+            $users = User::getUsersByName($tosearchdata['value'], $tosearchdata['include_deactivated'])->get();
         } else {
             $search_val = $tosearchdata['value'];
             $users = User::query()
@@ -553,7 +557,11 @@ class UserController extends Controller
                         ->orWhere('middlename', 'LIKE', '%' . $search_val . '%')
                         ->orWhere('lastname', 'LIKE', '%' . $search_val . '%');
                 })
-                ->where('active', '=', '1')
+                ->where(function ($query) use ($tosearchdata) {
+                    if (!$tosearchdata['include_deactivated']) {
+                        $query->where('active', '=', '1');
+                    }
+                })
                 ->whereNotNull('practice_id')
                 ->where('practice_user.practice_id', User::getPractice($userID)->id)
                 ->get();
@@ -577,6 +585,7 @@ class UserController extends Controller
             $data[$i]['id'] = $id;
             $data[$i]['name'] = $user->lastname . ', ' . $user->firstname;
             $data[$i]['email'] = $user->email;
+            $data[$i]['active'] = $user->active;
             if ($user->level) {
                 $data[$i]['level'] = UserLevel::find($user->level)->name;
             } else {

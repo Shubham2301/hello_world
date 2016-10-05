@@ -1,5 +1,4 @@
 'use strict';
-//$(document).ready(function () {
 
 window.onload = function () {
     tinymce.init({
@@ -23,7 +22,8 @@ window.onload = function () {
         $('.no_item_found').removeClass('active');
         if (searchvalue != '') {
             var formData = {
-                'value': searchvalue
+                'value': searchvalue,
+                'include_deactivated': $('#include_deactivated').prop('checked')
             };
             getPractices(formData, 0);
             $('#refresh_practices').addClass('active');
@@ -71,18 +71,17 @@ window.onload = function () {
                     locations = [];
                     createPractice(formdata);
                 } else {
-                    //for edit mode
                     if (locations[counter])
                         updateLocationData(counter);
                     formdata.push({
                         "practice_id": practice_id,
                         "practice_name": $('#practice_name').val(),
                         "locations": locations,
+                        "removed_location": removedLocation,
                         "practice_email": $('#practice_email').val(),
                         "practice_network": $('#practice_network').val()
                     });
                     updatePracticedata(formdata);
-
                 }
             } else {
                 $('p.alert_message').text('Please check the email format');
@@ -146,6 +145,7 @@ window.onload = function () {
     });
     $('#remove_location').on('click', function () {
         var index = parseInt($('.location_counter').text());
+        removedLocation.push(locations[index]);
         locations.splice(index, 1);
         var length = locations.length;
 
@@ -195,10 +195,6 @@ window.onload = function () {
         showModalConfirmDialog('Are you sure?', function (outcome) {
             if (outcome) {
                 removePractice(id);
-                var formData = {
-                    'value': ''
-                };
-                getPractices(formData, currentpage);
                 $(this).parents('.search_item').remove();
             }
         });
@@ -211,7 +207,6 @@ window.onload = function () {
             if (outcome) {
                 removePractice(id);
                 $('#back').trigger('click');
-                loadAllPractices();
             }
         });
     });
@@ -309,14 +304,16 @@ window.onload = function () {
             $("#search_practice_button").trigger("click");
         }
     });
-    //});
+
+    $('#include_deactivated').on('change', function () {
+        $("#search_practice_button").trigger("click");
+    });
 }
 
 var locations = [];
+var removedLocation = [];
 var currentPractice = [];
 var showinfo = true;
-//var currentpage = 0;
-//var lastpage = 0;
 var locationAddress = [];
 
 function showModalConfirmDialogTotal(msg, handler) {
@@ -326,7 +323,6 @@ function showModalConfirmDialogTotal(msg, handler) {
     $('.admin_delete_dropdown').on('click', '.confirm_no', function (evt) {
         handler(false);
     });
-
 }
 
 function getCheckedID() {
@@ -336,7 +332,8 @@ function getCheckedID() {
     });
     removePractice(id);
     var formData = {
-        'value': ''
+        'value': '',
+        'include_deactivated': $('#include_deactivated').prop('checked')
     };
     getPractices(formData, 0);
     $('.admin_delete').removeClass('active');
@@ -357,7 +354,9 @@ function getLocationData() {
                 "zip": $('#zip').val(),
                 "phone": $('#phone').val(),
                 "special_instructions": tinyMCE.activeEditor.getContent(),
-                "special_instructions_plain_text": tinyMCE.activeEditor.getContent({format : 'text'}),
+                "special_instructions_plain_text": tinyMCE.activeEditor.getContent({
+                    format: 'text'
+                }),
             });
         } else {
             $('p.alert_message').text('Please check the email format');
@@ -405,7 +404,8 @@ function setNewLocationField() {
 
 function loadAllPractices() {
     var formData = {
-        'value': ''
+        'value': '',
+        'include_deactivated': $('#include_deactivated').prop('checked')
     };
     getPractices(formData, 0);
     $('#refresh_practices').removeClass('active');
@@ -444,7 +444,6 @@ function getPractices(formData, page) {
             var content = '';
             var i = 0;
             $('#search_results').text('');
-            //            if (practices.length > 0 && practices[0]['total'] > 0) {
             if (practices.length > 0) {
                 practices.forEach(function (practice) {
                     locationAddress.push(practice.locations);
@@ -457,22 +456,17 @@ function getPractices(formData, page) {
                         totalLocation = 0;
                     }
                     content += '<img class="location_address_next" src="' + location_next_icon + '">';
-                    //        content += '<span class="glyphicon glyphicon-chevron-up glyph_design location_address_next"></span>';
                     content += '<span><p class="location_address_counter">' + totalLocation + '</p></span>';
                     content += '<img class="location_address_previous" src="' + location_previous_icon + '">';
-                    //        content += '<span class="glyphicon glyphicon-chevron-down glyph_design location_address_previous"></span>';
-                    content += '</div><div class="col-xs-3"><p>' + practice.email + '</p></div> <div class="col-xs-2 search_edit"><p><div class="dropdown hide"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editpractice_from_row arial_bold" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepractice_from_row"><img src="' + deleteimage + '" alt="" class="removepractice_img" data-toggle="tooltip" title="Delete Practice" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
-                    //<img class="delete_practice_im" src="' + deleteimage + '">
-                    //<img class="schedule_practice_img" src="' + scheduleimg + '">
+                    content += '</div><div class="col-xs-3"><p>' + practice.email + '</p></div>';
+                    if (practice.deleted == 'true') {
+                        content += '<div class="col-xs-2 search_edit" style="visibility:hidden;">';
+                    } else {
+                        content += '<div class="col-xs-2 search_edit">';
+                    }
+                    content += '<p><div class="dropdown hide"><span class="glyphicon glyphicon-triangle-bottom" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle" style="background: #e0e0e0;color: grey;padding: 3px;border-radius: 3px;opacity: 0.8;font-size: 0.9em;"></span><ul class="dropdown-menu" id="row_action_dropdown"><li><a href=""><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px">Assign Roles</a></li><li><a href=""><img src="' + assign_user_image + '" class="assign_user_image" style="width:20px">Assign Users</a></li></ul></div></p>&nbsp;&nbsp;<p class="editpractice_from_row arial_bold" data-toggle="modal" data-target="#create_practice">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removepractice_from_row"><img src="' + deleteimage + '" alt="" class="removepractice_img" data-toggle="tooltip" title="Delete Practice" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete this?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                     i++;
                 });
-                //                currentpage = practices[0]['currentPage'];
-                //                lastpage = practices[0]['lastpage'];
-                //                var result = currentpage * 5;
-                //                if (result > practices[0]['total'])
-                //                    result = practices[0]['total'];
-                //                $('.page_info').text(result + ' of ' + practices[0]['total']);
-
 
                 $('.practice_list').addClass('active');
                 $('.practice_search_content').html(content);
@@ -682,7 +676,6 @@ function removePractice(id) {
         removeId[i] = item;
         i++;
     });
-    //    var tojson = JSON.stringify(formdata);
     $.ajax({
         url: '/practices/remove',
         type: 'GET',
@@ -701,6 +694,7 @@ function removePractice(id) {
         $(this).find('input').prop('checked', false);
     });
     $('#checked_all_practice').prop('checked', false);
+    loadAllPractices();
 }
 
 function updateLocationData(index) {
@@ -714,7 +708,9 @@ function updateLocationData(index) {
     locations[index]['zip'] = $('#zip').val();
     locations[index]['phone'] = $('#phone').val();
     locations[index]['special_instructions'] = tinyMCE.activeEditor.getContent();
-    locations[index]['special_instructions_plain_text'] = tinyMCE.activeEditor.getContent({format : 'text'});
+    locations[index]['special_instructions_plain_text'] = tinyMCE.activeEditor.getContent({
+        format: 'text'
+    });
 }
 
 function removeLocation(formData, location_dom) {
@@ -772,5 +768,4 @@ function removeUser(id) {
     };
     $('.practice_location_item_list').html('');
     getPracticeInfo(formData);
-
 }
