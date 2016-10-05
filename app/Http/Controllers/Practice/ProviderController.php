@@ -5,15 +5,16 @@ namespace myocuhub\Http\Controllers\Practice;
 use DateTime;
 use Event;
 use Illuminate\Http\Request;
+use Auth;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Http\Controllers\Traits\ValidateFPCRequestParams;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
+use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\ProviderType;
 use myocuhub\Models\ReferralHistory;
-use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
 use myocuhub\ReferralType;
 use myocuhub\User;
@@ -34,6 +35,11 @@ class ProviderController extends Controller
 
     public function index(Request $request)
     {
+        if (Auth::user()->isSuperAdmin()) {
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
         $data = array();
         $data['admin'] = false;
         $data['schedule-patient'] = true;

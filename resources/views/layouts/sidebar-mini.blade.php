@@ -9,6 +9,9 @@
                 <?php $menus = \myocuhub\Models\Menu::renderForUser(Auth::user())?>
                 <ul class="dropdown-menu sidebar" >
                 @foreach($menus as $menu)
+                    @if($menu->name == "schedule-patient" && Auth::user()->isSuperAdmin())
+                        <?php continue; ?>
+                    @endif
                     @if($menu->name == "administration" && !Auth::user()->administrationAccess())
                         <?php continue;?>
                     @endif

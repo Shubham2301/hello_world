@@ -37,6 +37,11 @@ class AppointmentController extends Controller
 
     public function schedule(Request $request)
     {
+        if (Auth::user()->isSuperAdmin()) {
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
 	   $apptStatus = [
             'appointment_saved' => false,
             'provider_email' => false,
@@ -214,6 +219,12 @@ class AppointmentController extends Controller
 
     public function index(Request $request)
     {
+        $user = Auth::user();
+        if ($user->isSuperAdmin()) {
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
         $provider_id = $request->input('provider_id');
         $practice_id = $request->input('practice_id');
         $patient_id = $request->input('patient_id');

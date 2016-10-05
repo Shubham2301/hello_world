@@ -42,6 +42,10 @@ class HomeController extends Controller
                 break;
             }
         }
+        if (Auth::user()->isSuperAdmin()) {
+            $redirectURL = '/administration/patients';
+            return redirect($redirectURL);
+        }
         return redirect('/referraltype');
     }
 
@@ -127,7 +131,7 @@ class HomeController extends Controller
             $redirectURL = '/administration/patients';
             return redirect($redirectURL);
         }
-        if (Auth::user()->level == 1) {
+        if (Auth::user()->isSuperAdmin()) {
             $redirectURL = '/administration/patients';
             return redirect($redirectURL);
         }
@@ -150,6 +154,10 @@ class HomeController extends Controller
         }
 
         $request->session()->flash('failure', 'You do not have any report roles assigned. Please contact your admin for support');
+
+        if (Auth::user()->isSuperAdmin()) {
+            $redirectURL = '/administration/patients';
+        }
         return redirect($redirectURL);
     }
 }
