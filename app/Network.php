@@ -15,8 +15,17 @@ class Network extends Model {
 		// TODO : optimize
 		return $this->hasMany('myocuhub\Models\PracticeNetwork')
 		            ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
+		            ->whereNull('practices.deleted_at')
 		            ->orderBy('practices.name');
 	}
+
+	/**
+     * @return mixed
+     */
+	public function practiceNetwork()
+    {
+        return $this->hasMany('myocuhub\Models\PracticeNetwork');
+    }
 
     /**
      * @return mixed
@@ -27,13 +36,18 @@ class Network extends Model {
     }
 
 	
-	public static function practicesByName($search) {
-		return self::where('networks.id', session('network-id'))
+	public static function practicesByName($search, $filter = null) {
+		$query = self::query()
+			->where('networks.id', session('network-id'))
 			->leftJoin('practice_network', 'networks.id', '=', 'practice_network.network_id')
 			->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
-			->where('practices.name', 'like', '%' . $search . '%')
-			->orderBy('practices.name')
-			->get();
+			->where('practices.name', 'like', '%' . $search . '%');
+			if (!$filter) {
+				$query->whereNull('practices.deleted_at');
+			}
+		$query
+			->orderBy('practices.name');
+		return $query->get();
 	}
 
 	/**

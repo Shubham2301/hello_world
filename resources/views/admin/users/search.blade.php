@@ -7,6 +7,10 @@
         <img src="{{elixir('images/sidebar/search-icon.png')}}" class="admin_seacrh_icon" id="search_user_button">
     </span>
     <img src="{{URL::asset('images/close-white-small.png')}}" id="refresh_users">
+    <span class="include_deactivated_users">
+            <input type="checkbox" id="include_deactivated">
+            Include deactivated users
+        </span>
     <div class="dropdown admin_delete_dropdown" data-toggle="tooltip" title="Deactivate Users" data-placement="top"><span area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removeuser_from_row admin_delete"><img class="cancel_image" src="{{URL::asset('images/deactivate.png')}}"><img class="cancel_image-hover" src="{{URL::asset('images/deactivate.png')}}"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to deactivate the selected users?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div>
     </div>
     	<p id="search_results" class="search_result"></p>

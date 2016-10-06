@@ -86,6 +86,9 @@ trait ReachRateTrait
                             $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
                         }
                         $results[$patient_count]['scheduled_on'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
+                        if (isset($results[$patient_count]['appointment_completed']) && $results[$patient_count]['appointment_completed'] == 0) {
+                            $results[$patient_count]['already_rescheduled'] = 1;
+                        }
                         break;
                     case 'move-to-console':
                         if(($history['back_to_console'] == $history['move_to_recall'] && $history['back_to_console'] != 0) || $history['back_to_console'] < $history['move_to_recall']) {
@@ -260,6 +263,8 @@ trait ReachRateTrait
             'show' => 0,
             'no_show' => 0,
             'cancelled' => 0,
+            'already_rescheduled' => 0,
+            'pending_reschedule' => 0,
             'exam_report' => 0,
             'reports' => 0,
             'no_reports' => 0,
@@ -358,6 +363,10 @@ trait ReachRateTrait
                 if($result['appointment_completed'] == config('reports.appointment_completed.show') && !(array_key_exists('reports', $result))) {
                     $reportMetrics['no_reports']++;
                     $reportMetrics['exam_report']++;
+                }
+                if ($result['appointment_completed'] == config('reports.appointment_completed.no_show')) {
+                    isset($result['already_rescheduled']) ? $reportMetrics['already_rescheduled']++ : $reportMetrics['pending_reschedule']++ ;
+
                 }
 
             }

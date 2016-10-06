@@ -27,14 +27,14 @@
     &:hover {
         color: #fff;
     }
-    &>div>p{
+    &>div>p {
         margin: 0;
-        &.edituser_from_row{
+        &.edituser_from_row {
             margin: 0 1em;
             cursor: pointer;
         }
     }
-    &>div{
+    &>div {
         word-wrap: break-word;
         cursor: default;
     }
@@ -43,7 +43,7 @@
 .search_edit {
     display: inline-flex;
 }
-.search_name{
+.search_name {
     padding: 0;
 }
 .search_edit {
@@ -58,7 +58,7 @@
     text-align: center;
     margin-left: -4em;
     color: #4d4d4d;
-    &>li>a{
+    &>li>a {
         padding: 0 .7em;
     }
 }
@@ -120,7 +120,8 @@
 .search_input_box {
     display: flex;
     flex-direction: row;
-    background-color: #f6f6f6;;
+    background-color: #f6f6f6;
+    ;
     font-size: 1em;
     &>input,
     &>input:focus {
@@ -181,6 +182,7 @@ p.pagination {
     width: 25%;
     margin-right: 5px;
 }
+
 /*
 ---------------------------
 Create User Section
@@ -313,27 +315,24 @@ Create User Section
     text-decoration: none;
     font-size: 1.3em;
 }
-
-.pagination_col{
+.pagination_col {
     text-align: right;
     padding: 0;
 }
-input[type=checkbox]{
+input[type=checkbox] {
     margin-right: 1em;
 }
-
 .user_info {
-	display: none;
+    display: none;
     margin-top: 2em;
-	&.active{
-		display: block;
-	}
+    &.active {
+        display: block;
+    }
 }
-
 #user_name {
-	font-size:1.2em;
+    font-size: 1.2em;
 }
-.user_underline{
+.user_underline {
     margin-bottom: 20px;
     border: 0;
     width: 2em;
@@ -342,50 +341,45 @@ input[type=checkbox]{
     margin-left: 0;
 }
 .user_detail_info {
-	font-size: .9em;
+    font-size: .9em;
 }
 .add_user_footer {
     margin-bottom: 5em;
 }
-
-
 .user_back {
-	float: left;
-	margin-left:2em;
+    float: left;
+    margin-left: 2em;
     padding-left: 10px;
     padding-right: 10px;
 }
 .back {
-	color: #f2f2f2;
-	background-color: #808080;
-	&:hover {
-		background-color: #0086fb;
-		color: #f2f2f2;
-	}
+    color: #f2f2f2;
+    background-color: #808080;
+    &:hover {
+        background-color: #0086fb;
+        color: #f2f2f2;
+    }
 }
-
-.user_row_name{
-	cursor: pointer;
+.user_row_name {
+    cursor: pointer;
 }
-
 .section-break {
-	border-top: 2px solid #f2f2f2;
+    border-top: 2px solid #f2f2f2;
 }
 .section_header {
-	margin-top:1em;
-	font-size:1.2em;
+    margin-top: 1em;
+    font-size: 1.2em;
 }
-
 .row_content_margin {
-	margin-top: 1em;
+    margin-top: 1em;
 }
-.search_header{
-    &>div{
-        &>input[type=checkbox]{
+.search_header {
+    &>div {
+        &>input[type=checkbox] {
             margin: auto 0;
             margin-right: 1em;
         }
-        &>p{
+        &>p {
             margin: 0;
         }
     }
@@ -393,11 +387,17 @@ input[type=checkbox]{
 p.subsection_header {
     margin: 0;
 }
-
 .non_selectable_field {
-	&:focus {
-		border: 2px solid @font-color-4;
-		color: #fff;
-		box-shadow: none;
-	}
+    &:focus {
+        border: 2px solid @font-color-4;
+        color: #fff;
+        box-shadow: none;
+    }
+}
+.include_deactivated_users {
+    display: flex;
+    align-items: center;
+    &>input[type=checkbox] {
+        margin: 0 .2em 0 1em;
+    }
 }

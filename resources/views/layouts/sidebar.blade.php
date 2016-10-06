@@ -8,6 +8,9 @@
 <ul class="sidebar_item_list arial">
     <?php $menus = \myocuhub\Models\Menu::renderForUser(Auth::user())?>
     @foreach($menus as $menu)
+    @if($menu->name == "schedule-patient" && Auth::user()->isSuperAdmin())
+        <?php continue; ?>
+    @endif
     @if($menu->name == "administration" && !Auth::user()->administrationAccess())
         <?php continue; ?>
     @endif

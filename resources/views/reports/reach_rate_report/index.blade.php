@@ -297,13 +297,27 @@
                 </span>
             </span>
             <span class="right">
-                <span class="right_row">
+                <span class="right_row section_break">
                     <span class="right_row_section title_section">
                         <span class="patient_list" id="no_show" data-name="No Show">
                             <img src="{{ elixir('images/sidebar/red-dot.png') }}"> No Show
                         </span>
                     </span>
                     <span class="right_row_section no_show right_section_count category_count patient_list" id="no_show" data-name="No Show">
+                    </span>
+                </span>
+                <span class="right_row">
+                    <span class="right_row_section title_section">
+                        <span class="title">Already Rescheduled</span>
+                    </span>
+                    <span class="right_row_section already_rescheduled right_section_count category_count number_section">
+                    </span>
+                </span>
+                <span class="right_row">
+                    <span class="right_row_section title_section">
+                        <span class="title">Pending Reschedule</span>
+                    </span>
+                    <span class="right_row_section pending_reschedule right_section_count category_count">
                     </span>
                 </span>
             </span>

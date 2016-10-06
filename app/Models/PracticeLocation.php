@@ -3,12 +3,17 @@
 namespace myocuhub\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use myocuhub\Models\Practice;
 use myocuhub\User;
 
 class PracticeLocation extends Model
 {
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
+
     protected $table = 'practice_location';
     protected $fillable = ['practice_id','locationname','phone','addressline1','addressline2','city','state','zip'];
 

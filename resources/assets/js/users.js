@@ -27,7 +27,7 @@ $(document).ready(function () {
     });
 
     $("#form_add_users").submit(function (event) {
-        if(!checkForm())
+        if (!checkForm())
             event.preventDefault();
     });
 
@@ -60,7 +60,8 @@ $(document).ready(function () {
         $('.no_item_found').removeClass('active');
         if (searchvalue != '') {
             var formData = {
-                'value': searchvalue
+                'value': searchvalue,
+                'include_deactivated': $('#include_deactivated').prop('checked') ? $('#include_deactivated').prop('checked') : false
             };
             getUsers(formData, 0);
             $('#refresh_users').addClass('active');
@@ -152,6 +153,9 @@ $(document).ready(function () {
         $('.no_item_found').removeClass('active');
         $('.user_info').removeClass('active');
     });
+    $('#include_deactivated').on('change', function () {
+        $("#search_user_button").trigger("click");
+    })
 
 
 });
@@ -182,7 +186,8 @@ function getCheckedID() {
 
 function loadAllUsers() {
     var formData = {
-        'value': ''
+        'value': '',
+        'include_deactivated': $('#include_deactivated').prop('checked') ? $('#include_deactivated').prop('checked') : false
     };
     getUsers(formData, 0);
     $('#refresh_users').removeClass('active');
@@ -230,8 +235,12 @@ function getUsers(formData, page) {
             $('#search_results').text('');
             if (users.length > 0) {
                 users.forEach(function (user) {
-                    content += '<div class="row search_item" data-id="' + user.id + '"><div class="col-xs-3 search_name"><input type="checkbox" class="admin_checkbox_row" data-id="' + user.id + '" name="checkbox">&nbsp;&nbsp;<p class="user_row_name">' + user.name + '</p></div><div class="col-xs-3">' + user.email + '</div><div class="col-xs-2"><p>' + user.level + '</p></div><div class="col-xs-2"><p>' + user.practice + '</p></div><div class="col-xs-2 search_edit">';
-                    //                  content += '<li><a href="" style="margin-left: -5.1em;"><img src="' + assign_role_image + '" class="assign_role_image" style="width:20px;">&nbsp;Roles</a></li>';
+                    content += '<div class="row search_item" data-id="' + user.id + '"><div class="col-xs-3 search_name"><input type="checkbox" class="admin_checkbox_row" data-id="' + user.id + '" name="checkbox">&nbsp;&nbsp;<p class="user_row_name">' + user.name + '</p></div><div class="col-xs-3">' + user.email + '</div><div class="col-xs-2"><p>' + user.level + '</p></div><div class="col-xs-2"><p>' + user.practice + '</p></div>';
+                    if (user.active == '1') {
+                        content += '<div class="col-xs-2 search_edit">';
+                    } else {
+                        content += '<div class="col-xs-2 search_edit" style="visibility:hidden;">';
+                    }
                     content += '<p class="edituser_from_row arial_bold">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removeuser_from_row"><img src="' + activate_img + '" alt="" class="removeuser_img" data-toggle="tooltip" title="Deactivate User" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to deactivate this person?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
                 });
                 $('.user_search_content').html(content);
@@ -324,7 +333,7 @@ function checkForm() {
         }
     });
 
-    if(flag == 0)
+    if (flag == 0)
         return true;
 }
 

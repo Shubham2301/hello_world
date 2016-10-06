@@ -9,6 +9,10 @@
             <img src="{{elixir('images/sidebar/search-icon.png')}}" class="admin_seacrh_icon" id="search_practice_button">
         </span>
         <img src="{{URL::asset('images/close-white-small.png')}}" id="refresh_practices">
+        <span class="include_deactivated_practices">
+            <input type="checkbox" id="include_deactivated">
+            Include deactivated practices
+        </span>
         <div class="dropdown admin_delete_dropdown" data-toggle="tooltip" title="Delete Practice" data-placement="top"><span area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removeuser_from_row admin_delete"><img class="cancel_image" src="{{URL::asset('images/delete-natural.png')}}"><img class="cancel_image-hover" src="{{URL::asset('images/delete-natural-hover.png')}}"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to delete the selected practices?</strong></p></li><li class="confirm_buttons"><button type="button" class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button" class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div>
     </div>
 

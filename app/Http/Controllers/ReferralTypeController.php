@@ -3,9 +3,9 @@
 namespace myocuhub\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use myocuhub\Http\Requests;
+use Auth;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Requests;
 use myocuhub\Network;
 use myocuhub\NetworkReferraltype;
 use myocuhub\ReferralType;
@@ -19,6 +19,10 @@ class ReferralTypeController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->isSuperAdmin()) {
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $data = array();
 		$data['schedule-patient'] = true;
         return view('home')->with('data', $data);

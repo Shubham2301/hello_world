@@ -210,6 +210,7 @@ class PracticeController extends Controller
         $practiceemail = $practicedata[0]['practice_email'];
         $practiceid = $practicedata[0]['practice_id'];
         $locations = $practicedata[0]['locations'];
+        $removedLocations = $practicedata[0]['removed_location'];
         $practice = Practice::find($practiceid);
         $practice->name = $practicename;
         $practice->email = $practiceemail;
@@ -259,6 +260,14 @@ class PracticeController extends Controller
             if (isset($json['results'][0]['geometry']['location']['lat'])) {
                 $practicelocation->latitude = $json['results'][0]['geometry']['location']['lat'];
                 $practicelocation->longitude = $json['results'][0]['geometry']['location']['lng'];
+                $practicelocation->save();
+            }
+        }
+
+        foreach ($removedLocations as $location) {
+            if (isset($location['id'])) {
+                $practicelocation = PracticeLocation::find($location['id']);
+                $practicelocation->delete();
             }
         }
 
@@ -301,20 +310,34 @@ class PracticeController extends Controller
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
+        return 1;
     }
 
     public function search(Request $request)
     {
         $tosearchdata = json_decode($request->input('data'), true);
 
-        if (Auth::user()->isSuperAdmin()) {
-            $practices = Practice::where('name', 'like', '%' . $tosearchdata['value'] . '%')->get();
-        } elseif (Auth::user()->checkUserLevel(config('constants.user_levels.network'))) {
-            $practices = Network::practicesByName($tosearchdata['value']);
+        if ($tosearchdata['include_deactivated']) {
+            if (Auth::user()->isSuperAdmin()) {
+                $practices = Practice::withTrashed()->where('name', 'like', '%' . $tosearchdata['value'] . '%')->get();
+            } elseif (Auth::user()->checkUserLevel(config('constants.user_levels.network'))) {
+                $practices = Network::practicesByName($tosearchdata['value'], $tosearchdata['include_deactivated']);
+            } else {
+                $userID = Auth::user()->id;
+                $practices = Practice::getPracticeByUserID($userID, $tosearchdata['include_deactivated']);
+            }
         } else {
-            $userID = Auth::user()->id;
-            $practices = Practice::getPracticeByUserID($userID);
+            if (Auth::user()->isSuperAdmin()) {
+                $practices = Practice::where('name', 'like', '%' . $tosearchdata['value'] . '%')->get();
+            } elseif (Auth::user()->checkUserLevel(config('constants.user_levels.network'))) {
+                $practices = Network::practicesByName($tosearchdata['value']);
+            } else {
+                $userID = Auth::user()->id;
+                $practices = Practice::getPracticeByUserID($userID);
+            }
         }
+
         $data = [];
         $i = 0;
         foreach ($practices as $practice) {
@@ -323,6 +346,7 @@ class PracticeController extends Controller
             $data[$i]['email'] = ($practice->email) ? $practice->email : '-';
             $data[$i]['address'] = '';
             $data[$i]['locations'] = PracticeLocation::where('practice_id', $practice->id)->get();
+            $data[$i]['deleted'] = ($practice->deleted_at) ? 'true' : 'false';
             $i++;
         }
         return json_encode($data);

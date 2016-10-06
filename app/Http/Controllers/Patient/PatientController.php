@@ -33,6 +33,10 @@ class PatientController extends Controller
      */
     public function index(Request $request)
     {
+        if (Auth::user()->isSuperAdmin()) {
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
         $data = array();
         $data['admin'] = false;
         $data['schedule-patient'] = true;
