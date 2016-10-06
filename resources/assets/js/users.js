@@ -61,7 +61,7 @@ $(document).ready(function () {
         if (searchvalue != '') {
             var formData = {
                 'value': searchvalue,
-                'include_deactivated': $('#include_deactivated').prop('checked')
+                'include_deactivated': $('#include_deactivated').prop('checked') ? $('#include_deactivated').prop('checked') : false
             };
             getUsers(formData, 0);
             $('#refresh_users').addClass('active');
@@ -187,7 +187,7 @@ function getCheckedID() {
 function loadAllUsers() {
     var formData = {
         'value': '',
-        'include_deactivated': $('#include_deactivated').prop('checked')
+        'include_deactivated': $('#include_deactivated').prop('checked') ? $('#include_deactivated').prop('checked') : false
     };
     getUsers(formData, 0);
     $('#refresh_users').removeClass('active');

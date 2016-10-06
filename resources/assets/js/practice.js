@@ -23,7 +23,7 @@ window.onload = function () {
         if (searchvalue != '') {
             var formData = {
                 'value': searchvalue,
-                'include_deactivated': $('#include_deactivated').prop('checked')
+                'include_deactivated': $('#include_deactivated').prop('checked') ? $('#include_deactivated').prop('checked') : false
             };
             getPractices(formData, 0);
             $('#refresh_practices').addClass('active');
@@ -333,7 +333,7 @@ function getCheckedID() {
     removePractice(id);
     var formData = {
         'value': '',
-        'include_deactivated': $('#include_deactivated').prop('checked')
+        'include_deactivated': $('#include_deactivated').prop('checked') ? $('#include_deactivated').prop('checked') : false
     };
     getPractices(formData, 0);
     $('.admin_delete').removeClass('active');
@@ -405,7 +405,7 @@ function setNewLocationField() {
 function loadAllPractices() {
     var formData = {
         'value': '',
-        'include_deactivated': $('#include_deactivated').prop('checked')
+        'include_deactivated': $('#include_deactivated').prop('checked') ? $('#include_deactivated').prop('checked') : false
     };
     getPractices(formData, 0);
     $('#refresh_practices').removeClass('active');
