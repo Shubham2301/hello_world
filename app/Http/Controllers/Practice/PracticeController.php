@@ -314,6 +314,30 @@ class PracticeController extends Controller
         return 1;
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reactivate($practiceID, Request $request)
+    {
+        if (!policy(new Practice)->administration()) {
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+
+        $reactivate = Practice::where('id', $practiceID)->restore();
+        $practicelocation = PracticeLocation::where('practice_id', $practiceID)->restore();
+
+        $action = 'reactivated practice with ID'. $practiceID;
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+    }
+
+
     public function search(Request $request)
     {
         $tosearchdata = json_decode($request->input('data'), true);

@@ -24,4 +24,9 @@ return [
             'Attempted' => '#0071bc',
         ],
     ],
+
+    'appointment_status' => [
+        'past_appointment' => 1,
+        'scheduled_appointment' => 0,
+    ],
 ];

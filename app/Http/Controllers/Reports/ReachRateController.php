@@ -50,9 +50,16 @@ class ReachRateController extends ReportController
 
         $report_data = $this->generateReport();
 
+        usort($report_data, 'self::cmp');
+
         $result = $this->renderResult($report_data, $filter);
 
         return($result);
+    }
+
+    private static function cmp($a, $b)
+    {
+        return strcasecmp  ($a["patient_name"], $b["patient_name"]);
     }
 
 

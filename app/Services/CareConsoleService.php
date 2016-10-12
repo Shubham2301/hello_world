@@ -353,7 +353,7 @@ class CareConsoleService
                 break;
             case 'referred-by-practice':
                 $referralHistory = ReferralHistory::find($patient['referral_id']);
-                return (isset($referralHistory) && isset($referralHistory->referred_by_practice)) ? $referralHistory->referred_by_practice : '-';
+                return (isset($referralHistory) && isset($referralHistory->referred_by_practice) && ($referralHistory->referred_by_practice != '')) ? $referralHistory->referred_by_practice : '-';
                 break;
             default:
                 return '-';

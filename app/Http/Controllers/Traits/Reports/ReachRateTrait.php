@@ -70,6 +70,7 @@ trait ReachRateTrait
                             $results[$patient_count]['request_received'] = $date->format('Y-m-d');
                         }
                         $results[$patient_count]['contact_attempts'] = isset($results[$patient_count]['contact_attempts']) ? $results[$patient_count]['contact_attempts'] + 1 : 1;
+                        $results[$patient_count]['days_in_contact_status'] = $this->getDefaultPendingDays($contactHistory);
                         break;
                     case 'patient-notes':
                     case 'requested-data':
@@ -79,22 +80,36 @@ trait ReachRateTrait
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
-                        $results[$patient_count]['appointment_scheduled'] = isset($results[$patient_count]['appointment_scheduled']) ? $results[$patient_count]['appointment_scheduled'] + 1 : 1;
                         $results[$patient_count]['reached'] = isset($results[$patient_count]['reached']) ? $results[$patient_count]['reached'] + 1 : 1;
                         $results[$patient_count]['reached_stage_change'] = $contactHistory->days_in_prev_stage;
+
                         if(isset($contactHistory->appointments)) {
                             $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
+                            $results[$patient_count] = array_merge($results[$patient_count], $this->fillPatientDetail($contactHistory, 'appointment_data'));
                         }
+
+                        if (isset($contactHistory->appointments) && (Helper::formatDate($contactHistory->appointments->start_datetime, 'Ymd') >= Helper::formatDate($this->getEndDate(), 'Ymd')) )
+                        {
+                            $results[$patient_count]['appointment_scheduled'] = config('reports.appointment_status.scheduled_appointment');
+                        }
+                        else
+                        {
+                            $results[$patient_count]['appointment_scheduled'] = config('reports.appointment_status.past_appointment');
+                        }
+
                         $results[$patient_count]['scheduled_on'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
                         if (isset($results[$patient_count]['appointment_completed']) && $results[$patient_count]['appointment_completed'] == 0) {
                             $results[$patient_count]['already_rescheduled'] = 1;
+                        }
+                        if (isset($results[$patient_count]['appointment_completed'] )) {
+                            $results[$patient_count]['show_stage_change'] = $contactHistory->days_in_prev_stage;
                         }
                         break;
                     case 'move-to-console':
                         if(($history['back_to_console'] == $history['move_to_recall'] && $history['back_to_console'] != 0) || $history['back_to_console'] < $history['move_to_recall']) {
                             $patient_count++;
                             $results[$patient_count]['repeat_count'] = 1;
-                            $results[$patient_count] += $this->fillPatientDetail($careconsole, 'patient_data');
+                            $results[$patient_count] +=  array_merge($results[$patient_count], $this->fillPatientDetail($careconsole, 'patient_data'));
                         }
                         $results[$patient_count]['request_received'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
                         $history['back_to_console']++;
@@ -106,7 +121,7 @@ trait ReachRateTrait
                         if(($history['unarchived'] == $history['archived'] && $history['unarchived'] != 0) || $history['unarchived'] < $history['archived']) {
                             $patient_count++;
                             $results[$patient_count]['repeat_count'] = 1;
-                            $results[$patient_count] += $this->fillPatientDetail($careconsole, 'patient_data');
+                            $results[$patient_count] +=  array_merge($results[$patient_count], $this->fillPatientDetail($careconsole, 'patient_data'));
                         }
                         $results[$patient_count]['request_received'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
                         $history['unarchived']++;
@@ -117,6 +132,10 @@ trait ReachRateTrait
                         break;
                     case 'kept-appointment':
                         $results[$patient_count]['appointment_completed'] = config('reports.appointment_completed.show');
+
+                        $results[$patient_count]['days_in_appointment_completed'] = $this->getDefaultPendingDays($contactHistory);
+                        $results[$patient_count]['days_in_exam_report'] = $this->getDefaultPendingDays($contactHistory);
+
                         if(isset($contactHistory->appointments)) {
                             $appt_date = new DateTime($contactHistory->appointments->start_datetime);
                             $action_date = new DateTime($contactHistory->contact_activity_date);
@@ -126,24 +145,23 @@ trait ReachRateTrait
                             if ($date_diff >= 0) {
                                 $results[$patient_count]['appt_scheduled_stage_change'] = $date_diff;
                             }
-                            $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
+                            $results[$patient_count] +=  array_merge($results[$patient_count], $this->fillPatientDetail($contactHistory, 'appointment_data'));
                         }
                         break;
                     case 'no-show':
-                        $results[$patient_count]['appointment_completed'] = config('reports.appointment_completed.no_show');
-                        if(isset($contactHistory->appointments)) {
-                            $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
-                        }
-                        break;
                     case 'cancelled':
                         $results[$patient_count]['appointment_completed'] = config('reports.appointment_completed.no_show');
+
+                        $results[$patient_count]['days_in_appointment_completed'] = $this->getDefaultPendingDays($contactHistory);
+
                         if(isset($contactHistory->appointments)) {
-                            $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
+                            $results[$patient_count] +=  array_merge($results[$patient_count], $this->fillPatientDetail($contactHistory, 'appointment_data'));
                         }
                         break;
                     case 'data-received':
                         $results[$patient_count]['reports'] = 1;
                         $results[$patient_count]['show_stage_change'] = $contactHistory->days_in_prev_stage;
+                        $results[$patient_count]['days_in_exam_report'] = $this->getDefaultPendingDays($contactHistory);
                         if(isset($contactHistory->appointments)) {
                             $results[$patient_count]['scheduled_for'] = Helper::formatDate($contactHistory->appointments->start_datetime, config('constants.date_format'));
                         }
@@ -158,7 +176,6 @@ trait ReachRateTrait
                     case 'refer-to-specialist':
                     case 'highrisk-contact-pcp':
                     default:
-                        break;
                 }
 
                 if($contactHistory->actionResult) {
@@ -172,7 +189,7 @@ trait ReachRateTrait
                         case 'no-insurance':
                             $history['archived']++;
                             $results[$patient_count]['reached'] = isset($results[$patient_count]['reached']) ? $results[$patient_count]['reached'] + 1 : 1;
-                            $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'archive_data');
+                            $results[$patient_count] +=  array_merge($results[$patient_count], $this->fillPatientDetail($contactHistory, 'archive_data'));
                             break;
                         case 'unable-to-reach':
                             $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
@@ -197,8 +214,6 @@ trait ReachRateTrait
                             $results[$patient_count]['archive_date'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
                             break;
                         default:
-                            break;
-
                     }
                 }
             }
@@ -230,7 +245,6 @@ trait ReachRateTrait
         ];
 
         $referredBy = array();
-        $i = 0;
 
         $reportMetrics = array(
             'patient_count' => 0,
@@ -253,6 +267,7 @@ trait ReachRateTrait
             'incorrect_data' => 0,
             'incorrect_data_attempts' => 0,
             'appointment_scheduled' => 0,
+            'past_appointment' => 0,
             'not_scheduled' => 0,
             'no_need_to_schedule' => 0,
             'patient_declined_service' => 0,
@@ -279,12 +294,11 @@ trait ReachRateTrait
             }
 
             if(array_key_exists('referred_by_practice', $result) && $result['referred_by_practice'] != '-') {
-                $referredBy[$i] = $result['referred_by_practice'];
-                $i++;
+                $referredBy[strtolower(trim($result['referred_by_practice']))] = $result['referred_by_practice'];
             }
 
             if($filter != '') {
-                if(array_key_exists('referred_by_practice', $result) ? $result['referred_by_practice'] != $filter : true) {
+                if(array_key_exists('referred_by_practice', $result) ? strtolower(trim($result['referred_by_practice'])) != $filter : true) {
                     continue;
                 }
             }
@@ -343,7 +357,7 @@ trait ReachRateTrait
                     $reportMetrics['hold_for_future']++;
                     $reportMetrics['hold_for_future_attempts'] += $result['hold_for_future'];
                 }
-                if(array_key_exists('incorrect_data', $result)) {
+                if (array_key_exists('incorrect_data', $result)) {
                     $reportMetrics['incorrect_data']++;
                     $reportMetrics['incorrect_data_attempts'] += $result['incorrect_data'];
                 }
@@ -353,14 +367,18 @@ trait ReachRateTrait
                 }
             }
 
-            if(array_key_exists('appointment_scheduled', $result)) {
-                $reportMetrics['appointment_scheduled']++;
+            if (array_key_exists('appointment_scheduled', $result)) {
+                if ($result['appointment_scheduled'] == config('reports.appointment_status.scheduled_appointment')) {
+                    $reportMetrics['appointment_scheduled']++;
+                } else {
+                    $reportMetrics['past_appointment']++;
+                }
             }
 
-            if(array_key_exists('appointment_completed', $result)) {
+            if (array_key_exists('appointment_completed', $result)) {
                 $reportMetrics['appointment_completed']++;
                 $result['appointment_completed'] == config('reports.appointment_completed.show') ? $reportMetrics['show']++ : $reportMetrics['no_show']++;
-                if($result['appointment_completed'] == config('reports.appointment_completed.show') && !(array_key_exists('reports', $result))) {
+                if ($result['appointment_completed'] == config('reports.appointment_completed.show') && !(array_key_exists('reports', $result))) {
                     $reportMetrics['no_reports']++;
                     $reportMetrics['exam_report']++;
                 }
@@ -410,10 +428,10 @@ trait ReachRateTrait
                 unset($referredBy[$key]);
             }
         }
+        asort($referredBy);
+        $referredBy['-'] = 'not referred by';
 
-        $countReferred = array_count_values($referredBy);
-
-        $reportMetrics['referred_by_practice'] = $countReferred;
+        $reportMetrics['referred_by_practice'] = $referredBy;
 
         return $reportMetrics;
     }
@@ -449,7 +467,8 @@ trait ReachRateTrait
                 $patientInfo['patient_id'] = $requestData->patient->id;
                 $patientInfo['pcp_name'] = $this->CareConsoleService->getPatientFieldValue($requestData->patient, 'pcp');
                 $patientInfo['dob'] = $this->CareConsoleService->getPatientFieldValue($requestData->patient, 'dob');
-                $patientInfo['referred_by_practice'] = $this->CareConsoleService->getPatientFieldValue($requestData, 'referred-by-practice');
+                $referredByData = $this->CareConsoleService->getPatientFieldValue($requestData, 'referred-by-practice');
+                $patientInfo['referred_by_practice'] = strtolower(trim($referredByData));
                 if($requestData->import_history_count != 0) {
                     $patientInfo['patient_type'] = config('reports.patient_type.new');
                 }
@@ -487,5 +506,21 @@ trait ReachRateTrait
             default:
         }
         return $patientInfo;
+    }
+
+    public function getDefaultPendingDays($contactHistory) {
+        $archiveActions = ['recall-later', 'archive', 'annual-exam'];
+        $archiveActionResults = ['success', 'dropout', 'already-seen-by-outside-dr', 'patient-declined-services', 'other-reasons-for-declining', 'no-need-to-schedule', 'no-insurance'];
+        $action_date = new DateTime($contactHistory->contact_activity_date);
+        $end_date = new DateTime($this->getEndDate());
+        if (in_array($contactHistory->action->name, $archiveActions)) {
+            return 0;
+        }
+        if ($contactHistory->actionResult && in_array($contactHistory->actionResult->name, $archiveActionResults)) {
+            return 0;
+        }
+        $interval = $end_date->diff($action_date);
+        return $interval->format('%a');
+
     }
 }
