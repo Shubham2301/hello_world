@@ -428,7 +428,8 @@ trait ReachRateTrait
                 unset($referredBy[$key]);
             }
         }
-        $referredBy['-'] = 'Not referred By';
+        asort($referredBy);
+        $referredBy['-'] = 'not referred by';
 
         $reportMetrics['referred_by_practice'] = $referredBy;
 
