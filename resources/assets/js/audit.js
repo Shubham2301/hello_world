@@ -12,10 +12,10 @@ $(document).ready(function () {
         maxDate: cur_date,
     });
     $('#end_date').on('change', function () {
-        refreshReports();
+        $('#get_report.btn').addClass('clickable');
     });
     $('#start_date').on('change', function () {
-        refreshReports();
+        $('#get_report.btn').addClass('clickable');
     });
     var old_start_date = $('#start_date').val();
     var old_end_date = $('#end_date').val();
@@ -23,7 +23,7 @@ $(document).ready(function () {
         var start_date = $('#start_date').val();
         if (start_date != old_start_date) {
             old_start_date = $('#start_date').val();
-            refreshReports();
+            $('#get_report.btn').addClass('clickable');
         }
     });
     $('#end_date').datetimepicker().on('dp.hide', function (ev) {
@@ -31,18 +31,20 @@ $(document).ready(function () {
         $('#start_date').data("DateTimePicker").maxDate(new Date(end_date));
         if (end_date != old_end_date) {
             old_end_date = $('#end_date').val();
-            refreshReports();
+            $('#get_report.btn').addClass('clickable');
         }
     });
 
-
-    refreshReports();
-
-    $('#select_network').on('change', function () {
+    $('#get_report').on('click', function () {
+        $('#get_report.btn').removeClass('clickable');
         refreshReports();
     });
+
+    $('#select_network').on('change', function () {
+        $('#get_report.btn').addClass('clickable');
+    });
     $('#select_report_type').on('change', function () {
-        refreshReports();
+        $('#get_report.btn').addClass('clickable');
     });
 });
 
@@ -61,19 +63,24 @@ function refreshReports() {
         contentType: 'text/html',
         async: false,
         success: function (e) {
-            
+
             var auditLogs = $.parseJSON(e);
 
             var content = '';
-            
+
             if (auditLogs.length > 1) {
                 auditLogs.forEach(function (audit) {
                     content += '<div class="row no-margin"><div class="col-xs-3 info_col"><p>' + audit.date + '</p></div><div class="col-xs-2 info_col"><p>' + audit.user_name + '</p></div><div class="col-xs-2 info_col"><p>' + audit.network_name + '</p></div><div class="col-xs-5 info_col"><p>' + audit.action + '</p></div></div>';
                 });
+
+                $('.audit_report_header').show();
+                $('#audit_reports').html(content);
+            } else {
+                $('.audit_report_header').hide();
+                $('p.alert_message').text('No data received for the current options!');
+                $('#alert').modal('show');
             }
-            
-            $('#audit_reports').html(content);
-            
+
         },
         error: function () {
             $('p.alert_message').text('Error generating report');
@@ -86,13 +93,13 @@ function refreshReports() {
 
 }
 
-function downloadASXSLS(){
-	var formData = {
-		start_date: $('#start_date').val(),
-		end_date: $('#end_date').val(),
-		network_id: $('#select_network').val(),
-		report_type: $('#select_report_type').val(),
-	};
-	var query = $.param(formData);
-	window.location= '/export/audits?'+query;
+function downloadASXSLS() {
+    var formData = {
+        start_date: $('#start_date').val(),
+        end_date: $('#end_date').val(),
+        network_id: $('#select_network').val(),
+        report_type: $('#select_report_type').val(),
+    };
+    var query = $.param(formData);
+    window.location = '/export/audits?' + query;
 }

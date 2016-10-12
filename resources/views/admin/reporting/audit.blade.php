@@ -35,16 +35,19 @@
     <span class="input_field">Start Date<input type="text" id="start_date"></span>
     <span class="input_field">End Date<input type="text" id="end_date"></span>
     <span class="input_field">Select Network
-    <select class="network_dropdown audit_report_network" id="select_network">
-        <option value="">All</option>
-        @foreach($data['networks'] as $network)
-        <option value="{{ $network['id'] }}">{{ $network['name'] }}</option>
-        @endforeach
-    </select>
+        <select class="network_dropdown audit_report_network" id="select_network">
+            <option value="">All</option>
+            @foreach($data['networks'] as $network)
+            <option value="{{ $network['id'] }}">{{ $network['name'] }}</option>
+            @endforeach
+        </select>
+    </span>
+    <span>
+        <button class="btn add-btn clickable" id="get_report">Get Report</button>
     </span>
 </span>
 <div class="row reporting_content">
-    <div class="row arial_bold no-margin">
+    <div class="row arial_bold no-margin audit_report_header" style="display:none;">
         <div class="col-xs-3 info_col">
             <p>Date</p>
         </div>

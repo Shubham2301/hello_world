@@ -1,14 +1,14 @@
-.report_header{
+.report_header {
     font-size: 1em;
-    &>.title{
+    &>.title {
         font-size: 1.4em;
         margin: 1em 1em 0 1em;
     }
-    &>span{
-        &.input_field{
+    &>span {
+        &.input_field {
             margin-left: 1em;
         }
-        &>input{
+        &>input {
             color: #4d4d4d;
             border: none;
             width: 8em;
@@ -16,34 +16,33 @@
             padding: .2em 0.4em;
             background-color: #ebebeb;
         }
+    }
 }
-}
-.reporting_content{
+.reporting_content {
     margin: 3em 0;
 }
-.info_col{
+.info_col {
     display: flex;
     flex-direction: column;
     padding: 0 2em;
-    &>.info_row{
+    &>.info_row {
         display: inherit;
         flex-direction: row;
         justify-content: space-between;
         margin: .1em 0;
-        &.title{
+        &.title {
             font-size: 1.2em;
             margin-bottom: .8em
         }
     }
 }
-.section_separator{
+.section_separator {
     margin: 1em 0;
-        border-bottom: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
 }
-.content-right{
+.content-right {
     padding-top: 2em;
 }
-
 .network_dropdown {
     display: inline-block;
     color: #b2e3f5;
@@ -57,24 +56,32 @@
     }
     &:focus {
         border: 2px solid #fff;
-        color:#66c7eb;
+        color: #66c7eb;
         box-shadow: 0px 0px 2px #fff;
     }
 }
 .audit_report_network {
     padding-right: 2em;
 }
-
-#export_report_btn, #export_report_btn:active {
-	background: transparent;
-	color: #cde8f4;
+#export_report_btn,
+#export_report_btn:active {
+    background: transparent;
+    color: #cde8f4;
     border: 1px solid;
     float: right;
-	margin-right: 5em;
-	&:hover {
-		background-color: #cde8f4;
-		border-color: #cde8f4;
-		color: #000;
-	}
-
+    margin-right: 5em;
+    &:hover {
+        background-color: #cde8f4;
+        border-color: #cde8f4;
+        color: #000;
+    }
+}
+#get_report.btn {
+    float: inherit;
+    margin-bottom: 8px;
+    opacity: .6;
+    &.clickable {
+        opacity: 1;
+        box-shadow: 0px 0px 7px #fff;
+    }
 }
