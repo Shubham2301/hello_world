@@ -208,14 +208,27 @@
             </span>
         </span>
         <span class="stage_content stage_row">
-            <span class="left">
-                <span class="title">
-                    <span class="patient_list" id="appointment_scheduled" data-name="Appointment Scheduled">
-                        <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Appointment Scheduled
+            <span class="left sub_section">
+                <span>
+                    <span class="title">
+                        <span class="patient_list" id="appointment_scheduled" data-name="Appointment Scheduled">
+                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Appointment Scheduled
+                        </span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count appointment_scheduled patient_list" id="appointment_scheduled" data-name="Appointment Scheduled">
+                        </span>
                     </span>
                 </span>
-                <span class="count">
-                    <span class="category_count appointment_scheduled patient_list" id="appointment_scheduled" data-name="Appointment Scheduled">
+                <span>
+                    <span class="title">
+                        <span class="patient_list" id="past_appointment" data-name="Past Appointment">
+                            <img src="{{ elixir('images/sidebar/yellow-dot.png') }}"> Past Appointment
+                        </span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count past_appointment patient_list" id="past_appointment" data-name="Past Appointment">
+                        </span>
                     </span>
                 </span>
             </span>

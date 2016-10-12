@@ -66,7 +66,6 @@ function getReport(filter) {
         success: function (data) {
             for (var key in data) {
                 $('.' + key).html(data[key]);
-
             }
             reportResult = data['report_data'];
             config = data['config'];
@@ -76,10 +75,11 @@ function getReport(filter) {
 
             dropdownContent += '<option value="">All</option>';
             for (var referredByPractice in referredBy) {
-                if(referredByPractice == filter)
-                    dropdownContent += '<option value="' + referredByPractice + '" selected>' + referredByPractice + '</option>';
-                else
-                    dropdownContent += '<option value="' + referredByPractice + '">' + referredByPractice + '</option>';
+                if (referredByPractice == filter) {
+                    dropdownContent += '<option value="' + referredByPractice + '" selected>' + referredBy[referredByPractice] + '</option>';
+                } else {
+                    dropdownContent += '<option value="' + referredByPractice + '">' + referredBy[referredByPractice] + '</option>';
+                }
             }
             $('.referred_by_practice_list').html(dropdownContent);
 
@@ -103,14 +103,15 @@ function getPatientList(metricName) {
             }
         }
 
-        var patientListItem = '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span></li>';
+        headerContent = '<span>Name</span><span>Date of Birth</span>';
+        var patientListItem = '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.dob + '</span></li>';
         switch (metricName) {
             case 'contact_attempted':
                 headerContent = '<span>Name</span><span>Request Received</span><span>Contact Attempts</span><span>Days Pending</span>';
                 if ("reached" in result || "not_reached" in result) {
                     var requestReceived = result.request_received || '-';
                     var contactAttempts = result.contact_attempts || '-';
-                    var daysPending = result.reached_stage_change || '-';
+                    var daysPending = (result.reached_stage_change >= 0) ? result.reached_stage_change : result.days_in_contact_status;
                     content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + requestReceived + '</span><span>' + contactAttempts + '</span><span>' + daysPending + '</span></li>';
                 }
                 break;
@@ -126,18 +127,45 @@ function getPatientList(metricName) {
                 }
                 break;
             case 'not_reached':
+                headerContent = '<span>Name</span><span>Request Received</span><span>Contact Attempts</span><span>Days Pending</span>';
                 if ("not_reached" in result && !("reached" in result)) {
-                    content += patientListItem;
+                    var requestReceived = result.request_received || '-';
+                    var contactAttempts = result.contact_attempts || '-';
+                    var daysPending = (result.reached_stage_change >= 0) ? result.reached_stage_change : result.days_in_contact_status;
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + requestReceived + '</span><span>' + contactAttempts + '</span><span>' + daysPending + '</span></li>';
                 }
                 break;
             case 'appointment_scheduled':
-                if ("appointment_scheduled" in result) {
-                    content += patientListItem;
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
+                if ("appointment_scheduled" in result && result.appointment_scheduled == config.appointment_status.scheduled_appointment) {
+                    var scheduledToPractice = result.scheduled_to_practice || '-';
+                    var scheduledToProvider = result.scheduled_to_provider || '-';
+                    var scheduledFor = result.scheduled_for || '-';
+                    var appointmentType = result.appointment_type || '-';
+                    var scheduledOn = result.scheduled_on || '-';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
+                }
+                break;
+            case 'past_appointment':
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
+                if ("appointment_scheduled" in result && result.appointment_scheduled == config.appointment_status.past_appointment) {
+                    var scheduledToPractice = result.scheduled_to_practice || '-';
+                    var scheduledToProvider = result.scheduled_to_provider || '-';
+                    var scheduledFor = result.scheduled_for || '-';
+                    var appointmentType = result.appointment_type || '-';
+                    var scheduledOn = result.scheduled_on || '-';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
                 }
                 break;
             case 'not_scheduled':
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
                 if ("reached" in result && !("appointment_scheduled" in result)) {
-                    content += patientListItem;
+                    var scheduledToPractice = result.scheduled_to_practice || '-';
+                    var scheduledToProvider = result.scheduled_to_provider || '-';
+                    var scheduledFor = result.scheduled_for || '-';
+                    var appointmentType = result.appointment_type || '-';
+                    var scheduledOn = result.scheduled_on || '-';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
                 }
                 break;
             case 'appointment_completed':
@@ -147,51 +175,77 @@ function getPatientList(metricName) {
                     var scheduledToProvider = result.scheduled_to_provider || '-';
                     var scheduledFor = result.scheduled_for || '-';
                     var appointmentType = result.appointment_type || '-';
-                    var daysPending = result.show_stage_change || '-';
+                    var daysPending = (result.show_stage_change >= 0) ? result.show_stage_change : result.days_in_appointment_completed;
                     content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + appointmentType + '</span><span>' + daysPending + '</span></li>';
                 }
                 break;
             case 'show':
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Appointment Type</span><span>Days Pending</span>';
                 if ("appointment_completed" in result) {
-                    if (result.appointment_completed == config.appointment_completed.show)
-                        content += patientListItem;
+                    if (result.appointment_completed == config.appointment_completed.show) {
+                        var scheduledToPractice = result.scheduled_to_practice || '-';
+                        var scheduledToProvider = result.scheduled_to_provider || '-';
+                        var scheduledFor = result.scheduled_for || '-';
+                        var appointmentType = result.appointment_type || '-';
+                        var daysPending = (result.show_stage_change >= 0) ? result.show_stage_change : result.days_in_appointment_completed;
+                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + appointmentType + '</span><span>' + daysPending + '</span></li>';
+                    }
                 }
                 break;
             case 'no_show':
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Appointment Type</span><span>Days Pending</span>';
                 if ("appointment_completed" in result) {
-                    if (result.appointment_completed == config.appointment_completed.no_show)
-                        content += patientListItem;
+                    if (result.appointment_completed == config.appointment_completed.no_show) {
+                        var scheduledToPractice = result.scheduled_to_practice || '-';
+                        var scheduledToProvider = result.scheduled_to_provider || '-';
+                        var scheduledFor = result.scheduled_for || '-';
+                        var appointmentType = result.appointment_type || '-';
+                        var daysPending = (result.show_stage_change >= 0) ? result.show_stage_change : result.days_in_appointment_completed;
+                        console.log(daysPending);
+                        console.log(result.show_stage_change);
+                        console.log(result.days_in_appointment_completed);
+                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + appointmentType + '</span><span>' + daysPending + '</span></li>';
+                    }
                 }
                 break;
             case 'exam_report':
                 headerContent = '<span>Name</span><span>PCP</span><span>Scheduled For</span><span>Days Pending</span>';
                 if ("reports" in result || ("appointment_completed" in result && result.appointment_completed == config.appointment_completed.show)) {
-                    var daysPending = result.days_in_stage_before_archive || '-';
+                    var daysPending = (result.days_in_stage_before_archive >= 0) ? result.days_in_stage_before_archive : result.days_in_exam_report;
                     var scheduledFor = result.scheduled_for || '-';
                     var pcpName = result.pcp_name || '-';
                     content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + pcpName + '</span><span>' + scheduledFor + '</span><span>' + daysPending + '</span></li>';
                 }
                 break;
             case 'reports':
-                if ("reports" in result)
-                    content += patientListItem;
+                headerContent = '<span>Name</span><span>PCP</span><span>Scheduled For</span><span>Days Pending</span>';
+                if ("reports" in result) {
+                    var daysPending = (result.days_in_stage_before_archive >= 0) ? result.days_in_stage_before_archive : result.days_in_exam_report;
+                    var scheduledFor = result.scheduled_for || '-';
+                    var pcpName = result.pcp_name || '-';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + pcpName + '</span><span>' + scheduledFor + '</span><span>' + daysPending + '</span></li>';
+                }
                 break;
             case 'no_reports':
+                headerContent = '<span>Name</span><span>PCP</span><span>Scheduled For</span><span>Days Pending</span>';
                 if ("appointment_completed" in result) {
-                    if ((result.appointment_completed == config.appointment_completed.show) && !("reports" in result))
-                        content += patientListItem;
+                    if ((result.appointment_completed == config.appointment_completed.show) && !("reports" in result)) {
+                        var daysPending = (result.days_in_stage_before_archive >= 0) ? result.days_in_stage_before_archive : result.days_in_exam_report;
+                        var scheduledFor = result.scheduled_for || '-';
+                        var pcpName = result.pcp_name || '-';
+                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + pcpName + '</span><span>' + scheduledFor + '</span><span>' + daysPending + '</span></li>';
+                    }
                 }
                 break;
             case 'pending_patient':
                 headerContent = '<span>Name</span><span>Request Received</span>';
                 if (!("reached" in result) && !("not_reached" in result)) {
                     if ((result.patient_type == config.patient_type.new) || ("repeat_count" in result))
-                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.request_received  + '</span></li>';
+                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.request_received + '</span></li>';
                 }
                 break;
             case 'patient_count':
-                headerContent = '<span>Name</span><span>Date of Birth</span>';
-                content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.dob  + '</span></li>';
+                content += patientListItem;
                 break;
             case 'new_patient':
                 if ("patient_type" in result) {
@@ -208,21 +262,21 @@ function getPatientList(metricName) {
             case 'completed':
                 headerContent = '<span>Name</span><span>Date Archived</span><span>Reason for archiving</span>';
                 if ("archived" in result) {
-                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date  + '</span><span>' + result.archive_reason  + '</span></li>';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date + '</span><span>' + result.archive_reason + '</span></li>';
                 }
                 break;
             case 'success':
                 headerContent = '<span>Name</span><span>Date Archived</span><span>Reason for archiving</span>';
                 if ("archived" in result) {
                     if (result.archived == config.archive.success)
-                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date  + '</span><span>' + result.archive_reason  + '</span></li>';
+                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date + '</span><span>' + result.archive_reason + '</span></li>';
                 }
                 break;
             case 'dropout':
                 headerContent = '<span>Name</span><span>Date Archived</span><span>Reason for archiving</span>';
                 if ("archived" in result) {
                     if (result.archived == config.archive.dropout)
-                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date  + '</span><span>' + result.archive_reason  + '</span></li>';
+                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date + '</span><span>' + result.archive_reason + '</span></li>';
                 }
                 break;
             case 'active_patient':

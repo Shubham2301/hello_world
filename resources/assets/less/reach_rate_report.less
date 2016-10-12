@@ -109,7 +109,14 @@
     }
     &>.stage_content {
         margin: .3em 0;
-        &>.left {
+        &>.left.sub_section {
+            flex-direction: column;
+            &>span {
+                display: flex;
+            }
+        }
+        &>.left,
+        &>.left.sub_section>span {
             font-size: 1em;
             &>.title,
             &>.count {
