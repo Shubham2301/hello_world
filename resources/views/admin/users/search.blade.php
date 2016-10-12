@@ -33,6 +33,7 @@
 			<input type="hidden" id="dropdown_onhover_img" value="{{asset('images/dropdown-hover-new.png')}}">
 			<input type="hidden" id="dropdown_active_img" value="{{asset('images/dropdown-active-new.png')}}">
 			<input type="hidden" id="active_user_img" value="{{elixir('images/sidebar/deactivate-icon.png')}}">
+			<input type="hidden" id="re-activate_user_img" value="{{elixir('images/sidebar/reactivate_icon.png')}}">
 <!--
 			<p class="pagination"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"></span>
 			<span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>

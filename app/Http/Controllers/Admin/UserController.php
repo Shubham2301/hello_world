@@ -487,6 +487,31 @@ class UserController extends Controller
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reactivate($userID, Request $request)
+    {
+        if (!policy(new User)->administration()) {
+            session()->flash('failure', 'Unauthorized Access!');
+            return redirect('/home');
+        }
+        if ($userID === '') {
+            return;
+        }
+
+        $reactivate = User::where('id', $userID)->update(['active' => 1]);
+
+        $action = 'reactivated user with ID'. $userID;
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $request->getClientIp();
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+    }
+
     public function getUserTypes()
     {
         $userTypes = Usertype::all();

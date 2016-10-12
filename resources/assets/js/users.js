@@ -83,13 +83,13 @@ $(document).ready(function () {
     $('#checked_all_users').on('change', function () {
         if ($(this).is(":checked")) {
             $('.user_search_content').each(function () {
-                $(this).find('input').prop('checked', true);
+                $(this).find('input').not("[disabled]").prop('checked', true);
             });
             $('.admin_delete').addClass('active');
             $('.delete_from_row_dropdown').addClass('invisible');
         } else {
             $('.user_search_content').each(function () {
-                $(this).find('input').prop('checked', false);
+                $(this).find('input').not("[disabled]").prop('checked', false);
             });
             $('.admin_delete').removeClass('active');
             $('.delete_from_row_dropdown').removeClass('invisible');
@@ -142,6 +142,10 @@ $(document).ready(function () {
                 $(this).parents('.search_item').remove();
             }
         });
+    });
+    $('.user_listing').on('click', '.reactivate_user', function () {
+        var id = $(this).parents('.search_item').attr('data-id');
+        reactivateUser(id);
     });
     $('.user_listing').on('click', '.user_row_name', function () {
         var id = $(this).closest('.search_item').attr('data-id');
@@ -218,6 +222,7 @@ function getUsers(formData, page) {
     var tojson = JSON.stringify(formData);
     var activate_img = $('#active_user_img').val();
     var scheduleimg = $('#dropdown_natural_img').val();
+    var reactivate_user = $('#re-activate_user_img').val();
     var assign_role_image = $('#assign_role_image_path').val();
     var assign_user_image = $('#assign_user_image_path').val();
     $('.user_admin_index_header').removeClass('hide');
@@ -235,21 +240,29 @@ function getUsers(formData, page) {
             $('#search_results').text('');
             if (users.length > 0) {
                 users.forEach(function (user) {
-                    content += '<div class="row search_item" data-id="' + user.id + '"><div class="col-xs-3 search_name"><input type="checkbox" class="admin_checkbox_row" data-id="' + user.id + '" name="checkbox">&nbsp;&nbsp;<p class="user_row_name">' + user.name + '</p></div><div class="col-xs-3">' + user.email + '</div><div class="col-xs-2"><p>' + user.level + '</p></div><div class="col-xs-2"><p>' + user.practice + '</p></div>';
+                    content += '<div class="row search_item" data-id="' + user.id + '"><div class="col-xs-3 search_name">';
                     if (user.active == '1') {
-                        content += '<div class="col-xs-2 search_edit">';
+                        content += '<input type="checkbox" class="admin_checkbox_row" data-id="' + user.id + '" name="checkbox">';
                     } else {
-                        content += '<div class="col-xs-2 search_edit" style="visibility:hidden;">';
+                        content += '<input type="checkbox" class="admin_checkbox_row" data-id="' + user.id + '" name="checkbox" disabled>';
                     }
-                    content += '<p class="edituser_from_row arial_bold">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removeuser_from_row"><img src="' + activate_img + '" alt="" class="removeuser_img" data-toggle="tooltip" title="Deactivate User" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to deactivate this person?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div></div>';
+                    content += '&nbsp;&nbsp;<p class="user_row_name">' + user.name + '</p></div><div class="col-xs-3">' + user.email + '</div><div class="col-xs-2"><p>' + user.level + '</p></div><div class="col-xs-2"><p>' + user.practice + '</p></div>';
+                    if (user.active == '1') {
+                        content += '<div class="col-xs-2 search_edit"><p class="edituser_from_row arial_bold">Edit</p><div class="dropdown delete_from_row_dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle removeuser_from_row"><img src="' + activate_img + '" alt="" class="removeuser_img" data-toggle="tooltip" title="Deactivate User" data-placement="bottom"></span><ul class="dropdown-menu" id="row_remove_dropdown"><li class="confirm_text"><p><strong>Do you really want to deactivate this person?</strong></p></li><li class="confirm_buttons"><button type="button"  class="btn btn-info btn-lg confirm_yes"> Yes</button><button type="button"  class="btn btn-info btn-lg confirm_no">NO</button></li></ul></div></div>';
+                    } else {
+                        content += '<div class="col-xs-2 search_edit"><p class="edituser_from_row arial_bold" style="visibility:hidden;">Edit</p><div class="dropdown"><span area-hidden="true" area-hidden="true" data-toggle="dropdown" class="dropdown-toggle reactivate_user"><img src="' + reactivate_user + '" alt="" class="removeuser_img" data-toggle="tooltip" title="Reactivate User" data-placement="bottom"></span></div></div>';
+                    }
+                    content += '</div>';
                 });
                 $('.user_search_content').html(content);
                 $('.user_listing').addClass('active');
                 $('[data-toggle="tooltip"]').tooltip();
                 if ($('#checked_all_users').is(":checked")) {
                     $('.user_search_content').each(function () {
-                        $(this).find('input').prop('checked', true);
+                        $(this).find('input').not("[disabled]").prop('checked', true);
                     });
+                    $('.admin_delete').addClass('active');
+                    $('.delete_from_row_dropdown').addClass('invisible');
                 }
 
             } else {
@@ -282,16 +295,39 @@ function removeUser(id) {
         async: false,
         success: function (e) {},
         error: function error() {
-            $('p.alert_message').text('Error searching');
+            $('p.alert_message').text('Error removing');
             $('#alert').modal('show');
         },
         cache: false,
         processData: false
     });
     $('.user_search_content').each(function () {
-        $(this).find('input').prop('checked', false);
+        $(this).find('input').not("[disabled]").prop('checked', false);
     });
     $('#checked_all_users').prop('checked', false);
+    $('.admin_delete').removeClass('active');
+    loadAllUsers();
+}
+
+function reactivateUser(id) {
+    $.ajax({
+        url: '/users/reactivate/' + id,
+        type: 'GET',
+        contentType: 'text/html',
+        async: false,
+        success: function (e) {},
+        error: function error() {
+            $('p.alert_message').text('Error reactivating');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+    $('.user_search_content').each(function () {
+        $(this).find('input').not("[disabled]").prop('checked', false);
+    });
+    $('#checked_all_users').prop('checked', false);
+    $('.admin_delete').removeClass('active');
     loadAllUsers();
 }
 

@@ -54,6 +54,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('practices/store', 'Practice\PracticeController@store');
     Route::post('practices/update', 'Practice\PracticeController@update');
     Route::get('practices/remove', 'Practice\PracticeController@destroy');
+    Route::get('practices/reactivate/{id}', 'Practice\PracticeController@reactivate');
     Route::get('practices/users', 'Practice\PracticeController@practiceUsers');
 
     Route::group(['middleware' => 'role:care-console, 0'], function () {
@@ -140,6 +141,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('users/search', 'Admin\UserController@search');
         Route::get('users/remove', 'Admin\UserController@destroy');
         Route::get('users/show/{id}', 'Admin\UserController@show');
+        Route::get('users/reactivate/{id}', 'Admin\UserController@reactivate');
     });
     
     Route::get('/administration/practices/by-network/{networkId}', 'Practice\PracticeController@getPracticesByNetwork');
