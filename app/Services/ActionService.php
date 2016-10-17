@@ -148,11 +148,12 @@ class ActionService
                     $console->update();
 
                     $appointmentTypeName = strtolower(str_replace(' ', '_', trim($appointment->appointmenttype)));
-                    if ( !(AppointmentType::where('name', $appointmentTypeName)->first()) ) {
+                    if ( !(AppointmentType::where('name', $appointmentTypeName)->where('network_id', session('network-id'))->first()) ) {
                         $appointment_type = new AppointmentType();
                         $appointment_type->name = $appointmentTypeName;
                         $appointment_type->display_name = trim($appointment->appointmenttype);
                         $appointment_type->type = 'ocuhub';
+                        $appointment_type->network_id = session('network-id');
                         $appointment_type->save();
                     }
                 }
@@ -224,11 +225,12 @@ class ActionService
                     $console->update();
 
                     $appointmentTypeName = strtolower(str_replace(' ', '_', trim($appointment->appointmenttype)));
-                    if ( !(AppointmentType::where('name', $appointmentTypeName)->first()) ) {
+                    if ( !(AppointmentType::where('name', $appointmentTypeName)->where('network_id', session('network-id'))->first()) ) {
                         $appointment_type = new AppointmentType();
                         $appointment_type->name = $appointmentTypeName;
                         $appointment_type->display_name = trim($appointment->appointmenttype);
                         $appointment_type->type = 'ocuhub';
+                        $appointment_type->network_id = session('network-id');
                         $appointment_type->save();
                     }
                 }
