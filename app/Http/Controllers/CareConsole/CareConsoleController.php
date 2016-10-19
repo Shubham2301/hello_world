@@ -345,7 +345,7 @@ class CareConsoleController extends Controller
 
     public function getAppointmentTypes()
     {
-        $appointmentTypes = AppointmentType::where('network_id', session('network-id'))->orWhereNull('network_id')->get();
+        $appointmentTypes = AppointmentType::where('network_id', session('network-id'))->orWhereNull('network_id')->orderBy('name', 'ASC')->get();
         $appointmentTypeList = [];
         foreach ($appointmentTypes as $appointmentType) {
             $appointmentTypeList[] = $appointmentType->display_name;

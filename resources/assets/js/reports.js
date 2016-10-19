@@ -429,7 +429,7 @@ function renderReferredTo(data) {
 
 
         for (var i = 0; i < data.length; i++) {
-            if (data[i].count == 0) {
+            if (data[i].count == 0 || data[i].id == '') {
                 disable = 'disable_drilldown';
             } else {
                 disable = '';

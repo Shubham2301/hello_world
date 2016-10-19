@@ -258,7 +258,7 @@ $(document).ready(function () {
             'practice_id': practice_id
         };
         getProviderInfo(formData);
-        $('ul.location_dropdown>li').attr('data-id', location_id).click();
+        $('ul.location_dropdown>li[data-id="' + location_id + '"]').click();
     });
 
     $(document).keypress(function (e) {
