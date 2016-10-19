@@ -340,6 +340,7 @@ class ProviderController extends Controller
             $data[$i]['speciality'] = $provider->speciality ?: 'Unlisted';
             $data[$i]['provider_type'] = ProviderType::getName($provider->provider_type_id);
             $data[$i]['location_name'] = $provider->locationname;
+            $data[$i]['location_id'] = $provider->location_id;
             $i++;
         }
         return json_encode($data);
