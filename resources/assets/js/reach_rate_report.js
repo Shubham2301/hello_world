@@ -283,6 +283,12 @@ function getPatientList(metricName) {
                 if (!("archived" in result)) {
                     content += patientListItem;
                 }
+                break;
+            case 'repeat_patient':
+                if ("repeat_count" in result) {
+                    content += patientListItem;
+                }
+                break;
             default:
                 break;
         }

@@ -46,6 +46,36 @@ class Patient extends Model
         'timezone_id',
     ];
 
+    public function engagementPreference()
+    {
+        return $this->hasOne('myocuhub\Models\EngagementPreference');
+    }
+
+    public function timezone()
+    {
+        return $this->belongsTo('myocuhub\Models\Timezone');
+    }
+
+    public function practicePatient()
+    {
+        return $this->hasOne('myocuhub\Models\PracticePatient');
+    }
+
+    public function files()
+    {
+        return $this->hasMany(PatientFile::class);
+    }
+
+    public function careConsole()
+    {
+        return $this->hasOne(Careconsole::class);
+    }
+
+    public function records()
+    {
+        return $this->hasMany(PatientRecord::class);
+    }
+
     public function getPhone()
     {
         $phone = '-';
@@ -137,20 +167,43 @@ class Patient extends Model
             }
         });
 
-        $query->leftjoin('patient_insurance', 'patients.id', '=', 'patient_insurance.patient_id');
+        $query
+            ->leftjoin('patient_insurance', 'patients.id', '=', 'patient_insurance.patient_id')
+            ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id');
 
-        if (session('user-level') == 1) {
-            $query
-                ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id');
-        } elseif (session('user-level') == 3 && $requestSource == '/administration/patients') {
+        if (session('user-level') == 3 && $requestSource == '/administration/patients') {
             $practiceUser = PracticeUser::where('user_id', Auth::user()->id)->first();
             $query
-                ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
                 ->leftjoin('practice_patient', 'patients.id', '=', 'practice_patient.patient_id')
                 ->where('practice_patient.practice_id', $practiceUser['practice_id']);
-        } else {
+        }
+        elseif (session('user-level') == 3 && $requestSource == '/patients') {
+            $practiceUser = PracticeUser::where('user_id', Auth::user()->id)->first();
+            $query->where(function ($subquery) use ($practiceUser) {
+                $subquery
+                    ->where(function ($q) {
+                        $q
+                            ->has('practicePatient', '=', 0)
+                            ->whereHas('careConsole.importHistory', function ($query) {
+                                $query->where('network_id', session('network-id'));
+                            });
+                    })
+                    ->orWhere(function ($q) use ($practiceUser) {
+                        $q
+                            ->whereHas('practicePatient', function ($query) use ($practiceUser) {
+                                $query->where('practice_id', $practiceUser['practice_id']);
+                            });
+                    })
+                    ->orWhere(function ($q) use ($practiceUser) {
+                        $q
+                            ->whereHas('careConsole.referralHistory', function ($query) use ($practiceUser) {
+                                $query->where('referred_to_practice_id', $practiceUser['practice_id']);
+                            });
+                    });
+            });
+        }
+        else {
             $query
-                ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id')
                 ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
                 ->where('import_history.network_id', session('network-id'));
         }
@@ -204,6 +257,7 @@ class Patient extends Model
             ->orderBy('start_datetime', 'DESC')
             ->leftjoin('users', 'appointments.provider_id', '=', 'users.id')
             ->leftjoin('practices', 'appointments.practice_id', '=', 'practices.id')
+            ->leftjoin('practice_location', 'appointments.location_id', '=', 'practice_location.id')
             ->first();
     }
 
@@ -224,21 +278,6 @@ class Patient extends Model
             ->leftjoin('practice_location', 'appointments.location_id', '=', 'practice_location.id')
             ->groupBy('users.id')
             ->get();
-    }
-
-    public function engagementPreference()
-    {
-        return $this->hasOne('myocuhub\Models\EngagementPreference');
-    }
-
-    public function timezone()
-    {
-        return $this->belongsTo('myocuhub\Models\Timezone');
-    }
-
-    public function practicePatient()
-    {
-        return $this->hasOne('myocuhub\Models\PracticePatient');
     }
 
     public function engagePatient($appt)
@@ -282,19 +321,5 @@ class Patient extends Model
             $data['longitude'] = $patientLocation['results'][0]['geometry']['location']['lng'];
         }
         return $data;
-    }
-    public function files()
-    {
-        return $this->hasMany(PatientFile::class);
-    }
-
-    public function careConsole()
-    {
-        return $this->hasOne(Careconsole::class);
-    }
-
-    public function records()
-    {
-        return $this->hasMany(PatientRecord::class);
     }
 }

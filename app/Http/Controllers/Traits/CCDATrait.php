@@ -26,9 +26,9 @@ trait CCDATrait
         $data['addressline1'] = $this->validateKey($ccdaData['demographics']['address']['street'], 0);
         $data['addressline2'] = $this->validateKey($ccdaData['demographics']['address']['street'], 1);
         $data['lastname'] =  $ccdaData['demographics']['name']['family'];
-        $data['workphone'] = $ccdaData['demographics']['phone']['work'];
-        $data['homephone'] = $ccdaData['demographics']['phone']['home'];
-        $data['cellphone'] = $ccdaData['demographics']['phone']['mobile'];
+        $data['workphone'] = str_replace('tel:', '', $ccdaData['demographics']['phone']['work']);
+        $data['homephone'] = str_replace('tel:', '', $ccdaData['demographics']['phone']['home']);
+        $data['cellphone'] = str_replace('tel:', '', $ccdaData['demographics']['phone']['mobile']);
         $data['email']     = $ccdaData['demographics']['email'];
         $data['city']      = $ccdaData['demographics']['address']['city'];
         $data['zip']       = $ccdaData['demographics']['address']['zip'];
@@ -39,17 +39,17 @@ trait CCDATrait
         $data['preferredlanguage'] = $ccdaData['demographics']['language'];
 
         if ($data['gender']) {
-            $data['gender'] = 'Female';
+            $data['gender'] = 'F';
             if (stripos($data['gender'], 'male') > -1) {
-                $data['gender'] = 'Male';
+                $data['gender'] = 'M';
             }
         }
 
         if ($data['preferredlanguage']) {
-            $data['preferredlanguage'] = 'English';
+            $data['preferredlanguage'] = config('patient_engagement.language.english');
 
             if (stripos($data['preferredlanguage'], 'Spanish')> -1) {
-                $data['preferredlanguage'] = 'Spanish';
+                $data['preferredlanguage'] = config('patient_engagement.language.spanish');
             }
         }
 

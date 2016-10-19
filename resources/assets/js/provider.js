@@ -246,19 +246,19 @@ $(document).ready(function () {
             'provider_id': provider_id,
             'practice_id': practice_id
         };
-
         getProviderInfo(formData);
-
     });
 
     $('.provider_near_patient_list').on('click', '.nearby_provider_item', function () {
         var provider_id = $(this).attr('data-id');
         var practice_id = $(this).attr('data-practiceid');
+        var location_id = $(this).attr('data-locationid');
         var formData = {
             'provider_id': provider_id,
             'practice_id': practice_id
         };
         getProviderInfo(formData);
+        $('ul.location_dropdown>li').attr('data-id', location_id).click();
     });
 
     $(document).keypress(function (e) {
@@ -481,7 +481,7 @@ function showProviderNear(locations) {
             content += '<div class="panel panel-default"><div class="panel-heading"><div class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#' + location.location_id + '"><div class="row provider_location_name arial_bold">' + location.location_name + '  <span class="glyphicon glyphicon-chevron-right"></span></div><div class="row provider_location_detail"><span>Practice Name: ' + location.practice_name + '</span><span><span>Distance: ' + location.distance + '</span><span>No. of Providers: ' + location.provider_count + '</span></span></div></a></div></div>';
             content += '<div id="' + location.location_id + '" class="panel-collapse collapse"><div class="panel-body">';
             location.providers_list.forEach(function (provider_detail) {
-                content += '<div class="row nearby_provider_item" data-id="' + provider_detail.provider_id + '" data-practiceid="' + location.practice_id + '"><div class="row arial_bold">' + provider_detail.provider_name + '</div><div class="row provider_details_section"><span>Provider Type: ' + provider_detail.provider_type + '</span><span>Specialty: ' + provider_detail.speciality + '</span></div></div>';
+                content += '<div class="row nearby_provider_item" data-id="' + provider_detail.provider_id + '" data-practiceid="' + location.practice_id + '" data-locationid="' + location.location_id + '"><div class="row arial_bold">' + provider_detail.provider_name + '</div><div class="row provider_details_section"><span>Provider Type: ' + provider_detail.provider_type + '</span><span>Specialty: ' + provider_detail.speciality + '</span></div></div>';
             });
             content += '</div></div></div>';
         });
@@ -544,8 +544,9 @@ function getProviderInfo(formData) {
             var info = $.parseJSON(e);
             showProviderInfo(info);
             $('#ins_list').hide();
-            if (info.locations.length == 1)
+            if (info.locations.length == 1) {
                 $('ul.location_dropdown>li').first().click();
+            }
         },
         error: function () {
             $('p.alert_message').text('Error getting practice information');

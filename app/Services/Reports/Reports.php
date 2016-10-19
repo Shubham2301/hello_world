@@ -288,8 +288,8 @@ class Reports
             }
 
             if ($result->referred_to_practice_id != null) {
-                $referredToPractice[] = $result->referred_to_practice_id;
-                $referredToPracticeName[$result->referred_to_practice_id] = $this->cleanName($result->referred_to_practice);
+                $referredToPractice[] = $result->referred_to_practice_location_id;
+                $referredToPracticeName[$result->referred_to_practice_location_id] = $this->cleanName($result->referred_to_practice).' - '.$this->cleanName($result->referred_to_practice_location);
             }
             if ($result->referred_to_provider_id != null) {
                 $referredToPracticeUser[] = $result->referred_to_provider_id;
@@ -540,7 +540,9 @@ class Reports
                     `contact_attempts`.`count` as contact_attempts,
                     `action_result_id`.`action_result_id` as `action_result_id`,
                     `users`.`name` as `referred_to_provider`,
-                    `users`.`id` as `referred_to_provider_id`
+                    `users`.`id` as `referred_to_provider_id`,
+                    `practice_location`.`locationname` as `referred_to_practice_location`,
+                    `practice_location`.`id` as `referred_to_practice_location_id`
                     from `careconsole`
                     left join `import_history` on `careconsole`.`import_id` = `import_history`.`id`
                     left join `appointments` on `careconsole`.`appointment_id` = `appointments`.`id`
@@ -549,6 +551,7 @@ class Reports
                     left join `practices` on `appointments`.`practice_id` = `practices`.`id`
                     left join `practice_patient` on `careconsole`.`patient_id` = `practice_patient`.`patient_id`
                     left join `users` on `appointments`.`provider_id` = `users`.`id`
+                    left join `practice_location` on `appointments`.`location_id` = `practice_location`.`id`
                     left join (select console_id, archived, COUNT(*) as count from contact_history where archived is null group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
                     left join (select console_id, action_result_id as action_result_id from contact_history where action_result_id = '15' OR action_result_id = '16' OR action_result_id = '9' OR action_result_id = '10' OR action_result_id = '17') as `action_result_id` on `action_result_id`.`console_id` = `careconsole`.`id`
                     left join `patient_insurance` on `patient_insurance`.`patient_id` = `careconsole`.`patient_id`
@@ -639,7 +642,7 @@ class Reports
         if ($filters['referred_to']['type'] != 'none') {
             switch ($filters['referred_to']['type']) {
                 case 'practice':
-                    $queryFilters .= ' and `practices`.`id` = ' . $filters['referred_to']['name'];
+                    $queryFilters .= ' and `practice_location`.`id` = ' . $filters['referred_to']['name'];
                     break;
                 case 'practice_user':
                     $queryFilters .= ' and `users`.`id` = ' . $filters['referred_to']['name'];

@@ -104,8 +104,12 @@
             </span>
             <span class="flex_row category_count pending_patient patient_list" id="pending_patient" data-name="Pending Contact"></span>
             <span class="section_separater"></span>
-            <span class="arial_bold flex_row">Repeat Patients</span>
-            <span class="flex_row category_count repeat_count"></span>
+            <span class="arial_bold flex_row">
+                <span class="patient_list" id="repeat_patient" data-name="Repeat Patients">
+                    Repeat Patients
+                </span>
+            </span>
+            <span class="flex_row category_count repeat_count patient_list" id="repeat_patient" data-name="Repeat Patients"></span>
         </div>
     </div>
     <div class="report_stage_data">

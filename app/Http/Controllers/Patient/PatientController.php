@@ -260,6 +260,7 @@ class PatientController extends Controller
             $patientData['referred_to_practice_user'] = $previousProvider['title'] . ' ' . $previousProvider['lastname'] . ', ' . $previousProvider['firstname'];
             $patientData['referred_to_practice_user_type'] = $previousProvider['provider_type_id'] ? ProviderType::getName($previousProvider['provider_type_id']) : '';
             $patientData['referred_to_practice'] = $previousProvider['name'];
+            $patientData['location_name'] = $previousProvider['locationname'];
         }
 
         $referral_history = (isset($careconsole->referral_id)) ? ReferralHistory::find($careconsole->referral_id) : null;

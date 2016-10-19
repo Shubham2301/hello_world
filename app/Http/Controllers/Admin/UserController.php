@@ -433,9 +433,10 @@ class UserController extends Controller
 
         if ($user->level > 2 && $request->input('user_practice') !== '' && $request->input('user_practice')) {
             $userData = [];
-            $userData['practice_id'] = $request->input('user_practice');
             $userData['user_id'] = $user->id;
-            $practice_user = PracticeUser::firstOrCreate($userData);
+            $practice_user = PracticeUser::firstOrNew($userData);
+            $practice_user->practice_id = $request->input('user_practice');
+            $practice_user->save();
         } else {
             $practiceUser = PracticeUser::where('user_id', $user->id)->delete();
 

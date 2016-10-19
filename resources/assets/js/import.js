@@ -1,13 +1,11 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
-
-    $(document).on('change', '#practice_list', function(e) {
+    $(document).on('change', '#practice_list', function (e) {
         var practice_id = $(this).find(":selected").val();
         getLocation(practice_id);
-
     });
 
-    $(document).on('change', '.xlsx_file-input input[type="file"]', function() {
+    $(document).on('change', '.xlsx_file-input input[type="file"]', function () {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
         var clear_image_path = $('#clear_image_path').val();
         filename += '&nbsp;&nbsp;<img src="' + clear_image_path + '" class="clear_image_path" data-toggle="tooltip" title="Remove File" data-placement="top">';
@@ -18,7 +16,7 @@ $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
     });
 
-    $(document).on('click', '.import_button', function() {
+    $(document).on('click', '.import_button', function () {
         if ($('.xlsx_file-input input[type="file"]').val())
             importPatients();
         else {
@@ -28,15 +26,13 @@ $(document).ready(function() {
         }
     });
 
-    $('.filename').on('click', '.clear_image_path', function() {
-
-
+    $('.filename').on('click', '.clear_image_path', function () {
         $('.xlsx_file-input input[type="file"]').val('');
         $('.filename').html('');
         $('.xlsx_file-input').addClass('active');
     });
 
-    $(document).on('click', '.open_import', function() {
+    $(document).on('click', '.open_import', function () {
         $('.xlsx_file-input input[type="file"]').val('');
         $('.filename').html('');
         $('.xlsx_file-input').addClass('active');
@@ -47,7 +43,7 @@ $(document).ready(function() {
         $('.dismiss_button').text('Cancel');
     });
 
-    $(document).on('click', '#import_ccda_button', function() {
+    $(document).on('click', '#import_ccda_button', function () {
         var id = $(this).attr('data-id');
         $('#ccda_patient_id').val(id);
         $('.success_message').text('');
@@ -56,48 +52,52 @@ $(document).ready(function() {
         $('.dismiss_button').text('Cancel');
     });
 
-    $(document).on('click', '.compare_ccda_button', function() {
-
+    $(document).on('click', '.compare_ccda_button', function () {
         if ($('#form_edit_mode').val()) {
             setCheckedFieldInForm();
             return;
         }
         updatePatientData();
     });
-    $(document).on('click', '#compare_ccda_button', function() {
+
+    $(document).on('click', '#compare_ccda_button', function () {
         $('.compare_form').addClass('active');
         $('.success_message').text(" ");
         $('.success_message').removeClass('active');
         $('.compare_ccda_button').addClass('active');
         $('.dismiss_button').text('Cancel');
-        $('.compare_row_item').each(function() {
+        $('.compare_row_item').each(function () {
             $(this).find('input').prop('checked', false);
         });
     });
-    $(document).on('change', '#checked_all', function() {
+
+    $(document).on('change', '#checked_all', function () {
         if ($(this).is(":checked")) {
-            $('.compare_row_item').each(function() {
+            $('.compare_row_item').each(function () {
                 $(this).find('input').prop('checked', true);
             });
         } else
-            $('.compare_row_item').each(function() {
+            $('.compare_row_item').each(function () {
                 $(this).find('input').prop('checked', false);
             });
     });
-    $(document).on('click', '#download_ccda', function() {
+
+    $(document).on('click', '#download_ccda', function () {
         var url = $('#download_ccda').attr('data-href');
         getCcdaFile(url);
     });
-    $(document).on('click', '#view_ccda', function() {
+
+    $(document).on('click', '#view_ccda', function () {
         var url = $(this).attr('data-href');
         showCCDA(url);
     });
-    $(document).on('click', '.dismiss_button', function() {
+
+    $(document).on('click', '.dismiss_button', function () {
         $('.view_patient_ccda').removeClass('active');
         $('.view_patient_ccda').html(' ');
     });
 
-    $('.lastseenby_show').on('click', function() {
+    $('.lastseenby_show').on('click', function () {
         $('.lastseen_content').toggleClass('active');
         if ($('.lastseen_content').hasClass('active')) {
             $('.lastseenby_icon').removeClass('glyphicon-chevron-right');
@@ -107,7 +107,8 @@ $(document).ready(function() {
             $('.lastseenby_icon').addClass('glyphicon-chevron-right');
         }
     });
-    $('.insurance_provider_show').on('click', function() {
+
+    $('.insurance_provider_show').on('click', function () {
         $('.insurance_provider_content').toggleClass('active');
         if ($('.insurance_provider_content').hasClass('active')) {
             $('.insurance_provider_icon').removeClass('glyphicon-chevron-right');
@@ -117,7 +118,8 @@ $(document).ready(function() {
             $('.insurance_provider_icon').addClass('glyphicon-chevron-right');
         }
     });
-    $('.patient_files_show').on('click', function() {
+
+    $('.patient_files_show').on('click', function () {
         $('.patient_files_content').toggleClass('active');
         if ($('.patient_files_content').hasClass('active')) {
             $('.patient_files_icon').removeClass('glyphicon-chevron-right');
@@ -128,13 +130,13 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('change', '#import_from_ccda input[type="file"]', function() {
+    $(document).on('change', '#import_from_ccda input[type="file"]', function () {
         if ($(this).val() != '') {
             getCCDAData();
         }
     });
 
-    $(document).on('change', '.file_upload_form_input input[type="file"]', function() {
+    $(document).on('change', '.file_upload_form_input input[type="file"]', function () {
         var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '').substring(0, 7) + '...';
         var clear_image_path = $('#clear_image_path').val();
         filename += '&nbsp;&nbsp;<img src="' + clear_image_path + '" class="remove_file_name " data-toggle="tooltip" title="Remove File" data-placement="top">';
@@ -147,18 +149,18 @@ $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
     });
 
-    $(document).on('click', '.remove_file_name', function() {
+    $(document).on('click', '.remove_file_name', function () {
         $(this).parent().siblings('.file_upload_form_input').addClass('active');
         var inputDom = $(this).parent().siblings('.file_upload_form_input');
         inputDom.find('input').val('');
         $(this).parent().html('');
     });
 
-    $(document).on('click', '.upload_files_btn', function() {
+    $(document).on('click', '.upload_files_btn', function () {
         uploadPatientFiles();
     })
 
-    $(document).on('click', '.upload_file_view_btn', function() {
+    $(document).on('click', '.upload_file_view_btn', function () {
         $('.patient_file_section').html('');
         $('.success_message').removeClass('active');
         $('.dismiss_button').text('Cancel');
@@ -171,30 +173,27 @@ $(document).ready(function() {
         $('#footer_btn').show();
         $('#footer_loader_section').hide();
         $('#upload_files').modal('show');
-
     });
 
-    $('#new_file_upload_btn').on('click', function() {
+    $('#new_file_upload_btn').on('click', function () {
         createNewFileInput();
     });
 
-    $(document).on('click', '.remove_upload_input', function() {
+    $(document).on('click', '.remove_upload_input', function () {
         $(this).closest('.row').remove();
     })
-
 
 });
 
 var fileIndex = 1;
 
 function getCcdaFile(url) {
-
     $.ajax({
         url: url,
         type: 'GET',
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             if (e != 'nofile') {
                 window.location = url;
             } else {
@@ -205,13 +204,9 @@ function getCcdaFile(url) {
                 $('.success_message').addClass('active');
                 $('.compare_ccda_button').removeClass('active');
                 $('.dismiss_button').text('OK');
-
-
             }
         },
-        error: function() {
-
-        },
+        error: function () {},
         cache: false,
         processData: false
     });
@@ -228,23 +223,21 @@ function getLocation(id) {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             var locations = $.parseJSON(e);
             var content = '<option value="-1">Select Location</option>';
-            locations.forEach(function(location) {
+            locations.forEach(function (location) {
                 content += '<option value="' + location.id + '">' + location.name + '</option>';
-
             });
             $('#practice_locations').html(content);
         },
-        error: function() {
+        error: function () {
             $('p.alert_message').text('Error removing');
             $('#alert').modal('show');
         },
         cache: false,
         processData: false
     });
-
 }
 
 function importPatients() {
@@ -262,16 +255,13 @@ function importPatients() {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: function(dataofconfirm) {
+        success: function (dataofconfirm) {
             var patients = $.parseJSON(dataofconfirm);
-            if(patients.exception != "")
-            {
+            if (patients.exception != "") {
                 $('.dismiss_button').trigger('click');
                 $('p.alert_message').text('Error: Please provide a valid XLSX file.');
                 $('#alert').modal('show');
                 return;
-
-
             }
             var content = '<span class="total_import">You have imported ' + patients.total + ' patients </span> </br><span style="color:#4d4d4d;"> New patients </span><span class="new_patient">' + patients.patients_added + '</span></br><span style="color:#4d4d4d;"> Already existing patients </span><span class="old_patient">' + patients.already_exist + '</span>';
 
@@ -295,7 +285,7 @@ function saveCcdafile() {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: function(e) {
+        success: function (e) {
             var data = $.parseJSON(e);
             if (data.error) {
                 $('p.alert_message').text('Error: Please provide a valid CCDA file.');
@@ -385,7 +375,7 @@ function showCCDA(url) {
         type: 'GET',
         contentType: 'text/html',
         async: false,
-        success: function(e) {
+        success: function (e) {
             if (e != 'nofile') {
                 $('#compare_ccda_button').trigger('click');
                 $('.update_header').removeClass('active');
@@ -405,12 +395,9 @@ function showCCDA(url) {
                 $('.success_message').removeClass('active');
                 $('.compare_ccda_button').removeClass('active');
                 $('.dismiss_button').text('OK');
-
             }
         },
-        error: function() {
-
-        },
+        error: function () {},
         cache: false,
         processData: false
     });
@@ -460,11 +447,12 @@ function fillPatientData(data) {
     $('#import_patients').hide();
 
     var lastSeenBy = '';
-    lastSeenBy +='<p class="patient_dropdown_data">' + data.referred_to_practice_user + '</p>';
-    if(data.referred_to_practice_user_type.length > 0){
+    lastSeenBy += '<p class="patient_dropdown_data">' + data.referred_to_practice_user + '</p>';
+    if (data.referred_to_practice_user_type.length > 0) {
         lastSeenBy += '<p class="patient_dropdown_data">' + data.referred_to_practice_user_type + '</p>';
     }
-    lastSeenBy +='<p class="patient_dropdown_data">' + data.referred_to_practice + '</p>';
+    lastSeenBy += '<p class="patient_dropdown_data">' + data.referred_to_practice + '</p>';
+    lastSeenBy += '<p class="patient_dropdown_data">Location: ' + data.location_name + '</p>';
     $('.lastseen_content').html(lastSeenBy);
 
     $('.insurance_provider_content').html('<p class="patient_dropdown_data">' + data.insurance + '</p>');
@@ -488,7 +476,6 @@ function fillPatientData(data) {
         $('.insurance_provider_icon').removeClass('hide');
         $('.patient_table_header').removeClass('hide');
     }
-
     $('.patient_files_content').html(data.files);
 
 }
@@ -503,7 +490,7 @@ function getCCDAData() {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: function(e) {
+        success: function (e) {
             var data = $.parseJSON(e);
             if (data.error) {
                 $('p.alert_message').text('Error: Please provide a valid CCDA file.');
@@ -515,7 +502,6 @@ function getCCDAData() {
                 for (var key in data.ccda) {
                     $('#' + key).val(data.ccda[key]);
                 }
-
             }
         }
     });
@@ -523,7 +509,7 @@ function getCCDAData() {
 
 function setCheckedFieldInForm() {
     var $inputs = $('#compare_ccda_form :input');
-    $inputs.each(function() {
+    $inputs.each(function () {
         if ($(this).prop('checked')) {
             $('#form_add_patients').find('#' + this.name).val($(this).val());
         }
@@ -534,6 +520,7 @@ function setCheckedFieldInForm() {
 function uploadPatientFiles() {
     var patientID = location.search.split('patient_id=')[1];
     patientID = parseInt(patientID, 10);
+
     if (patientID > 0) {
         $('#upload_patient_id').val(patientID);
     } else {
@@ -558,7 +545,7 @@ function uploadPatientFiles() {
         contentType: false,
         type: 'POST',
         async: true,
-        success: function(e) {
+        success: function (e) {
             var data = $.parseJSON(e);
             $('#upload_files').modal('hide');
             if (data.ccda) {
@@ -577,17 +564,17 @@ function uploadPatientFiles() {
 }
 
 function getSelectedFiles() {
-   var patientFiles =  $('input:checkbox:checked.selected_files').map(function() {
+    var patientFiles = $('input:checkbox:checked.selected_files').map(function () {
         return this.value;
     }).get();
 
-    var patientRecords =  $('input:checkbox:checked.selected_records').map(function() {
+    var patientRecords = $('input:checkbox:checked.selected_records').map(function () {
         return this.value;
     }).get();
 
     var files = {
-        patient_files:patientFiles,
-        patient_records:patientRecords
+        patient_files: patientFiles,
+        patient_records: patientRecords
     };
     return JSON.stringify(files);
 }
@@ -600,7 +587,6 @@ function createNewFileInput() {
 
     $('.patient_file_section').append(content);
     $('#count_patient_file').val(fileIndex);
-
 }
 
 function updatePatientData() {
@@ -615,7 +601,7 @@ function updatePatientData() {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: function(dataofconfirm) {
+        success: function (dataofconfirm) {
             if (dataofconfirm != 'false') {
                 $('.update_header').removeClass('active');
                 $('.compare_form').removeClass('active');
@@ -624,7 +610,6 @@ function updatePatientData() {
                 $('.compare_ccda_button').removeClass('active');
                 $('.dismiss_button').text('OK');
             }
-
             var formData = {
                 'id': dataofconfirm
             };
@@ -635,36 +620,30 @@ function updatePatientData() {
 
 function validateFilesForm() {
     var result = true;
-    var i =0;
-    $('.select_file_to_upload').each(function(file) {
+    var i = 0;
+    $('.select_file_to_upload').each(function (file) {
         var file = $(this).val();
         var inputObj = $(this).parent().parent().parent().find('.patient_file_name');
         var fileName = inputObj.val();
 
-        if (i==0 && !fileName)
-        {
+        if (i == 0 && !fileName) {
             result = false;
             inputObj.focus();
             inputObj.attr('data-content', 'Enter file name');
             inputObj.popover('show');
             return false;
-        }
-        else if (i==0 && !file)
-        {
+        } else if (i == 0 && !file) {
             result = false;
             $(this).parent().attr('data-content', 'select file');
             $(this).parent().popover('show');
             return false;
-        }
-
-       else if (file && !fileName) {
+        } else if (file && !fileName) {
             result = false;
             inputObj.focus();
             inputObj.attr('data-content', 'Enter file name ');
             inputObj.popover('show');
             return false;
-        }
-        else if (fileName && !file) {
+        } else if (fileName && !file) {
             result = false;
             $(this).parent().attr('data-content', 'select file');
             $(this).parent().popover('show');
