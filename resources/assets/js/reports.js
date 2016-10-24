@@ -124,8 +124,20 @@ function addFilter(name, value, meta) {
             if (filterOptions.referred_to.type != 'none') {
                 $('.filter[data-id="referred_to_practice_user"]').remove();
                 $('.filter[data-id="referred_to_practice"]').remove();
+                $('.filter[data-id="referred_to_practice_location"]').remove();
             }
             filterOptions.referred_to.type = "practice";
+            filterOptions.referred_to.name = value;
+            $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">Referred To ' + meta + '</span></div><span class="filter_remove ">x</span></div>');
+            $('#referred_to_meta').html(meta);
+            break;
+        case 'referred_to_practice_location':
+            if (filterOptions.referred_to.type != 'none') {
+                $('.filter[data-id="referred_to_practice_user"]').remove();
+                $('.filter[data-id="referred_to_practice"]').remove();
+                $('.filter[data-id="referred_to_practice_location"]').remove();
+            }
+            filterOptions.referred_to.type = "practice_location";
             filterOptions.referred_to.name = value;
             $('#drilldown_filters').append('<div class="filter" data-id="' + name + '"><div class="filter_name"><span class="item_value report_content_label">Referred To ' + meta + '</span></div><span class="filter_remove ">x</span></div>');
             $('#referred_to_meta').html(meta);
@@ -134,6 +146,7 @@ function addFilter(name, value, meta) {
             if (filterOptions.referred_to.type != "none") {
                 $('.filter[data-id="referred_to_practice_user"]').remove();
                 $('.filter[data-id="referred_to_practice"]').remove();
+                $('.filter[data-id="referred_to_practice_location"]').remove();
             }
             filterOptions.referred_to.type = "practice_user";
             filterOptions.referred_to.name = value;
@@ -190,6 +203,11 @@ function removeFilter(name) {
             filterOptions.patient_demographics.insurance_type = 'none';
             break;
         case 'referred_to_practice':
+            filterOptions.referred_to.type = 'none';
+            filterOptions.referred_to.name = 'none';
+            $('#referred_to_meta').html('');
+            break;
+        case 'referred_to_practice_location':
             filterOptions.referred_to.type = 'none';
             filterOptions.referred_to.name = 'none';
             $('#referred_to_meta').html('');

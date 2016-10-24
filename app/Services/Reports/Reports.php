@@ -288,8 +288,12 @@ class Reports
             }
 
             if ($result->referred_to_practice_id != null) {
-                $referredToPractice[] = $result->referred_to_practice_location_id;
-                $referredToPracticeName[$result->referred_to_practice_location_id] = $this->cleanName($result->referred_to_practice).' - '.$this->cleanName($result->referred_to_practice_location);
+                $referredToPractice[] = $result->referred_to_practice_id;
+                $referredToPracticeName[$result->referred_to_practice_id] = $this->cleanName($result->referred_to_practice);
+            }
+            if ($result->referred_to_practice_location_id != null) {
+                $referredToPracticeLocation[] = $result->referred_to_practice_location_id;
+                $referredToPracticeLocationName[$result->referred_to_practice_location_id] = $this->cleanName($result->referred_to_practice_location);
             }
             if ($result->referred_to_provider_id != null) {
                 $referredToPracticeUser[] = $result->referred_to_provider_id;
@@ -333,8 +337,10 @@ class Reports
             }
         }
 
-        if ($filters['referred_to']['type'] == 'practice_user' || $filters['referred_to']['type'] == 'practice') {
+        if ($filters['referred_to']['type'] == 'practice_user' || $filters['referred_to']['type'] == 'practice_location') {
             $networkData['referred_to'] = $this->formatReferredTo('practice_user', $referredToPracticeUser, $referredToPracticeUserName);
+        } elseif ($filters['referred_to']['type'] == 'practice') {
+            $networkData['referred_to'] = $this->formatReferredTo('practice_location', $referredToPracticeLocation, $referredToPracticeLocationName);
         } elseif ($filters['referred_to']['type'] == 'none') {
             $networkData['referred_to'] = $this->formatReferredTo('practice', $referredToPractice, $referredToPracticeName);
         }
@@ -642,6 +648,9 @@ class Reports
         if ($filters['referred_to']['type'] != 'none') {
             switch ($filters['referred_to']['type']) {
                 case 'practice':
+                    $queryFilters .= ' and `practices`.`id` = ' . $filters['referred_to']['name'];
+                    break;
+                case 'practice_location':
                     $queryFilters .= ' and `practice_location`.`id` = ' . $filters['referred_to']['name'];
                     break;
                 case 'practice_user':
