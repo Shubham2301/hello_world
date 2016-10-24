@@ -29,6 +29,14 @@ class Appointment extends Model {
         return $this->belongsTo('myocuhub\Models\Practice', 'practice_id');
     }
 
+    /**
+     * @return mixed
+     */
+    public function practiceLocation()
+    {
+        return $this->belongsTo('myocuhub\Models\PracticeLocation', 'location_id');
+    }
+
 	public static function schedule($attributes){
 
 		$appointment = Appointment::create($attributes);

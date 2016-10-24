@@ -13,6 +13,7 @@ use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
+use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\Services\KPI\KPIService;
@@ -302,7 +303,9 @@ class CareConsoleService
                 $provider = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
                 $practice = Practice::find($appointment->practice_id);
                 $practice = $practice->name;
-                return $provider . ' from ' . $practice;
+                $practiceLocation = PracticeLocation::find($appointment->location_id);
+                $locationInfo = $practiceLocation ? ' at ' . $practiceLocation->locationname : '';
+                return $provider . ' from ' . $practice . $locationInfo;
                 break;
             case 'last-scheduled-to':
                 $previousProvider = Patient::getPreviousProvider($patient['patient_id']);
@@ -312,6 +315,7 @@ class CareConsoleService
                 $lastScheduledTo = '';
                 $lastScheduledTo .= $previousProvider['title'] . ' ' . $previousProvider['firstname'] . ' ' . $previousProvider['lastname'] . ' from ';
                 $lastScheduledTo .= $previousProvider['name'];
+                $lastScheduledTo .= $previousProvider['locationname'] ? ' at ' . $previousProvider['locationname'] : '';
                 return $lastScheduledTo;
                 break;
             case 'email':
