@@ -35,6 +35,7 @@ elixir(function (mix) {
     mix.less(['pre_op_form.less'], 'public/css/pre_op_form.css');
     mix.less(['retinal_post_exam.less'], 'public/css/retinal_post_exam.css');
     mix.less(['user_report.less'], 'public/css/user_report.css');
+    mix.less(['clean_up.less'], 'public/css/clean_up.css');
     mix.babel(['main.js', 'announcements.js'], 'public/js/main.js');
     mix.babel(['sesconnect.js'], 'public/js/sesconnect.js');
     mix.babel(['referraltype.js'], 'public/js/referraltype.js');
@@ -58,6 +59,7 @@ elixir(function (mix) {
     mix.babel(['call_center.js'], 'public/js/call_center.js');
     mix.babel(['performance_report.js'], 'public/js/performance_report.js');
     mix.babel(['user_report.js'], 'public/js/user_report.js');
+    mix.babel(['clean_up.js'], 'public/js/clean_up.js');
 
     mix.version(['css/style.css',
                 'css/directmail.css',
@@ -81,6 +83,7 @@ elixir(function (mix) {
                 'css/pre_op_form.css',
                 'css/retinal_post_exam.css',
                 'css/user_report.css',
+                'css/clean_up.css',
                 'js/main.js',
                 'js/sesconnect.js',
                 'js/referraltype.js',
@@ -102,6 +105,7 @@ elixir(function (mix) {
                  'js/call_center.js',
                  'js/performance_report.js',
                  'js/user_report.js',
+                 'js/clean_up.js',
                 'images/*'
                 ]);
 });

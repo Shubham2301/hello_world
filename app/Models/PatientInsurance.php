@@ -18,4 +18,12 @@ class PatientInsurance extends Model
         'subscriber_relation',
     ];
 
+    /**
+     * @return mixed
+     */
+    public function patient()
+    {
+        return $this->belongsTo('myocuhub\Patient');
+    }
+
 }

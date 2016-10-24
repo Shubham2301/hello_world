@@ -53,6 +53,14 @@ Administration
         </a>
     </li>
     @endif
+    @if(Auth::user()->hasRole('care-console'))
+    <li class="admin_sidebar_menu_item">
+        <a class="sidebar_button_subsection subsection_admin_add" href="/administration/cleanup">
+            <span class=""><img src="{{ elixir('images/sidebar/admin-network-icon.png') }}" ></span>
+            <span class="add_text admin_single_col">CleanUp</span>
+        </a>
+    </li>
+    @endif
 </ul>
 @if(Auth::user()->isSuperAdmin())
 <div class="admin_report_button_container">

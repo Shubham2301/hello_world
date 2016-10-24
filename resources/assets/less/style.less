@@ -606,6 +606,11 @@ Section : Admin Sidebar
                 flex-direction: row;
                 align-items: center;
                 justify-content: flex-start;
+                &.admin_single_col {
+                    flex-grow: 4;
+                    border-left: 1px solid #b3b3b3;
+                    padding-left: .5em;
+                }
             }
             &.img_on_hover {
                 display: none;
@@ -632,8 +637,7 @@ Section : Admin Sidebar
 }
 .subsection_admin_add {
     padding: .2em .5em;
-
-    &.disabled{
+    &.disabled {
         cursor: not-allowed;
         opacity: 0.4;
     }
@@ -957,7 +961,6 @@ Mobile Styling
         display: none;
     }
 }
-
 .seacrh_icon {
-	cursor: pointer;
+    cursor: pointer;
 }

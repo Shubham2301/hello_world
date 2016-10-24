@@ -32,6 +32,14 @@ class Appointment extends Model {
     /**
      * @return mixed
      */
+    public function patient()
+    {
+        return $this->belongsTo('myocuhub\Patient');
+    }
+
+    /**
+     * @return mixed
+     */
     public function practiceLocation()
     {
         return $this->belongsTo('myocuhub\Models\PracticeLocation', 'location_id');
