@@ -479,6 +479,7 @@ trait ReachRateTrait
             case 'appointment_data':
                 $patientInfo['scheduled_to_provider'] = isset($requestData->appointments->provider) ? $requestData->appointments->provider->name : '-';
                 $patientInfo['scheduled_to_practice'] = isset($requestData->appointments->practice) ? $requestData->appointments->practice->name : '-';
+                $patientInfo['scheduled_to_practice_location'] = isset($requestData->appointments->practiceLocation) ? $requestData->appointments->practiceLocation->locationname : '-';
                 $patientInfo['scheduled_for'] = Helper::formatDate($requestData->appointments->start_datetime, config('constants.date_format'));
                 $patientInfo['appointment_type'] = $requestData->appointments->appointmenttype;
                 break;

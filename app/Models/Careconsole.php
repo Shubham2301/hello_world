@@ -586,7 +586,7 @@ class Careconsole extends Model
                 $query->whereNotNull('user_id');
                 $query->where('contact_activity_date', '>=', $startDate);
                 $query->where('contact_activity_date', '<=', $endDate);
-            }, 'contactHistory.action', 'contactHistory.actionResult', 'contactHistory.currentStage', 'contactHistory.previousStage', 'contactHistory.appointments', 'contactHistory.appointments.provider', 'contactHistory.appointments.practice'])
+            }, 'contactHistory.action', 'contactHistory.actionResult', 'contactHistory.currentStage', 'contactHistory.previousStage', 'contactHistory.appointments', 'contactHistory.appointments.provider', 'contactHistory.appointments.practice', 'contactHistory.appointments.practiceLocation'])
             ->withCount(['importHistory' => function ($query) use ($startDate, $endDate) {
                 $query->where('created_at', '>=', $startDate);
                 $query->where('created_at', '<=', $endDate);

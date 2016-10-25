@@ -116,14 +116,15 @@ function getPatientList(metricName) {
                 }
                 break;
             case 'reached':
-                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
                 if ("reached" in result) {
                     var scheduledToPractice = result.scheduled_to_practice || '-';
+                    var scheduledToPracticeLocation = result.scheduled_to_practice_location || '-';
                     var scheduledToProvider = result.scheduled_to_provider || '-';
                     var scheduledFor = result.scheduled_for || '-';
                     var appointmentType = result.appointment_type || '-';
                     var scheduledOn = result.scheduled_on || '-';
-                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToPracticeLocation + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
                 }
                 break;
             case 'not_reached':
@@ -136,67 +137,73 @@ function getPatientList(metricName) {
                 }
                 break;
             case 'appointment_scheduled':
-                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
                 if ("appointment_scheduled" in result && result.appointment_scheduled == config.appointment_status.scheduled_appointment) {
                     var scheduledToPractice = result.scheduled_to_practice || '-';
+                    var scheduledToPracticeLocation = result.scheduled_to_practice_location || '-';
                     var scheduledToProvider = result.scheduled_to_provider || '-';
                     var scheduledFor = result.scheduled_for || '-';
                     var appointmentType = result.appointment_type || '-';
                     var scheduledOn = result.scheduled_on || '-';
-                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToPracticeLocation + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
                 }
                 break;
             case 'past_appointment':
-                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
                 if ("appointment_scheduled" in result && result.appointment_scheduled == config.appointment_status.past_appointment) {
                     var scheduledToPractice = result.scheduled_to_practice || '-';
+                    var scheduledToPracticeLocation = result.scheduled_to_practice_location || '-';
                     var scheduledToProvider = result.scheduled_to_provider || '-';
                     var scheduledFor = result.scheduled_for || '-';
                     var appointmentType = result.appointment_type || '-';
                     var scheduledOn = result.scheduled_on || '-';
-                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToPracticeLocation + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
                 }
                 break;
             case 'not_scheduled':
-                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
                 if ("reached" in result && !("appointment_scheduled" in result)) {
                     var scheduledToPractice = result.scheduled_to_practice || '-';
+                    var scheduledToPracticeLocation = result.scheduled_to_practice_location || '-';
                     var scheduledToProvider = result.scheduled_to_provider || '-';
                     var scheduledFor = result.scheduled_for || '-';
                     var appointmentType = result.appointment_type || '-';
                     var scheduledOn = result.scheduled_on || '-';
-                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToPracticeLocation + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
                 }
                 break;
             case 'appointment_completed':
-                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Appointment Type</span><span>Days Pending</span>';
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Appointment Type</span><span>Days Pending</span>';
                 if ("appointment_completed" in result) {
                     var scheduledToPractice = result.scheduled_to_practice || '-';
+                    var scheduledToPracticeLocation = result.scheduled_to_practice_location || '-';
                     var scheduledToProvider = result.scheduled_to_provider || '-';
                     var scheduledFor = result.scheduled_for || '-';
                     var appointmentType = result.appointment_type || '-';
                     var daysPending = (result.show_stage_change >= 0) ? result.show_stage_change : result.days_in_appointment_completed;
-                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + appointmentType + '</span><span>' + daysPending + '</span></li>';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToPracticeLocation + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + appointmentType + '</span><span>' + daysPending + '</span></li>';
                 }
                 break;
             case 'show':
-                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Appointment Type</span><span>Days Pending</span>';
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Appointment Type</span><span>Days Pending</span>';
                 if ("appointment_completed" in result) {
                     if (result.appointment_completed == config.appointment_completed.show) {
                         var scheduledToPractice = result.scheduled_to_practice || '-';
+                        var scheduledToPracticeLocation = result.scheduled_to_practice_location || '-';
                         var scheduledToProvider = result.scheduled_to_provider || '-';
                         var scheduledFor = result.scheduled_for || '-';
                         var appointmentType = result.appointment_type || '-';
                         var daysPending = (result.show_stage_change >= 0) ? result.show_stage_change : result.days_in_appointment_completed;
-                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + appointmentType + '</span><span>' + daysPending + '</span></li>';
+                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToPracticeLocation + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + appointmentType + '</span><span>' + daysPending + '</span></li>';
                     }
                 }
                 break;
             case 'no_show':
-                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Appointment Type</span><span>Days Pending</span>';
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Appointment Type</span><span>Days Pending</span>';
                 if ("appointment_completed" in result) {
                     if (result.appointment_completed == config.appointment_completed.no_show) {
                         var scheduledToPractice = result.scheduled_to_practice || '-';
+                        var scheduledToPracticeLocation = result.scheduled_to_practice_location || '-';
                         var scheduledToProvider = result.scheduled_to_provider || '-';
                         var scheduledFor = result.scheduled_for || '-';
                         var appointmentType = result.appointment_type || '-';
@@ -204,7 +211,7 @@ function getPatientList(metricName) {
                         console.log(daysPending);
                         console.log(result.show_stage_change);
                         console.log(result.days_in_appointment_completed);
-                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + appointmentType + '</span><span>' + daysPending + '</span></li>';
+                        content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToPracticeLocation + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + appointmentType + '</span><span>' + daysPending + '</span></li>';
                     }
                 }
                 break;

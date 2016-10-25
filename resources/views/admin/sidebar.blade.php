@@ -53,6 +53,14 @@ Administration
         </a>
     </li>
     @endif
+    @if(Auth::user()->hasRole('care-console'))
+    <li class="admin_sidebar_menu_item">
+        <a class="sidebar_button_subsection subsection_admin_add" href="/administration/duplicate_maintenance" id="{{ array_key_exists('duplicate_maintenance_active', $data) ? 'button_active' : '' }}">
+            <span class=""><img src="{{ elixir('images/sidebar/duplicate-icon.png') }}" ></span>
+            <span class="add_text admin_single_col">Duplicate maintenance</span>
+        </a>
+    </li>
+    @endif
 </ul>
 @if(Auth::user()->isSuperAdmin())
 <div class="admin_report_button_container">
