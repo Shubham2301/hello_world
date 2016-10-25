@@ -118,14 +118,17 @@ trait DuplicateMaintenance
 				foreach ($list as $key => $item) {
 			        $update = AppointmentType::where('display_name', $item)
 			        	->where('network_id', session('network-id'))
+			        	->where('type', 'ocuhub')
 			        	->delete();
 				}
-				$appointment_type = new AppointmentType();
-                $appointment_type->name = strtolower(str_replace(' ', '_', $correctedValue));
-                $appointment_type->display_name = $correctedValue;
-                $appointment_type->type = 'ocuhub';
-                $appointment_type->network_id = session('network-id');
-                $appointment_type->save();
+				if ( !(AppointmentType::where('name', strtolower(str_replace(' ', '_', $correctedValue)))->where('network_id', session('network-id'))->where('type', 'ocuhub')->first()) ) {
+					$appointment_type = new AppointmentType();
+	                $appointment_type->name = strtolower(str_replace(' ', '_', $correctedValue));
+	                $appointment_type->display_name = $correctedValue;
+	                $appointment_type->type = 'ocuhub';
+	                $appointment_type->network_id = session('network-id');
+	                $appointment_type->save();
+            	}
 				break;
 			case 'insurance_details':
 				foreach ($list as $key => $item) {
