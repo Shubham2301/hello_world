@@ -11,7 +11,7 @@ use myocuhub\Models\AppointmentType;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\ReferralHistory;
 
-trait CleanUp
+trait DuplicateMaintenance
 {
 	public function getCLeanUpList($value, $filter)
 	{
@@ -19,7 +19,7 @@ trait CleanUp
         $network = $user->network;
 		$networkID = $network->network_id;
 		$list = array();
-		switch ($filter) {		
+		switch ($filter) {
 			case 'referred_by_practice':
 				$list = ReferralHistory::where('referred_by_practice', 'LIKE', '%' . strtolower($value) . '%')
 					->whereHas('careConsole.importHistory', function ($query) use ($networkID) {
@@ -77,7 +77,7 @@ trait CleanUp
 		$user = Auth::user();
         $network = $user->network;
 		$networkID = $network->network_id;
-		switch ($filter) {		
+		switch ($filter) {
 			case 'referred_by_practice':
 				foreach ($list as $key => $item) {
 					$update = ReferralHistory::where('referred_by_practice', $item)

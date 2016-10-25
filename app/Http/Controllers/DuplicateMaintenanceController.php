@@ -5,11 +5,11 @@ namespace myocuhub\Http\Controllers;
 use Illuminate\Http\Request;
 
 use myocuhub\Http\Requests;
-use myocuhub\Http\Controllers\Traits\CleanUp;
+use myocuhub\Http\Controllers\Traits\DuplicateMaintenance;
 
-class CleanUpController extends Controller
+class DuplicateMaintenanceController extends Controller
 {
-    use CleanUp;
+    use DuplicateMaintenance;
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +22,8 @@ class CleanUpController extends Controller
             return redirect('/');
         }
         $data = array();
-        return view('admin.cleanup.index')->with('data', $data);
+        $data['duplicate_maintenance_active'] = true;
+        return view('admin.duplicate_maintenance.index')->with('data', $data);
     }
 
     /**

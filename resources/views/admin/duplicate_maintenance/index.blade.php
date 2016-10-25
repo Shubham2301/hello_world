@@ -1,10 +1,10 @@
 @extends('layouts.master')
 
-@section('title', 'My Ocuhub - Data Clean Up')
+@section('title', 'My Ocuhub - Duplicate Maintenance')
 
 @section('imports')
-<link rel="stylesheet" type="text/css" href="{{elixir('css/clean_up.css')}}">
-<script type="text/javascript" src="{{elixir('js/clean_up.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{elixir('css/duplicate_maintenance.css')}}">
+<script type="text/javascript" src="{{elixir('js/duplicate_maintenance.js')}}"></script>
 @endsection
 
 @section('sidebar')
@@ -25,7 +25,7 @@
 <div class="content-row-margin side_padding ">
     <div class="row">
         <p class="page_title arial_bold">
-            Data Clean Up
+            Duplicate Maintenance
         </p>
     </div>
     <div class="search_row">

@@ -34,11 +34,11 @@ function getCleanUpList() {
         'filter': $('#clean_up_option').val(),
     };
     $.ajax({
-        url: '/administration/cleanup/showlist',
+        url: '/administration/duplicate_maintenance/showlist',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',
-        async: true,
+        async: false,
         success: function success(e) {
             var data = $.parseJSON(e);
             var content = '';
@@ -70,15 +70,15 @@ function updateValue() {
         'filter': $('#clean_up_option').val()
     };
     $.each($("input[type='checkbox']:checked"), function () {
-        formData.list.push($(this).val());
+        formData.list.push($(this).val() ? $(this).val() : '');
     });
-    if (!formData.list[0]) {
+    if (!formData.list.length === 0) {
         $('p.alert_message').text('Please select a value to be updated');
         $('#alert').modal('show');
         return;
     }
     $.ajax({
-        url: '/administration/cleanup/cleanlist',
+        url: '/administration/duplicate_maintenance/cleanlist',
         type: 'GET',
         data: $.param(formData),
         contentType: 'text/html',

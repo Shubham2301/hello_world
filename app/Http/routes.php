@@ -156,9 +156,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('administration/networks', 'Admin\NetworkController');
     Route::resource('administration/permissions', 'Admin\PermissionController');
 
-    Route::get('administration/cleanup', 'CleanUpController@index');
-    Route::get('administration/cleanup/showlist', 'CleanUpController@showlist');
-    Route::get('administration/cleanup/cleanlist', 'CleanUpController@cleanlist');
+    Route::get('administration/duplicate_maintenance', 'DuplicateMaintenanceController@index');
+    Route::get('administration/duplicate_maintenance/showlist', 'DuplicateMaintenanceController@showlist');
+    Route::get('administration/duplicate_maintenance/cleanlist', 'DuplicateMaintenanceController@cleanlist');
 
     Route::group(['middleware' => 'role:practice-admin, 2, Staff'], function () {
         Route::get('administration/practices', 'Practice\PracticeController@administration');
