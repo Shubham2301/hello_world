@@ -26,7 +26,8 @@ trait DuplicateMaintenance
 			            $query->where('network_id', $networkID);
 			        })
 			        ->distinct()
-			       	->get(['referred_by_practice as list_item']);
+			       	->get(['referred_by_practice as list_item'])
+			       	->toArray();
 				break;
 			case 'referred_by_provider':
 				$list = ReferralHistory::where('referred_by_provider', 'LIKE', '%' . strtolower($value) . '%')
@@ -34,7 +35,8 @@ trait DuplicateMaintenance
 			            $query->where('network_id', $networkID);
 			        })
 					->distinct()
-					->get(['referred_by_provider as list_item']);
+					->get(['referred_by_provider as list_item'])
+					->toArray();
 				break;
 			case 'disease_type':
 				$list = ReferralHistory::where('disease_type', 'LIKE', '%' . strtolower($value) . '%')
@@ -42,7 +44,8 @@ trait DuplicateMaintenance
 	                    $query->where('network_id', $networkID);
 	                })
 					->distinct()
-					->get(['disease_type as list_item']);
+					->get(['disease_type as list_item'])
+					->toArray();
 				break;
 			case 'appointment_types':
 				$list = Appointment::where('appointmenttype', 'LIKE', '%' . strtolower($value) . '%')
@@ -50,13 +53,15 @@ trait DuplicateMaintenance
 	                    $query->where('network_id', $networkID);
 	                })
 					->distinct()
-					->get(['appointmenttype as list_item']);
+					->get(['appointmenttype as list_item'])
+					->toArray();
 				break;
 			case 'manual_appointment_types':
 				$list = AppointmentType::where('display_name', 'LIKE', '%' . strtolower($value) . '%')
 					->where('network_id', session('network-id'))
 					->distinct()
-					->get(['display_name as list_item']);
+					->get(['display_name as list_item'])
+					->toArray();
 				break;
 			case 'insurance_details':
 				$list = PatientInsurance::where('insurance_carrier', 'LIKE', '%' . strtolower($value) . '%')
@@ -64,11 +69,14 @@ trait DuplicateMaintenance
 	                    $query->where('network_id', $networkID);
 	                })
 					->distinct()
-					->get(['insurance_carrier as list_item']);
+					->get(['insurance_carrier as list_item'])
+					->toArray();
 				break;
 			default:
 				break;
 		}
+
+		usort($list, 'self::cmp');
 		return $list;
 	}
 
@@ -145,4 +153,9 @@ trait DuplicateMaintenance
 
 		return '1';
 	}
+
+	private static function cmp($a, $b)
+    {
+        return strcasecmp (trim($a["list_item"]), trim($b["list_item"]));
+    }
 }
