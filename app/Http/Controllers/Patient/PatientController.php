@@ -285,6 +285,7 @@ class PatientController extends Controller
         }
 
         $patientData['firstname'] = $patient->firstname ?: '';
+        $patientData['middlename'] = $patient->middlename ?: '';
         $patientData['lastname'] = $patient->lastname ?: '';
         $patientData['email'] = $patient->email ?: '-';
         $patientData['lastfourssn'] = $patient->lastfourssn ?: '-';
@@ -524,6 +525,7 @@ class PatientController extends Controller
         foreach ($patients as $patient) {
             $data[$i]['id'] = $patient->id;
             $data[$i]['fname'] = $patient->firstname;
+            $data[$i]['mname'] = $patient->middlename ?: '';
             $data[$i]['lname'] = $patient->lastname;
             $data[$i]['email'] = $patient->email;
             $data[$i]['phone'] = $patient->cellphone;

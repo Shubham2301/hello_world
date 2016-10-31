@@ -225,7 +225,7 @@ class CareConsoleController extends Controller
                 $results[$i]['id'] = $patient->id;
                 $results[$i]['console_id'] = $console->id;
                 $results[$i]['stage_id'] = $console->stage_id;
-                $results[$i]['name'] = $patient->lastname . ', ' . $patient->firstname;
+                $results[$i]['name'] = $patient->getName('system_format');
                 $results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
                 $results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
                 if ($console->recall_date) {
@@ -279,7 +279,7 @@ class CareConsoleController extends Controller
         $console = Careconsole::find($consoleID);
         $patient = Patient::find($console->patient_id);
         $data['patient_id'] = $console->patient_id;
-        $data['name'] = $patient->lastname . ', ' . $patient->firstname;
+        $data['name'] = $patient->getName('system_format');
         $data['phone'] = $patient->cellphone;
         $data['actions'] = $this->CareConsoleService->getActions($console->stage_id);
         $data['stageid'] = $console->stage_id;

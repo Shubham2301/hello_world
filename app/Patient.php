@@ -94,9 +94,9 @@ class Patient extends Model
     public function getName($type = 'system_format')
     {
         if($type == 'print_format') {
-            return $this->firstname . ' ' . $this->lastname;
+            return $this->firstname . ' ' . $this->middlename . ' ' . $this->lastname;
         }
-        return $this->lastname . ', ' . $this->firstname;
+        return $this->lastname . ', ' . $this->firstname . ' ' . $this->middlename;
     }
 
     public static function getPatients($filters, $sortInfo = [], $countResult, $requestSource = '/patients')
@@ -104,6 +104,7 @@ class Patient extends Model
         $columns = [
             'patients.id',
             'patients.firstname',
+            'patients.middlename',
             'patients.lastname',
             'patients.email',
             'patients.cellphone',

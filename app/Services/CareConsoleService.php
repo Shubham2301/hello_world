@@ -261,10 +261,10 @@ class CareConsoleService
                 return $date->format($dateFormat);
                 break;
             case 'full-name':
-                return $patient['lastname'] . ', ' . $patient['firstname'];
+                return $patient['lastname'] . ', ' . $patient['firstname'] . ' ' . $patient['middlename'];
                 break;
             case 'print-name':
-                return $patient['firstname'] . ' ' . $patient['lastname'];
+                return $patient['firstname'] . ' ' . $patient['middlename'] . ' ' . $patient['lastname'];
                 break;
             case 'phone':
                 $patient = Patient::find($patient['patient_id']);
