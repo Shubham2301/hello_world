@@ -509,6 +509,9 @@ class PatientController extends Controller
         $filters = json_decode($request->input('data'), true);
         $sortInfo = json_decode($request->input('tosort'), true);
         $requestSource = $request->input('requestSource');
+        if ($requestSource != '/administration/patients') {
+            $requestSource = '/patients';
+        }
         $countResult = config('constants.default_paginate_result');
         if ($request->has('countresult')) {
             $countResult = $request->countresult;

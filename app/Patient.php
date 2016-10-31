@@ -99,7 +99,7 @@ class Patient extends Model
         return $this->lastname . ', ' . $this->firstname;
     }
 
-    public static function getPatients($filters, $sortInfo = [], $countResult, $requestSource)
+    public static function getPatients($filters, $sortInfo = [], $countResult, $requestSource = '/patients')
     {
         $columns = [
             'patients.id',
