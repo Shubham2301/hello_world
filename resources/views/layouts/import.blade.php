@@ -62,6 +62,22 @@
                             <div class="col-md-2"></div>
                         </div>
                         @endif
+                        @if(session('network-id') == 9)
+                        <div class="row input_row">
+                            <div class="col-md-3 form-group">
+                                <label for="exampleInputFile"><strong style="padding-left:3em;" >Insurance</strong></label>
+                            </div>
+                            <div class="col-md-7">
+                                <select name="insurance_type" id="insurance_type" class="form-control">
+                                    <option value="-1">Select Insurance Provider</option>
+                                    @foreach(config('constants.insurance_providers') as $template_slug => $template_name)
+                                    <option value="{{ $template_slug }}">{{ $template_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        @endif
                         <a href="/import/format/xlsx"><div style="color:#000;text-decoration: underline; padding-left:3em;">Download Excel Format</div></a>
                         <div style="color:#FF7777; padding-left:3em;">* Max upload limit 5,000 patients.</div>
                     </div>

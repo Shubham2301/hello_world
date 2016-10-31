@@ -124,4 +124,14 @@ return [
     'google_map_url' => 'http://www.google.com/maps/place',
 
     'default_timezone' => "UTC-5",
+
+    'providerNearPatient' => [
+        'providerRadius' => 150,
+        'providerNumber' => 20,
+    ],
+
+    'insurance_providers' => [
+        'blue_cross' => 'Blue Cross',
+        'abc' => 'ABC',
+    ],
 ];

@@ -71,6 +71,7 @@ class BulkImportController extends Controller
     {
         $networkID = $request->network_id;
         $template = $request->template;
+        $insurance_type = $request->insurance_type;
         $new_patients = 0;
         $old_patients = 0;
 
@@ -117,6 +118,7 @@ class BulkImportController extends Controller
             $i = 0;
             $importHistory = new ImportHistory;
             $importHistory->network_id = $networkID;
+            $importHistory->insurance_provider = $insurance_type;
             $importHistory->save();
 
             $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'), function ($reader) {
