@@ -110,7 +110,7 @@ return [
     'db_date_format' => 'Y-m-d h:i:s',
     'schedule_notes_delimiter' => '</br>',
 
-    'user_levels'=>[
+    'user_levels' => [
         'network' => 'Network',
         'practice' => 'Practice',
         'location' => 'Location',
@@ -124,6 +124,12 @@ return [
     'google_map_url' => 'http://www.google.com/maps/place',
 
     'default_timezone' => "UTC-5",
+
+    'import_type'  => [
+        'admin' => 0,
+        'bulk_import' => 1,
+        '4PC_writeback' => 2,
+    ],
 
     'providerNearPatient' => [
         'providerRadius' => 150,

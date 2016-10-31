@@ -2,15 +2,17 @@
 
 namespace myocuhub\Services\PatientCare;
 
-use Exception;
 use Datetime;
+use Exception;
 use Illuminate\Support\Facades\Log;
+use SoapClient;
 use myocuhub\Models\Appointment;
+use myocuhub\Models\Careconsole;
 use myocuhub\Models\FPCWritebackAudit;
+use myocuhub\Models\ImportHistory;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
 use myocuhub\User;
-use SoapClient;
 
 class WriteBack4PC extends PatientCare
 {
@@ -132,6 +134,21 @@ class WriteBack4PC extends PatientCare
                             $patient->preferredlanguage = $fpcAppt->PatientData->PreferredLanguage;
 
                             $patient->save();
+
+                            $importHistory = new ImportHistory;
+                            $importHistory->network_id = $provider->userNetwork->network_id;
+                            $importHistory->type = config('constants.import_type.4PC_writeback');
+                            $importHistory->save();
+
+                            $careconsole = new Careconsole;
+                            $careconsole->import_id = $importHistory->id;
+                            $careconsole->patient_id = $patient->id;
+                            $careconsole->stage_id = 1;
+                            $date = new DateTime();
+                            $careconsole->stage_updated_at = $date->format('Y-m-d H:i:s');
+                            $careconsole->entered_console_at = $date->format('Y-m-d H:i:s');
+                            $careconsole->archived_date = $date->format('Y-m-d H:i:s');
+                            $careconsole->save();
 
                             if ($patient) {
                                 $appt->patient_id = $patient->id;

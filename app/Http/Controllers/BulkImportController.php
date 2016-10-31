@@ -118,6 +118,7 @@ class BulkImportController extends Controller
             $i = 0;
             $importHistory = new ImportHistory;
             $importHistory->network_id = $networkID;
+            $importHistory->type = config('constants.import_type.bulk_import');
             $importHistory->insurance_provider = $insurance_type;
             $importHistory->save();
 

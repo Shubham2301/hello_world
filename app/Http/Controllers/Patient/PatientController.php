@@ -165,6 +165,7 @@ class PatientController extends Controller
 
             $importHistory = new ImportHistory;
             $importHistory->network_id = $networkID;
+            $importHistory->type = config('constants.import_type.admin');
             $importHistory->save();
 
             $referralHistory = new ReferralHistory;
