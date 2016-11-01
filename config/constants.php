@@ -135,9 +135,4 @@ return [
         'providerRadius' => 150,
         'providerNumber' => 20,
     ],
-
-    'insurance_providers' => [
-        'blue_cross' => 'Blue Cross',
-        'abc' => 'ABC',
-    ],
 ];
