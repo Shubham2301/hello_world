@@ -708,12 +708,13 @@ function drawReferredByChart(data) {
         },
         chartArea: {
             width: '90%',
-            height: '75%'
+            height: '300px'
         },
         hAxis: {
             textStyle: {
                 color: '#4d4d4d'
             },
+            showTextEvery: '1',
         },
         vAxis: {
             textStyle: {
@@ -732,6 +733,7 @@ function drawReferredByChart(data) {
                 }
             }
         },
+        'height': 200
     };
     var chart_hospital = new google.visualization.ColumnChart(document.getElementById('linechart_material'));
     chart_hospital.draw(data_hospital, options);
@@ -769,12 +771,13 @@ function drawReferredToChart(data) {
         },
         chartArea: {
             width: '90%',
-            height: '75%'
+            height: '65%'
         },
         hAxis: {
             textStyle: {
                 color: '#4d4d4d'
             },
+            showTextEvery: '1',
         },
         vAxis: {
             textStyle: {
@@ -792,6 +795,7 @@ function drawReferredToChart(data) {
                 }
             }
         },
+        'height': 200
     };
     var chart_hospital = new google.visualization.ColumnChart(document.getElementById('linechart_material'));
     chart_hospital.draw(data_hospital, options);
@@ -824,13 +828,16 @@ function drawPrintReferredByChart(data) {
         }
     }
 
+    var printChartHeight = 20*data.length;
+
     var options = {
         legend: {
             position: 'none'
         },
         chartArea: {
-            width: '90%',
-            height: '75%'
+            width: '50%',
+            height: '90%',
+            right: '5%'
         },
         hAxis: {
             textStyle: {
@@ -854,8 +861,9 @@ function drawPrintReferredByChart(data) {
                 }
             }
         },
+        'height': printChartHeight
     };
-    var chart_hospital = new google.visualization.ColumnChart(document.getElementById('linechart_material_referred_by'));
+    var chart_hospital = new google.visualization.BarChart(document.getElementById('linechart_material_referred_by'));
     chart_hospital.draw(data_hospital, options);
 
 }
@@ -874,13 +882,17 @@ function drawPrintReferredToChart(data) {
             data_hospital.addRow([data[i].name, data[i].count]);
         }
     }
+
+    var printChartHeight = 20*data.length;
+
     var options = {
         legend: {
             position: 'none'
         },
         chartArea: {
-            width: '90%',
-            height: '75%'
+            width: '50%',
+            height: '90%',
+            right: '5%'
         },
         hAxis: {
             textStyle: {
@@ -903,7 +915,8 @@ function drawPrintReferredToChart(data) {
                 }
             }
         },
+        'height': printChartHeight
     };
-    var chart_hospital = new google.visualization.ColumnChart(document.getElementById('linechart_material_referred_to'));
+    var chart_hospital = new google.visualization.BarChart(document.getElementById('linechart_material_referred_to'));
     chart_hospital.draw(data_hospital, options);
 }
