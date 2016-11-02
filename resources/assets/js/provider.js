@@ -445,7 +445,7 @@ function getPatientInfo(formData) {
 }
 
 function fillPatientInfo(data) {
-    $('.selected_patient_name').text(data.lastname + ', ' + data.firstname);
+    $('.selected_patient_name').text(data.lastname + ', ' + data.firstname + ' ' + data.middlename);
     $('.provider_section').show();
     fillPatientData(data);
     checkselectedfiles();

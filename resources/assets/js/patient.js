@@ -438,7 +438,7 @@ function getPatients(formData, page) {
                 lastPage = patients[0]['lastpage'] + 1;
                 if (patients.length > 0 && patients[0]['total'] > 0) {
                     patients.forEach(function (patient) {
-                        content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3 search_name" style="display:inline-flex"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + patient.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name_text"><p style="margin-left:9px;">' + patient.lname + ', ' + patient.fname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p>';
+                        content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3 search_name" style="display:inline-flex"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + patient.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name_text"><p style="margin-left:9px;">' + patient.lname + ', ' + patient.fname + ' ' + patient.mname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p>';
                         if (active_img != '') {
                             content += '<div><a href="/providers?referraltype_id=6&action=schedule_appointment&patient_id=' + patient.id + '&patient_view=true" data-toggle="tooltip" title="Schedule Patient" data-placement="bottom"><img class="action_dropdown_img" src="' + active_img + '" alt=""></a></div>';
                         } else {
@@ -474,7 +474,7 @@ function getPatients(formData, page) {
                     if (showpage < 2)
                         content = '<p><bold>' + patients[0]['total'] + '<bold> results found</p>';
                     patients.forEach(function (patient) {
-                        content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin arial"><div class="col-xs-12 arial_bold patient_list_name">' + patient.lname + ', ' + patient.fname + '</div><div class="col-xs-6 patient_list_data"> ' + patient.birthdate + '<br>' + patient.phone + '</div><div class="col-xs-6 patient_list_data">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
+                        content += '<div class="col-xs-12 patient_list_item" data-id="' + patient.id + '"><div class="row content-row-margin arial"><div class="col-xs-12 arial_bold patient_list_name">' + patient.lname + ', ' + patient.fname + ' ' + patient.mname + '</div><div class="col-xs-6 patient_list_data"> ' + patient.birthdate + '<br>' + patient.phone + '</div><div class="col-xs-6 patient_list_data">' + patient.email + '<br> ' + patient.city + ' </div></div></div>';
                     });
                 }
                 if (showpage > 1)

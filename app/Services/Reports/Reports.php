@@ -586,7 +586,7 @@ class Reports
         if ($filters['type'] == 'real-time') {
             $queryFilters .= " and `careconsole`.`archived_date` IS NULL and `careconsole`.`recall_date` IS NULL";
         } elseif ($filters['type'] == 'historical') {
-            $queryFilters .= " and `careconsole`.`created_at` >= '$startDate' and `careconsole`.`created_at` <= '$endDate' ";
+            $queryFilters .= " and `careconsole`.`created_at` >= '$startDate' and `careconsole`.`created_at` <= '$endDate' and (`import_history`.`type` is null or `import_history`.`type` != " . config('constants.import_type.4PC_writeback') . " or ( (`contact_attempts`.`count` = 0 or `contact_attempts`.`count` is null) and `import_history`.`type` = " . config('constants.import_type.4PC_writeback') . " ) )";
         }
 
         if ($filters['status_of_patients'] != 'none') {

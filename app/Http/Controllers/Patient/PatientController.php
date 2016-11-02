@@ -165,6 +165,7 @@ class PatientController extends Controller
 
             $importHistory = new ImportHistory;
             $importHistory->network_id = $networkID;
+            $importHistory->type = config('constants.import_type.admin');
             $importHistory->save();
 
             $referralHistory = new ReferralHistory;
@@ -285,6 +286,7 @@ class PatientController extends Controller
         }
 
         $patientData['firstname'] = $patient->firstname ?: '';
+        $patientData['middlename'] = $patient->middlename ?: '';
         $patientData['lastname'] = $patient->lastname ?: '';
         $patientData['email'] = $patient->email ?: '-';
         $patientData['lastfourssn'] = $patient->lastfourssn ?: '-';
@@ -509,6 +511,9 @@ class PatientController extends Controller
         $filters = json_decode($request->input('data'), true);
         $sortInfo = json_decode($request->input('tosort'), true);
         $requestSource = $request->input('requestSource');
+        if ($requestSource != '/administration/patients') {
+            $requestSource = '/patients';
+        }
         $countResult = config('constants.default_paginate_result');
         if ($request->has('countresult')) {
             $countResult = $request->countresult;
@@ -521,6 +526,7 @@ class PatientController extends Controller
         foreach ($patients as $patient) {
             $data[$i]['id'] = $patient->id;
             $data[$i]['fname'] = $patient->firstname;
+            $data[$i]['mname'] = $patient->middlename ?: '';
             $data[$i]['lname'] = $patient->lastname;
             $data[$i]['email'] = $patient->email;
             $data[$i]['phone'] = $patient->cellphone;

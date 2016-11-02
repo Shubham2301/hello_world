@@ -117,6 +117,7 @@ class BulkImportController extends Controller
             $i = 0;
             $importHistory = new ImportHistory;
             $importHistory->network_id = $networkID;
+            $importHistory->type = config('constants.import_type.bulk_import');
             $importHistory->save();
 
             $excels = Excel::filter('chunk')->load($request->file('patient_xlsx'), function ($reader) {

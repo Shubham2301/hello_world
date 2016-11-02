@@ -261,7 +261,7 @@ class AppointmentController extends Controller
         $data['action'] = $action;
         $data['patient_id'] = $patient_id;
         $patient = Patient::find($patient_id);
-        $data['patient_name'] = $patient->firstname . ' ' . $patient->lastname;
+        $data['patient_name'] = $patient->getName('print_format');
         $data['schedule-patient'] = true;
 		$data['selectedfiles'] = $request->selectedfiles;
         if(isset($actionResultID)) {

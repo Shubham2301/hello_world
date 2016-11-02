@@ -16,13 +16,12 @@ use myocuhub\Http\Controllers\Traits\CCDATrait;
 
 trait CCDATrait
 {
-
-
     public function getCCDAData($ccdaData)
     {
         $data = [];
         $data['title'] =     $ccdaData['demographics']['name']['prefix'];
         $data['firstname'] = $this->validateKey($ccdaData['demographics']['name']['given'], 0);
+        $data['middlename'] = $this->validateKey($ccdaData['demographics']['name']['given'], 1);
         $data['addressline1'] = $this->validateKey($ccdaData['demographics']['address']['street'], 0);
         $data['addressline2'] = $this->validateKey($ccdaData['demographics']['address']['street'], 1);
         $data['lastname'] =  $ccdaData['demographics']['name']['family'];
