@@ -424,7 +424,7 @@ function loadImportForm() {
 }
 
 function fillPatientData(data) {
-    $('#patient_name').text(data.lastname + ', ' + data.firstname + ' ' + data.firstname);
+    $('#patient_name').text(data.lastname + ', ' + data.firstname + ' ' + data.middlename);
     $('#patient_email').text(data.email);
     $('#patient_dob').text(data.birthdate);
     $('#patient_add1').text(data.addressline1 + '');
