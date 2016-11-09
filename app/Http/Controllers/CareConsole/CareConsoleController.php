@@ -96,7 +96,6 @@ class CareConsoleController extends Controller
         }
 
         $overview['network_practices'] = Network::find(session('network-id'))->practices;
-        $overview['appointment_types'] = $this->getAppointmentTypes();
 
         $loggedInUser = Auth::user();
         $vars = [
@@ -343,13 +342,18 @@ class CareConsoleController extends Controller
         return json_encode($practiceData);
     }
 
-    public function getAppointmentTypes()
+    public function updateManualScheduleData($consoleID)
     {
+        $data = [];
+        $console = Careconsole::find($consoleID);
+        $data['referred_by_practice'] = $this->CareConsoleService->getPatientFieldValue($console, 'referred-by-practice');
+        $data['referred_by_provider'] = $this->CareConsoleService->getPatientFieldValue($console, 'referred-by-provider');
         $appointmentTypes = AppointmentType::where('network_id', session('network-id'))->where('type', 'ocuhub')->orderBy('name', 'ASC')->get();
         $appointmentTypeList = [];
         foreach ($appointmentTypes as $appointmentType) {
             $appointmentTypeList[] = $appointmentType->display_name;
         }
-        return $appointmentTypeList;
+        $data['appointment_type'] = $appointmentTypeList;
+        return $data;
     }
 }
