@@ -38,7 +38,7 @@
                     <span class="main_content">
                         @yield('content')
                     </span>
-                    <span class="mobile_sidebar_content">
+                    <span class="mobile_sidebar_content no_print">
                         @yield('mobile_sidebar_content')
                     </span>
                     @include('announcements')

@@ -363,7 +363,7 @@ p.date_selector {
     &.active,
     &.active:hover,
     &.active:active,
-    &.active:focus{
+    &.active:focus {
         background-color: #d2d3d5;
         .gradient(#d2d3d5, #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
@@ -418,45 +418,54 @@ p.date_selector {
 .hide_without_print {
     display: none;
 }
-@media print {
-    .no_print {
-        display: none;
-    }
-    .hide_without_print {
-        display: block;
-    }
-    .print_col_width {
-        width: 100%;
-    }
-    .print_page_break {
-        page-break-before: always;
-    }
-    body,
-    html,
-    #wrapper {
-        width: 100%;
-        position: relative;
-        height: auto;
-        overflow: scroll;
-    }
-    .container {
-        width: 100%;
-        height: auto;
-        display: flex;
-        flex-flow: column;
-        overflow: scroll;
-    }
-    .report_section_inner {
-        padding: 0;
-    }
-    .section_separator {
-        margin: 2em 0;
-        display: block;
-        border: none;
-    }
-}
 .dropdown-menu>.active>a,
 .dropdown-menu>.active>a:focus,
 .dropdown-menu>.active>a:hover {
     background-color: transparent;
+}
+@media print {
+    body {
+        position: inherit!important;
+        height: auto !important;
+    }
+    .container {
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+        &>.content {
+            display: block !important;
+            &>.content-left {
+                display: none !important;
+            }
+            &>.content-right {
+                display: block !important;
+                width: 100% !important;
+            }
+        }
+    }
+    .dashboard_inner {
+        padding: 0;
+    }
+    .footer {
+        position: inherit !important;
+        display: none !important;
+    }
+    .header {
+        display: none !important;
+    }
+    .row {
+        margin: 0 !important;
+    }
+    .no_print {
+        display: none !important;
+    }
+    .hide_without_print {
+        display: block;
+    }
+    .report_section_inner {
+        padding: 0;
+    }
+    .print_view_float {
+        float: none !important;
+    }
 }
