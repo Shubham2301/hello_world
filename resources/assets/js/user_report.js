@@ -2,6 +2,22 @@ $(document).ready(function () {
 
     getReport();
 
+    $('.report_table').on('click', '.table_row.drilldown', function () {
+        getNetworkData($(this).attr('data-network_id'), $(this).attr('data-network_name'));
+    });
+
+    $('.report_table').on('click', '#close_drilldown', function () {
+        getReport();
+    });
+
+    $('.report_table').on('click', '#export_table', function () {
+        var formData = {
+            network_id: $(this).attr('data-network_id'),
+        };
+        var query = $.param(formData);
+        window.location = '/report/user_report/generateReportExcel?' + query;
+    });
+
 });
 
 function getReport() {
@@ -36,12 +52,55 @@ function drawUserTable(data) {
     var content = '';
     content += '<div class="table_row row title"><div class="table_column col-xs-2">Network Name</div><div class="table_column col-xs-2 text-center">Active Users</div><div class="table_column col-xs-2 text-center">Inactive Users</div><div class="table_column col-xs-2 text-center">Total</div></div>';
     for (var row in data) {
-        content += '<div class="table_row row">';
+        if (row == 0) {
+            content += '<div class="table_row row ocuhub_row arial_bold" data-network_id="' + row + '">';
+        } else if ((data[row]['activeNetworkUser'] + data[row]['inactiveNetworkUser']) != 0) {
+            content += '<div class="table_row row drilldown" data-network_id="' + row + '" data-network_name="' + data[row]['name'] + '">';
+        } else {
+            content += '<div class="table_row row" data-network_id="' + row + '">';
+        }
         content += '<div class="table_column col-xs-2">' + data[row]['name'] + '</div>';
         content += '<div class="table_column col-xs-2 text-center">' + data[row]['activeNetworkUser'] + '</div>';
         content += '<div class="table_column col-xs-2 text-center">' + data[row]['inactiveNetworkUser'] + '</div>';
-        content += '<div class="table_column col-xs-2 text-center">' + ( data[row]['activeNetworkUser'] + data[row]['inactiveNetworkUser'] ) + '</div>';
+        content += '<div class="table_column col-xs-2 text-center">' + (data[row]['activeNetworkUser'] + data[row]['inactiveNetworkUser']) + '</div>';
         content += '</div>';
     }
     $('.report_table').html(content);
+}
+
+function getNetworkData(network_id, network_name) {
+
+    var formData = {
+        network_id: network_id
+    };
+
+    $.ajax({
+        url: '/report/user_report/network_data',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'application/json',
+        async: false,
+        success: function (data) {
+
+            if (data.length) {
+                var content = '';
+                content += '<div class="row"><div class="col-xs-10 drilldown_controls"><span class="filter_section">Network: ' + network_name + ' <span id="close_drilldown" class="glyphicon glyphicon-remove-circle remove_filter"></span></span><span class="filter_section" id="export_table" data-network_id="' + network_id + '">Export</span></div></div>';
+                content += '<div class="table_row row title"><div class="table_column col-xs-3">User Name</div><div class="table_column col-xs-5">User Email</div><div class="table_column col-xs-2 text-center">User Status</div></div>';
+                for (var row in data) {
+                    content += '<div class="table_row row">';
+                    content += '<div class="table_column col-xs-3">' + data[row]['Name'] + '</div>';
+                    content += '<div class="table_column col-xs-5">' + data[row]['Email'] + '</div>';
+                    content += '<div class="table_column col-xs-2 text-center">' + data[row]['Status'] + '</div>';
+                    content += '</div>';
+                }
+                $('.report_table').html(content);
+            }
+        },
+        error: function () {
+            alert('Error Refreshing');
+        },
+        cache: false,
+        processData: false
+    });
+
 }
