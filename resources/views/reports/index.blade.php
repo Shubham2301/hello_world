@@ -11,22 +11,12 @@
         </strong> {{ Session::pull('success') }}
 </div>
 @endif
-<!--
-<span class="report_header">
-    <span class="arial_bold title">Reports</span>
-    <span class="input_field">Start Date<input type="text" id="start_date"></span>
-    <span class="input_field">End Date<input type="text" id="end_date"></span>
-</span>
--->
 <div class="dashboard_container">
     <div class="dashboard_inner">
 
         <div class="row">
             <div class="col-xs-12">
                 <p class="drilldown" id="drilldown_filters">
-
-                    <!--
-                               <span>Drilldown:</span><span>&nbsp;Female</span><span>&nbsp;> Diabetes</span> -->
                 </p>
                 <div class="col-xs-12">
 
@@ -48,24 +38,16 @@
 
                 <div class="historical_subsection header_margin">
                     <input type="text align-center" class="date_selector" id="start_date">
-                    <!--                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>-->
-
                 </div>
                 <div class="historical_subsection header_margin align-center">
                     <span class="report_time_type align-center">to&nbsp;</span>
                 </div>
                 <div class="historical_subsection header_margin">
                     <input type="text" class="date_selector align-center" id="end_date">
-                    <!--                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>-->
-
                 </div>
             </div>
         </div>
-
-
-
         <div class="row">
-            <!--           <div class="col-xs-12">-->
             <span class="historical_section">
                           <div class="row no_print" style="margin:0;">
                            <ul class="nav nav-pills">
@@ -92,7 +74,6 @@
                             </div>
                             </div>
                         </span>
-            <!--            </div>-->
             <div class="col-xs-12 col-sm-8">
                 <div class="report_section">
                     <div class="realtime_section">
@@ -103,8 +84,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <div class="section_separator print_page_break"></div>
                 <p class="report_sub_section_header">Patient Demography</p>
                 <div class="report_sub_section">
@@ -167,7 +146,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-4">
+            <div class="col-xs-12 col-sm-4 print_view_float">
                 <div class="realtime_section">
                     <p class="report_section_header">Referrals</p>
                     <div class="report_section_inner">
