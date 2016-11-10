@@ -55,7 +55,8 @@
 .report_table {
     min-width: 50em;
     &>.table_row {
-        margin: 0;
+        margin: .3em;
+        cursor: default;
         .arial;
         &.title {
             .arial_bold;
@@ -64,8 +65,35 @@
                 border-bottom: 1px solid @font-color-black;
             }
         }
+        &.ocuhub_row>div {
+            border-bottom: 1px solid #4d4d4d;
+        }
         &>div {
-            padding: .3em 0;
+            padding: 0;
+        }
+        &.drilldown:hover {
+            cursor: pointer;
+            .arial_bold;
         }
     }
+}
+.drilldown_controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+.filter_section {
+    display: inline-block;
+    padding: .2em;
+    border: 1px solid #4d4d4d;
+    border-radius: .5em;
+    &#export_table:hover {
+        cursor: pointer;
+        border: 1px solid @background-color-4;
+        color: @background-color-4;
+    }
+}
+#close_drilldown,
+#export_table {
+    cursor: pointer;
 }

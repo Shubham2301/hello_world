@@ -234,7 +234,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
-                updateAppointmentTypes();
+                updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -244,7 +244,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
-                updateAppointmentTypes();
+                updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
             default:
@@ -311,7 +311,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
-                updateAppointmentTypes();
+                updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -321,7 +321,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
-                updateAppointmentTypes();
+                updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
             default:
@@ -412,7 +412,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
-                updateAppointmentTypes();
+                updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
             case 'manually-reschedule':
@@ -422,7 +422,7 @@ $(document).ready(function () {
                 $('#form_manual_appointment_date').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
-                updateAppointmentTypes();
+                updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
             default:
@@ -1274,18 +1274,20 @@ function getPatientContactData(patientID) {
     $('.patient_contact_request_info').html(content);
 }
 
-function updateAppointmentTypes() {
+function updateManualScheduleData(consoleID) {
 
     var content = '<option value="">Appointment Type</option>';
     $.ajax({
-        url: '/careconsole/appointment_type',
+        url: '/careconsole/manual_schedule_data/' + consoleID,
         type: 'GET',
         contentType: 'text/html',
         async: false,
-        success: function success(appointmentTypes) {
-            for (var key in appointmentTypes) {
-                content += '<option value="' + appointmentTypes[key] + '">' + appointmentTypes[key] + '</option>';
+        success: function success(data) {
+            for (var key in data.appointment_type) {
+                content += '<option value="' + data.appointment_type[key] + '">' + data.appointment_type[key] + '</option>';
             }
+            $('#manual_referredby_practice').val(data.referred_by_practice != '-' ? data.referred_by_practice : '');
+            $('#manual_referredby_provider').val(data.referred_by_provider != '-' ? data.referred_by_provider : '');
         },
         error: function error() {
             $('p.alert_message').text('Error:');

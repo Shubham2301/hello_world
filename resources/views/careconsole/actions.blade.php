@@ -110,9 +110,6 @@
                             <div class="col-md-7 form-group">
                                 <select class="form-control" name="manual_appointment_appointment_type" id="manual_appointment_appointment_type">
                                     <option value="">Appointment Type</option>
-                                    @foreach($overview['appointment_types'] as $types)
-                                    <option value="{{ $types }}">{{ $types }}</option>
-                                    @endforeach
                                     <option value="-1">Not listed</option>
                                 </select>
                             </div>
