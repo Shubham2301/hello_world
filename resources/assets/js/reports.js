@@ -427,21 +427,20 @@ function renderAgeDemographics(data) {
     drawAgeChart(ageData);
 }
 
-function renderReferredTo(data) {
-
+function renderReferredTo(original_data) {
 
     $('.historical_graph_print').removeClass('hide_without_print');
-    drawPrintReferredToChart(data);
+    drawPrintReferredToChart(original_data);
     $('.historical_graph_print').addClass('hide_without_print');
     if ($('.historical_header').hasClass('active')) {
         if ($('.chart').hasClass('referred_to')) {
             {
-                drawReferredToChart(data);
+                drawReferredToChart(original_data);
             }
         }
-    } else if (data.total !== 0) {
-        var type = data.type;
-        data = data.data;
+    } else if (original_data.total) {
+        var type = original_data.type;
+        var data = original_data.data;
         var content = '';
         var disable = '';
 
@@ -459,19 +458,18 @@ function renderReferredTo(data) {
     }
 }
 
-function renderReferredBy(data) {
-
+function renderReferredBy(original_data) {
 
     $('.historical_graph_print').removeClass('hide_without_print');
-    drawPrintReferredByChart(data);
+    drawPrintReferredByChart(original_data);
     $('.historical_graph_print').addClass('hide_without_print');
     if ($('.historical_header').hasClass('active')) {
         if ($('.chart').hasClass('referred_by')) {
-            drawReferredByChart(data);
+            drawReferredByChart(original_data);
         }
-    } else if (data.total !== 0) {
-        var type = data.type;
-        data = data.data;
+    } else if (original_data.total) {
+        var type = original_data.type;
+        var data = original_data.data;
         var content = '';
         var disable = '';
 
@@ -686,17 +684,15 @@ function clearHtml() {
 
 }
 
-function drawReferredByChart(data) {
+function drawReferredByChart(original_data) {
     var data_hospital = new google.visualization.DataTable();
     data_hospital.addColumn('string', 'Hospital Name');
     data_hospital.addColumn('number', 'Referals');
 
-    var type = 'referred_by_' + data.type;
+    var type = 'referred_by_' + original_data.type;
     $('.chart').attr('data-type', type);
-    data = data.data;
-    if (!data) {
-
-    } else {
+    if (original_data.total) {
+        var data = original_data.data;
         for (var i = 0; i < data.length; i++) {
             data_hospital.addRow([data[i].name, data[i].count]);
         }
@@ -751,16 +747,14 @@ function drawReferredByChart(data) {
     }
 }
 
-function drawReferredToChart(data) {
+function drawReferredToChart(original_data) {
     var data_hospital = new google.visualization.DataTable();
     data_hospital.addColumn('string', 'Hospital Name');
     data_hospital.addColumn('number', 'Referals');
-    var type = 'referred_to_' + data.type;
+    var type = 'referred_to_' + original_data.type;
     $('.chart').attr('data-type', type);
-    data = data.data;
-    if (!data) {
-
-    } else {
+    if (original_data.total) {
+        var data = original_data.data;
         for (var i = 0; i < data.length; i++) {
             data_hospital.addRow([data[i].name, data[i].count]);
         }
@@ -812,23 +806,21 @@ function drawReferredToChart(data) {
     }
 }
 
-function drawPrintReferredByChart(data) {
+function drawPrintReferredByChart(original_data) {
     var data_hospital = new google.visualization.DataTable();
     data_hospital.addColumn('string', 'Hospital Name');
     data_hospital.addColumn('number', 'Referals');
 
-    var type = 'referred_by_' + data.type;
+    var type = 'referred_by_' + original_data.type;
     $('.print_chart_referred_by').attr('data-type', type);
-    data = data.data;
-    if (!data) {
-
-    } else {
+    if (original_data.total) {
+        var data = original_data.data;
         for (var i = 0; i < data.length; i++) {
             data_hospital.addRow([data[i].name, data[i].count]);
         }
     }
 
-    var printChartHeight = 20*data.length;
+    var printChartHeight = original_data.total !== 0 ? 20 * original_data.total : 20;
 
     var options = {
         legend: {
@@ -868,22 +860,20 @@ function drawPrintReferredByChart(data) {
 
 }
 
-function drawPrintReferredToChart(data) {
+function drawPrintReferredToChart(original_data) {
     var data_hospital = new google.visualization.DataTable();
     data_hospital.addColumn('string', 'Hospital Name');
     data_hospital.addColumn('number', 'Referals');
-    var type = 'referred_to_' + data.type;
+    var type = 'referred_to_' + original_data.type;
     $('.print_chart_referred_to').attr('data-type', type);
-    data = data.data;
-    if (!data) {
-
-    } else {
+    if (original_data.total) {
+        var data = original_data.data;
         for (var i = 0; i < data.length; i++) {
             data_hospital.addRow([data[i].name, data[i].count]);
         }
     }
 
-    var printChartHeight = 20*data.length;
+    var printChartHeight = original_data.total !== 0 ? 20 * original_data.total : 20;
 
     var options = {
         legend: {
