@@ -109,6 +109,7 @@ class WriteBack4PC extends PatientCare
                              */
 
                             $appt->patient_id = $patient->id;
+                            $appt->save();
 
                         } else {
 
@@ -129,70 +130,20 @@ class WriteBack4PC extends PatientCare
                                 $patient->fpc_id = $fpcAppt->PatientData->FPCPatientID;
                                 $patient->save();
 
-                            } else {
-
-                                /**
-                                 * Patient Does Not Exist in Ocuhub
-                                 */
-
-                                $patient = new Patient;
-                                $patient->fpc_id = $fpcAppt->PatientData->FPCPatientID;
-                                $patient->title = $fpcAppt->PatientData->Title;
-                                $patient->firstname = $fpcAppt->PatientData->FirstName;
-                                $patient->lastname = $fpcAppt->PatientData->LastName;
-                                $patient->homephone = $fpcAppt->PatientData->Home;
-                                $patient->workphone = $fpcAppt->PatientData->Work;
-                                $patient->cellphone = $fpcAppt->PatientData->Cell;
-                                $patient->email = $fpcAppt->PatientData->Email;
-                                $patient->addressline1 = $fpcAppt->PatientData->Address1;
-                                $patient->addressline2 = $fpcAppt->PatientData->Address2;
-                                $patient->city = $fpcAppt->PatientData->City;
-                                $patient->state = $fpcAppt->PatientData->State;
-                                $patient->zip = $fpcAppt->PatientData->Zip;
-                                $patient->lastfourssn = $fpcAppt->PatientData->L4DSSN;
-                                $date = new Datetime($fpcAppt->PatientData->DOB);
-                                $patient->birthdate = $date->format('Y-m-d H:i:s');
-                                $patient->preferredlanguage = $fpcAppt->PatientData->PreferredLanguage;
-
-                                $patient->save();
-
-                                $importHistory = new ImportHistory;
-                                $importHistory->network_id = $provider->userNetwork->network_id;
-                                $importHistory->type = config('constants.import_type.4PC_writeback');
-                                $importHistory->save();
-
-                                $careconsole = new Careconsole;
-                                $careconsole->import_id = $importHistory->id;
-                                $careconsole->patient_id = $patient->id;
-                                $careconsole->stage_id = 1;
-                                $date = new DateTime();
-                                $careconsole->stage_updated_at = $date->format('Y-m-d H:i:s');
-                                $careconsole->entered_console_at = $date->format('Y-m-d H:i:s');
-                                $careconsole->archived_date = $date->format('Y-m-d H:i:s');
-                                $careconsole->save();
-
-                                $action = "new patient ($patient->id) created and added to console ($careconsole->id) from 4PC writeback service";
-                                $description = '';
-                                $filename = basename(__FILE__);
-                                $ip = $request->getClientIp();
-                                Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-                            }
-
-                            if ($patient) {
                                 $appt->patient_id = $patient->id;
+                                $appt->save();
                             }
                         }
 
-                        $appt->patient_id = $patient->id;
+                        $newAppoitment = Appointment::where('fpc_id', $fpcAppt->FPCApptID)->first();
+                        if ($newAppoitment) {
+                            $audit = new FPCWritebackAudit;
+                            $audit->patient_id = $newAppoitment->patient_id;
+                            $audit->provider_id = $newAppoitment->provider_id;
+                            $audit->appointment_id = $newAppoitment->id;
+                            $audit->save();
+                        }
 
-                        $appt->save();
-
-                        $audit = new FPCWritebackAudit;
-                        $audit->patient_id = $appt->patient_id;
-                        $audit->provider_id = $appt->provider_id;
-                        $audit->appointment_id = $appt->id;
-
-                        $audit->save();
 
                     } else {
 
