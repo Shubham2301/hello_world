@@ -46,7 +46,8 @@ class ImportPatientMail extends PatientEngagement implements ShouldQueue
 
             'subject' => $template['name'],
             'template' => $template['slug'],
-            'vars' => []
+            'vars' => [],
+            'attachments' => []
         ];
         $this->sendTemplate($attr);
     }
