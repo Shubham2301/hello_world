@@ -70,7 +70,7 @@ class BulkImportController extends Controller
     public function importPatientsXlsx(Request $request)
     {
         $networkID = $request->network_id;
-        $template = $request->template;
+        $template = $request->template ?: '-1';
         $new_patients = 0;
         $old_patients = 0;
 
