@@ -273,6 +273,9 @@ class CareConsoleService
                 }
                 return false;
                 break;
+            case 'cellphone':
+                return $patient['cellphone'] ?: '';
+                break;
             case 'request-received':
                 $date = new \DateTime($patient['created_at']);
                 return $date->format($dateFormat);
@@ -319,16 +322,16 @@ class CareConsoleService
                 return $lastScheduledTo;
                 break;
             case 'email':
-                return $patient['email'] ?: '-';
+                return $patient['email'] ?: '';
                 break;
             case 'special-request':
-                return $patient['special_request'] ?: '-';
+                return $patient['special_request'] ?: '';
                 break;
             case 'pcp':
-                return $patient['pcp'] ?: '-';
+                return $patient['pcp'] ?: '';
                 break;
             case 'dob':
-                return Helper::formatDate($patient['birthdate'], config('constants.date_format')) ?: '-';
+                return Helper::formatDate($patient['birthdate'], config('constants.date_format')) ?: '';
                 break;
             case 'address':
                 $address = '';
@@ -336,13 +339,59 @@ class CareConsoleService
                 $address = ($address != '') ? $address . ' ' . $patient['addressline2'] : $patient['addressline2'];
                 return ($address != '') ? $address : '-';
                 break;
+            case 'address-line-1':
+                return $patient['addressline1'] ?: '';
+                break;
+            case 'address-line-2':
+                return $patient['addressline2'] ?: '';
+                break;
             case 'insurance-carrier':
                 $insurance = PatientInsurance::where('patient_id', $patient['id'])->first();
                 $insuranceCarrier = '';
                 if (isset($insurance)) {
-                    $insuranceCarrier = ($insurance->insurance_carrier != '') ? $insurance->insurance_carrier : '-';
+                    $insuranceCarrier = $insurance->insurance_carrier;
                 }
-                return $insuranceCarrier ?: '-';
+                return $insuranceCarrier;
+                break;
+            case 'subscriber-birthdate':
+                $insurance = PatientInsurance::where('patient_id', $patient['id'])->first();
+                $subscriber_birthdate = '';
+                if (isset($insurance)) {
+                    $subscriber_birthdate = $insurance->subscriber_birthdate ? Helper::formatDate($insurance->subscriber_birthdate, config('constants.date_format')) : '';
+                }
+                return $subscriber_birthdate;
+                break;
+            case 'group-number':
+                $insurance = PatientInsurance::where('patient_id', $patient['id'])->first();
+                $group_no = '';
+                if (isset($insurance)) {
+                    $group_no = $insurance->insurance_group_no ?: '';
+                }
+                return $group_no;
+                break;
+            case 'subscriber-name':
+                $insurance = PatientInsurance::where('patient_id', $patient['id'])->first();
+                $subscriber_name = '';
+                if (isset($insurance)) {
+                    $subscriber_name = $insurance->subscriber_name ?: '';
+                }
+                return $subscriber_name;
+                break;
+            case 'subscriber-id':
+                $insurance = PatientInsurance::where('patient_id', $patient['id'])->first();
+                $subscriber_id = '';
+                if (isset($insurance)) {
+                    $subscriber_id = $insurance->subscriber_id ?: '';
+                }
+                return $subscriber_id;
+                break;
+            case 'relation-to-patient':
+                $insurance = PatientInsurance::where('patient_id', $patient['id'])->first();
+                $subscriber_relation = '';
+                if (isset($insurance)) {
+                    $subscriber_relation = $insurance->subscriber_relation ?: '';
+                }
+                return $subscriber_relation;
                 break;
             case 'referral-history':
                 $referralHistory = ReferralHistory::find($patient['referral_id']);
@@ -353,15 +402,15 @@ class CareConsoleService
                 if (isset($referralHistory->referred_by_practice)) {
                     $referredBy = ($referredBy != '') ? $referredBy . ' ' . $referralHistory->referred_by_practice : $referralHistory->referred_by_practice;
                 }
-                return $referredBy ?: '-';
+                return $referredBy ?: '';
                 break;
             case 'referred-by-practice':
                 $referralHistory = ReferralHistory::find($patient['referral_id']);
-                return (isset($referralHistory) && isset($referralHistory->referred_by_practice) && ($referralHistory->referred_by_practice != '')) ? $referralHistory->referred_by_practice : '-';
+                return (isset($referralHistory) && isset($referralHistory->referred_by_practice) && ($referralHistory->referred_by_practice != '')) ? $referralHistory->referred_by_practice : '';
                 break;
             case 'referred-by-provider':
                 $referralHistory = ReferralHistory::find($patient['referral_id']);
-                return (isset($referralHistory) && isset($referralHistory->referred_by_provider) && ($referralHistory->referred_by_provider != '')) ? $referralHistory->referred_by_provider : '-';
+                return (isset($referralHistory) && isset($referralHistory->referred_by_provider) && ($referralHistory->referred_by_provider != '')) ? $referralHistory->referred_by_provider : '';
                 break;
             default:
                 return '-';

@@ -78,7 +78,7 @@ input#search_data {
         &>.col-xs-offset-2 {
             margin-left: 11.666667%;
         }
-        &>.search_result_row_text{
+        &>.search_result_row_text {
             padding: 0;
             &>p {
                 padding: 0;
@@ -112,7 +112,7 @@ input#search_data {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    box-shadow: 0 0 4px rgba(0,113,188,.75);
+    box-shadow: 0 0 4px rgba(0, 113, 188, .75);
 }
 
 .info_section {
@@ -175,7 +175,8 @@ input#search_data {
 .bottom {
     width: 100%;
     text-align: center;
-    color: rgba(255,255,255,.95);;
+    color: rgba(255, 255, 255, .95);
+    ;
     background-color: #006d91;
     padding: 1em 0;
     font-size: 1em;
@@ -237,7 +238,7 @@ input#search_data {
         display: none;
         left: 0;
         bottom: 0;
-        &.glyphicon:before{
+        &.glyphicon:before {
             bottom: 5px;
             position: absolute;
         }
@@ -304,7 +305,7 @@ ul.c3_sidebar_list {
         .gradient(#d2d3d5, #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
     }
-    &.active{
+    &.active {
         background-color: #d2d3d5;
         .gradient(#d2d3d5, #d2d3d5);
         box-shadow: 0 1px 1px #d2d3d5;
@@ -336,58 +337,14 @@ ul.c3_sidebar_list {
     }
 }
 
-//ul.c3_sidebar_list{
-//    list-style-type: none;
-//    padding: 0;
-//    margin-right: -15px;
-//    margin-left: -15px;
-//    & li{
-//        position: relative;
-//        &>.box{
-//        padding: 1em 1em 1em 2em;
-//        font-size: 1.2em;
-//            &>p{
-//                cursor: pointer;
-//                margin: 0;
-//                padding: 0;
-//                display: block;
-//            }
-//        }
-//        &:hover{
-//            &>.box{
-//            border-left: solid .7em @background-color-6;
-//            background-color: #d2d3d5;
-//            font-weight: 600;
-//            }
-//        }
-//        &>ul{
-//            position: absolute;
-//            display: none;
-//            left: 100%;
-//            width: 70%;
-//            padding: 0;
-//            margin: -15px 0 0 -15px;
-//            top: 0;
-//            z-index: 1;
-//            border: none;
-//            list-style-type: none;
-//            &>.info_box{
-//                border-radius: 0;
-//            }
-//        }
-//    }
-//}
-//ul.active li:hover ul{
-//                display: block;
-//}
 .C3_day_row {
     display: flex;
     justify-content: flex-start;
     margin: 0 auto;
-    &.control_label{
+    &.control_label {
         padding: 1em 0 .6em 0;
     }
-    &>p{
+    &>p {
         margin: 0;
     }
     &>.low {
@@ -596,7 +553,7 @@ p.no_of_patients {
     box-shadow: 2px 0 2px #0071bc;
     z-index: 1;
     font-size: 0.9em;
-	right: 0%;
+    right: 0%;
     font-weight: normal;
     overflow-y: scroll;
     top: 5em;
@@ -644,7 +601,7 @@ p.no_of_patients {
     .close_patient_records_info {
         position: absolute;
         right: 1em;
-		cursor: pointer;
+        cursor: pointer;
     }
     .action_dropdown_patient_info {
         text-align: center;
@@ -678,14 +635,14 @@ p.no_of_patients {
 }
 
 #search_action_dropdown {
-   background-color: #ebeced;
+    background-color: #ebeced;
     border-radius: 3px;
-	margin-right: 17%;
+    margin-right: 17%;
     text-align: left;
-	margin-left: -144%;
+    margin-left: -144%;
     top: 1.5em;
     right: 0;
-	 &>li {
+    &>li {
         padding: 0.25em 0.5em;
         &:hover {
             background-color: #fff;
@@ -694,116 +651,129 @@ p.no_of_patients {
 }
 
 #records_action_dropdown {
-	background-color: #ebeced;
+    background-color: #ebeced;
     border-radius: 3px;
     margin-left: 20%;
-	margin-right: 17%;
+    margin-right: 17%;
     text-align: left;
     top: 1.5em;
     right: 0;
-	height: 8em;
-	overflow-y: scroll;
-	 &>li {
+    height: 8em;
+    overflow-y: scroll;
+    &>li {
         padding: 0.25em 0.5em;
         &:hover {
             background-color: #fff;
         }
     }
 }
+
 #search_do {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .contact_attempts {
-	height: 7em;
-	overflow-y: scroll;
+    height: 7em;
+    overflow-y: scroll;
 }
-#search_bar_open{
+
+#search_bar_open {
     cursor: pointer;
     margin-left: .3em;
-    &>.active_img{
+    &>.active_img {
+        display: none;
+    }
+    &>.right_natural {
+        display: inline-block;
+    }
+    &>.right_active {
+        display: none;
+    }
+    &:hover {
+        &>.right_natural {
             display: none;
         }
-        &>.right_natural{
+        &>.right_active {
             display: inline-block;
         }
-        &>.right_active{
+    }
+    &.active {
+        &>.non_active_img {
+            display: none;
+        }
+        &>.left_natural {
+            display: inline-block;
+        }
+        &>.left_active {
             display: none;
         }
         &:hover {
-            &>.right_natural{
+            &>.left_natural {
                 display: none;
             }
-            &>.right_active{
-                display: inline-block;
-            }
-        }
-    &.active{
-        &>.non_active_img{
-            display: none;
-        }
-        &>.left_natural{
-            display: inline-block;
-        }
-        &>.left_active{
-            display: none;
-        }
-        &:hover {
-            &>.left_natural{
-                display: none;
-            }
-            &>.left_active{
+            &>.left_active {
                 display: inline-block;
             }
         }
     }
 }
-.search_color_col{
+
+.search_color_col {
     display: flex;
     flex-direction: column;
     padding: 0 .5em 0 0;
 }
-.take_action_col{
+
+.take_action_col {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    &>.dropdown{
+    &>.dropdown {
         background-color: #ebebeb;
-        &>p{
+        &>p {
             margin: auto;
             padding: .5em;
-            &>img{
+            &>img {
                 width: .6em;
             }
         }
     }
 }
-.row.drilldown_item>div>p{
+
+.row.drilldown_item>div>p {
     margin: 0;
 }
-.center_dropdown_action{
+
+.center_dropdown_action {
     display: flex;
     justify-content: center;
 }
+
 .tooltip-inner {
     display: inline-block;
 }
-p.info_header{
+
+p.info_header {
     margin: 1.5em 0 1em 0;
 }
-.content-left{
+
+.content-left {
     padding-bottom: 0;
 }
-.content-right{
+
+.content-right {
     padding: 1em;
 }
-#drilldown_patients_listing{
+
+#drilldown_patients_listing {
     font-weight: normal;
 }
+
 .dropdown.patient_info_action {
     margin-top: 1.5em;
 }
-.close_patient_records_info{
+
+.close_patient_records_info {
     &>img {
         cursor: pointer;
         width: 1.4em;
@@ -825,46 +795,76 @@ p.info_header{
         }
     }
 }
-.bucket_icon_style{
+
+.bucket_icon_style {
     margin: auto .3em;
 }
-.suggestion_list {
-	display: none;
-	z-index: 1;
-	background-color: #ebeced;
-	width: 81%;
-	border-radius: 1px;
-	margin-left:1%;
-	padding-left: 0px;
-	>p{
-		color:#4d4d4d;
-		&:hover{
-			cursor: pointer;
-			background-color:#fff;
-		}
-	}
-	&.active{
-		display: block;
-		z-index: 10;
-		position: absolute;
 
-	}
+.suggestion_list {
+    display: none;
+    z-index: 1;
+    background-color: #ebeced;
+    width: 81%;
+    border-radius: 1px;
+    margin-left: 1%;
+    padding-left: 0px;
+    >p {
+        color: #4d4d4d;
+        &:hover {
+            cursor: pointer;
+            background-color: #fff;
+        }
+    }
+    &.active {
+        display: block;
+        z-index: 10;
+        position: absolute;
+    }
 }
 
 #listing_content {
-	height: 500px;
-	overflow-y: auto;
+    height: 500px;
+    overflow-y: auto;
 }
+
 label {
     font-weight: normal;
 }
 
 .action_note {
-	height: 5em;
-	overflow-y: auto;
+    height: 5em;
+    overflow-y: auto;
 }
+
 .modal-dialog {
     &.wide-modal {
         width: 60%;
+    }
+}
+
+.patient_contact_request_info>.form-group {
+    color: #4d4d4d;
+    max-height: 450px;
+    overflow-y: scroll;
+    margin-right: .2em;
+    padding: 0;
+}
+
+#actionModal>.modal-dialog>.modal-content>.modal-header {
+    display: flex;
+    justify-content: space-between;
+    &>h4 {
+        margin-bottom: 0;
+    }
+}
+
+.open_patient_detail_modal {
+    color: #4d4d4d;
+    font-size: 1.5em;
+    margin-right: .5em;
+    cursor: pointer;
+    visibility: hidden;
+    &.show {
+        visibility: visible;
     }
 }
