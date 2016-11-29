@@ -3,6 +3,7 @@
 namespace myocuhub\Http\Controllers\CareConsole;
 
 use Auth;
+use DateTime;
 use Event;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
@@ -12,8 +13,11 @@ use myocuhub\Models\Appointment;
 use myocuhub\Models\AppointmentType;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
+use myocuhub\Facades\Helper;
 use myocuhub\Models\MessageTemplate;
+use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
+use myocuhub\Models\ReferralHistory;
 use myocuhub\Models\Timezone;
 use myocuhub\Network;
 use myocuhub\Patient;
@@ -152,6 +156,51 @@ class CareConsoleController extends Controller
      */
     public function action(Request $request)
     {
+        if ($request->update_demographics == 'true') {
+
+            $patientData = $request->patient_data;
+            $consoleID = $request->console_id;
+            $careconsole = Careconsole::find($consoleID);
+            $patientID = $careconsole->patient_id;
+
+            $data = [];
+            $data['birthdate'] = ($patientData['dob'] == '') ? null : Helper::formatDate($patientData['dob'], config('constants.db_date_format'));
+            $data['email'] = $patientData['email'];
+            $data['cellphone'] = $patientData['cellphone'];
+            $data['special_request'] = $patientData['special_request'];
+            $data['pcp'] = $patientData['pcp'];
+            $data['addressline1'] = $patientData['address_line_1'];
+            $data['addressline2'] = $patientData['address_line_2'];
+            $patient = Patient::where('id', $patientID)->update($data);
+
+            $referralHistory = ReferralHistory::find($careconsole->referral_id);
+            if ($referralHistory == null) {
+                $referralHistory = new ReferralHistory;
+                $referralHistory->save();
+                $careconsole->referral_id = $referralHistory->id;
+                $careconsole->save();
+            }
+
+            $referralHistory->referred_by_provider = $patientData['referred_by_provider'];
+            $referralHistory->referred_by_practice = $patientData['referred_by_practice'];
+            $referralHistory->network_id = session('network-id');
+            $referralHistory->save();
+
+            $insuranceCarrier = PatientInsurance::where('patient_id', '=', $patientID)->orderBy('updated_at', 'desc')->first();
+            if ($insuranceCarrier == null) {
+                $insuranceCarrier = new PatientInsurance;
+                $insuranceCarrier->patient_id = $patientID;
+            }
+
+            $insuranceCarrier->insurance_carrier = $patientData['insurance_carrier'];
+            $insuranceCarrier->subscriber_name = $patientData['subscriber_name'];
+            $insuranceCarrier->subscriber_birthdate = ($patientData['subscriber_birthdate'] == '') ? null : Helper::formatDate($patientData['subscriber_birthdate'], config('constants.db_date_format'));
+            $insuranceCarrier->subscriber_id = $patientData['subscriber_id'];;
+            $insuranceCarrier->subscriber_relation = $patientData['relation_to_patient'];;
+            $insuranceCarrier->insurance_group_no = $patientData['group_number'];
+            $insuranceCarrier->save();
+        }
+
         $actionID = $request->action_id;
         $actionResultID = $request->action_result_id;
         $recallDate = $request->recall_date;
@@ -309,15 +358,22 @@ class CareConsoleController extends Controller
         $console = Careconsole::where('patient_id', $request->patientID)->first();
         $data['patient_id'] = $request->patientID;
         $data['name'] = $this->CareConsoleService->getPatientFieldValue($patient, 'full-name');
-        $data['phone'] = $this->CareConsoleService->getPatientFieldValue($patient, 'phone');
+        $data['cellphone'] = $this->CareConsoleService->getPatientFieldValue($patient, 'cellphone');
         $data['email'] = $this->CareConsoleService->getPatientFieldValue($patient, 'email');
         $data['special_request'] = $this->CareConsoleService->getPatientFieldValue($patient, 'special-request');
         $data['pcp'] = $this->CareConsoleService->getPatientFieldValue($patient, 'pcp');
         $data['dob'] = $this->CareConsoleService->getPatientFieldValue($patient, 'dob');
-        $data['address'] = $this->CareConsoleService->getPatientFieldValue($patient, 'address');
+        $data['address_line_1'] = $this->CareConsoleService->getPatientFieldValue($patient, 'address-line-1');
+        $data['address_line_2'] = $this->CareConsoleService->getPatientFieldValue($patient, 'address-line-2');
         $data['last_seen_by'] = $this->CareConsoleService->getPatientFieldValue($patient, 'last-scheduled-to');
-        $data['insurance'] = $this->CareConsoleService->getPatientFieldValue($patient, 'insurance-carrier');
-        $data['referred_by'] = $this->CareConsoleService->getPatientFieldValue($console, 'referral-history');
+        $data['insurance_carrier'] = $this->CareConsoleService->getPatientFieldValue($patient, 'insurance-carrier');
+        $data['subscriber_birthdate'] = $this->CareConsoleService->getPatientFieldValue($patient, 'subscriber-birthdate');
+        $data['group_number'] = $this->CareConsoleService->getPatientFieldValue($patient, 'group-number');
+        $data['subscriber_name'] = $this->CareConsoleService->getPatientFieldValue($patient, 'subscriber-name');
+        $data['subscriber_id'] = $this->CareConsoleService->getPatientFieldValue($patient, 'subscriber-id');
+        $data['relation_to_patient'] = $this->CareConsoleService->getPatientFieldValue($patient, 'relation-to-patient');
+        $data['referred_by_provider'] = $this->CareConsoleService->getPatientFieldValue($console, 'referred-by-provider');
+        $data['referred_by_practice'] = $this->CareConsoleService->getPatientFieldValue($console, 'referred-by-practice');
         $timezone = $patient->timezone;
         $data['timezone'] = ($timezone) ? $timezone->getName() : '';
 
