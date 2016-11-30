@@ -167,6 +167,8 @@ class CareConsoleController extends Controller
             $data['birthdate'] = ($patientData['dob'] == '') ? null : Helper::formatDate($patientData['dob'], config('constants.db_date_format'));
             $data['email'] = $patientData['email'];
             $data['cellphone'] = $patientData['cellphone'];
+            $data['homephone'] = $patientData['homephone'];
+            $data['workphone'] = $patientData['workphone'];
             $data['special_request'] = $patientData['special_request'];
             $data['pcp'] = $patientData['pcp'];
             $data['addressline1'] = $patientData['address_line_1'];
@@ -359,6 +361,8 @@ class CareConsoleController extends Controller
         $data['patient_id'] = $request->patientID;
         $data['name'] = $this->CareConsoleService->getPatientFieldValue($patient, 'full-name');
         $data['cellphone'] = $this->CareConsoleService->getPatientFieldValue($patient, 'cellphone');
+        $data['homephone'] = $this->CareConsoleService->getPatientFieldValue($patient, 'homephone');
+        $data['workphone'] = $this->CareConsoleService->getPatientFieldValue($patient, 'workphone');
         $data['email'] = $this->CareConsoleService->getPatientFieldValue($patient, 'email');
         $data['special_request'] = $this->CareConsoleService->getPatientFieldValue($patient, 'special-request');
         $data['pcp'] = $this->CareConsoleService->getPatientFieldValue($patient, 'pcp');
