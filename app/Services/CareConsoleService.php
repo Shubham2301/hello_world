@@ -276,6 +276,12 @@ class CareConsoleService
             case 'cellphone':
                 return $patient['cellphone'] ?: '';
                 break;
+            case 'homephone':
+                return $patient['homephone'] ?: '';
+                break;
+            case 'workphone':
+                return $patient['workphone'] ?: '';
+                break;
             case 'request-received':
                 $date = new \DateTime($patient['created_at']);
                 return $date->format($dateFormat);
