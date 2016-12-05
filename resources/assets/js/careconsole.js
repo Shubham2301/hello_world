@@ -1330,6 +1330,7 @@ function getPatientContactData(patientID) {
 
             content += '<div class="form-group"><h4 class="">Patient Details</h4>';
 
+            content += '<p><span class="arial_bold">Name</span><br><span class="arial">' + data.name + '</span><br></p>';
             content += '<p><span class="arial_bold">Timezone</span><br><span class="arial">' + data.timezone + '</span><br></p>';
             content += '<p><span class="arial_bold">Last Seen By</span><br><span class="arial">' + data.last_seen_by + '</span><br></p>';
 
