@@ -145,7 +145,7 @@ class SendAppointmentRequestEmail
                 'name' => $location->locationname,
                 'email' => $location->email,
             ],
-            'subject' => config('constants.message_views.request_appointment_provider.subject'),
+            'subject' => config('constants.message_views.request_appointment_provider.subject') . ' at ' . $appt['practice_name'] . ' - ' . $appt['location_name'],
             'body' => '',
             'view' => config('constants.message_views.request_appointment_provider.view'),
             'appt' => $appt,
