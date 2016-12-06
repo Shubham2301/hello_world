@@ -75,7 +75,7 @@ class SendAppointmentRequestEmail
             'appt_type' => $appointmentType ?: '',
             'provider_name' => $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname,
             'location_name' => $location->locationname ?: '',
-            'location_address' => ($location->addressline1 ?: '') . ', ' . ($location->addressline2 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: ''),
+            'location_address' => ($location->addressline1 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: ''),
             'practice_name' => $practice->name ?: '',
             'practice_phone' => $location->phone ?: '',
             'appt_startdate' => $apptStartdate->format('F d, Y'),
