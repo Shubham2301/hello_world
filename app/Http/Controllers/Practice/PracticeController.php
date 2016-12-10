@@ -92,7 +92,6 @@ class PracticeController extends Controller
             $practicelocation->phone = $location['phone'];
             $practicelocation->email = $location['email'];
             $practicelocation->addressline1 = $location['addressline1'];
-            $practicelocation->addressline2 = $location['addressline2'];
             $practicelocation->city = $location['city'];
             $practicelocation->state = $location['state'];
             $practicelocation->zip = $location['zip'];
@@ -105,7 +104,7 @@ class PracticeController extends Controller
                 $practicelocation->special_instructions_plain_text = null;
             }
 
-            $address = urlencode($practicelocation->addressline1.' '.$practicelocation->addressline1.' '.$practicelocation->city.' '.$practicelocation->zip.' '.$practicelocation->state);
+            $address = urlencode($practicelocation->addressline1.' '.$practicelocation->city.' '.$practicelocation->zip.' '.$practicelocation->state);
 
             try {
                 $json = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')), true);
@@ -236,7 +235,6 @@ class PracticeController extends Controller
             $practicelocation->phone = $location['phone'];
             $practicelocation->email = $location['email'];
             $practicelocation->addressline1 = $location['addressline1'];
-            $practicelocation->addressline2 = $location['addressline2'];
             $practicelocation->city = $location['city'];
             $practicelocation->state = $location['state'];
             $practicelocation->zip = $location['zip'];

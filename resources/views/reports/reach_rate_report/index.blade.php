@@ -165,15 +165,6 @@
                 </span>
                 <span class="right_row">
                     <span class="right_row_section">
-                        <span class="title">Unable to reach</span>
-                    </span>
-                    <span class="right_row_section unable_to_reach_attempts right_section_count category_count">
-                    </span>
-                    <span class="right_row_section unable_to_reach right_section_count category_count">
-                    </span>
-                </span>
-                <span class="right_row">
-                    <span class="right_row_section">
                         <span class="title">Hold for future</span>
                     </span>
                     <span class="right_row_section hold_for_future_attempts right_section_count category_count">
@@ -188,6 +179,33 @@
                     <span class="right_row_section incorrect_data_attempts right_section_count category_count">
                     </span>
                     <span class="right_row_section incorrect_data right_section_count category_count">
+                    </span>
+                </span>
+                <span class="right_row">
+                    <span class="right_row_section">
+                        <span class="title">Unable to reach</span>
+                    </span>
+                    <span class="right_row_section unable_to_reach_attempts right_section_count category_count">
+                    </span>
+                    <span class="right_row_section unable_to_reach right_section_count category_count">
+                    </span>
+                </span>
+                <span class="right_row">
+                    <span class="right_row_section">
+                        <span class="title">Unable to reach - left message with another person</span>
+                    </span>
+                    <span class="right_row_section left_message_with_3rd_party_attempts right_section_count category_count">
+                    </span>
+                    <span class="right_row_section left_message_with_3rd_party right_section_count category_count">
+                    </span>
+                </span>
+                <span class="right_row">
+                    <span class="right_row_section">
+                        <span class="title">Unable to reach - left voice mail message</span>
+                    </span>
+                    <span class="right_row_section left_voice_mail_message_attempts right_section_count category_count">
+                    </span>
+                    <span class="right_row_section left_voice_mail_message right_section_count category_count">
                     </span>
                 </span>
             </span>

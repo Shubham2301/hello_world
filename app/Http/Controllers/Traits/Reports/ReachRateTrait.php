@@ -195,6 +195,14 @@ trait ReachRateTrait
                             $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
                             $results[$patient_count]['unable_to_reach'] = isset($results[$patient_count]['unable_to_reach']) ? $results[$patient_count]['unable_to_reach'] + 1 : 1;
                             break;
+                        case 'left-message-with-3rd-party':
+                            $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
+                            $results[$patient_count]['left_message_with_3rd_party'] = isset($results[$patient_count]['left_message_with_3rd_party']) ? $results[$patient_count]['left_message_with_3rd_party'] + 1 : 1;
+                            break;
+                        case 'left-voice-mail-message':
+                            $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
+                            $results[$patient_count]['left_voice_mail_message'] = isset($results[$patient_count]['left_voice_mail_message']) ? $results[$patient_count]['left_voice_mail_message'] + 1 : 1;
+                            break;
                         case 'hold-for-future':
                             $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
                             $results[$patient_count]['hold_for_future'] = isset($results[$patient_count]['hold_for_future']) ? $results[$patient_count]['hold_for_future'] + 1 : 1;
@@ -262,6 +270,10 @@ trait ReachRateTrait
             'not_reached_attempts' => 0,
             'unable_to_reach' => 0,
             'unable_to_reach_attempts' => 0,
+            'left_message_with_3rd_party' => 0,
+            'left_message_with_3rd_party_attempts' => 0,
+            'left_voice_mail_message' => 0,
+            'left_voice_mail_message_attempts' => 0,
             'hold_for_future' => 0,
             'hold_for_future_attempts' => 0,
             'incorrect_data' => 0,
@@ -352,6 +364,14 @@ trait ReachRateTrait
                 if (array_key_exists('unable_to_reach', $result)) {
                     $reportMetrics['unable_to_reach']++;
                     $reportMetrics['unable_to_reach_attempts'] += $result['unable_to_reach'];
+                }
+                if (array_key_exists('left_message_with_3rd_party', $result)) {
+                    $reportMetrics['left_message_with_3rd_party']++;
+                    $reportMetrics['left_message_with_3rd_party_attempts'] += $result['left_message_with_3rd_party'];
+                }
+                if (array_key_exists('left_voice_mail_message', $result)) {
+                    $reportMetrics['left_voice_mail_message']++;
+                    $reportMetrics['left_voice_mail_message_attempts'] += $result['left_voice_mail_message'];
                 }
                 if(array_key_exists('hold_for_future', $result)) {
                     $reportMetrics['hold_for_future']++;
