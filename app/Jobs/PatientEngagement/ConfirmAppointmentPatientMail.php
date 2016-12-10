@@ -89,7 +89,7 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
             ],
             [
                 'name' => 'LOCATIONADDRESS',
-                'content' => ($location->addressline1 ?: '') . ', ' . ($location->addressline2 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: ''),
+                'content' => ($location->addressline1 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: ''),
             ],
             [
                 'name' => 'PRACTICENAME',
@@ -183,7 +183,7 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
 
             'timezone' => ($patient->timezone)?$patient->timezone->utc:config('constants.default_timezone'),
 
-            'summary' => ($practice->name ?: '') . ', ' . ($location->addressline1 ?: '') . ', ' . ($location->addressline2 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: '') . ', ' .($location->phone ?: ''),
+            'summary' => ($practice->name ?: '') . ', ' . ($location->addressline1 ?: '') . ', ' . ($location->city ?: '') . ', ' . ($location->state ?: '') . ', ' . ($location->zip ?: '') . ', ' .($location->phone ?: ''),
 
             'description' => $description,
 
