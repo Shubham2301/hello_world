@@ -18,11 +18,11 @@
                                 <lable for="exampleInputName1"><strong style="padding-left:3em;">Network</strong></lable>
                             </div>
                             <div class="col-md-7 form-group">
-								@if($network['super_admin'])
-								<select name="network_id" class="form-control">
+								@if($network['multiple_network'])
+								<select name="network_id" class="form-control" required>
                                	<option value="0">Select a Network</option>
-								   @foreach ($network['networks'] as $network)
-								   <option value="{{$network->id}}">{{$network->name}}</option>
+								   @foreach ($network['networks'] as $key => $network)
+								   <option value="{{$key}}">{{$network}}</option>
 								   @endforeach
                                </select>
                                @else

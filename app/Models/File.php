@@ -17,15 +17,17 @@ class File extends Model {
 		return $this->hasMany(FileShare::class);
 	}
 
-	public static function getFiles($folder_id = 0, $active = 1) {
+	public static function getFiles($folder_id = 0, $network_id = null, $active = 1) {
 		if ($folder_id == null) {
 			return File::where('status', '=', $active)
 				->where('creator_id', '=', Auth::user()->id)
+				->where('network_id', $network_id)
 				->whereNull('folder_id')
 				->orderBy('title', 'asc')->get();
 		}
 		$files =  File::where('status', '=', $active)
 			->where('folder_id', '=', $folder_id)
+			->where('network_id', $network_id)
 			->orderBy('title', 'asc')->get();
 
 			$fileObj = new File;

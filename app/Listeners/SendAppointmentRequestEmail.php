@@ -52,7 +52,7 @@ class SendAppointmentRequestEmail
 
         $practice = Practice::find($appointment->practice_id);
         $loggedInUser = Auth::user();
-        $network = User::getNetwork($loggedInUser->id);
+        $network = $loggedInUser->userNetwork->first()->network;
         $patient = Patient::find($appointment->patient_id);
         $provider = User::find($appointment->provider_id);
         $location = PracticeLocation::find($appointment->location_id);
@@ -207,7 +207,7 @@ class SendAppointmentRequestEmail
             if (Auth::check() && session('user-level') == 2) {
                 $vars[] = [
                     'name' => 'NETWORKLOGO',
-                    'content' => config('constants.production_url') . '/images/networks/network_' . $loggedInUser->getNetwork($loggedInUser->id)->id . '.png',
+                    'content' => config('constants.production_url') . '/images/networks/network_' . $loggedInUser->userNetwork->first()->network_id . '.png',
                 ];
             }
 

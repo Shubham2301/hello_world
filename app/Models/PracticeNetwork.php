@@ -15,4 +15,9 @@ class PracticeNetwork extends Model {
     {
         return $this->belongsTo('myocuhub\Models\Practice');
     }
+
+    public function network()
+    {
+        return $this->belongsTo('myocuhub\Network');
+    }
 }

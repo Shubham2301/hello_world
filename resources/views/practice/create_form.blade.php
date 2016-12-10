@@ -28,9 +28,14 @@
                         <input id="location_index" type="hidden" value="{{$data['location_index']}}">
                         {!! Form::text('practice_name', old('practice_name'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Name*', 'id' => 'practice_name' , 'data-toggle' => 'tooltip', 'title' => 'Practice Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
                         {!! Form::text('practice_email', old('practice_email'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Email*', 'id' => 'practice_email', 'data-toggle' => 'tooltip', 'title' => 'Practice Email', 'data-placement' => 'right')) !!}
-                        {!! Form::select('practice_network', $networks, $data['network_id'], array('class' => 'add_practice_input', ($data['network_id'] != '') ? '' : 'placeholder' => 'Select Network*' , 'id' => 'practice_network', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Practice Network', 'data-placement' => 'right')) !!}
                     </div>
-                    <div class="col-sm-6 col-xs-12 ocuapps_options">
+                    <div class="col-sm-6 col-xs-12 ocuapps_options" style="color:#fff;">
+                        <h4>Networks*</h4>
+                            @foreach($networks as $key => $network)
+                                {!! Form::checkbox('network[]', $network, in_array($key, $data['network_id']) ? true : null, array('id' => $key, 'class' => 'practice_network', in_array($key, $data['network_id']) ? 'disabled' : '')); !!}
+                                {!! Form::label($network, $network); !!}
+                                <br>
+                            @endforeach
                     </div>
                 </div>
             </div>

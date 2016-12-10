@@ -1,11 +1,11 @@
 'use strict';
-$(document).ready(function () {
+$(document).ready(function() {
     if (window.location.pathname != '/editprofile') {
         loadAllUsers();
         getLandingPageByRole();
     }
 
-    $('#user_type').on('change', function () {
+    $('#user_type').on('change', function() {
         if ($(this).val() == $('#usertype_provider_id').val()) {
             $('#provider_type').show();
         } else {
@@ -13,7 +13,7 @@ $(document).ready(function () {
         }
     })
 
-    $('.profile_img_upload').on('change', function () {
+    $('.profile_img_upload').on('change', function() {
         if ($(this).val() != '')
             changePicture();
     });
@@ -22,38 +22,63 @@ $(document).ready(function () {
         trigger: "manual"
     });
 
-    $('.add_user_submit_button').on('click', function () {
+    $('.add_user_submit_button').on('click', function() {
         checkForm();
     });
 
-    $("#form_add_users").submit(function (event) {
+    $("#form_add_users").submit(function(event) {
         if (!checkForm())
             event.preventDefault();
     });
 
-    $('#user_level').on('change', function () {
-        if ($(this).val() == 3) {
-            $('#user_practice').show();
-            $('#user_practice').prop('required', true);
-        } else {
-            $('#user_practice').hide();
-            $('#user_practice').prop('required', false);
-        }
-        if ($(this).val() == 1) {
-            $('#user_network').hide();
-            $('#user_network').prop('required', false);
-        } else {
-            $('#user_network').show();
-            $('#user_network').prop('required', true);
-
+    $('#user_level').on('change', function() {
+        if (window.location.pathname === '/administration/users/create') {
+            if ($(this).val() > 2) {
+                $('#user_practice').show();
+                $('#user_practice').prop('required', true);
+                $('.user_roles#care-console').prop('disabled', true);
+                $('.user_roles#reports').prop('disabled', true);
+                $('.user_roles#administrator').prop('disabled', true);
+                $('.user_roles#care-console').prop('checked', false);
+                $('.user_roles#reports').prop('checked', false);
+                $('.user_roles#administrator').prop('checked', false);
+            } else {
+                $('#user_practice').hide();
+                $('#user_practice').prop('required', false);
+                $('.user_roles#care-console').prop('disabled', false);
+                $('.user_roles#reports').prop('disabled', false);
+                $('.user_roles#administrator').prop('disabled', false);
+                $('.user_roles#care-console').prop('checked', false);
+                $('.user_roles#reports').prop('checked', false);
+                $('.user_roles#administrator').prop('checked', false);
+            }
+            if ($(this).val() == 1) {
+                $('.user_network').prop('disabled', true);
+                $('.user_network').prop('checked', false);
+            } else if ($('#logged_in_user_level').val() == 1) {
+                $('.user_network').prop('disabled', false);
+                $('.user_network').prop('checked', false);
+            }
         }
     });
 
-    $('#user_network').on('change', function () {
-        refreshPractices($(this).val());
-    });
+    $('.user_network').on('change', function() {
+        if (window.location.pathname === '/administration/users/create') {
+            var id = [];
+            $.each($("input[class='user_network']:checked"), function() {
+                id.push($(this).attr('id'));
+            });
+            if ((id.length > 0) && ($('#user_level').val() == 3)) {
+                refreshPractices(id);
+            } else if ((id.length > 1) && ($('#user_level').val() != 3)) {
+                $('.user_network').prop('checked', false);
+                $('p.alert_message').text('Only practice level users can be part of multiple networks');
+                $('#alert').modal('show');
+            }
+        }
+    })
 
-    $('#search_user_button').on('click', function () {
+    $('#search_user_button').on('click', function() {
         var searchvalue = $('#search_user_input').val();
         $('.no_item_found > p:eq(1)').text(searchvalue);
         $('.no_item_found > p:eq(1)').css('padding-left', '4em');
@@ -70,40 +95,40 @@ $(document).ready(function () {
             loadAllUsers();
         }
     });
-    $('#refresh_users').on('click', function () {
+    $('#refresh_users').on('click', function() {
         $('#search_user_input').val('');
         loadAllUsers();
     });
-    $('.user_search_content').on('mouseenter', '.action_dropdown', function () {
+    $('.user_search_content').on('mouseenter', '.action_dropdown', function() {
         $(this).attr('src', $('#dropdown_onhover_img').val());
     });
-    $('.user_search_content').on('mouseleave', '.action_dropdown', function () {
+    $('.user_search_content').on('mouseleave', '.action_dropdown', function() {
         $(this).attr('src', $('#dropdown_natural_img').val());
     });
-    $('#checked_all_users').on('change', function () {
+    $('#checked_all_users').on('change', function() {
         if ($(this).is(":checked")) {
-            $('.user_search_content').each(function () {
+            $('.user_search_content').each(function() {
                 $(this).find('input').not("[disabled]").prop('checked', true);
             });
             $('.admin_delete').addClass('active');
             $('.delete_from_row_dropdown').addClass('invisible');
         } else {
-            $('.user_search_content').each(function () {
+            $('.user_search_content').each(function() {
                 $(this).find('input').not("[disabled]").prop('checked', false);
             });
             $('.admin_delete').removeClass('active');
             $('.delete_from_row_dropdown').removeClass('invisible');
         }
     });
-    $('.admin_delete').on('click', function () {
+    $('.admin_delete').on('click', function() {
 
-        showModalConfirmDialogTotal('Are you sure?', function (outcome) {
+        showModalConfirmDialogTotal('Are you sure?', function(outcome) {
             if (outcome) {
                 getCheckedID();
             }
         });
     });
-    $('#care-console').on('change', function () {
+    $('#care-console').on('change', function() {
 
         if ($('#care-console').prop('checked')) {
             var content = '<option value="' + landingPage['care-console'][0] + '" id="care-console_page">' + landingPage['care-console'][1] + '</option>';
@@ -114,16 +139,16 @@ $(document).ready(function () {
         }
 
     });
-    $(document).keypress(function (e) {
+    $(document).keypress(function(e) {
         if (e.which == 13) {
             $("#search_user_button").trigger("click");
         }
     });
-    $('.user_search_content').on('click', 'p.edituser_from_row', function () {
+    $('.user_search_content').on('click', 'p.edituser_from_row', function() {
         var user_id = $(this).parents('.search_item').attr('data-id');
         window.location = '/administration/users/edit/' + user_id + '';
     });
-    $('.user_search_content').on('change', '.admin_checkbox_row', function () {
+    $('.user_search_content').on('change', '.admin_checkbox_row', function() {
         if ($("input[name='checkbox']:checked").length > 0) {
             $('.admin_delete').addClass('active');
             $('.delete_from_row_dropdown').addClass('invisible');
@@ -132,45 +157,45 @@ $(document).ready(function () {
             $('.delete_from_row_dropdown').removeClass('invisible');
         }
     });
-    $('.user_listing').on('click', '.removeuser_from_row', function () {
+    $('.user_listing').on('click', '.removeuser_from_row', function() {
         var val = $(this).parents('.search_item').attr('data-id');
         var id = [];
         id.push(val);
-        showModalConfirmDialog('Are you sure?', function (outcome) {
+        showModalConfirmDialog('Are you sure?', function(outcome) {
             if (outcome) {
                 removeUser(id);
                 $(this).parents('.search_item').remove();
             }
         });
     });
-    $('.user_listing').on('click', '.reactivate_user', function () {
+    $('.user_listing').on('click', '.reactivate_user', function() {
         var id = $(this).parents('.search_item').attr('data-id');
         reactivateUser(id);
     });
-    $('.user_listing').on('click', '.user_row_name', function () {
+    $('.user_listing').on('click', '.user_row_name', function() {
         var id = $(this).closest('.search_item').attr('data-id');
         showUserInfo(id)
     });
-    $('.user_info').on('click', '.user_back', function () {
+    $('.user_info').on('click', '.user_back', function() {
         $('.user_admin_index_header').removeClass('hide');
         $('.user_listing').addClass('active');
         $('.no_item_found').removeClass('active');
         $('.user_info').removeClass('active');
     });
-    $('#include_deactivated').on('change', function () {
+    $('#include_deactivated').on('change', function() {
         $("#search_user_button").trigger("click");
     })
 
 
 });
 
-$(document).click(function () {
+$(document).click(function() {
     if (flag == 0) {
         $('.popover_text').popover("hide");
     }
     flag = 0;
 });
-$(document).keypress(function (e) {
+$(document).keypress(function(e) {
     if (flag == 0) {
         $('.popover_text').popover("hide");
     }
@@ -181,7 +206,7 @@ var landingPage = [];
 
 function getCheckedID() {
     var id = [];
-    $.each($("input[name='checkbox']:checked"), function () {
+    $.each($("input[name='checkbox']:checked"), function() {
         id.push($(this).attr('data-id'));
     });
     removeUser(id);
@@ -199,20 +224,20 @@ function loadAllUsers() {
 }
 
 function showModalConfirmDialog(msg, handler) {
-    $('.user_listing').on('click', '.confirm_yes', function (evt) {
+    $('.user_listing').on('click', '.confirm_yes', function(evt) {
         handler(true);
     });
-    $('.user_listing').on('click', '.confirm_no', function (evt) {
+    $('.user_listing').on('click', '.confirm_no', function(evt) {
         handler(false);
     });
 
 }
 
 function showModalConfirmDialogTotal(msg, handler) {
-    $('.admin_delete_dropdown').on('click', '.confirm_yes', function (evt) {
+    $('.admin_delete_dropdown').on('click', '.confirm_yes', function(evt) {
         handler(true);
     });
-    $('.admin_delete_dropdown').on('click', '.confirm_no', function (evt) {
+    $('.admin_delete_dropdown').on('click', '.confirm_no', function(evt) {
         handler(false);
     });
 
@@ -239,7 +264,7 @@ function getUsers(formData, page) {
             var content = '';
             $('#search_results').text('');
             if (users.length > 0) {
-                users.forEach(function (user) {
+                users.forEach(function(user) {
                     content += '<div class="row search_item" data-id="' + user.id + '"><div class="col-xs-3 search_name">';
                     if (user.active == '1') {
                         content += '<input type="checkbox" class="admin_checkbox_row" data-id="' + user.id + '" name="checkbox">';
@@ -258,7 +283,7 @@ function getUsers(formData, page) {
                 $('.user_listing').addClass('active');
                 $('[data-toggle="tooltip"]').tooltip();
                 if ($('#checked_all_users').is(":checked")) {
-                    $('.user_search_content').each(function () {
+                    $('.user_search_content').each(function() {
                         $(this).find('input').not("[disabled]").prop('checked', true);
                     });
                     $('.admin_delete').addClass('active');
@@ -283,7 +308,7 @@ function getUsers(formData, page) {
 function removeUser(id) {
     var removeId = {};
     var i = 0;
-    id.forEach(function (item) {
+    id.forEach(function(item) {
         removeId[i] = item;
         i++;
     });
@@ -293,7 +318,7 @@ function removeUser(id) {
         data: $.param(removeId),
         contentType: 'text/html',
         async: false,
-        success: function (e) {},
+        success: function(e) {},
         error: function error() {
             $('p.alert_message').text('Error removing');
             $('#alert').modal('show');
@@ -301,7 +326,7 @@ function removeUser(id) {
         cache: false,
         processData: false
     });
-    $('.user_search_content').each(function () {
+    $('.user_search_content').each(function() {
         $(this).find('input').not("[disabled]").prop('checked', false);
     });
     $('#checked_all_users').prop('checked', false);
@@ -315,7 +340,7 @@ function reactivateUser(id) {
         type: 'GET',
         contentType: 'text/html',
         async: false,
-        success: function (e) {},
+        success: function(e) {},
         error: function error() {
             $('p.alert_message').text('Error reactivating');
             $('#alert').modal('show');
@@ -323,7 +348,7 @@ function reactivateUser(id) {
         cache: false,
         processData: false
     });
-    $('.user_search_content').each(function () {
+    $('.user_search_content').each(function() {
         $(this).find('input').not("[disabled]").prop('checked', false);
     });
     $('#checked_all_users').prop('checked', false);
@@ -341,7 +366,7 @@ function changePicture() {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: function (e) {
+        success: function(e) {
             $('#profile_image_view').attr('src', e);
         }
     });
@@ -352,7 +377,7 @@ function checkForm() {
     $('.user_email_field#ses_email').val($('.user_email_field#ses_email').val().trim());
     var fields = $('.panel-body').find('.add_user_input');
     var patt = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-    fields.each(function (field) {
+    fields.each(function(field) {
         if ($(this).prop('required')) {
             if ($(this).val() == "") {
                 $($(this).parents('.panel-default').find('.popover_text')).attr('data-content', 'Please fill all the required fields');
@@ -369,18 +394,38 @@ function checkForm() {
         }
     });
 
+    var i = 0;
+    $.each($("input[class='user_network']:checked"), function() {
+        i++;
+    });
+    if (i == 0 && $('.add_user_input#user_level').val() > 1) {
+        $('#collapse1').parents('.panel-default').find('.popover_text').attr('data-content', 'Please select the network for the user');
+        $('#collapse1').parents('.panel-default').find('.popover_text').popover("show");
+        flag = 1;
+        return false;
+    }
+
     if (flag == 0)
         return true;
 }
 
-function refreshPractices(networkID) {
-
+function refreshPractices(networkIDs) {
+    var networkList = {};
+    var i = 0;
+    networkIDs.forEach(function(item) {
+        networkList[i] = item;
+        i++;
+    });
+    var formData = {
+        'networks': networkList,
+    }
     $.ajax({
-        url: '/administration/practices/by-network/' + networkID,
+        url: '/administration/practices/by-network',
         type: 'GET',
+        data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function (e) {
+        success: function(e) {
             var practices = $.parseJSON(e);
             var practice_id;
             var content = '<option value="">Select Practice</option>';
@@ -405,7 +450,7 @@ function showUserInfo(id) {
         type: 'GET',
         contentType: 'text/html',
         async: false,
-        success: function (e) {
+        success: function(e) {
             $('.user_admin_index_header').addClass('hide');
             $('.user_listing').removeClass('active');
             $('.no_item_found').removeClass('active');
@@ -429,7 +474,7 @@ function getLandingPageByRole() {
         processData: false,
         contentType: false,
         type: 'GET',
-        success: function (e) {
+        success: function(e) {
             landingPage = $.parseJSON(e);
         }
     });

@@ -2,14 +2,15 @@
 
 namespace myocuhub\Http\Controllers\Practice;
 
+use Auth;
 use DateTime;
 use Event;
 use Illuminate\Http\Request;
-use Auth;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Http\Controllers\Traits\ValidateFPCRequestParams;
+use myocuhub\Models\Careconsole;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
@@ -35,7 +36,7 @@ class ProviderController extends Controller
 
     public function index(Request $request)
     {
-        if (Auth::user()->isSuperAdmin()) {
+        if (!$request->has('patient_id') || !policy(new User)->canSchedule($request->input('patient_id'))) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -187,23 +188,27 @@ class ProviderController extends Controller
             ];
         }
 
-        $providers = User::providers($filters);
+        $patientID = $request->patient_id;
+        $careconsole = Careconsole::where('patient_id', $patientID)->first();
+
         $data = [];
         $i = 0;
+        if ($careconsole) {
+            $providers = User::providers($filters, $careconsole->importHistory->network_id);
+            foreach ($providers as $provider) {
+                if (!$provider->id || !$provider->user_id) {
+                    continue;
+                }
 
-        foreach ($providers as $provider) {
-            if (!$provider->id || !$provider->user_id) {
-                continue;
+                $data[$i]['id'] = $provider->user_id;
+                $data[$i]['practice_id'] = $provider->id;
+                $data[$i]['name'] = $provider->getName();
+                $data[$i]['speciality'] = $provider->speciality ?: 'Unlisted';
+                $data[$i]['provider_type'] = ProviderType::getName($provider->provider_type_id);
+                $data[$i]['practice_name'] = $provider->name;
+                $data[$i]['location_name'] = $provider->locationname;
+                $i++;
             }
-
-            $data[$i]['id'] = $provider->user_id;
-            $data[$i]['practice_id'] = $provider->id;
-            $data[$i]['name'] = $provider->getName();
-            $data[$i]['speciality'] = $provider->speciality ?: 'Unlisted';
-            $data[$i]['provider_type'] = ProviderType::getName($provider->provider_type_id);
-            $data[$i]['practice_name'] = $provider->name;
-            $data[$i]['location_name'] = $provider->locationname;
-            $i++;
         }
 
         return json_encode($data);
@@ -349,7 +354,8 @@ class ProviderController extends Controller
     public function getNearByProviders(Request $request)
     {
         $patientID = $request->patient_id;
-        $patientLocation = Patient::find($patientID)->getLocation();
+        $patient = Patient::find($patientID);
+        $patientLocation = $patient->getLocation();
 
         if (isset($patientLocation['error'])) {
             return $patientLocation['error'];
@@ -362,8 +368,8 @@ class ProviderController extends Controller
         $data = [];
         $i = 0;
         $providers = [];
-        if ($lat != '') {
-            $locations = PracticeLocation::getNearByLocations($lat, $lng, config('constants.providerNearPatient.providerRadius'), $providerTypes);
+        if ($lat != '' && $patient->careConsole) {
+            $locations = PracticeLocation::getNearByLocations($lat, $lng, config('constants.providerNearPatient.providerRadius'), $providerTypes, $patient->careConsole->importHistory->network_id);
             foreach($locations as $location) {
                 if ($i >= config('constants.providerNearPatient.providerNumber')) {
                     break;
@@ -385,9 +391,6 @@ class ProviderController extends Controller
                 $i++;
             }
         }
-
-
-
         return json_encode($data);
     }
 

@@ -44,7 +44,7 @@ class CareConsoleService
 
     public function getControls($stageID)
     {
-        $networkID = User::getNetwork(Auth::user()->id)->network_id;
+        $networkID = Auth::user()->userNetwork->first()->network_id;
         $llKpiGroup = CareconsoleStage::find($stageID)->llKpiGroup;
         $kpis = CareconsoleStage::find($stageID)->kpi;
         $controls = [];
@@ -109,9 +109,9 @@ class CareConsoleService
      */
     public function getPatientListing($stageID, $kpiName = '', $sortField = '', $sortOrder = '', $llimit = -1, $ulimit = -1)
     {
-        $userID = Auth::user()->id;
-        $network = User::getNetwork($userID);
-        $networkID = $network->network_id;
+        $user = Auth::user();
+        $userID = $user->id;
+        $networkID = $user->userNetwork->first()->network_id;
         if ($sortField == '') {
             $sortField = 'days-pending';
         }
@@ -182,9 +182,9 @@ class CareConsoleService
      */
     public function getBucketPatientsListing($stageID, $sortField = '', $sortOrder = '')
     {
-        $userID = Auth::user()->id;
-        $network = User::getNetwork($userID);
-        $networkID = $network->network_id;
+        $user = Auth::user();
+        $userID = $user->id;
+        $networkID = $user->userNetwork->first()->network_id;
 
         $headers = CareconsoleStage::find($stageID)->patientFields;
         $patients = $this->KPIService->getBucketPatients($networkID, $stageID);
@@ -472,7 +472,7 @@ class CareConsoleService
 
     public function moveRecallPatientsToConsoleAsPending()
     {
-        $networkID = User::getNetwork(Auth::user()->id)->network_id;
+        $networkID = Auth::user()->userNetwork->first()->network_id;
         $patients = Careconsole::getRecallPatientsToMove($networkID);
         foreach ($patients as $patient) {
             $console = Careconsole::find($patient['id']);

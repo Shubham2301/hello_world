@@ -68,9 +68,9 @@ class CareConsoleController extends Controller
      */
     public function getOverviewData()
     {
-        $userID = Auth::user()->id;
-        $network = User::getNetwork($userID);
-        $networkID = $network->network_id;
+        $user = Auth::user();
+        $userID = $user->id;
+        $networkID = $user->userNetwork->first()->network_id;
         $careconsoleStages = Network::find($networkID)->careconsoleStages;
         $overview = array();
         $i = 0;
@@ -386,7 +386,7 @@ class CareConsoleController extends Controller
     public function practiceProviders(Request $request)
     {
         $practiceID = $request->practiceID;
-        $practiceUsers = User::practiceProvidersById($practiceID);
+        $practiceUsers = User::practiceProvidersById($practiceID, session('network-id'));
         $i = 0;
         $practiceData = [];
         foreach ($practiceUsers as $user) {

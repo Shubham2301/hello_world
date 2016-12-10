@@ -13,51 +13,63 @@
 <div class="content-section active">
    <span class="files_head_section">
     <div class="row no-margin">
-<!--        <div>-->
             <input type="hidden" value="{{$openView}}" id='current_view'>
             <input type="hidden" value="{{$isEditable}}" id='parent_editable'>
             <div class="file_exchange_navbar">
                 <span class="file_exchange_navbar_content_left">
                     <span class="arial_bold page_title">{{ $active_link['title'] }}</span>
                     <span class="buttons">
+                        @if($currentNetwork != -1)
                         <button id="" type="button" class="btn add-btn" data-toggle="modal" data-target="#newfolderModal">Add Folder</button>&nbsp;
                         <button id="" type="button" class="btn add-doc-btn file_input" data-toggle="modal" data-target="#newfileModal">Add Document</button>
+                        @endif
                     </span>
                 </span>
                 <span class="file_exchange_navbar_content_right">
-                    <span class="file_exchange_button share-button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{elixir('images/sidebar/share-icon.png')}}"></span>
+                <span class="file_exchange_button share-button" data-toggle="tooltip" title="Share" data-placement="bottom"><img src="{{elixir('images/sidebar/share-icon.png')}}"></span>
                 <span class="file_exchange_button trash-button" data-toggle="tooltip" title="Trash" data-placement="bottom"><img src="{{elixir('images/sidebar/trash-icon.png')}}"></span>
                 <span class="file_exchange_button download-button" data-toggle="tooltip" title="Download" data-placement="bottom"><img src="{{elixir('images/sidebar/download-icon.png')}}"></span>
                 <span class="file_exchange_button info-button" data-toggle="tooltip" title="Details" data-placement="bottom" id="details"><img src="{{elixir('images/sidebar/details-icon.png')}}"></span>
 					<span class="file_exchange_button restore-button" data-toggle="tooltip" title="Restore" data-placement="bottom" id="restore"><img src="{{elixir('images/sidebar/restore-icon.png')}}"></span>
                 </span>
             </div>
+            @if($currentNetwork != -1)
             <div class="folder_path active">
                 <!-- Folder 2 > Subfolder 1 -->
-                @if(sizeof($breadcrumbs)>0)
-                <a href="{{$accessLink}}"> {{ 'All' }}</a> @endif @for($i = 0; $i
-                < sizeof($breadcrumbs); $i++) <span>&nbsp;>&nbsp;</span>
-			<a href="{{$accessLink}}?id={{ $breadcrumbs[$i]['id'] }}"> {{ $breadcrumbs[$i]['name'] }}</a> @endfor
+                @if(sizeof($breadcrumbs) > 0 || sizeof($networkList) > 1)
+                    <a href="{{ $accessLink }}"> {{ 'All' }}</a>
+                    @if(sizeof($networkList) > 1)
+                    <span>&nbsp;>&nbsp;</span>
+                    <a href="{{ $accessLink }}?network_id={{ $currentNetwork }}"> {{ $networkList[$currentNetwork] }}</a>
+                    @endif
+                @endif
+                @for($i = 0; $i < sizeof($breadcrumbs); $i++)
+                <span>&nbsp;>&nbsp;</span>
+			    <a href="{{$accessLink}}?id={{ $breadcrumbs[$i]['id'] }}&network_id={{ $currentNetwork }}"> {{ $breadcrumbs[$i]['name'] }}</a>
+                @endfor
             </div>
-<!--        </div>-->
+            @endif
     </div>
-        <div class="row arial_bold col_title">
+        @if($currentNetwork != -1)
+        <div class="row arial_bold col_title no-margin">
             <div class="col-xs-1 no-padding"></div>
             <div class="col-xs-7 no-padding">Name</div>
             <div class="col-xs-2 no-padding">Modified by</div>
             <div class="col-xs-2 no-padding">Date Modified</div>
         </div>
         <hr class="main">
+        @endif
     </span>
+    @if($currentNetwork != -1 && $empty == 'false')
     <div class="files">
- @foreach($folderlist as $folder)
+     @foreach($folderlist as $folder)
         <div class="row arial col_content no-margin">
             <div class="col-xs-1 no-padding" style="text-align: center;">
                 <input type="checkbox" class="checkbox file-exchange folder-check" style="display: inline;" data-id="{{ $folder['id'] }}" data-name="folder">
             </div>
             <div class="col-xs-7 no-padding">
 				@if($openView != 'trash')
-				<a href="{{$accessLink}}?id={{$folder['id']}}"><img src="{{ URL::asset('images/sidebar/folder-white.png') }}" style="margin:0 0.5em 0.25em 0.25em"><span id="{{ $folder['id'] }}_folder_name">{{ $folder['name'] }}</span></a>
+				<a href="{{$accessLink}}?id={{$folder['id']}}&network_id={{$currentNetwork}}"><img src="{{ URL::asset('images/sidebar/folder-white.png') }}" style="margin:0 0.5em 0.25em 0.25em"><span id="{{ $folder['id'] }}_folder_name">{{ $folder['name'] }}</span></a>
 				@else
 				<a href="#" data-id="{{$folder['id']}}" class="restore_item"><img src="{{ URL::asset('images/sidebar/folder-white.png') }}" style="margin:0 0.5em 0.25em 0.25em"><span id="{{$folder['id'] }}_folder_name">{{ $folder['name'] }}</span></a>
 				@endif
@@ -100,15 +112,32 @@
         </div>
         <hr> @endforeach
     </div>
+    @endif
     <div class="item_info" id="item_info">
     </div>
-</div>
-@include('file_exchange.addFolder') @include('file_exchange.addFile') @include('file_exchange.share') @if($empty == 'true')
-<div style="display: flex;flex-direction: row;justify-content: center;">
-    <span>No files or folder found</span>
+    @if($currentNetwork != -1)
+    @include('file_exchange.addFolder')
+    @include('file_exchange.addFile')
+    @include('file_exchange.share')
+    @if($empty == 'true')
+    <div style="display: flex;flex-direction: row;justify-content: center;">
+        <span>No files or folder found</span>
+    </div>
+    @endif
+    @endif
+    @if($currentNetwork == -1)
+        <div class="select_network">
+        <h4 class="arial_bold">Select a network to add files and folders</h4>
+        <ul>
+        @foreach ( $networkList as $id => $networkName)
+            <li><a href="{{ $accessLink }}?network_id={{ $id }}">{{ $networkName }}</a></li>
+        @endforeach
+        </ul>
+        </div>
+    @endif
 </div>
 
-@endif
+
 {!! Form::open(array('url' => 'deleteFilesFolders', 'method' => 'POST', 'id'=>'delete_files_folders')) !!}
 <input type="hidden" name="delete_folders" id="delete_folders" value="">
 <input type="hidden" name="delete_files" id="delete_files" value="">

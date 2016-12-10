@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Auth;
 use Illuminate\Support\Facades\DB;
 use myocuhub\Http\Controllers\Traits\TwoFactorAuthenticatable;
 use myocuhub\Models\NetworkUser;
@@ -51,7 +52,7 @@ CanResetPasswordContract
 
     public function userNetwork()
     {
-        return $this->hasOne(NetworkUser::class);
+        return $this->hasMany(NetworkUser::class);
     }
 
     public function userPractice()
@@ -119,7 +120,7 @@ CanResetPasswordContract
         return $this->providerType ? $this->providerType->name : self::notSet();
     }
 
-    public static function providers($filters)
+    public static function providers($filters, $network = null)
     {
         $query = self::query()
             ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
@@ -182,16 +183,10 @@ CanResetPasswordContract
             })
             ->groupBy('users.id');
 
-        if (session('user-level') == 1) {
-            return $query
-                ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
-                ->get(['*', 'practices.id']);
-        } else {
-            return $query
-                ->leftjoin('practice_network', 'practices.id', '=', 'practice_network.practice_id')
-                ->where('practice_network.network_id', session('network-id'))
-                ->get(['*', 'practices.id']);
-        }
+        return $query
+            ->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
+            ->where('network_user.network_id', $network)
+            ->get(['*', 'practices.id']);
     }
 
     public function contactHistory()
@@ -199,14 +194,18 @@ CanResetPasswordContract
         return $this->hasMany('myocuhub\Models\ContactHistory', 'user_id');
     }
 
-    public static function practiceUserById($practice_id)
+    public static function practiceUserById($practice_id, $network_id = null)
     {
-        return self::query()
+        $query = self::query()
             ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
             ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
             ->where('practice_id', $practice_id)
-            ->where('active', '1')
-            ->get(['*', 'users.*']);
+            ->where('active', '1');
+        if ($network_id) {
+            $query->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
+                ->where('network_id', $network_id);
+        }
+        return $query->get(['*', 'users.*']);
     }
 
     public static function networkUserById($network_id)
@@ -216,15 +215,6 @@ CanResetPasswordContract
             ->leftjoin('networks', 'network_user.network_id', '=', 'networks.id')
             ->where('network_id', $network_id)
             ->get(['users.id', 'users.name', 'users.sesemail']);
-    }
-
-    public static function getNetwork($userID)
-    {
-        return self::query()
-            ->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
-            ->leftjoin('networks', 'network_user.network_id', '=', 'networks.id')
-            ->where('user_id', $userID)
-            ->first();
     }
 
     public static function getPractice($userID)
@@ -272,15 +262,25 @@ CanResetPasswordContract
             ->get(['id', 'npi']);
     }
 
-    public static function practiceProvidersById($practice_id)
+    public static function practiceProvidersById($practice_id, $network_id = null)
     {
-        return self::query()
+        $query = self::query()
             ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
-            ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id')
-            ->where('practice_id', $practice_id)
+            ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id');
+        if ($network_id) {
+            $query->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
+                ->where('network_id', $network_id);
+        } else {
+            $user = Auth::user();
+            $query->leftjoin('network_user', 'users.id', '=', 'network_user.user_id');
+            foreach ($user->userNetwork as $network) {
+                $query->orWhere('network_id', $network->network_id);
+            }
+        }
+        $query->where('practice_id', $practice_id)
             ->where('active', '1')
-            ->where('usertype_id', 1)
-            ->get(['*', 'users.*']);
+            ->where('usertype_id', 1);
+        return $query->get(['*', 'users.*']);
     }
 
     public static function networkProvidersById($network_id)

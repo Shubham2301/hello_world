@@ -615,7 +615,8 @@ function getProviders(formData) {
         data: $.param({
             data: tojson,
             show_specialist: showSpecialist,
-            provider_types: providerTypes
+            provider_types: providerTypes,
+            patient_id: $('#form_patient_id').val()
         }),
         contentType: 'text/html',
         async: false,

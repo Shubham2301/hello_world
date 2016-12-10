@@ -18,16 +18,21 @@ class FolderShare extends Model
     	return $this->belongsTo(Folder::class);
     }
 
-	public static function getSharedFoldersForUser($userId, $parentID = null)
+	public static function getSharedFoldersForUser($userId, $parentID = null, $network_id)
 	{
-		if($parentID == null){
-			return FolderShare::where('user_id', '=', $userId)->get();
+		if ($parentID == null) {
+			return FolderShare::where('user_id', '=', $userId)
+				->whereHas('folder', function ($subquery) use ($network_id) {
+					$subquery->where('network_id', $network_id);
+				})
+				->get();
 		}
 
 		if(self::isShared($parentID) || self::isParentShared($parentID))
 		{
 			$folders =  Folder::where('status', '=', 1)
 				->where('parent_id', '=', $parentID)
+				->where('network_id', $network_id)
 				->orderBy('name', 'asc')->pluck('id');
 			$sharedFolders = [];
 			$i =0;

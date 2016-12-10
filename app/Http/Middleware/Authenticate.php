@@ -48,9 +48,9 @@ class Authenticate {
 			return redirect('/auth/twofactorauth');
 		}
 
-		if ($network = User::getNetwork($user->id)) {
-			session(['network-id' => $network->network_id]);
-		}
+        if($user->level < 3 && $user->userNetwork->first()) {
+            session(['network-id' => $user->userNetwork->first()->network_id]);
+        }
 
 		session(['user-level' => $user->level]);
 		session(['user-type' => $user->usertype_id]);

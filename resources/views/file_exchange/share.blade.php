@@ -4,8 +4,7 @@
         <div class="modal-content">
                 {!! csrf_field() !!}
                 <span class="modal_title arial_bold">Share</span>
-
-                    <span class="modal_content_row">
+                <span class="modal_content_row">
                     <span class="left">Practice</span>
                     <span class="right">
                         <select name="share_practices" class="form-control" id="share_practices">
@@ -47,6 +46,7 @@
                 <input type="hidden" name="parent_id" value="{{ $parent_id }}">
                 <input type="hidden" name="share_folders" id="share_folders" value="">
                 <input type="hidden" name="share_files" id="share_files" value="">
+                <input type="hidden" class='share_modal network_id' name="network_id" value="{{ $currentNetwork }}">
         </div>
         {!! Form::close()!!}
     </div>

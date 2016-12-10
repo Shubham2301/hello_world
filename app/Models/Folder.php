@@ -20,24 +20,26 @@ class Folder extends Model
         return $this->hasMany(FolderShare::class);
     }
 
-    public static function getFolders($parent_id=0, $active=1)
+    public static function getFolders($parent_id = 0, $network_id = null, $active = 1)
     {
         if ($active == 0) {
             return Folder::where('status', '=', $active)
                 ->where('owner_id', '=', Auth::user()->id)
+                ->where('network_id', $network_id)
                 ->orderBy('name', 'asc')->get();
         }
 
         if ($parent_id == null) {
             return Folder::where('status', '=', $active)
                 ->where('owner_id', '=', Auth::user()->id)
+                ->where('network_id', $network_id)
                 ->whereNull('parent_id')
                 ->orderBy('name', 'asc')->get();
         }
 
-
         $folders =  Folder::where('status', '=', $active)
             ->where('parent_id', '=', $parent_id)
+            ->where('network_id', $network_id)
             ->orderBy('name', 'asc')->get();
         $i = 0;
         $folderObj = new Folder;

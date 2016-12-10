@@ -81,9 +81,9 @@ class RequestFPCAppointment
 
         $apptInfo = array();
 
-        $userID = Auth::user()->id;
-        $network = User::getNetwork($userID);
-        $networkID = $network->id;
+        $user = Auth::user();
+        $userID = $user->id;
+        $networkID = $loggedInUser->userNetwork->first()->_id;
         $patientID = $request->input('patient_id');
         $providerID = $request->input('provider_id');
         $locationID = $request->input('location_id');

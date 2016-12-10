@@ -5,14 +5,14 @@ namespace myocuhub\Http\Controllers;
 use Auth;
 use DateTime;
 use Illuminate\Http\Request;
-
-use myocuhub\Http\Requests;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Requests;
 use myocuhub\Models\Announcement;
 use myocuhub\Models\AnnouncementUser;
-use myocuhub\User;
+use myocuhub\Network;
 use myocuhub\Role;
 use myocuhub\Role_user;
+use myocuhub\User;
 class AnnouncementController extends Controller
 {
     /**
@@ -54,6 +54,7 @@ class AnnouncementController extends Controller
      */
     public function create(Request $request)
     {
+        $user = Auth::user();
         $roles = Role::all();
 		$roleArray = array();
         $i = 0;
@@ -62,9 +63,27 @@ class AnnouncementController extends Controller
 			$roleArray[$i][1] = $role->id;
             $i++;
 		}
+        $networks = array();
+        $i = 0;
+        if ($user->isSuperAdmin()) {
+            $networkList = Network::all();
+            foreach ($networkList as $network) {
+                $networks[$i][0] = $network->name;
+                $networks[$i][1] = $network->id;
+                $i++;
+            }
+        } else {
+            $networkList = $user->userNetwork;
+            foreach ($networkList as $network) {
+                $networks[$i][0] = $network->network->name;
+                $networks[$i][1] = $network->network->id;
+                $i++;
+            }
+        }
         $data = [];
         $data['role_data'] = $roleArray;
-        $data['user'] = Auth::user()->name;
+        $data['user'] = $user->name;
+        $data['network_data'] = $networks;
         return json_encode($data);
     }
 
@@ -89,14 +108,17 @@ class AnnouncementController extends Controller
         $announcement->save();
         $users = Role_user::where('role_id', '=', $request->input('send_to'))->get();
         foreach($users as $user){
-            if($userId != $user->user_id)
-            {
-                $announcementuser = new AnnouncementUser;
-                $announcementuser->user_id = $user->user_id;
-                $announcementuser->announcement_id = $announcement->id;
-                $announcementuser->read = 0;
-                $announcementuser->archive = 0;
-                $announcementuser->save();
+            if($userId != $user->user_id && $user->user->userNetwork) {
+                foreach ($user->user->userNetwork as $network) {
+                    if ($network->network_id == $request->input('network_id')) {
+                        $announcementuser = new AnnouncementUser;
+                        $announcementuser->user_id = $user->user_id;
+                        $announcementuser->announcement_id = $announcement->id;
+                        $announcementuser->read = 0;
+                        $announcementuser->archive = 0;
+                        $announcementuser->save();
+                    }
+                }   
             }
         }
         return json_encode($announcement->id);

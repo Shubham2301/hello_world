@@ -13,4 +13,8 @@ class NetworkUser extends Model
         return $this->belongsTo('myocuhub\User');
     }
 
+    public function network() {
+        return $this->belongsTo('myocuhub\Network');
+    }
+
 }

@@ -20,9 +20,11 @@ Content
     position: absolute;
     bottom: 0;
 }
+
 .sidebar_border_color {
     border-right: solid 2px rgba(235, 236, 237, .95);
 }
+
 .announcement_box {
     height: 100%;
     padding: .5em;
@@ -72,7 +74,7 @@ Content
                     .announcement_title {
                         cursor: default;
                     }
-                    &#close_announcement{
+                    &#close_announcement {
                         cursor: pointer;
                     }
                     &>img {
@@ -124,12 +126,14 @@ Content
         }
     }
 }
+
 .announcement_list_item {
     padding-top: .3em;
     display: flex;
     flex-direction: column;
     color: #4d4d4d;
 }
+
 .preview_announcement_list_item {
     display: flex;
     flex-direction: row;
@@ -146,6 +150,7 @@ Content
         flex-direction: column;
     }
 }
+
 .list_item_section {
     padding-right: .5em;
     display: flex;
@@ -188,19 +193,21 @@ Content
         }
     }
 }
+
 .section_separator {
     border-bottom: 1px solid #cccccc;
     width: 100%;
     margin: 1em 0;
 }
+
 .announcement_content {
     overflow-y: auto;
     padding: .5em;
 }
+
 .delete {
     padding-right: 1em;
-    .cancel_image,
-    .cancel_image-hover {
+    .cancel_image, .cancel_image-hover {
         width: 1.5em;
         cursor: pointer;
         margin: 0 0 0 1em;
@@ -222,6 +229,7 @@ Content
         display: block;
     }
 }
+
 .mark_as_read {
     border: none;
     background-color: #cde8f4;
@@ -238,6 +246,7 @@ Content
         display: block;
     }
 }
+
 .back-button {
     border: none;
     background-color: #ebeced;
@@ -245,14 +254,14 @@ Content
     opacity: 1;
     margin-bottom: auto;
     display: none;
-    &:active,
-    &:focus {
+    &:active, &:focus {
         border: none;
     }
     &.active {
         display: block;
     }
 }
+
 .sent_by_me {
     display: none;
     cursor: pointer;
@@ -269,6 +278,7 @@ Content
         color: #00a1e4;
     }
 }
+
 .announcement_tabs {
     display: flex;
     flex-direction: column;
@@ -276,6 +286,7 @@ Content
     border-bottom: 3px solid transparent;
     margin-bottom: auto;
 }
+
 .item_link {
     padding: .3em 0;
     cursor: pointer;
@@ -283,6 +294,7 @@ Content
         color: #00a1e4;
     }
 }
+
 
 /*
 --------------------------
@@ -382,12 +394,15 @@ Make annoucement section
         }
     }
 }
+
 #schedule,
-#send_to{
+#send_to,
+#network_id {
     padding: .3em;
     background-color: #ebebeb;
     border: none;
 }
+
 .make_row {
     display: flex;
     flex-direction: row;
@@ -422,6 +437,7 @@ Make annoucement section
         }
     }
 }
+
 input[type=checkbox] {
     margin: 3px 0 0;
 }

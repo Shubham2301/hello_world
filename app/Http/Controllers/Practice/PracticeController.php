@@ -2,17 +2,19 @@
 
 namespace myocuhub\Http\Controllers\Practice;
 
+use Auth;
 use Event;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Models\NetworkUser;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\PracticeNetwork;
+use myocuhub\Models\PracticeUser;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Network;
 use myocuhub\User;
-use Auth;
 
 class PracticeController extends Controller
 {
@@ -49,11 +51,11 @@ class PracticeController extends Controller
         $data['practice_active'] = true;
         $data['id'] = $id;
         $data['location_index'] = -1;
-        $data['network_id'] = session('network-id');
+        $data['network_id'] = [];
         $networkData = [];
-        if(session('network-id')) {
-            $networkId = session('network-id');
-            $networkData[$networkId] = Network::find($networkId)->name;
+        if (session('network-id')) {
+            $data['network_id'][] = session('network-id');
+            $networkData[session('network-id')] = Network::find(session('network-id'))->name;
         }
         else {
             $networks = Network::all()->sortBy("name");
@@ -61,7 +63,6 @@ class PracticeController extends Controller
                 $networkData[$network->id] = $network->name;
             }
         }
-
 
         return view('practice.create')->with('data', $data)->with('networks', $networkData);
     }
@@ -117,11 +118,13 @@ class PracticeController extends Controller
 
             $practicelocation->save();
         }
-        if(isset($practicedata[0]['practice_network'])) {
-            $practiceNetwork = new PracticeNetwork;
-            $practiceNetwork->practice_id = $practice->id;
-            $practiceNetwork->network_id = $practicedata[0]['practice_network'];
-            $practiceNetwork->save();
+        if (isset($practicedata[0]['practice_network'])) {
+            foreach ($practicedata[0]['practice_network'] as $network) {
+                $practiceNetwork = new PracticeNetwork;
+                $practiceNetwork->practice_id = $practice->id;
+                $practiceNetwork->network_id = $network;
+                $practiceNetwork->save();
+            }
         } else {
             session()->flash('warning', 'Practice added without network information! Please contact occuhub support.');
         }
@@ -174,12 +177,18 @@ class PracticeController extends Controller
         $data['id'] = $id;
         $data['location_index'] = $location;
         $data['edit'] = true;
-        $network = PracticeNetwork::where('practice_id', $id)->first();
-        $data['network_id'] = $network ? $network->network_id :  null ;
+        $practiceNetworks = PracticeNetwork::where('practice_id', $id)->get();
+        $data['network_id'] = [];
         $networkData = [];
-        if($network) {
-            $networks = Network::find($network->network_id);
-            $networkData[$networks->id] = $networks->name;
+
+        foreach ($practiceNetworks as $practiceNetwork) {
+            $data['network_id'][] = $practiceNetwork->network_id;
+        }
+
+        if (session('network-id')) {
+            foreach ($practiceNetworks as $practiceNetwork) {
+                $networkData[$practiceNetwork->network_id] = $practiceNetwork->network->name;
+            }
         }
         else {
             $networks = Network::all()->sortBy("name");
@@ -215,12 +224,10 @@ class PracticeController extends Controller
         $practice->email = $practiceemail;
         $practice->save();
 
-        $practiceNetwork = PracticeNetwork::where('practice_id', $practiceid)->first();
-        if(!$practiceNetwork) {
-            $practiceNetwork = new PracticeNetwork;
-            $practiceNetwork->practice_id = $practiceid;
-            $practiceNetwork->network_id = $practicedata[0]['practice_network'];
-            $practiceNetwork->save();
+        if (isset($practicedata[0]['practice_network'])) {
+            foreach ($practicedata[0]['practice_network'] as $network) {
+                $practiceNetwork = PracticeNetwork::firstOrCreate(['practice_id' => $practice->id, 'network_id' => $network]);
+            }
         }
 
         foreach ($locations as $location) {
@@ -400,7 +407,8 @@ class PracticeController extends Controller
     public function practiceUsers(Request $request)
     {
         $practiceId = $request->id;
-        $practiceUsers = User::practiceUserById($practiceId);
+        $networkId = $request->network_id;
+        $practiceUsers = User::practiceUserById($practiceId, $networkId);
         $i = 0;
         $users = [];
         foreach ($practiceUsers as $user) {
@@ -439,9 +447,10 @@ class PracticeController extends Controller
         return json_encode($data);
     }
 
-    public function getPracticesByNetwork($networkID)
+    public function getPracticesByNetwork(Request $request)
     {
-        $networkPractices = Network::find($networkID)->practices()->get(['practices.id', 'practices.name']);
+        $networkPractices = Practice::getPracticeByNetwork($request->input('networks'));
+
         $practices = [];
         foreach ($networkPractices as $practice) {
             $practices[$practice->id] = $practice->name;
