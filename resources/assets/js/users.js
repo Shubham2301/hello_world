@@ -42,6 +42,7 @@ $(document).ready(function() {
                 $('.user_roles#care-console').prop('checked', false);
                 $('.user_roles#reports').prop('checked', false);
                 $('.user_roles#administrator').prop('checked', false);
+                $('#user_practice').attr('required', true);
             } else {
                 $('#user_practice').hide();
                 $('#user_practice').prop('required', false);
@@ -51,6 +52,7 @@ $(document).ready(function() {
                 $('.user_roles#care-console').prop('checked', false);
                 $('.user_roles#reports').prop('checked', false);
                 $('.user_roles#administrator').prop('checked', false);
+                $('#user_practice').attr('required', false);
             }
             if ($(this).val() == 1) {
                 $('.user_network').prop('disabled', true);

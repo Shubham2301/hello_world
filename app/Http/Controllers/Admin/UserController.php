@@ -83,32 +83,37 @@ class UserController extends Controller
                 $user_network['network_id'][] = $network->network_id;
             }
         }
-        $menu_options = Menu::find([1, 2, 3, 4, 5]);
-        $menuData = [];
-        foreach ($menu_options as $menu_option) {
-
-            if ($menu_option->landing_page != 0) {
-                $menuData[$menu_option->id] = $menu_option->display_name;
-            }
-
-        }
-
-        $networkPractices = [];
 
         $i = 0;
-
         $practices = [];
-
+        $networkPractices = [];
+        if (session('user-level') == 2) {
+            $networkPractices = Network::find(session('network-id'))->practices;
+            foreach ($networkPractices as $practice) {
+                $practices[$practice->id] = $practice->name;
+            }
+        } else if (session('user-level') > 2) {
+            $user['practice_id'] = Auth::user()->userPractice->practice_id;
+            $practices[Auth::user()->userPractice->practice_id] = Auth::user()->userPractice->practice->name;
+        }
         foreach ($networkPractices as $practice) {
             $practices[$practice->id] = $practice->name;
         }
 
         if (session('user-level') > 2) {
-            $user['practice_id'] = User::getPractice(Auth::user()->id)->id;
+            $user['practice_id'] = Auth::user()->userPractice->practice_id;
         }
         $user['password_required'] = 'required';
 
         $providerTypes = ProviderType::indexed();
+
+        $menu_options = Menu::find([1, 2, 3, 4, 5]);
+        $menuData = [];
+        foreach ($menu_options as $menu_option) {
+            if ($menu_option->landing_page != 0) {
+                $menuData[$menu_option->id] = $menu_option->display_name;
+            }
+        }
 
         return view('admin.users.create')->with([
             'userTypes' => $userTypes,
@@ -196,29 +201,50 @@ class UserController extends Controller
         }
         $request->session()->flash('success', 'User Created Successfully!');
 
-        if ($user->level > 2 && $request->input('user_practice') !== '' && $request->input('user_practice')) {
-            $practiceUser = new PracticeUser;
-            $practiceUser->user_id = $user->id;
-            $practiceUser->practice_id = $request->input('user_practice');
-            $practiceUser->save();
-
-            foreach ($request->input('network') as $value) {
+        if (session('user-level') == 1) {
+            if ($user->level == 2) {
                 $networkUser = new NetworkUser;
                 $networkUser->user_id = $user->id;
-                $networkUser->network_id = $value;
+                $networks = $request->input('network');
+                $networkUser->network_id = $networks[0];
                 $networkUser->save();
-            }
-        }
+            } else if ($user->level > 2) {
+                $practiceUser = new PracticeUser;
+                $practiceUser->user_id = $user->id;
+                $practiceUser->practice_id = $request->input('user_practice');
+                $practiceUser->save();
 
-        if ($user->level == 2) {
+                foreach ($request->input('network') as $value) {
+                    $networkUser = new NetworkUser;
+                    $networkUser->user_id = $user->id;
+                    $networkUser->network_id = $value;
+                    $networkUser->save();
+                }
+            }
+        } else if (session('user-level') == 2) {
+            if ($user->level > 2) {
+                $practiceUser = new PracticeUser;
+                $practiceUser->user_id = $user->id;
+                $practiceUser->practice_id = $request->input('user_practice');
+                $practiceUser->save();
+            }
             $networkUser = new NetworkUser;
             $networkUser->user_id = $user->id;
             $networkUser->network_id = session('network-id');
-            if (session('user-level') == 1) {
-                $networks = $request->input('network');
-                $networkUser->network_id = $networks[0];
-            }
             $networkUser->save();
+        } else {
+            $practiceUser = new PracticeUser;
+            $practiceUser->user_id = $user->id;
+            $practiceUser->practice_id = Auth::user()->userPractice->practice_id;
+            $practiceUser->save();
+
+            $userNetworks = NetworkUser::where('user_id', Auth::user()->id)->get();
+            foreach ($userNetworks as $network) {
+                $networkUser = new NetworkUser;
+                $networkUser->user_id = $user->id;
+                $networkUser->network_id = $network->network_id;
+                $networkUser->save();
+            }
         }
 
         $action = 'New user created';
@@ -412,7 +438,7 @@ class UserController extends Controller
 
         if ($user->level > 2 && $request->input('network')) {
             foreach ($request->input('network') as $value) {
-                $practiceNetwork = NetworkUser::firstOrCreate(['user_id' => $user->id, 'network_id' => $value]);
+                $userNetwork = NetworkUser::firstOrCreate(['user_id' => $user->id, 'network_id' => $value]);
             }
         }
 
