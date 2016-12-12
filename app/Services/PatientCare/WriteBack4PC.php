@@ -97,18 +97,15 @@ class WriteBack4PC extends PatientCare
                         $appt->start_datetime = $date->format('Y-m-d H:i:s');
                         $date = new Datetime($fpcAppt->ApptEnd);
                         $appt->end_datetime = $date->format('Y-m-d H:i:s');
-                        if (!$network = User::getNetwork($provider->id)) {
-                            continue;
-                        }
-                        $appt->network_id = $network->id;
                         $patient = Patient::where('fpc_id', $fpcAppt->PatientData->FPCPatientID)->first();
-                        if ($patient) {
+                        if ($patient && $patient->careConsole) {
 
                             /**
                              * Patient Exists in Ocuhub
                              */
 
                             $appt->patient_id = $patient->id;
+                            $appt->network_id = $patient->careConsole->importHistory->network_id;
                             $appt->save();
 
                         } else {
@@ -121,7 +118,7 @@ class WriteBack4PC extends PatientCare
                             $patients['birthdate'] = $date->format('Y-m-d H:i:s');
                             $patient = Patient::where($patients)->first();
 
-                            if ($patient) {
+                            if ($patient && $patient->careConsole) {
 
                                 /**
                                  * Patient Exists in Ocuhub but not linked to FPC ID
@@ -131,6 +128,7 @@ class WriteBack4PC extends PatientCare
                                 $patient->save();
 
                                 $appt->patient_id = $patient->id;
+                                $appt->network_id = $patient->careConsole->importHistory->network_id;
                                 $appt->save();
                             }
                         }

@@ -39,4 +39,15 @@ class Practice extends Model
             ->where('user_id', $userID);
         return $query->get(['practices.id', 'practices.name', 'practices.email']);
     }
+
+    public static function getPracticeByNetwork($networkList)
+    {
+        $query = self::query();
+        foreach ($networkList as $networkID) {
+            $query->whereHas('practiceNetwork', function ($query) use ($networkID) {
+                $query->where('network_id', $networkID);
+            });
+        }
+        return $query->get(['practices.id', 'practices.name']);
+    }
 }

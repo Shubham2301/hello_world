@@ -20,6 +20,7 @@ use myocuhub\Models\PracticePatient;
 use myocuhub\Models\PracticeUser;
 use myocuhub\Models\ProviderType;
 use myocuhub\Models\ReferralHistory;
+use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\User;
 
@@ -76,6 +77,22 @@ class PatientController extends Controller
             $data['action'] = $request->input('action');
         }
 
+        $user = Auth::user();
+        $network = array();
+        if ($user->level == 1) {
+            $networkList = Network::all();
+            foreach ($networkList as $networkListItem) {
+                $network[$networkListItem->id] = $networkListItem->name;
+            }
+            $data['networkList'] = $network;
+        } else if ($user->level > 2 && sizeof($user->userNetwork) > 1) {
+            $networkList = $user->userNetwork;
+            foreach ($networkList as $networkListItem) {
+                $network[$networkListItem->network->id] = $networkListItem->network->name;
+            }
+            $data['networkList'] = $network;
+        }
+
         return view('patient.admin')
             ->with('data', $data);
 
@@ -95,6 +112,22 @@ class PatientController extends Controller
         $data['back_btn'] = config('constants.btn_urls.from_admin.back_btn');
         $data['url'] = config('constants.btn_urls.from_admin.save_url');
         $data['referraltype_id'] = -1;
+
+        $user = Auth::user();
+        $network = array();
+        if ($user->level == 1) {
+            $networkList = Network::all();
+            foreach ($networkList as $networkListItem) {
+                $network[$networkListItem->id] = $networkListItem->name;
+            }
+            $data['networkList'] = $network;
+        } else if ($user->level > 2 && sizeof($user->userNetwork) > 1) {
+            $networkList = $user->userNetwork;
+            foreach ($networkList as $networkListItem) {
+                $network[$networkListItem->network->id] = $networkListItem->network->name;
+            }
+            $data['networkList'] = $network;
+        }
         return view('patient.admin')
             ->with('data', $data);
     }
@@ -113,9 +146,23 @@ class PatientController extends Controller
             return redirect('/home');
         }
 
-        $userID = Auth::user()->id;
-        $network = User::getNetwork($userID);
-        $networkID = $network->network_id;
+        $user = Auth::user();
+        $userID = $user->id;
+        $networkID = -1;
+        if ($user->level == 2) {
+            $networkID = $user->userNetwork->first()->network_id;
+        } else {
+            if (sizeof($user->userNetwork) == 1) {
+                $networkID = $user->userNetwork->first()->network_id;
+            } else if ($request->has('patientnetwork')) {
+                $networkID = $request->has('patientnetwork');
+            }
+        }
+        if ($networkID == -1) {
+            session()->put('failure', 'patient network not specified');
+            return back();
+        }
+
         $data = $request->all();
         unset($data['_token']);
         $referraltypeID = 0;
@@ -137,6 +184,7 @@ class PatientController extends Controller
         unset($data['subscriber_relation']);
         unset($data['insurance_group_no']);
         unset($data['engagement_preference']);
+        unset($data['patientnetwork']);
 
         $patient = Patient::where($data)->first();
         if (!$patient) {
@@ -164,7 +212,11 @@ class PatientController extends Controller
             $patient->save();
 
             $importHistory = new ImportHistory;
-            $importHistory->network_id = $networkID;
+            if ($user->level != 2 && $request->input('patientnetwork')) {
+                $importHistory->network_id = $request->input('patientnetwork');
+            } else {
+                $importHistory->network_id = $networkID;
+            }
             $importHistory->type = config('constants.import_type.admin');
             $importHistory->save();
 
@@ -446,7 +498,6 @@ class PatientController extends Controller
                 $referralHistory->referred_by_practice = $request->referred_by_practice;
                 $referralHistory->disease_type = $request->input('disease_type');
                 $referralHistory->severity = $request->input('severity');
-                $referralHistory->network_id = session('network-id');
                 $referralHistory->save();
             }
 

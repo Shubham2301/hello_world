@@ -41,8 +41,8 @@ class SESConnect extends SES
 
         if ($usertype === 2) {
             if ($level === 2) {
-                $networkId = User::getNetwork($user->id)->id;
-                $user_networkId = User::getNetwork($userId)->id;
+                $networkId = $user->userNetwork->first()->network_id;
+                $user_networkId = User::find($userId)->userNetwork->first()->network_id;
                 if ($networkId != $user_networkId) {
                     return false;
                 } else {
@@ -75,7 +75,7 @@ class SESConnect extends SES
 
         if ($usertype == 2) {
             if ($level === 2) {
-                $networkId = User::getNetwork($user->id)->id;
+                $networkId = $user->userNetwork->first()->network_id;
                 $users = User::networkProvidersById($networkId);
 
                 foreach ($users as $user) {

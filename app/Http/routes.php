@@ -144,7 +144,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('users/reactivate/{id}', 'Admin\UserController@reactivate');
     });
     
-    Route::get('/administration/practices/by-network/{networkId}', 'Practice\PracticeController@getPracticesByNetwork');
+    Route::get('/administration/practices/by-network', 'Practice\PracticeController@getPracticesByNetwork');
 
     Route::resource('referraltype', 'ReferralTypeController');
     Route::get('removereferral', 'ReferralTypeController@removeReferral');

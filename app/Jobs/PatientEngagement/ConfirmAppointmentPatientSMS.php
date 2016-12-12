@@ -48,7 +48,7 @@ class ConfirmAppointmentPatientSMS extends PatientEngagement implements ShouldQu
 
         $practice = Practice::find($appointment->practice_id);
         $loggedInUser = Auth::user();
-        $network = User::getNetwork($loggedInUser->id);
+        $network = $loggedInUser->userNetwork->first()->network;
         $patient = Patient::find($appointment->patient_id);
         $provider = User::find($appointment->provider_id);
         $location = PracticeLocation::find($appointment->location_id);

@@ -18,15 +18,20 @@ class FileShare extends Model
 		return $this->belongsTo(File::class);
 	}
 
-	public static function getSharedFilesForUser($userId, $folderID = null)
+	public static function getSharedFilesForUser($userId, $folderID = null, $network_id)
 	{
 		if($folderID == null )
 		{
-			return FileShare::where('user_id', '=', $userId)->get();
+			return FileShare::where('user_id', '=', $userId)
+				->whereHas('file', function ($subquery) use ($network_id) {
+					$subquery->where('network_id', $network_id);
+				})
+				->get();
 		}
 
 		if(FolderShare::isParentShared($folderID)){
 			$files = File::where('folder_id', '=', $folderID)
+				->where('network_id', $network_id)
 				->pluck('id');
 			$sharedFiles = [];
 			$i =0;

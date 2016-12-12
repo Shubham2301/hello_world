@@ -36,7 +36,32 @@ class FileExchangeController extends Controller {
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
-		$folders = Folder::getFolders($request->id);
+        $user = Auth::user();
+        $networkList = array();
+        if (session('user-level') == 1) {
+        	$networks = Network::all(['id', 'name']);
+        	foreach ($networks as $network) {
+        		$networkList[$network->id] = $network->name;
+        	}
+        } else if (session('user-level') > 2 && sizeof($user->userNetwork) > 1) {
+        	foreach ($user->userNetwork as $network) {
+        		$networkList[$network->network_id] = $network->network->name;
+        	}
+        }
+
+      	if (session('user-level') == 1 && $request->has('network_id')) {
+      		$currentNetwork = $request->network_id;
+      	} else if (session('user-level') == 2) {
+      		$currentNetwork = $user->userNetwork->first()->network_id;
+      	} else if (session('user-level') > 2 && sizeof($user->userNetwork) == 1) {
+      		$currentNetwork = $user->userNetwork->first()->network_id;
+      	} else if (session('user-level') > 2 && sizeof($user->userNetwork) != 1 && $request->has('network_id')) {
+      		$currentNetwork = $request->network_id;
+      	} else {
+      		$currentNetwork = -1;
+      	}
+
+		$folders = Folder::getFolders($request->id, $currentNetwork);
 		$folderlist = array();
 
 		$i = 0;
@@ -53,7 +78,7 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		$files = File::getFiles($request->id);
+		$files = File::getFiles($request->id, $currentNetwork);
 
 		$filelist = array();
 
@@ -75,11 +100,14 @@ class FileExchangeController extends Controller {
 		else
 			$empty = 'false';
 
-
-		if (session('user-level') === 1) {
-			$networkPractices = Practice::all();
-		} else {
+		if (session('user-level') === 1 && $currentNetwork != -1) {
+			$networkPractices = Network::find($currentNetwork)->practices;
+		} else if (session('user-level') == 2) {
 			$networkPractices = Network::find(session('network-id'))->practices;
+		} else if (session('user-level') > 2) {
+			$networkPractices = Practice::where('id', $user->userPractice->practice_id)->get();
+		} else {
+			$networkPractices = array();
 		}
 
 		$i = 0;
@@ -98,7 +126,7 @@ class FileExchangeController extends Controller {
         $active_link['title'] = 'My Files';
         $isEditable =  true;
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'index', 'accessLink' => $accessLink, 'active_link' => $active_link, 'isEditable'=> $isEditable ]);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'index', 'accessLink' => $accessLink, 'active_link' => $active_link, 'isEditable'=> $isEditable, 'currentNetwork' => $currentNetwork, 'networkList' => $networkList]);
 	}
 
 	public function folderDetails($folder_id = 0) {
@@ -128,13 +156,14 @@ class FileExchangeController extends Controller {
 
 	public function createFolder(Request $request) {
 		$parent_id = $request->parent_id;
-		$networkId = session('network-id');
-		$parent_treepath = "/" . $networkId . '/' . Auth::user()->id . "/";
+		$network_id = $request->network_id;
+		$parent_treepath = "/" . $network_id . '/' . Auth::user()->id . "/";
 
 		$folder = new Folder();
 		$folder->name = $request->foldername;
 		$folder->description = $request->folderdescription;
 		$folder->owner_id = Auth::user()->id;
+		$folder->network_id = $network_id;
 		$folder->status = '1';
 
 		if ($parent_id != "") {
@@ -173,9 +202,9 @@ class FileExchangeController extends Controller {
 
 	public function uploadDocument(Request $request) {
 		$parent_id = $request->parent_id;
+		$network_id = $request->network_id;
 
-		$networkId = session('network-id');
-		$parent_treepath = "/" . $networkId . '/' . Auth::user()->id . "/";
+		$parent_treepath = "/" . $network_id . '/' . Auth::user()->id . "/";
 
 		$file = new File();
 
@@ -183,6 +212,7 @@ class FileExchangeController extends Controller {
 		$file->description = $request->filedescription;
 		$file->creator_id = Auth::user()->id;
 		$file->status = '1';
+		$fil->network_id = $network_id;
 		$extension = $request->file('add_document')->getClientOriginalExtension();
 		$file->extension = $extension;
 		$file->mimetype = $request->file('add_document')->getClientMimeType();
@@ -254,18 +284,42 @@ class FileExchangeController extends Controller {
 
 	public function sharedWithMe(Request $request, $sortOnRecent = '') {
 
-		$userId = Auth::user()->id;
+		$user = Auth::user();
+        $networkList = array();
+        if (session('user-level') == 1) {
+        	$networks = Network::all(['id', 'name']);
+        	foreach ($networks as $network) {
+        		$networkList[$network->id] = $network->name;
+        	}
+        } else if (session('user-level') > 2 && sizeof($user->userNetwork) > 1) {
+        	foreach ($user->userNetwork as $network) {
+        		$networkList[$network->network_id] = $network->network->name;
+        	}
+        }
 
-		$sharedfolders = FolderShare::getSharedFoldersForUser($userId, $request->id);
+      	if (session('user-level') == 1 && $request->has('network_id')) {
+      		$currentNetwork = $request->network_id;
+      	} else if (session('user-level') == 2) {
+      		$currentNetwork = $user->userNetwork->first()->network_id;
+      	} else if (session('user-level') > 2 && sizeof($user->userNetwork) == 1) {
+      		$currentNetwork = $user->userNetwork->first()->network_id;
+      	} else if (session('user-level') > 2 && sizeof($user->userNetwork) != 1 && $request->has('network_id')) {
+      		$currentNetwork = $request->network_id;
+      	} else {
+      		$currentNetwork = -1;
+      	}
+
+		$userId = $user->id;
+
+		$sharedfolders = FolderShare::getSharedFoldersForUser($userId, $request->id, $currentNetwork);
 		$isEditable = false;
 
-    if($request->id != null && $request->id !='' )
-    {
+	    if($request->id != null && $request->id !='' ) {
 			$parentFolder = Folder::find($request->id);
 			if($parentFolder){
-    		$isEditable = $parentFolder->isEditable();
-    	}
-    }
+	    		$isEditable = $parentFolder->isEditable();
+	    	}
+	    }
 		$folderlist = array();
 
 		$i = 0;
@@ -289,7 +343,7 @@ class FileExchangeController extends Controller {
 			return $value['name'];
 		}));
 
-		$sharedfiles = FileShare::getSharedFilesForUser($userId, $request->id);
+		$sharedfiles = FileShare::getSharedFilesForUser($userId, $request->id, $currentNetwork);
 
 		$filelist = array();
 
@@ -324,10 +378,14 @@ class FileExchangeController extends Controller {
 			}));
 		}
 
-		if (session('user-level') === 1) {
-			$networkPractices = Practice::all();
-		} else {
+		if (session('user-level') === 1 && $currentNetwork != -1) {
+			$networkPractices = Network::find($currentNetwork)->practices;
+		} else if (session('user-level') == 2) {
 			$networkPractices = Network::find(session('network-id'))->practices;
+		} else if (session('user-level') > 2) {
+			$networkPractices = Practice::where('id', $user->userPractice->practice_id)->get();
+		} else {
+			$networkPractices = array();
 		}
 
 		$i = 0;
@@ -360,7 +418,7 @@ class FileExchangeController extends Controller {
         $ip = $request->getClientIp();
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'sharedWithMe', 'accessLink' => $accessLink, 'active_link' => $active_link, 'isEditable'=> $isEditable]);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty , 'openView' => 'sharedWithMe', 'accessLink' => $accessLink, 'active_link' => $active_link, 'isEditable'=> $isEditable,  'currentNetwork' => $currentNetwork, 'networkList' => $networkList ]);
 	}
 
 	public function recentShareChanges(Request $request) {
@@ -409,7 +467,32 @@ class FileExchangeController extends Controller {
 
 	public function showtrash(Request $request) {
 
-		$folders = Folder::getFolders($request->id, 0);
+		$user = Auth::user();
+        $networkList = array();
+        if (session('user-level') == 1) {
+        	$networks = Network::all(['id', 'name']);
+        	foreach ($networks as $network) {
+        		$networkList[$network->id] = $network->name;
+        	}
+        } else if (session('user-level') > 2 && sizeof($user->userNetwork) > 1) {
+        	foreach ($user->userNetwork as $network) {
+        		$networkList[$network->network_id] = $network->network->name;
+        	}
+        }
+
+      	if (session('user-level') == 1 && $request->has('network_id')) {
+      		$currentNetwork = $request->network_id;
+      	} else if (session('user-level') == 2) {
+      		$currentNetwork = $user->userNetwork->first()->network_id;
+      	} else if (session('user-level') > 2 && sizeof($user->userNetwork) == 1) {
+      		$currentNetwork = $user->userNetwork->first()->network_id;
+      	} else if (session('user-level') > 2 && sizeof($user->userNetwork) != 1 && $request->has('network_id')) {
+      		$currentNetwork = $request->network_id;
+      	} else {
+      		$currentNetwork = -1;
+      	}
+
+		$folders = Folder::getFolders($request->id, $currentNetwork, 0);
 		$folderlist = array();
 
 		$i = 0;
@@ -426,7 +509,7 @@ class FileExchangeController extends Controller {
 			$i++;
 		}
 
-		$files = File::getFiles($request->id, 0);
+		$files = File::getFiles($request->id, $request->network_id, 0);
 
 		$filelist = array();
 
@@ -447,10 +530,14 @@ class FileExchangeController extends Controller {
 		else
 			$empty = 'false';
 
-		if (session('user-level') === 1) {
-			$networkPractices = Practice::all();
-		} else {
+		if (session('user-level') === 1 && $currentNetwork != -1) {
+			$networkPractices = Network::find($currentNetwork)->practices;
+		} else if (session('user-level') == 2) {
 			$networkPractices = Network::find(session('network-id'))->practices;
+		} else if (session('user-level') > 2) {
+			$networkPractices = Practice::where('id', $user->userPractice->practice_id)->get();
+		} else {
+			$networkPractices = array();
 		}
 
 		$i = 0;
@@ -462,7 +549,7 @@ class FileExchangeController extends Controller {
 		}
 
 		$breadcrumbs = $this->getBreadcrumbs($request);
-		$accessLink = '#';
+		$accessLink = '/trash';
 
 		$action = 'Accessed Trash in File Exchange';
         $description = '';
@@ -475,13 +562,15 @@ class FileExchangeController extends Controller {
         $active_link['title'] = 'Trash';
         $isEditable = false;
 
-		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty, 'openView' => 'trash', 'accessLink' => $accessLink, 'active_link' => $active_link, 'isEditable' => $isEditable]);
+		return view('file_exchange.index')->with(['folderlist' => $folderlist, 'filelist' => $filelist, 'parent_id' => $request->id, 'practices' => $practices, 'breadcrumbs' => $breadcrumbs, 'empty' => $empty, 'openView' => 'trash', 'accessLink' => $accessLink, 'active_link' => $active_link, 'isEditable' => $isEditable, 'currentNetwork' => $currentNetwork, 'networkList' => $networkList]);
 	}
 	public function shareFilesFolders(Request $request) {
 
 		$editable = ($request->share_writable === 'on') ? 1 : 0;
 
 		$toAllUsers = ($request->share_with_network === 'on') ? true : false;
+
+		$network_id = $request->network_id;
 
 		$folders =[];
 		$files = [];
@@ -491,7 +580,7 @@ class FileExchangeController extends Controller {
 			$files = explode(',', $request->share_files);
 
 		if($toAllUsers){
-			$this->shareWithNetwork($files , $folders, $editable );
+			$this->shareWithNetwork($files , $folders, $editable, $network_id);
 		} else {
 			$userId = $request->share_users;
 			foreach ($folders as $folder) {
@@ -646,10 +735,9 @@ class FileExchangeController extends Controller {
 		return $data;
 	}
 
-	public function shareWithNetwork($files , $folders, $editable ) {
+	public function shareWithNetwork($files , $folders, $editable , $network_id) {
 
-		$networkUsers = NetworkUser::where('network_id', session('network-id'))->get();
-
+		$networkUsers = NetworkUser::where('network_id', $network_id)->get();
 		foreach ($folders as $folder) {
 			$data = [];
 			$data['folder_id'] = $folder;

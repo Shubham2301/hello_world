@@ -39,7 +39,9 @@ class SendRecordWithEmail
     {
 
         $contactHistoryID = $event->getContactHistoryID();
-        $patientName = Patient::find($event->getPatientID())->getName();
+        $patient = Patient::find($event->getPatientID());
+        $patientName = $patient->getName();
+
         $templateName = WebFormTemplate::find($event->getTemplateID())->name;
 
         $PDFPaths = config('constants.paths.pdf');
@@ -58,7 +60,7 @@ class SendRecordWithEmail
         $notificationUsers = array();
         $notificationUsers[] = Auth::user();
         $networkNotificationUser = WebFormNotification::where([
-            'network_id' => session('network-id'),
+            'network_id' => $patient->careConsole->importHistory->network_id,
             'web_form_template_id' => $event->getTemplateID()
             ])->first();
 

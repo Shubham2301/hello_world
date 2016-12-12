@@ -9,8 +9,10 @@ use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientMail;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientPhone;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientSMS;
 use myocuhub\Models\Careconsole;
+use myocuhub\Models\NetworkUser;
 use myocuhub\Models\PatientFile;
 use myocuhub\Models\PatientRecord;
+use myocuhub\Models\PracticeNetwork;
 use myocuhub\Models\PracticeUser;
 use myocuhub\Network;
 
@@ -172,38 +174,47 @@ class Patient extends Model
             ->leftjoin('patient_insurance', 'patients.id', '=', 'patient_insurance.patient_id')
             ->leftjoin('careconsole', 'patients.id', '=', 'careconsole.patient_id');
 
-        if (session('user-level') == 3 && $requestSource == '/administration/patients') {
-            $practiceUser = PracticeUser::where('user_id', Auth::user()->id)->first();
+        if (session('user-level') > 2 && $requestSource == '/administration/patients') {
+            $user = Auth::user();
+            $userNetworks = NetworkUser::where('user_id', $user->id)->get();
+            $practiceUser = PracticeUser::where('user_id', $user->id)->first();
             $query
                 ->leftjoin('practice_patient', 'patients.id', '=', 'practice_patient.patient_id')
-                ->where('practice_patient.practice_id', $practiceUser['practice_id']);
+                ->where('practice_patient.practice_id', $practiceUser['practice_id'])
+                ->whereHas('careConsole.importHistory', function ($query) use ($userNetworks) {
+                    foreach ($userNetworks as $userNetwork) {
+                        $query->orWhere('network_id', $userNetwork->network_id);
+                    }
+                });
+
         }
-        elseif (session('user-level') == 3 && $requestSource == '/patients') {
-            $practiceUser = PracticeUser::where('user_id', Auth::user()->id)->first();
+        elseif (session('user-level') > 2 && $requestSource == '/patients') {
+            $user = Auth::user();
+            $practiceUser = PracticeUser::where('user_id', $user->id)->first();
+            $userNetworks = NetworkUser::where('user_id', $user->id)->get();
             $query->where(function ($subquery) use ($practiceUser) {
                 $subquery
                     ->where(function ($q) {
-                        $q
-                            ->has('practicePatient', '=', 0)
-                            ->whereHas('careConsole.importHistory', function ($query) {
-                                $query->where('network_id', session('network-id'));
-                            });
+                        $q->has('practicePatient', '=', 0);
                     })
                     ->orWhere(function ($q) use ($practiceUser) {
-                        $q
-                            ->whereHas('practicePatient', function ($query) use ($practiceUser) {
-                                $query->where('practice_id', $practiceUser['practice_id']);
-                            });
+                        $q->whereHas('practicePatient', function ($query) use ($practiceUser) {
+                            $query->where('practice_id', $practiceUser['practice_id']);
+                        });
                     })
                     ->orWhere(function ($q) use ($practiceUser) {
-                        $q
-                            ->whereHas('careConsole.referralHistory', function ($query) use ($practiceUser) {
-                                $query->where('referred_to_practice_id', $practiceUser['practice_id']);
-                            });
+                        $q->whereHas('careConsole.referralHistory', function ($query) use ($practiceUser) {
+                            $query->where('referred_to_practice_id', $practiceUser['practice_id']);
+                        });
                     });
             });
+            $query->whereHas('careConsole.importHistory', function ($query) use ($userNetworks) {
+                foreach ($userNetworks as $userNetwork) {
+                    $query->orWhere('network_id', $userNetwork->network_id);
+                }
+            });
         }
-        else {
+        else if (session('user-level') == 2) {
             $query
                 ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
                 ->where('import_history.network_id', session('network-id'));

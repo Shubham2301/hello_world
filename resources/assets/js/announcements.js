@@ -1,29 +1,29 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     $('[data-toggle="tooltip"]').tooltip();
 
     countUnreadAnnouncements();
 
-    $('#menu-announcements').on('click', function () {
+    $('#menu-announcements').on('click', function() {
         $('.announcement_box').addClass('visible');
         $('#show_announcements').addClass('active');
         $('.content-left').addClass('sidebar_border_color');
         resetDefaults();
         showAnnouncements();
     });
-    $('#close_announcement').on('click', function () {
+    $('#close_announcement').on('click', function() {
         $('.announcement_box').removeClass('visible');
         $('.announcement_tabs').removeClass('active');
         $('.content-left').removeClass('sidebar_border_color');
         resetDefaults();
     });
-    $('.announcement_content').on('click', '#close_announcement', function () {
+    $('.announcement_content').on('click', '#close_announcement', function() {
         $('.announcement_box').removeClass('visible');
         $('.announcement_tabs').removeClass('active');
         $('.content-left').removeClass('sidebar_border_color');
         resetDefaults();
     });
-    $('.announcement_content').on('click', '#edit_preview', function () {
+    $('.announcement_content').on('click', '#edit_preview', function() {
         var title = $('#title').val();
         var message = $('#message').val();
         var type = $('#type').val();
@@ -42,7 +42,7 @@ $(document).ready(function () {
         $("input:checkbox[value=" + type + "]").attr("checked", true);
         $("input:checkbox[value=" + priority + "]").attr("checked", true);
     });
-    $('.announcement_tabs').on('click', function () {
+    $('.announcement_tabs').on('click', function() {
         $($(this).parent('.announcement_navbar_left').find('.active')).removeClass('active');
         $(this).addClass('active');
         var nav_option = $(this).attr('id');
@@ -54,7 +54,7 @@ $(document).ready(function () {
             makeAnnouncementForm();
         }
     });
-    $('.announcement_content').on('change', '.select_item', function () {
+    $('.announcement_content').on('change', '.select_item', function() {
         if ($("input[name='checkbox']:checked").length > 0) {
             $('.delete').addClass('active');
             $('.mark_as_read').addClass('active');
@@ -64,7 +64,7 @@ $(document).ready(function () {
             resetDefaults();
         }
     });
-    $('.announcement_content').on('click', '.item_link', function () {
+    $('.announcement_content').on('click', '.item_link', function() {
         var id = $(this).attr('data-id');
         if ($('#sent_by_me').hasClass('sent_to_me')) {
             $('.back-button').addClass('active');
@@ -79,7 +79,7 @@ $(document).ready(function () {
         }
 
     });
-    $('.back-button').on('click', function () {
+    $('.back-button').on('click', function() {
         if ($('#sent_by_me').hasClass('sent_to_me')) {
             announcementByUserList()
         } else {
@@ -87,43 +87,43 @@ $(document).ready(function () {
             showAnnouncements();
         }
     });
-    $('.mark_as_read').on('click', function () {
+    $('.mark_as_read').on('click', function() {
         var id = [];
-        $.each($("input[name='checkbox']:checked"), function () {
+        $.each($("input[name='checkbox']:checked"), function() {
             id.push($(this).val());
         });
         resetDefaults();
         markAnnouncement(id);
     });
-    $('.delete').on('click', function () {
+    $('.delete').on('click', function() {
         var id = [];
         if ($('.delete').attr('id')) {
             id.push($('.delete').attr('id'));
         } else {
-            $.each($("input[name='checkbox']:checked"), function () {
+            $.each($("input[name='checkbox']:checked"), function() {
                 id.push($(this).val());
             });
         }
         resetDefaults();
         archiveAnnouncement(id);
     });
-    $('.announcement_content').on('click', '#publish', function () {
+    $('.announcement_content').on('click', '#publish', function() {
         makeAnnouncement();
     });
-    $('.announcement_content').on('click', '#preview', function () {
+    $('.announcement_content').on('click', '#preview', function() {
         previewAnnouncement();
     });
-    $('.announcement_content').on('change', '.type', function () {
+    $('.announcement_content').on('change', '.type', function() {
         $('.type').prop('checked', false);
         $(this).prop('checked', true);
         $('#type').val($(this).val());
     });
-    $('.announcement_content').on('change', '.priority', function () {
+    $('.announcement_content').on('change', '.priority', function() {
         $('.priority').prop('checked', false);
         $(this).prop('checked', true);
         $('#priority').val($(this).val());
     });
-    $('#sent_by_me').on('click', function () {
+    $('#sent_by_me').on('click', function() {
         if ($('#sent_by_me').hasClass('sent_to_me')) {
             resetDefaults();
             showAnnouncements();
@@ -144,10 +144,10 @@ function countUnreadAnnouncements() {
         data: '',
         contentType: 'text/html',
         async: false,
-        success: function (e) {
+        success: function(e) {
             var announcements = $.parseJSON(e);
             if (announcements.length != 0) {
-                announcements.forEach(function (announcement) {
+                announcements.forEach(function(announcement) {
                     if (announcement.read == 0) {
                         count++;
                     }
@@ -155,11 +155,11 @@ function countUnreadAnnouncements() {
                 $('#menu-notification-announcements>.notification_text').html(count);
                 $('#menu-notification-announcements').addClass('active');
             }
-            if(count == 0) {
+            if (count == 0) {
                 $('#menu-notification-announcements').removeClass('active');
             }
         },
-        error: function () {},
+        error: function() {},
         cache: false,
         processData: false
     });
@@ -186,13 +186,25 @@ function makeAnnouncementForm() {
         data: '',
         contentType: 'text/html',
         async: false,
-        success: function (e) {
-            var roles = $.parseJSON(e);
-            content += '<span class="make_announcement"><span class="item_left"></span><span class="item_right"><span class="make_row"><span class="left arial_bold">Send To</span><span class="right"><select id="send_to">';
-            for (var i = 0; i < roles.role_data.length; i++) {
-                content += '<option value="' + roles.role_data[i][1] + '">' + roles.role_data[i][0] + '</option>';
+        success: function(e) {
+            var data = $.parseJSON(e);
+            content += '<span class="make_announcement"><span class="item_left"></span><span class="item_right">';
+            if (data.network_data.length == 1) {
+                content += '<span class="make_row" style="display:none;">';
+            } else {
+                content += '<span class="make_row">';
             }
-            content += '</select></span></span><span class="make_row"><span class="left arial_bold">Schedule</span><span class="right"><input type="text" id="schedule"></span></span><span class="make_row"><span class="left arial_bold">Title</span><span class="right"><input type="text" id="title"></span></span><span class="make_row"><span class="left arial_bold">Message</span><span class="right"><textarea name="textarea" id="message"></textarea></span></span><span class="make_row"><span class="left arial_bold">Type</span><span class="right"><span><input type="radio" class="type" value="General">&nbsp;General</span><span><input type="radio" class="type" value="News">&nbsp;News</span><span><input type="radio" class="type" value="Test">&nbsp;Test</span></span></span><span class="make_row"><span class="left arial_bold">Priority</span><span class="right"><span><input type="radio" class="priority" value="Normal">&nbsp;Normal</span><span><input type="radio" class="priority" value="Important">&nbsp;Important</span><span></span></span></span><span class="make_row arial button_row"><button id="publish">Publish</button><button id="preview">Preview</button><button id="close_announcement">Cancel</button></span></span></span><input type="hidden" value="' + roles.user + '" id="user_name"><input type="hidden" value="" id="priority"><input type="hidden" value="" id="type">';
+            content += '<span class="left arial_bold">Network</span><span class="right"><select id="network_id">';
+            for (var i = 0; i < data.network_data.length; i++) {
+                content += '<option value="' + data.network_data[i][1] + '">' + data.network_data[i][0] + '</option>';
+            }
+            content += '</select></span></span><span class="make_row"><span class="left arial_bold">Send To</span><span class="right"><select id="send_to">';
+            for (var i = 0; i < data.role_data.length; i++) {
+                content += '<option value="' + data.role_data[i][1] + '">' + data.role_data[i][0] + '</option>';
+            }
+            content += '</select></span></span>';
+
+            content += '<span class="make_row"><span class="left arial_bold">Schedule</span><span class="right"><input type="text" id="schedule"></span></span><span class="make_row"><span class="left arial_bold">Title</span><span class="right"><input type="text" id="title"></span></span><span class="make_row"><span class="left arial_bold">Message</span><span class="right"><textarea name="textarea" id="message"></textarea></span></span><span class="make_row"><span class="left arial_bold">Type</span><span class="right"><span><input type="radio" class="type" value="General">&nbsp;General</span><span><input type="radio" class="type" value="News">&nbsp;News</span><span><input type="radio" class="type" value="Test">&nbsp;Test</span></span></span><span class="make_row"><span class="left arial_bold">Priority</span><span class="right"><span><input type="radio" class="priority" value="Normal">&nbsp;Normal</span><span><input type="radio" class="priority" value="Important">&nbsp;Important</span><span></span></span></span><span class="make_row arial button_row"><button id="publish">Publish</button><button id="preview">Preview</button><button id="close_announcement">Cancel</button></span></span></span><input type="hidden" value="' + data.user + '" id="user_name"><input type="hidden" value="" id="priority"><input type="hidden" value="" id="type">';
             $('.announcement_content').html(content);
             var date = new Date();
             $('#schedule').datetimepicker({
@@ -201,7 +213,7 @@ function makeAnnouncementForm() {
                 defaultDate: date
             });
         },
-        error: function () {
+        error: function() {
             $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },
@@ -220,12 +232,12 @@ function showAnnouncements() {
         data: '',
         contentType: 'text/html',
         async: false,
-        success: function (e) {
+        success: function(e) {
             var announcements = $.parseJSON(e);
             if (announcements.length == 0) {
                 content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section"><span class="from">No Announcements</span><span class=" from date"></span></span></span><span class="item_subject list_item_section"><span class="item_left"></span><span class="title arial_bold item_right"><span class="item_link" data-id=""></span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right excerpt"></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
             } else {
-                announcements.forEach(function (announcement) {
+                announcements.forEach(function(announcement) {
                     content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"><input type="checkbox" class="select_item" name="checkbox" value="' + announcement.id + '"></span><span class="item_right list_item_section"><span class="from">From: ' + announcement.from + '</span><span class=" from date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section">';
                     if (announcement.read == 0) {
                         content += '<span class="glyphicon glyphicon-exclamation-sign item_left ' + announcement.priority + '"></span>';
@@ -242,7 +254,7 @@ function showAnnouncements() {
             }
             $('.announcement_content').html(content);
         },
-        error: function () {
+        error: function() {
             $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },
@@ -268,7 +280,7 @@ function getAnnouncementDetail(id) {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function (e) {
+        success: function(e) {
             var announcement = $.parseJSON(e);
             content = '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section">';
             if ($('#sent_by_me').hasClass('sent_to_me'))
@@ -278,7 +290,7 @@ function getAnnouncementDetail(id) {
             content += '<span class="date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section"><span class="item_left"></span><span class="title arial_bold item_right"><span class="" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right">' + announcement.message + '</span></span></span>';
             $('.announcement_content').html(content);
         },
-        error: function () {
+        error: function() {
             $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },
@@ -300,13 +312,15 @@ function makeAnnouncement() {
     var priority = $('#priority').val();
     var schedule = $('#schedule').val();
     var send_to = $('#send_to').val();
+    var network_id = $('#network_id').val();
     var formData = {
         'title': title,
         'message': message,
         'type': type,
         'priority': priority,
         'schedule': schedule,
-        'send_to': send_to
+        'send_to': send_to,
+        'network_id': network_id
     };
     $.ajax({
         url: '/announcements/store',
@@ -314,7 +328,7 @@ function makeAnnouncement() {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function (e) {
+        success: function(e) {
             var id = $.parseJSON(e);
             resetDefaults();
             //            $('.delete').removeClass('active');
@@ -327,7 +341,7 @@ function makeAnnouncement() {
             $('.make').removeClass('active');
             getAnnouncementDetail(id);
         },
-        error: function () {
+        error: function() {
             $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },
@@ -339,7 +353,7 @@ function makeAnnouncement() {
 function archiveAnnouncement(id) {
     var archiveId = {};
     var i = 0;
-    id.forEach(function (item) {
+    id.forEach(function(item) {
         archiveId[i] = item;
         i++;
     });
@@ -349,10 +363,10 @@ function archiveAnnouncement(id) {
         data: $.param(archiveId),
         contentType: 'text/html',
         async: false,
-        success: function (e) {
+        success: function(e) {
             showAnnouncements();
         },
-        error: function () {
+        error: function() {
             $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },
@@ -366,7 +380,7 @@ function archiveAnnouncement(id) {
 function markAnnouncement(id) {
     var archiveId = {};
     var i = 0;
-    id.forEach(function (item) {
+    id.forEach(function(item) {
         archiveId[i] = item;
         i++;
     });
@@ -376,10 +390,10 @@ function markAnnouncement(id) {
         data: $.param(archiveId),
         contentType: 'text/html',
         async: false,
-        success: function (e) {
+        success: function(e) {
             showAnnouncements();
         },
-        error: function () {
+        error: function() {
             $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },
@@ -420,12 +434,12 @@ function announcementByUserList() {
         data: '',
         contentType: 'text/html',
         async: false,
-        success: function (e) {
+        success: function(e) {
             var announcements = $.parseJSON(e);
             if (announcements.length == 0) {
                 content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section"><span class="from">No Announcements</span><span class=" from date"></span></span></span><span class="item_subject list_item_section"><span class="item_left"></span><span class="title arial_bold item_right"><span class="item_link" data-id=""></span></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right excerpt"></span></span><span class="item_text list_item_section"><span class="item_left"></span><span class="item_right"><span class="section_separator"></span></span></span></span>';
             } else {
-                announcements.forEach(function (announcement) {
+                announcements.forEach(function(announcement) {
                     content += '<span class="announcement_list_item arial"><span class="item_header list_item_section"><span class="item_left"></span><span class="item_right list_item_section"><span class="from">To: ' + announcement.from + '</span><span class=" from date">' + announcement.schedule + '</span></span></span><span class="item_subject list_item_section">';
                     content += '<span class="item_left"></span>';
                     content += '<span class="title arial_bold item_right"><span class="item_link" data-id="' + announcement.id + '">' + announcement.title + '</span></span></span><span class="item_text list_item_section"><span class="item_left"></span>';
@@ -438,7 +452,7 @@ function announcementByUserList() {
             }
             $('.announcement_content').html(content);
         },
-        error: function () {
+        error: function() {
             $('p.alert_message').text('Error');
             $('#alert').modal('show');
         },

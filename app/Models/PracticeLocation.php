@@ -22,12 +22,12 @@ class PracticeLocation extends Model
         return $this->belongsTo(Practice::class);
     }
 
-    public static function getNearByLocations ($lat, $lng, $range = 10, $providerTypes)
+    public static function getNearByLocations ($lat, $lng, $range = 10, $providerTypes, $patientNetwork)
     	{
     	$query = self::query();
     	if (session('user-level') != 1) {
-    		$query->whereHas('practice.practiceNetwork', function ($subquery) {
-    			$subquery->where('network_id', session('network-id'));
+    		$query->whereHas('practice.practiceNetwork', function ($subquery) use ($patientNetwork){
+    			$subquery->where('network_id', $patientNetwork);
     		});
         }
     	$query->whereHas('practice.practiceUsers', function ($subquery) use ($providerTypes) {
@@ -48,8 +48,8 @@ class PracticeLocation extends Model
             ->having('distance', '<=', $range)
             ->orderBy('distance', 'ASC');
 
-        $query->with(['practice.practiceUsers' => function ($subquery) use ($providerTypes) {
-        	$subquery->whereHas('user', function ($subquery) use ($providerTypes) {
+        $query->with(['practice.practiceUsers' => function ($subquery) use ($providerTypes, $patientNetwork) {
+        	$subquery->whereHas('user', function ($subquery) use ($providerTypes, $patientNetwork) {
         		$subquery->where('active', 1);
         		$subquery->where('usertype_id', 1);
         		if($providerTypes) {
@@ -60,11 +60,11 @@ class PracticeLocation extends Model
 			            }
 			        });
         		}
+                $subquery->whereHas('userNetwork', function ($subquery) use ($patientNetwork) {
+                    $subquery->where('network_id', $patientNetwork);
+                });
         	});
         }]);
-
         return $query->get();
-
-
     }
 }

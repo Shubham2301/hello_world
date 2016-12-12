@@ -31,9 +31,7 @@ trait ReachRateTrait
 
     public function generateReport()
     {
-        $userID = Auth::user()->id;
-        $network = User::getNetwork($userID);
-        $networkID = $network->network_id;
+        $networkID = Auth::user()->userNetwork->first()->network_id;
 
         $results = array(array());
 

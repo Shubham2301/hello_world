@@ -2,8 +2,8 @@
 
 namespace myocuhub\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Http\Request;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Http\Requests;
 use myocuhub\Network;
@@ -57,11 +57,22 @@ class ReferralTypeController extends Controller
      */
     public function show()
     {
-        if (session('user-level') == 1) {
-			$referralType = ReferralType::all();
-		} else {
+        if (session('user-level') == 2) {
 			$referralType = Network::find(session('network-id'))->referralTypes;
-		}
+		} else {
+            $user = Auth::user();
+            $userNetworks = $user->userNetwork;
+            $referralType = array();
+            if (sizeof($userNetworks) > 1) {
+                $referralType = ReferralType::whereHas('NetworkReferraltype', function ($query) use ($userNetworks) {
+                    foreach ($userNetworks as $userNetwork) {
+                        $query->orWhere('network_id', $userNetwork->network_id);
+                    }
+                })->get();
+            } else {
+                $referralType = Network::find($user->userNetwork->first()->network_id)->referralTypes;
+            }
+        }
 		$referralTypeList = ReferralType::all();
 		$data = [];
 		$data[0] = $referralType;

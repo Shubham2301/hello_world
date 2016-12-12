@@ -46,6 +46,8 @@
             </span>
         </div>
         <div class="col-xs-12">
+            {!! Form::hidden('logged_in_user_level', session('user-level'), array('id' => 'logged_in_user_level')) !!}
+            {!! Form::hidden('logged_in_user_network', session('network-id'), array('id' => 'logged_in_user_level')) !!}
             <form method="POST" action="{{$data['url']}}" id="form_add_users">
                 {!! csrf_field() !!} {{ method_field('POST') }}
                 <div class="panel-group accordian_margin" id="accordion">
@@ -61,36 +63,32 @@
                         <div id="collapse1" class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-6">
+                                    <div class="col-xs-12 col-sm-5">
                                         <input type="hidden" value="{{ \myocuhub\Usertype::getID('Provider') }}" id="usertype_provider_id">
                                         {!! Form::select('usertype', $userTypes, $user['usertype_id'], array('class' => ' add_user_input', 'placeholder' => 'Select User Types*', 'id' => 'user_type', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'User Type', 'data-placement' => 'right')) !!}
                                         {!! Form::select('provider_type_id', $providerTypes, $user['provider_type_id'], array('class' => 'add_user_input', 'placeholder' => 'Select Provider Type', 'id' => 'provider_type', 'data-toggle' => 'tooltip', 'title' => 'Provider Type', 'data-placement' => 'right' , 'style' => ($user['usertype_id'] == \myocuhub\Usertype::getID('Provider')) ? 'display:inline-block' : 'display:none' )) !!}
-                                        {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => ' add_user_input', 'placeholder' => 'Select User Levels*', 'id' => 'user_level', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'User Level', 'data-placement' => 'right')) !!}
-
-                                        @if(session('user-level') == 1)
-                                            @if($user['network_id'] == '')
-                                            {!! Form::select('user_network', $networks, $user['network_id'], array('class' => 'add_user_input', 'placeholder' => 'Select Network*', 'id' => 'user_network', 'data-toggle' => 'tooltip', 'title' => 'User Network', 'data-placement' => 'right', 'style' =>'display:none')) !!}
-                                            @else
-                                            <input type="hidden" value={{ $user['network_id'] }} name="user_network" />
-                                            {!! Form::text('non_editable_network', $networks[$user['network_id']], array('class' => ' add_user_input non_selectable_field', 'placeholder' => '', 'id' => 'title' , 'data-toggle' => 'tooltip', 'title' => 'User Network', 'data-placement' => 'right', 'readonly')) !!}
-                                            @endif
-                                        {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'data-toggle' => 'tooltip', 'title' => 'User Practice', 'data-placement' => 'right', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
-                                        @elseif(session('user-level') == 2)
-                                            {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'data-toggle' => 'tooltip', 'title' => 'User Practice', 'data-placement' => 'right', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block")) !!}
-                                        @else
-                                        {!! Form::hidden('user_practice', $user['practice_id'], array('id' => 'user_practice')) !!}
-                                        @endif
-
+                                        {!! Form::select('userlevel', $userLevels, $user['level'], array('class' => ' add_user_input', 'placeholder' => 'Select User Levels*', 'id' => 'user_level', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'User Level', 'data-placement' => 'right', ($user['level'] != null ? 'disabled' : '' ))) !!}
                                         {!! Form::select('landing_page', $menuoption, $user['menu_id'], array('class' => 'add_user_input', 'placeholder' => 'Select Landing Page', 'id' => 'landing_page' , 'data-toggle' => 'tooltip', 'title' => 'Landing Page', 'data-placement' => 'right')) !!}
-
                                     </div>
-                                    <div class="col-xs-12 col-sm-6" style="color:#fff;">
-                                       <h4>Roles*</h4>
-                                        @foreach($roles as $key => $role)
-                                        @if(isset($user[$role])) {!! Form::checkbox('role[]', $role, true, array('id' => $key, 'class' => 'user_roles')); !!}
-                                        @else {!! Form::checkbox('role[]', $role, null, array('id' => $key, 'class' => 'user_roles')); !!}
-                                        @endif {!! Form::label($role, $role); !!}
-                                        <br> @endforeach
+                                    <div class="col-xs-12 col-sm-7" style="color:#fff;">
+                                        <div class="col-xs-6">
+                                        <h4>Networks*</h4>
+                                            @foreach($networks as $key => $network)
+                                                {!! Form::checkbox('network[]', $key, (in_array($key, $user_network['network_id']) ? true : null ), array('id' => $key, 'class' => 'user_network', (in_array($key, $user_network['network_id']) ? 'disabled' : '' ))); !!}
+                                                {!! Form::label($network, $network); !!}
+                                                <br>
+                                            @endforeach
+                                            {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'data-toggle' => 'tooltip', 'title' => 'User Practice', 'data-placement' => 'right', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block", ($user['practice_id'] != null ? 'disabled' : '' ))) !!}
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <h4>Roles*</h4>
+                                            @foreach($roles as $key => $role)
+                                                @if(isset($user[$role])) {!! Form::checkbox('role[]', $role, true, array('id' => $key, 'class' => 'user_roles')); !!}
+                                                @else {!! Form::checkbox('role[]', $role, null, array('id' => $key, 'class' => 'user_roles')); !!}
+                                                @endif {!! Form::label($role, $role); !!}
+                                                <br>
+                                            @endforeach
+                                        </div>
                                     </div>
 
                                 </div>

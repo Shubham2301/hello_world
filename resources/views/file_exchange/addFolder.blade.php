@@ -18,6 +18,7 @@
                     <button type="button" class="btn dismiss-button" data-dismiss="modal">Cancel</button>
                 </span>
                 <input type="hidden" name="parent_id" value="{{ $parent_id }}">
+                <input type="hidden" name="network_id" value="{{ $currentNetwork }}">
         </div>
         {!! Form::close()!!}
     </div>

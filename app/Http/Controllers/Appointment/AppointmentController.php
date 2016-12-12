@@ -37,7 +37,7 @@ class AppointmentController extends Controller
 
     public function schedule(Request $request)
     {
-        if (Auth::user()->isSuperAdmin()) {
+        if (!$request->has('patient_id') || !policy(new User)->canSchedule($request->input('patient_id'))) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
@@ -50,8 +50,6 @@ class AppointmentController extends Controller
         ];
         
         $userID = Auth::user()->id;
-        $network = User::getNetwork($userID);
-        $networkID = $network->id;
         $patientID = $request->input('patient_id');
         $providerID = $request->input('provider_id');
         $locationID = $request->input('location_id');
@@ -62,6 +60,7 @@ class AppointmentController extends Controller
         $appointmentType = $request->input('appointment_type');
         $appointmentTypeKey = $request->input('appointment_type_key');
         $appointmentDateTime = new DateTime($request->input('appointment_time'));
+        $networkID = Careconsole::where('patient_id', $patientID)->first()->importHistory->network_id;
     
         $appointment = Appointment::schedule([
             'provider_id' => $providerID,
@@ -149,7 +148,7 @@ class AppointmentController extends Controller
                 $careconsole->save();
             }
 
-            $referralHistory->network_id = session('network-id');
+            $referralHistory->network_id = $networkID;
             $referralHistory->referred_to_practice_id = $appointment->practice_id;
             $referralHistory->referred_to_location_id = $appointment->location_id;
             $referralHistory->referred_to_practice_user_id = $appointment->provider_id;
@@ -219,8 +218,7 @@ class AppointmentController extends Controller
 
     public function index(Request $request)
     {
-        $user = Auth::user();
-        if ($user->isSuperAdmin()) {
+        if (!$request->has('patient_id') || !policy(new User)->canSchedule($request->input('patient_id'))) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }

@@ -29,25 +29,37 @@ class BulkImportController extends Controller
 
     public function index()
     {
-
+        $user = Auth::user();
         if (session('user-level') == 1) {
-            $super_admin = true;
-
-            $data['super_admin'] = $super_admin;
-            if ($super_admin) {
-                $data['networks'] = Network::all();
+            $multiple_network = true;
+            $data['multiple_network'] = $multiple_network;
+            if ($multiple_network) {
+                $userNetworks = Network::all();
+                $networks = array();
+                foreach ($userNetworks as $userNetwork) {
+                    $networks[$userNetwork->id] = $userNetwork->name;
+                }
+            $data['networks'] = $networks;
             }
 
+        } else if (session('user-level') == 2) {
+            $data['id'] = $user->userNetwork->first()->network_id;
+            $data['name'] = $user->userNetwork->first()->network->name;
+            $data['multiple_network'] = false;
+        } else if (session('user-level') > 2 && sizeof($user->userNetwork) > 1){
+            $user = Auth::user();
+            $userNetworks = $user->userNetwork;
+            $networks = array();
+            foreach ($userNetworks as $userNetwork) {
+                $networks[$userNetwork->network_id] = $userNetwork->network->name;
+            }
+            $data['networks'] = $networks;
+            $data['multiple_network'] = true;
         } else {
-
-            $userID = Auth::user()->id;
-            $network = User::getNetwork($userID);
-            $data['id'] = $network->network_id;
-            $data['name'] = $network->name;
-            $data['super_admin'] = false;
-
+            $data['id'] = $user->userNetwork->first()->network_id;
+            $data['name'] = $user->userNetwork->first()->network->name;
+            $data['multiple_network'] = false;
         }
-
         return view('layouts.import')->with('network', $data);
     }
 

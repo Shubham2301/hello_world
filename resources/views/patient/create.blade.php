@@ -173,6 +173,29 @@
                     </div>
                 </div>
             </div>
+            @if(array_key_exists('networkList', $data))
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                    <span class="popover_text" data-content="">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">
+                        Network Details</a>
+                    </span>
+                    </h4>
+                </div>
+                <div id="collapse6" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="row content-row-margin">
+                            <div class="col-sm-6 col-xs-12">
+                                {!! Form::select('patientnetwork', $data['networkList'], null, array('class' => 'add_patient_input', 'placeholder' => 'Network*', 'id' => 'patientnetwork', 'required' => 'required', 'data-toggle' => 'tooltip', 'title' => 'Patient Network', 'data-placement' => 'right')) !!}
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
         <div class="row content-row-margin add_patient_footer">
             <div class="col-xs-8 col-sm-8 col-md-8">

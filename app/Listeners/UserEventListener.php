@@ -15,8 +15,8 @@ class UserEventListener {
 
 		$user = Auth::user();
 
-		if ($network = User::getNetwork($user->id)) {
-			session(['network-id' => $network->network_id]);
+		if ($user->userNetwork->first()) {
+			session(['network-id' => $user->userNetwork->first()->network_id]);
 		}
 
 		session(['user-level' => $user->level]);
