@@ -12,10 +12,8 @@
         <div class="dropdown select_form_dropdown">
 			<p class="form_name" type="" data-toggle="dropdown" style="display:none">Type of web form
 				<span class="caret" ></span></p>
-            <ul class="dropdown-menu" >
-                @foreach($forms as $form)
-				<li  class= "showwebform" value ="{{$form->name}}" data-id ="{{$form->id}}" >{{$form->display_name}}</li>
-                @endforeach
+            <ul class="dropdown-menu web_form_list" >
+                
             </ul>
         </div>
     </div>

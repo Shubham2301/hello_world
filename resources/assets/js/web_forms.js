@@ -19,6 +19,7 @@ $(document).ready(function() {
     });
 
     $('#search_listing').on('click', '.patient_list_item', function() {
+        getWebFormList($(this).attr('data-id'));
         $('.section').removeClass('active');
         $('.search_section').removeClass('active');
         $('#search_patient_input').val($(this).attr('data-name'));
@@ -43,7 +44,7 @@ $(document).ready(function() {
         }
     });
 
-    $('.showwebform').on('click', function() {
+    $('ul.web_form_list').on('click', '.showwebform', function() {
         var name = $(this).attr('value');
         templateID = $(this).attr('data-id');
         $('.form_name').text($(this).text());
@@ -304,12 +305,41 @@ function unSelectPatient(removeBtnObj) {
     $('.select_form_dropdown').find('p').hide();
 }
 
-function changeTheSizeOfPad()
-{
+function changeTheSizeOfPad() {
     $('.sigWrapper').css({
-        "height":"120px",
-        "padding":"10px",
+        "height": "120px",
+        "padding": "10px",
     });
 
     $('.sigPad').css('width', '400px');
+}
+
+function getWebFormList(patientID) {
+    $.ajax({
+        url: '/getWebFormList',
+        type: 'GET',
+        data: $.param({
+            patientID: patientID
+        }),
+        contentType: 'text/html',
+        async: false,
+        success: function success(webFormList) {
+            if (webFormList == 0) {
+                $('p.alert_message').text('No webform available for the selected patient');
+                $('#alert').modal('show');
+            } else {
+                var content = '';
+                webFormList.forEach(function(webForm) {
+                    content += '<li  class= "showwebform" value ="' + webForm.name + '" data-id ="' + webForm.id + '" >' + webForm.display_name + '</li>';
+                });
+                $('ul.web_form_list').html(content);
+            }
+        },
+        error: function error() {
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
 }

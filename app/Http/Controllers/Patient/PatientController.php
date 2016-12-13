@@ -155,7 +155,7 @@ class PatientController extends Controller
             if (sizeof($user->userNetwork) == 1) {
                 $networkID = $user->userNetwork->first()->network_id;
             } else if ($request->has('patientnetwork')) {
-                $networkID = $request->has('patientnetwork');
+                $networkID = $request->input('patientnetwork');
             }
         }
         if ($networkID == -1) {
@@ -698,13 +698,15 @@ class PatientController extends Controller
         $referredByProvider = $request->referred_by_provider;
         $patientID = $request->patient_id;
 
-        $referralHistory = new ReferralHistory;
-        $referralHistory->referred_by_provider = $referredByProvider;
-        $referralHistory->referred_by_practice = $referredByPractice;
-        $referralHistory->network_id = session('network-id');
-        $referralHistory->save();
-
         $careconsole = Careconsole::where('patient_id', '=', $patientID)->first();
+
+        if ($careconsole) {
+            $referralHistory = new ReferralHistory;
+            $referralHistory->referred_by_provider = $referredByProvider;
+            $referralHistory->referred_by_practice = $referredByPractice;
+            $referralHistory->network_id = $careconsole->importHistory->network_id;
+            $referralHistory->save();
+        }
 
         if ($careconsole && $referralHistory != null) {
             $careconsole->referral_id = $referralHistory->id;
