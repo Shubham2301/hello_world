@@ -60,8 +60,18 @@ trait PatientRecordsTrait
 
     public function getWebFormIndex(Request $request)
     {
-        $forms = Network::find(session('network-id'))->webForms;
-        return view('web-forms.index', ['forms' => $forms]);
+        return view('web-forms.index');
+    }
+
+    public function getWebFormList(Request $request)
+    {
+        $patientID = $request->patientID;
+        $patient = Patient::find($patientID);
+        if ($patient->careConsole) {
+            $network = Network::find($patient->careConsole->importHistory->network_id);
+            return $network->webForms;
+        }
+        return 0;
     }
 
     public function savePatientRecord(Request $request)
@@ -100,7 +110,7 @@ trait PatientRecordsTrait
                 $patient->special_request = $specialRequest;
                 $patient->save();
 
-                if ( Network::find(session('network-id'))->enable_console == 1)
+                if ( $patient->careConsole && Network::find($patient->careConsole->importHistory->network_id)->enable_console == 1)
                 {
                     $actionID = Action::where('name', 'move-to-contact-status')->first()->id;
                     $movePatient = $this->ActionService->userAction($actionID, '-1', null, 'Moved patient to Contact Status', '', $patient->careConsole->id, '');

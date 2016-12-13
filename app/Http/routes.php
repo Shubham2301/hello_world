@@ -217,6 +217,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('createrecord/{name}/{patient_id}', 'Patient\PatientController@createRecord');
     Route::post('save_records', 'Patient\PatientController@savePatientRecord');
     Route::get('patientlistforcreaterecord', 'Patient\PatientController@PatientListForCreateRecord');
+    Route::get('getWebFormList', 'Patient\PatientController@getWebFormList');
     Route::get('patientlistforshowrecord', 'Patient\PatientController@PatientListForShowRecord');
     Route::get('getcaretimeline', 'Patient\PatientController@getCareTimeLine');
     Route::get('/show_records/{id}', 'Patient\PatientController@printRecord');
