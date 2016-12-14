@@ -83,7 +83,6 @@ class RequestFPCAppointment
 
         $user = Auth::user();
         $userID = $user->id;
-        $networkID = $loggedInUser->userNetwork->first()->_id;
         $patientID = $request->input('patient_id');
         $providerID = $request->input('provider_id');
         $locationID = $request->input('location_id');
@@ -92,6 +91,7 @@ class RequestFPCAppointment
         $appointmentTypeKey = $request->input('appointment_type_key');
         $appointmentTime = $request->input('appointment_time');
         $patient = Patient::find($patientID);
+        $networkID = $patient->careConsole ? $patient->careConsole->importHistory->network_id : '';
 
         $providerKey = $request->input('provider_acc_key');
         $locationKey = $request->input('location_code');
