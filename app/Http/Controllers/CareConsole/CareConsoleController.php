@@ -276,14 +276,25 @@ class CareConsoleController extends Controller
                 $results[$i]['console_id'] = $console->id;
                 $results[$i]['stage_id'] = $console->stage_id;
                 $results[$i]['name'] = $patient->getName('system_format');
-                $results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
-                $results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
+                
                 if ($console->recall_date) {
-                    $results[$i]['actions'] = $this->CareConsoleService->getActions(8);
+                    $bucket = 'recall';
+                    $bucket = CareconsoleStage::where('name', $bucket)->first();
+                    $bucketID = $bucket->id;
+                    $results[$i]['actions'] = $this->CareConsoleService->getActions($bucketID);
+                    $results[$i]['stage_name'] = CareconsoleStage::find($bucketID)->display_name;
+                    $results[$i]['stage_color'] = CareconsoleStage::find(1)->color_indicator;
                 } elseif ($console->archived_date) {
-                    $results[$i]['actions'] = $this->CareConsoleService->getActions(6);
+                    $bucket = 'archived';
+                    $bucket = CareconsoleStage::where('name', $bucket)->first();
+                    $bucketID = $bucket->id;
+                    $results[$i]['actions'] = $this->CareConsoleService->getActions($bucketID);
+                    $results[$i]['stage_name'] = CareconsoleStage::find($bucketID)->display_name;
+                    $results[$i]['stage_color'] = CareconsoleStage::find(1)->color_indicator;
                 } else {
                     $results[$i]['actions'] = $this->CareConsoleService->getActions($console->stage_id);
+                    $results[$i]['stage_name'] = CareconsoleStage::find($console->stage_id)->display_name;
+                    $results[$i]['stage_color'] = CareconsoleStage::find($console->stage_id)->color_indicator;
                 }
 
                 $results[$i]['scheduled_to'] = '-';
@@ -331,7 +342,19 @@ class CareConsoleController extends Controller
         $data['patient_id'] = $console->patient_id;
         $data['name'] = $patient->getName('system_format');
         $data['phone'] = $patient->cellphone;
-        $data['actions'] = $this->CareConsoleService->getActions($console->stage_id);
+        if ($console->recall_date) {
+            $bucket = 'recall';
+            $bucket = CareconsoleStage::where('name', $bucket)->first();
+            $bucketID = $bucket->id;
+            $data['actions'] = $this->CareConsoleService->getActions($bucketID);
+        } else if ($console->archived_date) {
+            $bucket = 'archived';
+            $bucket = CareconsoleStage::where('name', $bucket)->first();
+            $bucketID = $bucket->id;
+            $data['actions'] = $this->CareConsoleService->getActions($bucketID);
+        } else {
+            $data['actions'] = $this->CareConsoleService->getActions($console->stage_id);
+        }
         $data['stageid'] = $console->stage_id;
         $data['priority'] = $console->priority;
 
