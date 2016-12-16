@@ -331,7 +331,19 @@ class CareConsoleController extends Controller
         $data['patient_id'] = $console->patient_id;
         $data['name'] = $patient->getName('system_format');
         $data['phone'] = $patient->cellphone;
-        $data['actions'] = $this->CareConsoleService->getActions($console->stage_id);
+        if ($console->recall_date) {
+            $bucket = 'recall';
+            $bucket = CareconsoleStage::where('name', $bucket)->first();
+            $bucketID = $bucket->id;
+            $data['actions'] = $this->CareConsoleService->getActions($bucketID);
+        } else if ($console->archived_date) {
+            $bucket = 'archived';
+            $bucket = CareconsoleStage::where('name', $bucket)->first();
+            $bucketID = $bucket->id;
+            $data['actions'] = $this->CareConsoleService->getActions($bucketID);
+        } else {
+            $data['actions'] = $this->CareConsoleService->getActions($console->stage_id);
+        }
         $data['stageid'] = $console->stage_id;
         $data['priority'] = $console->priority;
 
