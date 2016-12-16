@@ -93,6 +93,8 @@ class PatientController extends Controller
             $data['networkList'] = $network;
         }
 
+        $data['preferredlanguage'] = config('constants.language.english');
+        $data['engagement_preference'] = config('patient_engagement.type.email');
         return view('patient.admin')
             ->with('data', $data);
 
@@ -128,6 +130,9 @@ class PatientController extends Controller
             }
             $data['networkList'] = $network;
         }
+
+        $data['preferredlanguage'] = config('constants.language.english');
+        $data['engagement_preference'] = config('patient_engagement.type.email');
         return view('patient.admin')
             ->with('data', $data);
     }
@@ -228,10 +233,12 @@ class PatientController extends Controller
             $referralHistory->network_id = $networkID;
             $referralHistory->save();
 
-            $preference = new EngagementPreference;
-            $preference->type = $request->input('engagement_preference') ?: null;
-            $preference->patient_id = $patient->id;
-            $preference->save();
+            if($request->input('engagement_preference') && $request->input('engagement_preference') != '') {
+                $preference = new EngagementPreference;
+                $preference->type = $request->input('engagement_preference');
+                $preference->patient_id = $patient->id;
+                $preference->save();
+            }
 
             $careconsole = new Careconsole;
             $careconsole->import_id = $importHistory->id;
@@ -515,13 +522,15 @@ class PatientController extends Controller
             $insuranceCarrier->insurance_group_no = $request->input('insurance_group_no');
             $insuranceCarrier->save();
 
-            $preference = EngagementPreference::where('patient_id', $id)->first();
-            if ($preference == null) {
-                $preference = new EngagementPreference;
-                $preference->patient_id = $id;
+            if($request->input('engagement_preference') && $request->input('engagement_preference') != '') {
+                $preference = EngagementPreference::where('patient_id', $id)->first();
+                if ($preference == null) {
+                    $preference = new EngagementPreference;
+                    $preference->patient_id = $id;
+                }
+                $preference->type = $request->input('engagement_preference');
+                $preference->save();
             }
-            $preference->type = $request->input('engagement_preference');
-            $preference->save();
 
             $action = 'update patient of id =' . $id;
             $description = '';
