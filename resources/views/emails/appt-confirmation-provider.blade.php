@@ -3,7 +3,7 @@
 		<div>
 			<div style="width: 50%;display: inline-block;margin-bottom:1em;">
 				@if( Auth::check() && session('user-level') == 2 )
-				<img src="{{ config('constants.production_url').'/images/networks/network_'. Auth::user()->getNetwork(Auth::user()->id)->id .'.png'}}" style="width:10em" alt="">
+				<img src="{{ config('constants.production_url').'/images/networks/network_'. Auth::user()->userNetwork->first()->network_id .'.png'}}" style="width:10em" alt="">
 				@endif
 			</div>
 			<div style="width: 49%;display: inline-block;margin-bottom:1em;">

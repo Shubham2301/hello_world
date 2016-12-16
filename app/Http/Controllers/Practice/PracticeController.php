@@ -4,6 +4,8 @@ namespace myocuhub\Http\Controllers\Practice;
 
 use Auth;
 use Event;
+use Log;
+use Exception;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
@@ -110,6 +112,7 @@ class PracticeController extends Controller
             try {
                 $json = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')), true);
             } catch (Exception $e) {
+                Log::error($e);
             }
             if (isset($json['results'][0]['geometry']['location']['lat'])) {
                 $practicelocation->latitude = $json['results'][0]['geometry']['location']['lat'];
@@ -255,7 +258,7 @@ class PracticeController extends Controller
             }
             $practicelocation->save();
 
-            $address = urlencode($practicelocation->addressline1.' '.$practicelocation->addressline1.' '.$practicelocation->city.' '.$practicelocation->zip.' '.$practicelocation->state);
+            $address = urlencode($practicelocation->addressline1.' '.$practicelocation->city.' '.$practicelocation->zip.' '.$practicelocation->state);
 
             try {
                 $json = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.env('MAP_API_KEY')), true);
