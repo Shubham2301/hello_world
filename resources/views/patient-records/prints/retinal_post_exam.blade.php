@@ -31,7 +31,7 @@
             <div class="col-xs-12 border_bottom default_padding section_break">
                 <p class="cat_info_text no-margin">Diagnosis</p>
             </div>
-            <div class="col-xs-offset-1 col-xs-11  border_left border_bottom default_padding">
+            <div class="col-xs-12 border_bottom default_padding">
                 <div class="inline_element title">
                     <p>No diabetic retinopathy: &nbsp; &nbsp;</p>
                 </div>
@@ -44,7 +44,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-xs-offset-1 col-xs-11 border_left border_bottom default_padding">
+            <div class="col-xs-12 border_bottom default_padding">
                 <p> Non-proliferative diabetic retinopathy:</p>
 
                 @if(!isset($data['record']['od_NPDR']))
@@ -84,7 +84,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-xs-offset-1 col-xs-11 border_left border_bottom default_padding">
+            <div class="col-xs-12 border_bottom default_padding">
                 <div class="inline_element title">
                     <p>Proliferative diabetic retinopathy: &nbsp; &nbsp;</p>
                 </div>
@@ -97,7 +97,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-xs-offset-1 col-xs-11 border_left default_padding border_bottom">
+            <div class="col-xs-12 default_padding border_bottom">
                 <div class="inline_element title">
                     <p>Clinically significant macular edema: &nbsp; &nbsp;</p>
                 </div>
@@ -110,7 +110,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-xs-offset-1 col-xs-11 border_left border_bottom default_padding">
+            <div class="col-xs-12 border_bottom default_padding">
                 <div class="inline_element title">
                     <p>Open Angle Glaucoma: &nbsp; &nbsp;</p>
                 </div>
@@ -123,7 +123,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-xs-offset-1 col-xs-11 border_left  default_padding">
+            <div class="col-xs-12 default_padding">
                 <div class="inline_element title">
                     <p>Cataract: &nbsp; &nbsp;</p>
                 </div>
