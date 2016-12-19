@@ -37,25 +37,11 @@ class SendRecordWithEmail
      */
     public function handle(PatientRecordCreation $event)
     {
-
         $contactHistoryID = $event->getContactHistoryID();
         $patient = Patient::find($event->getPatientID());
         $patientName = $patient->getName();
 
         $templateName = WebFormTemplate::find($event->getTemplateID())->name;
-
-        $PDFPaths = config('constants.paths.pdf');
-        $path = [];
-
-        try {
-            $pdfObj = $this->createPDF($contactHistoryID);
-            $fileName = $PDFPaths['temp_dir'].'record-'.$contactHistoryID.$PDFPaths['ext'];
-            $pdfObj->save($fileName);
-            $path[] = $fileName;
-        } catch (Exception $e) {
-            Log::error($e);
-            return false;
-        }
 
         $notificationUsers = array();
         $notificationUsers[] = Auth::user();
@@ -64,17 +50,29 @@ class SendRecordWithEmail
             'web_form_template_id' => $event->getTemplateID()
             ])->first();
 
-        if($networkNotificationUser) {
+        if ($networkNotificationUser) {
             $notificationUsers[] = User::find($networkNotificationUser->user_id);
         }
 
         foreach ($notificationUsers as $user) {
-            if(!SES::isDirectID($user->sesemail))
-            {
+            if (!SES::isDirectID($user->sesemail)) {
                 continue;
             }
 
-            try{
+            $PDFPaths = config('constants.paths.pdf');
+            $path = [];
+
+            try {
+                $pdfObj = $this->createPDF($contactHistoryID);
+                $fileName = $PDFPaths['temp_dir'].'record-'.$contactHistoryID.$PDFPaths['ext'];
+                $pdfObj->save($fileName);
+                $path[] = $fileName;
+            } catch (Exception $e) {
+                Log::error($e);
+                return false;
+            }
+
+            try {
                 $attr = [
                     'from' => [
                         'name' => config('constants.support.ses.email.display_name'),
@@ -93,7 +91,7 @@ class SendRecordWithEmail
 
                 SES::send($attr);
 
-            }catch (Exception $e) {
+            } catch (Exception $e) {
                 Log::error($e);
                 continue;
             }
