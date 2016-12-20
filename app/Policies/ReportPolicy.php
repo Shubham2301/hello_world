@@ -33,6 +33,11 @@ class ReportPolicy
     	return ($user->checkUserLevel('Ocuhub'));
     }
 
+    public function accessRecordReportController(){
+        $user = Auth::user();
+        return ($user->checkUserLevel('Ocuhub'));
+    }
+
     public function accessUserReport(){
         $user = Auth::user();
     	return ($user->checkUserLevel('Ocuhub'));

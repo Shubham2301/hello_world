@@ -2,6 +2,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <link rel="stylesheet" type="text/css" href="{{elixir('css/reports.css')}}">
+<script type="text/javascript" src="{{elixir('js/report_master.js')}}"></script>
 <script type="text/javascript" src="{{elixir('js/reports.js')}}"></script>
 @endsection @section('sidebar') @include('reports.sidebar') @endsection @section('content') @if (Session::has('success'))
 <div class="alert alert-success" id="flash-message">

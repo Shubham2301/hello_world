@@ -60,6 +60,8 @@ elixir(function (mix) {
     mix.babel(['performance_report.js'], 'public/js/performance_report.js');
     mix.babel(['user_report.js'], 'public/js/user_report.js');
     mix.babel(['duplicate_maintenance.js'], 'public/js/duplicate_maintenance.js');
+    mix.babel(['report_master.js'], 'public/js/report_master.js');
+    mix.babel(['record_report.js'], 'public/js/record_report.js');
 
     mix.version(['css/style.css',
                 'css/directmail.css',
@@ -106,6 +108,8 @@ elixir(function (mix) {
                  'js/performance_report.js',
                  'js/user_report.js',
                  'js/duplicate_maintenance.js',
+                 'js/report_master.js',
+                 'js/record_report.js',
                 'images/*'
                 ]);
 });
