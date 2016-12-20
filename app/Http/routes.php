@@ -230,6 +230,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report/performance/generateReportExcel', 'Reports\PerformanceController@generateReportExcel');
     Route::resource('/report/performance', 'Reports\PerformanceController');
 
+    Route::get('/report/records/generateReportExcel', 'Reports\RecordReportController@generateReportExcel');
+    Route::get('/report/records/getWebFormList/{id}', 'Reports\RecordReportController@getNetworkWebForms');
+    Route::resource('/report/records', 'Reports\RecordReportController');
+
     Route::get('/report/user_report/network_data', 'Reports\UserReportController@getNetworkData');
     Route::get('/report/user_report/generateReportExcel', 'Reports\UserReportController@generateReportExcel');
     Route::resource('/report/user_report', 'Reports\UserReportController');

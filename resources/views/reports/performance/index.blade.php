@@ -5,6 +5,7 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <link rel="stylesheet" type="text/css" href="{{ elixir('css/reports.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ elixir('css/performance_report.css') }}">
+    <script type="text/javascript" src="{{elixir('js/report_master.js')}}"></script>
     <script type="text/javascript" src="{{ elixir('js/performance_report.js') }}"></script>
 @endsection
 @section('sidebar')

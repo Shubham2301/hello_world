@@ -4,6 +4,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <link rel="stylesheet" type="text/css" href="{{ elixir('css/reports.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ elixir('css/call_center.css') }}">
+    <script type="text/javascript" src="{{elixir('js/report_master.js')}}"></script>
     <script type="text/javascript" src="{{ elixir('js/call_center.js') }}"></script>
 @endsection
 @section('sidebar')

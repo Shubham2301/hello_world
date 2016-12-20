@@ -46,56 +46,21 @@ var graphOption = {
     }
 };
 
-$(document).ready(function () {
-
-    var cur_date = new Date();
-    var set_start_date = new Date(cur_date.getTime());
-
-    $('#start_date').datetimepicker({
-        defaultDate: set_start_date.setDate(cur_date.getDate() - 30),
-        format: 'MM/DD/YYYY',
-        maxDate: cur_date,
-    });
-
-    $('#end_date').datetimepicker({
-        defaultDate: cur_date,
-        format: 'MM/DD/YYYY',
-        maxDate: cur_date,
-    });
+$(document).ready(function() {
 
     getReport();
 
-    var old_start_date = $('#start_date').val();
-    var old_end_date = $('#end_date').val();
-
-    $('#start_date').datetimepicker().on('dp.hide', function (ev) {
-        var start_date = $('#start_date').val();
-        if (start_date != old_start_date) {
-            old_start_date = $('#start_date').val();
-            getReport();
-        }
-    });
-
-    $('#end_date').datetimepicker().on('dp.hide', function (ev) {
-        var end_date = $('#end_date').val();
-        $('#start_date').data("DateTimePicker").maxDate(new Date(end_date));
-        if (end_date != old_end_date) {
-            old_end_date = $('#end_date').val();
-            getReport();
-        }
-    });
-
-    $(document).on('change', '#network', function () {
+    $(document).on('change', '#network', function() {
         resetFilter();
         getReport();
     });
 
-    $('.filter_row').on('click', '.remove_filter', function () {
+    $('.filter_row').on('click', '.remove_filter', function() {
         resetFilter();
         getReport();
     });
 
-    $('.filter_row').on('click', '.export_button', function () {
+    $('.filter_row').on('click', '.export_button', function() {
         var formData = {
             start_date: $('#start_date').val(),
             end_date: $('#end_date').val(),
@@ -106,7 +71,7 @@ $(document).ready(function () {
         window.location = '/report/performance/generateReportExcel?' + query;
     });
 
-    $('.graph_column.clickable').on('click', function () {
+    $('.graph_column.clickable').on('click', function() {
         filterOptions.filterType = $(this).find('.graph_section').attr('id');
         filterOptions.filterHeader = $(this).attr('data-title');
         var filterData = '<div class="filter_section">Graph: ' + filterOptions.filterHeader + '<span class="glyphicon glyphicon-remove-circle remove_filter"></span></div><div class="filter_section export_button">Export</div>';
@@ -137,7 +102,7 @@ function getReport(filter) {
         data: $.param(formData),
         contentType: 'application/json',
         async: false,
-        success: function (data) {
+        success: function(data) {
             graphData = data.timelineGraph;
             graphType = data.graphType;
             overAllGraph = data.overAllGraph;
@@ -162,7 +127,7 @@ function getReport(filter) {
                 $('.no_data_received').show();
             }
         },
-        error: function () {
+        error: function() {
             alert('Error Refreshing');
         },
         cache: false,
@@ -194,7 +159,7 @@ function drawGoalChart(userCount) {
 
     var types = graphType.goalGraph;
 
-    types.forEach(function (type) {
+    types.forEach(function(type) {
 
         if (filterOptions.filterType != '' && filterOptions.filterType != type) {
             return true;
@@ -202,7 +167,7 @@ function drawGoalChart(userCount) {
 
         var data = new google.visualization.DataTable();
 
-        graphColumn[type].forEach(function (columnName) {
+        graphColumn[type].forEach(function(columnName) {
             if (columnName == 'Date') {
                 data.addColumn('string', columnName);
             } else {
@@ -296,7 +261,7 @@ function drawCompareChart(userCount) {
 
     var types = graphType.compareGraph;
 
-    types.forEach(function (type) {
+    types.forEach(function(type) {
 
         if (filterOptions.filterType != '' && filterOptions.filterType != type) {
             return true;
@@ -304,7 +269,7 @@ function drawCompareChart(userCount) {
 
         var data = new google.visualization.DataTable();
 
-        graphColumn[type].forEach(function (columnName) {
+        graphColumn[type].forEach(function(columnName) {
             if (columnName == 'Date') {
                 data.addColumn('string', columnName);
             } else {

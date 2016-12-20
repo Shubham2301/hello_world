@@ -13,4 +13,14 @@ class NetworkWebForm extends Model
 	 */
 	protected $table = 'network_web_form';
     protected $fillable = ['network_id', 'web_form_template_id'];
+
+    public function webForm()
+    {
+        return $this->belongsTo('myocuhub\Models\WebFormTemplate', 'web_form_template_id');
+    }
+
+    public function network()
+    {
+        return $this->belongsTo('myocuhub\Network');
+    }
 }
