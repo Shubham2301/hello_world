@@ -214,10 +214,11 @@ class ProviderController extends Controller
         return json_encode($data);
     }
 
-    public function getSpecialInstruction(Request $request) {
+    public function getSpecialInstruction(Request $request)
+    {
         $locationID = $request->input('location_id');
         $practiceLocation = PracticeLocation::find($locationID);
-        if($practiceLocation) {
+        if ($practiceLocation) {
             return $practiceLocation->special_instructions ?: '<p>No special instructions specified for this location</p>';
         }
         return '<p>No data found!</p>';
@@ -370,7 +371,7 @@ class ProviderController extends Controller
         $providers = [];
         if ($lat != '' && $patient->careConsole) {
             $locations = PracticeLocation::getNearByLocations($lat, $lng, config('constants.providerNearPatient.providerRadius'), $providerTypes, $patient->careConsole->importHistory->network_id);
-            foreach($locations as $location) {
+            foreach ($locations as $location) {
                 if ($i >= config('constants.providerNearPatient.providerNumber')) {
                     break;
                 }
