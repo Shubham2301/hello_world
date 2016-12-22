@@ -1149,12 +1149,21 @@ function showActionModel(data) {
     $('#action_stage_id').val(data['stage_id']);
     $('#action_header').html(data['action_header']);
 
-    $('.patient_contact_request_info').removeClass('hide');
-    $('.contact_request_section').addClass('col-md-8');
-    $('.contact_request_section').removeClass('col-md-12');
-    $('.modal-dialog').addClass('wide-modal');
-    $('.open_patient_detail_modal').addClass('glyphicon-circle-arrow-right');
-    $('.open_patient_detail_modal').removeClass('glyphicon-circle-arrow-left');
+    if (updatePatientDemographic != true) {
+        $('.patient_contact_request_info').addClass('hide');
+        $('.contact_request_section').removeClass('col-md-8');
+        $('.contact_request_section').addClass('col-md-12');
+        $('.modal-dialog').removeClass('wide-modal');
+        $('.open_patient_detail_modal').removeClass('glyphicon-circle-arrow-right');
+        $('.open_patient_detail_modal').addClass('glyphicon-circle-arrow-left');
+    } else {
+        $('.patient_contact_request_info').removeClass('hide');
+        $('.contact_request_section').addClass('col-md-8');
+        $('.contact_request_section').removeClass('col-md-12');
+        $('.modal-dialog').addClass('wide-modal');
+        $('.open_patient_detail_modal').addClass('glyphicon-circle-arrow-right');
+        $('.open_patient_detail_modal').removeClass('glyphicon-circle-arrow-left');
+    }
 
     var results = actionResults[data['action_id']];
     if (results.length > 0) {
@@ -1337,7 +1346,7 @@ function getPatientContactData(patientID) {
             content += '<div class="demographic_list"><p><span class="arial_bold">PCP</span><br><span class="arial"><input type="text" class="update_demographic" id="pcp" value="' + data.pcp + '"></span><br></p>';
             content += '<p><span class="arial_bold">Timezone</span><br><span class="arial">' + data.timezone + '</span><br></p>';
             content += '<p><span class="arial_bold">Last Seen By</span><br><span class="arial">' + data.last_seen_by + '</span><br></p>';
-            
+
             content += '<p><span class="arial_bold">Email</span><br><span class="arial"><input type="text" class="update_demographic" id="email" value="' + data.email + '"></span><br></p>';
             content += '<p><span class="arial_bold">Date of Birth</span><br><span class="arial"><input type="text" class="update_demographic" id="dob" value="' + data.dob + '"></span><br></p>';
             content += '<p><span class="arial_bold">Cellphone</span><br><span class="arial"><input type="text" class="update_demographic" id="cellphone" value="' + data.cellphone + '"></span><br></p>';
