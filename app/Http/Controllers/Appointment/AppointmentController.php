@@ -23,6 +23,7 @@ use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
+
 class AppointmentController extends Controller
 {
     /**
@@ -42,7 +43,7 @@ class AppointmentController extends Controller
             return redirect('/home');
         }
 
-	   $apptStatus = [
+        $apptStatus = [
             'appointment_saved' => false,
             'provider_email' => false,
             'patient_email' => false,
@@ -83,7 +84,7 @@ class AppointmentController extends Controller
         $apptStatus['appointment_saved'] = true;
 
         $appointmentTypeName = strtolower(str_replace(' ', '_', trim($appointmentType)));
-        if ( !(AppointmentType::where('name', $appointmentTypeName)->first()) ) {
+        if (!(AppointmentType::where('name', $appointmentTypeName)->first())) {
             $appointment_type = new AppointmentType();
             $appointment_type->name = $appointmentTypeName;
             $appointment_type->display_name = trim($appointmentType);
@@ -99,7 +100,6 @@ class AppointmentController extends Controller
          */
 
         if ($careconsole != null) {
-
             $contactHistory = new ContactHistory;
             $contactHistory->previous_stage = $careconsole->stage_id;
             $contactHistory->user_id = Auth::user()->id;
@@ -119,12 +119,11 @@ class AppointmentController extends Controller
 
             $contactDate = new DateTime();
             $previous_contact_history = ContactHistory::where('console_id', $careconsole->id)->orderBy('id', 'desc')->first();
-            if($previous_contact_history && $previous_contact_history->archived == 0) {
+            if ($previous_contact_history && $previous_contact_history->archived == 0) {
                 $prev_date = new DateTime($previous_contact_history->contact_activity_date);
                 $interval = $contactDate->diff($prev_date);
                 $date_diff = $interval->format('%a')  + $previous_contact_history->days_in_current_stage;
-            }
-            else {
+            } else {
                 $prev_date = new DateTime($careconsole->stage_updated_at);
                 $interval = $contactDate->diff($prev_date);
                 $date_diff = $interval->format('%a');
@@ -157,17 +156,13 @@ class AppointmentController extends Controller
             $referralHistory->save();
         }
 
-        if ($recordID)
-        {
+        if ($recordID) {
             $record = PatientRecord::find($recordID);
             $recordData = json_decode($record->content, true);
             $provider = User::find($providerID);
-            if ($recordData['ORR'] == 'yes')
-            {
+            if ($recordData['ORR'] == 'yes') {
                 $recordData['ORR-MD'] = $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname;
-            }
-            else if ($recordData['surgery_referral'] == 'yes')
-            {
+            } elseif ($recordData['surgery_referral'] == 'yes') {
                 $recordData['surgery_referral_md'] = $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname;
             }
             $record->content = json_encode($recordData);
@@ -181,16 +176,14 @@ class AppointmentController extends Controller
         return $apptStatus;
     }
 
-	public function partnerWebSchedule($apptInfo, $request)
+    public function partnerWebSchedule($apptInfo, $request)
     {
-
         $apptResult = WebScheduling4PC::requestApptInsert($apptInfo);
 
         $result = '';
 
         if ($apptResult != null) {
             if ($apptResult->RequestApptInsertResult->ApptKey != -1) {
-
                 $result = 'Appointment Scheduled Successfully';
                 $action = 'Appointment Scheduled for Provider = ' . $apptInfo['AcctKey'] . ' Location = ' . $apptInfo['LocKey'] . ' on Date ' . $apptInfo['ApptStartDateTime'] . 'for Patient = ' . $apptInfo['PatientData']['FirstName'] . ' ' . $apptInfo['PatientData']['FirstName'];
                 $description = '';
@@ -200,10 +193,9 @@ class AppointmentController extends Controller
                 Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
                 return $apptResult->RequestApptInsertResult->ApptKey;
-
             } else {
                 $result = $apptResult->RequestApptInsertResult->Result;
-				$action = 'Attempt to Request Appointment with 4PC failed for Provider = ' . $request->input('provider_id') . ' Location = ' . $request->input('location_id') . ' for Date ' . $request->input('appointment_time') . ' ';
+                $action = 'Attempt to Request Appointment with 4PC failed for Provider = ' . $request->input('provider_id') . ' Location = ' . $request->input('location_id') . ' for Date ' . $request->input('appointment_time') . ' ';
                 $description = '';
                 $filename = basename(__FILE__);
                 $ip = '';
@@ -261,11 +253,11 @@ class AppointmentController extends Controller
         $patient = Patient::find($patient_id);
         $data['patient_name'] = $patient->getName('print_format');
         $data['schedule-patient'] = true;
-		$data['selectedfiles'] = $request->selectedfiles;
-        if(isset($actionResultID)) {
+        $data['selectedfiles'] = $request->selectedfiles;
+        if (isset($actionResultID)) {
             $data['action_result_id'] = $actionResultID;
         }
-        if(isset($recordID)) {
+        if (isset($recordID)) {
             $data['record_id'] = $recordID;
         }
 
@@ -277,7 +269,7 @@ class AppointmentController extends Controller
 
         $data['count_files'] = sizeOf($patientFiles) + sizeOf($patientRecords);
 
-        if(sizeOf($patientFiles) == 0 && sizeOf($patientRecords)==0){
+        if (sizeOf($patientFiles) == 0 && sizeOf($patientRecords)==0) {
             $data['count_files'] = 0;
         }
 
@@ -298,8 +290,8 @@ class AppointmentController extends Controller
         $patientInsurance->subscriber_relation = ($request->input('subscriber_relation') != '') ? $request->input('subscriber_relation') : $patientInsurance->subscriber_relation;
         $patientInsurance->save();
 
-		$location = PracticeLocation::find($locationID);
-		$data['sesmail'] = SES::isDirectID($location->email);
+        $location = PracticeLocation::find($locationID);
+        $data['sesmail'] = SES::isDirectID($location->email);
 
         return view('appointment.index')->with('data', $data);
     }
@@ -369,5 +361,4 @@ class AppointmentController extends Controller
     {
         //
     }
-
 }
