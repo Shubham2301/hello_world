@@ -1158,8 +1158,8 @@ function showActionModel(data) {
         $('.contact_request_section').addClass('col-md-8');
         $('.contact_request_section').removeClass('col-md-12');
         $('.modal-dialog').addClass('wide-modal');
-        $('.open_patient_detail_modal').removeClass('glyphicon-circle-arrow-right');
-        $('.open_patient_detail_modal').addClass('glyphicon-circle-arrow-left');
+        $('.open_patient_detail_modal').addClass('glyphicon-circle-arrow-right');
+        $('.open_patient_detail_modal').removeClass('glyphicon-circle-arrow-left');
     }
 
     var results = actionResults[data['action_id']];
