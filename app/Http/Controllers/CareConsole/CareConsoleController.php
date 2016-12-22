@@ -157,7 +157,6 @@ class CareConsoleController extends Controller
     public function action(Request $request)
     {
         if ($request->update_demographics == 'true') {
-
             $patientData = $request->patient_data;
             $consoleID = $request->console_id;
             $careconsole = Careconsole::find($consoleID);
@@ -197,8 +196,8 @@ class CareConsoleController extends Controller
             $insuranceCarrier->insurance_carrier = $patientData['insurance_carrier'];
             $insuranceCarrier->subscriber_name = $patientData['subscriber_name'];
             $insuranceCarrier->subscriber_birthdate = ($patientData['subscriber_birthdate'] == '') ? null : Helper::formatDate($patientData['subscriber_birthdate'], config('constants.db_date_format'));
-            $insuranceCarrier->subscriber_id = $patientData['subscriber_id'];;
-            $insuranceCarrier->subscriber_relation = $patientData['relation_to_patient'];;
+            $insuranceCarrier->subscriber_id = $patientData['subscriber_id'];
+            $insuranceCarrier->subscriber_relation = $patientData['relation_to_patient'];
             $insuranceCarrier->insurance_group_no = $patientData['group_number'];
             $insuranceCarrier->save();
         }
@@ -347,7 +346,7 @@ class CareConsoleController extends Controller
             $bucket = CareconsoleStage::where('name', $bucket)->first();
             $bucketID = $bucket->id;
             $data['actions'] = $this->CareConsoleService->getActions($bucketID);
-        } else if ($console->archived_date) {
+        } elseif ($console->archived_date) {
             $bucket = 'archived';
             $bucket = CareconsoleStage::where('name', $bucket)->first();
             $bucketID = $bucket->id;

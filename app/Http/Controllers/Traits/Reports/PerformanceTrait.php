@@ -18,7 +18,6 @@ use myocuhub\Services\CareConsoleService;
 
 trait PerformanceTrait
 {
-
     protected $startDate;
     protected $endDate;
     private $CareConsoleService;
@@ -28,8 +27,8 @@ trait PerformanceTrait
         $this->CareConsoleService = $CareConsoleService;
     }
 
-    public function generateReport($network, $filterType) {
-
+    public function generateReport($network, $filterType)
+    {
         $timelineGraph = array();
 
         $reportResult = array();
@@ -59,11 +58,10 @@ trait PerformanceTrait
 
         $contactList = ContactHistory::getPerformanceReportData($network, $this->getStartDate(), $this->getEndDate());
 
-        foreach($contactList as $contact) {
-
+        foreach ($contactList as $contact) {
             $activityDate = Helper::formatDate($contact->contact_activity_date, 'Ymd');
 
-            if(!isset($timelineGraph[$activityDate])) {
+            if (!isset($timelineGraph[$activityDate])) {
                 $timelineGraph[$activityDate] = $this->graphArray();
                 $timelineGraph[$activityDate]['date'] = Helper::formatDate($contact->contact_activity_date, config('constants.date_format'));
             }
@@ -87,6 +85,7 @@ trait PerformanceTrait
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
+                    case 'previously-scheduled':
                         $reportAggregationData['Scheduled']++;
                         $timelineGraph[$activityDate]['appointmentScheduled']++;
                         $drillDownData['avgScheduled'][] = [
@@ -102,7 +101,7 @@ trait PerformanceTrait
                             $this->fillDetailData($contact, 'actionName')
                         ];
 
-                        if(!isset($contact->actionResult->name) || $contact->actionResult->name != 'incoming-call') {
+                        if (!isset($contact->actionResult->name) || $contact->actionResult->name != 'incoming-call') {
                             $reportAggregationData['Reached']++;
                             $reportAggregationData['Contact attempts']++;
                             $timelineGraph[$activityDate]['reached']++;
@@ -167,7 +166,7 @@ trait PerformanceTrait
                         break;
                 }
 
-            if($contact->actionResult) {
+            if ($contact->actionResult) {
                 switch ($contact->actionResult->name) {
                     case 'mark-as-priority':
                         break;
@@ -224,11 +223,10 @@ trait PerformanceTrait
 
         $apptContactList = ContactHistory::getPerformanceReportAppointmentData($network, $this->getStartDate(), $this->getEndDate());
 
-        foreach($apptContactList as $apptContact) {
-
+        foreach ($apptContactList as $apptContact) {
             $activityDate = Helper::formatDate($apptContact->contact_activity_date, 'Ymd');
 
-            if(!isset($timelineGraph[$activityDate])) {
+            if (!isset($timelineGraph[$activityDate])) {
                 $timelineGraph[$activityDate] = $this->graphArray();
                 $timelineGraph[$activityDate]['date'] = Helper::formatDate($apptContact->contact_activity_date, config('constants.date_format'));
             }
@@ -249,6 +247,7 @@ trait PerformanceTrait
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
+                    case 'previously-scheduled':
                         break;
                     case 'move-to-console':
                         break;
@@ -301,9 +300,9 @@ trait PerformanceTrait
 
         $graphGoal = array();
         $Goals = Goal::all();
-        foreach($Goals as $goal) {
+        foreach ($Goals as $goal) {
             $networkGraphGoal = GoalNetwork::where('goal_id', $goal->id)->where('network_id', $network)->first();
-            switch($goal->name) {
+            switch ($goal->name) {
                 case 'avg_contact_attempted_per_day_per_user':
                     $graphGoal['avgContact'] = $networkGraphGoal ? $networkGraphGoal->value : 0;
                     break;
@@ -332,14 +331,13 @@ trait PerformanceTrait
         $reportAggregationData['Users'] = $userCount;
         $reportResult['reportAggregationData'] = $reportAggregationData;
 
-        if($filterType != '') {
+        if ($filterType != '') {
             $reportResult['drilldown'] = [
                 'columns' => $this->drillDownDataColumns($filterType),
                 'data' => $drillDownData[$filterType],
             ];
         }
         return $reportResult;
-
     }
 
     public function setStartDate($startDate)
@@ -362,8 +360,8 @@ trait PerformanceTrait
         return $this->endDate;
     }
 
-    public function graphArray() {
-
+    public function graphArray()
+    {
         $graph = array();
         $graph = [
             'contactAttempted' => 0,
@@ -378,11 +376,10 @@ trait PerformanceTrait
         ];
 
         return $graph;
-
     }
 
-    public function graphType() {
-
+    public function graphType()
+    {
         $graph = array();
         $graph = [
             'goalGraph' => ['avgContact','avgReached','avgScheduled'],
@@ -398,14 +395,13 @@ trait PerformanceTrait
         ];
 
         return $graph;
-
     }
 
-    public function drillDownDataColumns($drilldownType) {
-
+    public function drillDownDataColumns($drilldownType)
+    {
         $dataColumns = array();
 
-        switch($drilldownType) {
+        switch ($drilldownType) {
             case 'avgContact':
                 $dataColumns = ['Attempt Date', 'User', 'Patient', 'Result', 'Type of Contact'];
                 break;
@@ -428,14 +424,13 @@ trait PerformanceTrait
         }
 
         return $dataColumns;
-
     }
 
-    public function fillDetailData($requestData, $option = null) {
-
+    public function fillDetailData($requestData, $option = null)
+    {
         $result = '';
 
-        switch($option) {
+        switch ($option) {
             case 'contactDate':
                 $result = Helper::formatDate($requestData->contact_activity_date, config('constants.date_format'));
                 break;

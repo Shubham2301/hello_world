@@ -14,12 +14,11 @@ use myocuhub\Models\Careconsole;
 
 trait CallCenterTrait
 {
-
     protected $startDate;
     protected $endDate;
 
-    public function generateReport($filter) {
-
+    public function generateReport($filter)
+    {
         $user = Auth::user();
         $network = $user->network;
 
@@ -29,7 +28,7 @@ trait CallCenterTrait
 
         $userData = User::getCareConsoledata($network->network_id, $this->getStartDate(), $this->getEndDate());
 
-        foreach($userData as $user) {
+        foreach ($userData as $user) {
             $userReportData = array();
             $userReportData['name'] = $user->name;
             $userReportData['id'] = $user->id;
@@ -38,7 +37,7 @@ trait CallCenterTrait
             $userReportData['sms'] = 0;
             $userReportData['total'] = 0;
 
-            foreach($user->contactHistory as $ContactHistory) {
+            foreach ($user->contactHistory as $ContactHistory) {
                 $activityDate = Helper::formatDate($ContactHistory->contact_activity_date, config('constants.date_format'));
                 switch ($ContactHistory->action->name) {
                     case 'request-patient-email':
@@ -59,7 +58,8 @@ trait CallCenterTrait
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
-                        if(!isset($ContactHistory->actionResult) || $ContactHistory->actionResult->name != 'incoming-call') {
+                    case 'previously-scheduled':
+                        if (!isset($ContactHistory->actionResult) || $ContactHistory->actionResult->name != 'incoming-call') {
                             $userReportData['phone']++;
                             $userReportData['total']++;
                         }
@@ -67,7 +67,6 @@ trait CallCenterTrait
                     default:
                         break;
                 }
-
             }
             $results['user'][$user->id] = $userReportData;
         }
@@ -77,11 +76,10 @@ trait CallCenterTrait
         $results['graphData'] = $this->getGraphData($patientData);
         $results['graphColumn'] = config('reports.call_center_report.graph_legends');
         return $results;
-
     }
 
-    public function getGraphData ($patientData) {
-
+    public function getGraphData($patientData)
+    {
         $graphData = array();
 
         $overviewData = array();
@@ -91,10 +89,9 @@ trait CallCenterTrait
         foreach ($patientData as $patient) {
             $lastContactType = 'phone';
             foreach ($patient->contactHistory as $contactHistory) {
-
                 $activityDate = Helper::formatDate($contactHistory->contact_activity_date, 'Ymd');
 
-                if(!isset($overviewData[$activityDate])) {
+                if (!isset($overviewData[$activityDate])) {
                     $overviewData[$activityDate] = $this->graphArray();
                     $overviewData[$activityDate]['date'] = Helper::formatDate($contactHistory->contact_activity_date, 'Y-m-d');
                 }
@@ -127,12 +124,12 @@ trait CallCenterTrait
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
-                        if(isset($contactHistory->actionResult) && $contactHistory->actionResult->name == 'incoming-call') {
+                    case 'previously-scheduled':
+                        if (isset($contactHistory->actionResult) && $contactHistory->actionResult->name == 'incoming-call') {
                             $overviewData[$activityDate]['scheduled'][$lastContactType]++;
                             $overviewData[$activityDate]['scheduled']['all']++;
                             $comparisonData['scheduled'][$lastContactType]++;
-                        }
-                        else {
+                        } else {
                             $overviewData[$activityDate]['scheduled']['phone']++;
                             $overviewData[$activityDate]['attempt']['phone']++;
                             $overviewData[$activityDate]['scheduled']['all']++;
@@ -155,7 +152,6 @@ trait CallCenterTrait
         $graphData['comparison'] = $comparisonData;
 
         return $graphData;
-
     }
 
     public function setStartDate($startDate)
@@ -178,8 +174,8 @@ trait CallCenterTrait
         return $this->endDate;
     }
 
-    public function graphArray() {
-
+    public function graphArray()
+    {
         $graph = array();
         $graph = [
                 'attempt' => [
@@ -197,6 +193,5 @@ trait CallCenterTrait
                 'date' => '',
             ];
         return $graph;
-
     }
 }

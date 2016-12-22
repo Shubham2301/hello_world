@@ -78,6 +78,7 @@ trait ReachRateTrait
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
+                    case 'previously-scheduled':
                         $results[$patient_count]['reached'] = isset($results[$patient_count]['reached']) ? $results[$patient_count]['reached'] + 1 : 1;
                         $results[$patient_count]['reached_stage_change'] = $contactHistory->days_in_prev_stage;
 
