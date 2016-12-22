@@ -10,7 +10,7 @@
                 <div class="content-section active" id="patients_section">
                     <div class="active">
                         <div class="row">
-                            <div class="col-md-3 patient_contact_request_info hide" style="color:#4d4d4d;padding: 0 0 0 1em">
+                            <div class="col-md-4 patient_contact_request_info hide" style="color:#4d4d4d;padding: 0 0 0 1em">
                             </div>
                             <div class="col-md-12 contact_request_section">
                                 <div class="row input_row" id="action_results">

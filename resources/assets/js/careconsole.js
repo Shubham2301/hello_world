@@ -13,14 +13,14 @@ $(document).ready(function() {
         if ($('.patient_contact_request_info').hasClass('hide')) {
             $('.patient_contact_request_info').removeClass('hide');
             $('.contact_request_section').removeClass('col-md-12');
-            $('.contact_request_section').addClass('col-md-9');
+            $('.contact_request_section').addClass('col-md-8');
             $('.modal-dialog').addClass('wide-modal');
             $('.open_patient_detail_modal').removeClass('glyphicon-circle-arrow-left');
             $('.open_patient_detail_modal').addClass('glyphicon-circle-arrow-right');
 
         } else {
             $('.patient_contact_request_info').addClass('hide');
-            $('.contact_request_section').removeClass('col-md-9');
+            $('.contact_request_section').removeClass('col-md-8');
             $('.contact_request_section').addClass('col-md-12');
             $('.modal-dialog').removeClass('wide-modal');
             $('.open_patient_detail_modal').removeClass('glyphicon-circle-arrow-right');
@@ -1146,12 +1146,12 @@ function showActionModel(data) {
     $('#action_stage_id').val(data['stage_id']);
     $('#action_header').html(data['action_header']);
 
-    $('.patient_contact_request_info').addClass('hide');
-    $('.contact_request_section').removeClass('col-md-9');
-    $('.contact_request_section').addClass('col-md-12');
-    $('.modal-dialog').removeClass('wide-modal');
-    $('.open_patient_detail_modal').removeClass('glyphicon-circle-arrow-right');
-    $('.open_patient_detail_modal').addClass('glyphicon-circle-arrow-left');
+    $('.patient_contact_request_info').removeClass('hide');
+    $('.contact_request_section').addClass('col-md-8');
+    $('.contact_request_section').removeClass('col-md-12');
+    $('.modal-dialog').addClass('wide-modal');
+    $('.open_patient_detail_modal').addClass('glyphicon-circle-arrow-right');
+    $('.open_patient_detail_modal').removeClass('glyphicon-circle-arrow-left');
 
     var results = actionResults[data['action_id']];
     if (results.length > 0) {
@@ -1331,9 +1331,10 @@ function getPatientContactData(patientID) {
             content += '<div class="form-group"><h4 class="">Patient Details</h4>';
 
             content += '<p><span class="arial_bold">Name</span><br><span class="arial">' + data.name + '</span><br></p>';
+            content += '<div class="demographic_list"><p><span class="arial_bold">PCP</span><br><span class="arial"><input type="text" class="update_demographic" id="pcp" value="' + data.pcp + '"></span><br></p>';
             content += '<p><span class="arial_bold">Timezone</span><br><span class="arial">' + data.timezone + '</span><br></p>';
             content += '<p><span class="arial_bold">Last Seen By</span><br><span class="arial">' + data.last_seen_by + '</span><br></p>';
-
+            
             content += '<p><span class="arial_bold">Email</span><br><span class="arial"><input type="text" class="update_demographic" id="email" value="' + data.email + '"></span><br></p>';
             content += '<p><span class="arial_bold">Date of Birth</span><br><span class="arial"><input type="text" class="update_demographic" id="dob" value="' + data.dob + '"></span><br></p>';
             content += '<p><span class="arial_bold">Cellphone</span><br><span class="arial"><input type="text" class="update_demographic" id="cellphone" value="' + data.cellphone + '"></span><br></p>';
@@ -1343,7 +1344,6 @@ function getPatientContactData(patientID) {
             content += '<p><span class="arial_bold">Home Address Line 2</span><br><span class="arial"><input type="text" class="update_demographic" id="address_line_2" value="' + data.address_line_2 + '"></span><br></p>';
             content += '<p><span class="arial_bold">Referred By Provider</span><br><span class="arial"><input type="text" class="update_demographic" id="referred_by_provider" value="' + data.referred_by_provider + '"></span><br></p>';
             content += '<p><span class="arial_bold">Referred By Practice</span><br><span class="arial"><input type="text" class="update_demographic" id="referred_by_practice" value="' + data.referred_by_practice + '"></span><br></p>';
-            content += '<p><span class="arial_bold">PCP</span><br><span class="arial"><input type="text" class="update_demographic" id="pcp" value="' + data.pcp + '"></span><br></p>';
             content += '<p><span class="arial_bold">Special Request</span><br><span class="arial"><input type="text" class="update_demographic" id="special_request" value="' + data.special_request + '"></span><br></p>';
 
             content += '<p><span class="arial_bold">Insurance Provider</span><br><span class="arial"><input type="text" class="update_demographic" id="insurance_carrier" value="' + data.insurance_carrier + '"></span><br></p>';
@@ -1353,7 +1353,7 @@ function getPatientContactData(patientID) {
             content += '<p><span class="arial_bold">Subscriber ID</span><br><span class="arial"><input type="text" class="update_demographic" id="subscriber_id" value="' + data.subscriber_id + '"></span><br></p>';
             content += '<p><span class="arial_bold">Relation to patient</span><br><span class="arial"><input type="text" class="update_demographic" id="relation_to_patient" value="' + data.relation_to_patient + '"></span><br></p>';
 
-            content += '</div>';
+            content += '</div></div>';
 
         },
         error: function error() {

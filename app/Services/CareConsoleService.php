@@ -21,7 +21,6 @@ use myocuhub\User;
 
 class CareConsoleService
 {
-
     private $KPIService;
     private $ActionService;
     private $pageNum;
