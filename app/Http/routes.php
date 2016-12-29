@@ -223,6 +223,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/show_records/{id}', 'Patient\PatientController@printRecord');
     });
 
+    Route::get('/report/reach_report/generateReportExcel', 'Reports\ReachRateController@generateReportExcel');
     Route::resource('/report/reach_report', 'Reports\ReachRateController');
 
     Route::resource('/report/call_center', 'Reports\CallCenterController');

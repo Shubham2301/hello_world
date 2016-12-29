@@ -409,6 +409,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="action_modal_title reach_report_patient_list arial_bold" id="action_header">Patient List</h4>
+                <button class="generate_report_excel">Export</button>
                 <span class="report_patient_list_header"></span>
             </div>
             <div class="modal-body">

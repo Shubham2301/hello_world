@@ -16,12 +16,15 @@
         }
     }
 }
+
 .content-right {
     padding: 0;
 }
+
 .reports_header {
     font-size: 1.4em;
 }
+
 .row.report_summary {
     margin: 2em 0;
     display: flex;
@@ -35,6 +38,7 @@
         }
     }
 }
+
 .referred_by_practice_list {
     background-color: @light-gray;
     width: 9em;
@@ -43,12 +47,15 @@
     border: transparent;
     padding-right: 2em;
 }
+
 .summary_header {
     font-size: 1.3em;
 }
+
 .category_count {
     color: @primary-blue;
 }
+
 .flex_col {
     display: flex;
     flex-direction: column;
@@ -56,16 +63,19 @@
     flex-grow: 1;
     justify-content: center;
 }
+
 .flex_row {
     display: flex;
     flex-direction: row;
     text-align: center;
     justify-content: space-around;
 }
+
 .section_separater {
     margin: .5em;
     border-top: solid 1px @font-color-black;
 }
+
 .report_stage_data {
     margin: 2em 0;
     &>.stage_row {
@@ -73,8 +83,7 @@
         flex-direction: row;
         flex-shrink: 0;
         flex-wrap: wrap;
-        &>.left,
-        .right {
+        &>.left, .right {
             display: flex;
             flex-shrink: 0;
             flex-basis: 0;
@@ -90,8 +99,7 @@
         border-bottom: solid 2px @primary-blue;
         &>.left {
             font-size: 1.2em;
-            &>.heading,
-            &>.count {
+            &>.heading, &>.count {
                 display: flex;
                 flex-basis: 0;
                 justify-content: flex-start;
@@ -118,8 +126,7 @@
         &>.left,
         &>.left.sub_section>span {
             font-size: 1em;
-            &>.title,
-            &>.count {
+            &>.title, &>.count {
                 display: flex;
                 flex-basis: 0;
                 justify-content: flex-start;
@@ -164,29 +171,36 @@
         }
     }
 }
+
 hr {
     margin-top: 5px;
     margin-bottom: 5px;
     border: 0;
     border-top: 1px solid @font-color-black;
 }
+
 .show {
     display: inline-block!important;
 }
+
 .text_align_end {
     text-align: end;
 }
+
 .patient_list {
     cursor: pointer;
 }
+
 .modal-footer {
     display: flex;
     justify-content: center;
 }
+
 .modal-body {
     max-height: 350px;
     overflow-y: auto;
 }
+
 .modal-header {
     padding-bottom: .5em;
     color: @font-color-black;
@@ -195,12 +209,14 @@ hr {
         margin: 0;
     }
 }
+
 .modal-dialog {
     width: 40%;
     &.wide_modal_dialog {
         width: 75%;
     }
 }
+
 ul.patient_listing {
     color: @font-color-black;
     list-style-type: none;
@@ -228,6 +244,7 @@ ul.patient_listing {
         }
     }
 }
+
 .report_patient_list_header {
     display: flex;
     flex-direction: row;
@@ -241,6 +258,22 @@ ul.patient_listing {
         text-align: center;
     }
 }
+
+.generate_report_excel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1em;
+    background: #fff;
+    outline: none;
+    border: 1px solid;
+    border-radius: 5px;
+    &:hover {
+        color: #00b6f1;
+        border: 1px solid #00b6f1;
+    }
+}
+
 @media print {
     .reports_container {
         overflow-y: visible;

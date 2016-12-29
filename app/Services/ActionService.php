@@ -21,7 +21,6 @@ use myocuhub\User;
 
 class ActionService
 {
-
     public function __construct()
     {
     }
@@ -44,18 +43,16 @@ class ActionService
 
         $actionResultName = ActionResult::find($actionResultID);
 
-		if($actionResultName)
-		{
-			$actionResultName = $actionResultName->name;
-		}
+        if ($actionResultName) {
+            $actionResultName = $actionResultName->name;
+        }
 
         $previous_contact_history = ContactHistory::where('console_id', $consoleID)->orderBy('id', 'desc')->first();
-        if($previous_contact_history && $previous_contact_history->archived == 0) {
+        if ($previous_contact_history && $previous_contact_history->archived == 0) {
             $prev_date = new DateTime($previous_contact_history->contact_activity_date);
             $interval = $contactDate->diff($prev_date);
             $date_diff = $interval->format('%a') + $previous_contact_history->days_in_current_stage;
-        }
-        else {
+        } else {
             $prev_date = new DateTime(Careconsole::find($consoleID)->stage_updated_at);
             $interval = $contactDate->diff($prev_date);
             $date_diff = $interval->format('%a');
@@ -94,6 +91,7 @@ class ActionService
 
                 break;
             case 'manually-schedule':
+            case 'previously-scheduled':
                 $console = Careconsole::find($consoleID);
                 $appointment_date = new DateTime($manualAppointmentData['appointment_date']);
                 $appointment = new Appointment;
@@ -148,7 +146,7 @@ class ActionService
                     $console->update();
 
                     $appointmentTypeName = strtolower(str_replace(' ', '_', trim($appointment->appointmenttype)));
-                    if ( !(AppointmentType::where('name', $appointmentTypeName)->where('network_id', session('network-id'))->where('type', 'ocuhub')->first()) ) {
+                    if (!(AppointmentType::where('name', $appointmentTypeName)->where('network_id', session('network-id'))->where('type', 'ocuhub')->first())) {
                         $appointment_type = new AppointmentType();
                         $appointment_type->name = $appointmentTypeName;
                         $appointment_type->display_name = trim($appointment->appointmenttype);
@@ -225,7 +223,7 @@ class ActionService
                     $console->update();
 
                     $appointmentTypeName = strtolower(str_replace(' ', '_', trim($appointment->appointmenttype)));
-                    if ( !(AppointmentType::where('name', $appointmentTypeName)->where('network_id', session('network-id'))->where('type', 'ocuhub')->first()) ) {
+                    if (!(AppointmentType::where('name', $appointmentTypeName)->where('network_id', session('network-id'))->where('type', 'ocuhub')->first())) {
                         $appointment_type = new AppointmentType();
                         $appointment_type->name = $appointmentTypeName;
                         $appointment_type->display_name = trim($appointment->appointmenttype);
@@ -439,7 +437,7 @@ class ActionService
 
             $actions[$i]['date'] = $date->format('j F Y');
             $actions[$i]['name'] = $contact['display_name'];
-			$actions[$i]['result'] = ($contact['result_display_name']) ?: false;
+            $actions[$i]['result'] = ($contact['result_display_name']) ?: false;
 
 
             if ($contact['name'] == 'unarchive' || $contact['name'] == 'move-to-console') {
@@ -448,24 +446,20 @@ class ActionService
 
             $actions[$i]['notes'] = $contact['notes'];
 
-			if($contact['result_id'] == 14 || !$contact['result_id'])
-			{
-				$actions[$i]['result'] = false;
-			}
+            if ($contact['result_id'] == 14 || !$contact['result_id']) {
+                $actions[$i]['result'] = false;
+            }
             $actions[$i]['contact_history_id'] = $contact['contact_history_id'];
 
-            if($contact['name'] =='create-record')
-            {
+            if ($contact['name'] =='create-record') {
                 $record = ContactHistory::find($contact['contact_history_id'])->record;
                 $actions[$i]['record_name']= '';
-                if($record)
-                {
+                if ($record) {
                     $actions[$i]['record_name'] = $record->template->display_name . ' - '.$record->created_at;
                 }
             }
 
             $i++;
-
         }
 
         $date = new \DateTime();
@@ -476,7 +470,7 @@ class ActionService
         $actions[$i]['date'] = $date->format('j F Y');
         $actions[$i]['name'] = 'entered into console';
         $actions[$i]['notes'] = '-';
-		$actions[$i]['result'] = false;
+        $actions[$i]['result'] = false;
         return $actions;
     }
 

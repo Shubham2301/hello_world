@@ -322,6 +322,7 @@ CanResetPasswordContract
                     $q->orwhere('name', 'reschedule');
                     $q->orwhere('name', 'manually-reschedule');
                     $q->orwhere('name', 'manually-schedule');
+                    $q->orwhere('name', 'previously-scheduled');
                     $q->orwhere('name', 'request-patient-email');
                     $q->orwhere('name', 'request-patient-phone');
                     $q->orwhere('name', 'request-patient-sms');

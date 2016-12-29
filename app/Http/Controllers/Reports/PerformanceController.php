@@ -15,7 +15,6 @@ use myocuhub\Network;
 
 class PerformanceController extends ReportController
 {
-
     use PerformanceTrait;
     /**
      * Display a listing of the resource.
@@ -95,5 +94,4 @@ class PerformanceController extends ReportController
             });
         })->export($fileType);
     }
-
 }

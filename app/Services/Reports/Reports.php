@@ -15,7 +15,6 @@ use myocuhub\User;
 
 class Reports
 {
-
     protected $startDate;
 
     public function setStartDate($startDate)

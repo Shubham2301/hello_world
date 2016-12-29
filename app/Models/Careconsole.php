@@ -567,17 +567,17 @@ class Careconsole extends Model
 
     public static function getReachRateData($networkID, $startDate, $endDate)
     {
-        return self::where( function ($subquery) use ($startDate, $endDate) {
-                $subquery->whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
-                    $query->whereNotNull('user_id');
-                    $query->where('contact_activity_date', '>=', $startDate);
-                    $query->where('contact_activity_date', '<=', $endDate);
-                })
+        return self::where(function ($subquery) use ($startDate, $endDate) {
+            $subquery->whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
+                $query->whereNotNull('user_id');
+                $query->where('contact_activity_date', '>=', $startDate);
+                $query->where('contact_activity_date', '<=', $endDate);
+            })
                 ->orWhereHas('importHistory', function ($query) use ($startDate, $endDate) {
                     $query->where('created_at', '>=', $startDate);
                     $query->where('created_at', '<=', $endDate);
                 });
-            })
+        })
             ->whereHas('importHistory', function ($query) use ($networkID, $startDate, $endDate) {
                 $query->where('network_id', $networkID);
             })
@@ -598,13 +598,13 @@ class Careconsole extends Model
 
     public static function getCallCenterReportData($networkID, $startDate, $endDate, $userID = null)
     {
-        return self::where( function ($subquery) use ($startDate, $endDate) {
-                $subquery->whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
-                    $query->whereNotNull('user_id');
-                    $query->where('contact_activity_date', '>=', $startDate);
-                    $query->where('contact_activity_date', '<=', $endDate);
-                });
-            })
+        return self::where(function ($subquery) use ($startDate, $endDate) {
+            $subquery->whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
+                $query->whereNotNull('user_id');
+                $query->where('contact_activity_date', '>=', $startDate);
+                $query->where('contact_activity_date', '<=', $endDate);
+            });
+        })
             ->whereHas('importHistory', function ($query) use ($networkID) {
                 $query->where('network_id', $networkID);
             })
@@ -613,7 +613,7 @@ class Careconsole extends Model
                 $query->whereNotNull('user_id');
                 $query->where('contact_activity_date', '>=', $startDate);
                 $query->where('contact_activity_date', '<=', $endDate);
-                if($userID) {
+                if ($userID) {
                     $query->where('user_id', $userID);
                 }
                 $query->whereHas('action', function ($q) {
@@ -621,6 +621,7 @@ class Careconsole extends Model
                     $q->orwhere('name', 'reschedule');
                     $q->orwhere('name', 'manually-reschedule');
                     $q->orwhere('name', 'manually-schedule');
+                    $q->orwhere('name', 'previously-scheduled');
                     $q->orwhere('name', 'request-patient-email');
                     $q->orwhere('name', 'request-patient-phone');
                     $q->orwhere('name', 'request-patient-sms');
@@ -634,10 +635,9 @@ class Careconsole extends Model
     public static function getTotalPatientCount($networkID)
     {
         return self::whereHas('importHistory', function ($query) use ($networkID) {
-                $query->where('network_id', $networkID);
-            })
+            $query->where('network_id', $networkID);
+        })
             ->has('patient')
             ->count();
     }
-
 }

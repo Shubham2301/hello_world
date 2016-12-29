@@ -234,6 +234,7 @@ $(document).ready(function() {
                 showActionModel(data);
                 break;
             case 'manually-schedule':
+            case 'previously-scheduled':
                 $('#form_manual_appointment_date').show();
                 $('#form_manual_appointment_practice').show();
                 $('#form_manual_appointment_provider').show();
@@ -326,6 +327,7 @@ $(document).ready(function() {
                 showActionModel(data);
                 break;
             case 'manually-schedule':
+            case 'previously-scheduled':
                 $('#form_manual_appointment_date').show();
                 $('#form_manual_appointment_practice').show();
                 $('#form_manual_appointment_provider').show();
@@ -442,6 +444,7 @@ $(document).ready(function() {
                 showActionModel(data);
                 break;
             case 'manually-schedule':
+            case 'previously-scheduled':
                 $('#form_manual_appointment_date').show();
                 $('#form_manual_appointment_practice').show();
                 $('#form_manual_appointment_provider').show();
