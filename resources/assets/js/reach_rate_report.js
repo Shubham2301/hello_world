@@ -14,6 +14,17 @@ $(document).ready(function() {
         filter = $(this).val();
         getReport(filter);
     });
+
+    $('.generate_report_excel').on('click', function() {
+        var formData = {
+            start_date: $('#start_date').val(),
+            end_date: $('#end_date').val(),
+            filter_option: filter,
+            export_field: $(this).attr('id')
+        };
+        var query = $.param(formData);
+        window.location = '/report/reach_report/generateReportExcel?' + query;
+    });
 });
 
 function getReport(filter) {
@@ -62,6 +73,7 @@ function getReport(filter) {
 function getPatientList(metricName) {
     var content = '';
     var headerContent = '';
+    $('.generate_report_excel').hide();
     reportResult.forEach(function(result) {
 
         if (filter != '') {
@@ -102,6 +114,8 @@ function getPatientList(metricName) {
                     var daysPending = (result.reached_stage_change >= 0) ? result.reached_stage_change : result.days_in_contact_status;
                     content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + requestReceived + '</span><span>' + contactAttempts + '</span><span>' + daysPending + '</span></li>';
                 }
+                $('.generate_report_excel').attr('id', metricName);
+                $('.generate_report_excel').show();
                 break;
             case 'appointment_scheduled':
                 headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
@@ -138,6 +152,8 @@ function getPatientList(metricName) {
                     var scheduledOn = result.scheduled_on || '-';
                     content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToPracticeLocation + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
                 }
+                $('.generate_report_excel').attr('id', metricName);
+                $('.generate_report_excel').show();
                 break;
             case 'appointment_completed':
                 headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Appointment Type</span><span>Days Pending</span>';
@@ -175,12 +191,11 @@ function getPatientList(metricName) {
                         var scheduledFor = result.scheduled_for || '-';
                         var appointmentType = result.appointment_type || '-';
                         var daysPending = (result.show_stage_change >= 0) ? result.show_stage_change : result.days_in_appointment_completed;
-                        console.log(daysPending);
-                        console.log(result.show_stage_change);
-                        console.log(result.days_in_appointment_completed);
                         content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToPracticeLocation + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + appointmentType + '</span><span>' + daysPending + '</span></li>';
                     }
                 }
+                $('.generate_report_excel').attr('id', metricName);
+                $('.generate_report_excel').show();
                 break;
             case 'exam_report':
                 headerContent = '<span>Name</span><span>PCP</span><span>Scheduled For</span><span>Days Pending</span>';

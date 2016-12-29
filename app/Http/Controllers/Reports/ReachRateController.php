@@ -14,10 +14,10 @@ use myocuhub\User;
 use Datetime;
 use myocuhub\Services\CareConsoleService;
 use myocuhub\Facades\Helper;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReachRateController extends ReportController
 {
-
     use ReachRateTrait;
     /**
      * Display a listing of the resource.
@@ -33,7 +33,6 @@ class ReachRateController extends ReportController
         }
         $data['reach_report'] = true;
         return view('reports.reach_rate_report.index')->with('data', $data);
-
     }
 
     /**
@@ -59,8 +58,46 @@ class ReachRateController extends ReportController
 
     private static function cmp($a, $b)
     {
-        return strcasecmp  ($a["patient_name"], $b["patient_name"]);
+        return strcasecmp($a["patient_name"], $b["patient_name"]);
     }
 
+    public function generateReportExcel(Request $request)
+    {
+        $this->setStartDate($request->start_date);
+        $this->setEndDate($request->end_date);
+        $filter = $request->filter_option;
+        $exportField = $request->export_field;
 
+        $report_data = $this->generateReport();
+
+        usort($report_data, 'self::cmp');
+
+        $data = $this->renderExcelData($report_data, $filter, $exportField);
+
+        switch ($exportField) {
+            case 'not_reached':
+                $fileName = 'Reach rate report - Not reached data';
+                break;
+            case 'not_scheduled':
+                $fileName = 'Reach rate report - Not scheduled data';
+                break;
+            case 'no_show':
+                $fileName = 'Reach rate report - No show data';
+                break;
+        }
+        $fileType = 'xlsx';
+        Excel::create($fileName, function ($excel) use ($data) {
+            $excel->sheet('Audits', function ($sheet) use ($data) {
+                $sheet->setPageMargin(0.25);
+                $sheet->fromArray($data);
+                $sheet->cell('A1:F1', function ($cells) {
+                    $cells->setFont(array(
+                        'family'     => 'Calibri',
+                        'size'       => '11',
+                        'bold'       =>  true
+                    ));
+                });
+            });
+        })->export($fileType);
+    }
 }
