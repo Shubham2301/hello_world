@@ -11,8 +11,6 @@ use myocuhub\Models\PracticeNetwork;
 use myocuhub\Network;
 use myocuhub\User;
 
-// use myocuhub\Http\Requests;
-
 class OnboardingController extends Controller
 {
     public function addLocation(Request $request)

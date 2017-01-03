@@ -16,8 +16,8 @@ return [
         ],
     ],
     'onboarding_notification' => [
-        'email_id' => 'tushar@coloredcow.in',
-        'email_name' => 'Tushar'
+        'email_id' => 'MKolodkin@ocuhub.com',
+        'email_name' => 'Margo'
     ],
     'production_url' => 'https://myocuhub.com',
     'message_type' => [
