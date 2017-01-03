@@ -808,6 +808,21 @@ function action() {
                 showActionModel(data);
             }
             break;
+        case 'manually-schedule':
+        case 'previously-scheduled':
+            var manual_appointment_date = $('#manual_appointment_date').val();
+            var manual_appointment_practice = $('#manual_appointment_practice').val();
+            var manual_appointment_location = $('#manual_appointment_location').val();
+            var manual_appointment_provider = $('#manual_appointment_provider').val();
+            var manual_appointment_appointment_type = $('#manual_appointment_appointment_type').val();
+            var custom_appointment_type = $('#manual_custom_appointment_appointment_type').val();
+            if (manual_appointment_date == '' || manual_appointment_practice == '' || manual_appointment_location == '' || manual_appointment_provider == '' || manual_appointment_practice == '0' || manual_appointment_location == '0' || manual_appointment_provider == '0' || ((manual_appointment_appointment_type == '' || manual_appointment_appointment_type == '-1') && custom_appointment_type == '')) {
+                $('p.alert_message').text('Please enter all the fields to schedule appointment');
+                $('#alert').modal('show');
+                return;
+            }
+            performAction();
+            break;
         default:
             performAction();
             break;
