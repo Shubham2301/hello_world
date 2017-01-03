@@ -17,6 +17,7 @@ class VerifyCsrfToken extends BaseVerifier
        '/errors/directmail/',
        'auth/verifyotp',
        '/auth/resendotp',
+        '/onboarding/*'
     ];
 
 }

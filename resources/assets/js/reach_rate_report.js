@@ -225,6 +225,8 @@ function getPatientList(metricName) {
                         content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + pcpName + '</span><span>' + scheduledFor + '</span><span>' + daysPending + '</span></li>';
                     }
                 }
+                $('.generate_report_excel').attr('id', metricName);
+                $('.generate_report_excel').show();
                 break;
             case 'pending_patient':
                 headerContent = '<span>Name</span><span>Request Received</span>';

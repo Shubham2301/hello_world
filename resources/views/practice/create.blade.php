@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'My Ocuhub - Select Provider')
+@section('title', 'My Ocuhub - Practices')
 
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/practice.css')}}">
@@ -8,7 +8,9 @@
 @endsection
 
 @section('sidebar')
+@if(Auth::check())
 @include('admin.sidebar')
+@endif
 @endsection
 
 @section('content')

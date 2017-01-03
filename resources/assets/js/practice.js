@@ -1,17 +1,30 @@
 'use strict';
-
+var showPracticeUrl = '/practices/show';
 window.onload = function() {
     tinymce.init({
         selector: 'textarea'
     });
-    loadAllPractices();
+    if (!document.getElementById('onboarding_id')) {
+        loadAllPractices();
+    }
     if ($('#editmode').val() && $('#editmode').val() != "-1") {
         var val = $('#editmode').val();
         var location_index = parseInt($('#location_index').val());
         showinfo = false;
-        var formData = {
-            'practice_id': val
-        };
+        if (!document.getElementById('onboarding_id')) {
+            var formData = {
+                'practice_id': val
+            };
+        } else {
+            showPracticeUrl = '/onboarding/show';
+            var formData = {
+                'practice_id': val,
+                'id': $('#onboarding_id').val(),
+                'token': $('#onboarding_token').val(),
+            };
+            $('.content-left').removeClass('ocuhub_logo_grey');
+            $('.content-right').removeClass('ocuhub_logo_blue');
+        }
         getPracticeInfo(formData);
         setEditMode(location_index);
     }
@@ -45,8 +58,16 @@ window.onload = function() {
         removeUser(id);
     });
 
-    $('#savepractice').on('click', function() {
+    $('.save_practice_button').on('click', function() {
         showinfo = true;
+        var onboard = false;
+        var discardOnboard = false;
+        if ($(this).attr('id') == 'onboardpractice') {
+            onboard = true;
+        }
+        if ($(this).attr('id') == 'discardOnboard') {
+            discardOnboard = true;
+        }
         var formdata = [];
         var practice_name = $('#practice_name').val();
         $('#practice_email').val($('#practice_email').val().trim());
@@ -71,11 +92,15 @@ window.onload = function() {
                     i++;
                 });
                 if (practice_id == "-1") {
+                    if (onboard) {
+                        locations = [];
+                    }
                     formdata.push({
                         "practice_name": $('#practice_name').val(),
                         "locations": locations,
                         "practice_email": $('#practice_email').val(),
-                        "practice_network": networkList
+                        "practice_network": networkList,
+                        "onboard_practice": onboard
                     });
                     setNewLocationField();
                     locations = [];
@@ -89,7 +114,8 @@ window.onload = function() {
                         "locations": locations,
                         "removed_location": removedLocation,
                         "practice_email": $('#practice_email').val(),
-                        "practice_network": networkList
+                        "practice_network": networkList,
+                        "discard_onboard": discardOnboard
                     });
                     updatePracticedata(formdata);
                 }
@@ -575,16 +601,20 @@ function refreshAttributes() {
 function getPracticeInfo(formdata) {
 
     $.ajax({
-        url: '/practices/show',
+        url: showPracticeUrl,
         type: 'GET',
         data: $.param(formdata),
         contentType: 'text/html',
         async: false,
         success: function(e) {
             var info = $.parseJSON(e);
+            if (!info && document.getElementById('onboarding_id')) {
+                window.location = '/';
+            }
             currentPractice = info;
-            if (showinfo)
+            if (showinfo) {
                 showPracticeInfo(info);
+            }
         },
         error: function() {
             $('p.alert_message').text('Error getting practice information');
@@ -680,15 +710,30 @@ function setEditMode(location_index) {
 }
 
 function updatePracticedata(formdata) {
-    var tojson = JSON.stringify(formdata);
-    $.ajax({
-        url: '/practices/update',
-        type: 'POST',
-        data: $.param({
+    if (!document.getElementById('onboarding_id')) {
+        var tojson = JSON.stringify(formdata);
+        var finalData = $.param({
             data: tojson
-        }),
+        });
+        var updateRoute = '/practices/update';
+    } else {
+        var finalData = $.param({
+            data: formdata,
+            id: $('#onboarding_id').val(),
+            token: $('#onboarding_token').val(),
+        });
+        var updateRoute = '/onboarding/storePracticeData';
+    }
+    $.ajax({
+        url: updateRoute,
+        type: 'POST',
+        data: finalData,
         async: false,
         success: function success(e) {
+            var info = $.parseJSON(e);
+            if (!info || document.getElementById('onboarding_id')) {
+                window.location = '/';
+            }
             window.location = "/administration/practices";
         },
         error: function error() {

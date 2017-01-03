@@ -30,5 +30,6 @@ class Kernel extends HttpKernel {
 		'guest' => \myocuhub\Http\Middleware\RedirectIfAuthenticated::class,
 		'role' => \myocuhub\Http\Middleware\RoleMiddleware::class,
 		'session.flush' => \myocuhub\Http\Middleware\SessionMiddleware::class,
+		'onboarding' => \myocuhub\Http\Middleware\OnboardingMiddleware::class,
 	];
 }
