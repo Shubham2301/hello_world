@@ -615,6 +615,18 @@ trait ReachRateTrait
                             }
                         }
                     break;
+                case 'no_reports':
+                        if (array_key_exists('appointment_completed', $result)) {
+                            if ($result['appointment_completed'] == config('reports.appointment_completed.show') && !(array_key_exists('reports', $result))) {
+                                $rowData = [];
+                                $rowData['Name'] = $result['patient_name'] ?: '-';
+                                $rowData['PCP'] = $result['pcp_name'] ?: '-';
+                                $rowData['Scheduled for'] = $result['scheduled_for'] ?: '-';
+                                $rowData['Days Pending'] = (isset($result['days_in_stage_before_archive']) && $result['days_in_stage_before_archive'] >= 0) ? $result['days_in_stage_before_archive'] : $result['days_in_exam_report'];
+                                $data[] = $rowData;
+                            }
+                        }
+                    break;
                 default:
             }
         }

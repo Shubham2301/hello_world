@@ -83,6 +83,8 @@ class ReachRateController extends ReportController
                 break;
             case 'no_show':
                 $fileName = 'Reach rate report - No show data';
+            case 'no_reports':
+                $fileName = 'Reach rate report - No reports';
                 break;
         }
         $fileType = 'xlsx';
