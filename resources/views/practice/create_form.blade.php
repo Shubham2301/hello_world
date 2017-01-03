@@ -1,13 +1,21 @@
 <div class="row content-row-margin add_header">
     <div>
+        @if(Auth::check())
         <button type="button" id="back_to_select_practice_btn" class="btn back back_practice">Back</button>
+        @endif
     </div>
     <div>
-        <p class="add_title">
-            @if(isset($data['edit']))
-                Edit Practice
+        <p class="add_title" @if(!Auth::check()) style="margin-left:0" @endif>
+            @if(Auth::check())
+                @if(isset($data['onboard']))
+                    Onboard Practice Location
+                @elseif (isset($data['edit']))
+                    Edit Practice
+                @else
+                    Add New Practice
+                @endif
             @else
-                Add New Practice
+                Add Location Information
             @endif
         </p>
     </div>
@@ -24,6 +32,10 @@
             <div class="panel-body">
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
+                        @if(!Auth::check())
+                            <input id="onboarding_id" type="hidden" value="{{$data['onboarding_id']}}">
+                            <input id="onboarding_token" type="hidden" value="{{$data['onboarding_token']}}">
+                        @endif
                         <input id="editmode" type="hidden" value="{{$data['id']}}">
                         <input id="location_index" type="hidden" value="{{$data['location_index']}}">
                         {!! Form::text('practice_name', old('practice_name'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Name*', 'id' => 'practice_name' , 'data-toggle' => 'tooltip', 'title' => 'Practice Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
@@ -91,11 +103,34 @@
             </div>
         </div>
     </div>
+    @if(session('user-level') == 1)
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">License Information</a>
+      </h4>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="row content-row-margin">
+                    <div class="col-sm-6 col-xs-12">
+                        {!! Form::text('location_license', old('location_license'), array('class' => 'add_practice_input', 'placeholder' => 'Location License Count', 'id' => 'location_license' , 'data-toggle' => 'tooltip', 'title' => 'Location License', 'data-placement' => 'right')) !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
 <div class="row content-row-margin ">
-    <div class="col-xs-8 col-sm-8 col-md-8">
+    <div class="col-xs-12 create_practice_buttons">
         <button type="button" class="btn save_practice_button" id="savepractice">Save</button>
-        <button type="button" class="btn add-btn " id="dontsave_new_practice">Don't Save</button>
+        @if(session('user-level') == 1 && !isset($data['edit']))
+        <button type="button" class="btn save_practice_button" id="onboardpractice" data-toggle="tooltip" title="Save practice and send notification to add locations to the email address provided" data-placement="bottom">Onboard</button>
+        @endif
+        @if(session('user-level') == 1 && isset($data['onboard']))
+        <button type="button" class="btn save_practice_button" id="discardOnboard" data-toggle="tooltip" title="Discard the location information received from the practice" data-placement="bottom">Discard</button>
+        @endif
+        <button type="button" class="btn" id="dontsave_new_practice">Don't Save</button>
     </div>
-    <div class="col-xs-4 col-sm-4"></div>
 </div>

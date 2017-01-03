@@ -4,12 +4,14 @@ namespace myocuhub\Http\Controllers\Practice;
 
 use Auth;
 use Event;
-use Log;
 use Exception;
 use Illuminate\Http\Request;
+use Log;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Jobs\Onboarding\SendPracticeOnboardingEmail;
 use myocuhub\Models\NetworkUser;
+use myocuhub\Models\OnboardPractice;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Models\PracticeNetwork;
@@ -20,7 +22,6 @@ use myocuhub\User;
 
 class PracticeController extends Controller
 {
-
     public function __construct()
     {
         //$this->middleware('role:practice-admin,1,Administrator');
@@ -58,8 +59,7 @@ class PracticeController extends Controller
         if (session('network-id')) {
             $data['network_id'][] = session('network-id');
             $networkData[session('network-id')] = Network::find(session('network-id'))->name;
-        }
-        else {
+        } else {
             $networks = Network::all()->sortBy("name");
             foreach ($networks as $network) {
                 $networkData[$network->id] = $network->name;
@@ -99,7 +99,7 @@ class PracticeController extends Controller
             $practicelocation->state = $location['state'];
             $practicelocation->zip = $location['zip'];
             $practicelocation->location_code = $location['location_code'];
-            if($location['special_instructions'] != ''){
+            if ($location['special_instructions'] != '') {
                 $practicelocation->special_instructions = $location['special_instructions'];
                 $practicelocation->special_instructions_plain_text = $location['special_instructions_plain_text'];
             } else {
@@ -131,6 +131,19 @@ class PracticeController extends Controller
         } else {
             session()->flash('warning', 'Practice added without network information! Please contact occuhub support.');
         }
+
+        if ($practicedata[0]['onboard_practice']) {
+            $onboard_practice = new OnboardPractice;
+            $onboard_practice->practice_id = $practiceid;
+            $onboard_practice->token = str_random(50);
+            $onboard_practice->save();
+
+            $url = url('/') . '/onboarding?id=' . $onboard_practice->id . '&token=' . $onboard_practice->token;
+            $messsage = 'Please use the following link to access form to add locations to your practice '.$url;
+
+            $this->dispatch(new SendPracticeOnboardingEmail($practice, $messsage));
+        }
+
         $action = 'new practice created';
         $description = '';
         $filename = basename(__FILE__);
@@ -147,17 +160,22 @@ class PracticeController extends Controller
      */
     public function show(Request $request)
     {
-        $data = array();
         $practice_id = $request->input('practice_id');
-        $practice_name = Practice::find($practice_id)->name;
-        $practice_email = Practice::find($practice_id)->email;
-        $practice_locations = Practice::find($practice_id)->locations;
-        $practice_users = User::practiceUserById($practice_id);
-        $data['practice_name'] = $practice_name;
-        $data['practice_email'] = $practice_email;
-        $data['practice_id'] = $practice_id;
-        $data['locations'] = $practice_locations;
-        $data['users'] = $practice_users;
+        $onboardPractice = OnboardPractice::where('practice_id', $practice_id)->first();
+        if ($onboardPractice && $onboardPractice->practice_form_data) {
+            $data = json_decode($onboardPractice->practice_form_data);
+        } else {
+            $data = array();
+            $practice_name = Practice::find($practice_id)->name;
+            $practice_email = Practice::find($practice_id)->email;
+            $practice_locations = Practice::find($practice_id)->locations;
+            $practice_users = User::practiceUserById($practice_id);
+            $data['practice_name'] = $practice_name;
+            $data['practice_email'] = $practice_email;
+            $data['practice_id'] = $practice_id;
+            $data['locations'] = $practice_locations;
+            $data['users'] = $practice_users;
+        }
 
         return json_encode($data);
     }
@@ -180,6 +198,11 @@ class PracticeController extends Controller
         $data['id'] = $id;
         $data['location_index'] = $location;
         $data['edit'] = true;
+        $onboardPractice = OnboardPractice::where('practice_id', $id)->first();
+        if ($onboardPractice && $onboardPractice->practice_form_data) {
+            $data['onboard'] = true;
+        }
+
         $practiceNetworks = PracticeNetwork::where('practice_id', $id)->get();
         $data['network_id'] = [];
         $networkData = [];
@@ -192,8 +215,7 @@ class PracticeController extends Controller
             foreach ($practiceNetworks as $practiceNetwork) {
                 $networkData[$practiceNetwork->network_id] = $practiceNetwork->network->name;
             }
-        }
-        else {
+        } else {
             $networks = Network::all()->sortBy("name");
             foreach ($networks as $network) {
                 $networkData[$network->id] = $network->name;
@@ -222,6 +244,12 @@ class PracticeController extends Controller
         $practiceid = $practicedata[0]['practice_id'];
         $locations = $practicedata[0]['locations'];
         $removedLocations = $practicedata[0]['removed_location'];
+        $onboardPractice = OnboardPractice::where('practice_id', $practiceid)->first();
+        if ($practicedata[0]['discard_onboard']) {
+            $onboardPractice->delete();
+            return json_encode($practiceid);
+        }
+
         $practice = Practice::find($practiceid);
         $practice->name = $practicename;
         $practice->email = $practiceemail;
@@ -249,7 +277,7 @@ class PracticeController extends Controller
             $practicelocation->state = $location['state'];
             $practicelocation->zip = $location['zip'];
             $practicelocation->location_code = $location['location_code'];
-            if($location['special_instructions'] != '') {
+            if ($location['special_instructions'] != '') {
                 $practicelocation->special_instructions = $location['special_instructions'];
                 $practicelocation->special_instructions_plain_text = $location['special_instructions_plain_text'];
             } else {
@@ -279,6 +307,10 @@ class PracticeController extends Controller
             }
         }
 
+        if ($onboardPractice) {
+            $onboardPractice->delete();
+        }
+
         $action = 'Edit practice';
         $description = '';
         $filename = basename(__FILE__);
@@ -299,6 +331,10 @@ class PracticeController extends Controller
         if (!policy(new Practice)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
+        }
+        $onboardPractice = OnboardPractice::where('practice_id', $practiceid)->first();
+        if ($onboardPractice) {
+            $onboardPractice->delete();
         }
 
         $i = 0;

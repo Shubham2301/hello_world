@@ -42,7 +42,6 @@ Route::post('auth/resendotp', 'Auth\TwoFactorAuthController@resendOTP');
 // Route::post('auth/verifyphone', 'Auth\AuthController@verifyPhone');
 
 Route::group(['middleware' => 'auth'], function () {
-
     Route::get('writeback', 'Appointment\WriteBackController@index');
 
     Route::get('editprofile', 'Admin\UserController@editProfile');
@@ -212,15 +211,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('downloadpatientfile/{id}', 'Patient\PatientFilesController@downloadFile');
 
     Route::group(['middleware' => 'role:patient-record'], function () {
-    Route::get('records', 'Patient\PatientController@getPatientRecordView');
-    Route::get('webform', 'Patient\PatientController@getWebFormIndex');
-    Route::get('createrecord/{name}/{patient_id}', 'Patient\PatientController@createRecord');
-    Route::post('save_records', 'Patient\PatientController@savePatientRecord');
-    Route::get('patientlistforcreaterecord', 'Patient\PatientController@PatientListForCreateRecord');
-    Route::get('getWebFormList', 'Patient\PatientController@getWebFormList');
-    Route::get('patientlistforshowrecord', 'Patient\PatientController@PatientListForShowRecord');
-    Route::get('getcaretimeline', 'Patient\PatientController@getCareTimeLine');
-    Route::get('/show_records/{id}', 'Patient\PatientController@printRecord');
+        Route::get('records', 'Patient\PatientController@getPatientRecordView');
+        Route::get('webform', 'Patient\PatientController@getWebFormIndex');
+        Route::get('createrecord/{name}/{patient_id}', 'Patient\PatientController@createRecord');
+        Route::post('save_records', 'Patient\PatientController@savePatientRecord');
+        Route::get('patientlistforcreaterecord', 'Patient\PatientController@PatientListForCreateRecord');
+        Route::get('getWebFormList', 'Patient\PatientController@getWebFormList');
+        Route::get('patientlistforshowrecord', 'Patient\PatientController@PatientListForShowRecord');
+        Route::get('getcaretimeline', 'Patient\PatientController@getCareTimeLine');
+        Route::get('/show_records/{id}', 'Patient\PatientController@printRecord');
     });
 
     Route::get('/report/reach_report/generateReportExcel', 'Reports\ReachRateController@generateReportExcel');
@@ -238,5 +237,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report/user_report/network_data', 'Reports\UserReportController@getNetworkData');
     Route::get('/report/user_report/generateReportExcel', 'Reports\UserReportController@generateReportExcel');
     Route::resource('/report/user_report', 'Reports\UserReportController');
+});
 
+Route::group(['middleware' => 'onboarding'], function () {
+    Route::get('onboarding', 'OnboardingController@addLocation');
+    Route::get('onboarding/show', 'OnboardingController@showPracticeInfo');
+    Route::post('onboarding/storePracticeData', 'OnboardingController@storePracticeData');
 });

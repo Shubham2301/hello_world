@@ -11,7 +11,7 @@ var elixir = require('laravel-elixir');
  |
  */
 
-elixir(function (mix) {
+elixir(function(mix) {
 
     mix.less(['style.less', 'announcements.less'], 'public/css/style.css');
     mix.less(['directmail.less'], 'public/css/directmail.css');
@@ -36,7 +36,8 @@ elixir(function (mix) {
     mix.less(['retinal_post_exam.less'], 'public/css/retinal_post_exam.css');
     mix.less(['user_report.less'], 'public/css/user_report.css');
     mix.less(['duplicate_maintenance.less'], 'public/css/duplicate_maintenance.css');
-    mix.babel(['main.js', 'announcements.js'], 'public/js/main.js');
+    mix.babel(['main.js'], 'public/js/main.js');
+    mix.babel(['announcements.js'], 'public/js/announcements.js');
     mix.babel(['sesconnect.js'], 'public/js/sesconnect.js');
     mix.babel(['referraltype.js'], 'public/js/referraltype.js');
     mix.babel(['patient.js', 'referred_by.js'], 'public/js/patient.js');
@@ -64,52 +65,53 @@ elixir(function (mix) {
     mix.babel(['record_report.js'], 'public/js/record_report.js');
 
     mix.version(['css/style.css',
-                'css/directmail.css',
-                'css/referral.css',
-                'css/patient.css',
-                'css/practice.css',
-                'css/provider.css',
-                'css/appointment.css',
-                'css/careconsole.css',
-                'css/networks.css',
-                'css/file_exchange.css',
-				'css/users.css',
-				'css/reporting.css',
-				'css/reports.css',
-				'css/reach_rate_report.css',
-                'css/web_forms.css',
-                'css/web_forms_print.css',
-                'css/patient_records.css',
-                'css/call_center.css',
-                'css/performance_report.css',
-                'css/pre_op_form.css',
-                'css/retinal_post_exam.css',
-                'css/user_report.css',
-                'css/duplicate_maintenance.css',
-                'js/main.js',
-                'js/sesconnect.js',
-                'js/referraltype.js',
-                'js/patient.js',
-                'js/provider.js',
-                'js/practice.js',
-                'js/appointment.js',
-                'js/import.js',
-                'js/careconsole.js',
-                'js/networks.js',
-                'js/file_exchange.js',
-				'js/users.js',
-				'js/reports.js',
-				'js/reach_rate_report.js',
-                'js/session_timeout.js',
-                'js/audit.js',
-                'js/web_forms.js',
-                'js/patient_records.js',
-                 'js/call_center.js',
-                 'js/performance_report.js',
-                 'js/user_report.js',
-                 'js/duplicate_maintenance.js',
-                 'js/report_master.js',
-                 'js/record_report.js',
-                'images/*'
-                ]);
+        'css/directmail.css',
+        'css/referral.css',
+        'css/patient.css',
+        'css/practice.css',
+        'css/provider.css',
+        'css/appointment.css',
+        'css/careconsole.css',
+        'css/networks.css',
+        'css/file_exchange.css',
+        'css/users.css',
+        'css/reporting.css',
+        'css/reports.css',
+        'css/reach_rate_report.css',
+        'css/web_forms.css',
+        'css/web_forms_print.css',
+        'css/patient_records.css',
+        'css/call_center.css',
+        'css/performance_report.css',
+        'css/pre_op_form.css',
+        'css/retinal_post_exam.css',
+        'css/user_report.css',
+        'css/duplicate_maintenance.css',
+        'js/main.js',
+        'js/announcements.js',
+        'js/sesconnect.js',
+        'js/referraltype.js',
+        'js/patient.js',
+        'js/provider.js',
+        'js/practice.js',
+        'js/appointment.js',
+        'js/import.js',
+        'js/careconsole.js',
+        'js/networks.js',
+        'js/file_exchange.js',
+        'js/users.js',
+        'js/reports.js',
+        'js/reach_rate_report.js',
+        'js/session_timeout.js',
+        'js/audit.js',
+        'js/web_forms.js',
+        'js/patient_records.js',
+        'js/call_center.js',
+        'js/performance_report.js',
+        'js/user_report.js',
+        'js/duplicate_maintenance.js',
+        'js/report_master.js',
+        'js/record_report.js',
+        'images/*'
+    ]);
 });
