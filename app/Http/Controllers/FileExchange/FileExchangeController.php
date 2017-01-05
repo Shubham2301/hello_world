@@ -212,7 +212,7 @@ class FileExchangeController extends Controller {
 		$file->description = $request->filedescription;
 		$file->creator_id = Auth::user()->id;
 		$file->status = '1';
-		$fil->network_id = $network_id;
+		$file->network_id = $network_id;
 		$extension = $request->file('add_document')->getClientOriginalExtension();
 		$file->extension = $extension;
 		$file->mimetype = $request->file('add_document')->getClientMimeType();
