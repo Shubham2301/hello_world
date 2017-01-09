@@ -67,16 +67,9 @@
                         <br>
                         <p style="color:#fff;font-size:1.2em;margin:0">Location Details</p>
                         <div class="change_location">
-<!--                            <span class="glyphicon glyphicon-chevron-up glyph_design" id="location_next"></span>-->
-                           <img class="create_location_toggle" id="location_next" src="{{URL::asset('images/triangle-up.png')}}">
+                            <img class="create_location_toggle" id="location_next" src="{{URL::asset('images/triangle-up.png')}}" data-toggle="tooltip" title="View next location" data-placement="top">
                             <span><p class="location_counter">0</p></span>
-                            <img class="create_location_toggle" id="location_previous" src="{{URL::asset('images/triangle-down.png')}}">
-<!--                            <span class="glyphicon glyphicon-chevron-down glyph_design" id="location_previous"></span>-->
-
-                        </div>
-                        <div>
-                            <button id="add_location" class="btn add_location_button "> add +</button>
-                            <button id="remove_location" class="btn remove_location_button">remove -</button>
+                            <img class="create_location_toggle" id="location_previous" src="{{URL::asset('images/triangle-down.png')}}" data-toggle="tooltip" title="View previous location" data-placement="bottom">
                         </div>
                     </div>
                     <div class="row content-row-margin">
@@ -97,6 +90,12 @@
                                 <textarea id="special_instruction_text">
                                 </textarea>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 add_location_footer">
+                        <div>
+                            <button id="add_location" class="btn add_location_button" data-toggle="tooltip" title="Add another location" data-placement="bottom"> add +</button>
+                            <button id="remove_location" class="btn remove_location_button" data-toggle="tooltip" title="Remove current location" data-placement="bottom">remove -</button>
                         </div>
                     </div>
                 </div>

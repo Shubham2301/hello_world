@@ -1,11 +1,17 @@
 'use strict';
 var showPracticeUrl = '/practices/show';
+var onBoardingForm = false;
 window.onload = function() {
     tinymce.init({
         selector: 'textarea'
     });
+    $('[data-toggle="tooltip"]').tooltip();
     if (!document.getElementById('onboarding_id')) {
         loadAllPractices();
+    } else {
+        $('#location_code').hide();
+        $('#location_email').hide();
+        onBoardingForm = true;
     }
     if ($('#editmode').val() && $('#editmode').val() != "-1") {
         var val = $('#editmode').val();
@@ -412,8 +418,8 @@ function getLocationData() {
 
 function validateLocation() {
     if ($('#locationname').val() == "") return false;
-    else if ($('#location_email').val() == "") return false;
-    else if ($('#location_code').val() == "") return false;
+    else if ($('#location_email').val() == "" && !onBoardingForm) return false;
+    else if ($('#location_code').val() == "" && !onBoardingForm) return false;
     else if ($('#addressline1').val() == "") return false;
     else if ($('#city').val() == "") return false;
     else if ($('#state').val() == "") return false;
@@ -425,7 +431,7 @@ function validateLocation() {
 function validateEmail() {
     var patt = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
     var email = $('#location_email').val().trim();
-    if (patt.test(email)) return true;
+    if (patt.test(email) || onBoardingForm) return true;
     else return false;
 }
 

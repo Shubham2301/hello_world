@@ -332,10 +332,6 @@ class PracticeController extends Controller
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
-        $onboardPractice = OnboardPractice::where('practice_id', $practiceid)->first();
-        if ($onboardPractice) {
-            $onboardPractice->delete();
-        }
 
         $i = 0;
         while (1) {
@@ -344,6 +340,11 @@ class PracticeController extends Controller
                 $practicelocation = PracticeLocation::where('practice_id', $practice_id)->delete();
                 $practices = Practice::where('id', $practice_id)->delete();
                 $i++;
+
+                $onboardPractice = OnboardPractice::where('practice_id', $practice_id)->first();
+                if ($onboardPractice) {
+                    $onboardPractice->delete();
+                }
             } else {
                 break;
             }
