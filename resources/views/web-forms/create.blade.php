@@ -9,7 +9,7 @@
 
             <?php $i=1; ?> @foreach(array_chunk($template['rows'], 6) as $chunk)
             <div class="form_chunk_{{$i}} form_chunk {{($i != 1)? '':'active'}} " data-index="{{$i}}">
-               @if($i ==1)
+               @if($i == 1 && $template['name'] != 'cataract-post-op')
                 <div class="row">
                     <div class="col-xs-4">
                         <p>DOB
@@ -45,20 +45,20 @@
 
                         @if($element['type'] == 'full_length_input')
                         <div class="row">
-                            <div class="col-xs-4">
+                            <div class="col-xs-{{ (isset($element['col'])? 12 - $element['col'] : '4')}}">
                                 <p>{{ $element['display-name'] }}</p>
                             </div>
-                            <div class="col-xs-7">
+                            <div class="col-xs-{{ (isset($element['col'])? $element['col'] : '7')}}">
                                 <p> <span> {{isset($element['pre-text'])? $element['pre-text']:''}} </span>
-                                    <input type="text" value="" name="{{$element['id']}}" class="unit_input_text" style="{{isset($element['style'])?$element['style']:'width:100%'}}">
+                                    <input type="text" value="" name="{{$element['id']}}" class="unit_input_text {{isset($element['class']) ? $element['class'] : ''}}" style="{{isset($element['style'])?$element['style']:'width:100%'}}">
                                 </p>
                             </div>
                         </div>
 
                         @elseif($element['type'] == 'h2')
-                        <h1>{{ $element['display-name'] }}</h1> @elseif($element['type'] == 'p')
-                        <p>{{ $element['display-name'] }}</p>
-
+                            <h1>{{ $element['display-name'] }}</h1> 
+                        @elseif($element['type'] == 'p')
+                            <p style="{{ isset($element['style']) ? $element['style'] : '' }}">{{ $element['display-name'] }}</p>
                         @elseif($element['type'] == 'input:date')
                         {!! Form::text($element['id'], '', array('class' => config('webforms.class.input-text').' '.'field_date', 'placeholder' => $element['display-name'], 'id' => $element['id'] , 'data-toggle' => 'tooltip', 'title' => $element['display-name'], 'data-placement' => 'right', 'style'=>'margin:0em')) !!}
 
@@ -176,6 +176,26 @@
                             @if(isset($element['direction']) && $element['direction'] == "H" )
                             </br>
                             @endif
+
+                        @elseif($element['type']=='input:select')
+
+                        <div class="row">
+                            @if($element['display-name'] != '')
+                            <div class="col-xs-3">
+                                <span> {{$element['display-name']}}</span>
+                            </div>
+                            @endif
+                            <div class="col-xs-9">
+                                <span> {{isset($element['pre-text'])? $element['pre-text']:''}} </span>
+                                <select class="webform_select {{$element['id']}}" id="{{$element['id']}}" name="{{$element['id']}}">
+                                @foreach($element['option'] as $option)
+                                    <option class="" value="{{$option['value']}}">
+                                                {{$option['value']}}
+                                    </option>
+                                @endforeach
+                                </select>
+                            </div>
+                        </div>
                         @endif
 
                     @endforeach

@@ -34,6 +34,7 @@ elixir(function(mix) {
     mix.less(['performance_report.less'], 'public/css/performance_report.css');
     mix.less(['pre_op_form.less'], 'public/css/pre_op_form.css');
     mix.less(['retinal_post_exam.less'], 'public/css/retinal_post_exam.css');
+    mix.less(['cataract_post_op.less'], 'public/css/cataract_post_op.css');
     mix.less(['user_report.less'], 'public/css/user_report.css');
     mix.less(['duplicate_maintenance.less'], 'public/css/duplicate_maintenance.css');
     mix.babel(['main.js'], 'public/js/main.js');
@@ -85,6 +86,7 @@ elixir(function(mix) {
         'css/performance_report.css',
         'css/pre_op_form.css',
         'css/retinal_post_exam.css',
+        'css/cataract_post_op.css',
         'css/user_report.css',
         'css/duplicate_maintenance.css',
         'js/main.js',

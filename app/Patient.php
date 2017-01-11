@@ -18,7 +18,6 @@ use myocuhub\Network;
 
 class Patient extends Model
 {
-
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
@@ -95,8 +94,12 @@ class Patient extends Model
 
     public function getName($type = 'system_format')
     {
-        if($type == 'print_format') {
-            return $this->firstname . ' ' . $this->middlename . ' ' . $this->lastname;
+        if ($type == 'print_format') {
+            if ($this->middlename) {
+                return $this->firstname . ' ' . $this->middlename . ' ' . $this->lastname;
+            } else {
+                return $this->firstname . ' ' . $this->lastname;
+            }
         }
         return $this->lastname . ', ' . $this->firstname . ' ' . $this->middlename;
     }
@@ -120,7 +123,6 @@ class Patient extends Model
         $query = self::where(function ($query) use ($filters) {
             foreach ($filters as $filter) {
                 $query->where(function ($query) use ($filter) {
-
                     switch ($filter['type']) {
                         case 'name':
                             $query->where('firstname', 'LIKE', '%' . $filter['value'] . '%')
@@ -186,9 +188,7 @@ class Patient extends Model
                         $query->orWhere('network_id', $userNetwork->network_id);
                     }
                 });
-
-        }
-        elseif (session('user-level') > 2 && $requestSource == '/patients') {
+        } elseif (session('user-level') > 2 && $requestSource == '/patients') {
             $user = Auth::user();
             $practiceUser = PracticeUser::where('user_id', $user->id)->first();
             $userNetworks = NetworkUser::where('user_id', $user->id)->get();
@@ -213,8 +213,7 @@ class Patient extends Model
                     $query->orWhere('network_id', $userNetwork->network_id);
                 }
             });
-        }
-        else if (session('user-level') == 2) {
+        } elseif (session('user-level') == 2) {
             $query
                 ->leftjoin('import_history', 'careconsole.import_id', '=', 'import_history.id')
                 ->where('import_history.network_id', session('network-id'));
