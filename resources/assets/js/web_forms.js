@@ -257,6 +257,7 @@ function showWebForm(name) {
             });
 
             changeTheSizeOfPad();
+            setDefaultData(name);
         },
         error: function error() {
             $('p.alert_message').text('Error searching');
@@ -334,6 +335,32 @@ function getWebFormList(patientID) {
                 });
                 $('ul.web_form_list').html(content);
             }
+        },
+        error: function error() {
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+}
+
+function setDefaultData(name) {
+
+    $.ajax({
+        url: '/getWebFormDefaultData',
+        type: 'GET',
+        data: $.param({
+            patientID: $('#search_patient_input').attr('data-id'),
+            templateName: name
+        }),
+        contentType: 'text/html',
+        async: false,
+        success: function success(e) {
+            var data = e;
+            $.each(data, function(key, value) {
+                $("[name='" +key+ "']").val(value);
+            });
         },
         error: function error() {
             $('p.alert_message').text('Error searching');

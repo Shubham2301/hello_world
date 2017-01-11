@@ -2,24 +2,24 @@
 
 namespace myocuhub\Http\Controllers\Traits\PatientRecords;
 
+use Auth;
+use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
+use PDF;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Events\Patient\PatientRecordCreation;
+use myocuhub\Facades\Helper;
+use myocuhub\Models\Action;
+use myocuhub\Models\ContactHistory;
 use myocuhub\Models\PatientRecord;
+use myocuhub\Models\ProviderType;
 use myocuhub\Models\WebFormTemplate;
+use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
-use myocuhub\Models\ProviderType;
-use myocuhub\Models\ContactHistory;
-use myocuhub\Models\Action;
-use Auth;
-use DateTime;
-use PDF;
-use Helper;
-use myocuhub\Network;
 
 trait PatientRecordsTrait
 {
@@ -221,5 +221,24 @@ trait PatientRecordsTrait
         $html = view('patient-records.prints.'.$printView)->with('data', $data)->render();
         $pdf = PDF::loadHtml($html);
         return $pdf;
+    }
+
+    public function getWebFormDefaultData(Request $request) {
+        $templateName = $request->templateName;
+        $patientID = $request->patientID;
+        $patient = Patient::find($patientID);
+        $user = Auth::user();
+        $data = array();
+        switch ($templateName) {
+            case 'cataract-post-op':
+                $data['patient_name'] = $patient->getName('print_format');
+                $data['patient_dob'] = Helper::formatDate($patient->birthdate, config('constants.date_format'));
+                $data['doctor_name'] = $user->getName('print_format');
+                $data['doctor_phone'] = $user->cellphone;
+                break;
+            default:
+        }
+
+        return $data;
     }
 }
