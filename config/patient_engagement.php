@@ -20,4 +20,10 @@ return [
         'spanish' => 2,
     ],
 
+    'contact_numbers' => [
+        'cellphone' => 1,
+        'workphone' => 2,
+        'homephone' => 3,
+    ],
+
 ];

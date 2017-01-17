@@ -58,7 +58,6 @@ class PatientController extends Controller
      */
     public function create(Request $request)
     {
-
         if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
@@ -85,7 +84,7 @@ class PatientController extends Controller
                 $network[$networkListItem->id] = $networkListItem->name;
             }
             $data['networkList'] = $network;
-        } else if ($user->level > 2 && sizeof($user->userNetwork) > 1) {
+        } elseif ($user->level > 2 && sizeof($user->userNetwork) > 1) {
             $networkList = $user->userNetwork;
             foreach ($networkList as $networkListItem) {
                 $network[$networkListItem->network->id] = $networkListItem->network->name;
@@ -97,12 +96,10 @@ class PatientController extends Controller
         $data['engagement_preference'] = config('patient_engagement.type.email');
         return view('patient.admin')
             ->with('data', $data);
-
     }
 
     public function createByAdmin()
     {
-
         if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
@@ -123,7 +120,7 @@ class PatientController extends Controller
                 $network[$networkListItem->id] = $networkListItem->name;
             }
             $data['networkList'] = $network;
-        } else if ($user->level > 2 && sizeof($user->userNetwork) > 1) {
+        } elseif ($user->level > 2 && sizeof($user->userNetwork) > 1) {
             $networkList = $user->userNetwork;
             foreach ($networkList as $networkListItem) {
                 $network[$networkListItem->network->id] = $networkListItem->network->name;
@@ -145,7 +142,6 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-
         if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
@@ -159,7 +155,7 @@ class PatientController extends Controller
         } else {
             if (sizeof($user->userNetwork) == 1) {
                 $networkID = $user->userNetwork->first()->network_id;
-            } else if ($request->has('patientnetwork')) {
+            } elseif ($request->has('patientnetwork')) {
                 $networkID = $request->input('patientnetwork');
             }
         }
@@ -189,6 +185,7 @@ class PatientController extends Controller
         unset($data['subscriber_relation']);
         unset($data['insurance_group_no']);
         unset($data['engagement_preference']);
+        unset($data['contact_phone_preference']);
         unset($data['patientnetwork']);
 
         $patient = Patient::where($data)->first();
@@ -233,9 +230,10 @@ class PatientController extends Controller
             $referralHistory->network_id = $networkID;
             $referralHistory->save();
 
-            if($request->input('engagement_preference') && $request->input('engagement_preference') != '') {
+            if ($request->input('engagement_preference') && $request->input('engagement_preference') != '') {
                 $preference = new EngagementPreference;
                 $preference->type = $request->input('engagement_preference');
+                $preference->phone_preference = $request->input('contact_phone_preference');
                 $preference->patient_id = $patient->id;
                 $preference->save();
             }
@@ -398,7 +396,6 @@ class PatientController extends Controller
      */
     public function edit($id)
     {
-
         if (!policy(new Patient)->canUpdate($id)) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
@@ -434,6 +431,7 @@ class PatientController extends Controller
         $data['engagement_preference'] = null;
         if ($preference) {
             $data['engagement_preference'] = $preference->type;
+            $data['contact_phone_preference'] = $preference->phone_preference;
         }
 
         $insuranceCarrier = PatientInsurance::where('patient_id', $id)->orderBy('updated_at', 'desc')->first();
@@ -459,7 +457,6 @@ class PatientController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
@@ -522,13 +519,14 @@ class PatientController extends Controller
             $insuranceCarrier->insurance_group_no = $request->input('insurance_group_no');
             $insuranceCarrier->save();
 
-            if($request->input('engagement_preference') && $request->input('engagement_preference') != '') {
+            if (($request->input('engagement_preference') && $request->input('engagement_preference') != '') || ($request->input('contact_phone_preference') && $request->input('contact_phone_preference') != '')) {
                 $preference = EngagementPreference::where('patient_id', $id)->first();
                 if ($preference == null) {
                     $preference = new EngagementPreference;
                     $preference->patient_id = $id;
                 }
-                $preference->type = $request->input('engagement_preference');
+                $preference->type = $request->input('engagement_preference') ?: config('patient_engagement.type.email');
+                $preference->phone_preference = $request->input('contact_phone_preference') ?: null;
                 $preference->save();
             }
 
@@ -548,7 +546,6 @@ class PatientController extends Controller
 
     public function destroy(Request $request)
     {
-
         if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
@@ -611,7 +608,6 @@ class PatientController extends Controller
         $data[0]['previouspage'] = $data[0]['currentpage'] - 1;
 
         if ($data[0]['nextpage'] > $data[0]['lastpage']) {
-
             $data[0]['nextpage'] = $data[0]['currentpage'];
         }
 
@@ -628,7 +624,6 @@ class PatientController extends Controller
 
     public function administration(Request $request)
     {
-
         if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
@@ -726,7 +721,6 @@ class PatientController extends Controller
 
     public function updateDemographics(Request $request)
     {
-
         if (!policy(new Patient)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');

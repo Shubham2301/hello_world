@@ -26,7 +26,6 @@ use myocuhub\User;
 
 class BulkImportController extends Controller
 {
-
     public function index()
     {
         $user = Auth::user();
@@ -39,14 +38,13 @@ class BulkImportController extends Controller
                 foreach ($userNetworks as $userNetwork) {
                     $networks[$userNetwork->id] = $userNetwork->name;
                 }
-            $data['networks'] = $networks;
+                $data['networks'] = $networks;
             }
-
-        } else if (session('user-level') == 2) {
+        } elseif (session('user-level') == 2) {
             $data['id'] = $user->userNetwork->first()->network_id;
             $data['name'] = $user->userNetwork->first()->network->name;
             $data['multiple_network'] = false;
-        } else if (session('user-level') > 2 && sizeof($user->userNetwork) > 1){
+        } elseif (session('user-level') > 2 && sizeof($user->userNetwork) > 1) {
             $user = Auth::user();
             $userNetworks = $user->userNetwork;
             $networks = array();
@@ -65,7 +63,6 @@ class BulkImportController extends Controller
 
     public function getLocations(Request $request)
     {
-
         $practice_id = $request->input('practice_id');
         $locations = PracticeLocation::where('practice_id', $practice_id)->get();
         $data = [];
@@ -223,7 +220,6 @@ class BulkImportController extends Controller
                             $careconsole->save();
 
                             if (session('user-level') == 3) {
-
                                 $userID = Auth::user()->id;
                                 $practiceUser = PracticeUser::where('user_id', $userID)->first();
                                 if ($practiceUser) {
@@ -247,7 +243,6 @@ class BulkImportController extends Controller
                         $i++;
                     }
                 }
-
             });
 
             $action = 'Bulk import Patients';
