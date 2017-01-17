@@ -7,13 +7,14 @@ use DateTime;
 use Event;
 use Illuminate\Http\Request;
 use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Facades\Helper;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Action;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\AppointmentType;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
-use myocuhub\Facades\Helper;
+use myocuhub\Models\EngagementPreference;
 use myocuhub\Models\MessageTemplate;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
@@ -200,6 +201,21 @@ class CareConsoleController extends Controller
             $insuranceCarrier->subscriber_relation = $patientData['relation_to_patient'];
             $insuranceCarrier->insurance_group_no = $patientData['group_number'];
             $insuranceCarrier->save();
+
+            if ($patientData['contact_phone_preference'] != -1) {
+                $patient = Patient::find($patientID);
+                if ($patient->engagementPreference) {
+                    $preference = EngagementPreference::find($patient->engagementPreference->id);
+                    $preference->phone_preference = $patientData['contact_phone_preference'];
+                    $preference->update();
+                } else {
+                    $preference = new EngagementPreference;
+                    $preference->type = config('patient_engagement.type.email');
+                    $preference->phone_preference = $patientData['contact_phone_preference'];
+                    $preference->patient_id = $patientID;
+                    $preference->save();
+                }
+            }
         }
 
         $actionID = $request->action_id;
@@ -402,6 +418,9 @@ class CareConsoleController extends Controller
         $data['referred_by_practice'] = $this->CareConsoleService->getPatientFieldValue($console, 'referred-by-practice');
         $timezone = $patient->timezone;
         $data['timezone'] = ($timezone) ? $timezone->getName() : '';
+
+        $data['preferred_contact_number']['list'] = Helper::getContactNumberTypes();
+        $data['preferred_contact_number']['selected'] = ($patient->engagementPreference && $patient->engagementPreference->phone_preference) ? $patient->engagementPreference->phone_preference : -1;
 
         return json_encode($data);
     }

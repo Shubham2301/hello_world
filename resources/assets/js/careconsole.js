@@ -580,6 +580,15 @@ $(document).ready(function() {
         }
     });
 
+    $(document).on('click', '.preferred_phone_checkbox', function() {
+        $('.preferred_phone_checkbox').tooltip('hide');
+        var checked = $(this).is(':checked');
+        $('.preferred_phone_checkbox').attr('checked', false);
+        if (checked) {
+            $(this).prop('checked', true);
+        }
+    });
+
 });
 
 var actionResults = {};
@@ -853,6 +862,7 @@ function performAction() {
             'subscriber_id': $('.update_demographic#subscriber_id').val(),
             'relation_to_patient': $('.update_demographic#relation_to_patient').val(),
             'group_number': $('.update_demographic#group_number').val(),
+            'contact_phone_preference': $('.preferred_phone_checkbox:checked').val() ? $('.preferred_phone_checkbox:checked').val() : '',
         };
     }
 
@@ -1364,9 +1374,25 @@ function getPatientContactData(patientID) {
 
             content += '<p><span class="arial_bold">Email</span><br><span class="arial"><input type="text" class="update_demographic" id="email" value="' + data.email + '"></span><br></p>';
             content += '<p><span class="arial_bold">Date of Birth</span><br><span class="arial"><input type="text" class="update_demographic" id="dob" value="' + data.dob + '"></span><br></p>';
-            content += '<p><span class="arial_bold">Cellphone</span><br><span class="arial"><input type="text" class="update_demographic" id="cellphone" value="' + data.cellphone + '"></span><br></p>';
-            content += '<p><span class="arial_bold">Homephone</span><br><span class="arial"><input type="text" class="update_demographic" id="homephone" value="' + data.homephone + '"></span><br></p>';
-            content += '<p><span class="arial_bold">Workphone</span><br><span class="arial"><input type="text" class="update_demographic" id="workphone" value="' + data.workphone + '"></span><br></p>';
+
+            content += '<p><span class="arial_bold">Cellphone</span><span class="arial"><input type="text" class="update_demographic" id="cellphone" value="' + data.cellphone + '"><input type="checkbox" class="preferred_phone_checkbox" value="1" data-toggle="tooltip" title="Mark as preferred phone" data-placement="right"';
+            if (data.preferred_contact_number.selected != '-1' && data.preferred_contact_number.list[data.preferred_contact_number.selected] == 'Cellphone') {
+                content += 'checked'
+            }
+            content += '></span><br></p>';
+            
+            content += '<p><span class="arial_bold">Workphone</span><span class="arial"><input type="text" class="update_demographic" id="workphone" value="' + data.workphone + '"><input type="checkbox" class="preferred_phone_checkbox" value="2" data-toggle="tooltip" title="Mark as preferred phone" data-placement="right"';
+            if (data.preferred_contact_number.selected != '-1' && data.preferred_contact_number.list[data.preferred_contact_number.selected] == 'Workphone') {
+                content += 'checked'
+            }
+            content += '></span><br></p>';
+
+            content += '<p><span class="arial_bold">Homephone</span><span class="arial"><input type="text" class="update_demographic" id="homephone" value="' + data.homephone + '"><input type="checkbox" class="preferred_phone_checkbox" value="3" data-toggle="tooltip" title="Mark as preferred phone" data-placement="right"';
+            if (data.preferred_contact_number.selected != '-1' && data.preferred_contact_number.list[data.preferred_contact_number.selected] == 'Homephone') {
+                content += 'checked'
+            }
+            content += '></span><br></p>';
+
             content += '<p><span class="arial_bold">Home Address Line 1</span><br><span class="arial"><input type="text" class="update_demographic" id="address_line_1" value="' + data.address_line_1 + '"></span><br></p>';
             content += '<p><span class="arial_bold">Home Address Line 2</span><br><span class="arial"><input type="text" class="update_demographic" id="address_line_2" value="' + data.address_line_2 + '"></span><br></p>';
             content += '<p><span class="arial_bold">Referred By Provider</span><br><span class="arial"><input type="text" class="update_demographic" id="referred_by_provider" value="' + data.referred_by_provider + '"></span><br></p>';
@@ -1404,6 +1430,8 @@ function getPatientContactData(patientID) {
     });
 
     updatePatientDemographic = true;
+
+    $('[data-toggle="tooltip"]').tooltip();
 }
 
 function updateManualScheduleData(consoleID) {

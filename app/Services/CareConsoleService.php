@@ -309,11 +309,11 @@ class CareConsoleService
                     return '-';
                 }
                 $provider = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
-                $practice = Practice::find($appointment->practice_id);
-                $practice = $practice->name;
+                $practice = Practice::withTrashed()->find($appointment->practice_id);
+                $practiceName = $practice ? $practice->name : '';
                 $practiceLocation = PracticeLocation::find($appointment->location_id);
                 $locationInfo = $practiceLocation ? ' at ' . $practiceLocation->locationname : '';
-                return $provider . ' from ' . $practice . $locationInfo;
+                return $provider . ' from ' . $practiceName . $locationInfo;
                 break;
             case 'last-scheduled-to':
                 $previousProvider = Patient::getPreviousProvider($patient['patient_id']);
