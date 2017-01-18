@@ -70,7 +70,7 @@ class UserController extends Controller
             foreach ($networks as $network) {
                 $networkData[$network->id] = $network->name;
             }
-        } else if (session('user-level') == 2) {
+        } elseif (session('user-level') == 2) {
             $networks = Network::where('id', session('network-id'))->get();
             foreach ($networks as $network) {
                 $networkData[$network->id] = $network->name;
@@ -90,14 +90,13 @@ class UserController extends Controller
         if (session('user-level') == 2) {
             $networkPractices = Network::find(session('network-id'))->practices;
             foreach ($networkPractices as $practice) {
-                $practices[$practice->id] = $practice->name;
+                if ($practice->manually_created == null) {
+                    $practices[$practice->id] = $practice->name;
+                }
             }
-        } else if (session('user-level') > 2) {
+        } elseif (session('user-level') > 2) {
             $user['practice_id'] = Auth::user()->userPractice->practice_id;
             $practices[Auth::user()->userPractice->practice_id] = Auth::user()->userPractice->practice->name;
-        }
-        foreach ($networkPractices as $practice) {
-            $practices[$practice->id] = $practice->name;
         }
 
         if (session('user-level') > 2) {
@@ -208,7 +207,7 @@ class UserController extends Controller
                 $networks = $request->input('network');
                 $networkUser->network_id = $networks[0];
                 $networkUser->save();
-            } else if ($user->level > 2) {
+            } elseif ($user->level > 2) {
                 $practiceUser = new PracticeUser;
                 $practiceUser->user_id = $user->id;
                 $practiceUser->practice_id = $request->input('user_practice');
@@ -221,7 +220,7 @@ class UserController extends Controller
                     $networkUser->save();
                 }
             }
-        } else if (session('user-level') == 2) {
+        } elseif (session('user-level') == 2) {
             if ($user->level > 2) {
                 $practiceUser = new PracticeUser;
                 $practiceUser->user_id = $user->id;
@@ -254,7 +253,6 @@ class UserController extends Controller
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
         return redirect('administration/users');
-
     }
 
     /**
@@ -329,12 +327,12 @@ class UserController extends Controller
                 foreach ($userNetwork as $network) {
                     $networkData[$network->network_id] = $network->network->name;
                 }
-            } else if ($user['level'] == 3 && session('user-level') == 1) {
+            } elseif ($user['level'] == 3 && session('user-level') == 1) {
                 $practiceNetworks = $user->userPractice->practice->practiceNetwork;
                 foreach ($practiceNetworks as $practiceNetwork) {
                     $networkData[$practiceNetwork->network->id] = $practiceNetwork->network->name;
                 }
-            } else if ($user['level'] == 3 && session('user-level') != 1) {
+            } elseif ($user['level'] == 3 && session('user-level') != 1) {
                 $user_networks = NetworkUser::where('user_id', '=', $id)->get();
                 foreach ($user_networks as $network) {
                     $networkData[$network->network_id]  = $network->network->name;
@@ -570,10 +568,9 @@ class UserController extends Controller
         $user = Auth::user();
 
         foreach ($roles as $role) {
-
             if (!$user->isSuperAdmin() && $role->name == 'patient-record') {
                 continue;
-            } else if (!$user->isSuperAdmin() && $role->name == 'super-admin') {
+            } elseif (!$user->isSuperAdmin() && $role->name == 'super-admin') {
                 continue;
             }
 
@@ -609,10 +606,10 @@ class UserController extends Controller
         if (session('user-level') == 1) {
             $search_val = $tosearchdata['value'];
             $users = User::where(function ($query) use ($tosearchdata) {
-                    if (!$tosearchdata['include_deactivated']) {
-                        $query->where('active', '=', '1');
-                    }
-                })
+                if (!$tosearchdata['include_deactivated']) {
+                    $query->where('active', '=', '1');
+                }
+            })
                 ->where(function ($query) use ($search_val) {
                     $query->where('firstname', 'LIKE', '%' . $search_val . '%')
                         ->orWhere('middlename', 'LIKE', '%' . $search_val . '%')

@@ -2,7 +2,7 @@
     <div class="modal-dialog alert">
         <div class="modal-content">
             <div class="modal-header">
-                <span class="glyphicon glyphicon-circle-arrow-left open_patient_detail_modal" ></span>
+                <span class="glyphicon glyphicon-circle-arrow-left open_patient_detail_modal"></span>
                 <h4 class="action_modal_title" id="action_header" style="color:black;text-align:center">Care Console Action</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
@@ -75,15 +75,18 @@
                                         <label for="manual_appointment_date"><span class="arial_bold" style="color:black;padding-left:1em;">Practice</span></label>
                                     </div>
                                     <div class="col-md-7 form-group">
-
                                         <select class="form-control" name="manual_appointment_practice" id="manual_appointment_practice">
-                                            <option value="0">Select Practice</option>
-                                            @foreach($overview['network_practices'] as $practice)
-                                            <option value="{{ $practice['id'] }}">{{ $practice['name'] }}</option>
-                                            @endforeach
-                                            <option value="0">Not listed</option>
-
                                         </select>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                                <div class="row input_row" id="form_manual_custom_appointment_practice" style="display:none">
+                                    <div class="col-md-4 form-group">
+                                        <label for="manual_custom_appointment_practice"><span class="arial_bold" style="color:black;padding-left:1em;">&nbsp;</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        <input type="text" class="form-control" name="manual_custom_appointment_practice" id="manual_custom_appointment_practice" placeholder="Custom Practice Name">
                                     </div>
                                     <div class="col-md-1"></div>
                                 </div>
@@ -106,6 +109,16 @@
 
                                         <select class="form-control" name="manual_appointment_location" id="manual_appointment_location"></select>
 
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                                <div class="row input_row" id="form_manual_custom_appointment_location" style="display:none">
+                                    <div class="col-md-4 form-group">
+                                        <label for="manual_appointment_location"><span class="arial_bold" style="color:black;padding-left:1em;">&nbsp;</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        <input type="text" class="form-control" name="manual_custom_appointment_location" id="manual_custom_appointment_location" placeholder="Custom Location Name">
                                     </div>
                                     <div class="col-md-1"></div>
                                 </div>

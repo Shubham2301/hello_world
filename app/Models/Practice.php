@@ -12,7 +12,7 @@ class Practice extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name', 'email'];
+    protected $fillable = ['name', 'email', 'manually_created'];
 
     public function locations()
     {
@@ -31,9 +31,9 @@ class Practice extends Model
     public static function getPracticeByUserID($userID, $filter = null)
     {
         $query = self::query();
-            if (!$filter) {
-                $query->withTrashed();
-            }
+        if (!$filter) {
+            $query->withTrashed();
+        }
         $query
             ->rightjoin('practice_user', 'practices.id', '=', 'practice_user.practice_id')
             ->where('user_id', $userID);
@@ -43,6 +43,7 @@ class Practice extends Model
     public static function getPracticeByNetwork($networkList)
     {
         $query = self::query();
+        $query->whereNull('manually_created');
         foreach ($networkList as $networkID) {
             $query->whereHas('practiceNetwork', function ($query) use ($networkID) {
                 $query->where('network_id', $networkID);

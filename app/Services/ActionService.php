@@ -121,9 +121,9 @@ class ActionService
                 $provider = User::find($appointment->provider_id);
                 $scheduledTo = ' ';
                 if ($provider) {
-                    $scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+                    $scheduledTo = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname . '</br>';
                 }
-                $newNote = $scheduledTo . '</br>' . $appointment->start_datetime . '</br>' . $appointment->appointmenttype;
+                $newNote = $scheduledTo . $appointment->start_datetime . '</br>' . $appointment->appointmenttype;
                 $updatedNote = $newNote.'</br></br>'. $notes;
                 $appointment->notes = $updatedNote;
                 $appointment->enable_writeback = 0;
