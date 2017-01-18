@@ -18,6 +18,8 @@ use myocuhub\Models\EngagementPreference;
 use myocuhub\Models\MessageTemplate;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
+use myocuhub\Models\PracticeLocation;
+use myocuhub\Models\PracticeNetwork;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Models\Timezone;
 use myocuhub\Network;
@@ -99,8 +101,6 @@ class CareConsoleController extends Controller
             $overview['stages'][$i]['kpi_count'] = $j;
             $i++;
         }
-
-        $overview['network_practices'] = Network::find(session('network-id'))->practices;
 
         $loggedInUser = Auth::user();
         $vars = [
@@ -223,8 +223,23 @@ class CareConsoleController extends Controller
         $recallDate = $request->recall_date;
         $manualAppointmentData = [];
         $manualAppointmentData['appointment_date'] = $request->manual_appointment_date;
-        $manualAppointmentData['practice_id'] = $request->manual_appointment_practice;
-        $manualAppointmentData['location_id'] = $request->manual_appointment_location;
+        if ($request->manual_appointment_practice != '-1') {
+            $manualAppointmentData['practice_id'] = $request->manual_appointment_practice;
+        } else {
+            if ($request->custom_manual_appointment_practice != '') {
+                $practice = Practice::create(['name' => $request->custom_manual_appointment_practice, 'manually_created' => '1']);
+                $practiceNetwork = PracticeNetwork::create(['network_id' => session('network-id'), 'practice_id' => $practice->id]);
+            }
+            $manualAppointmentData['practice_id'] = isset($practice) ? $practice->id : '';
+        }
+        if ($request->manual_appointment_location != '-1' && $request->manual_appointment_practice != '-1') {
+            $manualAppointmentData['location_id'] = $request->manual_appointment_location;
+        } else {
+            if ($request->custom_manual_appointment_location != '' && $manualAppointmentData['practice_id'] != '') {
+                $practiceLocation = PracticeLocation::create(['locationname' => $request->custom_manual_appointment_location, 'practice_id' => $manualAppointmentData['practice_id']]);
+            }
+            $manualAppointmentData['location_id'] = isset($practiceLocation) ? $practiceLocation->id : '';
+        }
         $manualAppointmentData['provider_id'] = $request->manual_appointment_provider;
         $manualAppointmentData['appointment_type'] = $request->manual_appointment_appointment_type;
         $manualAppointmentData['custom_appointment_type'] = $request->custom_appointment_type;
@@ -455,6 +470,7 @@ class CareConsoleController extends Controller
             $appointmentTypeList[] = $appointmentType->display_name;
         }
         $data['appointment_type'] = $appointmentTypeList;
+        $data['practiceList'] = Network::find(session('network-id'))->practices;
         return $data;
     }
 }

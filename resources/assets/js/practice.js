@@ -112,8 +112,10 @@ window.onload = function() {
                     locations = [];
                     createPractice(formdata);
                 } else {
-                    if (locations[counter])
+                    if (locations[counter]) {
                         updateLocationData(counter);
+                    }
+                    var manuallyCreated = $('#manually_created').prop('checked') ? $('#manually_created').prop('checked') : false;
                     formdata.push({
                         "practice_id": practice_id,
                         "practice_name": $('#practice_name').val(),
@@ -121,7 +123,8 @@ window.onload = function() {
                         "removed_location": removedLocation,
                         "practice_email": $('#practice_email').val(),
                         "practice_network": networkList,
-                        "discard_onboard": discardOnboard
+                        "discard_onboard": discardOnboard,
+                        "manually_created": manuallyCreated,
                     });
                     updatePracticedata(formdata);
                 }
@@ -327,7 +330,14 @@ window.onload = function() {
         var totalAddress = locationAddress[index].length;
 
         if (counter > 0) {
-            var address = locationAddress[index][counter - 1].addressline1 + '<br>' + locationAddress[index][counter - 1].city + ',' + locationAddress[index][counter - 1].state + '&nbsp;' + locationAddress[index][counter - 1].zip;
+            var addressline1 = locationAddress[index][counter - 1].addressline1;
+            var city = locationAddress[index][counter - 1].city;
+            var state = locationAddress[index][counter - 1].state;
+            var zip = locationAddress[index][counter - 1].zip;
+            var address = addressline1 ? addressline1 + '<br>' : '';
+            address += city ? city + ', ' : '';
+            address += state ? state + ' ' : '';
+            address += zip ? zip : '';
             $(this).parent().parent().find('.location_address').html(address);
             $(this).parent().find('.location_address_counter').text(counter - 1);
 
@@ -339,7 +349,14 @@ window.onload = function() {
         var totalAddress = locationAddress[index].length;
 
         if (counter < totalAddress - 1) {
-            var address = locationAddress[index][counter + 1].addressline1 + '<br>' + locationAddress[index][counter + 1].city + ',' + locationAddress[index][counter + 1].state + '&nbsp;' + locationAddress[index][counter + 1].zip;
+            var addressline1 = locationAddress[index][counter + 1].addressline1;
+            var city = locationAddress[index][counter + 1].city;
+            var state = locationAddress[index][counter + 1].state;
+            var zip = locationAddress[index][counter + 1].zip;
+            var address = addressline1 ? addressline1 + '<br>' : '';
+            address += city ? city + ', ' : '';
+            address += state ? state + ' ' : '';
+            address += zip ? zip : '';
             $(this).parent().parent().find('.location_address').html(address);
             $(this).parent().find('.location_address_counter').text(counter + 1);
         }
@@ -508,7 +525,15 @@ function getPractices(formData, page) {
                     }
                     content += '&nbsp;&nbsp;</div><div class="search_name"><p>' + practice.name + '</p></div></div>';
                     if (totalLocation >= 0) {
-                        content += '<div class="col-xs-3 location_address">' + practice.locations[totalLocation].addressline1 + '<br>' + practice.locations[totalLocation].city + ',' + practice.locations[totalLocation].state + ' ' + practice.locations[totalLocation].zip + '</div><div class="col-xs-1 location_counter_toggle" data-index = "' + i + '">';
+                        var addressline1 = practice.locations[totalLocation].addressline1;
+                        var city = practice.locations[totalLocation].city;
+                        var state = practice.locations[totalLocation].state;
+                        var zip = practice.locations[totalLocation].zip;
+                        var address = addressline1 ? addressline1 + '<br>' : '';
+                        address += city ? city + ', ' : '';
+                        address += state ? state + ' ' : '';
+                        address += zip ? zip : '';
+                        content += '<div class="col-xs-3 location_address">' + address + '</div><div class="col-xs-1 location_counter_toggle" data-index = "' + i + '">';
                     } else {
                         content += '<div class="col-xs-3 location_address"><br></div><div class="col-xs-1 location_counter_toggle" data-index = "' + i + '">';
                         totalLocation = 0;

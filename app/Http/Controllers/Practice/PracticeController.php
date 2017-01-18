@@ -221,6 +221,10 @@ class PracticeController extends Controller
                 $networkData[$network->id] = $network->name;
             }
         }
+
+        $practice = Practice::find($id);
+        $data['manually_created'] = $practice->manually_created ? true : false;
+
         return view('practice.create')->with('data', $data)->with('networks', $networkData);
     }
 
@@ -244,6 +248,7 @@ class PracticeController extends Controller
         $practiceid = $practicedata[0]['practice_id'];
         $locations = $practicedata[0]['locations'];
         $removedLocations = $practicedata[0]['removed_location'];
+        $manuallyCreated = $practicedata[0]['manually_created'];
         $onboardPractice = OnboardPractice::where('practice_id', $practiceid)->first();
         if ($practicedata[0]['discard_onboard']) {
             $onboardPractice->delete();
@@ -252,6 +257,9 @@ class PracticeController extends Controller
 
         $practice = Practice::find($practiceid);
         $practice->name = $practicename;
+        if($manuallyCreated == false && $practice->manually_created != null) {
+            $practice->manually_created = null;
+        }
         $practice->email = $practiceemail;
         $practice->save();
 

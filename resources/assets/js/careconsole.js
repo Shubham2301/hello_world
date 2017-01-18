@@ -74,7 +74,6 @@ $(document).ready(function() {
                 } else {
                     showKPIData(stageID, kpi_id, stageName, kpi_name, kpi_indicator);
                 }
-
             }
         }
         setSidebarButtonActive();
@@ -545,7 +544,29 @@ $(document).ready(function() {
     });
 
     $('#manual_appointment_practice').on('change', function() {
-        getProvidersAndLocations($(this).val());
+        if ($(this).val() != '-1') {
+            $('#form_manual_appointment_provider').show();
+            $('#form_manual_appointment_location').show();
+            $('#form_manual_custom_appointment_practice').hide();
+            $('#form_manual_custom_appointment_location').hide();
+            getProvidersAndLocations($(this).val(), $(this).find(':selected').data('manually_created'));
+        } else {
+            $('#form_manual_custom_appointment_practice').show();
+            $('#form_manual_custom_appointment_location').show();
+            $('#form_manual_appointment_provider').hide();
+            $('#form_manual_appointment_location').hide();
+            $('#manual_custom_appointment_practice').val('');
+            $('#manual_custom_appointment_location').val('');
+        }
+    });
+
+    $('#manual_appointment_location').on('change', function() {
+        if ($(this).val() == '-1') {
+            $('#form_manual_custom_appointment_location').show();
+            $('#manual_custom_appointment_location').val('');
+        } else {
+            $('#form_manual_custom_appointment_location').hide();
+        }
     });
 
     $('#listing_content').on('scroll', function() {
@@ -825,7 +846,8 @@ function action() {
             var manual_appointment_provider = $('#manual_appointment_provider').val();
             var manual_appointment_appointment_type = $('#manual_appointment_appointment_type').val();
             var custom_appointment_type = $('#manual_custom_appointment_appointment_type').val();
-            if (manual_appointment_date == '' || manual_appointment_practice == '' || ((manual_appointment_appointment_type == '' || manual_appointment_appointment_type == '-1') && custom_appointment_type == '') || (manual_appointment_practice != '0' && (manual_appointment_location == '' || manual_appointment_provider == '' || manual_appointment_location == '0' || manual_appointment_provider == '0'))) {
+            var manually_created = $('#manual_appointment_practice').find(':selected').data('manually_created')
+            if (manual_appointment_date == '' || manual_appointment_practice == '0' || ((manual_appointment_appointment_type == '' || manual_appointment_appointment_type == '-1') && custom_appointment_type == '') || (manual_appointment_practice != '-1' && manually_created != '1' && (manual_appointment_location == '' || manual_appointment_provider == '' || manual_appointment_location == '0' || manual_appointment_provider == '0'))) {
                 $('p.alert_message').text('Please enter all the fields to schedule appointment');
                 $('#alert').modal('show');
                 return;
@@ -880,6 +902,8 @@ function performAction() {
         'manual_appointment_appointment_type': $('#manual_appointment_appointment_type').val(),
         'manual_referredby_practice': $('#manual_referredby_practice').val(),
         'manual_referredby_provider': $('#manual_referredby_provider').val(),
+        'custom_manual_appointment_practice': $('#manual_custom_appointment_practice').val(),
+        'custom_manual_appointment_location': $('#manual_custom_appointment_location').val(),
         'custom_appointment_type': $('#manual_custom_appointment_appointment_type').val(),
         'request_message': request_message,
         'update_demographics': updatePatientDemographic,
@@ -1216,7 +1240,7 @@ function setSidebarButtonActive() {
     $(".stage.box[data-id=" + stageID + "]").parent('.sidebar_menu_item').addClass('active');
 }
 
-function getProvidersAndLocations(practiceID) {
+function getProvidersAndLocations(practiceID, manualPractice) {
     var formData = {
         'practiceID': practiceID
     };
@@ -1234,6 +1258,9 @@ function getProvidersAndLocations(practiceID) {
             $.each(locations, function(index, val) {
                 content += '<option value="' + val.id + '">' + val.locationname + '</option>';
             });
+            if (manualPractice == '1') {
+                content += '<option value="-1">Not Listed</option>';
+            }
             $('#manual_appointment_location').html(content);
 
             var providers = data['provider'];
@@ -1274,6 +1301,10 @@ function clearActionFields() {
     $('#form_action_request_email').hide();
     $('#form_action_request_phone').hide();
     $('#form_action_request_sms').hide();
+    $('#form_manual_custom_appointment_practice').hide();
+    $('#form_manual_custom_appointment_location').hide();
+    $('#manual_custom_appointment_practice').val('');
+    $('#manual_custom_appointment_location').val('');
 }
 
 function referredByProviderSuggestions(searchValue) {
@@ -1436,7 +1467,8 @@ function getPatientContactData(patientID) {
 
 function updateManualScheduleData(consoleID) {
 
-    var content = '<option value="">Appointment Type</option>';
+    var appointmentTypeList = '<option value="">Appointment Type</option>';
+    var practiceList = '<option value="0">Select Practice</option>';
     $.ajax({
         url: '/careconsole/manual_schedule_data/' + consoleID,
         type: 'GET',
@@ -1444,7 +1476,11 @@ function updateManualScheduleData(consoleID) {
         async: false,
         success: function success(data) {
             for (var key in data.appointment_type) {
-                content += '<option value="' + data.appointment_type[key] + '">' + data.appointment_type[key] + '</option>';
+                appointmentTypeList += '<option value="' + data.appointment_type[key] + '">' + data.appointment_type[key] + '</option>';
+            }
+            for (var key in data.practiceList) {
+                var manually_created = data.practiceList[key].manually_created ? data.practiceList[key].manually_created : '';
+                practiceList += '<option value="' + data.practiceList[key].id + '" data-manually_created="' + manually_created + '">' + data.practiceList[key].name + '</option>';
             }
             $('#manual_referredby_practice').val(data.referred_by_practice != '-' ? data.referred_by_practice : '');
             $('#manual_referredby_provider').val(data.referred_by_provider != '-' ? data.referred_by_provider : '');
@@ -1457,6 +1493,8 @@ function updateManualScheduleData(consoleID) {
         processData: false
     });
 
-    content += '<option value="-1">Not listed</option>';
-    $('#manual_appointment_appointment_type').html(content);
+    appointmentTypeList += '<option value="-1">Not listed</option>';
+    practiceList += '<option value="-1">Not listed</option>';
+    $('#manual_appointment_appointment_type').html(appointmentTypeList);
+    $('#manual_appointment_practice').html(practiceList);
 }

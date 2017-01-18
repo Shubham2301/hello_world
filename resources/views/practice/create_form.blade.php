@@ -6,17 +6,7 @@
     </div>
     <div>
         <p class="add_title" @if(!Auth::check()) style="margin-left:0" @endif>
-            @if(Auth::check())
-                @if(isset($data['onboard']))
-                    Onboard Practice Location
-                @elseif (isset($data['edit']))
-                    Edit Practice
-                @else
-                    Add New Practice
-                @endif
-            @else
-                Add Location Information
-            @endif
+            @if(Auth::check()) @if(isset($data['onboard'])) Onboard Practice Locations @elseif (isset($data['edit'])) Edit Practice @else Add New Practice @endif @else Add Location Information @endif
         </p>
     </div>
 </div>
@@ -33,21 +23,20 @@
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
                         @if(!Auth::check())
-                            <input id="onboarding_id" type="hidden" value="{{$data['onboarding_id']}}">
-                            <input id="onboarding_token" type="hidden" value="{{$data['onboarding_token']}}">
-                        @endif
+                        <input id="onboarding_id" type="hidden" value="{{$data['onboarding_id']}}">
+                        <input id="onboarding_token" type="hidden" value="{{$data['onboarding_token']}}"> @endif
                         <input id="editmode" type="hidden" value="{{$data['id']}}">
-                        <input id="location_index" type="hidden" value="{{$data['location_index']}}">
-                        {!! Form::text('practice_name', old('practice_name'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Name*', 'id' => 'practice_name' , 'data-toggle' => 'tooltip', 'title' => 'Practice Name', 'data-placement' => 'right', 'maxlength' => '50')) !!}
-                        {!! Form::text('practice_email', old('practice_email'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Email*', 'id' => 'practice_email', 'data-toggle' => 'tooltip', 'title' => 'Practice Email', 'data-placement' => 'right')) !!}
+                        <input id="location_index" type="hidden" value="{{$data['location_index']}}"> {!! Form::text('practice_name', old('practice_name'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Name*', 'id' => 'practice_name' , 'data-toggle' => 'tooltip', 'title' => 'Practice Name', 'data-placement' => 'right', 'maxlength' => '50')) !!} {!! Form::text('practice_email', old('practice_email'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Email*', 'id' => 'practice_email', 'data-toggle' => 'tooltip', 'title' => 'Practice Email', 'data-placement' => 'right')) !!}
+                        @if(array_key_exists('manually_created', $data) && $data['manually_created'] == true && session('user-level') == 1)
+                        <div class="manually_created arial">
+                            {!! Form::checkbox('manuall_created', '1', true, array('id' => 'manually_created')) !!}
+                            <label>Manually Created</label>
+                        </div>
+                        @endif
                     </div>
                     <div class="col-sm-6 col-xs-12 ocuapps_options" style="color:#fff;">
-                        <h4>Networks*</h4>
-                            @foreach($networks as $key => $network)
-                                {!! Form::checkbox('network[]', $network, in_array($key, $data['network_id']) ? true : null, array('id' => $key, 'class' => 'practice_network', in_array($key, $data['network_id']) ? 'disabled' : '')); !!}
-                                {!! Form::label($network, $network); !!}
-                                <br>
-                            @endforeach
+                        <h4>Networks*</h4> @foreach($networks as $key => $network) {!! Form::checkbox('network[]', $network, in_array($key, $data['network_id']) ? true : null, array('id' => $key, 'class' => 'practice_network', in_array($key, $data['network_id']) ? 'disabled' : '')); !!} {!! Form::label($network, $network); !!}
+                        <br> @endforeach
                     </div>
                 </div>
             </div>
@@ -75,10 +64,10 @@
                     <div class="row content-row-margin">
                         <div class="col-sm-6 col-xs-12">
                             <input class="add_practice_input" id="locationname" type="text" placeholder="Location Name*" data-toggle="tooltip" title="Location Name" data-placement="right">
-                            <input class="add_practice_input" id="location_code" type="text" placeholder="Location Code*"  data-toggle="tooltip" title="Location Code" data-placement="right">
+                            <input class="add_practice_input" id="location_code" type="text" placeholder="Location Code*" data-toggle="tooltip" title="Location Code" data-placement="right">
                             <input class="add_practice_input" id="location_email" type="text" placeholder="Notification Email*" data-toggle="tooltip" title="Notification Email" data-placement="right">
-							<input class="add_practice_input" id="phone" type="text" placeholder="Phone*"  data-toggle="tooltip" title="Phone" data-placement="right" pattern = "[^A-Za-z]+">
-                            <input class="add_practice_input" id="addressline1" type="text" placeholder="Address*"  data-toggle="tooltip" title="Address" data-placement="right">
+                            <input class="add_practice_input" id="phone" type="text" placeholder="Phone*" data-toggle="tooltip" title="Phone" data-placement="right" pattern="[^A-Za-z]+">
+                            <input class="add_practice_input" id="addressline1" type="text" placeholder="Address*" data-toggle="tooltip" title="Address" data-placement="right">
                             <input class="add_practice_input" id="city" type="text" placeholder="City*" data-toggle="tooltip" title="City" data-placement="right">
                             <input class="add_practice_input" id="state" type="text" placeholder="State*" data-toggle="tooltip" title="State" data-placement="right">
                             <input class="add_practice_input" id="zip" type="text" placeholder="Zip*" data-toggle="tooltip" title="ZIP" data-placement="right">
@@ -126,8 +115,7 @@
         <button type="button" class="btn save_practice_button" id="savepractice">Save</button>
         @if(session('user-level') == 1 && !isset($data['edit']))
         <button type="button" class="btn save_practice_button" id="onboardpractice" data-toggle="tooltip" title="Save practice and send notification to add locations to the email address provided" data-placement="bottom">Onboard</button>
-        @endif
-        @if(session('user-level') == 1 && isset($data['onboard']))
+        @endif @if(session('user-level') == 1 && isset($data['onboard']))
         <button type="button" class="btn save_practice_button" id="discardOnboard" data-toggle="tooltip" title="Discard the location information received from the practice" data-placement="bottom">Discard</button>
         @endif
         <button type="button" class="btn" id="dontsave_new_practice">Don't Save</button>
