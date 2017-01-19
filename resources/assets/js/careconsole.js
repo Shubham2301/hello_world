@@ -503,7 +503,6 @@ $(document).ready(function() {
             return;
         }
 
-
         if (field.css('display') !== 'none') {
             if (field.attr('data-order') === 'SORT_DESC') {
                 field.attr('data-order', 'SORT_ASC');
@@ -545,10 +544,15 @@ $(document).ready(function() {
 
     $('#manual_appointment_practice').on('change', function() {
         if ($(this).val() != '-1') {
-            $('#form_manual_appointment_provider').show();
             $('#form_manual_appointment_location').show();
             $('#form_manual_custom_appointment_practice').hide();
             $('#form_manual_custom_appointment_location').hide();
+            var manually_created = $('#manual_appointment_practice').find(':selected').data('manually_created');
+            if (manually_created == 1) {
+                $('#form_manual_appointment_provider').hide();
+            } else {
+                $('#form_manual_appointment_provider').show();
+            }
             getProvidersAndLocations($(this).val(), $(this).find(':selected').data('manually_created'));
         } else {
             $('#form_manual_custom_appointment_practice').show();
@@ -846,7 +850,7 @@ function action() {
             var manual_appointment_provider = $('#manual_appointment_provider').val();
             var manual_appointment_appointment_type = $('#manual_appointment_appointment_type').val();
             var custom_appointment_type = $('#manual_custom_appointment_appointment_type').val();
-            var manually_created = $('#manual_appointment_practice').find(':selected').data('manually_created')
+            var manually_created = $('#manual_appointment_practice').find(':selected').data('manually_created');
             if (manual_appointment_date == '' || manual_appointment_practice == '0' || ((manual_appointment_appointment_type == '' || manual_appointment_appointment_type == '-1') && custom_appointment_type == '') || (manual_appointment_practice != '-1' && manually_created != '1' && (manual_appointment_location == '' || manual_appointment_provider == '' || manual_appointment_location == '0' || manual_appointment_provider == '0'))) {
                 $('p.alert_message').text('Please enter all the fields to schedule appointment');
                 $('#alert').modal('show');
@@ -1411,7 +1415,7 @@ function getPatientContactData(patientID) {
                 content += 'checked'
             }
             content += '></span><br></p>';
-            
+
             content += '<p><span class="arial_bold">Workphone</span><span class="arial"><input type="text" class="update_demographic" id="workphone" value="' + data.workphone + '"><input type="checkbox" class="preferred_phone_checkbox" value="2" data-toggle="tooltip" title="Mark as preferred phone" data-placement="right"';
             if (data.preferred_contact_number.selected != '-1' && data.preferred_contact_number.list[data.preferred_contact_number.selected] == 'Workphone') {
                 content += 'checked'

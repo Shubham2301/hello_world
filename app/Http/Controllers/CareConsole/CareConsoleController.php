@@ -371,7 +371,14 @@ class CareConsoleController extends Controller
         $patient = Patient::find($console->patient_id);
         $data['patient_id'] = $console->patient_id;
         $data['name'] = $patient->getName('system_format');
-        $data['phone'] = $patient->cellphone;
+        if ($patient->engagementPreference && $patient->engagementPreference->phone_preference != null && $patient->engagementPreference->phone_preference != '') {
+            $contactNumberList = Helper::getContactNumberTypes();
+            $patientPreference = $contactNumberList[$patient->engagementPreference->phone_preference];
+            $data['phone'] = $patient[strtolower($patientPreference)];
+        } else {
+            $data['phone'] = $patient->getPhone() != '-' ? $patient->getPhone() : '';
+        }
+        
         if ($console->recall_date) {
             $bucket = 'recall';
             $bucket = CareconsoleStage::where('name', $bucket)->first();

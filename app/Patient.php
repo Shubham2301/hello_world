@@ -5,6 +5,7 @@ namespace myocuhub;
 use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use myocuhub\Facades\Helper;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientMail;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientPhone;
 use myocuhub\Jobs\PatientEngagement\PostAppointmentPatientSMS;
@@ -81,15 +82,22 @@ class Patient extends Model
     {
         $phone = '-';
 
-        if ($this->cellphone != '' || $this->cellphone != null) {
-            $phone = $this->cellphone;
-        } elseif ($this->homephone != '' || $this->homephone != null) {
-            $phone = $this->homephone;
-        } elseif ($this->workphone != '' || $this->workphone != null) {
-            $phone = $this->workphone;
+        if ($this->engagementPreference && $this->engagementPreference->phone_preference != null && $this->engagementPreference->phone_preference != '') {
+            $contactNumberList = Helper::getContactNumberTypes();
+            $patientPreference = $contactNumberList[$this->engagementPreference->phone_preference];
+            $phone = $this[strtolower($patientPreference)];
+        } else {
+            if ($this->cellphone != '' || $this->cellphone != null) {
+                $phone = $this->cellphone;
+            } elseif ($this->homephone != '' || $this->homephone != null) {
+                $phone = $this->homephone;
+            } elseif ($this->workphone != '' || $this->workphone != null) {
+                $phone = $this->workphone;
+            }
         }
 
         return $phone;
+
     }
 
     public function getName($type = 'system_format')
