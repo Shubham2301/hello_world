@@ -257,7 +257,7 @@ class PracticeController extends Controller
 
         $practice = Practice::find($practiceid);
         $practice->name = $practicename;
-        if($manuallyCreated == false && $practice->manually_created != null) {
+        if ($manuallyCreated == false && $practice->manually_created != null) {
             $practice->manually_created = null;
         }
         $practice->email = $practiceemail;
@@ -342,11 +342,15 @@ class PracticeController extends Controller
         }
 
         $i = 0;
+        $deleted = array();
         while (1) {
             if ($request->input($i)) {
                 $practice_id = $request->input($i);
                 $practicelocation = PracticeLocation::where('practice_id', $practice_id)->delete();
                 $practices = Practice::where('id', $practice_id)->delete();
+                if ($practices != 0) {
+                    array_push($deleted, $practice_id);
+                }
                 $i++;
 
                 $onboardPractice = OnboardPractice::where('practice_id', $practice_id)->first();
@@ -358,11 +362,13 @@ class PracticeController extends Controller
             }
         }
 
-        $action = 'deleted practice';
-        $description = '';
-        $filename = basename(__FILE__);
-        $ip = $request->getClientIp();
-        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        if (sizeof($deleted) > 0) {
+            $action = 'Deleted ' . sizeof($deleted) . ' practices with ID ' .implode(", ", $deleted);
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        }
 
         return 1;
     }
@@ -383,7 +389,7 @@ class PracticeController extends Controller
         $reactivate = Practice::where('id', $practiceID)->restore();
         $practicelocation = PracticeLocation::where('practice_id', $practiceID)->restore();
 
-        $action = 'reactivated practice with ID'. $practiceID;
+        $action = 'Reactivated practice with ID '. $practiceID;
         $description = '';
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();
