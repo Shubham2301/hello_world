@@ -516,13 +516,18 @@ class UserController extends Controller
             return;
         }
 
-        $deactivate = User::whereIn('id', $request->input())->update(['active' => 0]);
+        $toDelete = $request->input();
+        array_pop($toDelete);
 
-        $action = 'deleted ' . sizeof($request->input()) . ' users';
-        $description = '';
-        $filename = basename(__FILE__);
-        $ip = $request->getClientIp();
-        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        $deactivate = User::whereIn('id', $toDelete)->where('active', 1)->update(['active' => 0]);
+
+        if ($deactivate != 0) {
+            $action = 'Deleted ' . $deactivate . ' users with ID ' .implode(", ", $toDelete);
+            $description = '';
+            $filename = basename(__FILE__);
+            $ip = $request->getClientIp();
+            Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+        }
     }
 
     /**
@@ -543,7 +548,7 @@ class UserController extends Controller
 
         $reactivate = User::where('id', $userID)->update(['active' => 1]);
 
-        $action = 'reactivated user with ID'. $userID;
+        $action = 'Reactivated user with ID '. $userID;
         $description = '';
         $filename = basename(__FILE__);
         $ip = $request->getClientIp();
