@@ -55,7 +55,7 @@
                 </div>
                 <div class="inline_element">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['iol']) && $data['record']['iol'] == 'Crystalens') ? 'checked' : '' }}>Crystalense &nbsp; &nbsp;
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['iol']) && $data['record']['iol'] == 'Crystalens') ? 'checked' : '' }}>Crystalens &nbsp; &nbsp;
                     </p>
                 </div>
                 <div class="inline_element">
@@ -92,17 +92,12 @@
                 </div>
                 <div class="inline_element">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['eye']) && in_array('OD', $data['record']['eye'])) ? 'checked' : '' }}>OD &nbsp; &nbsp;
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['eye']) && $data['record']['eye'] == 'OD') ? 'checked' : '' }}>OD &nbsp; &nbsp;
                     </p>
                 </div>
                 <div class="inline_element">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['eye']) && in_array('OU', $data['record']['eye'])) ? 'checked' : '' }}>OU &nbsp; &nbsp;
-                    </p>
-                </div>
-                <div class="inline_element">
-                    <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['eye']) && in_array('OS', $data['record']['eye'])) ? 'checked' : '' }}>OS &nbsp; &nbsp;
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['eye']) && $data['record']['eye'] == 'OS') ? 'checked' : '' }}>OS &nbsp; &nbsp;
                     </p>
                 </div>
             </div>
