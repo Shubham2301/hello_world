@@ -155,17 +155,21 @@ class ActionService
                         $appointment_type->save();
                     }
                 }
-                    $referralHistory = new ReferralHistory;
-                    $referralHistory->network_id  = session('network-id');
-                    $referralHistory->referred_to_practice_id        = $appointment->practice_id;
-                    $referralHistory->referred_to_practice_user_id  = $appointment->provider_id;
-                    $referralHistory->referred_to_location_id        = $appointment->location_id;
-                    $referralHistory->referred_by_provider          = $manualAppointmentData['referredby_provider'];
-                    $referralHistory->referred_by_practice          = $manualAppointmentData['referredby_practice'];
-                    $referralHistory->save();
 
-                    $console->referral_id = $referralHistory->id;
-                    $console->save();
+                $referralHistory = ReferralHistory::find($console->referral_id);
+                if ($referralHistory == null) {
+                    $referralHistory = new ReferralHistory;
+                }
+                $referralHistory->network_id  = session('network-id');
+                $referralHistory->referred_to_practice_id  = $appointment->practice_id;
+                $referralHistory->referred_to_practice_user_id = $appointment->provider_id;
+                $referralHistory->referred_to_location_id = $appointment->location_id;
+                $referralHistory->referred_by_provider = $manualAppointmentData['referredby_provider'];
+                $referralHistory->referred_by_practice = $manualAppointmentData['referredby_practice'];
+                $referralHistory->save();
+
+                $console->referral_id = $referralHistory->id;
+                $console->save();
 
                 break;
             case 'manually-reschedule':
@@ -233,13 +237,16 @@ class ActionService
                     }
                 }
 
-                $referralHistory = new ReferralHistory;
-                $referralHistory->network_id = session('network-id');
-                $referralHistory->referred_to_practice_id        = $appointment->practice_id;
-                $referralHistory->referred_to_practice_user_id  = $appointment->provider_id;
-                $referralHistory->referred_to_location_id        = $appointment->location_id;
-                $referralHistory->referred_by_provider          = $manualAppointmentData['referredby_provider'];
-                $referralHistory->referred_by_practice          = $manualAppointmentData['referredby_practice'];
+                $referralHistory = ReferralHistory::find($console->referral_id);
+                if ($referralHistory == null) {
+                    $referralHistory = new ReferralHistory;
+                }
+                $referralHistory->network_id  = session('network-id');
+                $referralHistory->referred_to_practice_id  = $appointment->practice_id;
+                $referralHistory->referred_to_practice_user_id = $appointment->provider_id;
+                $referralHistory->referred_to_location_id = $appointment->location_id;
+                $referralHistory->referred_by_provider = $manualAppointmentData['referredby_provider'];
+                $referralHistory->referred_by_practice = $manualAppointmentData['referredby_practice'];
                 $referralHistory->save();
 
                 $console->referral_id = $referralHistory->id;
@@ -266,6 +273,14 @@ class ActionService
                 $contact->days_in_prev_stage = $date_diff;
                 $contact->days_in_current_stage = 0;
                 $referralHistory = new ReferralHistory;
+                $pastReferralHistory = ReferralHistory::find($console->referral_id);
+                if ($pastReferralHistory) {
+                    $referralHistory->referred_by_practice = $pastReferralHistory->referred_by_practice;
+                    $referralHistory->referred_by_provider = $pastReferralHistory->referred_by_provider;
+                    $referralHistory->disease_type = $pastReferralHistory->disease_type;
+                    $referralHistory->severity = $pastReferralHistory->severity;
+                }
+                $referralHistory->network_id = session('network-id');
                 $referralHistory->save();
                 $console->referral_id = $referralHistory->id;
                 $console->recall_date = null;
@@ -294,10 +309,17 @@ class ActionService
                 $console->archived_date = null;
                 $console->stage_id = 1;
                 $console->appointment_id = null;
-                $console->referral_id = null;
                 $console->stage_updated_at = $date->format('Y-m-d H:i:s');
                 $console->save();
                 $referralHistory = new ReferralHistory;
+                $pastReferralHistory = ReferralHistory::find($console->referral_id);
+                if ($pastReferralHistory) {
+                    $referralHistory->referred_by_practice = $pastReferralHistory->referred_by_practice;
+                    $referralHistory->referred_by_provider = $pastReferralHistory->referred_by_provider;
+                    $referralHistory->disease_type = $pastReferralHistory->disease_type;
+                    $referralHistory->severity = $pastReferralHistory->severity;
+                    $referralHistory->network_id = session('network-id');
+                }
                 $referralHistory->save();
                 $console->referral_id = $referralHistory->id;
                 $console->save();
