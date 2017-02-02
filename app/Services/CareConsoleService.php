@@ -418,6 +418,21 @@ class CareConsoleService
                 $referralHistory = ReferralHistory::find($patient['referral_id']);
                 return (isset($referralHistory) && isset($referralHistory->referred_by_provider) && ($referralHistory->referred_by_provider != '')) ? $referralHistory->referred_by_provider : '';
                 break;
+            case 'archive-reason':
+                $archiveReason = ContactHistory::where('console_id', $patient->id)
+                    ->whereHas('actionResult', function ($q) {
+                        $q->where('name', 'patient-declined-services');
+                        $q->orwhere('name', 'other-reasons-for-declining');
+                        $q->orwhere('name', 'already-seen-by-outside-dr');
+                        $q->orwhere('name', 'no-need-to-schedule');
+                        $q->orwhere('name', 'no-insurance');
+                        $q->orwhere('name', 'success');
+                        $q->orwhere('name', 'dropout');
+                    })
+                    ->orderBy('id', 'desc')
+                    ->first();
+                return $archiveReason ? $archiveReason->actionResult->display_name : '-';
+                break;
             default:
                 return '-';
                 break;
