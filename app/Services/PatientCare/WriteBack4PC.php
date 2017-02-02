@@ -17,7 +17,6 @@ use myocuhub\User;
 
 class WriteBack4PC extends PatientCare
 {
-
     public function __construct()
     {
         self::$url = 'https://www.4patientcare.net/4pcdn/writeback4pc.asmx';
@@ -38,7 +37,6 @@ class WriteBack4PC extends PatientCare
      */
     public static function ProviderApptSchedule($input)
     {
-
         $input['AccessID'] = self::getAccessID();
         $input['SecurityCode'] = self::getSecurityCode();
 
@@ -66,83 +64,81 @@ class WriteBack4PC extends PatientCare
      */
     public function OcuhubAppointmentWriteback($schedules)
     {
-
         foreach ($schedules as $schedule) {
-
             $fpcAappts = $schedule['schedule'];
             $provider = User::where('npi', $schedule['npi'])->first();
 
             foreach ($fpcAappts as $fpcAppt) {
                 try {
-                    if(!is_array($fpcAappts)) {
+                    if (!is_array($fpcAappts)) {
                         $fpcAppt = $fpcAappts;
                     }
                     $appt = Appointment::where('fpc_id', $fpcAppt->FPCApptID)->get();
                     $practiceLocation = PracticeLocation::where('location_code', $fpcAppt->LocK)->first();
-
+                    if (!$practiceLocation) {
+                        continue;
+                    }
 
                     if (!sizeof($appt)) {
 
-                        /**
-                         * Appointment was not scheduled by Ocuhub
-                         */
+                        // /**
+                        //  * Appointment was not scheduled by Ocuhub
+                        //  */
 
-                        $appt = new Appointment;
-                        $appt->practice_id = $practiceLocation->practice_id;
-                        $appt->location_id = $practiceLocation->id;
-                        $appt->provider_id = $provider->id;
-                        $appt->appointmenttype = $fpcAppt->ApptReason;
-                        $appt->fpc_id = $fpcAppt->FPCApptID;
-                        $date = new Datetime($fpcAppt->ApptStart);
-                        $appt->start_datetime = $date->format('Y-m-d H:i:s');
-                        $date = new Datetime($fpcAppt->ApptEnd);
-                        $appt->end_datetime = $date->format('Y-m-d H:i:s');
-                        $patient = Patient::where('fpc_id', $fpcAppt->PatientData->FPCPatientID)->first();
-                        if ($patient && $patient->careConsole) {
+                        // $appt = new Appointment;
+                        // $appt->practice_id = $practiceLocation->practice_id;
+                        // $appt->location_id = $practiceLocation->id;
+                        // $appt->provider_id = $provider->id;
+                        // $appt->appointmenttype = $fpcAppt->ApptReason;
+                        // $appt->fpc_id = $fpcAppt->FPCApptID;
+                        // $date = new Datetime($fpcAppt->ApptStart);
+                        // $appt->start_datetime = $date->format('Y-m-d H:i:s');
+                        // $date = new Datetime($fpcAppt->ApptEnd);
+                        // $appt->end_datetime = $date->format('Y-m-d H:i:s');
+                        // $patient = Patient::where('fpc_id', $fpcAppt->PatientData->FPCPatientID)->first();
+                        // if ($patient && $patient->careConsole) {
 
-                            /**
-                             * Patient Exists in Ocuhub
-                             */
+                        //     /**
+                        //      * Patient Exists in Ocuhub
+                        //      */
 
-                            $appt->patient_id = $patient->id;
-                            $appt->network_id = $patient->careConsole->importHistory->network_id;
-                            $appt->save();
+                        //     $appt->patient_id = $patient->id;
+                        //     $appt->network_id = $patient->careConsole->importHistory->network_id;
+                        //     $appt->save();
 
-                        } else {
+                        // } else {
 
-                            $patients = [];
-                            $patients['firstname'] = $fpcAppt->PatientData->FirstName;
-                            $patients['lastname'] = $fpcAppt->PatientData->LastName;
-                            $patients['lastfourssn'] = $fpcAppt->PatientData->L4DSSN;
-                            $date = new Datetime($fpcAppt->PatientData->DOB);
-                            $patients['birthdate'] = $date->format('Y-m-d H:i:s');
-                            $patient = Patient::where($patients)->first();
+                        //     $patients = [];
+                        //     $patients['firstname'] = $fpcAppt->PatientData->FirstName;
+                        //     $patients['lastname'] = $fpcAppt->PatientData->LastName;
+                        //     $patients['lastfourssn'] = $fpcAppt->PatientData->L4DSSN;
+                        //     $date = new Datetime($fpcAppt->PatientData->DOB);
+                        //     $patients['birthdate'] = $date->format('Y-m-d H:i:s');
+                        //     $patient = Patient::where($patients)->first();
 
-                            if ($patient && $patient->careConsole) {
+                        //     if ($patient && $patient->careConsole) {
 
-                                /**
-                                 * Patient Exists in Ocuhub but not linked to FPC ID
-                                 */
+                        //         /**
+                        //          * Patient Exists in Ocuhub but not linked to FPC ID
+                        //          */
 
-                                $patient->fpc_id = $fpcAppt->PatientData->FPCPatientID;
-                                $patient->save();
+                        //         $patient->fpc_id = $fpcAppt->PatientData->FPCPatientID;
+                        //         $patient->save();
 
-                                $appt->patient_id = $patient->id;
-                                $appt->network_id = $patient->careConsole->importHistory->network_id;
-                                $appt->save();
-                            }
-                        }
+                        //         $appt->patient_id = $patient->id;
+                        //         $appt->network_id = $patient->careConsole->importHistory->network_id;
+                        //         $appt->save();
+                        //     }
+                        // }
 
-                        $newAppoitment = Appointment::where('fpc_id', $fpcAppt->FPCApptID)->first();
-                        if ($newAppoitment) {
-                            $audit = new FPCWritebackAudit;
-                            $audit->patient_id = $newAppoitment->patient_id;
-                            $audit->provider_id = $newAppoitment->provider_id;
-                            $audit->appointment_id = $newAppoitment->id;
-                            $audit->save();
-                        }
-
-
+                        // $newAppoitment = Appointment::where('fpc_id', $fpcAppt->FPCApptID)->first();
+                        // if ($newAppoitment) {
+                        //     $audit = new FPCWritebackAudit;
+                        //     $audit->patient_id = $newAppoitment->patient_id;
+                        //     $audit->provider_id = $newAppoitment->provider_id;
+                        //     $audit->appointment_id = $newAppoitment->id;
+                        //     $audit->save();
+                        // }
                     } else {
 
                         /**
@@ -176,7 +172,6 @@ class WriteBack4PC extends PatientCare
 
                             $audit->save();
                         }
-
                     }
                 } catch (Exception $e) {
                     Log::error($e);
@@ -184,5 +179,4 @@ class WriteBack4PC extends PatientCare
             }
         }
     }
-
 }
