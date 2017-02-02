@@ -31,7 +31,7 @@
 
         @if(session('impersonation-id') != '' )
         <div style="position:absolute">
-            <div style="background-color:#d3eefa;padding:0.25em;border-radius:100%;width:2.5em;display:inline-block">
+            <div style="background-color:#d3eefa;padding:0.25em;border-radius:98%;width:2.5em;display:inline-block">
                 <img style="width:2em" src="{{ asset('/images/impersonate-icon-01.png') }}" alt="">
             </div>
             <span style="display:inline-block"> &nbsp;Proxying <span class="arial_bold">{{ session('impersonation-name') }}</span>&nbsp;</span>
