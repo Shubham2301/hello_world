@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\AuditLog;
+use myocuhub\Models\FPCWritebackAudit;
 use myocuhub\Models\ImpersonationAudit;
 use myocuhub\Network;
 use myocuhub\Services\Reports\Reports;
@@ -16,7 +17,6 @@ use myocuhub\User;
 
 class AuditReportController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('role:admin_report,1');
@@ -59,8 +59,8 @@ class AuditReportController extends Controller
                 $date = new Datetime($log->created_at);
 
                 $audit[] = [
-                    'user_name' => $log->user_fname ?: '' . ' ' . $log->user_lname ?: '',
-                    'user_id' => $log->user_id ?: '',
+                    'name' => $log->user_fname ?: '' . ' ' . $log->user_lname ?: '',
+                    'id' => $log->user_id ?: '',
                     'network_name' => $log->network_name ?: '',
                     'network_id' => $log->network_id ?: '',
                     'action' => $log->action ?: '',
@@ -68,7 +68,7 @@ class AuditReportController extends Controller
                 ];
             }
             return json_encode($audit);
-        } else {
+        } elseif ($reportType == 'impersonation_report') {
             $logs = ImpersonationAudit::ImpersonationReport($networkId, $startDate, $endDate);
             $impersonationaudit = [];
 
@@ -77,8 +77,8 @@ class AuditReportController extends Controller
                 $impersonated_user = User::find($log->impersonated_id);
 
                 $impersonationaudit[] = [
-                    'user_name' => $log->user_fname ?: '' . ' ' . $log->user_lname ?: '',
-                    'user_id' => $log->user_id ?: '',
+                    'name' => $log->user_fname ?: '' . ' ' . $log->user_lname ?: '',
+                    'id' => $log->user_id ?: '',
                     'network_name' => $log->network_name ?: '',
                     'network_id' => $log->network_id ?: '',
                     'action' => 'Impersonated '.$impersonated_user->name ?: ''.' '.$impersonated_user->lname ?: '',
@@ -86,6 +86,26 @@ class AuditReportController extends Controller
                 ];
             }
             return json_encode($impersonationaudit);
+        } else {
+            $logs = FPCWritebackAudit::WritebackReport($networkId, $startDate, $endDate);
+
+            $FPCWriteback = [];
+
+            foreach ($logs as $log) {
+                $date = new Datetime($log->created_at);
+                $network = Network::find($networkId);
+
+                $FPCWriteback[] = [
+                    'name' => $log->patient->getName('print_format'),
+                    'id' => $log->patient->id ?: '',
+                    'network_name' => isset($log->patient->careConsole->importHistory->network) ? $log->patient->careConsole->importHistory->network->name : '',
+                    'network_id' => isset($log->patient->careConsole->importHistory->network) ? $log->patient->careConsole->importHistory->network->id : '',
+                    'action' => 'Appointment date - ' .$log->appointments->start_datetime . ', Scheduled with - ' . $log->provider->getName('print_format'),
+                    'date' => $log->created_at ? $date->format('F j Y, g:i a') : ''
+                ];
+            }
+
+            return json_encode($FPCWriteback);
         }
     }
 
@@ -95,18 +115,23 @@ class AuditReportController extends Controller
 
     public function downloadAsXSLS(Request $request)
     {
-        $fileName = 'Impersonation Report';
+        $fileName = 'Audit Report';
 
         if ($request->report_type === 'audit_report') {
             $fileName = 'Audit Report';
+        } elseif ($request->report_type == 'impersonation_report') {
+            $fileName = 'Impersonation Report';
+        } else {
+            $fileName = '4PC Writeback Report';
         }
+
         $logs = $this->getReports($request);
         $logs = json_decode($logs, true);
         $data = [];
         foreach ($logs as $log) {
             $data[] = [
                 'Date' => $log['date'],
-                'User Name' => $log['user_name'],
+                'Name' => $log['name'],
                 'Network Name' => $log['network_name'],
                 'Action' => $log['action'],
 

@@ -70,13 +70,14 @@ function refreshReports() {
 
             if (auditLogs.length > 1) {
                 auditLogs.forEach(function (audit) {
-                    content += '<div class="row no-margin"><div class="col-xs-3 info_col"><p>' + audit.date + '</p></div><div class="col-xs-2 info_col"><p>' + audit.user_name + '</p></div><div class="col-xs-2 info_col"><p>' + audit.network_name + '</p></div><div class="col-xs-5 info_col"><p>' + audit.action + '</p></div></div>';
+                    content += '<div class="row no-margin"><div class="col-xs-3 info_col"><p>' + audit.date + '</p></div><div class="col-xs-2 info_col"><p>' + audit.name + '</p></div><div class="col-xs-2 info_col"><p>' + audit.network_name + '</p></div><div class="col-xs-5 info_col"><p>' + audit.action + '</p></div></div>';
                 });
 
                 $('.audit_report_header').show();
                 $('#audit_reports').html(content);
             } else {
                 $('.audit_report_header').hide();
+                $('#audit_reports').html('');
                 $('p.alert_message').text('No data received for the current options!');
                 $('#alert').modal('show');
             }

@@ -175,6 +175,40 @@
         </div>
     </div>
     @endif
+    @if(session('user-level') == 1 && isset($data['email']))
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                    <span class="popover_text" data-content="">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse7">
+                        Patient Admin Information</a>
+                    </span>
+                    </h4>
+        </div>
+        <div id="collapse7" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="row content-row-margin">
+                    <div class="col-sm-6 col-xs-12">
+                        <span data-toggle="tooltip" title="Patient ID" data-placement="right">
+                        {!! Form::text('id', $data['id'], array('class' => ' add_patient_input', 'placeholder' => 'Patient ID', 'id' => 'id', 'disabled', 'style' => 'display:inline-block; margin-bottom:0;margin-right:0;')) !!}
+                        </span>
+                        <span data-toggle="tooltip" title="Console ID" data-placement="right">
+                        {!! Form::text('console_id', $data['console_id'], array('class' => ' add_patient_input', 'placeholder' => 'Console ID', 'id' => 'console_id', 'disabled', 'style' => 'display:inline-block; margin-bottom:0;margin-right:0;')) !!}
+                        </span>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <span data-toggle="tooltip" title="Creation Date" data-placement="right">
+                        {!! Form::text('created_at', $data['created_at'], array('class' => ' add_patient_input', 'placeholder' => 'Creation Date', 'id' => 'created_at', 'disabled', 'style' => 'display:inline-block; margin-bottom:0;margin-right:0;')) !!}
+                        </span>
+                        <span data-toggle="tooltip" title="Modification Date" data-placement="right">
+                        {!! Form::text('updated_at', $data['updated_at'], array('class' => ' add_patient_input', 'placeholder' => 'Modification Date', 'id' => 'updated_at', 'disabled', 'style' => 'display:inline-block; margin-bottom:0;margin-right:0;')) !!}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
 <div class="row content-row-margin add_patient_footer">
     <div class="col-xs-8 col-sm-8 col-md-8">
