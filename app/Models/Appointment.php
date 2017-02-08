@@ -11,7 +11,7 @@ class Appointment extends Model {
      *
      * @var array
      */
-    protected $fillable = ['provider_id', 'practice_id', 'location_id', 'patient_id', 'network_id', 'appointmenttype_key', 'appointmenttype', 'start_datetime', 'enable_writeback'];
+    protected $fillable = ['provider_id', 'practice_id', 'location_id', 'patient_id', 'network_id', 'appointmenttype_key', 'appointmenttype', 'start_datetime', 'enable_writeback' , 'existing_relationship'];
 
     /**
      * @return mixed

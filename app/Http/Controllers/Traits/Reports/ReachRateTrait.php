@@ -80,15 +80,20 @@ trait ReachRateTrait
                         $results[$patient_count]['reached'] = isset($results[$patient_count]['reached']) ? $results[$patient_count]['reached'] + 1 : 1;
                         $results[$patient_count]['reached_stage_change'] = $contactHistory->days_in_prev_stage;
 
+                        $existingRelationship = 0;
+                        if ($contactHistory->appointments) {
+                            $existingRelationship = $contactHistory->appointments->existing_relationship;
+                        }
+
                         if (isset($contactHistory->appointments)) {
                             $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
                             $results[$patient_count] = array_merge($results[$patient_count], $this->fillPatientDetail($contactHistory, 'appointment_data'));
                         }
 
                         if (isset($contactHistory->appointments) && (Helper::formatDate($contactHistory->appointments->start_datetime, 'Ymd') >= Helper::formatDate($this->getEndDate(), 'Ymd'))) {
-                            $results[$patient_count]['appointment_scheduled'] = config('reports.appointment_status.scheduled_appointment');
+                            $results[$patient_count]['appointment_scheduled'] = ($existingRelationship == 1) ? config('reports.appointment_status.scheduled_appointment_existing_relationship') : config('reports.appointment_status.scheduled_appointment_non_existing_relationship') ;
                         } else {
-                            $results[$patient_count]['appointment_scheduled'] = config('reports.appointment_status.past_appointment');
+                            $results[$patient_count]['appointment_scheduled'] = ($existingRelationship == 1) ? config('reports.appointment_status.past_appointment_existing_relationship') : config('reports.appointment_status.past_appointment_non_existing_relationship') ;
                         }
 
                         $results[$patient_count]['scheduled_on'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
@@ -272,8 +277,10 @@ trait ReachRateTrait
             'hold_for_future_attempts' => 0,
             'incorrect_data' => 0,
             'incorrect_data_attempts' => 0,
-            'appointment_scheduled' => 0,
-            'past_appointment' => 0,
+            'appointment_scheduled_existing_relationship' => 0,
+            'appointment_scheduled_non_existing_relationship' => 0,
+            'past_appointment_existing_relationship' => 0,
+            'past_appointment_non_existing_relationship' => 0,
             'not_scheduled' => 0,
             'no_need_to_schedule' => 0,
             'patient_declined_service' => 0,
@@ -381,10 +388,19 @@ trait ReachRateTrait
             }
 
             if (array_key_exists('appointment_scheduled', $result)) {
-                if ($result['appointment_scheduled'] == config('reports.appointment_status.scheduled_appointment')) {
-                    $reportMetrics['appointment_scheduled']++;
-                } else {
-                    $reportMetrics['past_appointment']++;
+                switch ($result['appointment_scheduled']) {
+                    case config('reports.appointment_status.scheduled_appointment_existing_relationship'):
+                               $reportMetrics['appointment_scheduled_existing_relationship']++;
+                               break;
+                    case config('reports.appointment_status.scheduled_appointment_non_existing_relationship'):
+                               $reportMetrics['appointment_scheduled_non_existing_relationship']++;
+                               break;
+                    case config('reports.appointment_status.past_appointment_existing_relationship'):
+                               $reportMetrics['past_appointment_existing_relationship']++;
+                               break;
+                    case config('reports.appointment_status.past_appointment_non_existing_relationship'):
+                               $reportMetrics['past_appointment_non_existing_relationship']++;
+                               break;
                 }
             }
 

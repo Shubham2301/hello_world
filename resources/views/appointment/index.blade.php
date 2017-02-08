@@ -32,13 +32,14 @@
     {!! Form::hidden('location_code', $data['location_code'], array('id' => 'form_location_code')) !!}
     {!! Form::hidden('patient_id', $data['patient_id'], array('id' => 'form_patient_id')) !!}
 	{!! Form::hidden('selectedfiles', $data['selectedfiles'], array('id' => 'selected_patient_files')) !!}
+
     @if(array_key_exists('action_result_id', $data))
         {!! Form::hidden('action_result_id', $data['action_result_id'], array('id' => 'form_action_result_id')) !!}
     @endif
     @if(array_key_exists('record_id', $data))
         {!! Form::hidden('record_id', $data['record_id'], array('id' => 'form_record_id')) !!}
     @endif
-    {!! Form::close() !!}
+
     <div class="appointment_section active" id="confirm-appointment">
         <button type="button" class="btn back-btn" id="back">Back</button><h3 class="center-align arial_bold">Schedule an appointment</h3>
         <div class="row appointment_info center-align">
@@ -64,6 +65,7 @@
                 </div>
             </div>
         </div>
+
         <div class="appointment_message arial">
 			<input type="hidden" id="isses" value="{{$data['sesmail']}}">
 			@if($data['sesmail'])
@@ -77,6 +79,8 @@
             @else
 			<p class="apt_msg"><span></span> No files will be sent because the provider does not have an SES email </p>
             @endif
+            <p>{!! Form::checkbox('existing_relationship',1,false, array('id' => 'existing_relationship_checkbox')) !!} Patient has existing relationship with provider</p>
+            {!! Form::close() !!}
         </div>
         <div class="appointment_confirm center-align arial">
             <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment" data-toggle="tooltip" title="You will lose all progress" data-placement="bottom">Abort</button></p>

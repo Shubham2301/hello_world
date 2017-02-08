@@ -60,6 +60,7 @@ class AppointmentController extends Controller
         $referralTypeID = $request->input('referraltype_id');
         $appointmentType = $request->input('appointment_type');
         $appointmentTypeKey = $request->input('appointment_type_key');
+        $existingRelationship = $request->input('existing_relationship');
         $appointmentDateTime = new DateTime($request->input('appointment_time'));
         $networkID = Careconsole::where('patient_id', $patientID)->first()->importHistory->network_id;
     
@@ -72,7 +73,8 @@ class AppointmentController extends Controller
             'appointmenttype_key' => $appointmentTypeKey,
             'appointmenttype' => $appointmentType,
             'start_datetime' => $appointmentDateTime->format('Y-m-d H:i:s'),
-            'enable_writeback' => 1
+            'enable_writeback' => 1,
+            'existing_relationship' => $existingRelationship
         ]);
         if (!$appointment) {
             return $apptStatus;

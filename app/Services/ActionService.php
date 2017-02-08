@@ -127,6 +127,7 @@ class ActionService
                 $updatedNote = $newNote.'</br></br>'. $notes;
                 $appointment->notes = $updatedNote;
                 $appointment->enable_writeback = 0;
+                $appointment->existing_relationship = $manualAppointmentData['existing_relationship'];
 
                 $contact->notes = $updatedNote;
                 $contact->save();
@@ -208,6 +209,7 @@ class ActionService
                 $updatedNote = $newNote.'</br></br>'. $notes;
                 $appointment->notes = $updatedNote;
                 $appointment->enable_writeback = 0;
+                $appointment->existing_relationship = $manualAppointmentData['existing_relationship'];
 
                 $contact->notes = $updatedNote;
                 $contact->save();

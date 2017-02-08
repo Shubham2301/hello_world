@@ -26,7 +26,9 @@ return [
     ],
 
     'appointment_status' => [
-        'past_appointment' => 1,
-        'scheduled_appointment' => 0,
+        'scheduled_appointment_existing_relationship' => 1,
+        'scheduled_appointment_non_existing_relationship' => 2,
+        'past_appointment_existing_relationship' => 3,
+        'past_appointment_non_existing_relationship' => 4,
     ],
 ];
