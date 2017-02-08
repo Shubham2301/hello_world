@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
     loadFPCValidateModel();
     $('#subscriber_dob').datetimepicker({
         format: 'YYYY-MM-DD'
@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     $('[data-toggle="tooltip"]').tooltip();
     $('.appointment_confirmed').hide();
-    $('#confirm_appointment').on('click', function () {
+    $('#confirm_appointment').on('click', function() {
         if (unfillfpcFields > 0) {
             $('#show_fpc_model').trigger('click');
             return;
@@ -15,20 +15,20 @@ $(document).ready(function () {
         }
     });
 
-    $('#schedule_new_patient').on('click', function () {
+    $('#schedule_new_patient').on('click', function() {
         $('#form_patient_id').prop('disabled', true);
         $('#form_schedule_another_appointment').submit();
     });
-    $('#cancel_appointment').on('click', function () {
+    $('#cancel_appointment').on('click', function() {
         $('#form_patient_id').prop('disabled', true);
         $('#form_schedule_another_appointment').submit();
     });
-    $('#back').on('click', function () {
+    $('#back').on('click', function() {
         $('#form_schedule_another_appointment').attr('action', "/providers");
         $('#form_schedule_another_appointment').submit();
     });
 
-    $('#model_fpc_view').on('click', '.save_fpcdata', function () {
+    $('#model_fpc_view').on('click', '.save_fpcdata', function() {
         $('.patient_id_fpc').val($('#form_patient_id').val());
         saveFPCRequiredFields();
     });
@@ -60,7 +60,7 @@ function scheduleAppointment() {
     $('#schedule_apt_loader').css("display", "block");
     $('#apt_loader').show();
 
-    window.onbeforeunload = function () {
+    window.onbeforeunload = function() {
         return 'Scripts are running. Please wait.';
     };
 
@@ -72,6 +72,7 @@ function scheduleAppointment() {
     var appointment_type_key = $('#form_appointment_type_id').val();
     var appointment_time = $('#form_appointment_date').val() + ' ' + $('#form_appointment_time').val();
     var appointment_type_name = $('#form_appointment_type_name').val();
+    var existing_relationship = ($('#existing_relationship_checkbox').prop('checked') == true) ? 1 : 0;
     var provider_acc_key = $('#form_provider_acc_key').val();
     var location_code = $('#form_location_code').val();
     var action_result_id = $('#form_action_result_id').val();
@@ -87,6 +88,7 @@ function scheduleAppointment() {
         'provider_acc_key': provider_acc_key,
         'appointment_type': appointment_type_name,
         'appointment_type_key': appointment_type_key,
+        'existing_relationship': existing_relationship,
         'appointment_time': appointment_time,
         'action_result_id': action_result_id,
         'record_id': record_id,
@@ -101,7 +103,7 @@ function scheduleAppointment() {
         data: $.param(formData),
         contentType: 'text/html',
         async: true,
-        success: function (e) {
+        success: function(e) {
 
             $('#schedule_apt_loader').css("display", "none");
             $('#apt_loader').hide();
@@ -119,11 +121,11 @@ function scheduleAppointment() {
                 $('.apt_msg').text('Files have been sent successfully');
             }
 
-            window.onbeforeunload = function () {};
+            window.onbeforeunload = function() {};
 
             window.history.replaceState("Redirect to referral screen after appointment scheduled", "Redirect", "/referraltype");
         },
-        error: function () {
+        error: function() {
             $('#back').removeClass('hide');
         },
         cache: false,
@@ -142,7 +144,7 @@ function loadFPCValidateModel() {
         data: $.param(formData),
         contentType: 'text/html',
         async: false,
-        success: function (e) {
+        success: function(e) {
             var data = $.parseJSON(e);
             unfillfpcFields = data.validate_fpc_count;
             $('#model_fpc_view').html('');
@@ -154,7 +156,7 @@ function loadFPCValidateModel() {
             $('.modal-backdrop').remove();
 
         },
-        error: function () {
+        error: function() {
             $('p.alert_message').text('Error getting practice information');
             $('#alert').modal('show');
         },

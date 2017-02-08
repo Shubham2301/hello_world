@@ -240,6 +240,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                $('#form_manual_appointment_existing_relationship').show();
                 updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
@@ -250,6 +251,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                $('#form_manual_appointment_existing_relationship').show();
                 updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
@@ -333,6 +335,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                $('#form_manual_appointment_existing_relationship').show();
                 updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
@@ -343,6 +346,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                $('#form_manual_appointment_existing_relationship').show();
                 updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
@@ -450,6 +454,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_location').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                $('#form_manual_appointment_existing_relationship').show();
                 updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
@@ -460,6 +465,7 @@ $(document).ready(function() {
                 $('#form_manual_appointment_date').show();
                 $('#form_manual_appointment_appointment_type').show();
                 $('#form_manual_referredby_details').show();
+                $('#form_manual_appointment_existing_relationship').show();
                 updateManualScheduleData(data['console_id']);
                 showActionModel(data);
                 break;
@@ -867,7 +873,6 @@ function action() {
 function performAction() {
 
     var request_message = getRequestMessage($('#action_name').val());
-
     var patientData = [];
     if (updatePatientDemographic) {
         patientData = {
@@ -904,6 +909,7 @@ function performAction() {
         'manual_appointment_location': $('#manual_appointment_location').val(),
         'manual_appointment_provider': $('#manual_appointment_provider').val(),
         'manual_appointment_appointment_type': $('#manual_appointment_appointment_type').val(),
+        'existing_relationship': ($('#existing_relationship_checkbox').prop('checked') == true) ? 1 : 0,
         'manual_referredby_practice': $('#manual_referredby_practice').val(),
         'manual_referredby_provider': $('#manual_referredby_provider').val(),
         'custom_manual_appointment_practice': $('#manual_custom_appointment_practice').val(),
@@ -1291,6 +1297,7 @@ function clearActionFields() {
     $('#form_manual_appointment_location').hide();
     $('#form_manual_referredby_details').hide();
     $('#form_manual_appointment_appointment_type').hide();
+    $('#form_manual_appointment_existing_relationship').hide();
     $('#form_manual_custom_appointment_appointment_type').hide();
     $('#form_recall_date').val('');
     $('#manual_appointment_date').val('');
@@ -1298,6 +1305,7 @@ function clearActionFields() {
     $('#manual_appointment_provider').val('0');
     $('#manual_appointment_location').val('0');
     $('#manual_appointment_appointment_type').val('');
+    $('#existing_relationship_checkbox').prop('checked', false);
     $('#manual_referredby_practice').val('');
     $('#manual_referredby_provider').val('');
     $('#manual_custom_appointment_appointment_type').val('');

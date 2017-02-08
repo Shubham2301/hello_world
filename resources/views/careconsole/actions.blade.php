@@ -146,6 +146,15 @@
                                     <div class="col-md-1"></div>
                                 </div>
 
+                                <div class="row input_row" id="form_manual_appointment_existing_relationship" style="display:none">
+                                    <div class="col-md-10 form-group" style="margin-left:1em;">
+                                        <input type="checkbox" value="" id="existing_relationship_checkbox">
+                                        <span class="arial_bold" style="color:black;padding-left:1em;">
+                                            Patient has existing relationship with provider
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <div class="row input_row" id="form_action_notes">
                                     <div class="col-md-4 form-group">
                                         <label for="action_notes"><span class="arial_bold" style="color:black;padding-left:1em;">Notes</span></label>

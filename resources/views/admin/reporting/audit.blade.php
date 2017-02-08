@@ -28,6 +28,7 @@
     <select class="network_dropdown audit_report_network" id="select_report_type">
         <option value="audit_report">Audit Report</option>
         <option value="impersonation_report">Impersonation Report</option>
+        <option value="writeback_report">4PC writeback Report</option>
     </select>
     </span>
 	<span><button class="btn" id ="export_report_btn" onclick="downloadASXSLS()">Export</button></span>
@@ -52,7 +53,7 @@
             <p>Date</p>
         </div>
         <div class="col-xs-2 info_col">
-            <p>User</p>
+            <p>Name</p>
         </div>
         <div class="col-xs-2 info_col">
             <p>Network</p>

@@ -409,6 +409,8 @@ class PatientController extends Controller
         }
         $dob = new DateTime($data['birthdate']);
         $data['birthdate'] = ($data['birthdate'] && $data['birthdate'] != '0000-00-00 00:00:00') ? $dob->format('m/d/Y') : '';
+        $console = Careconsole::where('patient_id', $id)->first();
+        $data['console_id'] = $console ? $console->id : '';
         $data['admin'] = true;
         $data['back_btn'] = 'back_to_admin_patient_btn';
         $data['url'] = '/administration/patients/update/' . $id;
@@ -530,7 +532,7 @@ class PatientController extends Controller
                 $preference->save();
             }
 
-            $action = 'update patient of id =' . $id;
+            $action = 'Update patient of id =' . $id;
             $description = '';
             $filename = basename(__FILE__);
             $ip = $request->getClientIp();

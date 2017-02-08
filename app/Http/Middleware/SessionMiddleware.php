@@ -19,7 +19,6 @@ class SessionMiddleware
      */
     public function handle($request, Closure $next)
     {
-
         $route = $request->route()->getPath();
 
         $user = Auth::user();
@@ -32,7 +31,7 @@ class SessionMiddleware
             if (($state = Auth::user()) != null) {
                 return $response;
             }
-            $action = 'User Logged out';
+            $action = ($request->timeout == 1) ? 'User session time out' :  'User Logged out';
             $description = '';
             $filename = basename(__FILE__);
             $ip = $request->getClientIp();
