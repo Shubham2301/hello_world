@@ -280,17 +280,17 @@ function getPatientList(metricName) {
                     content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date + '</span><span>' + result.archive_reason + '</span></li>';
                 }
                 break;
-            case 'success':
+            case 'closed':
                 headerContent = '<span>Name</span><span>Date Archived</span><span>Reason for archiving</span>';
                 if ("archived" in result) {
-                    if (result.archived == config.archive.success)
+                    if (result.archived == config.archive.closed)
                         content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date + '</span><span>' + result.archive_reason + '</span></li>';
                 }
                 break;
-            case 'dropout':
+            case 'incomplete':
                 headerContent = '<span>Name</span><span>Date Archived</span><span>Reason for archiving</span>';
                 if ("archived" in result) {
-                    if (result.archived == config.archive.dropout)
+                    if (result.archived == config.archive.incomplete)
                         content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date + '</span><span>' + result.archive_reason + '</span></li>';
                 }
                 break;
