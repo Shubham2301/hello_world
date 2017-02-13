@@ -59,7 +59,7 @@
             </span>
         </div>
         <div class="col-sm-6 col-md-3 flex_col">
-            <span class="" data-toggle="tooltip" title="Number of patients that moved out of console as successful or dropout" data-placement="top">
+            <span class="" data-toggle="tooltip" title="Number of patients that moved out of console as closed or incomplete" data-placement="top">
                 <span class="arial_bold flex_row summary_header">
                     <span class="patient_list" id="completed" data-name="Completed">
                         Completed
@@ -69,21 +69,21 @@
             </span>
             <span class="section_separater"></span>
             <span class="flex_row">
-                <span class="flex_col" data-toggle="tooltip" title="Number of patients marked successful in any stage of careconsole during this timeline" data-placement="bottom">
+                <span class="flex_col" data-toggle="tooltip" title="Number of patients marked closed in any stage of careconsole during this timeline" data-placement="bottom">
                     <span class="arial_bold">
-                        <span class="patient_list" id="success" data-name="Success">
-                            Success
+                        <span class="patient_list" id="closed" data-name="Closed">
+                            Closed
                         </span>
                     </span>
-                    <span class="category_count success patient_list" id="success" data-name="Success"></span>
+                    <span class="category_count closed patient_list" id="closed" data-name="Closed"></span>
                 </span>
-                <span class="flex_col" data-toggle="tooltip" title="Number of patients marked successful in any stage of careconsole or marked as 'already seen by outside dr', 'patient declined services', 'other reasons for declining', 'no need to schedule' or as 'no insurance' during this time timeline" data-placement="bottom">
+                <span class="flex_col" data-toggle="tooltip" title="Number of patients marked closed in any stage of careconsole or marked as 'already seen by outside dr', 'patient declined services', 'other reasons for declining', 'no need to schedule' or as 'no insurance' during this time timeline" data-placement="bottom">
                     <span class="arial_bold">
-                        <span class="patient_list" id="dropout" data-name="Dropouts">
-                            Dropouts
+                        <span class="patient_list" id="incomplete" data-name="Incomplete">
+                            Incomplete
                         </span>
                     </span>
-                    <span class="category_count dropout patient_list" id="dropout" data-name="Dropouts"></span>
+                    <span class="category_count incomplete patient_list" id="incomplete" data-name="Incomplete"></span>
                 </span>
             </span>
         </div>
@@ -235,7 +235,7 @@
                 <span>
                     <span class="title">
                         <span class="patient_list" id="appointment_scheduled_existing_relationship" data-name="Appointment Scheduled Existing Relationship">
-                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Appointment Scheduled (<span class ="arial_italic">Existing Relationship</span>)
+                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Future (<span class ="arial_italic">Existing Relationship</span>)
                         </span>
                     </span>
                     <span class="count">
@@ -246,7 +246,7 @@
                 <span>
                     <span class="title">
                         <span class="patient_list" id="appointment_scheduled_non_existing_relationship" data-name="Appointment Scheduled Non Existing Relationship">
-                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Appointment Scheduled (<span class ="arial_italic">Non Existing Relationship</span>)
+                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Future (<span class ="arial_italic">Non Existing Relationship</span>)
                         </span>
                     </span>
                     <span class="count">
@@ -257,7 +257,7 @@
                 <span>
                     <span class="title">
                         <span class="patient_list" id="past_appointment_existing_relationship" data-name="Past Appointment Existing Relationship">
-                            <img src="{{ elixir('images/sidebar/yellow-dot.png') }}"> Past Appointment (<span class ="arial_italic">Existing Relationship</span>)
+                            <img src="{{ elixir('images/sidebar/yellow-dot.png') }}"> Past (<span class ="arial_italic">Existing Relationship</span>)
                         </span>
                     </span>
                     <span class="count">
@@ -268,7 +268,7 @@
                 <span>
                     <span class="title">
                         <span class="patient_list" id="past_appointment_non_existing_relationship" data-name="Past Appointment Non Existing Relationship">
-                            <img src="{{ elixir('images/sidebar/yellow-dot.png') }}"> Past Appointment (<span class ="arial_italic">Non Existing Relationship</span>)
+                            <img src="{{ elixir('images/sidebar/yellow-dot.png') }}"> Past (<span class ="arial_italic">Non Existing Relationship</span>)
                         </span>
                     </span>
                     <span class="count">

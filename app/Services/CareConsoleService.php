@@ -426,8 +426,8 @@ class CareConsoleService
                         $q->orwhere('name', 'already-seen-by-outside-dr');
                         $q->orwhere('name', 'no-need-to-schedule');
                         $q->orwhere('name', 'no-insurance');
-                        $q->orwhere('name', 'success');
-                        $q->orwhere('name', 'dropout');
+                        $q->orwhere('name', 'closed');
+                        $q->orwhere('name', 'incomplete');
                     })
                     ->orderBy('id', 'desc')
                     ->first();

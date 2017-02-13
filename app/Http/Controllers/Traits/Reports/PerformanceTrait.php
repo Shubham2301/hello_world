@@ -198,9 +198,9 @@ trait PerformanceTrait
                         break;
                     case 'incorrect-data':
                         break;
-                    case 'success':
+                    case 'closed':
                         break;
-                    case 'dropout':
+                    case 'incomplete':
                         $reportAggregationData['Dropped']++;
                         $timelineGraph[$activityDate]['dropped']++;
                         $drillDownData['scheduled_vs_dropped'][] = [

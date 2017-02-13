@@ -210,14 +210,14 @@ trait ReachRateTrait
                             $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
                             $results[$patient_count]['incorrect_data'] = isset($results[$patient_count]['incorrect_data']) ? $results[$patient_count]['incorrect_data'] + 1 : 1;
                             break;
-                        case 'success':
-                            $results[$patient_count]['archived'] = config('reports.archive.success');
-                            $results[$patient_count]['archive_reason'] = 'Marked Success';
+                        case 'closed':
+                            $results[$patient_count]['archived'] = config('reports.archive.closed');
+                            $results[$patient_count]['archive_reason'] = 'Marked Closed';
                             $results[$patient_count]['archive_date'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
                             break;
-                        case 'dropout':
-                            $results[$patient_count]['archived'] = config('reports.archive.dropout');
-                            $results[$patient_count]['archive_reason'] = 'Marked Dropout';
+                        case 'incomplete':
+                            $results[$patient_count]['archived'] = config('reports.archive.incomplete');
+                            $results[$patient_count]['archive_reason'] = 'Marked Incomplete';
                             $results[$patient_count]['archive_date'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
                             break;
                         default:
@@ -258,8 +258,8 @@ trait ReachRateTrait
             'new_patient' => 0,
             'existing_patients' => 0,
             'completed' => 0,
-            'success' => 0,
-            'dropout' => 0,
+            'closed' => 0,
+            'incomplete' => 0,
             'active_patient' => 0,
             'pending_patient' => 0,
             'repeat_count' => 0,
@@ -322,7 +322,7 @@ trait ReachRateTrait
 
             if (array_key_exists('archived', $result)) {
                 $reportMetrics['completed']++;
-                $result['archived'] == config('reports.archive.success') ? $reportMetrics['success']++ : $reportMetrics['dropout']++;
+                $result['archived'] == config('reports.archive.closed') ? $reportMetrics['closed']++ : $reportMetrics['incomplete']++;
             } else {
                 $reportMetrics['active_patient']++;
             }
@@ -507,9 +507,10 @@ trait ReachRateTrait
                 $patientInfo['scheduled_to_practice_location'] = isset($requestData->appointments->practiceLocation) ? $requestData->appointments->practiceLocation->locationname : '-';
                 $patientInfo['scheduled_for'] = Helper::formatDate($requestData->appointments->start_datetime, config('constants.date_format'));
                 $patientInfo['appointment_type'] = $requestData->appointments->appointmenttype;
+                $patientInfo['existing_relationship'] = $requestData->appointments->existing_relationship;
                 break;
             case 'archive_data':
-                $patientInfo['archived'] = config('reports.archive.dropout');
+                $patientInfo['archived'] = config('reports.archive.incomplete');
                 $patientInfo['archive_date'] = Helper::formatDate($requestData->contact_activity_date, config('constants.date_format'));
                 switch ($requestData->actionResult->name) {
                     case 'already-seen-by-outside-dr':
@@ -537,7 +538,7 @@ trait ReachRateTrait
     public function getDefaultPendingDays($contactHistory)
     {
         $archiveActions = ['recall-later', 'archive', 'annual-exam'];
-        $archiveActionResults = ['success', 'dropout', 'already-seen-by-outside-dr', 'patient-declined-services', 'other-reasons-for-declining', 'no-need-to-schedule', 'no-insurance'];
+        $archiveActionResults = ['closed', 'incomplete', 'already-seen-by-outside-dr', 'patient-declined-services', 'other-reasons-for-declining', 'no-need-to-schedule', 'no-insurance'];
         $action_date = new DateTime($contactHistory->contact_activity_date);
         $end_date = new DateTime($this->getEndDate());
         if (in_array($contactHistory->action->name, $archiveActions)) {
@@ -627,6 +628,7 @@ trait ReachRateTrait
                                 $rowData['Scheduled to provider'] = $result['scheduled_to_provider'] ?: '-';
                                 $rowData['Scheduled for'] = $result['scheduled_for'] ?: '-';
                                 $rowData['Appointment type'] = $result['appointment_type'] ?: '-';
+
                                 $data[] = $rowData;
                             }
                         }

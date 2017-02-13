@@ -95,15 +95,20 @@ function getPatientList(metricName) {
                 }
                 break;
             case 'reached':
-                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
+                headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Existing Relationship</span><span>Appointment Type</span>';
                 if ("reached" in result) {
                     var scheduledToPractice = result.scheduled_to_practice || '-';
-                    var scheduledToPracticeLocation = result.scheduled_to_practice_location || '-';
+                    if (scheduledToPractice != '-') {
+                        var scheduledToPracticeLocation = result.scheduled_to_practice_location || '-';
+                        scheduledToPractice += '(<span class ="arial_italic">' + scheduledToPracticeLocation + '</span>)';
+                    }
+
                     var scheduledToProvider = result.scheduled_to_provider || '-';
                     var scheduledFor = result.scheduled_for || '-';
                     var appointmentType = result.appointment_type || '-';
                     var scheduledOn = result.scheduled_on || '-';
-                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToPracticeLocation + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
+                    var existingRelationship = result.existing_relationship || '0';
+                    content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + existingRelationship + '</span><span>' + appointmentType + '</span></li>';
                 }
                 break;
             case 'not_reached':
@@ -280,17 +285,17 @@ function getPatientList(metricName) {
                     content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date + '</span><span>' + result.archive_reason + '</span></li>';
                 }
                 break;
-            case 'success':
+            case 'closed':
                 headerContent = '<span>Name</span><span>Date Archived</span><span>Reason for archiving</span>';
                 if ("archived" in result) {
-                    if (result.archived == config.archive.success)
+                    if (result.archived == config.archive.closed)
                         content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date + '</span><span>' + result.archive_reason + '</span></li>';
                 }
                 break;
-            case 'dropout':
+            case 'incomplete':
                 headerContent = '<span>Name</span><span>Date Archived</span><span>Reason for archiving</span>';
                 if ("archived" in result) {
-                    if (result.archived == config.archive.dropout)
+                    if (result.archived == config.archive.incomplete)
                         content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + result.archive_date + '</span><span>' + result.archive_reason + '</span></li>';
                 }
                 break;

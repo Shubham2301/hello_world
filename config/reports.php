@@ -3,8 +3,8 @@
 return [
 
     'archive' => [
-		'success' => 1,
-		'dropout' => 0,
+		'closed' => 1,
+		'incomplete' => 0,
     ],
 
     'patient_type' => [
