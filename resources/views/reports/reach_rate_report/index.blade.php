@@ -235,7 +235,7 @@
                 <span>
                     <span class="title">
                         <span class="patient_list" id="appointment_scheduled_existing_relationship" data-name="Appointment Scheduled Existing Relationship">
-                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Appointment Scheduled (<span class ="arial_italic">Existing Relationship</span>)
+                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Future (<span class ="arial_italic">Existing Relationship</span>)
                         </span>
                     </span>
                     <span class="count">
@@ -246,7 +246,7 @@
                 <span>
                     <span class="title">
                         <span class="patient_list" id="appointment_scheduled_non_existing_relationship" data-name="Appointment Scheduled Non Existing Relationship">
-                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Appointment Scheduled (<span class ="arial_italic">Non Existing Relationship</span>)
+                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Future (<span class ="arial_italic">Non Existing Relationship</span>)
                         </span>
                     </span>
                     <span class="count">
@@ -257,7 +257,7 @@
                 <span>
                     <span class="title">
                         <span class="patient_list" id="past_appointment_existing_relationship" data-name="Past Appointment Existing Relationship">
-                            <img src="{{ elixir('images/sidebar/yellow-dot.png') }}"> Past Appointment (<span class ="arial_italic">Existing Relationship</span>)
+                            <img src="{{ elixir('images/sidebar/yellow-dot.png') }}"> Past (<span class ="arial_italic">Existing Relationship</span>)
                         </span>
                     </span>
                     <span class="count">
@@ -268,7 +268,7 @@
                 <span>
                     <span class="title">
                         <span class="patient_list" id="past_appointment_non_existing_relationship" data-name="Past Appointment Non Existing Relationship">
-                            <img src="{{ elixir('images/sidebar/yellow-dot.png') }}"> Past Appointment (<span class ="arial_italic">Non Existing Relationship</span>)
+                            <img src="{{ elixir('images/sidebar/yellow-dot.png') }}"> Past (<span class ="arial_italic">Non Existing Relationship</span>)
                         </span>
                     </span>
                     <span class="count">

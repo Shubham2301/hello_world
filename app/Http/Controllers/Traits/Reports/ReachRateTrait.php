@@ -507,6 +507,7 @@ trait ReachRateTrait
                 $patientInfo['scheduled_to_practice_location'] = isset($requestData->appointments->practiceLocation) ? $requestData->appointments->practiceLocation->locationname : '-';
                 $patientInfo['scheduled_for'] = Helper::formatDate($requestData->appointments->start_datetime, config('constants.date_format'));
                 $patientInfo['appointment_type'] = $requestData->appointments->appointmenttype;
+                $patientInfo['existing_relationship'] = $requestData->appointments->existing_relationship;
                 break;
             case 'archive_data':
                 $patientInfo['archived'] = config('reports.archive.incomplete');
@@ -627,6 +628,7 @@ trait ReachRateTrait
                                 $rowData['Scheduled to provider'] = $result['scheduled_to_provider'] ?: '-';
                                 $rowData['Scheduled for'] = $result['scheduled_for'] ?: '-';
                                 $rowData['Appointment type'] = $result['appointment_type'] ?: '-';
+
                                 $data[] = $rowData;
                             }
                         }
