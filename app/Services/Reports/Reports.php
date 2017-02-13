@@ -144,6 +144,10 @@ class Reports
     {
         $archiveDataResult = [];
 
+        $archiveDataResult['closed']['count'] = 0;
+        $archiveDataResult['closed']['name'] = 'Closed';
+        $archiveDataResult['incomplete']['count'] = 0;
+        $archiveDataResult['incomplete']['name'] = 'Incomplete';        
         $archiveDataResult['patient_declined_service']['count'] = 0;
         $archiveDataResult['patient_declined_service']['name'] = 'Patient declined service';
         $archiveDataResult['already_seen_by_an_outside_doctor']['count'] = 0;
@@ -157,6 +161,12 @@ class Reports
 
         foreach ($results as $result) {
             switch ($result->action_result_id) {
+                case 20:
+                    $archiveDataResult['closed']['count']++;
+                    break;
+                case 21:
+                    $archiveDataResult['incomplete']['count']++;
+                    break;                                    
                 case 9:
                     $archiveDataResult['patient_declined_service']['count']++;
                     break;
@@ -558,7 +568,7 @@ class Reports
                     left join `users` on `appointments`.`provider_id` = `users`.`id`
                     left join `practice_location` on `appointments`.`location_id` = `practice_location`.`id`
                     left join (select console_id, archived, COUNT(*) as count from contact_history where archived is null group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
-                    left join (select console_id, action_result_id as action_result_id from contact_history where action_result_id = '15' OR action_result_id = '16' OR action_result_id = '9' OR action_result_id = '10' OR action_result_id = '17') as `action_result_id` on `action_result_id`.`console_id` = `careconsole`.`id`
+                    left join (select console_id, action_result_id as action_result_id from contact_history where action_result_id = '20' OR action_result_id = '21' OR action_result_id = '15' OR action_result_id = '16' OR action_result_id = '9' OR action_result_id = '10' OR action_result_id = '17') as `action_result_id` on `action_result_id`.`console_id` = `careconsole`.`id`
                     left join `patient_insurance` on `patient_insurance`.`patient_id` = `careconsole`.`patient_id`
                     where `patients`.`deleted_at` is null
                     $queryFilters";
@@ -694,6 +704,12 @@ class Reports
 
         if ($filters['archive_data'] != 'none') {
             switch ($filters['archive_data']) {
+                case 'closed':
+                    $queryFilters .= " and `action_result_id` = 20 ";
+                    break;
+                case 'incomplete':
+                    $queryFilters .= " and `action_result_id` = 21 ";
+                    break;                                    
                 case 'patient_declined_service':
                     $queryFilters .= " and `action_result_id` = 9 ";
                     break;
