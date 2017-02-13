@@ -101,7 +101,7 @@ function getPatientList(metricName) {
                     if (scheduledToPractice != '-') {
                         var scheduledToPracticeLocation = result.scheduled_to_practice_location || '-';
                         scheduledToPractice += '(<span class ="arial_italic">' + scheduledToPracticeLocation + '</span>)';
-                    }s
+                    }
 
                     var scheduledToProvider = result.scheduled_to_provider || '-';
                     var scheduledFor = result.scheduled_for || '-';
