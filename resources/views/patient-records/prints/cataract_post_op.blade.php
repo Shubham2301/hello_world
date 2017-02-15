@@ -141,9 +141,8 @@
         </div>
         <div class="row pdf_box">
             <div class="col-xs-12">
-                <p class="section_header">Visual Acuities</p>
+                <p class="section_header " id ="visual_acuities">Visual Acuities</p>
             </div>
-            <div class="col-xs-12 section_break"></div>
             <div class="col-xs-2 col-xs-offset-2">
                 <div class="inline_element">
                     <p class="no-margin">
@@ -188,11 +187,12 @@
                 </div>
             </div>
             <div class="col-xs-2">
-                <p><span class="section_title">OD</span> {{isset($data['record']['mrx_od']) ? $data['record']['mrx_od'] : ''}}</p>
+                <p class="mrx"><span class="section_title">OD</span> {{isset($data['record']['mrx_od']) ? $data['record']['mrx_od'] : ''}}</p>
             </div>
-            <div class="col-xs-8">
-                <p><span class="section_title">OS</span> {{isset($data['record']['mrx_os']) ? $data['record']['mrx_os'] : ''}}</p>
+            <div class="col-xs-2">
+                <p class="mrx"><span class="section_title">OS</span> {{isset($data['record']['mrx_os']) ? $data['record']['mrx_os'] : ''}}</p>
             </div>
+            <div class="col-xs-6"></div>
             <div class="col-xs-12">&nbsp;</div>
             <div class="col-xs-2">
                 <div class="inline_element">
