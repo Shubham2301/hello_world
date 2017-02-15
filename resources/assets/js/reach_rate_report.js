@@ -107,7 +107,7 @@ function getPatientList(metricName) {
                     var scheduledFor = result.scheduled_for || '-';
                     var appointmentType = result.appointment_type || '-';
                     var scheduledOn = result.scheduled_on || '-';
-                    var existingRelationship = result.existing_relationship || '0';
+                    var existingRelationship = (result.existing_relationship==1) ? 'Y' : 'N';
                     content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + existingRelationship + '</span><span>' + appointmentType + '</span></li>';
                 }
                 break;

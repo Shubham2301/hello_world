@@ -70,7 +70,7 @@
                 </div>
                 <div class="inline_element">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['iol']) && $data['record']['iol'] == 'Standard') ? 'checked' : '' }}>Standard &nbsp; &nbsp;
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['iol']) && $data['record']['iol'] == 'Monofocal') ? 'checked' : '' }}>Monofocal &nbsp; &nbsp;
                     </p>
                 </div>
                 <div class="inline_element">
@@ -141,39 +141,30 @@
         </div>
         <div class="row pdf_box">
             <div class="col-xs-12">
-                <p class="section_header">Visual Acuities</p>
+                <p class="section_header " id ="visual_acuities">Visual Acuities</p>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-2 col-xs-offset-2">
                 <div class="inline_element">
                     <p class="no-margin">
                         <span class="section_title">OD:</span> 20/<span class="text_underline">{{isset($data['record']['visual_od']) ? $data['record']['visual_od'] : '   '}}</span> &nbsp; &nbsp;
                     </p>
                 </div>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-2">
                 <div class="inline_element">
                     <p class="no-margin">
                         <span class="section_title">OS:</span> 20/<span class="text_underline">{{isset($data['record']['visual_os']) ? $data['record']['visual_os'] : '   '}}</span> &nbsp; &nbsp;
                     </p>
                 </div>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-6">
                 <div class="inline_element">
                     <p class="no-margin">
                         <span class="section_title">OU:</span> 20/<span class="text_underline">{{isset($data['record']['visual_ou']) ? $data['record']['visual_ou'] : '   '}}</span> &nbsp; &nbsp;
                     </p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-6 circle_container">
-                    <p>MRX</p>
-                    <div class="circle"></div>
-                </div>
-                <div class="col-xs-6 circle_container">
-                    <p>MRX</p>
-                    <div class="circle"></div>
-                </div>
-            </div>
+
             <div class="section_break"></div>
             <div class="col-xs-2">
                 <div class="inline_element">
@@ -186,147 +177,48 @@
             <div class="col-xs-2">
                 <p><span class="section_title">OS</span> {{isset($data['record']['pressure_os']) ? $data['record']['pressure_os'] : ''}} mmHg</p>
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-6">
                 <p><span class="section_title">at time:</span> {{isset($data['record']['pressure_time']) ? $data['record']['pressure_time'] : ''}}</p>
             </div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-2">
+                <div class="inline_element">
+                    <p class="text_bold"><span class="section_title">MRX</span></p>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <p class="mrx"><span class="section_title">OD</span> {{isset($data['record']['mrx_od']) ? $data['record']['mrx_od'] : ''}}</p>
+            </div>
+            <div class="col-xs-2">
+                <p class="mrx"><span class="section_title">OS</span> {{isset($data['record']['mrx_os']) ? $data['record']['mrx_os'] : ''}}</p>
+            </div>
+            <div class="col-xs-6"></div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-2">
+                <div class="inline_element">
+                    <p class="text_bold"><span class="section_title">Ocular Findings:</span></p>
+                </div>
+            </div>
+            <div class="col-xs-10">
+                <p>{{isset($data['record']['ocular_findings']) ? $data['record']['ocular_findings'] : ''}}</p>
+            </div>
+       
         </div>
+		<div class="section_break"></div>
         <div class="row">
             <div class="col-xs-12">
                 <p class="section_header">Assessment Notes:</p>
                 <p>{{isset($data['record']['assessment_notes']) ? $data['record']['assessment_notes'] : ''}}</p>
             </div>
         </div>
+		<div class="section_break"></div>
         <div class="row">
             <div class="col-xs-12">
                 <p class="section_header">Plan:</p>
                 <p>{{isset($data['record']['plan']) ? $data['record']['plan'] : ''}}</p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <p class="section_header">Medication:</p>
-            </div>
-            <div class="col-xs-4">
-                <div class="inline_element">
-                    <p class="text_underline">{{ (isset($data['record']['medication_1_text']) && $data['record']['medication_1_text'] != "") ? $data['record']['medication_1_text'] : str_repeat('&nbsp;', 5)}}</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_1']) && $data['record']['medication_1'] == 'QD') ? 'medicine_active' : ''}}">QD</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_1']) && $data['record']['medication_1'] == 'BID') ? 'medicine_active' : ''}}">BID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_1']) && $data['record']['medication_1'] == 'TID') ? 'medicine_active' : ''}}">TID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_1']) && $data['record']['medication_1'] == 'QID') ? 'medicine_active' : ''}}">QID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_1']) && $data['record']['medication_1'] == 'PRN') ? 'medicine_active' : ''}}">PRN</span></p>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <div class="inline_element">
-                    <p class="text_underline">{{ (isset($data['record']['medication_2_text']) && $data['record']['medication_2_text'] != "") ? $data['record']['medication_2_text'] : str_repeat('&nbsp;', 5)}}</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_2']) && $data['record']['medication_2'] == 'QD') ? 'medicine_active' : ''}}">QD</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_2']) && $data['record']['medication_2'] == 'BID') ? 'medicine_active' : ''}}">BID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_2']) && $data['record']['medication_2'] == 'TID') ? 'medicine_active' : ''}}">TID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_2']) && $data['record']['medication_2'] == 'QID') ? 'medicine_active' : ''}}">QID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_2']) && $data['record']['medication_2'] == 'PRN') ? 'medicine_active' : ''}}">PRN</span></p>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <div class="inline_element">
-                    <p class="text_underline">{{ (isset($data['record']['medication_3_text']) && $data['record']['medication_3_text'] != "") ? $data['record']['medication_3_text'] : str_repeat('&nbsp;', 5)}}</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_3']) && $data['record']['medication_3'] == 'QD') ? 'medicine_active' : ''}}">QD</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_3']) && $data['record']['medication_3'] == 'BID') ? 'medicine_active' : ''}}">BID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_3']) && $data['record']['medication_3'] == 'TID') ? 'medicine_active' : ''}}">TID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_3']) && $data['record']['medication_3'] == 'QID') ? 'medicine_active' : ''}}">QID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_3']) && $data['record']['medication_3'] == 'PRN') ? 'medicine_active' : ''}}">PRN</span></p>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <div class="inline_element">
-                    <p class="text_underline">{{ (isset($data['record']['medication_4_text']) && $data['record']['medication_4_text'] != "") ? $data['record']['medication_4_text'] : str_repeat('&nbsp;', 5)}}</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_4']) && $data['record']['medication_4'] == 'QD') ? 'medicine_active' : ''}}">QD</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_4']) && $data['record']['medication_4'] == 'BID') ? 'medicine_active' : ''}}">BID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_4']) && $data['record']['medication_4'] == 'TID') ? 'medicine_active' : ''}}">TID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_4']) && $data['record']['medication_4'] == 'QID') ? 'medicine_active' : ''}}">QID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_4']) && $data['record']['medication_4'] == 'PRN') ? 'medicine_active' : ''}}">PRN</span></p>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <div class="inline_element">
-                    <p class="text_underline">{{ (isset($data['record']['medication_5_text']) && $data['record']['medication_4_text'] != "") ? $data['record']['medication_5_text'] : str_repeat('&nbsp;', 5)}}</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_5']) && $data['record']['medication_5'] == 'QD') ? 'medicine_active' : ''}}">QD</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_5']) && $data['record']['medication_5'] == 'BID') ? 'medicine_active' : ''}}">BID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_5']) && $data['record']['medication_5'] == 'TID') ? 'medicine_active' : ''}}">TID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_5']) && $data['record']['medication_5'] == 'QID') ? 'medicine_active' : ''}}">QID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_5']) && $data['record']['medication_5'] == 'PRN') ? 'medicine_active' : ''}}">PRN</span></p>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <div class="inline_element">
-                    <p class="text_underline">{{ (isset($data['record']['medication_6_text']) && $data['record']['medication_6_text'] != "") ? $data['record']['medication_6_text'] : str_repeat('&nbsp;', 5)}}</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_6']) && $data['record']['medication_6'] == 'QD') ? 'medicine_active' : ''}}">QD</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_6']) && $data['record']['medication_6'] == 'BID') ? 'medicine_active' : ''}}">BID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_6']) && $data['record']['medication_6'] == 'TID') ? 'medicine_active' : ''}}">TID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_6']) && $data['record']['medication_6'] == 'QID') ? 'medicine_active' : ''}}">QID</span>/</p>
-                </div>
-                <div class="inline_element">
-                    <p><span class="{{ (isset($data['record']['medication_6']) && $data['record']['medication_6'] == 'PRN') ? 'medicine_active' : ''}}">PRN</span></p>
-                </div>
-            </div>
-        </div>
+		<div class="section_break"></div>
         <div class="row pdf_box">
             <div class="col-xs-2">
                 <p class="signature_text"><span class="section_title">Doctor Signature</span></p>
