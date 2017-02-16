@@ -146,6 +146,7 @@
                                     <div class="col-xs-12 col-sm-6">
                                         {!! Form::email('email', $user['email'], array('class' => 'add_user_input user_email_field','required' => 'required', 'placeholder' => 'Email*', 'id' => 'email', 'data-toggle' => 'tooltip', 'title' => 'Email', 'data-placement' => 'right')) !!}
                                         {!! Form::email('sesemail', $user['sesemail'], array('class' => 'add_user_input user_email_field', 'placeholder' => 'SES Email', 'id' => 'ses_email', 'data-toggle' => 'tooltip', 'title' => 'SES Email', 'data-placement' => 'right')) !!}
+                                        {!! Form::text('ses_username', $user['ses_username'], array('class' => 'add_user_input', 'placeholder' => 'SES Username', 'id' => 'ses_username', 'data-toggle' => 'tooltip', 'title' => 'SES Username', 'data-placement' => 'right')) !!}
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         {!! Form::password('password', array('class' => ' add_user_input', 'placeholder' => 'Password', 'id' => 'password', 'data-toggle' => 'tooltip', 'title' => 'Password', 'data-placement' => 'right', $user['password_required'] => $user['password_required'])) !!}
