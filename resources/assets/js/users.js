@@ -406,6 +406,16 @@ function checkForm() {
         flag = 1;
         return false;
     }
+    if ($('.add_user_input#user_level').val() > 2 && $('.add_user_input#user_practice').val() == null && window.location.pathname === '/administration/users/create') {
+        $('#user_practice').show();
+        $('#user_practice').prop('required', true);
+        $('#user_practice').attr('required', true);
+        $('.user_network').prop('checked', false);
+        $('#collapse1').parents('.panel-default').find('.popover_text').attr('data-content', 'Please select a network and practice for the user');
+        $('#collapse1').parents('.panel-default').find('.popover_text').popover("show");
+        flag = 1;
+        return false;
+    }
 
     if (flag == 0)
         return true;
