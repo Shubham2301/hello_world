@@ -160,6 +160,7 @@ class UserController extends Controller
         $user->npi = $request->input('npi');
         $user->cellphone = $request->input('cellphone');
         $user->sesemail = $request->input('sesemail');
+        $user->ses_username = $request->input('ses_username', null);
         $user->calendar = $request->input('calendar');
         $user->address1 = $request->input('address1');
         $user->address2 = $request->input('address2');
@@ -421,6 +422,7 @@ class UserController extends Controller
         $user->npi = $request->input('npi');
         $user->cellphone = $request->input('cellphone');
         $user->sesemail = $request->input('sesemail');
+        $user->ses_username = $request->input('ses_username', null);
         $user->calendar = $request->input('calendar');
         $user->address1 = $request->input('address1');
         $user->address2 = $request->input('address2');
@@ -433,7 +435,7 @@ class UserController extends Controller
         $user->two_factor_auth = $request->input('two_factor_auth') ?: null;
         $user->speciality = $request->input('speciality');
         $user->provider_type_id = $request->input('provider_type_id') ?: null;
-
+        
         if ($user->level > 2 && $request->input('network')) {
             foreach ($request->input('network') as $value) {
                 $userNetwork = NetworkUser::firstOrCreate(['user_id' => $user->id, 'network_id' => $value]);
