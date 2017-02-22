@@ -19,7 +19,12 @@
     @endif
     <div class="reports_container arial arial">
         <div class="row report_header_row">
+        <div class="col-xs-5" style="padding:0;">
             <span class="arial_bold reports_header">User Report</span>
+        </div>
+        <div lass="col-xs-8">
+            <span class="export_all filter_section" id="export_all">Export</span>
+        </div>            
         </div>
         <div class="row report_content">
             <div class="report_table">

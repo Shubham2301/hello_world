@@ -1,21 +1,29 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     getReport();
 
-    $('.report_table').on('click', '.table_row.drilldown', function () {
+    $('.report_table').on('click', '.table_row.drilldown', function() {
+        $('#export_all').hide();
+        $('.report_table').addClass('user_report_table');
         getNetworkData($(this).attr('data-network_id'), $(this).attr('data-network_name'));
     });
 
-    $('.report_table').on('click', '#close_drilldown', function () {
+    $('.report_table').on('click', '#close_drilldown', function() {
+        $('.report_table').removeClass('user_report_table');
+        $('#export_all').show();
         getReport();
     });
 
-    $('.report_table').on('click', '#export_table', function () {
+    $('.report_table').on('click', '#export_table', function() {
         var formData = {
             network_id: $(this).attr('data-network_id'),
         };
         var query = $.param(formData);
         window.location = '/report/user_report/generateReportExcel?' + query;
+    });
+
+    $('#export_all').on('click', function() {
+        window.location = '/report/user_report/generateReportExcel';
     });
 
 });
@@ -27,11 +35,11 @@ function getReport() {
         type: 'GET',
         contentType: 'application/json',
         async: false,
-        success: function (data) {
+        success: function(data) {
             drawAggregationTable(data.total_active_user, data.total_inactive_user);
             drawUserTable(data.networkData);
         },
-        error: function () {
+        error: function() {
             alert('Error Refreshing');
         },
         cache: false,
@@ -80,23 +88,26 @@ function getNetworkData(network_id, network_name) {
         data: $.param(formData),
         contentType: 'application/json',
         async: false,
-        success: function (data) {
+        success: function(data) {
 
             if (data.length) {
                 var content = '';
-                content += '<div class="row"><div class="col-xs-10 drilldown_controls"><span class="filter_section">Network: ' + network_name + ' <span id="close_drilldown" class="glyphicon glyphicon-remove-circle remove_filter"></span></span><span class="filter_section" id="export_table" data-network_id="' + network_id + '">Export</span></div></div>';
-                content += '<div class="table_row row title"><div class="table_column col-xs-3">User Name</div><div class="table_column col-xs-5">User Email</div><div class="table_column col-xs-2 text-center">User Status</div></div>';
+                content += '<div class="row"><div class="col-xs-12 drilldown_controls"><span class="filter_section">Network: ' + network_name + ' <span id="close_drilldown" class="glyphicon glyphicon-remove-circle remove_filter"></span></span><span class="filter_section" id="export_table" data-network_id="' + network_id + '">Export</span></div></div>';
+                content += '<div class="table_row row title"><div class="table_column col-xs-2 ">User Name</div><div class="table_column col-xs-3 ">User Email</div><div class="table_column col-xs-2 ">User Type</div><div class="table_column col-xs-2 ">User Level</div><div class="table_column col-xs-2 ">Organization</div><div class="table_column col-xs-1 ">Status</div></div>';
                 for (var row in data) {
                     content += '<div class="table_row row">';
-                    content += '<div class="table_column col-xs-3">' + data[row]['Name'] + '</div>';
-                    content += '<div class="table_column col-xs-5">' + data[row]['Email'] + '</div>';
-                    content += '<div class="table_column col-xs-2 text-center">' + data[row]['Status'] + '</div>';
+                    content += '<div class="table_column col-xs-2">' + data[row]['Name'] + '</div>';
+                    content += '<div class="table_column col-xs-3 user_report_table_col">' + data[row]['Email'] + '</div>';
+                    content += '<div class="table_column col-xs-2">' + data[row]['Type'] + '</div>';
+                    content += '<div class="table_column col-xs-2">' + data[row]['Level'] + '</div>';
+                    content += '<div class="table_column col-xs-2">' + data[row]['Organization'] + '</div>';
+                    content += '<div class="table_column col-xs-1">' + data[row]['Status'] + '</div>';
                     content += '</div>';
                 }
                 $('.report_table').html(content);
             }
         },
-        error: function () {
+        error: function() {
             alert('Error Refreshing');
         },
         cache: false,
