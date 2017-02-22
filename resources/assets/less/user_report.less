@@ -60,7 +60,6 @@
         .arial;
         &.title {
             .arial_bold;
-            margin: .5em 0;
             &>div {
                 border-bottom: 1px solid @font-color-black;
             }
@@ -69,7 +68,7 @@
             border-bottom: 1px solid #4d4d4d;
         }
         &>div {
-            padding: 0;
+            padding: 0 .5em 0 0;
         }
         &.drilldown:hover {
             cursor: pointer;
@@ -92,8 +91,19 @@
         border: 1px solid @background-color-4;
         color: @background-color-4;
     }
+    &#export_all:hover {
+        cursor: pointer;
+        border: 1px solid @background-color-4;
+        color: @background-color-4;
+    }
 }
 #close_drilldown,
 #export_table {
     cursor: pointer;
+}
+.user_report_table{
+    width : 100%;
+}
+.user_report_table_col{
+    word-break:break-all;
 }

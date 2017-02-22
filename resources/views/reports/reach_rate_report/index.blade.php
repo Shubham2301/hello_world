@@ -144,7 +144,7 @@
             </span>
             <span class="right">
                 <span class="right_row">
-                    <span class="right_row_section">
+                    <span class="right_row_section title_section">
                     </span>
                     <span class="right_row_section right_section_count">
                         #contact
@@ -154,7 +154,7 @@
                     </span>
                 </span>
                 <span class="right_row section_break">
-                    <span class="right_row_section">
+                    <span class="right_row_section title_section">
                         <span class="patient_list" id="not_reached" data-name="Not Reached">
                             <img src="{{ elixir('images/sidebar/red-dot.png') }}"> Not Reached
                         </span>
@@ -165,7 +165,7 @@
                     </span>
                 </span>
                 <span class="right_row">
-                    <span class="right_row_section">
+                    <span class="right_row_section title_section">
                         <span class="title">Hold for future</span>
                     </span>
                     <span class="right_row_section hold_for_future_attempts right_section_count category_count">
@@ -174,7 +174,25 @@
                     </span>
                 </span>
                 <span class="right_row">
-                    <span class="right_row_section">
+                    <span class="right_row_section title_section">
+                        <span class="title">Would not validate DOB</span>
+                    </span>
+                    <span class="right_row_section would_not_validate_dob_attempts right_section_count category_count">
+                    </span>
+                    <span class="right_row_section would_not_validate_dob right_section_count category_count">
+                    </span>
+                </span>
+                <span class="right_row">
+                    <span class="right_row_section title_section">
+                        <span class="title">Unaware of diagnosis</span>
+                    </span>
+                    <span class="right_row_section unaware_of_diagnosis_attempts right_section_count category_count">
+                    </span>
+                    <span class="right_row_section unaware_of_diagnosis right_section_count category_count">
+                    </span>
+                </span>                                 
+                <span class="right_row">
+                    <span class="right_row_section title_section">
                         <span class="title">Incorrect Data</span>
                     </span>
                     <span class="right_row_section incorrect_data_attempts right_section_count category_count">
@@ -183,7 +201,7 @@
                     </span>
                 </span>
                 <span class="right_row">
-                    <span class="right_row_section">
+                    <span class="right_row_section title_section">
                         <span class="title">Unable to reach</span>
                     </span>
                     <span class="right_row_section unable_to_reach_attempts right_section_count category_count">
@@ -192,7 +210,7 @@
                     </span>
                 </span>
                 <span class="right_row">
-                    <span class="right_row_section">
+                    <span class="right_row_section title_section">
                         <span class="title">Unable to reach - left message with another person</span>
                     </span>
                     <span class="right_row_section left_message_with_3rd_party_attempts right_section_count category_count">
@@ -201,7 +219,7 @@
                     </span>
                 </span>
                 <span class="right_row">
-                    <span class="right_row_section">
+                    <span class="right_row_section title_section">
                         <span class="title">Unable to reach - left voice mail message</span>
                     </span>
                     <span class="right_row_section left_voice_mail_message_attempts right_section_count category_count">

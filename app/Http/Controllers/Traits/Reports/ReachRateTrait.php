@@ -206,6 +206,14 @@ trait ReachRateTrait
                             $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
                             $results[$patient_count]['hold_for_future'] = isset($results[$patient_count]['hold_for_future']) ? $results[$patient_count]['hold_for_future'] + 1 : 1;
                             break;
+                        case 'unaware-of-diagnosis':
+                            $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
+                            $results[$patient_count]['unaware_of_diagnosis'] = isset($results[$patient_count]['unaware_of_diagnosis']) ? $results[$patient_count]['unaware_of_diagnosis'] + 1 : 1;
+                            break;  
+                        case 'would-not-validate-dob':
+                            $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
+                            $results[$patient_count]['would_not_validate_dob'] = isset($results[$patient_count]['would_not_validate_dob']) ? $results[$patient_count]['would_not_validate_dob'] + 1 : 1;
+                            break;                                                       
                         case 'incorrect-data':
                             $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
                             $results[$patient_count]['incorrect_data'] = isset($results[$patient_count]['incorrect_data']) ? $results[$patient_count]['incorrect_data'] + 1 : 1;
@@ -275,6 +283,10 @@ trait ReachRateTrait
             'left_voice_mail_message_attempts' => 0,
             'hold_for_future' => 0,
             'hold_for_future_attempts' => 0,
+            'would_not_validate_dob' =>0,
+            'would_not_validate_dob_attempts' => 0,
+            'unaware_of_diagnosis' => 0,
+            'unaware_of_diagnosis_attempts' => 0, 
             'incorrect_data' => 0,
             'incorrect_data_attempts' => 0,
             'appointment_scheduled_existing_relationship' => 0,
@@ -377,6 +389,14 @@ trait ReachRateTrait
                     $reportMetrics['hold_for_future']++;
                     $reportMetrics['hold_for_future_attempts'] += $result['hold_for_future'];
                 }
+                if (array_key_exists('would_not_validate_dob', $result)) {
+                    $reportMetrics['would_not_validate_dob']++;
+                    $reportMetrics['would_not_validate_dob_attempts'] += $result['would_not_validate_dob'];
+                }
+                if (array_key_exists('unaware_of_diagnosis', $result)) {
+                    $reportMetrics['unaware_of_diagnosis']++;
+                    $reportMetrics['unaware_of_diagnosis_attempts'] += $result['unaware_of_diagnosis'];
+                }                                
                 if (array_key_exists('incorrect_data', $result)) {
                     $reportMetrics['incorrect_data']++;
                     $reportMetrics['incorrect_data_attempts'] += $result['incorrect_data'];
@@ -599,6 +619,22 @@ trait ReachRateTrait
                             $rowData['Attempts'] = $result['hold_for_future'] ?: '-';
                             $data[] = $rowData;
                         }
+                        if (array_key_exists('would_not_validate_dob', $result)) {
+                            $rowData = [];
+                            $rowData['Name'] = $result['patient_name'] ?: '-';
+                            $rowData['Request Received'] = $result['request_received'] ?: '-';
+                            $rowData['Action'] = 'Would not validate DOB';
+                            $rowData['Attempts'] = $result['would_not_validate_dob'] ?: '-';
+                            $data[] = $rowData;
+                        }
+                        if (array_key_exists('unaware_of_diagnosis', $result)) {
+                            $rowData = [];
+                            $rowData['Name'] = $result['patient_name'] ?: '-';
+                            $rowData['Request Received'] = $result['request_received'] ?: '-';
+                            $rowData['Action'] = 'Unaware of diagnosis';
+                            $rowData['Attempts'] = $result['unaware_of_diagnosis'] ?: '-';
+                            $data[] = $rowData;
+                        }                                                
                         if (array_key_exists('incorrect_data', $result)) {
                             $rowData = [];
                             $rowData['Name'] = $result['patient_name'] ?: '-';

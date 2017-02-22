@@ -66,16 +66,21 @@ class UserReportController extends ReportController
 
     public function getNetworkData (Request $request) {
 
-        $networkID = $request->network_id;
-        $networkData = [];
-        $networkUser = NetworkUser::where('network_id', $networkID)->get();
+        $networkID = ($request->network_id ) ? $request->network_id :null;
+        $networkData = [];   
+        $networkUser = NetworkUser::networkUserData($networkID);
         foreach ($networkUser as $user) {
             $networkData[] = [
-                'Name' => $user->user->name,
-                'Email' => $user->user->email,
-                'Status' => $user->user->active == 1 ? 'Active' : 'Deleted'
+                'Name' => $user->user_name,
+                'Email' => $user->user_email,
+                'Type' => ($user->usertypes_name) ? $user->usertypes_name : '-',
+                'Level' => ($user->userlevel_name) ? $user->userlevel_name : '-',
+                'Organization' => ($user->practice_name) ? $user->practice_name : $user->network_name,
+                'Direct Address' => ($user->direct_address) ? $user->direct_address : '-',
+                'Username' => ($user->ses_username) ? $user->ses_username : '-',
+                'Status' => $user->user_status == 1 ? 'Active' : 'Deleted'
             ];
-        }
+        }    
         usort($networkData, 'self::cmp');
         return $networkData;
 
@@ -83,8 +88,8 @@ class UserReportController extends ReportController
 
     public function generateReportExcel(Request $request)
     {
-        $networkID = $request->network_id;
-        $networkName = Network::find($networkID)->name;
+        $networkID = ($request->network_id) ? $request->network_id : null;
+        $networkName = ($request->network_id ) ?  Network::find($networkID)->name : 'Ocuhub' ;
 
         $fileName = $networkName . ' - User List';
 
@@ -106,6 +111,10 @@ class UserReportController extends ReportController
                     'B'     =>  35,
                     'C'     =>  35,
                     'D'     =>  35,
+                    'E'     =>  35,
+                    'F'     =>  35,
+                    'G'     =>  35,
+                    'H'     =>  35,
                 ));
 
                 $sheet->setPageMargin(0.25);
