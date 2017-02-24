@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'My Ocuhub - Schedule Appointment')
+@section('title', 'illuma - Schedule Appointment')
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/appointment.css')}}">
 <script type="text/javascript" src="{{elixir('js/appointment.js')}}"></script>

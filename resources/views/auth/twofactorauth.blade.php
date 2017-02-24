@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Ocuhub - Reset Password')
+@section('title', 'illuma - Reset Password')
 @section('content')
     @if (count($errors) > 0)
     <ul id="flash-message">

@@ -1,4 +1,4 @@
-@extends('layouts.master') @section('title', 'Ocuhub - Reset Password') @section('content')
+@extends('layouts.master') @section('title', 'illuma - Reset Password') @section('content')
 <form method="POST" action="/password/email">
     {!! csrf_field() !!} @if (count($errors) > 0)
     <div class="row" id="flash-message">

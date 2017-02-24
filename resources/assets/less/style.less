@@ -51,8 +51,11 @@ Section : Header
     flex: 0 0 auto;
     z-index: 1;
     box-shadow: 0 2px 4px rgba(170, 170, 170, 1);
-    &>div {
+    &>div.header-left {
         padding: 1em 0em;
+    }
+    &>div.header-right {
+        padding: .5em 0em;
     }
 }
 .header-user {
@@ -86,9 +89,10 @@ Section : Header
     align-items: flex-end;
 }
 .header-logo {
+    margin: auto;
     > img {
-        max-height: 2.5em;
-        padding: 0em 1em;
+        max-height: 3.5em;
+        padding: .2em 1em;
     }
 }
 .header-menu {
@@ -181,16 +185,6 @@ p.error {
     color: @font-color-1;
     background: @primary-blue;
     padding: 1em 0;
-}
-.ocuhub_logo_blue {
-    background: @primary-blue url(../../images/signin_logo_bg_blue.png) no-repeat left bottom;
-    background-size: 57%;
-    background-position: bottom left;
-}
-.ocuhub_logo_grey {
-    background: @light-gray url(../../images/signin_logo_bg_grey.png) no-repeat left bottom;
-    background-size: 100%;
-    background-position: bottom right;
 }
 .content-row-margin {
     margin: 1em 0;

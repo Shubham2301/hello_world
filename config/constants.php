@@ -3,20 +3,20 @@
 return [
 
     'support' => [
-        'email_id' => 'support@ocuhub.com',
-        'email_name' => 'OcuHub',
+        'email_id' => 'support@illumacc.com',
+        'email_name' => 'illuma',
         'phone' => '844-605-8243',
-        'contact_form' => 'www.ocuhub.com/contact',
+        'contact_form' => 'www.illumacc.com/contact',
         'application_error' => 'applicationerror@ocuhub.com',
         'ses' => [
             'email' => [
                 'id' => 'Admin2@direct.ocuhub.com',
-                'display_name' => 'Support OcuHub',
+                'display_name' => 'Support illuma',
             ],
         ],
     ],
     'onboarding_notification' => [
-        'email_id' => 'MKolodkin@ocuhub.com',
+        'email_id' => 'mkolodkin@illumacc.com',
         'email_name' => 'Margo'
     ],
     'production_url' => 'https://myocuhub.com',

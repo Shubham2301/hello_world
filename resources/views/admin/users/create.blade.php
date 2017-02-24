@@ -1,4 +1,4 @@
-@extends('layouts.master') @section('title', 'My Ocuhub - Administration') @section('imports')
+@extends('layouts.master') @section('title', 'illuma - Administration') @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/users.css')}}">
 <script type="text/javascript" src="{{elixir('js/users.js')}}"></script>
 @endsection @section('sidebar') @include('admin.sidebar') @endsection @section('content') @if (Session::has('success'))

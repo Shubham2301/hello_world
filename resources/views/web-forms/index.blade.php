@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'My Ocuhub - Web Forms')
+@section('title', 'illuma - Web Forms')
 
 @section('imports')
 

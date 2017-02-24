@@ -4,7 +4,6 @@
 
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{asset('css/referral.css')}}">
-<script type="text/javascript" src="{{asset('js/referraltype.js')}}"></script>
 @endsection
 
 @section('sidebar')
@@ -18,7 +17,7 @@
 
     <div class="row content-row-margin">
         <div class="col-xs-12 section-header">
-            <span class="arial_bold">Contact OcuHub Support</span>
+            <span class="arial_bold">Contact illuma Support</span>
             <br>
             <span><p>
                 <br>

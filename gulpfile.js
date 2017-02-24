@@ -114,6 +114,6 @@ elixir(function(mix) {
         'js/duplicate_maintenance.js',
         'js/report_master.js',
         'js/record_report.js',
-        'images/*'
+        'images*'
     ]);
 });

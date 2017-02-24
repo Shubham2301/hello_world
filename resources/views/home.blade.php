@@ -1,4 +1,4 @@
-@extends('layouts.master') @section('title', 'My Ocuhub') @section('imports')
+@extends('layouts.master') @section('title', 'illuma') @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/referral.css')}}">
 <script type="text/javascript" src="{{elixir('js/referraltype.js')}}"></script>
 @endsection

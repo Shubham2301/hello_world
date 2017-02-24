@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Ocuhub - Reset Password')
+@section('title', 'illuma - Reset Password')
 @section('content')
 <form method="POST" action="/password/reset">
     {!! csrf_field() !!}

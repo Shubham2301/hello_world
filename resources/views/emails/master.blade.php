@@ -10,8 +10,8 @@
 			</div>
 			<div style="width: 30%;display: inline-block;text-align:left">
 				<br>
-				<p>Support Staff, <br>Ocuhub LLC.</p>
-				<img src="{{ config('constants.production_url').'/images/ocuhub-logo.png' }}" style="width:10em" alt="">
+				<p>Support Staff, <br>illuma LLC.</p>
+				<img src="{{ config('constants.production_url').'/images/ocuhub-logo.png' }}?v=1" style="width:10em" alt="">
 				<hr style="border: solid 1px #ddd;">
 				<p><a href="{{ config('constants.support.contact_form') }}">{{ config('constants.support.contact_form') }}</a><br>Email - {{ config('constants.support.email_id') }}<br>Call - {{ config('constants.support.phone') }}</p>
 			</div>

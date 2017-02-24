@@ -1,7 +1,7 @@
 
 @extends('layouts.master')
 
-@section('title', 'My Ocuhub - Select Provider')
+@section('title', 'illuma - Select Provider')
 
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{asset('css/provider.css')}}">
