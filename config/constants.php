@@ -7,7 +7,7 @@ return [
         'email_name' => 'illuma',
         'phone' => '844-605-8243',
         'contact_form' => 'www.illumacc.com/contact',
-        'application_error' => 'applicationerror@ocuhub.com',
+        'application_error' => 'applicationerror@illumcc.com',
         'ses' => [
             'email' => [
                 'id' => 'Admin2@direct.ocuhub.com',
