@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'My Ocuhub - Network Management')
+@section('title', 'illuma - Network Management')
 
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/networks.css')}}">

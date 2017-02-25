@@ -1,4 +1,4 @@
-@extends('layouts.master') @section('title', 'My Ocuhub - Reports') @section('imports')
+@extends('layouts.master') @section('title', 'illuma - Reports') @section('imports')
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <link rel="stylesheet" type="text/css" href="{{elixir('css/reports.css')}}">

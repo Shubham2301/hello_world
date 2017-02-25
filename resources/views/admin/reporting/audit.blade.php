@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'My Ocuhub - Audit Reports')
+@section('title', 'illuma - Audit Reports')
 
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/reporting.css')}}">

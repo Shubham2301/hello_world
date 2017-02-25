@@ -1,4 +1,4 @@
-@extends('layouts.master') @section('title', 'My Ocuhub - File Exchange') @section('imports')
+@extends('layouts.master') @section('title', 'illuma - File Exchange') @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/file_exchange.css')}}">
 <script type="text/javascript" src="{{elixir('js/file_exchange.js')}}"></script>
 @endsection @section('sidebar') @include('file_exchange.sidebar') @endsection @section('content') @if (Session::has('success'))

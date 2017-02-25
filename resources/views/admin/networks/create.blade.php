@@ -1,4 +1,4 @@
-@extends('layouts.master') @section('title', 'My Ocuhub - Add Network') @section('imports')
+@extends('layouts.master') @section('title', 'illuma - Add Network') @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/networks.css')}}">
 <script type="text/javascript" src="{{elixir('js/networks.js')}}"></script>
 @endsection @section('sidebar') @include('admin.sidebar') @endsection @section('content') @if (Session::has('success'))

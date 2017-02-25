@@ -7,7 +7,7 @@
             <div class="modal-header " style="border-bottom:none;">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <p class="update_header active"><strong>Please select the patient information you
-                    <br> want to update from CCDA file into Ocuhub
+                    <br> want to update from CCDA file into illuma
                      </strong>
                 </p>
             </div>
@@ -24,7 +24,7 @@
                                 <p><strong>All</strong></p>
                             </div>
                             <div class="col-md-4 col-xs-4 col-xm-4">
-                                <p style="font-size:20px;"><strong>Ocuhub</strong></p>
+                                <p style="font-size:20px;"><strong>illuma</strong></p>
                             </div>
                             <div class="col-md-4 col-xs-4 col-xm-4">
                                 <p style="font-size:20px;"><strong>CCDA file</strong></p>

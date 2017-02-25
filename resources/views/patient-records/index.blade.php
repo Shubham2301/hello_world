@@ -1,4 +1,4 @@
-@extends('layouts.master') @section('title', 'My Ocuhub - Web Forms') @section('imports')
+@extends('layouts.master') @section('title', 'illuma - Web Forms') @section('imports')
 
 <link rel="stylesheet" type="text/css" href="{{elixir('css/patient_records.css')}}">
 <script type="text/javascript" src="{{elixir('js/patient_records.js')}}"></script>

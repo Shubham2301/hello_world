@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'My Ocuhub - Administration')
+@section('title', 'illuma - Administration')
 
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/patient.css')}}">

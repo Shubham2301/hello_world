@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'My Ocuhub - Edit Profile')
+@section('title', 'illuma - Edit Profile')
 @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/users.css')}}">
 <script type="text/javascript" src="{{elixir('js/users.js')}}"></script>

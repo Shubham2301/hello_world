@@ -1,4 +1,4 @@
-@extends('layouts.master') @section('title', 'My Ocuhub - Select Provider') @section('imports')
+@extends('layouts.master') @section('title', 'illuma - Select Provider') @section('imports')
 <link rel="stylesheet" type="text/css" href="{{elixir('css/provider.css')}}">
 <script type="text/javascript" src="{{elixir('js/provider.js')}}"></script>
 <script type="text/javascript" src="{{elixir('js/import.js')}}"></script>

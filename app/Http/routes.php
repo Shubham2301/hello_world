@@ -126,12 +126,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('update/ccda', 'Patient\PatientController@updateDemographics');
     Route::get('show/ccda/{id}', 'CcdaController@show');
 
-    Route::get('terms', 'SupportController@termsIndex');
-    Route::get('privacy', 'SupportController@privacyIndex');
-    Route::get('sitemap', 'SupportController@sitemapIndex');
-    Route::get('contactus', 'SupportController@contactusIndex');
-    Route::get('investors', 'SupportController@investorsIndex');
-    Route::get('techsupport', 'SupportController@techSupportIndex');
+    Route::get('techsupport', function () {
+        return view('support.support'); 
+    });
 
     Route::group(['middleware' => 'role:user-admin, 9, Staff'], function () {
         Route::resource('administration/users', 'Admin\UserController');

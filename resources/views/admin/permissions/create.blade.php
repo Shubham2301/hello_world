@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'My Ocuhub - Administration')
+@section('title', 'illuma - Administration')
 
 @section('content')
     <div class="content-section active" id="admin-permission-console">
