@@ -239,6 +239,16 @@ class CareConsoleService
         return $listing;
     }
 
+    public function getBucketPatientsExcelData($stageID)
+    {
+      $user = Auth::user();
+      $userID = $user->id;
+      $networkID = $user->userNetwork->first()->network_id;
+      
+      return $this->KPIService->getBucketExcelData($networkID, $stageID);
+      
+    }
+
     /**
      * @param $patient
      * @param $field
@@ -326,6 +336,15 @@ class CareConsoleService
                 $lastScheduledTo .= $previousProvider['name'];
                 $lastScheduledTo .= $previousProvider['locationname'] ? ' at ' . $previousProvider['locationname'] : '';
                 return $lastScheduledTo;
+                break;
+            case 'last-appointment-date':
+                $previousProvider = Patient::getPreviousProvider($patient['patient_id']);
+                if ($previousProvider['id'] === null) {
+                    return '-';
+                }
+                $lastAppointmentDate = Helper::formatDate($previousProvider['start_datetime'], config('constants.date_time')) ?: '-';
+
+                return $lastAppointmentDate;
                 break;
             case 'email':
                 return $patient['email'] ?: '';
@@ -432,6 +451,50 @@ class CareConsoleService
                     ->orderBy('id', 'desc')
                     ->first();
                 return $archiveReason ? $archiveReason->actionResult->display_name : '-';
+                break;
+            case 'archive-note':
+                $archiveNote = ContactHistory::where('console_id', $patient->id)
+                    ->whereHas('actionResult', function ($q) {
+                        $q->where('name', 'patient-declined-services');
+                        $q->orwhere('name', 'other-reasons-for-declining');
+                        $q->orwhere('name', 'already-seen-by-outside-dr');
+                        $q->orwhere('name', 'no-need-to-schedule');
+                        $q->orwhere('name', 'no-insurance');
+                        $q->orwhere('name', 'closed');
+                        $q->orwhere('name', 'incomplete');
+                    })
+                    ->orderBy('id', 'desc')
+                    ->first();
+                return $archiveNote ? str_replace("</br>", " ", $archiveNote->notes) : '-';
+                break;
+            case 'priority-note':
+                $priorityNote = ContactHistory::where('console_id', $patient->id)
+                    ->where(function ($subquery) {
+                        $subquery->whereHas('actionResult', function ($q) {
+                                $q->where('name', 'mark-as-priority');
+                            })
+                            ->orWhereHas('action', function ($q) {
+                                $q->where('name', 'mark-as-priority');
+                            });
+                    })
+                    ->orderBy('id', 'desc')
+                    ->first();
+                return $priorityNote ? str_replace("</br>", " ", $priorityNote->notes) : '-';
+                break;
+            case 'recall-note':
+                $recallNote = ContactHistory::where('console_id', $patient->id)
+                    ->where(function ($subquery) {
+                        $subquery->whereHas('actionResult', function ($q) {
+                                $q->where('name', 'recall-later');
+                            })
+                            ->orWhereHas('action', function ($q) {
+                                $q->where('name', 'recall-later');
+                                $q->orWhere('name', 'annual-exam');
+                            });
+                    })
+                    ->orderBy('id', 'desc')
+                    ->first();
+                return $recallNote ? str_replace("</br>", " ", $recallNote->notes) : '-';
                 break;
             default:
                 return '-';

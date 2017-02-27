@@ -128,9 +128,16 @@ class KPIService {
 				$patients = Careconsole::getRecallPatients($networkID);
 				break;
 		}
-
 		return $patients;
 	}
+
+	public function getBucketExcelData($networkID, $bucketID) {
+
+		$bucketName = CareconsoleStage::find($bucketID)->name;
+		$bucketExl = [];
+		$bucketExl = Careconsole::getBucketPatientsExcelDataModel($networkID, $bucketName);
+		return $bucketExl;  
+	}	
 
     /**
 	 * @param $count
