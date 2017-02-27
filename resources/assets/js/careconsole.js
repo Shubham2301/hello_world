@@ -103,11 +103,11 @@ $(document).ready(function() {
             bucketName = $(this).attr('data-name');
             var bucketTitle = $(this).find('p').html();
             if (bucketName == 'recall') {
-                bucketTitle += '<img src="' + recall_icon_path + '" alt="" class="bucket_icon_style">';
+                bucketTitle += '<img src="' + recall_icon_path + '" alt="" class="bucket_icon_style"><button type="button" class="btn export_btn" id="export_bucket" data_bucket_name="recall">Export</button>';
             } else if (bucketName == 'archived') {
-                bucketTitle += '<img src="' + archive_icon_path + '" alt="" class="bucket_icon_style">';
+                bucketTitle += '<img src="' + archive_icon_path + '" alt="" class="bucket_icon_style"><button type="button" class="btn export_btn" id="export_bucket" data_bucket_name="archived">Export</button>';
             } else if (bucketName == 'priority') {
-                bucketTitle += '<img src="' + priority_icon_path + '" alt="" class="bucket_icon_style">';
+                bucketTitle += '<img src="' + priority_icon_path + '" alt="" class="bucket_icon_style"><button type="button" class="btn export_btn" id="export_bucket" data_bucket_name="priority">Export</button>';
             }
             $('.drilldown>.section-header').html(bucketTitle);
             currentPage = 1;
@@ -1086,6 +1086,13 @@ function bucketData(bucketName) {
                 $('#listing_content').html(data.listing_content);
             }
             $('.dropdown-menu.action_dropdownmenu').html(actionList);
+            $('#export_bucket').on('click', function() {
+                var formData = {
+                    bucket: $(this).attr('data_bucket_name'),
+                };
+                var query = $.param(formData);
+                window.location = '/careconsole/bucket-patients-excel?' + query;
+            });
         },
         error: function error() {
             $('p.alert_message').text('Error:');

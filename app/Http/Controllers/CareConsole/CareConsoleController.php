@@ -2,6 +2,7 @@
 
 namespace myocuhub\Http\Controllers\CareConsole;
 
+use Maatwebsite\Excel\Facades\Excel;
 use Auth;
 use DateTime;
 use Event;
@@ -364,6 +365,89 @@ class CareConsoleController extends Controller
         $drilldown['lastpage'] = $listing['lastpage'];
         return json_encode($drilldown);
     }
+
+    public function getBucketPatientsExcel(Request $request)
+    {
+        $bucketName = $request->bucket;
+        $bucket = CareconsoleStage::where('name', $bucketName)->first();
+        $bucketID = $bucket->id;
+        $bucketData = $this->CareConsoleService->getBucketPatientsExcelData($bucketID);
+        $data = [];
+        foreach ($bucketData as $bucketPatient) {
+            $patientData = array();
+            $patientData['Name'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient->patient, 'full-name');
+            $patientData['Phone'] = $bucketPatient->patient->getPhone();
+            $patientData['DOB'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient->patient, 'dob');
+            $patientData['Referred By Practice'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'referred-by-practice');
+            $patientData['Referred By Provider'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'referred-by-provider');
+            switch ($bucketName) {
+                case 'archived':
+                    $patientData['Archived On'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'archived-at');
+                    $patientData['Archived Reason'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'archive-reason');
+                    $patientData['Archive Notes'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'archive-note');
+                    break;
+                case 'recall':
+                    $patientData['Recall At'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'recall-at');
+                    $patientData['Recall Notes'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'recall-note');
+                    break;
+                case 'priority':
+                    $patientData['Priority Notes'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'priority-note');
+                    break;
+            }
+
+            $patientData['Last Scheduled To'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'last-scheduled-to');
+            $patientData['Last Scheduled Date of Service'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'last-appointment-date');
+            $data[] = $patientData;
+        }
+
+        usort($data, 'self::cmp');
+
+        $fileName = Network::find(session('network-id'))->name.' - ';
+        switch ($bucketName) {
+            case 'archived':
+                $fileName .= 'Archived patient list';
+                break;
+            case 'recall':
+                $fileName .= 'Recall patient list';
+                break;
+            case 'priority':
+                $fileName .= 'Priority patient list';
+                break;
+        }
+
+        $fileType = 'xlsx';
+        Excel::create($fileName, function ($excel) use ($data) {
+            $excel->sheet('Audits', function ($sheet) use ($data) {
+                $sheet->setWidth(array(
+                    'A'     =>  35,
+                    'B'     =>  35,
+                    'C'     =>  35,
+                    'D'     =>  35,
+                    'E'     =>  35,
+                    'F'     =>  35,
+                    'G'     =>  70,
+                    'H'     =>  35,
+                    'I'     =>  35,
+                    'J'     =>  70,
+                ));
+                $sheet->setPageMargin(0.25);
+                $sheet->fromArray($data);
+                $sheet->cell('A1:F1', function ($cells) {
+                    $cells->setFont(array(
+                        'family'     => 'Calibri',
+                        'size'       => '11',
+                        'bold'       =>  true
+                    ));
+                });
+            });
+        })->export($fileType);
+    }
+
+    private static function cmp($a, $b)
+    {
+        return strcasecmp($a["Name"], $b["Name"]);
+    }
+
     public function getPatientRecords(Request $request)
     {
         $data = [];

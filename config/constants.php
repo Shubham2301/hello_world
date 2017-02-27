@@ -3,7 +3,7 @@
 return [
 
     'support' => [
-        'email_id' => 'support@ocuhub.com',
+        'email_id' => 'support@illumacc.com',
         'email_name' => 'illuma',
         'phone' => '844-605-8243',
         'contact_form' => 'www.illumacc.com/contact',

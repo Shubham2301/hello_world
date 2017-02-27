@@ -46,7 +46,7 @@ class Careconsole extends Model
      */
     public function appointment()
     {
-        return $this->hasOne('myocuhub\Models\Appointments');
+        return $this->belongsTo('myocuhub\Models\Appointment');
     }
 
     /**
@@ -68,6 +68,33 @@ class Careconsole extends Model
             ->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id')
             ->whereNull('deleted_at')
             ->get(['*', 'careconsole.id', 'careconsole.created_at']);
+    }
+
+        /**
+     * @param $networkID
+     */
+    public static function getBucketPatientsExcelDataModel($networkID, $bucketName)
+    {
+        $query = self::query();
+        switch ($bucketName) {
+            case 'archived':
+              $query->whereNotNull('archived_date');
+              break;
+            case 'recall':
+              $query->whereNotNull('recall_date');
+              break;
+            case 'priority':
+              $query->where('priority', '1');
+              break;
+            default:
+              break;
+        }
+        $query->whereHas('importHistory', function ($query) use ($networkID) {
+            $query->where('network_id', $networkID);
+          })
+          ->has('patient')
+          ->with(['patient', 'appointment']);
+        return $query->get();
     }
 
     /**
