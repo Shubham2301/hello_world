@@ -4,7 +4,7 @@ namespace myocuhub\Services\SES;
 
 use Auth;
 use myocuhub\User;
-
+use Illuminate\Support\Facades\URL;
 class SESConnect extends SES
 {
 //    protected $tokenURL;
@@ -129,17 +129,17 @@ class SESConnect extends SES
 
         $config = array();
 
-        $config['sso_logon_url'] = 'https://direct.ocuhub.com/portalsso/Home/SSOLogOn';
+        $config['sso_logon_url'] = env('SES_LOGON_URL');
         $config['authorization_url'] = 'https://direct.ocuhub.com/sesidpserver/connect/authorize';
         $config['client_id'] = env('SES_CLIENT_ID');
         $config['direct_mail_str'] = $this->hasDirectMail();
         $config['display_count_timer'] = '10';
-        $config['redirect_uri'] = env('SES_REDIRECT_URI');
+        $config['redirect_uri'] = URL::to('/directmail');
         $config['btoa_code'] = env('SES_BTOA_CODE');
         $config['token_url'] = 'https://direct.ocuhub.com/sesidpserver/connect/token';
-        $config['iframe_height'] = 800;
+        $config['iframe_height'] = 900;
         $config['iframe_width'] = 1000;
-        $config['sso_logoff_url'] = 'https://direct.ocuhub.com/sesidpserver/connect/endsession';
+        $config['sso_logoff_url'] = env('SES_LOGOFF_URL');
 
         return $config;
     }

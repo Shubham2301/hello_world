@@ -148,6 +148,7 @@ class UserController extends Controller
 
         $user = new User;
 
+
         $user->title = $request->input('title');
         $user->firstname = $request->input('firstname');
         $user->middlename = $request->input('middlename');
@@ -435,7 +436,7 @@ class UserController extends Controller
         $user->two_factor_auth = $request->input('two_factor_auth') ?: null;
         $user->speciality = $request->input('speciality');
         $user->provider_type_id = $request->input('provider_type_id') ?: null;
-        
+
         if ($user->level > 2 && $request->input('network')) {
             foreach ($request->input('network') as $value) {
                 $userNetwork = NetworkUser::firstOrCreate(['user_id' => $user->id, 'network_id' => $value]);

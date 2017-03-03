@@ -10,12 +10,15 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Controllers\Traits\EncryptTimestamp;
 use myocuhub\Models\ImpersonationAudit;
 use myocuhub\Services\SES\SESConnect;
 use myocuhub\User;
 
 class DirectMailController extends Controller
 {
+    use EncryptTimestamp;
+
     private $sesConnect;
 
     public function __construct(SESConnect $sesConnect)
@@ -49,16 +52,26 @@ class DirectMailController extends Controller
             $description = '';
             $filename = basename(__FILE__);
             $ip = $request->getClientIp();
+
             Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
         }
 
         $ses = $this->sesConnect->getDirectMail();
 
+        $user = User::find(session('impersonation-id'));
+        if (!$user) {
+            $user = Auth::user();
+        }
+
+        $data = array();
+        $data['direct-mail'] = true;
+        $data['ocuhub-idp'] = config('ses.ocuhub-idp');
+        $data['timestamp'] = $this->encrypt(microtime(true));
+        $data['email'] = $this->encrypt($user->email);
+
         if (!$ses['direct_mail_str']) {
             $request->session()->flash('no_direct_mail', 'You do not have a direct mail access. If you feel this is in error, please contact the OcuHub administrator for assistance.');
         }
-        $data = array();
-        $data['direct-mail'] = true;
 
         $impersonation = $this->sesConnect->getImpersonationScope();
 
@@ -69,7 +82,9 @@ class DirectMailController extends Controller
             $request->session()->flash('disable_directmail', 'SES Directmail is temporarily down. We are working out to resolve the issue.');
         }
 
-        return view('directmail.index')->with('ses', $ses)->with('data', $data)->with('impersonation', $impersonation);
+        return view('directmail.index')->with('ses', $ses)
+            ->with('data', $data)
+            ->with('impersonation', $impersonation);
 
     }
 
@@ -140,5 +155,4 @@ class DirectMailController extends Controller
         }
 
     }
-
 }

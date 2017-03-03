@@ -14,6 +14,7 @@
 @section('content')
 
     @if (Session::has('no_direct_mail'))
+
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong><i class="fa fa-check-circle fa-lg fa-fw"></i> Failure. &nbsp;</strong>
@@ -25,16 +26,14 @@
         {{ Session::pull('disable_directmail') }}
     </div>
     @else
-
     <div class="content-section active" id="directmail-console">
-
-
         @if(session('impersonation-id') != '' )
         <div style="position:absolute">
             <div style="background-color:#d3eefa;padding:0.25em;border-radius:98%;width:2.5em;display:inline-block">
                 <img style="width:2em" src="{{ asset('/images/impersonate-icon-01.png') }}" alt="">
             </div>
-            <span style="display:inline-block"> &nbsp;Proxying <span class="arial_bold">{{ session('impersonation-name') }}</span>&nbsp;</span>
+            <span style="display:inline-block"> &nbsp;Proxying <span class="arial_bold">{{ session('impersonation-name') }}
+            </span>&nbsp;</span>
             <form action="/directmail/endimpersonate" method="POST" id="reload-active-direct" style="display:inline-block">
                {{ csrf_field() }}
                 <div onclick="endImpersonation()" style="display:inline-block">
@@ -47,7 +46,6 @@
             <div id="impersonateBtn">Proxy User</div>
             @endif
         @endif
-
         <img id="loadingImg" alt="Loading..."   src="{{ asset('/images/ajax-loader.gif') }}" style="width:1em;display: none;">
         <div id="refreshBtn" onclick="refreshPage()"><img src="{{ elixir('images/sidebar/refresh-icon-01.png') }}" alt=""></div>
         <button id="getCodeBtn" class="btn dismiss_button" style="width:20%;display: none;">Get Code</button>
@@ -61,29 +59,41 @@
             {{ Session::pull('request_failed_msg') }}
         </div>
         @endif
-        <form id="ocuhubSESFm" action="{{ $ses['sso_logon_url'] }}" method="post" target="_blank">
+        <!-- <form id="ocuhubSESFm" action="{{ $ses['sso_logon_url'] }}" method="post" target="_blank">
             <input id="id_token" type='hidden' name='token' value="" />
-        </form>
-        <iframe id="ocuhubSESiframeId" name="ocuhubSESiframe" src="" frameborder="0" style="display:none;width: 100%;flex: 1 1 auto;margin-top: 3em;"></iframe>
+        </form> -->
 
+        <iframe id="ocuhubSESiframeId"
+                name="ocuhubSESiframe"
+                src="{{ $data['ocuhub-idp'] }}?u={{ urlencode($data['email']) }}&imp={{ session('impersonation-id') }}&t={{ urlencode($data['timestamp']) }}"
+                frameborder="0"
+                style="display:block;width: 100%;flex: 1 1 auto;margin-top: 3em;"></iframe>
 
         <div>
-            <form id="end-impersonation-form" target="end-impersonation-iframe" action="https://direct.ocuhub.com/sesidpserver/connect/endsession" method="GET"></form>
+            <form id="end-impersonation-form" target="end-impersonation-iframe" action="{{ env('SES_LOGOFF_URL', 'https://test.direct.ocuhub.com/identity/connect/endsession') }}" method="GET"></form>
             <iframe id="end-impersonation-iframe" name="end-impersonation-iframe" src="" frameborder="0" style="display:none;"></iframe>
         </div>
     </div>
 
     <script>
 
+
+     //  resizeIframe($('#ocuhubSESiframeId'));
+
         $('#impersonateBtn').on('click', function(){
             $('#impersonateModal').modal('show');
         });
 
         $("#end-impersonation-form").submit(function () {
+
             @if(session('impersonation-id') != '')
-                $("#reload-active-direct").submit();
+                setTimeout(function (){
+                   $("#reload-active-direct").submit();
+                }, 5000);
             @else
-                $('#impersonation-form').submit();
+                setTimeout(function () {
+                     $('#impersonation-form').submit();
+                }, 1000);
             @endif
         });
 
@@ -93,8 +103,7 @@
 				$('#alert').modal('show');
 				return;
 			}
-             $("#end-impersonation-form").submit();
-
+            $("#end-impersonation-form").submit();
         }
 
         function endImpersonation () {
@@ -132,6 +141,8 @@
             document.forms["ocuhubSESFm"].submit();
         }
 
+
+/*
         var code;
         var token;
 
@@ -214,6 +225,7 @@
         if (!window.location.search) {
            document.getElementById("getCodeBtn").click();
         }
+*/
     </script>
 
     @endif
