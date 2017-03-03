@@ -175,8 +175,6 @@ class UserController extends Controller
         $user->speciality = $request->input('speciality');
         $user->provider_type_id = $request->input('provider_type_id') ?: null;
 
-        $user->ses_username = $request->input('ses_username', null);
-
         $user->two_factor_auth = $request->input('two_factor_auth') ? $request->input('two_factor_auth') : 0;
         $roles = array();
         $roles = $request->input('role', []);
