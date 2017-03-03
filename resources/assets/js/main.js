@@ -41,7 +41,9 @@ $(document).ready(function () {
     });
 
     $("#ses_logout_form").submit(function () {
-        window.location.href = '/auth/logout';
+        setTimeout(function(){
+            window.location.href = '/auth/logout';
+        }, 3000);
     });
 
     $('.open_main_sidebar_mobile').on('click', function () {

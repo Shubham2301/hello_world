@@ -38,7 +38,7 @@
                         </li>
                     </ul>
                     <div class="ocuhub_sso_logoff">
-                        <form id="ses_logout_form" target="ses_logout_iframe" action="https://direct.ocuhub.com/sesidpserver/connect/endsession" method="GET"></form>
+                        <form id="ses_logout_form" target="ses_logout_iframe" action="{{ env('SES_LOGOFF_URL', 'https://test.direct.ocuhub.com/identity/connect/endsession') }}" method="GET"></form>
                         <iframe id="ses_logout_iframe" name="ses_logout_iframe" src="" frameborder="0" style="display:none;"></iframe>
                     </div>
                 </div>

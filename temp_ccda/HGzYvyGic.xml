@@ -1,0 +1,707 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="CDA.xsl"?>
+<!--
+
+    Title: US_Realm_Header_Template
+    Original Filename: US_Realm_Header_Template.xml
+    Version: 1.0
+
+    Generated via BlueButton.js
+
+-->
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="urn:hl7-org:v3 ../../C-CDA%20rules/infrastructure/cda/CDA_SDTC.xsd"
+ xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc">
+
+<!--
+********************************************************
+
+  CDA Header
+
+********************************************************
+-->
+
+    <realmCode code="US"/>
+    <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+    <!-- US General Header Template -->
+    <templateId root="2.16.840.1.113883.10.20.22.1.1"/>
+    <!-- *** Note:  The next templateId, code and title will differ depending on what type of document is being sent. *** -->
+    <!-- conforms to the document specific requirements  -->
+    <templateId root="2.16.840.1.113883.10.20.22.1.2"/>
+    <id extension="999021" root="2.16.840.1.113883.19"/>
+    <code codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" code="34133-9" displayName="Summarization of Episode Note"/>
+    <title>
+        
+            Patient Health Summary
+        
+    </title>
+    
+        <effectiveTime value="20161214080412+0000" />
+    
+    <confidentialityCode code="N" displayName="Normal" codeSystem="2.16.840.1.113883.5.25"/>
+    <languageCode code="en-US"/>
+    <setId extension="111199021" root="2.16.840.1.113883.19"/>
+    <versionNumber value="1"/>
+    <recordTarget>
+        
+
+            <patientRole>
+                <id extension="12345" root="2.16.840.1.113883.19"/>
+                <!-- Fake ID using HL7 example OID. -->
+                <id extension="111-00-1234" root="2.16.840.1.113883.4.1"/>
+                <!-- Fake Social Security Number using the actual SSN OID. -->
+                <addr use="HP">
+                    <!-- HP is "primary home" from codeSystem 2.16.840.1.113883.5.1119 -->
+                    <streetAddressLine>122</streetAddressLine>
+<streetAddressLine>13</streetAddressLine>
+<city>Atlanta</city>
+<state nullFlavor="UNK" />
+<postalCode>42029</postalCode>
+<country nullFlavor="UNK" />
+
+                </addr>
+                                                                                    <telecom nullFlavor="NI" />
+                                <patient>
+                    <name use="L">
+                        <!-- L is "Legal" from HL7 EntityNameUse 2.16.840.1.113883.5.45 -->
+                        <given>test patient 7-27</given>
+<given nullFlavor="UNK" />
+<family>1221</family>
+
+                    </name>
+                    <administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1" displayName="male"/>
+                    <birthTime value="20160727" />
+                    
+                    
+                    
+                        <raceCode nullFlavor="NI" />
+                    
+                    
+                        <ethnicGroupCode nullFlavor="NI" />
+                    
+                    
+                    
+                    
+                        <languageCommunication>
+                            <languageCode code="1"/>
+                            <modeCode code="RWR" displayName="Recieve Written" codeSystem="2.16.840.1.113883.5.60" codeSystemName="LanguageAbilityMode"/>
+                            <preferenceInd value="true"/>
+                        </languageCommunication>
+                    
+                </patient>
+                <providerOrganization>
+                    <id root="2.16.840.1.113883.19"/>
+                    <name>Ocuhub</name>
+                    <telecom use="WP" value=""/>
+                    <addr>
+                        <streetAddressLine nullFlavor="UNK" />
+<city nullFlavor="UNK" />
+<state nullFlavor="UNK" />
+<postalCode nullFlavor="UNK" />
+<country nullFlavor="UNK" />
+
+                    </addr>
+                </providerOrganization>
+            </patientRole>
+
+        
+
+    </recordTarget>
+    
+    
+        <author>
+            <time value="20161214130441+0000" />
+            <assignedAuthor>
+                <!-- TODO support real NPI -->
+                <id extension="99999999" root="2.16.840.1.113883.4.6"/>
+                <addr>
+                    <streetAddressLine nullFlavor="UNK" />
+<city nullFlavor="UNK" />
+<state nullFlavor="UNK" />
+<postalCode nullFlavor="UNK" />
+<country nullFlavor="UNK" />
+
+                </addr>
+                <telecom use="WP" value=""/>
+                <assignedPerson>
+                    <name>
+                        <given nullFlavor="UNK" />
+<family>Ocuhub</family>
+
+                    </name>
+                </assignedPerson>
+            </assignedAuthor>
+        </author>
+        <custodian>
+            <assignedCustodian>
+                <representedCustodianOrganization>
+                    <id extension="99999999" root="2.16.840.1.113883.4.6"/>
+                    <name>Ocuhub</name>
+                    <telecom use="WP" value=""/>
+                    <addr>
+                        <streetAddressLine nullFlavor="UNK" />
+<city nullFlavor="UNK" />
+<state nullFlavor="UNK" />
+<postalCode nullFlavor="UNK" />
+<country nullFlavor="UNK" />
+
+                    </addr>
+                </representedCustodianOrganization>
+            </assignedCustodian>
+        </custodian>
+        <documentationOf>
+            <serviceEvent classCode="PCPR">
+                <effectiveTime>
+                    
+                        <low value="20161214080412+0000" />
+                    
+                    <high nullFlavor="UNK" />
+                </effectiveTime>
+                
+                    <performer typeCode="PRF">
+                        <assignedEntity>
+                            <id extension="99999999" root="2.16.840.1.113883.4.6"/>
+                            <code code="261QP2300X" displayName="Primary Care [Ambulatory Health Care Facilities\Clinic/Center]"
+                                codeSystemName="NUCC Provider Codes" codeSystem="2.16.840.1.113883.6.101"/>
+                                                            <addr use="WP">
+                                    <streetAddressLine nullFlavor="UNK" />
+<city nullFlavor="UNK" />
+<state nullFlavor="UNK" />
+<postalCode nullFlavor="UNK" />
+<country nullFlavor="UNK" />
+
+                                </addr>
+                                                                                        <telecom nullFlavor="UNK" />
+                                                        <assignedPerson>
+                                <name>
+                                    <given>Ocuhub</given>
+<family nullFlavor="UNK" />
+
+                                </name>
+                            </assignedPerson>
+                        </assignedEntity>
+                    </performer>
+                
+            </serviceEvent>
+        </documentationOf>
+        
+    
+
+    <!-- ********************************************************
+
+     CDA Body
+
+     ******************************************************** -->
+    <component>
+        <structuredBody>
+            <!-- *********************** -->
+
+            <!--
+            ********************************************************
+
+            Allergies, Adverse Reactions, Alerts
+
+            ********************************************************
+            -->
+                <component>
+                    <section>
+                        <templateId root="2.16.840.1.113883.10.20.22.2.6.1"/>
+                        <!-- Alerts section template -->
+                        <code code="48765-2" codeSystem="2.16.840.1.113883.6.1"/>
+                        <title>Allergies, Adverse Reactions, Alerts</title>
+                        <text>
+                            
+                                No allergy data provided.
+                            
+                        </text>
+
+                        
+
+                            <entry typeCode="DRIV">
+                              <act classCode="ACT" moodCode="EVN">
+                                <!-- ** Allergy problem act ** -->
+                                <templateId root="2.16.840.1.113883.10.20.22.4.30" />
+                                <id root="6208ef0f-7750-1115-8cf9-b6ea1d0d0a66" />
+                                <code code="48765-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Allergies, adverse reactions, alerts" />
+                                <statusCode code="completed" />
+                                <effectiveTime>
+                                  <low nullFlavor="NA" />
+                                  <high nullFlavor="NA" />
+                                </effectiveTime>
+                                <entryRelationship typeCode="SUBJ" inversionInd="true">
+                                  <observation classCode="OBS" moodCode="EVN" negationInd="true">
+                                    <!-- ** Allergy observation ** -->
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.7" />
+                                    <id root="434c9b5a-e514-46bb-91b5-032ca579efec" />
+                                    <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" />
+                                    <statusCode code="completed" />
+                                    <effectiveTime>
+                                      <low nullFlavor="NA" />
+                                      <high nullFlavor="NA" />
+                                    </effectiveTime>
+                                    <value xsi:type="CD" code="419511003" displayName="Propensity to adverse reactions to drug" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"></value>
+                                    <participant typeCode="CSM">
+                                      <participantRole classCode="MANU">
+                                        <playingEntity classCode="MMAT">
+                                          <code nullFlavor="NI" />
+                                        </playingEntity>
+                                      </participantRole>
+                                    </participant>
+                                  </observation>
+                                </entryRelationship>
+                              </act>
+                            </entry>
+
+                        
+
+                    </section>
+                </component>
+
+            <!--
+            ********************************************************
+
+            PLAN OF CARE
+            (This section is optimized for its unstructured data, not its structured data)
+
+            ********************************************************
+            -->
+            <component>
+                <section>
+                    <templateId root = "2.16.840.1.113883.10.20.22.2.10"/>
+                    <code code = "18776-5" codeSystem = "2.16.840.1.113883.6.1" codeSystemName = "LOINC" displayName = "Treatment plan"/>
+                    <title>Plan of Care</title>
+                    <text>
+                        
+
+                    </text>
+
+                    
+
+                </section>
+            </component>
+
+            <!--
+            ********************************************************
+
+            INSTRUCTIONS
+            (This section is optimized for its unstructured data, not its structured data)
+
+            ********************************************************
+            -->
+            <component>
+                <section>
+                    <templateId root = "2.16.840.1.113883.10.20.22.2.45"/>
+                    <code code = "69730-0" codeSystem = "2.16.840.1.113883.6.1" codeSystemName = "LOINC" displayName = "INSTRUCTIONS"/>
+                    <title>Instructions</title>
+                    <text>
+                        
+
+                    </text>
+
+                    
+                </section>
+            </component>
+
+            <!--
+            ********************************************************
+
+            FUNCTIONAL STATUS
+
+            ********************************************************
+            -->
+            <component>
+                <section>
+                    <templateId
+                      root="2.16.840.1.113883.10.20.22.2.14"/>
+                    <!--  ******** Functional status section template   ******** -->
+                    <code
+                      code="47420-5"
+                      codeSystem="2.16.840.1.113883.6.1"/>
+                    <title>Functional Status</title>
+                    <text>
+                                            </text>
+                                    </section>
+            </component>
+
+            <!--
+            ********************************************************
+            
+            REASON FOR REFERRAL
+            
+            ********************************************************
+            -->
+            <component>
+                <section>
+                   <templateId
+                      root="1.3.6.1.4.1.19376.1.5.3.1.3.1"/>
+                   <!-- ** Reason for Referral Section Template ** -->
+                   <code
+                      codeSystem="2.16.840.1.113883.6.1"
+                      codeSystemName="LOINC"
+                      code="42349-1"
+                      displayName="REASON FOR REFERRAL"/>
+                   <title>Reason for Referral</title>
+                   <!-- Unstructured text field -->
+                   <text></text>
+                </section>
+            </component>
+
+            <!-- 
+            ************************************
+            
+            HOSPITAL DISCHARGE INSTRUCTIONS
+            
+            ************************************ 
+            -->
+                <component>
+                    <section>
+                       <templateId
+                          root="2.16.840.1.113883.10.20.22.2.41"/>
+                       <code
+                          code="8653-8"
+                          codeSystem="2.16.840.1.113883.6.1"
+                          codeSystemName="LOINC"
+                          displayName="HOSPITAL DISCHARGE INSTRUCTIONS"/>
+                       <title>Hospital Discharge Instructions</title>
+                       <!-- Unstructured text field -->
+                       <text></text>
+                    </section>
+                </component>
+
+
+            <!-- 
+            ************************************
+            
+            CHIEF COMPLAINT / REASON
+            
+            ************************************ 
+            -->
+                <component>
+                    <section>
+                        <templateId root="2.16.840.1.113883.10.20.22.2.13"/>
+                        <code code="46239-0"
+                              codeSystem="2.16.840.1.113883.6.1"
+                              codeSystemName="LOINC"
+                              displayName="CHIEF COMPLAINT AND REASON FOR VISIT"/>
+                        <title>Chief Complaint</title>
+                        
+                            <text></text>
+                        
+                      </section>
+                </component>
+
+
+            
+
+            <!--
+            ********************************************************
+
+            MEDICATIONS
+
+            ********************************************************
+            -->
+                <component>
+                    <section>
+                        <templateId root="2.16.840.1.113883.10.20.22.2.1.1"/>
+                        <code code="10160-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="HISTORY OF MEDICATION USE"/>
+                        <title>Medications</title>
+                        <text>
+                            
+                                No medications data provided.
+                            
+                        </text>
+
+                        
+                            <entry>
+                              <substanceAdministration moodCode="EVN" classCode="SBADM" negationInd="true">
+                                <!-- ** Medication activity ** -->
+                                <templateId root="2.16.840.1.113883.10.20.22.4.16" />
+                                <id root="37c20f19-f327-b5cc-3a5d-0587eb9deb3f" />
+                                <statusCode code="completed" />
+                                <effectiveTime xsi:type="IVL_TS">
+                                  <low nullFlavor="NA" />
+                                  <high nullFlavor="NA" />
+                                </effectiveTime>
+                                <consumable>
+                                  <manufacturedProduct classCode="MANU">
+                                    <!-- ** Medication information ** -->
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.23" />
+                                    <id root="70260742-c295-154c-4e2e-9f68b1a7397f" />
+                                    <manufacturedMaterial>
+                                      <code nullFlavor="NI" />
+                                    </manufacturedMaterial>
+                                  </manufacturedProduct>
+                                </consumable>
+                              </substanceAdministration>
+                            </entry>
+                        
+
+                    </section>
+                </component>
+            
+
+            <!--
+            ********************************************************
+
+            PROBLEM LIST
+
+            ********************************************************
+            -->
+                <component>
+                    <section>
+                        <templateId root="2.16.840.1.113883.10.20.22.2.5.1"/>
+                        <code code="11450-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="PROBLEM LIST"/>
+                        <title>Problems</title>
+                        <text>
+                            
+                                No problems data provided.
+                            
+                        </text>
+
+                        
+
+                            <entry typeCode="DRIV">
+                              <act classCode="ACT" moodCode="EVN">
+                                <!-- ** Problem concern act ** -->
+                                <templateId root="2.16.840.1.113883.10.20.22.4.3" />
+                                <id root="6b51d431-df5d-f141-bece-cf79edf3dd86" />
+                                <code code="CONC" codeSystem="2.16.840.1.113883.5.6" displayName="Concern" />
+                                <statusCode code="completed" />
+                                <effectiveTime>
+                                  <low nullFlavor="NA" />
+                                  <high nullFlavor="NA" />
+                                </effectiveTime>
+                                <entryRelationship typeCode="SUBJ">
+                                  <observation classCode="OBS" moodCode="EVN" negationInd="true">
+                                    <!-- Problem Observation template -->
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.4" />
+                                    <id root="73475cb4-0a56-e8da-a045-ed110137e159" />
+                                    <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="HL7ActCode" />
+                                    <statusCode code="completed" />
+                                    <value xsi:type="CD" code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Problem" />
+                                  </observation>
+                                </entryRelationship>
+                              </act>
+                            </entry>
+
+                        
+
+                    </section>
+                </component>
+            
+
+            <!--
+            ********************************************************
+
+            PROCEDURES
+
+            ********************************************************
+            -->
+                <component>
+                    <section>
+                        <templateId root="2.16.840.1.113883.10.20.22.2.7.1"/>
+                        <!-- Procedures section template -->
+                        <code code="47519-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="PROCEDURES"/>
+                        <title>Procedures</title>
+                        <text>
+                            
+                                No procedures data provided.
+                            
+                        </text>
+
+                        
+
+                            <entry>
+                              <act classCode="ACT" moodCode="INT">
+                                <!-- Procedure activity act -->
+                                <templateId root="2.16.840.1.113883.10.20.22.4.12" />
+                                <id root="d6061bbe-e6cf-3bd7-765f-aea7cdd0af13" />
+                                <code nullFlavor="NI" />
+                                <statusCode code="completed" />
+                                <effectiveTime nullFlavor="NA" />
+                              </act>
+                            </entry>
+
+                        
+
+                    </section>
+                </component>
+            
+
+            <!--
+            ********************************************************
+
+            RESULTS / LABS
+
+            ********************************************************
+            -->
+                <component>
+                    <section>
+                        <templateId root="2.16.840.1.113883.10.20.22.2.3.1"/>
+                        <code code="30954-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="RESULTS"/>
+                        <title>Results</title>
+                        <text>
+                            
+                                No lab results data provided.
+                            
+                        </text>
+
+                        
+
+                            <entry>
+                               <organizer classCode="BATTERY" moodCode="EVN">
+                                  <templateId root="2.16.840.1.113883.10.20.22.4.1"/>
+                                  <id nullFlavor="NI"/>
+                                  <code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+                                  <statusCode code="completed"/>
+                                  <effectiveTime>
+                                     <low nullFlavor="UNK"/>
+                                  </effectiveTime>
+                                  <component>
+                                     <observation classCode="OBS" moodCode="EVN">
+                                        <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
+                                        <id nullFlavor="NI"/>
+                                        <code nullFlavor="NI"/>
+                                        <statusCode code="completed"/>
+                                        <effectiveTime>
+                                           <low nullFlavor="UNK"/>
+                                        </effectiveTime>
+                                        <value nullFlavor="NI" xsi:type="ST"/>
+                                     </observation>
+                                  </component>
+                               </organizer>
+                            </entry>
+
+                        
+
+                    </section>
+                </component>
+
+
+            <!--
+            ********************************************************
+
+            ENCOUNTERS
+
+            ********************************************************
+            -->
+                <component>
+                    <section>
+                        <templateId root="2.16.840.1.113883.10.20.22.2.22"/>
+                        <!-- Encounters Section - optional entries -->
+                        <code code="46240-8" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of encounters"/>
+                        <title>Encounters</title>
+                        <text>
+                                                            No encounters data provided.
+                                                    </text>
+
+                        
+                    </section>
+                </component>
+            
+
+            <!--
+            ********************************************************
+
+            IMMUNIZATIONS
+
+            ********************************************************
+            -->
+                <component>
+                    <section>
+                        <templateId root="2.16.840.1.113883.10.20.22.2.2.1"/>
+                        <!--  ********  Immunizations section template   ******** -->
+                        <code code="11369-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of immunizations"/>
+                        <title>Immunizations</title>
+                        <text>
+                            
+                                No immunizations data provided.
+                            
+                        </text>
+
+                        
+
+                            <entry typeCode="DRIV">
+                              <substanceAdministration moodCode="EVN" classCode="SBADM" negationInd="true">
+                                <!-- ** Immunization activity ** -->
+                                <templateId root="2.16.840.1.113883.10.20.22.4.52" />
+                                <id root="d6a40317-3361-bb08-d0bf-794fcc9dbdcf" />
+                                <statusCode code="completed" />
+                                <effectiveTime nullFlavor="NA" />
+                                <consumable>
+                                  <manufacturedProduct classCode="MANU">
+                                    <!-- ** Immunization medication information ** -->
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.54" />
+                                    <manufacturedMaterial>
+                                      <code nullFlavor="NI" />
+                                    </manufacturedMaterial>
+                                  </manufacturedProduct>
+                                </consumable>
+                              </substanceAdministration>
+                            </entry>
+
+                        
+
+                    </section>
+                </component>
+            
+
+            <!--
+            ********************************************************
+
+            VITAL SIGNS
+
+            ********************************************************
+            -->
+                <component>
+                    <section>
+                        <templateId root="2.16.840.1.113883.10.20.22.2.4"/>
+                        <code code="8716-3" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="VITAL SIGNS"/>
+                        <title>Vital Signs</title>
+                        <text>
+                            
+                                No vital signs data provided.
+                            
+                        </text>
+
+                        
+                    </section>
+                </component>
+
+            <!--
+            ********************************************************
+
+            SOCIAL HISTORY
+
+            ********************************************************
+            -->
+                <component>
+                    <section>
+                        <templateId root = "2.16.840.1.113883.10.20.22.2.17"/>
+                        <code code = "29762-2" codeSystem = "2.16.840.1.113883.6.1" displayName = "Social History"/>
+                        <title>Social History</title>
+                        <text>
+                                                            No social history data provided.
+                                                    </text>
+                        <entry typeCode = "DRIV">
+                            <observation classCode = "OBS" moodCode = "EVN">
+                                <templateId root = "2.16.840.1.113883.10.20.22.4.78"/>
+                                <id root = "bb4029d5-cd10-437e-8985-6db6db5beb12"/>
+                                <code code = "ASSERTION" codeSystem = "2.16.840.1.113883.5.4"/>
+                                <statusCode code = "completed"/>
+                                <effectiveTime>
+                                    <low nullFlavor="UNK" />
+                                </effectiveTime>
+                                
+                                
+                                    <value xsi:type="CD" nullFlavor="NASK" />
+                                
+                            </observation>
+                        </entry>
+                    </section>
+                </component>
+
+            </structuredBody>
+        </component>
+
+</ClinicalDocument>
