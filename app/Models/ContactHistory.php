@@ -105,4 +105,18 @@ class ContactHistory extends Model
             ->with('appointments')
             ->get();
     }
+
+    public static function getPatientExcelData($networkID, $startDate, $endDate)
+    {
+        return self::whereNotNull('contact_history.user_id')
+            ->where('contact_activity_date', '>=', $startDate)
+            ->where('contact_activity_date', '<=', $endDate)        
+            ->whereHas('careconsole.importHistory', function ($query) use ($networkID) {
+                $query->where('network_id', $networkID);
+            })
+            ->has('careconsole.patient')
+            ->with(['careconsole.patient', 'action', 'actionResult', 'appointments'])
+            ->orderBy('contact_history.id')
+            ->get();
+    }
 }
