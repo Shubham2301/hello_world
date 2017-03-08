@@ -1,8 +1,11 @@
 'use strict';
 $(document).ready(function() {
     if (window.location.pathname != '/editprofile') {
-        loadAllUsers();
-        getLandingPageByRole();
+        if (window.location.pathname == '/administration/users') {
+            loadAllUsers();
+        } else {
+            getLandingPageByRole();
+        }
     }
 
     $('#user_type').on('change', function() {
