@@ -1,10 +1,10 @@
 @extends('layouts.master')
-@section('title', 'Record Report')
+@section('title', 'Export Patient Activity')
 @section('imports')
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <link rel="stylesheet" type="text/css" href="{{ elixir('css/reports.css') }}">
-    <script type="text/javascript" src="{{elixir('js/record_report.js')}}"></script>
+    <script type="text/javascript" src="{{elixir('js/export_patient_activity.js')}}"></script>
 @endsection
 @section('sidebar')
 @include('reports.sidebar')
@@ -19,7 +19,7 @@
     </div>
     @endif
     <div class="reports_container arial" id="record_report">
-        <span class="arial_bold reports_header">Record Report</span>
+        <span class="arial_bold reports_header">Export Patient Activity</span>
         <span class="report_option_row timeline">
             <span>Timeline:</span>
             <span>
@@ -36,15 +36,7 @@
             </select>
         </span>
         <span class="report_option_row">
-            <span>WebForm List:</span>
-            <select class="web_form_selector" id="web_form_id">
-                @foreach($webFormList as $webFormID => $webForm)
-                    <option value="{{ $webFormID }}">{{ $webForm }}</option>
-                @endforeach
-            </select>
-        </span>
-        <span class="report_option_row">
-            <button type="submit" class="btn" id="generate_record_xml">Generate Excel</button>
+            <button type="submit" class="btn" id="export_patient_activity_excel">Export</button>
         </span>
     </div>
 @endsection

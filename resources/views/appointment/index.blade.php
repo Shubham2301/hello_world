@@ -18,7 +18,6 @@
 </div>
 @endif
 <div class="content-section active" id="appointment_section">
-    {!! Form::open(array('url' => '/patients', 'method' => 'GET', 'id' => 'form_schedule_another_appointment')) !!}
     {!! Form::hidden('referraltype_id', $data['referraltype_id'] , array('id' => 'form_referraltype_id')) !!}
     {!! Form::hidden('action', $data['action'], array('id' => 'form_action')) !!}
     {!! Form::hidden('provider_id', $data['provider_id'], array('id' => 'form_provider_id')) !!}
@@ -80,7 +79,6 @@
 			<p class="apt_msg"><span></span> No files will be sent because the provider does not have an SES email </p>
             @endif
             <p>{!! Form::checkbox('existing_relationship',1,false, array('id' => 'existing_relationship_checkbox')) !!} Patient has existing relationship with provider</p>
-            {!! Form::close() !!}
         </div>
         <div class="appointment_confirm center-align arial">
             <p><button id="confirm_appointment">Confirm</button>&nbsp; <button id="cancel_appointment" data-toggle="tooltip" title="You will lose all progress" data-placement="bottom">Abort</button></p>

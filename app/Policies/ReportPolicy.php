@@ -38,6 +38,11 @@ class ReportPolicy
         return ($user->checkUserLevel('Ocuhub'));
     }
 
+    public function accessPatientExportController(){
+        $user = Auth::user();
+        return ($user->checkUserLevel('Ocuhub'));
+    }
+
     public function accessUserReport(){
         $user = Auth::user();
     	return ($user->checkUserLevel('Ocuhub'));

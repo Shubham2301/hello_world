@@ -76,7 +76,6 @@ trait ReachRateTrait
                     case 'reschedule':
                     case 'manually-schedule':
                     case 'manually-reschedule':
-                    case 'previously-scheduled':
                         $results[$patient_count]['reached'] = isset($results[$patient_count]['reached']) ? $results[$patient_count]['reached'] + 1 : 1;
                         $results[$patient_count]['reached_stage_change'] = $contactHistory->days_in_prev_stage;
 
@@ -104,6 +103,34 @@ trait ReachRateTrait
                             $results[$patient_count]['show_stage_change'] = $contactHistory->days_in_prev_stage;
                         }
                         break;
+                    case 'previously-scheduled':
+                        $results[$patient_count]['reached'] = isset($results[$patient_count]['reached']) ? $results[$patient_count]['reached'] + 1 : 1;
+                        $results[$patient_count]['reached_stage_change'] = $contactHistory->days_in_prev_stage;
+
+                        $existingRelationship = 0;
+                        if ($contactHistory->appointments) {
+                            $existingRelationship = $contactHistory->appointments->existing_relationship;
+                        }
+
+                        if (isset($contactHistory->appointments)) {
+                            $results[$patient_count] += $this->fillPatientDetail($contactHistory, 'appointment_data');
+                            $results[$patient_count] = array_merge($results[$patient_count], $this->fillPatientDetail($contactHistory, 'appointment_data'));
+                        }
+
+                        if (isset($contactHistory->appointments) && (Helper::formatDate($contactHistory->appointments->start_datetime, 'Ymd') >= Helper::formatDate($this->getEndDate(), 'Ymd'))) {
+                            $results[$patient_count]['previously_appointment_scheduled'] = ($existingRelationship == 1) ? config('reports.appointment_status.scheduled_appointment_existing_relationship') : config('reports.appointment_status.scheduled_appointment_non_existing_relationship') ;
+                        } else {
+                            $results[$patient_count]['previously_appointment_scheduled'] = ($existingRelationship == 1) ? config('reports.appointment_status.past_appointment_existing_relationship') : config('reports.appointment_status.past_appointment_non_existing_relationship') ;
+                        }
+
+                        $results[$patient_count]['scheduled_on'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
+                        if (isset($results[$patient_count]['appointment_completed']) && $results[$patient_count]['appointment_completed'] == 0) {
+                            $results[$patient_count]['already_rescheduled'] = 1;
+                        }
+                        if (isset($results[$patient_count]['appointment_completed'])) {
+                            $results[$patient_count]['show_stage_change'] = $contactHistory->days_in_prev_stage;
+                        }
+                        break;                        
                     case 'move-to-console':
                         if (($history['back_to_console'] == $history['move_to_recall'] && $history['back_to_console'] != 0) || $history['back_to_console'] < $history['move_to_recall']) {
                             $patient_count++;
@@ -293,6 +320,10 @@ trait ReachRateTrait
             'appointment_scheduled_non_existing_relationship' => 0,
             'past_appointment_existing_relationship' => 0,
             'past_appointment_non_existing_relationship' => 0,
+            'previously_appointment_scheduled_existing_relationship' => 0,
+            'previously_appointment_scheduled_non_existing_relationship' => 0,
+            'previously_past_appointment_existing_relationship' => 0,
+            'previously_past_appointment_non_existing_relationship' => 0,            
             'not_scheduled' => 0,
             'no_need_to_schedule' => 0,
             'patient_declined_service' => 0,
@@ -347,7 +378,7 @@ trait ReachRateTrait
                 $reportMetrics['reached']++;
                 $reportMetrics['contact_attempted']++;
 
-                if (!(array_key_exists('appointment_scheduled', $result))) {
+                if (!(array_key_exists('appointment_scheduled', $result)) && !(array_key_exists('previously_appointment_scheduled', $result))) {
                     $reportMetrics['not_scheduled']++;
                     if (array_key_exists('archive_reason', $result)) {
                         switch ($result['archive_reason']) {
@@ -423,6 +454,23 @@ trait ReachRateTrait
                                break;
                 }
             }
+
+            if (array_key_exists('previously_appointment_scheduled', $result)) {
+                switch ($result['previously_appointment_scheduled']) {
+                    case config('reports.appointment_status.scheduled_appointment_existing_relationship'):
+                               $reportMetrics['previously_appointment_scheduled_existing_relationship']++;
+                               break;
+                    case config('reports.appointment_status.scheduled_appointment_non_existing_relationship'):
+                               $reportMetrics['previously_appointment_scheduled_non_existing_relationship']++;
+                               break;
+                    case config('reports.appointment_status.past_appointment_existing_relationship'):
+                               $reportMetrics['previously_past_appointment_existing_relationship']++;
+                               break;
+                    case config('reports.appointment_status.past_appointment_non_existing_relationship'):
+                               $reportMetrics['previously_past_appointment_non_existing_relationship']++;
+                               break;
+                }
+            }            
 
             if (array_key_exists('appointment_completed', $result)) {
                 $reportMetrics['appointment_completed']++;
@@ -646,7 +694,7 @@ trait ReachRateTrait
                     }
                     break;
                 case 'not_scheduled':
-                        if (array_key_exists('reached', $result) && !(array_key_exists('appointment_scheduled', $result))) {
+                        if (array_key_exists('reached', $result) && !(array_key_exists('appointment_scheduled', $result)) && !(array_key_exists('previously_appointment_scheduled', $result))) {
                             $rowData = [];
                             $rowData['Name'] = $result['patient_name'] ?: '-';
                             $rowData['Request Received'] = $result['request_received'] ?: '-';

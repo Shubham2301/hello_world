@@ -269,6 +269,15 @@ class CareConsoleService
                 $date = new \DateTime($patient['recall_date']);
                 return $date->format($dateFormat);
                 break;
+            case 'first-name':
+                return $patient['firstname'];
+                break;
+            case 'last-name':
+                return $patient['lastname'];
+                break;
+            case 'patient-name':
+                return $patient['firstname'].' '.$patient['lastname'];
+                break;        
             case 'full-name':
                 return $patient['lastname'] . ', ' . $patient['firstname'] . ' ' . $patient['middlename'];
                 break;
@@ -312,6 +321,28 @@ class CareConsoleService
             case 'days-pending':
                 return date_diff(new \DateTime($patient['stage_updated_at']), new \DateTime(), true)->d;
                 break;
+            case 'provider-name':
+                $appointment = Appointment::find($patient['appointment_id']);
+                $provider = User::find($appointment->provider_id);
+                if (!$provider) {
+                    $provider = '-';
+                } else {
+                    $provider = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname ;
+                }  
+                return $provider;
+                break;
+            case 'practice-name':
+                $appointment = Appointment::find($patient['appointment_id']);
+                $practice = Practice::withTrashed()->find($appointment->practice_id);
+                $practiceName = $practice ? $practice->name : '-';
+                return $practiceName;
+                break;
+            case 'location-name':
+                $appointment = Appointment::find($patient['appointment_id']);
+                $practiceLocation = PracticeLocation::find($appointment->location_id);
+                $locationInfo = $practiceLocation ? $practiceLocation->locationname : '-'; 
+                return $locationInfo;
+                break;                                                                                       
             case 'scheduled-to':
                 $appointment = Appointment::find($patient['appointment_id']);
                 $provider = User::find($appointment->provider_id);
@@ -496,6 +527,10 @@ class CareConsoleService
                     ->first();
                 return $recallNote ? str_replace("</br>", " ", $recallNote->notes) : '-';
                 break;
+            case 'contact-activity-date':
+                $date = new \DateTime($patient->contact_activity_date);
+                return $date->format($dateFormat);
+                break;                
             default:
                 return '-';
                 break;

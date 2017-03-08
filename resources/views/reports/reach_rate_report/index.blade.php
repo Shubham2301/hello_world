@@ -1,7 +1,7 @@
 @extends('layouts.master') @section('title', 'Reach Report') @section('imports')
 <link rel="stylesheet" type="text/css" href="{{ elixir('css/reports.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ elixir('css/reach_rate_report.css') }}">
-<script type="text/javascript" src="{{elixir('js/report_master.js')}}"></script>
+<!--<script type="text/javascript" src="{{elixir('js/report_master.js')}}"></script>-->
 <script type="text/javascript" src="{{ elixir('js/reach_rate_report.js') }}"></script>
 @endsection @section('sidebar') @include('reports.sidebar') @endsection @section('content') @if (Session::has('success'))
 <div class="alert alert-success" id="flash-message">
@@ -251,6 +251,13 @@
         <span class="stage_content stage_row">
             <span class="left sub_section">
                 <span>
+                    <span class="title section_header">
+                        <span class ="arial_bold">Appointment Scheduled</span>
+                    </span>
+                    <span class="count">
+                    </span>
+                </span>
+                <span>
                     <span class="title">
                         <span class="patient_list" id="appointment_scheduled_existing_relationship" data-name="Appointment Scheduled Existing Relationship">
                             <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Future (<span class ="arial_italic">Existing Relationship</span>)
@@ -294,6 +301,57 @@
                         </span>
                     </span>
                 </span>
+                <span>
+                    <span class="title section_header">
+                        <span class ="arial_bold">Previously Scheduled</span>
+                    </span>
+                    <span class="count">
+                    </span>
+                </span>
+                <span>
+                    <span class="title">
+                        <span class="patient_list" id="previously_appointment_scheduled_existing_relationship" data-name="Previously Appointment Scheduled Existing Relationship">
+                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Future (<span class ="arial_italic">Existing Relationship</span>)
+                        </span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count previously_appointment_scheduled_existing_relationship patient_list" id="previously_appointment_scheduled_existing_relationship" data-name="Previously Appointment Scheduled Existing Relationship">
+                        </span>
+                    </span>
+                </span>
+                <span>
+                    <span class="title">
+                        <span class="patient_list" id="previously_appointment_scheduled_non_existing_relationship" data-name="Previously Appointment Scheduled Non Existing Relationship">
+                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Future (<span class ="arial_italic">Non Existing Relationship</span>)
+                        </span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count previously_appointment_scheduled_non_existing_relationship patient_list" id="previously_appointment_scheduled_non_existing_relationship" data-name="Previously Appointment Scheduled Non Existing Relationship">
+                        </span>
+                    </span>
+                </span>
+                <span>
+                    <span class="title">
+                        <span class="patient_list" id="previously_past_appointment_existing_relationship" data-name="Previously Past Appointment Existing Relationship">
+                            <img src="{{ elixir('images/sidebar/yellow-dot.png') }}"> Past (<span class ="arial_italic">Existing Relationship</span>)
+                        </span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count previously_past_appointment_existing_relationship patient_list" id="previously_past_appointment_existing_relationship" data-name="Previously Past Appointment Existing Relationship">
+                        </span>
+                    </span>
+                </span>
+                <span>
+                    <span class="title">
+                        <span class="patient_list" id="previously_past_appointment_non_existing_relationship" data-name="Previously Past Appointment Non Existing Relationship">
+                            <img src="{{ elixir('images/sidebar/yellow-dot.png') }}"> Past (<span class ="arial_italic">Non Existing Relationship</span>)
+                        </span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count previously_past_appointment_non_existing_relationship patient_list" id="previously_past_appointment_non_existing_relationship" data-name="Previously Past Appointment Non Existing Relationship">
+                        </span>
+                    </span>
+                </span>                
 
             </span>
             <span class="right">
@@ -344,6 +402,7 @@
             </span>
         </span>
     </div>
+
     <div class="report_stage_data">
         <span class="stage_header stage_row">
             <span class="left arial_bold">
