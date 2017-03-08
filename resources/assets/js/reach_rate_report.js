@@ -3,6 +3,43 @@ var config = [];
 var filter = '';
 
 $(document).ready(function() {
+    
+    var cur_date = new Date();
+    var set_start_date = new Date(cur_date.getTime());
+    $('#start_date').datetimepicker({
+        defaultDate: set_start_date.setDate(cur_date.getDate() - 31),
+        format: 'MM/DD/YYYY',
+        maxDate: cur_date,
+    });
+    set_start_date = new Date(cur_date.getTime());
+    $('#end_date').datetimepicker({
+        defaultDate: cur_date,
+        format: 'MM/DD/YYYY',
+        maxDate: cur_date,
+        minDate: set_start_date.setDate(cur_date.getDate() - 30),
+    });
+    var old_start_date = $('#start_date').val();
+    var old_end_date = $('#end_date').val();
+
+    $('#start_date').datetimepicker().on('dp.hide', function(ev) {
+        var start_date = $('#start_date').val();
+        $('#end_date').data("DateTimePicker").minDate(new Date(start_date));
+        if (start_date != old_start_date) {
+            old_start_date = $('#start_date').val();
+            filter = '';
+            getReport();
+        }
+    });
+    $('#end_date').datetimepicker().on('dp.hide', function(ev) {
+        var end_date = $('#end_date').val();
+        $('#start_date').data("DateTimePicker").maxDate(new Date(end_date));
+        if (end_date != old_end_date) {
+            old_end_date = $('#end_date').val();
+            filter = '';
+            getReport();
+        }
+    });
+
     getReport();
 
     $('.patient_list').on('click', function() {
@@ -107,7 +144,7 @@ function getPatientList(metricName) {
                     var scheduledFor = result.scheduled_for || '-';
                     var appointmentType = result.appointment_type || '-';
                     var scheduledOn = result.scheduled_on || '-';
-                    var existingRelationship = (result.existing_relationship==1) ? 'Y' : 'N';
+                    var existingRelationship = (result.existing_relationship == 1) ? 'Y' : 'N';
                     content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + existingRelationship + '</span><span>' + appointmentType + '</span></li>';
                 }
                 break;
@@ -135,10 +172,10 @@ function getPatientList(metricName) {
                     var scheduledFor = result.scheduled_for || '-';
                     var appointmentType = result.appointment_type || '-';
                     var scheduledOn = result.scheduled_on || '-';
-                    var existingRelationship = (result.existing_relationship==1) ? 'Y' : 'N';
+                    var existingRelationship = (result.existing_relationship == 1) ? 'Y' : 'N';
                     content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + existingRelationship + '</span><span>' + appointmentType + '</span></li>';
                 }
-                break;                
+                break;
             case 'appointment_scheduled_existing_relationship':
                 headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
                 if ("appointment_scheduled" in result && result.appointment_scheduled == config.appointment_status.scheduled_appointment_existing_relationship) {
@@ -234,7 +271,7 @@ function getPatientList(metricName) {
                     var scheduledOn = result.scheduled_on || '-';
                     content += '<li><span><a href="/records?patient_id=' + result.patient_id + '">' + result.patient_name + '</a></span><span>' + scheduledToPractice + '</span><span>' + scheduledToPracticeLocation + '</span><span>' + scheduledToProvider + '</span><span>' + scheduledFor + '</span><span>' + scheduledOn + '</span><span>' + appointmentType + '</span></li>';
                 }
-                break;                
+                break;
             case 'not_scheduled':
                 headerContent = '<span>Name</span><span>Scheduled To Practice</span><span>Scheduled To Practice Location</span><span>Scheduled To Provider</span><span>Scheduled For</span><span>Scheduled On</span><span>Appointment Type</span>';
                 if ("reached" in result && !("appointment_scheduled" in result) && !("previously_appointment_scheduled" in result)) {
