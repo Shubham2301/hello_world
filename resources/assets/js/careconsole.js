@@ -48,7 +48,8 @@ $(document).ready(function() {
         var kpi_id = $(this).attr('data-id');
         var kpi_name = $(this).attr('data-name');
         var stageID = $(this).parent().attr('data-stageid');
-        var stageName = $('.drilldown>.section-header').html();
+        var stage_system_name = $(this).parent().attr('data-stage-system-name');
+        var stageName = $(this).parent().attr('data-stage-display-name');
         var kpi_indicator = $(this).attr('data-indicator');
 
         if ($(this).hasClass('active')) {
@@ -56,7 +57,7 @@ $(document).ready(function() {
             showcontrolls = true;
             clearHTML();
             $('#current_stage').val(stageID);
-            showStageData(stageID, stageName);
+            showStageData(stageID, stageName, stage_system_name);
         } else {
             $('.C3_day_box').removeClass('active');
             $(this).addClass('active');
@@ -72,7 +73,7 @@ $(document).ready(function() {
                     setPendingDayslimit(kpi_name, stageID);
                     getPatientData();
                 } else {
-                    showKPIData(stageID, kpi_id, stageName, kpi_name, kpi_indicator);
+                    showKPIData(stageID, kpi_id, stageName, kpi_name, kpi_indicator, stage_system_name);
                 }
             }
         }
@@ -144,12 +145,13 @@ $(document).ready(function() {
         $('.stage').removeClass('sidebar_items_active');
         var stage_id = $($(this).closest('.info_box')).attr('data-id');
         var stage_name = $($(this).closest('.info_box')).attr('data-name');
+        var stage_system_name = $($(this).closest('.info_box')).attr('data-system-name');
         var kpi_id = $(this).attr('id');
         var kpi_name = $(this).attr('data-name');
         var kpi_indicator = $(this).attr('data-indicator');
         clearHTML();
         $('#current_stage').val(stage_id);
-        showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator);
+        showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator, stage_system_name);
     });
     $('.stage').on('click', function() {
         $('.c3_overview_link').addClass('active');
@@ -164,12 +166,14 @@ $(document).ready(function() {
 
         var stage_id = '';
         var stage_name = '';
+        var stage_system_name = '';
         showcontrolls = true;
         stage_id = $(this).attr('data-id');
         stage_name = $(this).attr('data-name');
+        stage_system_name = $(this).attr('data-system-name');
         clearHTML();
         $('#current_stage').val(stage_id);
-        showStageData(stage_id, stage_name);
+        showStageData(stage_id, stage_name, stage_system_name);
     });
     $('#drilldown_patients_listing').on('click', '.careconsole_action', function() {
         var data = [];
@@ -677,10 +681,11 @@ function searchc3() {
     }
 }
 
-function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator) {
+function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator, stage_system_name) {
     $('#sidebar_' + stage_id).addClass('sidebar_items_active');
     $('.subsection-header').addClass('active');
-    $('.drilldown>.section-header').html(stage_name);
+    $('.drilldown>.section-header').html('');
+    $('.drilldown>.section-header').html(stage_name + '<button type="button" class="btn export_btn" id="export_bucket" data_bucket_name="' + stage_system_name + '" data_kpi_name="' + kpi_id + '">Export</button');
     $('.drilldown>.subsection-header>p').html(kpi_name);
     $('.drilldown_kpi_indicator').css('background-color', kpi_indicator);
     $('#current_stage').val(stage_id);
@@ -691,9 +696,10 @@ function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator) {
     getPatientData();
 }
 
-function showStageData(stage_id, stage_name) {
+function showStageData(stage_id, stage_name, stage_system_name) {
     $('#sidebar_' + stage_id).addClass('sidebar_items_active');
-    $('.drilldown>.section-header').html(stage_name);
+    $('.drilldown>.section-header').html('');
+    $('.drilldown>.section-header').html(stage_name + '<button type="button" class="btn export_btn" id="export_bucket" data_bucket_name="' + stage_system_name + '" data_kpi_name="">Export</button');
     $('.subsection-header').removeClass('active');
     $('#current_stage').val(stage_id);
     setSidebarButtonActive();
@@ -724,7 +730,6 @@ function getPatientData() {
         'lower_limit': llimit,
         'upper_limit': ulimit
     };
-    //$('.drilldown_content').html('');
     $.ajax({
         url: '/careconsole/drilldown?page=' + currentPage,
         type: 'GET',
@@ -760,6 +765,16 @@ function getPatientData() {
             if (showcontrolls) {
                 $('.control_section').html(controls);
             }
+            
+            $('#export_bucket').on('click', function() {
+                var formData = {
+                    bucket: $(this).attr('data_bucket_name'),
+                    kpi: $(this).attr('data_kpi_name'),
+                };
+                var query = $.param(formData);
+                window.location = '/careconsole/bucket-patients-excel?' + query;
+            });
+            
         },
         error: function error() {
             $('p.alert_message').text('Error:');
@@ -943,7 +958,7 @@ function performAction() {
                     var stage = $.parseJSON(e);
                     $('#actionModal').modal('hide');
                     if (show_patient && bucketName == '') {
-                        showStageData(stage.id, stage.name);
+                        showStageData(stage.id, stage.name, stage.system_name);
                     } else if (show_patient && bucketName != '') {
                         currentPage = 1;
                         bucketData(bucketName);

@@ -3,7 +3,7 @@
 <div class="C3_day_row control_label arial">
 	<p>{{ $control['group_display_name'] }}</p>
 </div>
-<div class="C3_day_row" data-stageid ="{{$control['stage_id'] }}">
+<div class="C3_day_row" data-stageid ="{{$control['stage_id'] }}" data-stage-system-name="{{ $control['stage_system_name'] }}" data-stage-display-name="{{ $control['stage_display_name'] }}">
 	@if($control['type'] == 1)
 	@foreach($control['options'] as $option)
 	<div class="C3_day_box low" style="color:{{ $option['color_indicator'] }}" data-name="{{ $option['display_name'] }}">

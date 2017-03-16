@@ -45,6 +45,14 @@ class Appointment extends Model {
         return $this->belongsTo('myocuhub\Models\PracticeLocation', 'location_id');
     }
 
+    /**
+     * @return mixed
+     */
+    public function appointmentStatus()
+    {
+        return $this->belongsTo('myocuhub\Models\Kpi', 'appointment_status');
+    }
+
 	public static function schedule($attributes){
 
 		$appointment = Appointment::create($attributes);

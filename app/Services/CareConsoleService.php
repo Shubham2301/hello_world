@@ -45,6 +45,7 @@ class CareConsoleService
     {
         $networkID = Auth::user()->userNetwork->first()->network_id;
         $llKpiGroup = CareconsoleStage::find($stageID)->llKpiGroup;
+        $stage = CareconsoleStage::find($stageID);
         $kpis = CareconsoleStage::find($stageID)->kpi;
         $controls = [];
         $i = 0;
@@ -53,6 +54,8 @@ class CareConsoleService
             $controls[$i]['group_display_name'] = $group->group_display_name;
             $controls[$i]['type'] = $group->type;
             $controls[$i]['stage_id'] = $stageID;
+            $controls[$i]['stage_system_name'] = $stage->name;
+            $controls[$i]['stage_display_name'] = $stage->display_name;
             $options = CareconsoleStage::llKpiByGroup($group->group_name, $stageID);
             $j = 0;
             foreach ($options as $option) {
@@ -239,16 +242,6 @@ class CareConsoleService
         return $listing;
     }
 
-    public function getBucketPatientsExcelData($stageID)
-    {
-      $user = Auth::user();
-      $userID = $user->id;
-      $networkID = $user->userNetwork->first()->network_id;
-      
-      return $this->KPIService->getBucketExcelData($networkID, $stageID);
-      
-    }
-
     /**
      * @param $patient
      * @param $field
@@ -349,7 +342,12 @@ class CareConsoleService
                 if (!$provider) {
                     $provider = '';
                 } else {
-                    $provider = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname . ' from ';
+                    $provider = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+                    if (trim($provider) != '') {
+                        $provider .= ' from ';
+                    } else {
+                        $provider = trim($provider);
+                    }
                 }
                 $practice = Practice::withTrashed()->find($appointment->practice_id);
                 $practiceName = $practice ? $practice->name : '';
@@ -363,7 +361,14 @@ class CareConsoleService
                     return '-';
                 }
                 $lastScheduledTo = '';
-                $lastScheduledTo .= $previousProvider['title'] . ' ' . $previousProvider['firstname'] . ' ' . $previousProvider['lastname'] . ' from ';
+                $lastScheduledTo .= $previousProvider['title'] . ' ' . $previousProvider['firstname'] . ' ' . $previousProvider['lastname'];
+
+                if (trim($lastScheduledTo) != '') {
+                    $lastScheduledTo .= ' from ';
+                } else {
+                    $lastScheduledTo = trim($lastScheduledTo);
+                }
+                
                 $lastScheduledTo .= $previousProvider['name'];
                 $lastScheduledTo .= $previousProvider['locationname'] ? ' at ' . $previousProvider['locationname'] : '';
                 return $lastScheduledTo;
@@ -530,7 +535,24 @@ class CareConsoleService
             case 'contact-activity-date':
                 $date = new \DateTime($patient->contact_activity_date);
                 return $date->format($dateFormat);
-                break;                
+                break;
+            case 'stage_updated_date':
+                $date = Helper::formatDate($patient['stage_updated_at'], config('constants.date_time_format.date_only')) ?: '-';
+                return $date;
+                break;
+            case 'last_action':
+                $last_contact_history = ContactHistory::where('console_id', $patient->id)
+                    ->with('action')
+                    ->orderBy('id', 'desc')
+                    ->first();
+                return $last_contact_history ? $last_contact_history->action->display_name : '-';
+                break;
+            case 'last_action_note':
+                $last_contact_history = ContactHistory::where('console_id', $patient->id)
+                    ->orderBy('id', 'desc')
+                    ->first();
+                return $last_contact_history ? strip_tags($last_contact_history->notes) : '-';
+                break;
             default:
                 return '-';
                 break;
