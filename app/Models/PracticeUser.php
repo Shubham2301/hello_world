@@ -3,6 +3,7 @@
 namespace myocuhub\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PracticeUser extends Model
 {
@@ -11,7 +12,7 @@ class PracticeUser extends Model
 
     public function practice()
     {
-        return $this->belongsTo('myocuhub\Models\Practice');
+        return $this->belongsTo('myocuhub\Models\Practice')->withTrashed();
     }
 
     public function user()
