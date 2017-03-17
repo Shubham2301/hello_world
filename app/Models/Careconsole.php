@@ -70,12 +70,16 @@ class Careconsole extends Model
             ->get(['*', 'careconsole.id', 'careconsole.created_at']);
     }
 
-        /**
+    /**
      * @param $networkID
      */
-    public static function getBucketPatientsExcelDataModel($networkID, $bucketName)
+    public static function getBucketPatientsExcelData($networkID, $bucketName, $kpiName)
     {
         $query = self::query();
+        $query->whereHas('importHistory', function ($query) use ($networkID) {
+            $query->where('network_id', $networkID);
+        })
+          ->has('patient');
         switch ($bucketName) {
             case 'archived':
               $query->whereNotNull('archived_date');
@@ -85,15 +89,57 @@ class Careconsole extends Model
               break;
             case 'priority':
               $query->where('priority', '1');
+              $query->whereNull('archived_date');
+              $query->whereNull('recall_date');
+              break;
+            default:
+              $query->whereHas('stage', function ($subquery) use ($bucketName) {
+                  $subquery->where('name', $bucketName);
+              });
+              $query->whereNull('archived_date');
+              $query->whereNull('recall_date');
+              break;
+        }
+        switch ($kpiName) {
+            case 'contact-attempted':
+              $query->has('contactHistory');
+              break;
+            case 'contact-pending':
+              $query->whereDoesntHave('contactHistory');
+              break;
+            case 'appointment-scheduled':
+              $query->whereHas('appointment', function ($subquery) {
+                $subquery->where('start_datetime', '>', date('Y-m-d', strtotime(' +1 day')));
+              });
+              break;
+            case 'appointment-tomorrow':
+              $query->whereHas('appointment', function ($subquery) {
+                $subquery->where('start_datetime', '=', date('Y-m-d', strtotime(' +1 day')));
+              });
+              break;
+            case 'past-appointment':
+              $query->whereHas('appointment', function ($subquery) {
+                $subquery->where('start_datetime', '<=', date('Y-m-d'));
+              });
+              break;
+            case 'cancelled':
+            case 'no-show':
+              $query->whereHas('appointment.appointmentStatus', function ($subquery) use ($kpiName) {
+                $subquery->where('name', $kpiName);
+              });
+              break;
+            case 'waiting-for-report':
+            case 'ready-to-be-completed':
+              $query->where('stage_updated_at', '>=', date('Y-m-d', strtotime(' -5 day')));
+              break;
+            case 'reports-overdue':
+            case 'overdue':
+              $query->where('stage_updated_at', '<', date('Y-m-d', strtotime(' -5 day')));
               break;
             default:
               break;
         }
-        $query->whereHas('importHistory', function ($query) use ($networkID) {
-            $query->where('network_id', $networkID);
-          })
-          ->has('patient')
-          ->with(['patient', 'appointment']);
+        $query->with(['patient', 'appointment']);
         return $query->get();
     }
 

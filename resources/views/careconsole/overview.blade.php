@@ -1,7 +1,7 @@
 <div class="overview row before_drilldown">
     @foreach($overview['stages'] as $stage)
     <div class="overview_section col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">
-        <div class="info_box" id="{{ $stage['name'] }}" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}">
+        <div class="info_box" data-system-name="{{ $stage['name'] }}" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}">
             <div class="top">
                 @if(isset($stage['kpis']))
                 @for($i = 0; $i < $stage['kpi_count']; $i++)
@@ -18,7 +18,7 @@
                 @endfor
                 @endif
             </div>
-            <div class="bottom stage arial_bold" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}">
+            <div class="bottom stage arial_bold" data-system-name="{{ $stage['name'] }}" data-id="{{ $stage['id'] }}" data-name="{{ $stage['display_name'] }}">
                 <p>{{ $stage['display_name'] }}</p>
             </div>
         </div>

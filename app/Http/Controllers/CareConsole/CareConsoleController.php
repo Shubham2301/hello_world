@@ -2,7 +2,6 @@
 
 namespace myocuhub\Http\Controllers\CareConsole;
 
-use Maatwebsite\Excel\Facades\Excel;
 use Auth;
 use DateTime;
 use Event;
@@ -16,6 +15,7 @@ use myocuhub\Models\AppointmentType;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\CareconsoleStage;
 use myocuhub\Models\EngagementPreference;
+use myocuhub\Models\Kpi;
 use myocuhub\Models\MessageTemplate;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
@@ -254,6 +254,7 @@ class CareConsoleController extends Controller
         $stage = CareConsole::find($consoleID)->stage;
         $patientStage['id'] = $stage->id;
         $patientStage['name'] = $stage->display_name;
+        $patientStage['system_name'] = $stage->name;
 
         $actionName = Action::find($actionID)->display_name;
         $action = "Performed Action : '$actionName' on Console Entry : $consoleID in the Careconsole";
@@ -368,11 +369,16 @@ class CareConsoleController extends Controller
 
     public function getBucketPatientsExcel(Request $request)
     {
+        $networkID = session('network-id');
+
         $bucketName = $request->bucket;
         $bucket = CareconsoleStage::where('name', $bucketName)->first();
-        $bucketID = $bucket->id;
-        $bucketData = $this->CareConsoleService->getBucketPatientsExcelData($bucketID);
-        $data = [];
+
+        $kpiName = $request->kpi;
+        $kpi = KPI::where('name', $kpiName)->first();
+
+        $bucketData = Careconsole::getBucketPatientsExcelData($networkID, $bucketName, $kpiName);
+
         foreach ($bucketData as $bucketPatient) {
             $patientData = array();
             $patientData['Name'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient->patient, 'full-name');
@@ -393,6 +399,10 @@ class CareConsoleController extends Controller
                 case 'priority':
                     $patientData['Priority Notes'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'priority-note');
                     break;
+                default:
+                    $patientData['Stage updated On'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'stage_updated_date');
+                    $patientData['Last Action'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'last_action');
+                    $patientData['Last Action Note'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'last_action_note');
             }
 
             $patientData['Last Scheduled To'] = $this->CareConsoleService->getPatientFieldValue($bucketPatient, 'last-scheduled-to');
@@ -402,45 +412,12 @@ class CareConsoleController extends Controller
 
         usort($data, 'self::cmp');
 
-        $fileName = Network::find(session('network-id'))->name.' - ';
-        switch ($bucketName) {
-            case 'archived':
-                $fileName .= 'Archived patient list';
-                break;
-            case 'recall':
-                $fileName .= 'Recall patient list';
-                break;
-            case 'priority':
-                $fileName .= 'Priority patient list';
-                break;
+        $fileName = Network::find(session('network-id'))->name.' - ' . $bucket->display_name;
+        if($request->has('kpi')) {
+            $fileName .= ' (' .  $kpi->display_name . ')';
         }
 
-        $fileType = 'xlsx';
-        Excel::create($fileName, function ($excel) use ($data) {
-            $excel->sheet('Audits', function ($sheet) use ($data) {
-                $sheet->setWidth(array(
-                    'A'     =>  35,
-                    'B'     =>  35,
-                    'C'     =>  35,
-                    'D'     =>  35,
-                    'E'     =>  35,
-                    'F'     =>  35,
-                    'G'     =>  70,
-                    'H'     =>  35,
-                    'I'     =>  35,
-                    'J'     =>  70,
-                ));
-                $sheet->setPageMargin(0.25);
-                $sheet->fromArray($data);
-                $sheet->cell('A1:F1', function ($cells) {
-                    $cells->setFont(array(
-                        'family'     => 'Calibri',
-                        'size'       => '11',
-                        'bold'       =>  true
-                    ));
-                });
-            });
-        })->export($fileType);
+        $export = Helper::exportExcel($data, $fileName, $request->getClientIp());
     }
 
     private static function cmp($a, $b)

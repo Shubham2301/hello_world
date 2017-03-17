@@ -2,11 +2,11 @@
 
 namespace myocuhub\Http\Controllers\Reports;
 
-use Illuminate\Http\Request;
-use myocuhub\Http\Controllers\Reports\ReportController;
-use Maatwebsite\Excel\Facades\Excel;
-use myocuhub\Models\NetworkUser;
+use myocuhub\Facades\Helper;
 use myocuhub\Network;
+use myocuhub\Models\NetworkUser;
+use myocuhub\Http\Controllers\Reports\ReportController;
+use Illuminate\Http\Request;
 use myocuhub\User;
 
 class UserReportController extends ReportController
@@ -74,6 +74,8 @@ class UserReportController extends ReportController
                 'Name' => $user->user_name,
                 'Email' => $user->user_email,
                 'Type' => ($user->usertypes_name) ? $user->usertypes_name : '-',
+                'Provider Type' => ($user->provider_type) ? $user->provider_type : '-',
+                'NPI' => ($user->npi) ? $user->npi : '-',
                 'Level' => ($user->userlevel_name) ? $user->userlevel_name : '-',
                 'Organization' => ($user->practice_name) ? $user->practice_name : $user->network_name,
                 'Direct Address' => ($user->direct_address) ? $user->direct_address : '-',
@@ -103,31 +105,8 @@ class UserReportController extends ReportController
             }
             $data[] = $rowData;
         }
-        $fileType = 'xlsx';
-        Excel::create($fileName, function ($excel) use ($data) {
-            $excel->sheet('Audits', function ($sheet) use ($data) {
-                $sheet->setWidth(array(
-                    'A'     =>  35,
-                    'B'     =>  35,
-                    'C'     =>  35,
-                    'D'     =>  35,
-                    'E'     =>  35,
-                    'F'     =>  35,
-                    'G'     =>  35,
-                    'H'     =>  35,
-                ));
 
-                $sheet->setPageMargin(0.25);
-                $sheet->fromArray($data);
-                $sheet->cell('A1:F1', function ($cells) {
-                    $cells->setFont(array(
-                        'family'     => 'Calibri',
-                        'size'       => '11',
-                        'bold'       =>  true
-                    ));
-                });
-            });
-        })->export($fileType);
+        $export = Helper::exportExcel($data, $fileName, $request->getClientIp());
     }
 
     private static function cmp($a, $b)
