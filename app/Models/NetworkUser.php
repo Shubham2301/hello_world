@@ -34,6 +34,6 @@ class NetworkUser extends Model
                        ->leftjoin('userlevels', 'users.level', '=', 'userlevels.id')
                        ->leftjoin('usertypes', 'users.usertype_id', '=', 'usertypes.id')
                        ->leftjoin('networks', 'networks.id', '=', 'network_user.network_id')
-                       ->get(['users.name AS user_name', 'users.sesemail AS direct_address', 'users.ses_username', 'provider_types.name AS provider_type', 'practices.name AS practice_name', 'userlevels.name AS userlevel_name', 'usertypes.name AS usertypes_name','users.active AS user_status', 'users.email AS user_email', 'users.npi', 'networks.name AS network_name']);
+                       ->get(['users.name AS user_name', 'users.sesemail AS direct_address', 'users.ses_username', 'provider_types.name AS provider_type', 'practices.name AS practice_name', 'userlevels.name AS userlevel_name', 'usertypes.name AS usertypes_name','users.active AS user_status', 'users.email AS user_email', 'users.npi', 'users.acc_key', 'networks.name AS network_name']);
     }
 }
