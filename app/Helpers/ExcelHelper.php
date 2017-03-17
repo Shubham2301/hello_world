@@ -3,11 +3,20 @@
 namespace myocuhub\Helpers;
 
 use Maatwebsite\Excel\Facades\Excel;
+use Event;
+use myocuhub\Events\MakeAuditEntry;
 
 trait ExcelHelper
 {
-    public static function exportExcel($data, $fileName, $widthArray = array(), $fileType = 'xlsx')
+    public static function exportExcel($data, $fileName, $requestIP, $widthArray = array(), $fileType = 'xlsx')
     {
+
+        $action = 'Exported File - ' . $fileName;
+        $description = '';
+        $filename = basename(__FILE__);
+        $ip = $requestIP;
+        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+
         Excel::create($fileName, function ($excel) use ($data, $widthArray) {
             $excel->sheet('Audits', function ($sheet) use ($data, $widthArray) {
                 $sheet->setWidth($widthArray);

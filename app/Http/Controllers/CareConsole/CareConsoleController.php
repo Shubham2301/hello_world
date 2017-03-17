@@ -2,7 +2,6 @@
 
 namespace myocuhub\Http\Controllers\CareConsole;
 
-use Maatwebsite\Excel\Facades\Excel;
 use Auth;
 use DateTime;
 use Event;
@@ -418,13 +417,7 @@ class CareConsoleController extends Controller
             $fileName .= ' (' .  $kpi->display_name . ')';
         }
 
-        $action = "Exported file " . $fileName;
-        $description = '';
-        $filename = basename(__FILE__);
-        $ip = $request->getClientIp();
-        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
-
-        $export = Helper::exportExcel($data, $fileName);
+        $export = Helper::exportExcel($data, $fileName, $request->getClientIp());
     }
 
     private static function cmp($a, $b)
