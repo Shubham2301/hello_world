@@ -350,7 +350,7 @@ class UserController extends Controller
 
             $networkPractices = [];
             if ($user->userPractice) {
-                $networkPractices = Practice::where('id', $user->userPractice->practice_id)->get();
+                $networkPractices = Practice::where('id', $user->userPractice->practice_id)->withTrashed()->get();
             }
 
             $practices = [];
