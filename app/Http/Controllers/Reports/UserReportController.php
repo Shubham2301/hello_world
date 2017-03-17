@@ -76,6 +76,7 @@ class UserReportController extends ReportController
                 'Type' => ($user->usertypes_name) ? $user->usertypes_name : '-',
                 'Provider Type' => ($user->provider_type) ? $user->provider_type : '-',
                 'NPI' => ($user->npi) ? $user->npi : '-',
+                '4PC Account Key' => ($user->acc_key) ? $user->acc_key : '-',
                 'Level' => ($user->userlevel_name) ? $user->userlevel_name : '-',
                 'Organization' => ($user->practice_name) ? $user->practice_name : $user->network_name,
                 'Direct Address' => ($user->direct_address) ? $user->direct_address : '-',
