@@ -81,7 +81,9 @@ class UserReportController extends ReportController
                 'Organization' => ($user->practice_name) ? $user->practice_name : $user->network_name,
                 'Direct Address' => ($user->direct_address) ? $user->direct_address : '-',
                 'Username' => ($user->ses_username) ? $user->ses_username : '-',
-                'Status' => $user->user_status == 1 ? 'Active' : 'Deleted'
+                'Status' => $user->user_status == 1 ? 'Active' : 'Deleted',
+                'Created At' => ($user->created_at) ? $user->created_at : '-',
+                'Deleted At' => ($user->updated_at && ($user->user_status == 0)) ? $user->updated_at : '-'
             ];
         }    
         usort($networkData, 'self::cmp');
