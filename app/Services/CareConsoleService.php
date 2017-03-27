@@ -312,7 +312,7 @@ class CareConsoleService
                 return $appointment->appointmenttype;
                 break;
             case 'days-pending':
-                return date_diff(new \DateTime($patient['stage_updated_at']), new \DateTime(), true)->d;
+                return date_diff(new \DateTime($patient['stage_updated_at']), new \DateTime(), true)->days;
                 break;
             case 'provider-name':
                 $appointment = Appointment::find($patient['appointment_id']);
