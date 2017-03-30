@@ -214,5 +214,5 @@
             <p id="loading_text" class="text-center"><span>Please wait...</span>
                 <br> It may take some time</p>
         </div>
-    </div>>
+    </div>
 </div>
