@@ -1,9 +1,4 @@
-@extends('layouts.master')
-
-@section('title', 'illuma - Web Forms')
-
-@section('imports')
-
+@extends('layouts.master') @section('title', 'illuma - Web Forms') @section('imports')
 
 <link rel="stylesheet" type="text/css" href="{{elixir('css/web_forms.css')}}">
 
@@ -15,14 +10,7 @@
 
 <script src="{{asset('lib/signature/jquery.signaturepad.js')}}"></script>
 
-    @section('sidebar')
-        @include('patient-records.sidebar')
-    @endsection
-@endsection
-
-@section('content')
-
-@if (Session::has('success'))
+@section('sidebar') @include('patient-records.sidebar') @endsection @endsection @section('content') @if (Session::has('success'))
 <div class="alert alert-success" id="flash-message">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <strong>
@@ -35,15 +23,8 @@
 </div>
 
 <div class="content-section active">
-
-    <div class="search_section section active" id="search_listing">
-
-    </div>
-
-    <div class="form_section section" id="form_view">
-
-    </div>
-
+    <div class="search_section section active" id="search_listing"></div>
+    <div class="form_section section" id="form_view"></div>
 </div>
 
 @endsection

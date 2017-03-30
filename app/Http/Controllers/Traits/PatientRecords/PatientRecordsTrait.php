@@ -48,7 +48,6 @@ trait PatientRecordsTrait
         $pdf = $this->createPDF($contactHistoryID);
 
         return $pdf->inline();
-
     }
 
     public function getPatientRecordView(Request $request)
@@ -100,18 +99,15 @@ trait PatientRecordsTrait
             ]
         ));
 
-        if( (WebFormTemplate::find($request->template_id)->name == 'eye-exam-report') )
-        {
-            if (( ($request->has('ORR') && $request->ORR == 'yes') || ($request->has('surgery_referral') && $request->surgery_referral == 'yes')))
-            {
+        if ((WebFormTemplate::find($request->template_id)->name == 'eye-exam-report')) {
+            if ((($request->has('ORR') && $request->ORR == 'yes') || ($request->has('surgery_referral') && $request->surgery_referral == 'yes'))) {
                 $specialRequest = ($request->has('ORR') && $request->ORR == 'yes') ? 'Ophthalmology Retinal Referral' : 'Cataract Surgery Referral';
 
                 $patient = Patient::find($data['patient_id']);
                 $patient->special_request = $specialRequest;
                 $patient->save();
 
-                if ( $patient->careConsole && Network::find($patient->careConsole->importHistory->network_id)->enable_console == 1)
-                {
+                if ($patient->careConsole && Network::find($patient->careConsole->importHistory->network_id)->enable_console == 1) {
                     $actionID = Action::where('name', 'move-to-contact-status')->first()->id;
                     $movePatient = $this->ActionService->userAction($actionID, '-1', null, 'Moved patient to Contact Status', '', $patient->careConsole->id, '');
                 }
@@ -203,7 +199,6 @@ trait PatientRecordsTrait
 
     public function CreatePDF($contactHistoryID)
     {
-
         $record = ContactHistory::find($contactHistoryID)->record;
         $patientID = $record->patient_id;
         $patient = Patient::find($patientID);
@@ -223,7 +218,8 @@ trait PatientRecordsTrait
         return $pdf;
     }
 
-    public function getWebFormDefaultData(Request $request) {
+    public function getWebFormDefaultData(Request $request)
+    {
         $templateName = $request->templateName;
         $patientID = $request->patientID;
         $patient = Patient::find($patientID);
@@ -236,7 +232,28 @@ trait PatientRecordsTrait
                 $data['doctor_name'] = $user->getName('print_format');
                 $data['doctor_phone'] = $user->cellphone;
                 break;
+            case 'illuma-web-form':
+                $data['patient_name'] = $patient->getName('print_format');
+                $data['patient_dob'] = Helper::formatDate($patient->birthdate, config('constants.date_format'));
+                break;
             default:
+        }
+
+        return $data;
+    }
+
+    public function searchWebFormInput(Request $request)
+    {
+        $search_text = $request->search_text;
+        $search_type = $request->search_type;
+        $data = 'Not Found';
+
+        switch ($search_type) {
+            case 'ICD-10':
+                $data = $search_text;
+                break;
+            default:
+                break;
         }
 
         return $data;

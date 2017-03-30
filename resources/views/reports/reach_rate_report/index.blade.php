@@ -399,6 +399,20 @@
                     <span class="right_row_section other_reason_for_declining right_section_count category_count">
                     </span>
                 </span>
+                <span class="right_row">
+                    <span class="right_row_section title_section">
+                        <span class="title">Marked Closed</span>
+                    </span>
+                    <span class="right_row_section not_scheduled_closed right_section_count category_count">
+                    </span>
+                </span>
+                <span class="right_row">
+                    <span class="right_row_section title_section">
+                        <span class="title">Marked Incomplete</span>
+                    </span>
+                    <span class="right_row_section not_scheduled_incomplete right_section_count category_count">
+                    </span>
+                </span>
             </span>
         </span>
     </div>
