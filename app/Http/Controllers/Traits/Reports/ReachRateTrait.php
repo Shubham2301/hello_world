@@ -330,6 +330,8 @@ trait ReachRateTrait
             'already_seen_by_outside_dr' => 0,
             'no_insurance' => 0,
             'other_reason_for_declining' => 0,
+            'not_scheduled_closed' => 0,
+            'not_scheduled_incomplete' => 0,
             'appointment_completed' => 0,
             'show' => 0,
             'no_show' => 0,
@@ -396,6 +398,12 @@ trait ReachRateTrait
                                 break;
                             case 'No insurance':
                                 $reportMetrics['no_insurance']++;
+                                break;
+                            case 'Marked Closed':
+                                $reportMetrics['not_scheduled_closed']++;
+                                break;
+                            case 'Marked Incomplete':
+                                $reportMetrics['not_scheduled_incomplete']++;
                                 break;
                         }
                     }
