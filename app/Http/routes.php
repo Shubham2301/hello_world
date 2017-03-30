@@ -216,6 +216,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('patientlistforcreaterecord', 'Patient\PatientController@PatientListForCreateRecord');
         Route::get('getWebFormList', 'Patient\PatientController@getWebFormList');
         Route::get('getWebFormDefaultData', 'Patient\PatientController@getWebFormDefaultData');
+        Route::get('searchWebFormInput', 'Patient\PatientController@searchWebFormInput');
         Route::get('patientlistforshowrecord', 'Patient\PatientController@PatientListForShowRecord');
         Route::get('getcaretimeline', 'Patient\PatientController@getCareTimeLine');
         Route::get('/show_records/{id}', 'Patient\PatientController@printRecord');

@@ -68,39 +68,6 @@ $(document).ready(function() {
         }
     });
 
-    $('.form_section').on('click', '#previous_btn', function() {
-
-        var dataid = $('.form_chunk.active').attr('data-index');
-        $('#continue_btn').show();
-        $('#create_record').hide();
-        dataid--;
-
-        if (dataid.toString() === "1") {
-            $(this).hide();
-        } else {
-            $(this).show();
-        }
-
-        $('.form_chunk').removeClass('active');
-        $('.form_chunk_' + dataid).addClass('active');
-
-    });
-
-    $('.form_section').on('click', '#continue_btn', function() {
-        var dataid = $('.form_chunk.active').attr('data-index');
-        $('#previous_btn').show();
-        dataid++;
-        if (dataid.toString() === $('#count_form_sections').val()) {
-            $(this).hide();
-            $('#create_record').show();
-        } else {
-            $(this).show();
-            $('#create_record').hide();
-        }
-        $('.form_chunk').removeClass('active');
-        $('.form_chunk_' + dataid).addClass('active');
-    });
-
     $('.form_section').on('click', '.tgl_text', function() {
         var isChecked = $(this).find('.tgl').prop('checked');
         if (isChecked) {
@@ -195,6 +162,30 @@ $(document).ready(function() {
 
     });
 
+    $('.form_section').on('click', '.input_checkbox', function() {
+        if ($(this).prop('checked')) {
+            $('.subsection.' + $(this).attr('id')).show();
+        } else {
+            $('.subsection.' + $(this).attr('id')).hide();
+        }
+    });
+
+    $('.form_section').on('focusout', '.web_form_search.unit_input_text', function() {
+        var search_type = $(this).attr('data-search_type');
+        var search_text = $(this).val();
+        var search_item_id = $(this).attr('id');
+        searchWebFormInput(search_text, search_type, search_item_id);
+    });
+
+    $('.form_section').on('click', '.multiple_input_add_new_input', function() {
+        $('[data-toggle="tooltip"]').tooltip('destroy');
+        var id = $(this).prev().attr('id');
+        var html = '<span>' + $(this).parent('span').html() + '</span>';
+        $('.multiple_input_container.' + id).append(html);
+
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
 });
 
 var templateID = 0;
@@ -258,6 +249,9 @@ function showWebForm(name) {
 
             changeTheSizeOfPad();
             setDefaultData(name);
+
+            $('[data-toggle="tooltip"]').tooltip('destroy');
+            $('[data-toggle="tooltip"]').tooltip();
         },
         error: function error() {
             $('p.alert_message').text('Error searching');
@@ -326,7 +320,7 @@ function getWebFormList(patientID) {
         async: false,
         success: function success(webFormList) {
             if (webFormList == 0) {
-                $('p.alert_message').text('No webform available for the selected patient');
+                $('p.alert_message>.msg').text('No webform available for the selected patient');
                 $('#alert').modal('show');
             } else {
                 var content = '';
@@ -359,8 +353,31 @@ function setDefaultData(name) {
         success: function success(e) {
             var data = e;
             $.each(data, function(key, value) {
-                $("[name='" +key+ "']").val(value);
+                $("[name='" + key + "']").val(value);
             });
+        },
+        error: function error() {
+            $('p.alert_message').text('Error searching');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+}
+
+function searchWebFormInput(search_text, search_type, search_item_id) {
+    $.ajax({
+        url: '/searchWebFormInput',
+        type: 'GET',
+        data: $.param({
+            search_text: search_text,
+            search_type: search_type
+        }),
+        contentType: 'text/html',
+        async: true,
+        success: function success(e) {
+            var data = e;
+            $('.web_form_search_message.' + search_item_id).text(data);
         },
         error: function error() {
             $('p.alert_message').text('Error searching');
