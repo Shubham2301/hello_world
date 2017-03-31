@@ -492,14 +492,43 @@
             </span>
         </span>
         <span class="stage_content stage_row">
-            <span class="left">
-                <span class="title">
-                    <span class="patient_list" id="reports" data-name="Report">
-                        <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Reports
+            <span class="left sub_section">
+                <span>
+                    <span class="title section_header">
+                        <span class="patient_list" id="reports" data-name="Report">
+                            <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Reports
+                        </span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count reports patient_list" id="reports" data-name="Report"></span>
                     </span>
                 </span>
-                <span class="count">
-                    <span class="category_count reports patient_list" id="reports" data-name="Report"></span>
+                <span>
+                    <span class="title">
+                        <span>Clinical findings sent to both PCP and referring provider</span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count clinical-findings-sent-to-both-pcp-and-referring-provider">
+                        </span>
+                    </span>
+                </span>
+                <span>
+                    <span class="title">
+                        <span>Clinical findings sent to PCP</span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count clinical-findings-sent-to-pcp">
+                        </span>
+                    </span>
+                </span>
+                <span>
+                    <span class="title">
+                        <span>Clinical findings sent to referring provider</span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count clinical-findings-sent-to-referring-provider">
+                        </span>
+                    </span>
                 </span>
             </span>
             <span class="right">
