@@ -414,6 +414,9 @@ class ActionService
                 $console->save();
                 $this->archiveContactHistory($consoleID);
                 break;
+            case 'clinical-findings-sent-to-pcp':
+            case 'clinical-findings-sent-to-referring-provider':
+            case 'clinical-findings-sent-to-both-pcp-and-referring-provider':
             case 'refer-to-specialist':
             case 'highrisk-contact-pcp':
             default:

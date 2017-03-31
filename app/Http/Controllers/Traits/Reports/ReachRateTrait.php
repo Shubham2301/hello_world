@@ -130,7 +130,7 @@ trait ReachRateTrait
                         if (isset($results[$patient_count]['appointment_completed'])) {
                             $results[$patient_count]['show_stage_change'] = $contactHistory->days_in_prev_stage;
                         }
-                        break;                        
+                        break;
                     case 'move-to-console':
                         if (($history['back_to_console'] == $history['move_to_recall'] && $history['back_to_console'] != 0) || $history['back_to_console'] < $history['move_to_recall']) {
                             $patient_count++;
@@ -199,6 +199,11 @@ trait ReachRateTrait
                     case 'annual-exam':
                         $history['move_to_recall']++;
                         break;
+                    case 'clinical-findings-sent-to-pcp':
+                    case 'clinical-findings-sent-to-referring-provider':
+                    case 'clinical-findings-sent-to-both-pcp-and-referring-provider':
+                        $results[$patient_count]['clinical_finding_action'] = $contactHistory->action->name;
+                        break;
                     case 'refer-to-specialist':
                     case 'highrisk-contact-pcp':
                     default:
@@ -236,11 +241,11 @@ trait ReachRateTrait
                         case 'unaware-of-diagnosis':
                             $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
                             $results[$patient_count]['unaware_of_diagnosis'] = isset($results[$patient_count]['unaware_of_diagnosis']) ? $results[$patient_count]['unaware_of_diagnosis'] + 1 : 1;
-                            break;  
+                            break;
                         case 'would-not-validate-dob':
                             $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
                             $results[$patient_count]['would_not_validate_dob'] = isset($results[$patient_count]['would_not_validate_dob']) ? $results[$patient_count]['would_not_validate_dob'] + 1 : 1;
-                            break;                                                       
+                            break;
                         case 'incorrect-data':
                             $results[$patient_count]['not_reached'] = isset($results[$patient_count]['not_reached']) ? $results[$patient_count]['not_reached'] + 1 : 1;
                             $results[$patient_count]['incorrect_data'] = isset($results[$patient_count]['incorrect_data']) ? $results[$patient_count]['incorrect_data'] + 1 : 1;
@@ -313,7 +318,7 @@ trait ReachRateTrait
             'would_not_validate_dob' =>0,
             'would_not_validate_dob_attempts' => 0,
             'unaware_of_diagnosis' => 0,
-            'unaware_of_diagnosis_attempts' => 0, 
+            'unaware_of_diagnosis_attempts' => 0,
             'incorrect_data' => 0,
             'incorrect_data_attempts' => 0,
             'appointment_scheduled_existing_relationship' => 0,
@@ -323,7 +328,7 @@ trait ReachRateTrait
             'previously_appointment_scheduled_existing_relationship' => 0,
             'previously_appointment_scheduled_non_existing_relationship' => 0,
             'previously_past_appointment_existing_relationship' => 0,
-            'previously_past_appointment_non_existing_relationship' => 0,            
+            'previously_past_appointment_non_existing_relationship' => 0,
             'not_scheduled' => 0,
             'no_need_to_schedule' => 0,
             'patient_declined_service' => 0,
@@ -341,6 +346,9 @@ trait ReachRateTrait
             'exam_report' => 0,
             'reports' => 0,
             'no_reports' => 0,
+            'clinical-findings-sent-to-pcp' => 0,
+            'clinical-findings-sent-to-referring-provider' => 0,
+            'clinical-findings-sent-to-both-pcp-and-referring-provider' => 0,
             'config' => config('reports'),
             'referred_by_practice' => array(),
         );
@@ -435,7 +443,7 @@ trait ReachRateTrait
                 if (array_key_exists('unaware_of_diagnosis', $result)) {
                     $reportMetrics['unaware_of_diagnosis']++;
                     $reportMetrics['unaware_of_diagnosis_attempts'] += $result['unaware_of_diagnosis'];
-                }                                
+                }
                 if (array_key_exists('incorrect_data', $result)) {
                     $reportMetrics['incorrect_data']++;
                     $reportMetrics['incorrect_data_attempts'] += $result['incorrect_data'];
@@ -478,7 +486,7 @@ trait ReachRateTrait
                                $reportMetrics['previously_past_appointment_non_existing_relationship']++;
                                break;
                 }
-            }            
+            }
 
             if (array_key_exists('appointment_completed', $result)) {
                 $reportMetrics['appointment_completed']++;
@@ -494,7 +502,10 @@ trait ReachRateTrait
 
             if (array_key_exists('reports', $result)) {
                 $reportMetrics['reports']++;
-                $reportMetrics['exam_report']++;
+                $reportMetrics['exam_report']++; 
+                if (array_key_exists('clinical_finding_action', $result)) {
+                    $reportMetrics[$result['clinical_finding_action']]++;
+                }
             }
 
             if (array_key_exists('pending_stage_change', $result)) {
@@ -690,7 +701,7 @@ trait ReachRateTrait
                             $rowData['Action'] = 'Unaware of diagnosis';
                             $rowData['Attempts'] = $result['unaware_of_diagnosis'] ?: '-';
                             $data[] = $rowData;
-                        }                                                
+                        }
                         if (array_key_exists('incorrect_data', $result)) {
                             $rowData = [];
                             $rowData['Name'] = $result['patient_name'] ?: '-';

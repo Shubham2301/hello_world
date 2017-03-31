@@ -25,37 +25,37 @@
             <div class="col-xs-12">
                 <div class="">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'reported_outcome_diabetic_aware'])) ? 'checked' : '' }}>Patient aware of diabetic diagnosis &nbsp; &nbsp;
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['reported_outcome_diabetic_aware'])) ? 'checked' : '' }}>Patient aware of diabetic diagnosis &nbsp; &nbsp;
                     </p>
                 </div>
                 <div class="">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'reported_outcome_diabetic_unaware'][ 'duration'])) ? 'checked' : '' }}>Patient unaware of diabetic diagnosis &nbsp; &nbsp;
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['reported_outcome_diabetic_unaware'])) ? 'checked' : '' }}>Patient unaware of diabetic diagnosis &nbsp; &nbsp;
                     </p>
                 </div>
                 <div class="">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'reported_outcome_diabetic_medication'])) ? 'checked' : '' }}>Patient currently taking diabetic related prescription &nbsp; &nbsp;
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['reported_outcome_diabetic_medication'])) ? 'checked' : '' }}>Patient currently taking diabetic related prescription &nbsp; &nbsp;
                     </p>
                 </div>
                 <div class="">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'reported_outcome_diabetic_foot_exam_performed'])) ? 'checked' : '' }}>Patient's last diabetic foot exam &nbsp; &nbsp; <span style="font-weight:bold;">{{isset($data['record']['daiabetic_foot_date']) ? $data['record']['daiabetic_foot_date'] : ''}}</span>
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['reported_outcome_diabetic_foot_exam_performed'])) ? 'checked' : '' }}>Patient's last diabetic foot exam &nbsp; &nbsp; <span style="font-weight:bold;">{{isset($data['record']['daiabetic_foot_date']) ? $data['record']['daiabetic_foot_date'] : ''}}</span>
                     </p>
                 </div>
                 <div class="">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'reported_outcome_micro_neurography_preformed'])) ? 'checked' : '' }}>Patient's last micro-neurography performed &nbsp; &nbsp; <span style="font-weight:bold;">{{isset($data['record']['micro-neurography_date']) ? $data['record']['micro-neurography_date'] : ''}}</span>
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['reported_outcome_micro_neurography_preformed'])) ? 'checked' : '' }}>Patient's last micro-neurography performed &nbsp; &nbsp; <span style="font-weight:bold;">{{isset($data['record']['micro-neurography_date']) ? $data['record']['micro-neurography_date'] : ''}}</span>
                     </p>
                 </div>
                 <div class="">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'reported_outcome_used_tobacco'])) ? 'checked' : '' }}>Patient currently used tobacco &nbsp; &nbsp;
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['reported_outcome_used_tobacco'])) ? 'checked' : '' }}>Patient currently used tobacco &nbsp; &nbsp;
                     </p>
                 </div>
                 <div class="">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'reported_outcome_unhealthy_body_weight'])) ? 'checked' : '' }}>Screening for unhealth body weight conducted &nbsp; &nbsp;
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['reported_outcome_unhealthy_body_weight'])) ? 'checked' : '' }}>Screening for unhealthy body weight conducted &nbsp; &nbsp;
                     </p>
                 </div>
             </div>
@@ -140,7 +140,7 @@
                 <p><span class="text_bold">Blood Presurres </span>&nbsp; &nbsp;<span><u>{{isset($data['record']['blood_pressure_1']) ? $data['record']['blood_pressure_1'] : ''}}</u></span>&nbsp;over&nbsp;<span><u>{{isset($data['record']['blood_pressure_2']) ? $data['record']['blood_pressure_2'] : ''}}</u></span></p>
             </div>
             <div class="col-xs-12">
-                <p><span class="text_bold">IOP</span>&nbsp; &nbsp;<span>{{isset($data['record']['iop']) ? $data['record']['iop'] : ''}}</span>mm</p>
+                <p><span class="text_bold">IOP</span>&nbsp; &nbsp;<span>{{isset($data['record']['iop']) ? $data['record']['iop'] : ''}}</span></p>
             </div>
         </div>
         <div class="row">
@@ -153,7 +153,7 @@
                 </p>
             </div>
             @if(isset($data['record']['clinical_finding_diabetes_related']))
-            <div class="col-xs-offset-1 col-xs-11 border-left clinical_finding_subsection">
+            <div class="col-xs-offset-1 col-xs-11 border-left clinical_finding_subsection" style="margin-bottom:3em;">
                 <div class="col-xs-12">
                     <p class="text_bold">Medications</p>
                 </div>
@@ -290,38 +290,6 @@
 
             </div>
             @endif
-            <div class="col-xs-12">
-                <p class="no-margin text_bold">
-                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'clinical_finding_age_related_muscular_degeneration'][ 'duration'])) ? 'checked' : '' }}>Age-related macular degeneration &nbsp; &nbsp;
-                </p>
-            </div>
-            @if(isset($data['record']['clinical_finding_age_related_muscular_degeneration']))
-            <div class="col-xs-12  border-left clinical_finding_subsection">Age-related macular degeneration</div>
-            @endif
-            <div class="col-xs-12">
-                <p class="no-margin text_bold">
-                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'clinical_finding_retinopathy'])) ? 'checked' : '' }}>Retinopathy &nbsp; &nbsp;
-                </p>
-            </div>
-            @if(isset($data['record']['clinical_finding_retinopathy']))
-            <div class="col-xs-12  border-left clinical_finding_subsection">Retinopathy</div>
-            @endif
-            <div class="col-xs-12">
-                <p class="no-margin text_bold">
-                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'clinical_finding_glaucoma'])) ? 'checked' : '' }}>Glaucoma &nbsp; &nbsp;
-                </p>
-            </div>
-            @if(isset($data['record']['clinical_finding_glaucoma']))
-            <div class="col-xs-12  border-left clinical_finding_subsection">Glaucoma</div>
-            @endif
-            <div class="col-xs-12">
-                <p class="no-margin text_bold">
-                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'clinical_finding_cataract'])) ? 'checked' : '' }}>Cataract &nbsp; &nbsp;
-                </p>
-            </div>
-            @if(isset($data['record']['clinical_finding_cataract']))
-            <div class="col-xs-12  border-left clinical_finding_subsection">Cataract</div>
-            @endif
         </div>
         <div class="row">
             <div class="col-xs-12">
@@ -329,22 +297,22 @@
             </div>
             <div class="col-xs-12">
                 <p class="no-margin">
-                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'follow-up_patient_educated_about_condition'])) ? 'checked' : '' }}>Patient educated in detail about their condition &nbsp; &nbsp;
+                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['follow-up_patient_educated_about_condition'])) ? 'checked' : '' }}>Patient educated in detail about their condition &nbsp; &nbsp;
                 </p>
             </div>
             <div class="col-xs-12">
                 <p class="no-margin">
-                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'follow-up_refer_to_retinology'][ 'duration'])) ? 'checked' : '' }}>Refer to retinology &nbsp; &nbsp;
+                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['follow-up_refer_to_retinology'])) ? 'checked' : '' }}>Refer to retinology &nbsp; &nbsp;
                 </p>
             </div>
             <div class="col-xs-12">
                 <p class="no-margin">
-                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'follow-up_monitor_for_progression'])) ? 'checked' : '' }}>Monitor at clinic for progression &nbsp; &nbsp;
+                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['follow-up_monitor_for_progression'])) ? 'checked' : '' }}>Monitor at clinic for progression &nbsp; &nbsp;
                 </p>
             </div>
             <div class="col-xs-12">
                 <p class="no-margin">
-                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data[ 'record'][ 'follow-up_report_sent_to_pcp'])) ? 'checked' : '' }}>Report was sent to PCP and/or endocrinologist &nbsp; &nbsp;
+                    <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['follow-up_report_sent_to_pcp'])) ? 'checked' : '' }}>Report was sent to PCP and/or endocrinologist &nbsp; &nbsp;
                 </p>
             </div>
         </div>
