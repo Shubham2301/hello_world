@@ -368,6 +368,42 @@ ul.c3_sidebar_list {
             color: #ea4335;
         }
     }
+    &.filter_row {
+        justify-content: space-between;
+        &>select {
+            width: 35%;
+            padding: .4em .8em;
+            border-radius: 0.2em;
+            background: #e3e3e3;
+            box-shadow: 0 0 5px #898989;
+            border: #e3e3e3;
+        }
+        &>input {
+            background: #e3e3e3;
+            border: none;
+            border-radius: 0.3em;
+            box-shadow: 0 0 5px #898989;
+            padding: .2em .5em;
+        }
+    }
+    &>button {
+        margin: .5em 0;
+        margin-right: .5em;
+        padding: .4em .8em;
+        border-radius: 0.2em;
+        background: #e3e3e3;
+        box-shadow: 0 0 5px #898989;
+        border: #e3e3e3;
+        &:disabled {
+            opacity: .5;
+        }
+        &#apply_filter {
+            color: #33a86a;
+        }
+        &#remove_filter {
+            color: #ee685d;
+        }
+    }
 }
 
 .C3_day_box {
