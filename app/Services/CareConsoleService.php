@@ -3,7 +3,6 @@
 namespace myocuhub\Services;
 
 use Auth;
-use Carbon\Carbon;
 use DateTime;
 use Helper;
 use myocuhub\Models\Action;
@@ -42,7 +41,7 @@ class CareConsoleService
      * @return mixed
      */
 
-    public function getControls($stageID, $filterType = '', $filterValue = '')
+    public function getControls($stageID)
     {
         $networkID = Auth::user()->userNetwork->first()->network_id;
         $llKpiGroup = CareconsoleStage::find($stageID)->llKpiGroup;
@@ -69,7 +68,7 @@ class CareConsoleService
                     $controls[$i]['options'][$j]['kpi_name'] = '';
                     if (isset($kpis[$j])) {
                         $controls[$i]['options'][$j]['kpi_name'] = $kpis[$j]->name;
-                        $count = $this->KPIService->getCount($kpis[$j]->name, $networkID, $stageID, $filterType, $filterValue);
+                        $count = $this->KPIService->getCount($kpis[$j]->name, $networkID, $stageID);
                         $controls[$i]['options'][$j]['count'] = $count['precise_count'];
                     }
                 }
@@ -110,7 +109,7 @@ class CareConsoleService
      * @param $sortOrder
      * @return mixed
      */
-    public function getPatientListing($stageID, $kpiName = '', $sortField = '', $sortOrder = '', $filterType = '', $filterValue = '', $llimit = -1, $ulimit = -1)
+    public function getPatientListing($stageID, $kpiName = '', $sortField = '', $sortOrder = '', $llimit = -1, $ulimit = -1)
     {
         $user = Auth::user();
         $userID = $user->id;
@@ -128,9 +127,11 @@ class CareConsoleService
         $i = 0;
         $fields = [];
 
-        $stage = CareconsoleStage::find($stageID);
-
-        $patients = Careconsole::getConsolePatientsData($networkID, $stage->name, $kpiName, $filterType, $filterValue);
+        if ($kpiName !== '' && isset($stageID)) {
+            $patients = $this->KPIService->getPatients($kpiName, $networkID, $stageID);
+        } elseif (isset($stageID)) {
+            $patients = Careconsole::getStagePatients($networkID, $stageID);
+        }
 
         $headers = CareconsoleStage::find($stageID)->patientFields;
 
@@ -138,7 +139,6 @@ class CareConsoleService
             $headerData[$i]['display_name'] = $header['display_name'];
             $headerData[$i]['name'] = $header['name'];
             $headerData[$i]['width'] = $header['width'];
-            $headerData[$i]['filter_field'] = $header['filter_field'];
             if ($header['name'] == $sortField) {
                 $headerData[$i]['sort_order'] = $sortOrder;
             }
@@ -182,18 +182,14 @@ class CareConsoleService
      * @param $stageID
      * @return mixed
      */
-    public function getBucketPatientsListing($stageID, $sortField = '', $sortOrder = '', $filterType = '', $filterValue = '', $kpiName = '')
+    public function getBucketPatientsListing($stageID, $sortField = '', $sortOrder = '')
     {
         $user = Auth::user();
         $userID = $user->id;
         $networkID = $user->userNetwork->first()->network_id;
 
         $headers = CareconsoleStage::find($stageID)->patientFields;
-
-        $bucket = CareconsoleStage::find($stageID);
-
-        $patients = Careconsole::getConsolePatientsData($networkID, $bucket->name, $kpiName, $filterType, $filterValue);
-
+        $patients = $this->KPIService->getBucketPatients($networkID, $stageID);
 
         if ($sortField == '') {
             $sortField = 'full-name';
@@ -212,7 +208,6 @@ class CareConsoleService
             $headerData[$i]['display_name'] = $header['display_name'];
             $headerData[$i]['name'] = $header['name'];
             $headerData[$i]['width'] = $header['width'];
-            $headerData[$i]['filter_field'] = $header['filter_field'];
             if ($header['name'] == $sortField) {
                 $headerData[$i]['sort_order'] = $sortOrder;
             }
@@ -317,8 +312,7 @@ class CareConsoleService
                 return $appointment->appointmenttype;
                 break;
             case 'days-pending':
-                $patient_date = new DateTime($patient['stage_updated_at']);
-                return date_diff(new \DateTime($patient_date->format('Y-m-d')), new \DateTime(), false)->days;
+                return date_diff(new \DateTime($patient['stage_updated_at']), new \DateTime(), true)->days;
                 break;
             case 'provider-name':
                 $appointment = Appointment::find($patient['appointment_id']);

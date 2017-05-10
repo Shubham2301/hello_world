@@ -44,26 +44,6 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', '#apply_filter', function() {
-        currentPage = 1;
-        if (toCall == 2) {
-            bucketData(bucketName);
-        } else {
-            getPatientData();
-        }
-    });
-    
-    $(document).on('click', '#remove_filter', function() {
-        $(this).attr('disabled', true);
-        currentPage = 1;
-        clearStageFilter();
-        if (toCall == 2) {
-            bucketData(bucketName);
-        } else {
-            getPatientData();
-        }
-    });
-
     $(document).on('click', '.C3_day_box', function() {
         var kpi_id = $(this).attr('data-id');
         var kpi_name = $(this).attr('data-name');
@@ -74,14 +54,14 @@ $(document).ready(function() {
 
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
-            showcontrols = true;
+            showcontrolls = true;
             clearHTML();
             $('#current_stage').val(stageID);
             showStageData(stageID, stageName, stage_system_name);
         } else {
             $('.C3_day_box').removeClass('active');
             $(this).addClass('active');
-            showcontrols = false;
+            showcontrolls = false;
             currentPage = 1;
             if (kpi_name) {
                 $('#current_stage').val(stageID);
@@ -101,7 +81,6 @@ $(document).ready(function() {
     });
     $(document).on('click', '.console_buckets', function() {
         $('.control_section').html('');
-        clearStageFilter();
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             $('.c3_overview_link').removeClass('active');
@@ -112,7 +91,6 @@ $(document).ready(function() {
             $('.drilldown>.section-header').html('');
             $('.drilldown>.subsection-header>p').html('');
             $('.circle.drilldown_kpi_indicator').css('background-color', 'transparent');
-            showcontrols = false;
         } else {
             $('.console_buckets').removeClass('active');
             $(this).addClass('active');
@@ -123,7 +101,6 @@ $(document).ready(function() {
             $('.drilldown').addClass('active');
             $('.drilldown>.subsection-header>p').html('');
             $('.circle.drilldown_kpi_indicator').css('background-color', 'transparent');
-            showcontrols = true;
             bucketName = $(this).attr('data-name');
             var bucketTitle = $(this).find('p').html();
             if (bucketName == 'recall') {
@@ -148,7 +125,6 @@ $(document).ready(function() {
     $('.c3_overview_link').on('click', function() {
         $('.console_buckets').removeClass('active');
         refreshOverview();
-        clearStageFilter();
         $('.c3_overview_link').removeClass('active');
         $('.console_bucket_row').removeClass('hide');
         $('.control_section').removeClass('active');
@@ -160,7 +136,6 @@ $(document).ready(function() {
         setSidebarButtonActive();
     });
     $('.info_section').on('click', function() {
-        clearStageFilter();
         $('.c3_overview_link').addClass('active');
         $('.console_bucket_row').addClass('hide');
         $('.control_section').addClass('active');
@@ -179,7 +154,6 @@ $(document).ready(function() {
         showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator, stage_system_name);
     });
     $('.stage').on('click', function() {
-        clearStageFilter();
         $('.c3_overview_link').addClass('active');
         $('.console_bucket_row').addClass('hide');
         $('.control_section').addClass('active');
@@ -193,7 +167,7 @@ $(document).ready(function() {
         var stage_id = '';
         var stage_name = '';
         var stage_system_name = '';
-        showcontrols = true;
+        showcontrolls = true;
         stage_id = $(this).attr('data-id');
         stage_name = $(this).attr('data-name');
         stage_system_name = $(this).attr('data-system-name');
@@ -659,7 +633,7 @@ var ulimit = -1;
 var show_patient = true;
 var contact_notes = [];
 var showDate = false;
-var showcontrols = true;
+var showcontrolls = true;
 var bucketName = '';
 var currentPage = 1;
 var toCall = 0;
@@ -748,18 +722,13 @@ function getPatientData() {
     var kpiName = $('#current_kpi').val() === '0' ? '' : $('#current_kpi').val();
     var sortField = $('#current_sort_field').val();
     var sortOrder = $('#current_sort_order').val();
-    var filterType = $('#filter_type').val();
-    var filterValue = $('#filter_value').val();
-
     var formData = {
         'stage': stageID,
         'kpi': kpiName,
         'sort_field': sortField,
         'sort_order': sortOrder,
         'lower_limit': llimit,
-        'upper_limit': ulimit,
-        'filter_type': filterType,
-        'filter_value': filterValue
+        'upper_limit': ulimit
     };
     $.ajax({
         url: '/careconsole/drilldown?page=' + currentPage,
@@ -787,17 +756,16 @@ function getPatientData() {
                 });
             }
 
-            if (currentPage > 1) {
-                $('#listing_content').append(data.listing_content)
-            } else {
+            if (currentPage > 1) $('#listing_content').append(data.listing_content);
+            else {
                 $('#listing_header').html(data.listing_header);
                 $('#listing_content').html(data.listing_content);
             }
 
-            if (showcontrols) {
+            if (showcontrolls) {
                 $('.control_section').html(controls);
             }
-
+            
             $('#export_bucket').on('click', function() {
                 var formData = {
                     bucket: $(this).attr('data_bucket_name'),
@@ -806,7 +774,7 @@ function getPatientData() {
                 var query = $.param(formData);
                 window.location = '/careconsole/bucket-patients-excel?' + query;
             });
-
+            
         },
         error: function error() {
             $('p.alert_message').text('Error:');
@@ -990,11 +958,8 @@ function performAction() {
                     var stage = $.parseJSON(e);
                     $('#actionModal').modal('hide');
                     if (show_patient && bucketName == '') {
-                        currentPage = 1;
-                        showcontrols = true;
-                        getPatientData();
+                        showStageData(stage.id, stage.name, stage.system_name);
                     } else if (show_patient && bucketName != '') {
-                        showcontrols = true;
                         currentPage = 1;
                         bucketData(bucketName);
                     }
@@ -1098,14 +1063,10 @@ function bucketData(bucketName) {
     toCall = 2;
     var sortField = $('#current_sort_field').val();
     var sortOrder = $('#current_sort_order').val();
-    var filterType = $('#filter_type').val();
-    var filterValue = $('#filter_value').val();
     var formData = {
         'bucket': bucketName,
         'sort_field': sortField,
-        'sort_order': sortOrder,
-        'filter_type': filterType,
-        'filter_value': filterValue
+        'sort_order': sortOrder
     };
 
     $.ajax({
@@ -1134,15 +1095,11 @@ function bucketData(bucketName) {
             if (currentPage > 1) {
                 $('#listing_content').append(data.listing_content);
             } else {
+
                 $('#listing_header').html(data.listing_header);
 
                 $('#listing_content').html(data.listing_content);
             }
-
-            if (showcontrols) {
-                $('.control_section').html(data.controls);
-            }
-
             $('.dropdown-menu.action_dropdownmenu').html(actionList);
             $('#export_bucket').on('click', function() {
                 var formData = {
@@ -1574,9 +1531,4 @@ function updateManualScheduleData(consoleID) {
     practiceList += '<option value="-1">Not listed</option>';
     $('#manual_appointment_appointment_type').html(appointmentTypeList);
     $('#manual_appointment_practice').html(practiceList);
-}
-
-function clearStageFilter() {
-    $('#filter_type').val('-1');
-    $('#filter_value').val('');
 }

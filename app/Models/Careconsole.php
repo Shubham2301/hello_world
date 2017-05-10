@@ -2,7 +2,6 @@
 
 namespace myocuhub\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -32,14 +31,6 @@ class Careconsole extends Model
     public function contactHistory()
     {
         return $this->hasMany('myocuhub\Models\ContactHistory', 'console_id');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function activeContactHistory()
-    {
-        return $this->hasMany('myocuhub\Models\ContactHistory', 'console_id')->whereNull('archived');
     }
 
     /**
@@ -85,10 +76,69 @@ class Careconsole extends Model
     public static function getBucketPatientsExcelData($networkID, $bucketName, $kpiName)
     {
         $query = self::query();
-
-        $query->consoleStagePatientQuery($networkID, $bucketName);
-        $query->consoleKpiPatientQuery($kpiName);
-
+        $query->whereHas('importHistory', function ($query) use ($networkID) {
+            $query->where('network_id', $networkID);
+        })
+          ->has('patient');
+        switch ($bucketName) {
+            case 'archived':
+              $query->whereNotNull('archived_date');
+              break;
+            case 'recall':
+              $query->whereNotNull('recall_date');
+              break;
+            case 'priority':
+              $query->where('priority', '1');
+              $query->whereNull('archived_date');
+              $query->whereNull('recall_date');
+              break;
+            default:
+              $query->whereHas('stage', function ($subquery) use ($bucketName) {
+                  $subquery->where('name', $bucketName);
+              });
+              $query->whereNull('archived_date');
+              $query->whereNull('recall_date');
+              break;
+        }
+        switch ($kpiName) {
+            case 'contact-attempted':
+              $query->has('contactHistory');
+              break;
+            case 'contact-pending':
+              $query->whereDoesntHave('contactHistory');
+              break;
+            case 'appointment-scheduled':
+              $query->whereHas('appointment', function ($subquery) {
+                $subquery->where('start_datetime', '>', date('Y-m-d', strtotime(' +1 day')));
+              });
+              break;
+            case 'appointment-tomorrow':
+              $query->whereHas('appointment', function ($subquery) {
+                $subquery->where('start_datetime', '=', date('Y-m-d', strtotime(' +1 day')));
+              });
+              break;
+            case 'past-appointment':
+              $query->whereHas('appointment', function ($subquery) {
+                $subquery->where('start_datetime', '<=', date('Y-m-d'));
+              });
+              break;
+            case 'cancelled':
+            case 'no-show':
+              $query->whereHas('appointment.appointmentStatus', function ($subquery) use ($kpiName) {
+                $subquery->where('name', $kpiName);
+              });
+              break;
+            case 'waiting-for-report':
+            case 'ready-to-be-completed':
+              $query->where('stage_updated_at', '>=', date('Y-m-d', strtotime(' -5 day')));
+              break;
+            case 'reports-overdue':
+            case 'overdue':
+              $query->where('stage_updated_at', '<', date('Y-m-d', strtotime(' -5 day')));
+              break;
+            default:
+              break;
+        }
         $query->with(['patient', 'appointment']);
         return $query->get();
     }
@@ -662,169 +712,5 @@ class Careconsole extends Model
         })
             ->has('patient')
             ->count();
-    }
-
-    /**
-     * @param $networkID
-     */
-    public static function getConsolePatientsData($networkID, $stageName, $kpiName, $filterType, $filterValue)
-    {
-        $query = self::query();
-        
-        $query->consoleStagePatientQuery($networkID, $stageName);
-
-        $query->consoleKpiPatientQuery($kpiName);
-
-        if($filterValue != '') {
-          $query->consolepatientListFilter($filterType, $filterValue);
-        }
-
-        $query->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id');
-        $query->leftjoin('appointments', 'careconsole.appointment_id', '=', 'appointments.id');
-        return $query->get(['*', 'careconsole.id', 'careconsole.created_at', 'careconsole.patient_id', 'careconsole.appointment_id']);
-    }
-
-    public static function scopeConsoleStagePatientQuery($query, $networkID, $stageName)
-    {
-        $query->whereHas('importHistory', function ($query) use ($networkID) {
-            $query->where('network_id', $networkID);
-        })
-          ->has('patient');
-        switch ($stageName) {
-            case 'archived':
-              $query->whereNotNull('archived_date');
-              break;
-            case 'recall':
-              $query->whereNotNull('recall_date');
-              break;
-            case 'priority':
-              $query->where('priority', '1');
-              $query->whereNull('archived_date');
-              $query->whereNull('recall_date');
-              break;
-            default:
-              $query->whereHas('stage', function ($subquery) use ($stageName) {
-                  $subquery->where('name', $stageName);
-              });
-              $query->whereNull('archived_date');
-              $query->whereNull('recall_date');
-              break;
-        }
-        return $query;
-    }
-
-    public static function scopeConsoleKpiPatientQuery($query, $kpiName) {
-      switch ($kpiName) {
-            case 'contact-attempted':
-              $query->has('activeContactHistory');
-              break;
-            case 'contact-pending':
-            $query->has('activeContactHistory', '=', '0');
-              break;
-            case 'appointment-scheduled':
-              $query->whereHas('appointment', function ($subquery) {
-                  $subquery->where('start_datetime', '>', date('Y-m-d', strtotime(' +1 day')));
-              });
-              break;
-            case 'appointment-tomorrow':
-              $query->whereHas('appointment', function ($subquery) {
-                  $subquery->where('start_datetime', '=', date('Y-m-d', strtotime(' +1 day')));
-              });
-              break;
-            case 'past-appointment':
-              $query->whereHas('appointment', function ($subquery) {
-                  $subquery->where('start_datetime', '<=', date('Y-m-d'));
-              });
-              break;
-            case 'cancelled':
-            case 'no-show':
-              $query->whereHas('appointment.appointmentStatus', function ($subquery) use ($kpiName) {
-                  $subquery->where('name', $kpiName);
-              });
-              break;
-            case 'waiting-for-report':
-            case 'ready-to-be-completed':
-              $query->where('stage_updated_at', '>=', date('Y-m-d', strtotime(' -5 day')));
-              break;
-            case 'reports-overdue':
-            case 'overdue':
-              $query->where('stage_updated_at', '<', date('Y-m-d', strtotime(' -5 day')));
-              break;
-            default:
-              break;
-        }
-
-        return $query;
-    }
-
-    public static function scopeConsolePatientListFilter($query, $filterType, $filterValue)
-    {
-        switch ($filterType) {
-          case 'full-name':
-            $query->whereHas('patient', function ($subquery) use ($filterValue) {
-                $subquery->where('firstname', 'LIKE', '%' . $filterValue . '%')
-                      ->orWhere('middlename', 'LIKE', '%' . $filterValue . '%')
-                      ->orWhere('lastname', 'LIKE', '%' . $filterValue . '%');
-            });
-            break;
-          case 'phone':
-            $query->whereHas('patient', function ($subquery) use ($filterValue) {
-                $subquery->where('cellphone', 'LIKE', '%' . $filterValue . '%')
-                      ->orWhere('workphone', 'LIKE', '%' . $filterValue . '%')
-                      ->orWhere('homephone', 'LIKE', '%' . $filterValue . '%');
-            });
-            break;
-          case 'last-scheduled-to':
-          case 'scheduled-to':
-            $query->whereHas('appointment', function ($subquery) use ($filterValue) {
-                $subquery->whereHas('provider', function ($subquery) use ($filterValue) {
-                    $subquery->where('firstname', 'LIKE', '%' . $filterValue . '%')
-                          ->orwhere('middlename', 'LIKE', '%' . $filterValue . '%')
-                          ->orwhere('lastname', 'LIKE', '%' . $filterValue . '%');
-                });
-                $subquery->orWhereHas('practice', function ($subquery) use ($filterValue) {
-                    $subquery->where('name', 'LIKE', '%' . $filterValue . '%');
-                });
-                $subquery->orWhereHas('practiceLocation', function ($subquery) use ($filterValue) {
-                    $subquery->where('locationname', 'LIKE', '%' . $filterValue . '%');
-                });
-            });
-            break;
-          case 'contact-attempts':
-            $query->has('activeContactHistory', '=', $filterValue);
-            break;
-          case 'appointment-type':
-            $query->whereHas('appointment', function ($subquery) use ($filterValue) {
-                $subquery->where('appointmenttype', 'LIKE', '%' . $filterValue . '%');
-            });
-            break;
-          case 'days-pending':
-            $startDate = date('Y-m-d', strtotime(date('Y-m-d') . ' -' . ($filterValue) . ' day'));
-            $query->where('stage_updated_at', 'LIKE', $startDate . '%');
-            break;
-          case 'special-request':
-            $query->whereHas('patient', function ($subquery) use ($filterValue) {
-                $subquery->where('special_request', 'LIKE', '%' . $filterValue . '%');
-            });
-            break;
-          case 'archive-reason':
-            $query->whereHas('contactHistory', function ($subquery) use ($filterValue) {
-                $subquery->whereHas('actionResult', function ($subquery) use ($filterValue) {
-                    $subquery->where('name', 'LIKE', '%' . $filterValue . '%');
-                })->orderBy('created_at','desc')->limit(1);
-                $subquery->orWhereHas('action', function ($subquery) use ($filterValue) {
-                    $subquery->where('name', 'LIKE', '%' . $filterValue . '%');
-                })->orderBy('created_at','desc')->limit(1);
-            });
-            break;
-          case 'current-stage':
-            $query->whereHas('stage', function ($subquery) use ($filterValue) {
-                $subquery->where('name', 'LIKE', '%' . $filterValue . '%');
-            });
-            break;
-          default:
-        }
-
-        return $query;
     }
 }
