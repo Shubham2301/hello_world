@@ -134,18 +134,20 @@ class CareConsoleController extends Controller
         $sortParams = [];
         $sortField = $request->sort_field;
         $sortOrder = $request->sort_order;
+        $filterType = $request->filter_type;
+        $filterValue = $request->filter_value;
         $lower_limit = $request->lower_limit;
         $upper_limit = $request->upper_limit;
 
         if ($upper_limit != -1) {
-            $listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder, $lower_limit, $upper_limit);
+            $listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder, $filterType, $filterValue, $lower_limit, $upper_limit);
         } else {
-            $listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder);
+            $listing = $this->CareConsoleService->getPatientListing($stageID, $kpiName, $sortField, $sortOrder, $filterType, $filterValue);
         }
 
         $actions = $this->CareConsoleService->getActions($stageID);
-        $controls = $this->CareConsoleService->getControls($stageID);
-        $drilldown['controls'] = (sizeof($controls) === 0) ? '' : view('careconsole.controls')->with('controls', $controls)->render();
+        $controls = $this->CareConsoleService->getControls($stageID, $filterType, $filterValue);
+        $drilldown['controls'] = view('careconsole.controls')->with('controls', $controls)->with(['listing' => $listing, 'filter_type' => $filterType, 'filter_value' => $filterValue])->render();
         $drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
         $drilldown['listing_header'] = view('careconsole.listing_header')->with('listing', $listing)->render();
         $drilldown['listing_content'] = view('careconsole.listing_patient')->with('listing', $listing)->with('actions', $actions)->render();
@@ -358,8 +360,14 @@ class CareConsoleController extends Controller
         $bucketID = $bucket->id;
         $sortField = $request->sort_field;
         $sortOrder = $request->sort_order;
-        $listing = $this->CareConsoleService->getBucketPatientsListing($bucketID, $sortField, $sortOrder);
+        $filterType = $request->filter_type;
+        $filterValue = $request->filter_value;
+
+        $listing = $this->CareConsoleService->getBucketPatientsListing($bucketID, $sortField, $sortOrder, $filterType, $filterValue);
+
         $actions = $this->CareConsoleService->getActions($bucketID);
+        $controls = $this->CareConsoleService->getControls($bucketID, $filterType, $filterValue);
+        $drilldown['controls'] = view('careconsole.controls')->with('controls', $controls)->with(['listing' => $listing, 'filter_type' => $filterType, 'filter_value' => $filterValue])->render();
         $drilldown['actions'] = (sizeof($actions) === 0) ? [] : $actions;
         $drilldown['listing_header'] = view('careconsole.listing_header')->with('listing', $listing)->render();
         $drilldown['listing_content'] = view('careconsole.listing_patient')->with('listing', $listing)->with('actions', $actions)->render();
@@ -413,7 +421,7 @@ class CareConsoleController extends Controller
         usort($data, 'self::cmp');
 
         $fileName = Network::find(session('network-id'))->name.' - ' . $bucket->display_name;
-        if($request->has('kpi')) {
+        if ($request->has('kpi')) {
             $fileName .= ' (' .  $kpi->display_name . ')';
         }
 
