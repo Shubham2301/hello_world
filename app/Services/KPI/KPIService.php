@@ -16,47 +16,20 @@ class KPIService {
 	 * @param $kpiName
 	 * @param $networkID
 	 * @param $stageID
+	 * @param $filterType
+	 * @param $filterValue
 	 * @return mixed
 	 */
-	public function getCount($kpiName, $networkID, $stageID) {
+	public function getCount($kpiName, $networkID, $stageID, $filterType = '', $filterValue = '') {
         $count = array();
-		switch ($kpiName) {
-			case 'contact-attempted':
-				$count['precise_count'] = Careconsole::getContactAttemptedCount($networkID, $stageID);
-				break;
-			case 'contact-pending':
-				$count['precise_count'] = Careconsole::getContactPendingCount($networkID, $stageID);
-				break;
-			case 'appointment-scheduled':
-				$count['precise_count'] = Careconsole::getAppointmentScheduledCount($networkID, $stageID);
-				break;
-			case 'appointment-tomorrow':
-				$count['precise_count'] = Careconsole::getAppointmentTomorrowCount($networkID, $stageID);
-				break;
-			case 'past-appointment':
-				$count['precise_count'] = Careconsole::getPastAppointmentCount($networkID, $stageID);
-				break;
-			case 'waiting-for-report':
-				$count['precise_count'] = Careconsole::getStageWaitingCount($networkID, $stageID, $kpiName);
-				break;
-			case 'reports-overdue':
-				$count['precise_count'] = Careconsole::getStageOverdueCount($networkID, $stageID, $kpiName);
-				break;
-			case 'pending-information':
-			case 'cancelled':
-			case 'no-show':
-				$count['precise_count'] = Careconsole::getAppointmentStatusCount($networkID, $stageID, $kpiName);
-				break;
-			case 'ready-to-be-completed':
-				$count['precise_count'] = Careconsole::getStageWaitingCount($networkID, $stageID, $kpiName);
-				break;
-			case 'overdue':
-				$count['precise_count'] = Careconsole::getStageOverdueCount($networkID, $stageID, $kpiName);
-				break;
-			default:
-				$count['precise_count'] = -1;
-				break;
-		}
+
+        $stageName = CareconsoleStage::find($stageID)->name;
+
+        $count['precise_count'] = Careconsole::consoleStagePatientQuery($networkID, $stageName)
+        						->consoleKpiPatientQuery($kpiName)
+        						->consolepatientListFilter($filterType, $filterValue)
+        						->count();
+
         $count['abbreviated_count'] = $this->getAbbreviationCount($count['precise_count']);
         return $count;
 	}
