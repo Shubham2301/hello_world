@@ -127,7 +127,7 @@
             </div>
 
             <div class="col-xs-5">
-                <p class="text_bold">Was refraction performed with cyclopedic agents?</p>
+                <p class="text_bold">Was refraction performed with cycloplegic agents?</p>
             </div>
             <div class="col-xs-7">
                 <p>
