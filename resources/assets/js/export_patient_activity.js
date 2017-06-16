@@ -17,6 +17,15 @@ $(document).ready(function() {
     var old_start_date = $('#start_date').val();
     var old_end_date = $('#end_date').val();
 
+    $('#start_date').datetimepicker().on('dp.hide', function(ev) {
+        var start_date = $('#start_date').val();
+        $('#end_date').data("DateTimePicker").minDate(new Date(start_date));
+    });
+    $('#end_date').datetimepicker().on('dp.hide', function(ev) {
+        var end_date = $('#end_date').val();
+        $('#start_date').data("DateTimePicker").maxDate(new Date(end_date));
+    });
+
     $('#export_patient_activity_excel').on('click', function() {
         var formData = {
             start_date: $('#start_date').val(),
