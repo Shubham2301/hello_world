@@ -716,6 +716,7 @@ function showKPIData(stage_id, kpi_id, stage_name, kpi_name, kpi_indicator, stag
     $('.drilldown_kpi_indicator').css('background-color', kpi_indicator);
     $('#current_stage').val(stage_id);
     $('#current_kpi').val(kpi_id);
+    bucketName = '';
     setSidebarButtonActive();
     currentPage = 1;
     $('#drilldown_patients_listing').html();
@@ -750,6 +751,10 @@ function getPatientData() {
     var sortOrder = $('#current_sort_order').val();
     var filterType = $('#filter_type').val();
     var filterValue = $('#filter_value').val();
+    
+    if(stageID === '') {
+        return;
+    }
 
     var formData = {
         'stage': stageID,
