@@ -52,7 +52,7 @@
             <div class="modal-footer">
                 <div style="margin-right:40%">
                     <button type="button" class="btn import_button active" >Import</button>
-                    <button type="button" class="btn btn-default dismiss_button" data-dismiss="modal">cancel</button>
+                    <button type="button" class="btn btn-default dismiss_button" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>

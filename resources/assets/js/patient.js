@@ -418,6 +418,7 @@ function getPatients(formData, page) {
     $('#import_patients').show();
     var active_img = $('#schedule_patient_img').val();
     var delete_img = $('#delete_practice_img').val();
+    var patient_record_img = $('#patient_records_img').val();
 
     var tojson = JSON.stringify(formData);
     var sortInfo = {
@@ -446,6 +447,8 @@ function getPatients(formData, page) {
                 if (patients.length > 0 && patients[0]['total'] > 0) {
                     patients.forEach(function(patient) {
                         content += '<div class="row search_item" data-id="' + patient.id + '"><div class="col-xs-3 search_name" style="display:inline-flex"><div><input type="checkbox" class="admin_checkbox_row" data-id="' + patient.id + '" name="checkbox">&nbsp;&nbsp;</div><div class="search_name_text"><p style="margin-left:9px;">' + patient.lname + ', ' + patient.fname + ' ' + patient.mname + '</p></div></div><div class="col-xs-3">' + patient.addressline1 + '<br>' + patient.addressline2 + '</div><div class="col-xs-1"></div><div class="col-xs-3"><p>' + patient.email + '</p></div><div class="col-xs-2 search_edit"><p>';
+                        
+                        content += '<div><span class="upload_file_view_btn_patient_list" data-toggle="tooltip" title="Upload Patient records" data-placement="bottom" data-id="' + patient.id + '"><img class="action_dropdown_img" src="' + patient_record_img + '" alt="" style="margin-right: 10px;height: 24px;"></span></div>';
                         if (active_img != '') {
                             content += '<div><a href="/providers?referraltype_id=6&action=schedule_appointment&patient_id=' + patient.id + '&patient_view=true" data-toggle="tooltip" title="Schedule Patient" data-placement="bottom"><img class="action_dropdown_img" src="' + active_img + '" alt=""></a></div>';
                         } else {
