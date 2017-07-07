@@ -141,6 +141,7 @@ return [
          */
 
         Collective\Html\HtmlServiceProvider::class,
+        Collective\Remote\RemoteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -177,6 +178,10 @@ return [
          */
         myocuhub\Providers\HelperServiceProvider::class,
 
+        /*
+         * Hedis Export Servive Provider
+         */
+        myocuhub\Providers\HedisServiceProvider::class,
         /*
          * PDF Service Providers
          */
@@ -234,6 +239,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'SSH' => Collective\Remote\RemoteFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'WriteBack4PC' => myocuhub\Facades\Writeback4PC::class,
         'WebScheduling4PC' => myocuhub\Facades\WebScheduling4PC::class,
@@ -241,6 +247,7 @@ return [
         'Sms' => myocuhub\Facades\Sms::class,
         'SES' => myocuhub\Facades\SES::class,
         'MyCCDA' => myocuhub\Facades\CCDAFacade::class,
+        'Hedis' => myocuhub\Facades\Hedis::class,
 		'Helper' => myocuhub\Facades\Helper::class,
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
     ],

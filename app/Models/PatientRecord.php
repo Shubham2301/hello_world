@@ -28,6 +28,14 @@ class PatientRecord extends Model
         return $this->belongsTo('myocuhub\Patient');
     }
 
+    /**
+     * @return mixed
+     */
+    public function WebFormTemplate()
+    {
+        return $this->belongsTo('myocuhub\Models\WebFormTemplate');
+    }
+
 
     public function getCreatedAtAttribute($value)
     {

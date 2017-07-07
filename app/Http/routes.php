@@ -233,6 +233,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report/records/generateReportExcel', 'Reports\RecordReportController@generateReportExcel');
     Route::get('/report/records/getWebFormList/{id}', 'Reports\RecordReportController@getNetworkWebForms');
     Route::resource('/report/records', 'Reports\RecordReportController');
+
+    Route::get('/report/hedis_export/generate', 'Reports\HedisExportController@generate');
+    Route::get('/report/hedis_export/export/{id}', 'Reports\HedisExportController@export');
+    Route::get('/report/hedis_export', 'Reports\HedisExportController@index');
     
     Route::resource('/report/export-patient-activity', 'Reports\PatientExportController');
     Route::get('/report/export-patient-activity/get-patient-excel', 'Reports\PatientExportController@generatePatientExcel');

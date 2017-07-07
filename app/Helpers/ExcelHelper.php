@@ -8,7 +8,7 @@ use myocuhub\Events\MakeAuditEntry;
 
 trait ExcelHelper
 {
-    public static function exportExcel($data, $fileName, $requestIP, $widthArray = array(), $fileType = 'xlsx')
+    public static function exportExcel($data, $fileName, $requestIP, $widthArray = array(), $fileType = 'xlsx', $file_action = 'export')
     {
 
         $action = 'Exported File - ' . $fileName;
@@ -17,7 +17,8 @@ trait ExcelHelper
         $ip = $requestIP;
         Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
 
-        Excel::create($fileName, function ($excel) use ($data, $widthArray) {
+        
+        $excel = Excel::create($fileName, function ($excel) use ($data, $widthArray) {
             $excel->sheet('Audits', function ($sheet) use ($data, $widthArray) {
                 $sheet->setWidth($widthArray);
                 $sheet->setPageMargin(0.25);
@@ -30,7 +31,13 @@ trait ExcelHelper
                     ));
                 });
             });
-        })->export($fileType);
+        });
+
+        if($file_action != 'export') {
+            $excel->store($fileType, $file_action);
+        } else {
+            $excel->export($fileType);
+        }
 
         return true;
     }

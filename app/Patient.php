@@ -63,6 +63,11 @@ class Patient extends Model
         return $this->hasOne('myocuhub\Models\PracticePatient');
     }
 
+    public function patientInsurance()
+    {
+        return $this->hasOne('myocuhub\Models\PatientInsurance');
+    }
+
     public function files()
     {
         return $this->hasMany(PatientFile::class);

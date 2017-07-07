@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
         \myocuhub\Console\Commands\LimitStageName::class,
         \myocuhub\Console\Commands\PostAppointmentEngagement::class,
 		\myocuhub\Console\Commands\ClearethnicGroupCode::class,
+        \myocuhub\Console\Commands\HedisSupplement::class,
     ];
 
     /**

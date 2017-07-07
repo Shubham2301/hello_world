@@ -52,4 +52,9 @@ class ReportPolicy
         $user = Auth::user();
     	return ($user->checkUserLevel('Network') && $user->hasRole('care-console') && $user->hasRole('reports'));
     }
+
+    public function accessHedisExport(){
+        $user = Auth::user();
+        return ($user->checkUserLevel('Ocuhub'));
+    }
 }
