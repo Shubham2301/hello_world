@@ -95,7 +95,6 @@ class HedisExport
         if (!self::checkCredential($network_id)) {
             $this->export_status['Mode of transfer'] = 'Not transferred. Data exported as file.';
         } else {
-
             $file_data = self::generateFileData($patient_list);
 
             self::storeFileData($file_data, $network_id);
@@ -292,10 +291,16 @@ class HedisExport
     {
         switch ($field_type) {
             case 'product_id':
+                $product_id = '';
                 $patient_referral_history = $data->load('referralHistory')->referralHistory;
                 if ($patient_referral_history) {
-                    return $patient_referral_history->referred_by_practice;
+                    $product_id = $patient_referral_history->referred_by_practice;
                 }
+
+                if ($product_id == 'Medicaid' || $product_id == 'Medicare' || $product_id == 'Commercial') {
+                    return $product_id;
+                }
+                return '';
                 break;
             case 'provider_speciality_taxonomy':
             
