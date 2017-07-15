@@ -13,7 +13,7 @@
             <input type="checkbox" value="{{ $file->id }}" class="selected_files file_checkbox" />
         </div>
         <div class="col-xs-10">
-            <a href="downloadpatientfile/{{ $file->id }}" target="_blank" class="file_name" > {{ $file->display_name }}</a>
+            <a href="/downloadpatientfile/{{ $file->id }}" target="_blank" class="file_name" > {{ $file->display_name }}</a>
         </div>
     </div>
 @endforeach

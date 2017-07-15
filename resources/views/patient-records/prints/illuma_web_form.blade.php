@@ -137,7 +137,7 @@
             </div>
 
             <div class="col-xs-12">
-                <p><span class="text_bold">Blood Presurres </span>&nbsp; &nbsp;<span><u>{{isset($data['record']['blood_pressure_1']) ? $data['record']['blood_pressure_1'] : ''}}</u></span>&nbsp;over&nbsp;<span><u>{{isset($data['record']['blood_pressure_2']) ? $data['record']['blood_pressure_2'] : ''}}</u></span></p>
+                <p><span class="text_bold">Blood Pressure </span>&nbsp; &nbsp;<span><u>{{( isset($data['record']['blood_pressure_1']) && $data['record']['blood_pressure_1'] != '') ? $data['record']['blood_pressure_1'] : '___'}}</u></span>&nbsp;over&nbsp;<span><u>{{( isset($data['record']['blood_pressure_2']) && $data['record']['blood_pressure_2'] != '') ? $data['record']['blood_pressure_2'] : '___'}}</u></span></p>
             </div>
             <div class="col-xs-12">
                 <p><span class="text_bold">IOP</span>&nbsp; &nbsp;<span>{{isset($data['record']['iop']) ? $data['record']['iop'] : ''}}</span></p>
@@ -169,16 +169,20 @@
                 </div>
                 <div class="col-xs-offset-1 col-xs-11">
                     @if(isset($data['record']['diabetes_related_diagnosis']) )
-                        <p class="text_bold">ICD-10 Codes</p>
+                    <p><span class="text_bold">ICD-10 Codes - </span>{{implode('; ', $data['record']['diabetes_related_diagnosis'])}}</p> 
                     @endif
                 </div>
-                <div class="col-xs-offset-2 col-xs-10">
-                    @if(isset($data['record']['diabetes_related_diagnosis']) )
-                        @foreach($data['record']['diabetes_related_diagnosis'] as $diagnosis)
-                            <p class="">{{$diagnosis}}</p>
-                        @endforeach
+                <div class="col-xs-offset-1 col-xs-11">
+                    @if(isset($data['record']['diabetes_related_diagnosis_cpt_codes']) )
+                    <p><span class="text_bold">CPT Codes -</span> {{implode('; ', $data['record']['diabetes_related_diagnosis_cpt_codes'])}}</p>
                     @endif
                 </div>
+                <div class="col-xs-offset-1 col-xs-11">
+                    @if(isset($data['record']['diabetes_related_diagnosis_hcpcs_code']) )
+                    <p><span class="text_bold">HCPCS Codes -</span> {{implode('; ', $data['record']['diabetes_related_diagnosis_hcpcs_code'])}}</p>
+                    @endif
+                </div>
+               
 
                 <div class="col-xs-offset-1 col-xs-5">
                     <p>No diabetic retinopathy</p>
@@ -291,7 +295,7 @@
             </div>
             @endif
         </div>
-        <div class="row">
+        <div class="row" style="margin-top: 20px;">
             <div class="col-xs-12">
                 <p class="section_header">Patient Follow-up</p>
             </div>

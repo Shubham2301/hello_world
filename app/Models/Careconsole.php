@@ -45,6 +45,14 @@ class Careconsole extends Model
     /**
      * @return mixed
      */
+    public function latestContactHistory()
+    {
+        return $this->hasOne('myocuhub\Models\ContactHistory', 'console_id')->orderBy('updated_at', 'desc');
+    }
+
+    /**
+     * @return mixed
+     */
     public function referralHistory()
     {
         return $this->belongsTo('myocuhub\Models\ReferralHistory', 'referral_id');

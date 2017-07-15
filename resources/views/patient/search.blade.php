@@ -66,8 +66,8 @@
             <button type="button" data-toggle="modal" data-target="#importModal" class="btn import-btn open_import">Import</button>
             @endcan
 
-			<input type="hidden" id="triangle_up_image_path" value="{{URL::asset('images/triangle-up.png')}}">
-			<input type="hidden" id="triangle_down_image_path" value="{{URL::asset('images/triangle-down.png')}}">
+            <input type="hidden" id="triangle_up_image_path" value="{{URL::asset('images/triangle-up.png')}}">
+            <input type="hidden" id="triangle_down_image_path" value="{{URL::asset('images/triangle-down.png')}}">
         </div>
         <p id="search_results" class="search_result"></p>
         <div class="row search_header arial top_margin_large">
@@ -96,12 +96,14 @@
             <div class="col-xs-2">
                 <input type="hidden" id="delete_practice_img" value="{{asset('images/delete-natural-hover.png')}}">
                 <input type="hidden" id="schedule_patient_img" value="{{ Auth::user()->isSuperAdmin() ? '' : asset('images/schedule-icon-01.png')}}">
+                <input type="hidden" id="patient_records_img" value="{{ asset('images/records-health.png')}}">
                 <!--            <p class="" style="color:#333"><span class="glyphicon glyphicon-chevron-left p_left" id="search_practice_button" aria-hidden="true"></span> <span class="page_info"></span><span class="glyphicon glyphicon-chevron-right p_right" id="search_practice_button" aria-hidden="true"></span></p>-->
             </div>
         </div>
     </div>
-	<input type="hidden" value="" id="current_sort_field">
-	<input type="hidden" value="" id="current_sort_order">
+    <input type="hidden" value="" id="current_sort_field">
+    <input type="hidden" value="" id="current_sort_order">
+    @include('patient.files_upload')
     <div class="row content-row-margin patient_admin_back">
         <div class="col-xs-2">
             <button type="button" class="btn back patient_back">Back</button>

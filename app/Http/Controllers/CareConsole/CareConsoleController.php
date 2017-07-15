@@ -27,6 +27,7 @@ use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
 use myocuhub\Services\CareConsoleService;
+use myocuhub\Services\CustomFileExport\HedisSupplementary\HedisExport;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
 
@@ -40,12 +41,14 @@ class CareConsoleController extends Controller
     private $KPIService;
     private $ActionService;
     private $CareConsoleService;
+    private $AnthemExport;
 
-    public function __construct(KPIService $KPIService, ActionService $ActionService, CareConsoleService $CareConsoleService)
+    public function __construct(KPIService $KPIService, ActionService $ActionService, CareConsoleService $CareConsoleService, HedisExport $HedisExport)
     {
         $this->KPIService = $KPIService;
         $this->ActionService = $ActionService;
         $this->CareConsoleService = $CareConsoleService;
+        $this->HedisExport = $HedisExport;
         $this->middleware('role:care-console,0');
     }
 

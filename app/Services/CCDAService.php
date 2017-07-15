@@ -59,7 +59,6 @@ class CCDAService
         }
     }
 
-
     public function updateDemographics($ccdaInJson, $patientID)
     {
         $data = json_decode($ccdaInJson, true);

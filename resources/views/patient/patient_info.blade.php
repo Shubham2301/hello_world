@@ -138,17 +138,6 @@
 		</div>
 		<div class="col-xs-3 no-padding">
 			<div class="patient_files_content">
-				<!--
-<div class="patient_file_item row">
-<div class="col-xs-6">
-<p class="file_name" style="font-size:11px; margin-top:3px;">CCDA-24-12-2016</p>
-</div>
-<div class="col-xs-2">
-<a href="" class="view_file" >View</a></div>
-<div class="col-xs-4">
-<a href="" class="download_file">Download</a></div>
-</div>
--->
 			</div>
 		</div>
 	</div>
@@ -200,7 +189,6 @@
 
 <input type="hidden" id="clear_image_path" value="{{URL::asset('images/close-active.png')}}">
 <div id = "file_upload_view">
-
-	@include('patient.files_upload')
+	
 </div>
 

@@ -75,7 +75,7 @@ Reporting
   @if(policy(new \myocuhub\Http\Controllers\Reports\ReportController)->accessRecordReportController())
   <a href="/report/records" class="report_sidebar_button {{ array_key_exists('record-report', $data) ? 'active' : '' }}">
     <span class="report_sidebar_image">
-      <span><img src="{{elixir('images/sidebar/performance-report.png')}}"></span>
+      <span><img src="{{elixir('images/sidebar/real-time-icon.png')}}"></span>
     </span>
     <span class="report_sidebar_text">
       <span class="text">Record Report</span>
@@ -85,13 +85,23 @@ Reporting
   @if(policy(new \myocuhub\Http\Controllers\Reports\ReportController)->accessPatientExportController())
   <a href="/report/export-patient-activity" class="report_sidebar_button {{ array_key_exists('export-patient-activity', $data) ? 'active' : '' }}">
     <span class="report_sidebar_image">
-      <span><img src="{{elixir('images/sidebar/performance-report.png')}}"></span>
+      <span><img src="{{elixir('images/sidebar/historical-icon.png')}}"></span>
     </span>
     <span class="report_sidebar_text">
       <span class="text">Export Patient Activity</span>
     </span>
   </a>
-  @endif  
+  @endif
+  @if(policy(new \myocuhub\Http\Controllers\Reports\ReportController)->accessHedisExport())
+  <a href="/report/hedis_export" class="report_sidebar_button {{ array_key_exists('hedis_export', $data) ? 'active' : '' }}">
+    <span class="report_sidebar_image">
+      <span><img src="{{elixir('images/sidebar/reports-reachrate.png')}}"></span>
+    </span>
+    <span class="report_sidebar_text">
+      <span class="text">HEDIS Export</span>
+    </span>
+  </a>
+  @endif
 
 
 </div>
