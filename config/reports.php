@@ -31,4 +31,9 @@ return [
         'past_appointment_existing_relationship' => 3,
         'past_appointment_non_existing_relationship' => 4,
     ],
+
+    'appointment_practice_type' => [
+        'admin_created' => 1,
+        'manually_created' => 2
+    ],
 ];

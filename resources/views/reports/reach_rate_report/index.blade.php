@@ -258,6 +258,28 @@
                     </span>
                 </span>
                 <span>
+                    <span class="title arial_italic">
+                        <span>
+                            In network
+                        </span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count appointment_scheduled_in_network">
+                        </span>
+                    </span>
+                </span>
+                <span>
+                    <span class="title arial_italic" style="border-bottom: 1px solid #4d4d4d;margin-bottom: 1em;">
+                        <span>
+                            Out of network
+                        </span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count appointment_scheduled_out_of_network">
+                        </span>
+                    </span>
+                </span>
+                <span>
                     <span class="title">
                         <span class="patient_list" id="appointment_scheduled_existing_relationship" data-name="Appointment Scheduled Existing Relationship">
                             <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Future (<span class ="arial_italic">Existing Relationship</span>)
@@ -309,6 +331,28 @@
                     </span>
                 </span>
                 <span>
+                    <span class="title arial_italic">
+                        <span>
+                            In network
+                        </span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count previously_scheduled_in_network">
+                        </span>
+                    </span>
+                </span>
+                <span>
+                    <span class="title arial_italic" style="border-bottom: 1px solid #4d4d4d;margin-bottom: 1em;">
+                        <span>
+                            Out of network
+                        </span>
+                    </span>
+                    <span class="count">
+                        <span class="category_count previously_scheduled_out_of_network">
+                        </span>
+                    </span>
+                </span>
+                <span>
                     <span class="title">
                         <span class="patient_list" id="previously_appointment_scheduled_existing_relationship" data-name="Previously Appointment Scheduled Existing Relationship">
                             <img src="{{ elixir('images/sidebar/green-dot.png') }}"> Future (<span class ="arial_italic">Existing Relationship</span>)
@@ -351,8 +395,7 @@
                         <span class="category_count previously_past_appointment_non_existing_relationship patient_list" id="previously_past_appointment_non_existing_relationship" data-name="Previously Past Appointment Non Existing Relationship">
                         </span>
                     </span>
-                </span>                
-
+                </span>                                                            
             </span>
             <span class="right">
                 <span class="right_row section_break">
