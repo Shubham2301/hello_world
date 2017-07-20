@@ -105,6 +105,8 @@ trait ReachRateTrait
 
                         if (isset($contactHistory->appointments->practice)) {
                             $results[$patient_count]['appointment_practice_type'] = isset($contactHistory->appointments->practice->manually_created) ? config('reports.appointment_practice_type.manually_created') : config('reports.appointment_practice_type.admin_created');
+                        } else {
+                            $results[$patient_count]['appointment_practice_type'] = config('reports.appointment_practice_type.manually_created');
                         }
                         break;
                     case 'previously-scheduled':
@@ -129,6 +131,8 @@ trait ReachRateTrait
 
                         if (isset($contactHistory->appointments->practice)) {
                             $results[$patient_count]['appointment_practice_type'] = isset($contactHistory->appointments->practice->manually_created) ? config('reports.appointment_practice_type.manually_created') : config('reports.appointment_practice_type.admin_created');
+                        } else {
+                            $results[$patient_count]['appointment_practice_type'] = config('reports.appointment_practice_type.manually_created');
                         }
 
                         $results[$patient_count]['scheduled_on'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
