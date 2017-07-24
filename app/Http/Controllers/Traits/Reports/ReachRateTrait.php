@@ -102,6 +102,12 @@ trait ReachRateTrait
                         if (isset($results[$patient_count]['appointment_completed'])) {
                             $results[$patient_count]['show_stage_change'] = $contactHistory->days_in_prev_stage;
                         }
+
+                        if (isset($contactHistory->appointments->practice)) {
+                            $results[$patient_count]['appointment_practice_type'] = isset($contactHistory->appointments->practice->manually_created) ? config('reports.appointment_practice_type.manually_created') : config('reports.appointment_practice_type.admin_created');
+                        } else {
+                            $results[$patient_count]['appointment_practice_type'] = config('reports.appointment_practice_type.manually_created');
+                        }
                         break;
                     case 'previously-scheduled':
                         $results[$patient_count]['reached'] = isset($results[$patient_count]['reached']) ? $results[$patient_count]['reached'] + 1 : 1;
@@ -121,6 +127,12 @@ trait ReachRateTrait
                             $results[$patient_count]['previously_appointment_scheduled'] = ($existingRelationship == 1) ? config('reports.appointment_status.scheduled_appointment_existing_relationship') : config('reports.appointment_status.scheduled_appointment_non_existing_relationship') ;
                         } else {
                             $results[$patient_count]['previously_appointment_scheduled'] = ($existingRelationship == 1) ? config('reports.appointment_status.past_appointment_existing_relationship') : config('reports.appointment_status.past_appointment_non_existing_relationship') ;
+                        }
+
+                        if (isset($contactHistory->appointments->practice)) {
+                            $results[$patient_count]['appointment_practice_type'] = isset($contactHistory->appointments->practice->manually_created) ? config('reports.appointment_practice_type.manually_created') : config('reports.appointment_practice_type.admin_created');
+                        } else {
+                            $results[$patient_count]['appointment_practice_type'] = config('reports.appointment_practice_type.manually_created');
                         }
 
                         $results[$patient_count]['scheduled_on'] = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
@@ -321,10 +333,15 @@ trait ReachRateTrait
             'unaware_of_diagnosis_attempts' => 0,
             'incorrect_data' => 0,
             'incorrect_data_attempts' => 0,
+            'appointment_scheduled_in_network' => 0,
+            'appointment_scheduled_out_of_network' => 0,
+            'appointment_scheduled_existing_relationship' => 0,
             'appointment_scheduled_existing_relationship' => 0,
             'appointment_scheduled_non_existing_relationship' => 0,
             'past_appointment_existing_relationship' => 0,
             'past_appointment_non_existing_relationship' => 0,
+            'previously_scheduled_in_network' => 0,
+            'previously_scheduled_out_of_network' => 0,
             'previously_appointment_scheduled_existing_relationship' => 0,
             'previously_appointment_scheduled_non_existing_relationship' => 0,
             'previously_past_appointment_existing_relationship' => 0,
@@ -469,6 +486,17 @@ trait ReachRateTrait
                                $reportMetrics['past_appointment_non_existing_relationship']++;
                                break;
                 }
+
+                if (array_key_exists('appointment_practice_type', $result)) {
+                    switch ($result['appointment_practice_type']) {
+                        case config('reports.appointment_practice_type.admin_created'):
+                            $reportMetrics['appointment_scheduled_in_network']++;
+                            break;
+                        case config('reports.appointment_practice_type.manually_created'):
+                            $reportMetrics['appointment_scheduled_out_of_network']++;
+                            break;
+                    }
+                }
             }
 
             if (array_key_exists('previously_appointment_scheduled', $result)) {
@@ -486,6 +514,17 @@ trait ReachRateTrait
                                $reportMetrics['previously_past_appointment_non_existing_relationship']++;
                                break;
                 }
+
+                if (array_key_exists('appointment_practice_type', $result)) {
+                    switch ($result['appointment_practice_type']) {
+                        case config('reports.appointment_practice_type.admin_created'):
+                            $reportMetrics['previously_scheduled_in_network']++;
+                            break;
+                        case config('reports.appointment_practice_type.manually_created'):
+                            $reportMetrics['previously_scheduled_out_of_network']++;
+                            break;
+                    }
+                }
             }
 
             if (array_key_exists('appointment_completed', $result)) {
@@ -502,7 +541,7 @@ trait ReachRateTrait
 
             if (array_key_exists('reports', $result)) {
                 $reportMetrics['reports']++;
-                $reportMetrics['exam_report']++; 
+                $reportMetrics['exam_report']++;
                 if (array_key_exists('clinical_finding_action', $result)) {
                     $reportMetrics[$result['clinical_finding_action']]++;
                 }
