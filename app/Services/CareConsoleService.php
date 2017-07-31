@@ -128,9 +128,19 @@ class CareConsoleService
         $i = 0;
         $fields = [];
 
+        $page = $this->getPage();
+        $skip_count = config('constants.default_careconsole_paginate') * ($page);
+        
+
         $stage = CareconsoleStage::find($stageID);
 
-        $patients = Careconsole::getConsolePatientsData($networkID, $stage->name, $kpiName, $filterType, $filterValue);
+        // $patients = Careconsole::getConsolePatientsData($networkID, $stage->name, $kpiName, $filterType, $filterValue, $sortField, $sortOrder, $skip_count)->toArray();
+
+        $patients = Careconsole::getConsolePatientsData($networkID, $stage->name, $kpiName, $filterType, $filterValue, $sortField, $sortOrder);
+
+        $patients = $this->paginatePatienListCollection($patients, $sortOrder, $sortField);
+
+        $patients = $patients->slice($skip_count, config('constants.default_careconsole_paginate'));
 
         $headers = CareconsoleStage::find($stageID)->patientFields;
 
@@ -168,12 +178,12 @@ class CareConsoleService
             $patientsData = Careconsole::filterPatientByDaysPendings($llimit, $ulimit, $patientsData);
         }
 
-        $patientsData = $this->paginateResults($patientsData);
+        // $patientsData = $this->paginateResults($patientsData);
 
         $listing['patients'] = $patientsData;
 
         $listing['headers'] = $headerData;
-        $listing['lastpage'] = $this->countChunk;
+        $listing['lastpage'] = sizeof($patientsData) != 0 ? 1000 : $this->getPage() - 1;
 
         return $listing;
     }
@@ -188,11 +198,20 @@ class CareConsoleService
         $userID = $user->id;
         $networkID = $user->userNetwork->first()->network_id;
 
+        $page = $this->getPage();
+        $skip_count = config('constants.default_careconsole_paginate') * ($page);
+
         $headers = CareconsoleStage::find($stageID)->patientFields;
 
         $bucket = CareconsoleStage::find($stageID);
 
-        $patients = Careconsole::getConsolePatientsData($networkID, $bucket->name, $kpiName, $filterType, $filterValue);
+        // $patients = Careconsole::getConsolePatientsData($networkID, $bucket->name, $kpiName, $filterType, $filterValue);
+
+        $patients = Careconsole::getConsolePatientsData($networkID, $bucket->name, $kpiName, $filterType, $filterValue, $sortField, $sortOrder);
+
+        $patients = $this->paginatePatienListCollection($patients, $sortOrder, $sortField);
+
+        $patients = $patients->slice($skip_count, config('constants.default_careconsole_paginate'));
 
 
         if ($sortField == '') {
@@ -275,7 +294,7 @@ class CareConsoleService
                 break;
             case 'patient-name':
                 return $patient['firstname'].' '.$patient['lastname'];
-                break;        
+                break;
             case 'full-name':
                 return $patient['lastname'] . ', ' . $patient['firstname'] . ' ' . $patient['middlename'];
                 break;
@@ -327,7 +346,7 @@ class CareConsoleService
                     $provider = '-';
                 } else {
                     $provider = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname ;
-                }  
+                }
                 return $provider;
                 break;
             case 'practice-name':
@@ -339,16 +358,16 @@ class CareConsoleService
             case 'location-name':
                 $appointment = Appointment::find($patient['appointment_id']);
                 $practiceLocation = PracticeLocation::find($appointment->location_id);
-                $locationInfo = $practiceLocation ? $practiceLocation->locationname : '-'; 
+                $locationInfo = $practiceLocation ? $practiceLocation->locationname : '-';
                 return $locationInfo;
-                break;                                                                                       
+                break;
             case 'scheduled-to':
                 $appointment = Appointment::find($patient['appointment_id']);
                 $provider = User::find($appointment->provider_id);
                 if (!$provider) {
                     $provider = '';
                 } else {
-                    $provider = $provider->title . ' ' . $provider->lastname . ', ' . $provider->firstname;
+                    $provider = $provider->title . ' ' . $provider->firstname . ' ' . $provider->lastname;
                     if (trim($provider) != '') {
                         $provider .= ' from ';
                     } else {
@@ -513,8 +532,8 @@ class CareConsoleService
                 $priorityNote = ContactHistory::where('console_id', $patient->id)
                     ->where(function ($subquery) {
                         $subquery->whereHas('actionResult', function ($q) {
-                                $q->where('name', 'mark-as-priority');
-                            })
+                            $q->where('name', 'mark-as-priority');
+                        })
                             ->orWhereHas('action', function ($q) {
                                 $q->where('name', 'mark-as-priority');
                             });
@@ -527,8 +546,8 @@ class CareConsoleService
                 $recallNote = ContactHistory::where('console_id', $patient->id)
                     ->where(function ($subquery) {
                         $subquery->whereHas('actionResult', function ($q) {
-                                $q->where('name', 'recall-later');
-                            })
+                            $q->where('name', 'recall-later');
+                        })
                             ->orWhereHas('action', function ($q) {
                                 $q->where('name', 'recall-later');
                                 $q->orWhere('name', 'annual-exam');
@@ -572,6 +591,7 @@ class CareConsoleService
      */
     public function arrayMsort($array, $cols)
     {
+        return $array;
         $colarr = array();
         foreach ($cols as $col => $order) {
             $colarr[$col] = array();
@@ -658,5 +678,68 @@ class CareConsoleService
         }
 
         return [];
+    }
+
+    public function paginatePatienListCollection($patient_list, $sortType, $sortVariable)
+    {
+        if ($sortType == 'SORT_ASC') {
+            $sortDesc = false;
+        } else {
+            $sortDesc = true;
+        }
+
+        switch ($sortVariable) {
+
+            case 'contact-attempts':
+                return $patient_list->sortBy(function ($console_patients) {
+                    return $console_patients->activeContactHistory->count();
+                }, null, $sortDesc);
+                break;
+            case 'phone':
+                return $patient_list->sortBy(function ($console_patients) {
+                    $phone = '';
+                    if ($console_patients->cellphone != '') {
+                        $phone = $console_patients->cellphone;
+                    } elseif ($console_patients->homephone != '') {
+                        $phone = $console_patients->homephone;
+                    } else {
+                        $phone = $console_patients->workphone;
+                    }
+                    return $phone;
+                }, null, $sortDesc);
+                break;
+            case 'last-scheduled-to':
+            case 'scheduled-to':
+                return $patient_list->sortBy(function ($console_patients) {
+                    $scheduled_to = '';
+                    if ($console_patients->appointment) {
+                        if ($console_patients->appointment->provider) {
+                            if ($console_patients->appointment->provider->title != '') {
+                                $scheduled_to .= $console_patients->appointment->provider->title . ' ';
+                            }
+                            $scheduled_to .= $console_patients->appointment->provider->name . ' ';
+                        }
+                        if ($console_patients->appointment->practice) {
+                            $scheduled_to .= $console_patients->appointment->practice->name . ' ';
+                        }
+                        if ($console_patients->appointment->practiceLocation) {
+                            $scheduled_to .= $console_patients->appointment->practiceLocation->locationname;
+                        }
+                    }
+                    return $scheduled_to;
+                }, null, $sortDesc);
+                break;
+            case 'archive-reason':
+                return $patient_list->sortBy(function ($console_patients) {
+                    if ($console_patients->latestArchiveContactHistory && $console_patients->latestArchiveContactHistory->actionResult) {
+                        return $console_patients->latestArchiveContactHistory->actionResult->display_name;
+                    }
+                    return '';
+                }, null, $sortDesc);
+                break;
+            default:
+        }
+
+        return $patient_list;
     }
 }
