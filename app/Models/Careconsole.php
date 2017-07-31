@@ -53,6 +53,22 @@ class Careconsole extends Model
     /**
      * @return mixed
      */
+    public function latestArchiveContactHistory()
+    {
+        return $this->hasOne('myocuhub\Models\ContactHistory', 'console_id')->whereHas('actionResult', function ($q) {
+                        $q->where('name', 'patient-declined-services');
+                        $q->orwhere('name', 'other-reasons-for-declining');
+                        $q->orwhere('name', 'already-seen-by-outside-dr');
+                        $q->orwhere('name', 'no-need-to-schedule');
+                        $q->orwhere('name', 'no-insurance');
+                        $q->orwhere('name', 'closed');
+                        $q->orwhere('name', 'incomplete');
+                    })->orderBy('updated_at', 'desc');
+    }
+
+    /**
+     * @return mixed
+     */
     public function referralHistory()
     {
         return $this->belongsTo('myocuhub\Models\ReferralHistory', 'referral_id');
@@ -675,7 +691,7 @@ class Careconsole extends Model
     /**
      * @param $networkID
      */
-    public static function getConsolePatientsData($networkID, $stageName, $kpiName, $filterType, $filterValue)
+    public static function getConsolePatientsData($networkID, $stageName, $kpiName, $filterType, $filterValue, $sortField, $sortOrder)
     {
         $query = self::query();
         
@@ -683,13 +699,23 @@ class Careconsole extends Model
 
         $query->consoleKpiPatientQuery($kpiName);
 
-        if($filterValue != '') {
-          $query->consolepatientListFilter($filterType, $filterValue);
+        if ($filterValue != '') {
+            $query->consolepatientListFilter($filterType, $filterValue);
         }
 
         $query->leftjoin('patients', 'careconsole.patient_id', '=', 'patients.id');
         $query->leftjoin('appointments', 'careconsole.appointment_id', '=', 'appointments.id');
-        return $query->get(['*', 'careconsole.id', 'careconsole.created_at', 'careconsole.patient_id', 'careconsole.appointment_id']);
+        $query->leftjoin('careconsole_stages', 'careconsole.stage_id', '=', 'careconsole_stages.id');
+
+        $query->with('activeContactHistory');
+        $query->with('appointment.provider');
+        $query->with('appointment.practice');
+        $query->with('appointment.practiceLocation');
+        $query->with('latestArchiveContactHistory');
+
+        $query->consoleSortQuery($sortField, $sortOrder);
+
+        return $query->select('careconsole.*', 'patients.firstname', 'patients.middlename', 'patients.lastname', 'patients.email', 'patients.cellphone', 'patients.homephone', 'patients.workphone', 'patients.pcp', 'patients.special_request', 'patients.addressline1', 'patients.addressline2', 'patients.birthdate', 'appointments.practice_id', 'appointments.provider_id', 'appointments.location_id', 'appointments.start_datetime', 'appointments.appointmenttype', 'careconsole_stages.display_name')->get();
     }
 
     public static function scopeConsoleStagePatientQuery($query, $networkID, $stageName)
@@ -721,8 +747,9 @@ class Careconsole extends Model
         return $query;
     }
 
-    public static function scopeConsoleKpiPatientQuery($query, $kpiName) {
-      switch ($kpiName) {
+    public static function scopeConsoleKpiPatientQuery($query, $kpiName)
+    {
+        switch ($kpiName) {
             case 'contact-attempted':
               $query->has('activeContactHistory');
               break;
@@ -819,10 +846,10 @@ class Careconsole extends Model
             $query->whereHas('contactHistory', function ($subquery) use ($filterValue) {
                 $subquery->whereHas('actionResult', function ($subquery) use ($filterValue) {
                     $subquery->where('name', 'LIKE', '%' . $filterValue . '%');
-                })->orderBy('created_at','desc')->limit(1);
+                })->orderBy('created_at', 'desc')->limit(1);
                 $subquery->orWhereHas('action', function ($subquery) use ($filterValue) {
                     $subquery->where('name', 'LIKE', '%' . $filterValue . '%');
-                })->orderBy('created_at','desc')->limit(1);
+                })->orderBy('created_at', 'desc')->limit(1);
             });
             break;
           case 'current-stage':
@@ -833,6 +860,56 @@ class Careconsole extends Model
           default:
         }
 
+        return $query;
+    }
+
+    public static function scopeConsoleSortQuery($query, $sortVariable, $sortType)
+    {
+        if ($sortType == 'SORT_ASC') { // temporary
+            $sortType = 'asc';
+        } else {
+            $sortType = 'desc';
+        }
+        
+        switch ($sortVariable) {
+        case 'days-pending':
+            $sortType = $sortType == 'asc' ? 'desc' : 'asc';
+            $query->orderBy('stage_updated_at', $sortType);
+            break;
+        case 'full-name':
+            $query->orderBy('lastname', $sortType);
+            $query->orderBy('firstname', $sortType);
+            $query->orderBy('middlename', $sortType);
+            break;
+        case 'request-received':
+            $query->orderBy('careconsole.created_at', $sortType);
+            break;
+        case 'special-request':
+            $query->orderBy('special_request', $sortType);
+            break;
+        case 'contact-attempts':
+            break;
+        case 'last-scheduled-to':
+        case 'scheduled-to':
+            break;
+        case 'last-appointment-date':
+        case 'appointment-date':
+            $query->orderBy('start_datetime', $sortType);
+            break;
+        case 'appointment-type':
+            $query->orderBy('appointmenttype', $sortType);
+            break;
+        case 'archived-at':
+            $query->orderBy('archived_date', $sortType);
+            break;
+        case 'recall-at':
+            $query->orderBy('recall_date', $sortType);
+            break;
+        case 'current-stage':
+            $query->orderBy('careconsole_stages.display_name', $sortType);
+            break;
+        default:
+        }
         return $query;
     }
 }
