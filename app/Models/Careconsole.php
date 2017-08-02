@@ -56,14 +56,14 @@ class Careconsole extends Model
     public function latestArchiveContactHistory()
     {
         return $this->hasOne('myocuhub\Models\ContactHistory', 'console_id')->whereHas('actionResult', function ($q) {
-                        $q->where('name', 'patient-declined-services');
-                        $q->orwhere('name', 'other-reasons-for-declining');
-                        $q->orwhere('name', 'already-seen-by-outside-dr');
-                        $q->orwhere('name', 'no-need-to-schedule');
-                        $q->orwhere('name', 'no-insurance');
-                        $q->orwhere('name', 'closed');
-                        $q->orwhere('name', 'incomplete');
-                    })->orderBy('updated_at', 'desc');
+            $q->where('name', 'patient-declined-services');
+            $q->orwhere('name', 'other-reasons-for-declining');
+            $q->orwhere('name', 'already-seen-by-outside-dr');
+            $q->orwhere('name', 'no-need-to-schedule');
+            $q->orwhere('name', 'no-insurance');
+            $q->orwhere('name', 'closed');
+            $q->orwhere('name', 'incomplete');
+        })->orderBy('updated_at', 'desc');
     }
 
     /**
@@ -715,7 +715,7 @@ class Careconsole extends Model
 
         $query->consoleSortQuery($sortField, $sortOrder);
 
-        return $query->select('careconsole.*', 'patients.firstname', 'patients.middlename', 'patients.lastname', 'patients.email', 'patients.cellphone', 'patients.homephone', 'patients.workphone', 'patients.pcp', 'patients.special_request', 'patients.addressline1', 'patients.addressline2', 'patients.birthdate', 'appointments.practice_id', 'appointments.provider_id', 'appointments.location_id', 'appointments.start_datetime', 'appointments.appointmenttype', 'careconsole_stages.display_name')->get();
+        return $query->select('careconsole.*', 'patients.firstname', 'patients.middlename', 'patients.lastname', 'patients.email', 'patients.cellphone', 'patients.homephone', 'patients.workphone', 'patients.pcp', 'patients.state', 'patients.special_request', 'patients.addressline1', 'patients.addressline2', 'patients.birthdate', 'appointments.practice_id', 'appointments.provider_id', 'appointments.location_id', 'appointments.start_datetime', 'appointments.appointmenttype', 'careconsole_stages.display_name')->get();
     }
 
     public static function scopeConsoleStagePatientQuery($query, $networkID, $stageName)
@@ -842,6 +842,11 @@ class Careconsole extends Model
                 $subquery->where('special_request', 'LIKE', '%' . $filterValue . '%');
             });
             break;
+          case 'state':
+            $query->whereHas('patient', function ($subquery) use ($filterValue) {
+                $subquery->where('state', 'LIKE', '%' . $filterValue . '%');
+            });
+            break;
           case 'archive-reason':
             $query->whereHas('contactHistory', function ($subquery) use ($filterValue) {
                 $subquery->whereHas('actionResult', function ($subquery) use ($filterValue) {
@@ -880,6 +885,9 @@ class Careconsole extends Model
             $query->orderBy('lastname', $sortType);
             $query->orderBy('firstname', $sortType);
             $query->orderBy('middlename', $sortType);
+            break;
+        case 'state':
+            $query->orderBy('state', $sortType);
             break;
         case 'request-received':
             $query->orderBy('careconsole.created_at', $sortType);

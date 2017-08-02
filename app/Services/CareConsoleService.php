@@ -134,8 +134,6 @@ class CareConsoleService
 
         $stage = CareconsoleStage::find($stageID);
 
-        // $patients = Careconsole::getConsolePatientsData($networkID, $stage->name, $kpiName, $filterType, $filterValue, $sortField, $sortOrder, $skip_count)->toArray();
-
         $patients = Careconsole::getConsolePatientsData($networkID, $stage->name, $kpiName, $filterType, $filterValue, $sortField, $sortOrder);
 
         $patients = $this->paginatePatienListCollection($patients, $sortOrder, $sortField);
@@ -292,6 +290,9 @@ class CareConsoleService
             case 'last-name':
                 return $patient['lastname'];
                 break;
+            case 'state':
+                return $patient['state'];
+                break;
             case 'patient-name':
                 return $patient['firstname'].' '.$patient['lastname'];
                 break;
@@ -319,7 +320,7 @@ class CareConsoleService
                 break;
             case 'request-received':
                 $date = new \DateTime($patient['created_at']);
-                return $date->format($dateFormat);
+                return $date->format('m/d/y');
                 break;
             case 'contact-attempts':
                 return ContactHistory::where('console_id', $patient['id'])
@@ -578,6 +579,14 @@ class CareConsoleService
                     ->first();
                 return $last_contact_history ? strip_tags($last_contact_history->notes) : '-';
                 break;
+            case 'last-touched':
+                $contact_history_count = $patient->activeContactHistory->count();
+                if ($contact_history_count > 0) {
+                    $date = new \DateTime($patient->activeContactHistory[$contact_history_count - 1]->created_at);
+                    return $date->format('m/d/y g:i a');
+                }
+                return '-';
+                break;
             default:
                 return '-';
                 break;
@@ -693,6 +702,16 @@ class CareConsoleService
             case 'contact-attempts':
                 return $patient_list->sortBy(function ($console_patients) {
                     return $console_patients->activeContactHistory->count();
+                }, null, $sortDesc);
+                break;
+            case 'last-touched':
+                return $patient_list->sortBy(function ($console_patients) {
+                    $contact_history_count = $console_patients->activeContactHistory->count();
+                    if ($contact_history_count > 0) {
+                        $date = new \DateTime($console_patients->activeContactHistory[$contact_history_count - 1]->created_at);
+                        return $date->format('m/d/y g:i a');
+                    }
+                    return '';
                 }, null, $sortDesc);
                 break;
             case 'phone':
