@@ -46,7 +46,6 @@
                             </div>
                             <div class="col-md-2"></div>
                         </div>
-                        @if(session('network-id') == 9)
                         <div class="row input_row">
                             <div class="col-md-3 form-group">
                                 <label for="exampleInputFile"><strong style="padding-left:3em;" >Mail</strong></label>
@@ -55,7 +54,7 @@
                                 <select name="template" id="template" class="form-control">
                                     <option value="-1">Select Mail Template</option>
                                     @foreach(Helper::mandrillTemplates('bulk-import') as $template_slug => $template_info)
-                                        @if(!$network['multiple_network'] AND in_array('network_specific', $template_info['labels']) AND !in_array(str_replace(' ', '_', strtolower($network['name'])), $template_info['labels']))
+                                        @if(!(session('user-level') == 1) AND in_array('network_specific', $template_info['labels']) AND !in_array(str_replace(' ', '_', strtolower($network['name'])), $template_info['labels']))
                                             @continue
                                         @endif
                                         <option value="{{ $template_slug }}">{{ $template_info['name'] }}</option>
@@ -65,7 +64,6 @@
                             </div>
                             <div class="col-md-2"></div>
                         </div>
-                        @endif
                         <a href="/import/format/xlsx"><div style="color:#000;text-decoration: underline; padding-left:3em;">Download Excel Format</div></a>
                         <div style="color:#FF7777; padding-left:3em;">* Max upload limit 5,000 patients.</div>
                     </div>
