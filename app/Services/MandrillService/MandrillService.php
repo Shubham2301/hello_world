@@ -56,7 +56,10 @@ class MandrillService
 			$templates = $this->mandrill->templates->getList($label);
 			$result = [];
 			foreach ($templates as $template) {
-				$result[$template['slug']] = $template['name'];
+				$result[$template['slug']] = [
+						'name' => $template['name'],
+						'labels' => $template['labels']
+					];
 			}
 			return $result;
 		} catch (Mandrill_Error $e) {
