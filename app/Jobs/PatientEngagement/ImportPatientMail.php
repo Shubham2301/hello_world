@@ -44,7 +44,7 @@ class ImportPatientMail extends PatientEngagement implements ShouldQueue
                 'email' => $patient->email,
             ],
 
-            'subject' => $template['name'],
+            'subject' => '',
             'template' => $template['slug'],
             'vars' => [],
             'attachments' => []

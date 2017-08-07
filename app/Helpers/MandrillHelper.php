@@ -9,7 +9,7 @@ trait MandrillHelper
 
     public static function mandrillTemplates($label = '')
     {
-        return (new MandrillService)->templates($label);
+        return (new MandrillService)->templates($label); 
     }
 
 }
