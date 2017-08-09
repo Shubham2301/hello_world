@@ -41,22 +41,22 @@ class BulkImportController extends Controller
                 $data['networks'] = $networks;
             }
         } elseif (session('user-level') == 2) {
+            $data['multiple_network'] = false;
             $data['id'] = $user->userNetwork->first()->network_id;
             $data['name'] = $user->userNetwork->first()->network->name;
-            $data['multiple_network'] = false;
         } elseif (session('user-level') > 2 && sizeof($user->userNetwork) > 1) {
             $user = Auth::user();
             $userNetworks = $user->userNetwork;
             $networks = array();
+            $data['multiple_network'] = true;
             foreach ($userNetworks as $userNetwork) {
                 $networks[$userNetwork->network_id] = $userNetwork->network->name;
             }
             $data['networks'] = $networks;
-            $data['multiple_network'] = true;
         } else {
+            $data['multiple_network'] = false;
             $data['id'] = $user->userNetwork->first()->network_id;
             $data['name'] = $user->userNetwork->first()->network->name;
-            $data['multiple_network'] = false;
         }
         return view('layouts.import')->with('network', $data);
     }
