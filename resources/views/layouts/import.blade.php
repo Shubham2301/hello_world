@@ -19,7 +19,7 @@
                             </div>
                             <div class="col-md-7 form-group">
 								@if($network['multiple_network'])
-								<select name="network_id" class="form-control" required>
+								<select name="network_id" class="form-control" id="multiple_network_select" required>
                                	<option value="0">Select a Network</option>
 								   @foreach ($network['networks'] as $key => $network)
 								   <option value="{{$key}}">{{$network}}</option>
@@ -54,10 +54,10 @@
                                 <select name="template" id="template" class="form-control">
                                     <option value="-1">Select Mail Template</option>
                                     @foreach(Helper::mandrillTemplates('bulk-import') as $template_slug => $template_info)
-                                        @if(!(session('user-level') == 1) AND in_array('network_specific', $template_info['labels']) AND !in_array(str_replace(' ', '_', strtolower($network['name'])), $template_info['labels']))
+                                        @if(isset($network['name']) AND in_array('network_specific', $template_info['labels']) AND !in_array(str_replace(' ', '_', strtolower($network['name'])), $template_info['labels']))
                                             @continue
                                         @endif
-                                        <option value="{{ $template_slug }}">{{ $template_info['name'] }}</option>
+                                        <option value="{{ $template_slug }}" attr-label="{{ implode(' ', $template_info['labels'] ) }}" >{{ $template_info['name'] }}</option>
                                     @endforeach
                                 </select>
                                 

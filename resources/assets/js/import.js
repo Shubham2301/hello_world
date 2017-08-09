@@ -35,6 +35,27 @@ $(document).ready(function() {
         $('.xlsx_file-input').addClass('active');
     });
 
+    $(document).on('change', '#multiple_network_select', function() {
+        var selected_network = $('#multiple_network_select option:selected').text();
+        selected_network = selected_network.toLocaleLowerCase();
+        selected_network = selected_network.replace(' ', '_');
+        $("#template").val('-1');
+        $("#template option").each(function() {
+            var template_attr = $(this).attr('attr-label');
+            if (template_attr) {
+                if (template_attr.indexOf("network_specific") > -1) {
+                    if (template_attr.indexOf(selected_network) > -1) {
+                        $(this).prop('disabled', false);
+                    } else {
+                        $(this).prop('disabled', true);
+                    }
+                } else {
+                    $(this).prop('disabled', false);
+                }
+            }
+        });
+    });
+
     $(document).on('click', '.open_import', function() {
         $('.xlsx_file-input input[type="file"]').val('');
         $('.filename').html('');
