@@ -231,7 +231,9 @@ class BulkImportController extends Controller
                             }
 
                             if ($template != '-1') {
-                                dispatch((new ImportPatientMail($patient, $template))->onQueue('email'));
+                                if ($patient->email != '') {
+                                    dispatch((new ImportPatientMail($patient, $template))->onQueue('email'));
+                                }
                             }
 
                             $action = "new patient ($patient->id) created and added to console ($careconsole->id) ";
