@@ -534,7 +534,7 @@ class Reports
     public function buildReportsQuery($filters)
     {
         $queryFilters = $this->buildQueryFilters($filters);
-        $query = "Select distinct
+        $query = "Select
                     `careconsole`.`created_at` as careconsole_created_at,
                     `careconsole`.`stage_id`,
                     `careconsole`.`stage_updated_at`,
