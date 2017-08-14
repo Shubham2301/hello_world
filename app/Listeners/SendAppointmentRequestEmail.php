@@ -131,7 +131,6 @@ class SendAppointmentRequestEmail
 
     public function sendProviderMail($appt, $location)
     {
-
         if ($location->email == null || $location->email == '') {
             return false;
         }
@@ -153,7 +152,6 @@ class SendAppointmentRequestEmail
         ];
 
         if (SES::isDirectID($location->email)) {
-
             $loggedInUser = Auth::user();
 
             if (SES::isDirectID($loggedInUser->sesemail)) {
@@ -175,7 +173,6 @@ class SendAppointmentRequestEmail
                 return false;
             }
         } else {
-
             $mandrillService = new MandrillService;
             $template = $mandrillService->templateInfo('Email to provider');
 
@@ -269,7 +266,6 @@ class SendAppointmentRequestEmail
                 $myfile = fopen($tempFileName, "w");
                 $ss = fwrite($myfile, $fileContent);
                 $paths[] = $tempFileName;
-
             } catch (Exception $e) {
                 Log::error($e);
 
@@ -285,14 +281,12 @@ class SendAppointmentRequestEmail
 
         for ($i = 0; $i < sizeOf($patientRecords); $i++) {
             try {
-
                 $pdfObj = $this->createPDF($patientRecords[$i]);
 
                 $PDFPaths = config('constants.paths.pdf');
                 $tempFileName = $PDFPaths['temp_dir'] . 'record-' . $patientRecords[$i] . $PDFPaths['ext'];
                 $pdfObj->save($tempFileName);
                 $paths[] = $tempFileName;
-
             } catch (Exception $e) {
                 Log::error($e);
 

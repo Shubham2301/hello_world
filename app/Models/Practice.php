@@ -23,6 +23,12 @@ class Practice extends Model
     {
         return $this->hasMany('myocuhub\Models\PracticeUser');
     }
+
+    public function appointment()
+    {
+        return $this->hasMany('myocuhub\Models\Appointment');
+    }
+
     public function practiceNetwork()
     {
         return $this->hasMany('myocuhub\Models\PracticeNetwork');
