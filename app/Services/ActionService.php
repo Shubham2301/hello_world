@@ -4,6 +4,7 @@ namespace myocuhub\Services;
 
 use Auth;
 use DateTime;
+use myocuhub\Events\PracticeFirstAppointment;
 use myocuhub\Events\RequestPatientAppointment;
 use myocuhub\Jobs\PatientEngagement\RequestAppointmentPatientMail;
 use myocuhub\Jobs\PatientEngagement\RequestAppointmentPatientSMS;
@@ -15,6 +16,7 @@ use myocuhub\Models\Careconsole;
 use myocuhub\Models\ContactHistory;
 use myocuhub\Models\Kpi;
 use myocuhub\Models\MessageTemplate;
+use myocuhub\Models\Practice;
 use myocuhub\Models\ReferralHistory;
 use myocuhub\Patient;
 use myocuhub\User;
@@ -155,6 +157,12 @@ class ActionService
                         $appointment_type->network_id = session('network-id');
                         $appointment_type->save();
                     }
+
+                    $practice = Practice::withCount('appointment')->find($appointment->practice_id);
+                    if ($practice && $practice->appointment_count == 1) {
+                        $practiceFirstAppointment = new PracticeFirstAppointment($appointment);
+                        event($practiceFirstAppointment);
+                    }
                 }
 
                 $referralHistory = ReferralHistory::find($console->referral_id);
@@ -236,6 +244,12 @@ class ActionService
                         $appointment_type->type = 'ocuhub';
                         $appointment_type->network_id = session('network-id');
                         $appointment_type->save();
+                    }
+
+                    $practice = Practice::withCount('appointment')->find($appointment->practice_id);
+                    if ($practice && $practice->appointment_count == 1) {
+                        $practiceFirstAppointment = new PracticeFirstAppointment($appointment);
+                        event($practiceFirstAppointment);
                     }
                 }
 

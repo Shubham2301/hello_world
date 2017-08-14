@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use myocuhub\Events\AppointmentScheduled;
 use myocuhub\Events\MakeAuditEntry;
+use myocuhub\Events\PracticeFirstAppointment;
 use myocuhub\Facades\SES;
 use myocuhub\Facades\WebScheduling4PC;
 use myocuhub\Http\Controllers\Controller;
@@ -81,6 +82,12 @@ class AppointmentController extends Controller
         } else {
             $appointmentScheduled = new AppointmentScheduled($request, $appointment);
             event($appointmentScheduled);
+
+            $practice = Practice::withCount('appointment')->find($practiceID);
+            if ($practice->appointment_count == 1) {
+                $practiceFirstAppointment = new PracticeFirstAppointment($appointment);
+                event($practiceFirstAppointment);
+            }
         }
 
         $apptStatus['appointment_saved'] = true;

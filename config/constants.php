@@ -43,11 +43,17 @@ return [
             'subject' => 'How was your Appointment',
             'view' => 'emails.post-appointment-patient',
         ],
-
         'send_record_provider' => [
             'subject' => 'New health record created',
             'view' => 'You have created a new health record',
         ],
+        'first_appointment_notification' => [
+            'subject' => 'First appointment for practice scheduled',
+            'view' => 'emails.first-appt-notification',
+            'name' => 'illuma Appointment Notification',
+            'email' => 'appointments@direct.ocuhub.com',
+        ],
+
     ],
     'language' => [
         'english' => 1,

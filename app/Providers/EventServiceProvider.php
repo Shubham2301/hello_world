@@ -25,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
             'myocuhub\Listeners\RequestFPCAppointment',
             'myocuhub\Listeners\SendAppointmentRequestEmail',
         ],
+        'myocuhub\Events\PracticeFirstAppointment' => [
+            'myocuhub\Listeners\SendFirstAppointmentNotification',
+        ],
         'myocuhub\Events\Patient\PatientRecordCreation' => [
             'myocuhub\Listeners\AuditListener',
             'myocuhub\Listeners\Patient\SendRecordWithEmail',

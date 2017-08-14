@@ -9,6 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Auth;
 use myocuhub\Jobs\Job;
 use myocuhub\Models\Appointment;
+use myocuhub\Models\Careconsole;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
 use myocuhub\Patient;
@@ -26,7 +27,6 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
      */
     public function __construct(Patient $patient, Appointment $appt)
     {
-
         $this->setPatient($patient);
         $this->setAppt($appt);
         $this->setStage('confirm_appointment');
@@ -45,7 +45,7 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
 
         $patient = Patient::find($appointment->patient_id);
 
-        if($patient == null){
+        if ($patient == null) {
             return false;
         }
 
@@ -65,7 +65,7 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
         $patientDob = new DateTime($patient->birthdate);
 
         $practiceName = $practice->name ?: '';
-        $description = 'Thank you for your recent appointment request. Please remember final confirmation of the appointment will come from the practice. ' . (($location->latitude && $location->longitude) ? '\n\nTo ensure you arrive at the appointment easily, you can use the link below: \nhttp://maps.google.com?q=' . $location->latitude . ',' . $location->longitude : '') . ($location->special_instructions_plain_text ? '\n\nWe are also providing some helpful notes that the practice has provided: \n\n' . str_replace("\n","\\n",$location->special_instructions_plain_text)  .' ' : '') . '\n\nThank you. \n\nTo cancel or reschedule this appointment please email at '. $loggedInUser->email ?: 'support@ocuhub.com';
+        $description = 'Thank you for your recent appointment request. Please remember final confirmation of the appointment will come from the practice. ' . (($location->latitude && $location->longitude) ? '\n\nTo ensure you arrive at the appointment easily, you can use the link below: \nhttp://maps.google.com?q=' . $location->latitude . ',' . $location->longitude : '') . ($location->special_instructions_plain_text ? '\n\nWe are also providing some helpful notes that the practice has provided: \n\n' . str_replace("\n", "\\n", $location->special_instructions_plain_text)  .' ' : '') . '\n\nThank you. \n\nTo cancel or reschedule this appointment please email at '. $loggedInUser->email ?: 'support@ocuhub.com';
         $vars = [
             [
                 'name' => 'USERNAME',
@@ -121,7 +121,16 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
             ],
         ];
 
-        $template = (new MandrillService)->templateInfo('Email to patients');
+        $patient_careconsole = Careconsole::where('patient_id', $patient->id)->with('importHistory')->first();
+        $patient_network = $patient_careconsole->importHistory->network_id;
+
+        $config_template_path = 'network.patient_appointment_email_template.' . $patient_network;
+        $config_subject_path = 'network.patient_appointment_email_subject.' . $patient_network;
+
+        $network_email_template = config($config_template_path, 'Email to patients');
+        $network_email_subject = config($config_subject_path, 'Appointment has been scheduled');
+
+        $template = (new MandrillService)->templateInfo($network_email_template);
 
         if ($location->special_instructions) {
             $vars[] = [
@@ -189,13 +198,12 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
 
         ]);
 
-         if ($iCal) {
-
-             $vars[] = [
+        if ($iCal) {
+            $vars[] = [
                  'name' => 'CALENDER',
                  'content' => $iCal->googleCalenderLink(),
              ];
-         }
+        }
 
         $attr = [
             'from' => [
@@ -206,7 +214,7 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
                 'name' => $patient->getName(),
                 'email' => $patient->email,
             ],
-            'subject' => 'Appointment has been scheduled',
+            'subject' => $network_email_subject,
             'template' => $template['slug'],
             'vars' => $vars,
             'attachments' => [
@@ -219,7 +227,5 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
         ];
 
         $this->sendTemplate($attr);
-
     }
-
 }
