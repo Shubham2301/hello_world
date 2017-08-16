@@ -158,10 +158,12 @@ class ActionService
                         $appointment_type->save();
                     }
 
-                    $practice = Practice::withCount('appointment')->find($appointment->practice_id);
-                    if ($practice && $practice->appointment_count == 1) {
-                        $practiceFirstAppointment = new PracticeFirstAppointment($appointment);
-                        event($practiceFirstAppointment);
+                    if ($actionName == 'manually-schedule') {
+                        $practice = Practice::withCount('appointment')->find($appointment->practice_id);
+                        if ($practice && $practice->appointment_count == 1) {
+                            $practiceFirstAppointment = new PracticeFirstAppointment($appointment);
+                            event($practiceFirstAppointment);
+                        }
                     }
                 }
 
