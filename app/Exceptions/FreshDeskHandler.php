@@ -26,10 +26,10 @@ class FreshDeskHandler
         if ($this->canReport() && env('MAIL_ERRORLOG', false)) {
             $errorMessage = $this->exception;
             if (Auth::user()) {
-                $message = 'Exception for User ID: ' . Auth::user()->id . ' with email id: ' . Auth::user()->email . ' <br> ' . $errorMessage;
+                $errorMessage = 'Exception for User ID: ' . Auth::user()->id . ' with email id: ' . Auth::user()->email . ' <br> ' . $errorMessage;
             }
 
-            Mail::raw($message, function ($m) use ($errorMessage) {
+            Mail::raw($errorMessage, function ($m) use ($errorMessage) {
                 $subject = 'System Error - ' . str_limit($errorMessage, 70);
                 $m->from(config('constants.support.email_id'), config('constants.support.email_name'));
                 $m->to(env('MAIL_ERRORLOG_TO', config('constants.support.application_error')), 'Application Error')->subject($subject);
