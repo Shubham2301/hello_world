@@ -38,9 +38,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('writeback')
                  ->withoutOverlapping()
                  ->daily();
-        // $schedule->command('pee:post-appt')
-        //          ->withoutOverlapping()
-        //          ->dailyAt('18:00');
+        $schedule->command('pee:post-appt')
+                 ->withoutOverlapping()
+                 ->dailyAt('18:00');
         // $schedule->command('two-factor-auth:clean')
         //          ->withoutOverlapping()
         //          ->daily();
