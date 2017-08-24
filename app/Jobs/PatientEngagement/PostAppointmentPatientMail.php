@@ -29,15 +29,19 @@ class PostAppointmentPatientMail extends PatientEngagement implements ShouldQueu
 
     public function handle()
     {
-        
         $patient = $this->getPatient();
 
         $message = $this->getContent();
         $subject = $this->getContent('subject');
 
-        if($message == ''){
+        if ($message == '') {
             return;
         }
+
+        if ($patient->email == '') {
+            return;
+        }
+
 
         $mailDate = new DateTime();
         $template = (new MandrillService)->templateInfo('contact-patient-template');
