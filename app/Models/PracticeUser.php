@@ -19,5 +19,14 @@ class PracticeUser extends Model
     {
         return $this->belongsTo('myocuhub\User');
     }
+
+    public static function getPracticeUsersList($practice_id) {
+        $practice_user_list =  self::where('practice_id', $practice_id)->get(['user_id'])->toArray();
+        $user_list = array();
+        foreach ($practice_user_list as $practice_user) {
+            $user_list[] = $practice_user['user_id'];
+        }
+        return $user_list;
+    }
 }
 

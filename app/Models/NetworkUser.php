@@ -36,4 +36,30 @@ class NetworkUser extends Model
                        ->leftjoin('networks', 'networks.id', '=', 'network_user.network_id')
                        ->get(['users.name AS user_name', 'users.sesemail AS direct_address', 'users.ses_username', 'provider_types.name AS provider_type', 'practices.name AS practice_name', 'userlevels.name AS userlevel_name', 'usertypes.name AS usertypes_name','users.active AS user_status', 'users.email AS user_email', 'users.created_at AS created_at', 'users.updated_at AS updated_at', 'users.npi', 'users.acc_key', 'networks.name AS network_name']);
     }
+
+    public static function updateUserNetworks($user_id, $network_update_list)
+    {
+        $user_networks = self::where('user_id', $user_id)->get(['network_id'])->toArray();
+        $network_list = array();
+        foreach ($user_networks as $network) {
+            $network_list[] = $network['network_id'];
+        }
+
+        $removed_network = array_diff($network_list, $network_update_list);
+
+        self::removeUserNetworks($user_id, $removed_network);
+
+        foreach ($network_update_list as $network_id) {
+            self::firstOrCreate(['user_id' => $user_id, 'network_id' => $network_id]);
+        }
+
+        return true;
+    }
+
+    public static function removeUserNetworks($user_id, $remove_network_list)
+    {
+        self::where('user_id', $user_id)
+            ->whereIn('network_id', $remove_network_list)
+            ->delete();
+    }
 }

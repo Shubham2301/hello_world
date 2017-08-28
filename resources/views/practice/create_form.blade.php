@@ -35,7 +35,7 @@
                         @endif
                     </div>
                     <div class="col-sm-6 col-xs-12 ocuapps_options" style="color:#fff;">
-                        <h4>Networks*</h4> @foreach($networks as $key => $network) {!! Form::checkbox('network[]', $network, in_array($key, $data['network_id']) ? true : null, array('id' => $key, 'class' => 'practice_network', in_array($key, $data['network_id']) ? 'disabled' : '')); !!} {!! Form::label($network, $network); !!}
+                        <h4>Networks*</h4> @foreach($networks as $key => $network) {!! Form::checkbox('network[]', $network, in_array($key, $data['network_id']) ? true : null, array('id' => $key, 'class' => 'practice_network', (in_array($key, $data['network_id']) && !$data['update_network']) ? 'disabled' : '')); !!} {!! Form::label($network, $network); !!}
                         <br> @endforeach
                     </div>
                 </div>

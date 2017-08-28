@@ -91,11 +91,9 @@ window.onload = function() {
                     getLocationData();
                 }
                 var practice_id = $('#editmode').val();
-                var networkList = {};
-                var i = 0;
+                var networkList = [];
                 $.each($("input[class='practice_network']:checked"), function() {
-                    networkList[i] = $(this).attr('id');
-                    i++;
+                    networkList.push($(this).attr('id'));
                 });
                 if (practice_id == "-1") {
                     if (onboard) {

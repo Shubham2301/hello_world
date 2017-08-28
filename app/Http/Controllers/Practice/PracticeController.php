@@ -198,6 +198,7 @@ class PracticeController extends Controller
         $data['id'] = $id;
         $data['location_index'] = $location;
         $data['edit'] = true;
+        $data['update_network'] = Auth::user()->isSuperAdmin();
         $onboardPractice = OnboardPractice::where('practice_id', $id)->first();
         if ($onboardPractice && $onboardPractice->practice_form_data) {
             $data['onboard'] = true;
@@ -263,10 +264,8 @@ class PracticeController extends Controller
         $practice->email = $practiceemail;
         $practice->save();
 
-        if (isset($practicedata[0]['practice_network'])) {
-            foreach ($practicedata[0]['practice_network'] as $network) {
-                $practiceNetwork = PracticeNetwork::firstOrCreate(['practice_id' => $practice->id, 'network_id' => $network]);
-            }
+        if (policy(new Practice)->updateNetwork()) {
+            PracticeNetwork::updatePracticeNetworks($practice->id, $practicedata[0]['practice_network']);
         }
 
         foreach ($locations as $location) {

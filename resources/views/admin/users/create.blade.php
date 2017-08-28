@@ -74,7 +74,7 @@
                                         <div class="col-xs-6">
                                         <h4>Networks*</h4>
                                             @foreach($networks as $key => $network)
-                                                {!! Form::checkbox('network[]', $key, (in_array($key, $user_network['network_id']) ? true : null ), array('id' => $key, 'class' => 'user_network', (in_array($key, $user_network['network_id']) ? 'disabled' : '' ))); !!}
+                                                {!! Form::checkbox('network[]', $key, (in_array($key, $user_network['network_id']) ? true : null ), array('id' => $key, 'class' => 'user_network', ( (in_array($key, $user_network['network_id'])  && !$data['update_network']) ? 'disabled' : '' ))); !!}
                                                 {!! Form::label($network, $network); !!}
                                                 <br>
                                             @endforeach
