@@ -139,9 +139,9 @@ class HedisExport
             ->get();
 
         foreach ($careconsole_patients as $patient) {
-            if ($patient->latestContactHistory->action->name != 'hedis-data-exported') {
+            // if ($patient->latestContactHistory->action->name != 'hedis-data-exported') {
                 $patient_list[] = $patient->patient_id;
-            }
+            // }
         }
 
         $this->export_status['Patient Count'] = count($patient_list);
@@ -156,7 +156,7 @@ class HedisExport
         $ccda_data = self::getCcdaData();
         $web_form_data = self::getWebFormData();
         $default_field_data = self::getDefaultFieldData();
-
+        
         $patient_file_data = array_merge($system_data, $default_field_data, $ccda_data, $web_form_data);
 
         $careconsole = Careconsole::where('patient_id', $this->patient_id)->first();
@@ -189,6 +189,7 @@ class HedisExport
         $data = MyCCDA::updateDemographics($ccda->ccdablob, $this->patient_id);
 
         $this->ccda_data = $data;
+
         return self::processData($data, 'ccda');
     }
 
@@ -201,10 +202,11 @@ class HedisExport
 
         if ($record) {
             $record_data = json_decode($record->content, true);
-
-            $this->web_form_data = $record_data;
-            return self::processData($record_data, 'web-form');
+        } else {
+            $record_data = [];
         }
+        $this->web_form_data = $record_data;
+        return self::processData($record_data, 'web-form');
 
         return [];
     }
@@ -216,7 +218,6 @@ class HedisExport
         $data_array['place_of_service'] = '11';
 
         $data_array['secondary_insurance'] = '';
-        $data_array['member_hcid'] = '';
         $data_array['medicare_hic'] = '';
         $data_array['medicaid_id'] = '';
         $data_array['rendering_provider_key'] = '';
@@ -227,6 +228,8 @@ class HedisExport
 
         $data_array['test_name'] = '';
         $data_array['test_result_value'] = '';
+
+        $data_array['dialated_eye_exam_performed_by_professional'] = 'Y';
 
         return $data_array;
     }
@@ -243,7 +246,7 @@ class HedisExport
                 $data_array['date_of_service'] = isset($data->appointment) ? self::getFieldValue($data->appointment, 'date_of_service') : '';
 
                 $data_array['member_key'] = self::getFieldValue($data, 'member_key');
-                $data_array['dialated_eye_exam_performed_by_professional'] = self::getFieldValue($data, 'dialated_eye_exam_performed_by_professional');
+                $data_array['member_hcid'] = self::getFieldValue($data, 'member_hcid');
                 break;
             case 'ccda':
                 $data_array['member_last_name'] = $data['demographics']['name']['family'];
@@ -254,8 +257,8 @@ class HedisExport
                 $data_array['state'] = $data['demographics']['address']['state'];
                 $data_array['zipcode'] = $data['demographics']['address']['zip'];
                 $data_array['member_email'] = $data['demographics']['email'];
-                $data_array['member_telephone_1'] = $data['demographics']['phone']['home'];
-                $data_array['member_telephone_2'] = $data['demographics']['phone']['mobile'];
+                $data_array['member_telephone_1'] = self::getFieldValue($data['demographics']['phone']['home'], 'phone');
+                $data_array['member_telephone_2'] = self::getFieldValue($data['demographics']['phone']['mobile'], 'phone');
                 $data_array['gender'] = self::getFieldValue($data['demographics']['gender'], 'gender');
                 $data_array['race'] = $data['demographics']['race'];
                 $data_array['dob'] = self::getFieldValue($data['demographics']['dob'], 'dob');
@@ -264,21 +267,14 @@ class HedisExport
                 $data_array['bmi_percentile'] = (isset($data['vitals']) && count($data['vitals']) != 0) ? self::getFieldValue($data['vitals'][ count($data['vitals']) - 1 ]['results'], 'percentile') : '';
                 $data_array['height'] = (isset($data['vitals']) && count($data['vitals']) != 0) ? self::getFieldValue($data['vitals'][ count($data['vitals']) - 1 ]['results'], 'height') : '';
                 $data_array['weight'] = (isset($data['vitals']) && count($data['vitals']) != 0) ? self::getFieldValue($data['vitals'][ count($data['vitals']) - 1 ]['results'], 'weight') : '';
-                $data_array['systolic_blood_pressure'] = (isset($data['vitals']) && count($data['vitals']) != 0) ? self::getFieldValue($data['vitals'][ count($data['vitals']) - 1 ]['results'], 'systolic') : '';
-                $data_array['diastolic_blood_pressure'] = (isset($data['vitals']) && count($data['vitals']) != 0) ? self::getFieldValue($data['vitals'][ count($data['vitals']) - 1 ]['results'], 'diastolic') : '';
 
-                $data_array = array_merge($data_array, self::getFieldValue($data, 'diagnosis'));
                 $data_array['loinc'] = isset($data['results']) ? self::getFieldValue($data['results'], 'loinc') : '';
                 $data_array['ndc'] = isset($data['medications']) ? self::getFieldValue($data['medications'], 'ndc') : '';
+                $data_array['procedures'] = isset($data['procedures']) ? self::getFieldValue($data['procedures'], 'procedures') : '';
                 break;
             case 'web-form':
-                $procedure_data = array();
-                $ccda_procedure = isset($this->ccda_data['procedures']) ? self::getFieldValue($this->ccda_data['procedures'], 'procedures') : [];
-                $web_form_procedure = self::getFieldValue($this->web_form_data, 'procedures_web_form');
-                
-                $procedure_data = array_merge($ccda_procedure, $web_form_procedure);
-
-                $data_array['procedures'] = implode('; ', $procedure_data);
+                $data_array = array_merge($data_array, self::getFieldValue([], 'diagnosis'));
+                $data_array = array_merge($data_array, self::getFieldValue([], 'blood-pressure'));
                 break;
             default:
                 break;
@@ -325,33 +321,61 @@ class HedisExport
             case 'date_of_service':
                 $date = new \DateTime($data->start_datetime);
                 return $date->format($this->dateFormat);
+                break;
             case 'gender':
                 if (strtolower($data) == 'male' || strtolower($data) == 'm') {
                     return 'M';
                 } else {
                     return 'F';
                 }
+                break;
             case 'dob':
                 $date = new \DateTime($data);
                 return $date->format($this->dateFormat);
                 break;
+            case 'phone':
+                $phone = $data;
+                $phone = preg_replace('(\D)', '', $phone);
+                return $phone;
+                break;
             case 'member_key':
                 $member_insurance = $data->load('patient')->patient->load('patientInsurance')->patientInsurance;
                 if (isset($member_insurance)) {
-                    return $member_insurance->subscriber_id;
+                    $subscriber_id = $member_insurance->subscriber_id;
+                    if (strpos($subscriber_id, 'MCID') !== false) {
+                        $mcid = substr($subscriber_id, strpos($subscriber_id, '[') + 1, strpos($subscriber_id, ']') - strpos($subscriber_id, '[') -1);
+                        return $mcid;
+                    } else {
+                        return $subscriber_id;
+                    }
+                    return '';
                 }
                 break;
-            case 'dialated_eye_exam_performed_by_professional':
-                $patient_id = $data->patient_id;
-                $web_form_check = PatientRecord::where('patient_id', $patient_id)
-                ->whereHas('WebFormTemplate', function ($query) {
-                    $query->where('name', 'illuma-web-form');
-                })->first();
-                if ($web_form_check) {
-                    return 'Y';
+            case 'member_hcid':
+                $member_insurance = $data->load('patient')->patient->load('patientInsurance')->patientInsurance;
+                if (isset($member_insurance)) {
+                    $subscriber_id = $member_insurance->subscriber_id;
+                    if (strpos($subscriber_id, 'HCID') !== false) {
+                        $hcid = substr($subscriber_id, strpos($subscriber_id, 'HCID [') + 6, -1);
+                        return $hcid;
+                    } else {
+                        return '';
+                    }
+                    return '';
                 }
-                return 'N';
+                return '';
                 break;
+            // case 'dialated_eye_exam_performed_by_professional':
+            //     $patient_id = $data->patient_id;
+            //     $web_form_check = PatientRecord::where('patient_id', $patient_id)
+            //     ->whereHas('WebFormTemplate', function ($query) {
+            //         $query->where('name', 'illuma-web-form');
+            //     })->first();
+            //     if ($web_form_check) {
+            //         return 'Y';
+            //     }
+            //     return 'N';
+            //     break;
             case 'height':
             case 'weight':
             case 'bmi':
@@ -367,28 +391,62 @@ class HedisExport
                     }
                 }
                 break;
+            case 'blood-pressure':
+                $blood_pressure = array();
+                $web_form_data = $this->web_form_data;
+                if (isset($web_form_data['blood_pressure_1']) && isset($web_form_data['blood_pressure_2']) && $web_form_data['blood_pressure_1'] != '' && $web_form_data['blood_pressure_2'] != '') {
+                    $blood_pressure['systolic_blood_pressure'] = $web_form_data['blood_pressure_1'];
+                    $blood_pressure['diastolic_blood_pressure'] = $web_form_data['blood_pressure_2'];
+                } else {
+                    $ccda_data = $this->ccda_data;
+                    $blood_pressure['systolic_blood_pressure'] = (isset($ccda_data['vitals']) && count($ccda_data['vitals']) != 0) ? self::getFieldValue($ccda_data['vitals'][ count($ccda_data['vitals']) - 1 ]['results'], 'systolic') : '';
+                    $blood_pressure['diastolic_blood_pressure'] = (isset($ccda_data['vitals']) && count($ccda_data['vitals']) != 0) ? self::getFieldValue($ccda_data['vitals'][ count($ccda_data['vitals']) - 1 ]['results'], 'diastolic') : '';
+                }
+                return $blood_pressure;
+                break;
+            case 'ccda_diagnosis':
+                $diagnosis_array = array();
+                for ($i=0; $i < 9; $i++) {
+                    switch ($i) {
+                        case '0':
+                            if (isset($data['problems']['0'])) {
+                                if (isset($data['problems']['0']['code'])) {
+                                    $diagnosis_array[] = $data['problems']['0']['code'];
+                                } elseif (isset($data['problems']['0']['translation']) && isset($data['problems']['0']['translation']['code'])) {
+                                    $diagnosis_array[] = $data['problems']['0']['translation']['code'];
+                                }
+                            }
+                            break;
+                        default:
+                            if (isset($data['problems'][$i])) {
+                                if (isset($data['problems'][$i]['code'])) {
+                                    $diagnosis_array[] = $data['problems'][$i]['code'];
+                                } elseif (isset($data['problems'][$i]['translation']) && isset($data['problems'][$i]['translation']['code'])) {
+                                    $diagnosis_array[] = $data['problems'][$i]['translation']['code'];
+                                }
+                            }
+                    }
+                }
+                return $diagnosis_array;
+                break;
             case 'diagnosis':
+                $ccda_diagnosis = self::getFieldValue($this->ccda_data, 'ccda_diagnosis');
+                $web_form_diagnosis = self::getFieldValue($this->web_form_data, 'web_form_diagnosis');
+                $diagnosis_data = array_merge($web_form_diagnosis, $ccda_diagnosis);
+
                 $diagnosis_array = array();
                 for ($i=0; $i < 9; $i++) {
                     switch ($i) {
                         case '0':
                             $diagnosis_array['dxpri'] = '';
-                            if (isset($data['problems']['0'])) {
-                                if (isset($data['problems']['0']['code'])) {
-                                    $diagnosis_array['dxpri'] = $data['problems']['0']['code'];
-                                } elseif (isset($data['problems']['0']['translation']) && isset($data['problems']['0']['translation']['code'])) {
-                                    $diagnosis_array['dxpri'] = $data['problems']['0']['translation']['code'];
-                                }
+                            if (isset($diagnosis_data[$i])) {
+                                $diagnosis_array['dxpri'] = strtoupper($diagnosis_data[$i]);
                             }
                             break;
                         default:
                             $diagnosis_array['dxsec'.$i] = '';
-                            if (isset($data['problems'][$i])) {
-                                if (isset($data['problems'][$i]['code'])) {
-                                    $diagnosis_array['dxsec'.$i] = $data['problems'][$i]['code'];
-                                } elseif (isset($data['problems'][$i]['translation']) && isset($data['problems'][$i]['translation']['code'])) {
-                                    $diagnosis_array['dxsec'.$i] = $data['problems'][$i]['translation']['code'];
-                                }
+                            if (isset($diagnosis_data[$i])) {
+                                $diagnosis_array['dxsec'.$i] = strtoupper($diagnosis_data[$i]);
                             }
                     }
                 }
@@ -397,9 +455,12 @@ class HedisExport
             case 'procedures':
                 $procedures_values = array();
                 foreach ($data as $data_row) {
+                    if (trim($data_row['code']) == '') {
+                        continue;
+                    }
                     array_push($procedures_values, $data_row['code']);
                 }
-                return $procedures_values;
+                return implode('; ', $procedures_values);
                 break;
             case 'loinc':
                 $loinc_values = array();
@@ -416,28 +477,38 @@ class HedisExport
                 $ndc = array();
                 foreach ($data as $data_row) {
                     if (isset($data_row['product'])) {
-                        if (isset($data_row['product']['code'])) {
-                            array_push($ndc, $data_row['product']['code']);
-                        } elseif (isset($data_row['product']['translation'])) {
-                            array_push($ndc, $data_row['product']['translation']['code']);
+                        if (isset($data_row['product']['translation'])) {
+                            if ($data_row['product']['translation']['code_system_name'] == 'NDC') {
+                                $ndc_code = $data_row['product']['translation']['code'];
+                                $ndc_code = substr_replace($ndc_code, '-', -2, 0);
+                                $ndc_code = substr_replace($ndc_code, '-', -7, 0);
+                                array_push($ndc, $ndc_code);
+                            }
                         }
                     }
                 }
                 return implode('; ', $ndc);
                 break;
-            case 'procedures_web_form':
-                $procedures_values = array();
+            case 'web_form_diagnosis':
+                $diagnosis_values = array();
                 if (array_key_exists('diabetes_related_diagnosis', $data)) {
-                    $procedures_values = array_merge($procedures_values, $data['diabetes_related_diagnosis']);
+                    $diagnosis_values = array_merge($diagnosis_values, explode(',', $data['diabetes_related_diagnosis'][0]));
                 }
                 if (array_key_exists('diabetes_related_diagnosis_cpt_codes', $data)) {
-                    $procedures_values = array_merge($procedures_values, $data['diabetes_related_diagnosis_cpt_codes']);
+                    $diagnosis_values = array_merge($diagnosis_values, explode(',', $data['diabetes_related_diagnosis_cpt_codes'][0]));
                 }
                 if (array_key_exists('diabetes_related_diagnosis_hcpcs_code', $data)) {
-                    $procedures_values = array_merge($procedures_values, $data['diabetes_related_diagnosis_hcpcs_code']);
+                    $diagnosis_values = array_merge($diagnosis_values, explode(',', $data['diabetes_related_diagnosis_hcpcs_code'][0]));
                 }
 
-                return $procedures_values;
+                $diagnosis_array = array();
+                foreach ($diagnosis_values as $value) {
+                    if ($value != '') {
+                        $diagnosis_array[] = $value;
+                    }
+                }
+
+                return $diagnosis_array;
             break;
         }
 
