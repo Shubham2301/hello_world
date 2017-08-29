@@ -375,6 +375,9 @@ class ProviderController extends Controller
                 if ($i >= config('constants.providerNearPatient.providerNumber')) {
                     break;
                 }
+                if ($location->practice->practiceUsers->count() == 0) {
+                    continue;
+                }
                 $data[$i]['practice_name'] = $location->practice->name;
                 $data[$i]['location_name'] = $location->locationname;
                 $data[$i]['practice_id'] = $location->practice_id;
