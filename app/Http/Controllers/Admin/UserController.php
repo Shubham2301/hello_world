@@ -5,6 +5,7 @@ namespace myocuhub\Http\Controllers\Admin;
 use Auth;
 use Event;
 use Illuminate\Http\Request;
+use Validator;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Http\Controllers\Controller;
 use myocuhub\Models\Menu;
@@ -18,7 +19,6 @@ use myocuhub\Role;
 use myocuhub\Role_user;
 use myocuhub\User;
 use myocuhub\Usertype;
-use Validator;
 
 class UserController extends Controller
 {
@@ -374,6 +374,7 @@ class UserController extends Controller
             $user['practice_id'] = ($practice = User::getPractice($id)) ? $practice->id : '';
             $data['user_active'] = true;
             $data['url'] = '/administration/users/update/' . $id;
+            $data['update_network'] = Auth::user()->isSuperAdmin();
 
             $user['password_required'] = '';
 
@@ -437,10 +438,8 @@ class UserController extends Controller
         $user->speciality = $request->input('speciality');
         $user->provider_type_id = $request->input('provider_type_id') ?: null;
 
-        if ($user->level > 2 && $request->input('network')) {
-            foreach ($request->input('network') as $value) {
-                $userNetwork = NetworkUser::firstOrCreate(['user_id' => $user->id, 'network_id' => $value]);
-            }
+        if (policy(new User)->updateNetwork()) {
+            NetworkUser::updateUserNetworks($user->id, $request->input('network'));
         }
 
         $menuID = $request->input('landing_page');
