@@ -62,6 +62,7 @@ class UserController extends Controller
         $userLevels = $this->getUserLevels();
         $data['url'] = '/administration/users';
         $data['user_active'] = true;
+        $data['update_network'] = Auth::user()->isSuperAdmin();
         $user_network['network_id'] = [];
         $user['practice_id'] = '';
         $networkData = [];

@@ -55,6 +55,7 @@ class PracticeController extends Controller
         $data['id'] = $id;
         $data['location_index'] = -1;
         $data['network_id'] = [];
+        $data['update_network'] = Auth::user()->isSuperAdmin();
         $networkData = [];
         if (session('network-id')) {
             $data['network_id'][] = session('network-id');
