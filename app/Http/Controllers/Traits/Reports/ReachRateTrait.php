@@ -590,7 +590,7 @@ trait ReachRateTrait
 
     public function setStartDate($startDate)
     {
-        $this->startDate = Helper::formatDate($startDate, config('constants.db_date_format'));
+        $this->startDate = Helper::formatDate($startDate, config('constants.report_date_format.start_date_time'));
     }
 
     public function getStartDate()
@@ -600,7 +600,7 @@ trait ReachRateTrait
 
     public function setEndDate($endDate)
     {
-        $this->endDate = Helper::formatDate($endDate, config('constants.db_date_format'));
+        $this->endDate = Helper::formatDate($endDate, config('constants.report_date_format.end_date_time'));
     }
 
     public function getEndDate()

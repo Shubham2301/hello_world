@@ -92,6 +92,16 @@ Reporting
     </span>
   </a>
   @endif
+  @if(policy(new \myocuhub\Http\Controllers\Reports\ReportController)->accessNetworkStateActivityReport())
+  <a href="/report/network-state-activity" class="report_sidebar_button {{ array_key_exists('network-state-activity', $data) ? 'active' : '' }}">
+    <span class="report_sidebar_image">
+      <span><img src="{{elixir('images/sidebar/performance-report.png')}}"></span>
+    </span>
+    <span class="report_sidebar_text">
+      <span class="text">Network State Activity</span>
+    </span>
+  </a>
+  @endif
   @if(policy(new \myocuhub\Http\Controllers\Reports\ReportController)->accessHedisExport())
   <a href="/report/hedis_export" class="report_sidebar_button {{ array_key_exists('hedis_export', $data) ? 'active' : '' }}">
     <span class="report_sidebar_image">

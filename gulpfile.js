@@ -64,6 +64,7 @@ elixir(function(mix) {
     mix.babel(['duplicate_maintenance.js'], 'public/js/duplicate_maintenance.js');
     mix.babel(['record_report.js'], 'public/js/record_report.js');
     mix.babel(['export_patient_activity.js'], 'public/js/export_patient_activity.js');
+    mix.babel(['network_state_activity.js'], 'public/js/network_state_activity.js');
     mix.babel(['hedis_export.js'], 'public/js/hedis_export.js');
 
     mix.version(['css/style.css',
@@ -116,6 +117,7 @@ elixir(function(mix) {
         'js/report_master.js',
         'js/record_report.js',
         'js/export_patient_activity.js',
+        'js/network_state_activity.js',
         'js/hedis_export.js',
         'images/*'
     ]);
