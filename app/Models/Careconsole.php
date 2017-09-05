@@ -947,7 +947,6 @@ class Careconsole extends Model
         foreach ($field_list as $field_value) {
             $result[$field_value['display_name']] = self::networkStateActivityFieldValue($field_value['name'], $filter);
         }
-        dd($result);
         return $result;
     }
 
@@ -972,9 +971,11 @@ class Careconsole extends Model
                     $sub_query->statePatients($filter['state_list']);
                 }
             });
-            $query->consoleActivityRange($filter['start_date'], $filter['end_date']);
-            $query->whereHas('contactHistory.action', function ($sub_query) {
-                $sub_query->actionCheck(['request-patient-email', 'request-patient-phone', 'request-patient-sms', 'contact-attempted-by-phone', 'contact-attempted-by-email', 'contact-attempted-by-other', 'contact-attempted-by-mail']);
+            $query->whereHas('contactHistory', function ($sub_query) use ($filter) {
+                $sub_query->activityRange($filter['start_date'], $filter['end_date']);
+                $sub_query->whereHas('action', function ($sub_sub_query) {
+                    $sub_sub_query->actionCheck(['request-patient-email', 'request-patient-phone', 'request-patient-sms', 'contact-attempted-by-phone', 'contact-attempted-by-email', 'contact-attempted-by-other', 'contact-attempted-by-mail', 'schedule', 'manually-schedule', 'previously-scheduled']);
+                });
             });
             return $query->count();
             break;
@@ -986,13 +987,15 @@ class Careconsole extends Model
                     $sub_query->statePatients($filter['state_list']);
                 }
             });
-            $query->consoleActivityRange($filter['start_date'], $filter['end_date']);
-            $query->where(function ($query) {
-                $query->whereHas('contactHistory.action', function ($sub_query) {
-                    $sub_query->actionCheck(['schedule', 'manually-schedule', 'previously-scheduled']);
-                });
-                $query->orWhereHas('contactHistory.actionResult', function ($sub_query) {
-                    $sub_query->actionResultCheck(['recall-later', 'patient-declined-services', 'already-seen-by-outside-dr', 'no-need-to-schedule', 'no-insurance', 'would-not-validate-dob', 'unaware-of-diagnosis', 'other-reasons-for-declining']);
+            $query->whereHas('contactHistory', function ($sub_query) use ($filter) {
+                $sub_query->activityRange($filter['start_date'], $filter['end_date']);
+                $sub_query->where(function($sub_sub_query) {
+                    $sub_sub_query->whereHas('action', function ($sub_sub_sub_query) {
+                    $sub_sub_sub_query->actionCheck(['schedule', 'manually-schedule', 'previously-scheduled']);
+                    });
+                    $sub_sub_query->orWhereHas('actionResult', function ($sub_sub_sub_query) {
+                        $sub_sub_sub_query->actionResultCheck(['recall-later', 'patient-declined-services', 'already-seen-by-outside-dr', 'no-need-to-schedule', 'no-insurance', 'would-not-validate-dob', 'unaware-of-diagnosis', 'other-reasons-for-declining']);
+                    });
                 });
             });
             return $query->count();
@@ -1005,28 +1008,30 @@ class Careconsole extends Model
                     $sub_query->statePatients($filter['state_list']);
                 }
             });
-            $query->consoleActivityRange($filter['start_date'], $filter['end_date']);
-            $query->where(function ($query) {
-                $query->whereHas('contactHistory.action', function ($sub_query) {
-                    $sub_query->actionCheck(['archive']);
-                });
-                $query->orWhereHas('contactHistory.actionResult', function ($sub_query) {
-                    $sub_query->actionResultCheck(['recall-later', 'patient-declined-services', 'already-seen-by-outside-dr', 'no-need-to-schedule', 'no-insurance', 'would-not-validate-dob', 'unaware-of-diagnosis', 'other-reasons-for-declining', 'closed', 'incomplete']);
+            $query->whereHas('contactHistory', function ($sub_query) use ($filter) {
+                $sub_query->activityRange($filter['start_date'], $filter['end_date']);
+                $sub_query->where(function($sub_sub_query) {
+                    $sub_sub_query->whereHas('action', function ($sub_sub_sub_query) {
+                    $sub_sub_sub_query->actionCheck(['archive']);
+                    });
+                    $sub_sub_query->orWhereHas('actionResult', function ($sub_sub_sub_query) {
+                        $sub_sub_sub_query->actionResultCheck(['recall-later', 'patient-declined-services', 'already-seen-by-outside-dr', 'no-need-to-schedule', 'no-insurance', 'would-not-validate-dob', 'unaware-of-diagnosis', 'other-reasons-for-declining', 'closed', 'incomplete']);
+                    });
                 });
             });
             return $query->count();
             break;
         case 'in_network_past_appointments':
-            $query = (new ContactHistory)::query();
-            $query->whereHas('careconsole', function ($query) use ($filter) {
-                $query->networkCheck($filter['network_id']);
-                $query->whereHas('patient', function ($sub_query) use ($filter) {
+            $query = ContactHistory::query();
+            $query->whereHas('careconsole', function ($sub_query) use ($filter) {
+                $sub_query->networkCheck($filter['network_id']);
+                $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
                     if ($filter['state_list']) {
-                        $sub_query->statePatients($filter['state_list']);
+                        $sub_sub_query->statePatients($filter['state_list']);
                     }
                 });
-                $query->consoleActivityRange($filter['start_date'], $filter['end_date']);
             });
+            $query->activityRange($filter['start_date'], $filter['end_date']);
             $query->whereHas('appointments', function ($sub_query) use ($filter) {
                 $sub_query->where('start_datetime', '<=', $filter['end_date']);
             });
@@ -1039,17 +1044,16 @@ class Careconsole extends Model
             return $query->count();
             break;
         case 'out_network_past_appointments':
-
             $query = ContactHistory::query();
-            $query->whereHas('careconsole', function ($query) use ($filter) {
-                $query->networkCheck($filter['network_id']);
-                $query->whereHas('patient', function ($sub_query) use ($filter) {
+            $query->whereHas('careconsole', function ($sub_query) use ($filter) {
+                $sub_query->networkCheck($filter['network_id']);
+                $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
                     if ($filter['state_list']) {
-                        $sub_query->statePatients($filter['state_list']);
+                        $sub_sub_query->statePatients($filter['state_list']);
                     }
                 });
-                $query->consoleActivityRange($filter['start_date'], $filter['end_date']);
             });
+            $query->activityRange($filter['start_date'], $filter['end_date']);
             $query->whereHas('appointments', function ($sub_query) use ($filter) {
                 $sub_query->where('start_datetime', '<=', $filter['end_date']);
             });
@@ -1063,15 +1067,15 @@ class Careconsole extends Model
             break;
         case 'in_network_future_appointment':
             $query = ContactHistory::query();
-            $query->whereHas('careconsole', function ($query) use ($filter) {
-                $query->networkCheck($filter['network_id']);
-                $query->whereHas('patient', function ($sub_query) use ($filter) {
+            $query->whereHas('careconsole', function ($sub_query) use ($filter) {
+                $sub_query->networkCheck($filter['network_id']);
+                $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
                     if ($filter['state_list']) {
-                        $sub_query->statePatients($filter['state_list']);
+                        $sub_sub_query->statePatients($filter['state_list']);
                     }
                 });
-                $query->consoleActivityRange($filter['start_date'], $filter['end_date']);
             });
+            $query->activityRange($filter['start_date'], $filter['end_date']);
             $query->whereHas('appointments', function ($sub_query) use ($filter) {
                 $sub_query->where('start_datetime', '>', $filter['end_date']);
             });
@@ -1085,15 +1089,15 @@ class Careconsole extends Model
             break;
         case 'out_network_future_appointment':
             $query = ContactHistory::query();
-            $query->whereHas('careconsole', function ($query) use ($filter) {
-                $query->networkCheck($filter['network_id']);
-                $query->whereHas('patient', function ($sub_query) use ($filter) {
+            $query->whereHas('careconsole', function ($sub_query) use ($filter) {
+                $sub_query->networkCheck($filter['network_id']);
+                $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
                     if ($filter['state_list']) {
-                        $sub_query->statePatients($filter['state_list']);
+                        $sub_sub_query->statePatients($filter['state_list']);
                     }
                 });
-                $query->consoleActivityRange($filter['start_date'], $filter['end_date']);
             });
+            $query->activityRange($filter['start_date'], $filter['end_date']);
             $query->whereHas('appointments', function ($sub_query) use ($filter) {
                 $sub_query->where('start_datetime', '>', $filter['end_date']);
             });
@@ -1107,15 +1111,15 @@ class Careconsole extends Model
             break;
         case 'appointments_kept':
             $query = ContactHistory::query();
-            $query->whereHas('careconsole', function ($query) use ($filter) {
-                $query->networkCheck($filter['network_id']);
-                $query->whereHas('patient', function ($sub_query) use ($filter) {
+            $query->whereHas('careconsole', function ($sub_query) use ($filter) {
+                $sub_query->networkCheck($filter['network_id']);
+                $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
                     if ($filter['state_list']) {
-                        $sub_query->statePatients($filter['state_list']);
+                        $sub_sub_query->statePatients($filter['state_list']);
                     }
                 });
-                $query->consoleActivityRange($filter['start_date'], $filter['end_date']);
             });
+            $query->activityRange($filter['start_date'], $filter['end_date']);
             $query->whereHas('action', function ($sub_query) {
                 $sub_query->actionCheck(['kept-appointment']);
             });
@@ -1123,15 +1127,15 @@ class Careconsole extends Model
             break;
         case 'appointments_rescheduled':
             $query = ContactHistory::query();
-            $query->whereHas('careconsole', function ($query) use ($filter) {
-                $query->networkCheck($filter['network_id']);
-                $query->whereHas('patient', function ($sub_query) use ($filter) {
+            $query->whereHas('careconsole', function ($sub_query) use ($filter) {
+                $sub_query->networkCheck($filter['network_id']);
+                $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
                     if ($filter['state_list']) {
-                        $sub_query->statePatients($filter['state_list']);
+                        $sub_sub_query->statePatients($filter['state_list']);
                     }
                 });
-                $query->consoleActivityRange($filter['start_date'], $filter['end_date']);
             });
+            $query->activityRange($filter['start_date'], $filter['end_date']);
             $query->whereHas('action', function ($sub_query) {
                 $sub_query->actionCheck(['manually-reschedule']);
             });

@@ -64,7 +64,7 @@ class NetworkStateActivityController extends ReportController
 
     public function exportData($report_data, $report_filter)
     {
-        $file_name = 'Network Export - ';
+        $file_name = 'Network State Export - ';
         $file_name .= Network::find($report_filter['network_id'])->name;
         if (!empty($report_filter['state_list'])) {
             $file_name .= ' (' . implode(',', $report_filter['state_list']) . ')';
