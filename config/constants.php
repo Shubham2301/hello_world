@@ -16,8 +16,8 @@ return [
         ],
     ],
     'onboarding_notification' => [
-        'email_id' => 'mkolodkin@illumacc.com',
-        'email_name' => 'Margo'
+        'email_id' => 'ehoell@illumacc.com',
+        'email_name' => 'Eric'
     ],
     'production_url' => 'https://myocuhub.com',
     'message_type' => [

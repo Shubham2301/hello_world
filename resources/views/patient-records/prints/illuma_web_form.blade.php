@@ -50,7 +50,12 @@
                 </div>
                 <div class="">
                     <p class="no-margin">
-                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['reported_outcome_used_tobacco'])) ? 'checked' : '' }}>Patient currently used tobacco &nbsp; &nbsp;
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['reported_outcome_used_tobacco'])) ? 'checked' : '' }}>Patient currently uses tobacco &nbsp; &nbsp;
+                    </p>
+                </div>
+                <div class="">
+                    <p class="no-margin">
+                        <input type="checkbox" style="margin-right:10px;" {{ (isset($data['record']['reported_outcome_previously_used_tobacco'])) ? 'checked' : '' }}>Patient previously used tobacco &nbsp; &nbsp;
                     </p>
                 </div>
                 <div class="">
