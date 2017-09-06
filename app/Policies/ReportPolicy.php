@@ -48,6 +48,11 @@ class ReportPolicy
     	return ($user->checkUserLevel('Ocuhub'));
     }
 
+    public function accessNetworkStateActivityReport(){
+        $user = Auth::user();
+        return ($user->checkUserLevel('Ocuhub'));
+    }
+
     public function networkReportAccessPolicy() {
         $user = Auth::user();
     	return ($user->checkUserLevel('Network') && $user->hasRole('care-console') && $user->hasRole('reports'));

@@ -41,7 +41,8 @@ class RecordReportController extends ReportController
         return view('reports.record_report.index')->with('data', $data)->with('networkData', $networkData)->with('webFormList', $webFormList);
     }
 
-    public function getNetworkWebForms($networkID) {
+    public function getNetworkWebForms($networkID)
+    {
         $webFormTemplateList = NetworkWebForm::where('network_id', $networkID)->get();
         $webFormList = array();
         foreach ($webFormTemplateList as $webForm) {
@@ -64,8 +65,15 @@ class RecordReportController extends ReportController
             $recordData = json_decode($record->content, true);
             $recordDataUpdate = array();
             foreach ($jsonStructure as $key => $value) {
-                $recordField = (array_key_exists($key, $recordData) && $recordData[$key] != '') ? $recordData[$key] : '-';
-                $recordDataUpdate[$key] = $recordField;
+                $index = str_replace('_', ' ', $key);
+                $index = ucwords($index);
+                if (is_array($value)) {
+                    $recordField = (array_key_exists($key, $recordData) && !empty($recordData[$key])) ? implode(',', $recordData[$key]) : '-';
+                    $recordDataUpdate[$index] = $recordField;
+                } else {
+                    $recordField = (array_key_exists($key, $recordData) && $recordData[$key] != '') ? $recordData[$key] : '-';
+                    $recordDataUpdate[$index] = $recordField;
+                }
             }
             $data[] = $recordDataUpdate;
         }
@@ -83,5 +91,4 @@ class RecordReportController extends ReportController
             });
         })->export($fileType);
     }
-
 }

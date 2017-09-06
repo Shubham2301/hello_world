@@ -78,6 +78,14 @@ class Patient extends Model
         return $this->hasOne(Careconsole::class);
     }
 
+    public function scopeStatePatients($query, $state_list)
+    {
+        foreach ($state_list as $state) {
+            $query->orWhere('state', $state);
+        }
+        return $query;
+    }
+
     public function records()
     {
         return $this->hasMany(PatientRecord::class);
@@ -102,7 +110,6 @@ class Patient extends Model
         }
 
         return $phone;
-
     }
 
     public function getName($type = 'system_format')

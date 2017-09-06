@@ -45,6 +45,15 @@ class ContactHistory extends Model
         return $this->belongsTo('myocuhub\User', 'user_id');
     }
 
+    public function scopeActivityRange($query, $start_date, $end_date)
+    {
+        $query->whereNotNull('user_id');
+        $query->where('contact_activity_date', '>=', $start_date);
+        $query->where('contact_activity_date', '<=', $end_date);
+
+        return $query;
+    }
+
     public static function getContactHistory($consoleID)
     {
         return self::where('console_id', $consoleID)
@@ -110,7 +119,7 @@ class ContactHistory extends Model
     {
         return self::whereNotNull('contact_history.user_id')
             ->where('contact_activity_date', '>=', $startDate)
-            ->where('contact_activity_date', '<=', $endDate)        
+            ->where('contact_activity_date', '<=', $endDate)
             ->whereHas('careconsole.importHistory', function ($query) use ($networkID) {
                 $query->where('network_id', $networkID);
             })
