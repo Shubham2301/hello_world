@@ -12,6 +12,7 @@ use myocuhub\Facades\Helper;
 use myocuhub\Models\Careconsole;
 use myocuhub\Models\Ccda;
 use myocuhub\Models\PatientRecord;
+use myocuhub\Models\ReportField;
 use myocuhub\Network;
 use myocuhub\Patient;
 use myocuhub\Services\ActionService;
@@ -25,59 +26,7 @@ class HedisExport
     private $system_data;
     private $ccda_data;
     private $web_form_data;
-    private $file_order = [
-        'product_id' => 'Product ID',
-        'secondary_insurance' => 'SecondaryInsurance',
-        'member_key' => 'MemberKey',
-        'member_hcid' => 'MemberHCID',
-        'medicare_hic' => 'Medicare HIC',
-        'medicaid_id' => 'Medicaid ID',
-        'member_last_name' => 'Member Last Name',
-        'member_first_name' => 'Member First Name',
-        'address_1' => 'Address 1',
-        'address_2' => 'Address 2',
-        'city' => 'City',
-        'state' => 'State',
-        'zipcode' => 'Zipcode',
-        'member_email' => 'MemberEmail',
-        'member_telephone_1' => 'MemberTelephone',
-        'member_telephone_2' => 'MemberTelephone 2',
-        'gender' => 'Gender',
-        'race' => 'Race',
-        'dob' => 'DOB',
-        'rendering_provider_key' => 'Rendering Provider Key',
-        'rendering_provider_name' => 'Rendering Provider Name',
-        'rendering_provider_npi' => 'Rendering Provider NPI',
-        'rendering_provider_tax_id' => 'Rendering Provider Tax ID',
-        'rendering_provider_speciality_1' => 'Rendering Provider Specialty (1)',
-        'rendering_provider_speciality_2' => 'Rendering Provider Specialty (2)',
-        'date_of_service' => 'Date of Service',
-        'dxpri' => 'DxPri',
-        'dxsec1' => 'DxSec1',
-        'dxsec2' => 'DxSec2',
-        'dxsec3' => 'DxSec3',
-        'dxsec4' => 'DxSec4',
-        'dxsec5' => 'DxSec5',
-        'dxsec6' => 'DxSec6',
-        'dxsec7' => 'DxSec7',
-        'dxsec8' => 'DxSec8',
-        'procedures' => 'Procedure',
-        'loinc' => 'LOINC',
-        'test_name' => 'Test Name',
-        'test_result_value' => 'Test Result Value',
-        'ndc' => 'NDC',
-        'rx_fill_date' => 'RxFillDate',
-        'rx_days_supply' => 'RxDays Supply',
-        'bmi' => 'BMI',
-        'bmi_percentile' => 'BMIPercentile',
-        'height' => 'Height',
-        'weight' => 'Weight',
-        'systolic_blood_pressure' => 'Systolic Blood Pressure',
-        'diastolic_blood_pressure' => 'Diastolic Blood Pressure',
-        'dialated_eye_exam_performed_by_professional' => 'DilatedEyeExam Performed by eye care professional',
-        'place_of_service' => 'Place of Service',
-    ];
-
+    
     public function __construct(ActionService $ActionService)
     {
         $this->ActionService = $ActionService;
@@ -155,9 +104,10 @@ class HedisExport
         $system_data = self::getSystemData();
         $ccda_data = self::getCcdaData();
         $web_form_data = self::getWebFormData();
+        $combined_data = self::processData([], 'combined-data');
         $default_field_data = self::getDefaultFieldData();
         
-        $patient_file_data = array_merge($system_data, $default_field_data, $ccda_data, $web_form_data);
+        $patient_file_data = array_merge($system_data, $default_field_data, $ccda_data, $web_form_data, $combined_data);
 
         $careconsole = Careconsole::where('patient_id', $this->patient_id)->first();
 
@@ -270,11 +220,13 @@ class HedisExport
 
                 $data_array['loinc'] = isset($data['results']) ? self::getFieldValue($data['results'], 'loinc') : '';
                 $data_array['ndc'] = isset($data['medications']) ? self::getFieldValue($data['medications'], 'ndc') : '';
-                $data_array['procedures'] = isset($data['procedures']) ? self::getFieldValue($data['procedures'], 'procedures') : '';
                 break;
             case 'web-form':
+                break;
+            case 'combined-data':
                 $data_array = array_merge($data_array, self::getFieldValue([], 'diagnosis'));
                 $data_array = array_merge($data_array, self::getFieldValue([], 'blood-pressure'));
+                $data_array['procedures'] = self::getFieldValue([], 'procedures');
                 break;
             default:
                 break;
@@ -365,17 +317,6 @@ class HedisExport
                 }
                 return '';
                 break;
-            // case 'dialated_eye_exam_performed_by_professional':
-            //     $patient_id = $data->patient_id;
-            //     $web_form_check = PatientRecord::where('patient_id', $patient_id)
-            //     ->whereHas('WebFormTemplate', function ($query) {
-            //         $query->where('name', 'illuma-web-form');
-            //     })->first();
-            //     if ($web_form_check) {
-            //         return 'Y';
-            //     }
-            //     return 'N';
-            //     break;
             case 'height':
             case 'weight':
             case 'bmi':
@@ -453,14 +394,11 @@ class HedisExport
                 return $diagnosis_array;
                 break;
             case 'procedures':
-                $procedures_values = array();
-                foreach ($data as $data_row) {
-                    if (trim($data_row['code']) == '') {
-                        continue;
-                    }
-                    array_push($procedures_values, $data_row['code']);
-                }
-                return implode('; ', $procedures_values);
+                $ccda_procedures = self::getFieldValue($this->ccda_data, 'ccda_procedures');
+                $web_form_procedures = self::getFieldValue($this->web_form_data, 'web_form_procedures');
+                $procedures_data = array_merge($web_form_procedures, $ccda_procedures);
+
+                return implode('; ', $procedures_data);
                 break;
             case 'loinc':
                 $loinc_values = array();
@@ -492,23 +430,50 @@ class HedisExport
             case 'web_form_diagnosis':
                 $diagnosis_values = array();
                 if (array_key_exists('diabetes_related_diagnosis', $data)) {
-                    $diagnosis_values = array_merge($diagnosis_values, explode(',', $data['diabetes_related_diagnosis'][0]));
-                }
-                if (array_key_exists('diabetes_related_diagnosis_cpt_codes', $data)) {
-                    $diagnosis_values = array_merge($diagnosis_values, explode(',', $data['diabetes_related_diagnosis_cpt_codes'][0]));
-                }
-                if (array_key_exists('diabetes_related_diagnosis_hcpcs_code', $data)) {
-                    $diagnosis_values = array_merge($diagnosis_values, explode(',', $data['diabetes_related_diagnosis_hcpcs_code'][0]));
+                    $diagnosis_values = $data['diabetes_related_diagnosis'];
                 }
 
                 $diagnosis_array = array();
                 foreach ($diagnosis_values as $value) {
-                    if ($value != '') {
-                        $diagnosis_array[] = $value;
+                    foreach (explode(',', $value) as $code_fragment) { //cleanup for values added in  single column
+                        foreach (explode(' ', $code_fragment) as $code_value) {
+                            if (trim($code_value) != '') {
+                                $diagnosis_array[] = trim($code_value);
+                            }
+                        }
                     }
                 }
 
                 return $diagnosis_array;
+            break;
+            case 'ccda_procedures':
+                $ccda_data = $this->ccda_data;
+                $procedures_values = array();
+                if (isset($ccda_data['procedures'])) {
+                    foreach ($ccda_data['procedures'] as $data_row) {
+                        if (trim($data_row['code']) == '') {
+                            continue;
+                        }
+                        array_push($procedures_values, $data_row['code']);
+                    }
+                }
+
+                return $procedures_values;
+            break;
+            case 'web_form_procedures':
+                $web_form_data = $this->web_form_data;
+
+                $procedures_values = array();
+                if (isset($web_form_data)) {
+                    if (array_key_exists('diabetes_related_diagnosis_cpt_codes', $web_form_data)) {
+                        $procedures_values = array_merge($procedures_values, $web_form_data['diabetes_related_diagnosis_cpt_codes']);
+                    }
+                    if (array_key_exists('diabetes_related_diagnosis_hcpcs_code', $web_form_data)) {
+                        $procedures_values = array_merge($procedures_values, $web_form_data['diabetes_related_diagnosis_hcpcs_code']);
+                    }
+                }
+
+                return array_filter($procedures_values);
             break;
         }
 
@@ -518,9 +483,13 @@ class HedisExport
     protected function sortValues($original_array)
     {
         $sorted_array = array();
-        foreach ($this->file_order as $key => $value) {
-            $sorted_array[$value] = isset($original_array[$key]) ? $original_array[$key] : '';
+
+        $report_fields = ReportField::where('report_name', 'hedis_export')->get(['name', 'display_name'])->toArray();
+
+        foreach ($report_fields as $field) {
+            $sorted_array[$field['display_name']] = isset($original_array[$field['name']]) ? $original_array[$field['name']] : '';
         }
+
         return $sorted_array;
     }
 
