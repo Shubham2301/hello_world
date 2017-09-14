@@ -10,14 +10,15 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    public function administration(){
-    	$user = Auth::user();
-    	try {
-    		return ($user->isSuperAdmin() || $user->hasRole('user-admin'));
-    	} catch (Exception $e) {
-    		Log::error($e);
-    	}
-    	return false;
+    public function administration()
+    {
+        $user = Auth::user();
+        try {
+            return ($user->isSuperAdmin() || $user->hasRole('user-admin'));
+        } catch (Exception $e) {
+            Log::error($e);
+        }
+        return false;
     }
 
     public function canSchedule($patientID)
@@ -36,7 +37,21 @@ class UserPolicy
         return false;
     }
 
-    public function updateNetwork()
+    public function edit($user)
+    {
+        $current_user = Auth::user();
+
+        if ($user->id == $current_user->id) {
+            return true;
+        }
+        
+        if ($current_user->level <= $user->level) {
+            return true;
+        }
+        return false;
+    }
+
+    public function updateOrganisation()
     {
         $user = Auth::user();
         try {
@@ -46,5 +61,4 @@ class UserPolicy
         }
         return false;
     }
-
 }

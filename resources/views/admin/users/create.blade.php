@@ -78,7 +78,7 @@
                                                 {!! Form::label($network, $network); !!}
                                                 <br>
                                             @endforeach
-                                            {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'data-toggle' => 'tooltip', 'title' => 'User Practice', 'data-placement' => 'right', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block", ($user['practice_id'] != null ? 'disabled' : '' ))) !!}
+                                            {!! Form::select('user_practice', $practices, $user['practice_id'], array('class' => ' add_user_input', 'placeholder' => 'Select Practice*', 'id' => 'user_practice', 'data-toggle' => 'tooltip', 'title' => 'User Practice', 'data-placement' => 'right', 'style' => ($user['practice_id'] == '') ? 'display:none' : "display:inline-block", ( ($user['practice_id'] != null &&  !$data['update_practice']) ? 'disabled' : '' ))) !!}
                                         </div>
                                         <div class="col-xs-6">
                                             <h4>Roles*</h4>
