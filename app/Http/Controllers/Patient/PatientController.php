@@ -411,6 +411,7 @@ class PatientController extends Controller
         $data['birthdate'] = ($data['birthdate'] && $data['birthdate'] != '0000-00-00 00:00:00') ? $dob->format('m/d/Y') : '';
         $console = Careconsole::where('patient_id', $id)->first();
         $data['console_id'] = $console ? $console->id : '';
+        $data['network'] = $console ? $console->importHistory->network->name : '';
         $data['admin'] = true;
         $data['back_btn'] = 'back_to_admin_patient_btn';
         $data['url'] = '/administration/patients/update/' . $id;

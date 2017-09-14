@@ -5,6 +5,7 @@ $(document).ready(function() {
             loadAllUsers();
         } else {
             getLandingPageByRole();
+            updatePractice();
         }
     }
 
@@ -68,19 +69,7 @@ $(document).ready(function() {
     });
 
     $('.user_network').on('change', function() {
-        if (window.location.pathname === '/administration/users/create') {
-            var id = [];
-            $.each($("input[class='user_network']:checked"), function() {
-                id.push($(this).attr('id'));
-            });
-            if ((id.length > 0) && ($('#user_level').val() == 3)) {
-                refreshPractices(id);
-            } else if ((id.length > 1) && ($('#user_level').val() != 3)) {
-                $('.user_network').prop('checked', false);
-                $('p.alert_message').text('Only practice level users can be part of multiple networks');
-                $('#alert').modal('show');
-            }
-        }
+        updatePractice();
     })
 
     $('#search_user_button').on('click', function() {
@@ -426,6 +415,29 @@ function checkForm() {
 
     if (flag == 0)
         return true;
+}
+
+function updatePractice() {
+    var selected = '';
+    if (window.location.pathname != '/administration/users/create') {
+        selected = $('#user_practice').val();
+    }
+    var id = [];
+    $.each($("input[class='user_network']:checked"), function() {
+        id.push($(this).attr('id'));
+    });
+    if ((id.length > 0) && ($('#user_level').val() == 3)) {
+        refreshPractices(id);
+    } else if ((id.length > 1) && ($('#user_level').val() != 3)) {
+        $('.user_network').prop('checked', false);
+        $('p.alert_message').text('Only practice level users can be part of multiple networks');
+        $('#alert').modal('show');
+    }
+
+    if (selected != '') {
+        $('#user_practice').val(selected);
+    }
+    $('#user_practice').attr('required', true);
 }
 
 function refreshPractices(networkIDs) {
