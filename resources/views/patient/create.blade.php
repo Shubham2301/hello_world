@@ -195,6 +195,9 @@
                         <span data-toggle="tooltip" title="Console ID" data-placement="right">
                         {!! Form::text('console_id', $data['console_id'], array('class' => ' add_patient_input', 'placeholder' => 'Console ID', 'id' => 'console_id', 'disabled', 'style' => 'display:inline-block; margin-bottom:0;margin-right:0;')) !!}
                         </span>
+                        <span data-toggle="tooltip" title="Network Name" data-placement="right">
+                        {!! Form::text('network', $data['network'], array('class' => ' add_patient_input', 'placeholder' => 'Network Name', 'id' => 'network', 'disabled', 'style' => 'display:inline-block; margin-bottom:0;margin-right:0;')) !!}
+                        </span>
                     </div>
                     <div class="col-sm-6 col-xs-12">
                         <span data-toggle="tooltip" title="Creation Date" data-placement="right">
