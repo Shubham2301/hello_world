@@ -46,7 +46,6 @@ class NetworkStateActivityController extends ReportController
 
     public function getReportData(Request $request)
     {
-        dd($request->all());
         $report_filter['start_date'] = Helper::formatDate($request->start_date, config('constants.report_date_format.start_date_time'));
         $report_filter['end_date'] = Helper::formatDate($request->end_date, config('constants.report_date_format.end_date_time'));
         $report_filter['network_id'] = $request->network_id;
