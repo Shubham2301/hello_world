@@ -453,6 +453,8 @@ class ActionService
             case 'other-reasons-for-declining':
             case 'no-need-to-schedule':
             case 'no-insurance':
+            case 'would-not-validate-dob':
+            case 'unaware-of-diagnosis':
                 $console = Careconsole::find($consoleID);
                 $date = new DateTime();
                 $console->archived_date = $date->format('Y-m-d H:i:s');

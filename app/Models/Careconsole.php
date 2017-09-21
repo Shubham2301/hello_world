@@ -79,6 +79,8 @@ class Careconsole extends Model
             $q->orwhere('name', 'other-reasons-for-declining');
             $q->orwhere('name', 'already-seen-by-outside-dr');
             $q->orwhere('name', 'no-need-to-schedule');
+            $q->orwhere('name', 'would-not-validate-dob');
+            $q->orwhere('name', 'unaware-of-diagnosis');
             $q->orwhere('name', 'no-insurance');
             $q->orwhere('name', 'closed');
             $q->orwhere('name', 'incomplete');
