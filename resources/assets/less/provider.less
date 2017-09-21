@@ -17,6 +17,7 @@ Section : Imports
         overflow-y: hidden;
     }
 }
+
 .practice_list_item {
     border-top: 1px solid;
     opacity: 0.9;
@@ -25,6 +26,7 @@ Section : Imports
         opacity: 1;
     }
 }
+
 .practice_info {
     display: none;
     margin-top: 2em;
@@ -39,20 +41,24 @@ Section : Imports
         display: block;
     }
 }
+
 #search_practice_button {
     cursor: pointer
 }
+
 #add_practice_search_option {
     position: inherit;
     cursor: pointer;
     margin-right: 2em;
 }
+
 .search_filter {
     color: black;
     display: inline-flex;
     padding-left: 1px;
     padding-top: 4px;
 }
+
 .search_filter_item {
     background: transparent;
     padding: 2px 5px 2px 5px;
@@ -67,6 +73,7 @@ Section : Imports
         margin-left: 2px;
     }
 }
+
 .provider_list {
     overflow-y: scroll;
     display: none;
@@ -74,6 +81,7 @@ Section : Imports
         display: block;
     }
 }
+
 .provider_list_item {
     border-top: 1px solid;
     opacity: 0.9;
@@ -82,6 +90,7 @@ Section : Imports
         opacity: 1;
     }
 }
+
 .provider_info {
     display: block;
     margin-top: 2em;
@@ -96,14 +105,17 @@ Section : Imports
         display: block;
     }
 }
+
 #search_provider_button {
     cursor: pointer
 }
+
 .section_seperator {
     border-bottom: solid 2px white;
     display: block;
     position: relative
 }
+
 .patient_previous_information {
     display: none;
     margin: 1.5em auto;
@@ -118,6 +130,7 @@ Section : Imports
         display: block;
     }
 }
+
 .list_seperator {
     padding: 1em 0;
     border-bottom: solid 1px white;
@@ -127,6 +140,7 @@ Section : Imports
         color: #fff;
     }
 }
+
 .provider_near_patient,
 .previous_provider_patient {
     font-size: 1em;
@@ -135,6 +149,7 @@ Section : Imports
         cursor: pointer;
     }
 }
+
 .provider_near_patient_list,
 .previous_provider_patient_list {
     margin: 1em 2em;
@@ -143,6 +158,7 @@ Section : Imports
         display: block;
     }
 }
+
 .patient_info {
     display: none;
     margin-top: 2em;
@@ -157,12 +173,14 @@ Section : Imports
         display: block;
     }
 }
+
 .schedule_button {
     display: none;
     &.active {
         display: inline-block;
     }
 }
+
 .button_type_11 {
     color: black;
     padding: 0.5em 1em;
@@ -175,10 +193,12 @@ Section : Imports
         display: inline-block;
     }
 }
+
 .availability_display>.col-xs-1 {
     background-color: #f2f2f2;
     color: black;
 }
+
 .lastseen_content {
     display: none;
     &.active {
@@ -186,32 +206,39 @@ Section : Imports
         cursor: pointer;
     }
 }
+
 .lastseenby_show {
     cursor: pointer;
 }
+
 .referredby_content {
     display: none;
     &.active {
         display: inline-block;
     }
 }
+
 .referredby_show {
     cursor: pointer;
 }
+
 .insurance_provider_show {
     cursor: pointer;
 }
+
 .insurance_provider_content {
     display: none;
     &.active {
         display: inline-block;
     }
 }
+
 #practice_listing {
     width: 85%;
     margin: 1em auto;
     // overflow-y: auto;
 }
+
 .practice_list {
     overflow-y: scroll;
     display: none;
@@ -224,19 +251,21 @@ Section : Imports
         margin: 0;
     }
 }
+
 .practice_search_content {
     margin-left: 112px;
 }
+
 .practice_location {
     border: 1px solid;
     padding: 0.25em 0.5em;
     border-radius: 5px;
     cursor: pointer;
-    &.active,
-    &:hover {
+    &.active, &:hover {
         font-weight: bold;
     }
 }
+
 .modal-dialog {
     background-color: #f2f2f2;
     padding: 10px;
@@ -249,9 +278,11 @@ Section : Imports
         padding: .5em 0 0 0;
     }
 }
+
 .dropdown {
     color: #000;
 }
+
 .availability {
     display: none;
     background-color: @light-gray;
@@ -296,22 +327,27 @@ Section : Imports
         }
     }
 }
+
 .ajax {
     display: none;
     &.active {
         display: inline-block;
     }
 }
+
 input {
     color: #000;
 }
+
 .availability-btn {
     color: #000;
     border: none;
 }
+
 .hide {
     display: none;
 }
+
 .availability_glyph {
     color: #82888f;
     background-color: #cccccc;
@@ -330,6 +366,7 @@ input {
         cursor: pointer;
     }
 }
+
 .mycarousel {
     display: flex;
     justify-content: space-between;
@@ -340,6 +377,7 @@ input {
         padding: 0;
     }
 }
+
 #custom_dropdown {
     background-color: #ebeced;
     box-shadow: 0px 0px 3px #82888f;
@@ -349,49 +387,60 @@ input {
     min-width: 9em;
     color: black;
 }
+
 ul.time_selector {
     list-style-type: none;
     padding: 0;
     &>li {
         padding: .5em 0;
         cursor: pointer;
-        &:hover,
-        &:active {
+        &:hover, &:active {
             color: #0071bc;
         }
     }
 }
+
 .time_glyph {
     color: #000;
 }
+
 li {
     cursor: pointer;
 }
+
 #appointment_date {
     color: #fff;
 }
+
 #appointment_time {
     color: #fff;
 }
+
 p.patient_dropdown_data {
     margin: 0;
 }
+
 .patient_detail_info {
     font-size: .9em;
 }
+
 .provider_list_title {
     font-size: 1.3em;
     padding-bottom: .5em;
 }
+
 .provider_list_detail {
     font-size: .9em;
 }
+
 .provider_detail_text {
     font-size: .9em;
 }
+
 #practice_name {
     margin: 0;
 }
+
 #button_active {
     background-color: #d2d3d5;
     background-image: linear-gradient(#d2d3d5 10%, #d2d3d5 90%);
@@ -400,6 +449,7 @@ p.patient_dropdown_data {
     font-size: 1.2em;
     font-weight: bold;
 }
+
 .select_date {
     display: block;
     color: #000;
@@ -410,24 +460,30 @@ p.patient_dropdown_data {
     font-size: 1.1em;
     cursor: pointer;
 }
+
 .get_availability {
     margin: 0;
 }
+
 .preferences {
     color: #4d4d4d;
     cursor: pointer;
 }
+
 .custom_dropdown {
     display: flex;
 }
+
 .custom_dropdown_img {
     width: 1.5em;
     height: 1.5em;
     margin: auto .5em;
 }
+
 .custom_dropdown_img_search {
     margin: auto .5em;
 }
+
 .practice_name_underline {
     width: 2em;
     margin-top: 0;
@@ -435,21 +491,25 @@ p.patient_dropdown_data {
     border-top: 2px solid #eee;
     margin-right: auto;
 }
+
 .provider_info_row>div>p {
     margin-bottom: 1.3em;
     &.get_availability {
         margin-bottom: 0;
     }
 }
+
 .custom_dropdown {
     cursor: pointer;
 }
+
 .dropdown-menu>ul>li {
     color: #4d4d4d;
     &:hover {
         color: #000;
     }
 }
+
 #custom_dropdown {
     background-color: #ebeced;
     box-shadow: 0px 0px 3px #82888f;
@@ -460,6 +520,7 @@ p.patient_dropdown_data {
     color: black;
     margin-top: .5em;
 }
+
 .underline {
     border: 0;
     border-top: 2px solid #f2f2f2;
@@ -468,6 +529,7 @@ p.patient_dropdown_data {
     margin-top: 0;
     margin-right: auto;
 }
+
 ul.location_list {
     list-style: none;
     padding: 0;
@@ -476,18 +538,22 @@ ul.location_list {
         cursor: pointer;
     }
 }
+
 .provider_near_accordian {
     margin: 0;
 }
+
 .panel-title>a {
     font-size: 15px;
     color: #ebebeb;
 }
+
 .provider_location_name {
     font-size: 1.3em;
     color: #ebebeb;
     padding: .5em 0;
 }
+
 .provider_location_detail {
     font-size: 1em;
     font-size: #ebebeb;
@@ -506,10 +572,12 @@ ul.location_list {
         }
     }
 }
+
 .panel-body {
     padding: .5em 0;
     margin: .5em 1em;
 }
+
 .provider_details_section {
     display: flex;
     flex-direction: row;
@@ -519,6 +587,7 @@ ul.location_list {
         flex-grow: 1;
     }
 }
+
 .nearby_provider_item {
     cursor: pointer;
     margin: .5em 0;
@@ -527,12 +596,25 @@ ul.location_list {
         color: #f5f5f5;
     }
 }
+
 .provider_near_patient_list {
     margin: .5em 2em;
 }
+
 .panel-group.panel {
     margin: 1em 0;
 }
+
+.location_preferences {
+    text-align: left;
+    background: #fff;
+    color: #4d4d4d;
+    padding: 15px;
+    box-shadow: #4d4d4d 2px 2px 2px;
+    margin: 1em 2em;
+    border-radius: .5em;
+}
+
 
 /*
 ----------------------
@@ -571,6 +653,7 @@ Mobile Styling
         margin-right: .5em;
     }
 }
+
 @media only screen and (min-width: 767px) {
     .content-right {
         padding: 15px;
@@ -579,6 +662,7 @@ Mobile Styling
         width: 90%;
     }
 }
+
 .show_specialist {
     margin: 0.2em 0.5em;
     color: #4d4d4d;

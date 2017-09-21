@@ -219,9 +219,9 @@ class ProviderController extends Controller
         $locationID = $request->input('location_id');
         $practiceLocation = PracticeLocation::find($locationID);
         if ($practiceLocation) {
-            return $practiceLocation->special_instructions ?: '<p>No special instructions specified for this location</p>';
+            return $practiceLocation->special_instructions ?: '';
         }
-        return '<p>No data found!</p>';
+        return '';
     }
 
     public function getAppointmentTypes(Request $request)
