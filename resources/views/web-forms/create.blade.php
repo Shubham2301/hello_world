@@ -49,8 +49,8 @@
                 <div>
                     <p>
                         <label class="input_checkbox_lable">
-                            {!! Form::checkbox($element['id'], ($element['display-name'] != "") ? $element['display-name'] : true, null, array('id' => $element['id'], 'class' => 'input_checkbox')); !!}
-                            <sapn> {{ $element['display-name'] }}</sapn>
+                            {!! Form::checkbox($element['id'], ($element['display-name'] != "") ? $element['display-name'] : true, (isset($element['checked']) && $element['checked'] == "checked") ? true : null, array('id' => $element['id'], 'class' => 'input_checkbox')); !!}
+                            <span> {{ $element['display-name'] }}</span>
                         </label>
                     </p>
                 </div>
@@ -59,7 +59,7 @@
                 <div>
                     <label class="radio_checkbox_lable">
                         {!! Form::radio($element['id'], ($element['value'] != "")?$element['value'] :true, null, array('id' => $element['id'], 'class' => 'radio_checkbox')); !!}
-                        <sapn> {{ $element['display-name'] }}</sapn>
+                        <span> {{ $element['display-name'] }}</span>
                     </label>
                 </div>
 
