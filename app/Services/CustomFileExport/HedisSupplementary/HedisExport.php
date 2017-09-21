@@ -68,9 +68,27 @@ class HedisExport
     {
         $file_data = array();
         foreach ($patient_id_list as $patientID) {
-            $file_data[] = self::getPatientFileData($patientID);
+            $patient_data = self::getPatientFileData($patientID);
+            if (!empty($patient_data['Procedure'])) {
+                $patient_file_procedure_split = self::splitProcedureData($patient_data);
+                $file_data = array_merge($patient_file_procedure_split, $file_data);
+            } else {
+                $file_data[] = $patient_data;
+            }
         }
         return $file_data;
+    }
+
+    protected function splitProcedureData($patient_data)
+    {
+        $patient_file_data = array();
+        foreach ($patient_data['Procedure'] as $procedure) {
+            $file_data = $patient_data;
+            $file_data['Procedure'] = strtoupper($procedure);
+            $patient_file_data[] = $file_data;
+        }
+
+        return $patient_file_data;
     }
 
     public function getNetworkPatientList($network_id)
@@ -111,7 +129,7 @@ class HedisExport
 
         $careconsole = Careconsole::where('patient_id', $this->patient_id)->first();
 
-        $this->ActionService->userAction(44, null, null, '', '', $careconsole->id, '');
+        // $this->ActionService->userAction(44, null, null, '', '', $careconsole->id, '');
 
         return self::sortValues($patient_file_data);
     }
@@ -398,7 +416,7 @@ class HedisExport
                 $web_form_procedures = self::getFieldValue($this->web_form_data, 'web_form_procedures');
                 $procedures_data = array_merge($web_form_procedures, $ccda_procedures);
 
-                return implode('; ', $procedures_data);
+                return $procedures_data;
                 break;
             case 'loinc':
                 $loinc_values = array();
