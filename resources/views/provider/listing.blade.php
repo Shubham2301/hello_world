@@ -10,7 +10,11 @@
             <br>
             <p class="button_type_1" id="change_practice_button">Change Provider</p>
             <br>
-            <p id="" class="arial_bold preferences">Provider Preferences</p>
+            <div class="location_preferences" style="display:none;">
+                <span class="arial_bold">Location Preferences</span>
+                <hr class="practice_name_underline" style="border-top: 2px solid #4d4d4d;">
+                <span class="arial" id="location_special_instruction"></span>
+            </div>
         </div>
         <div class="col-sm-8 col-xs-6">
             <p class="bold arial_bold" id="practice_name"></p>
@@ -35,7 +39,6 @@
                     <p>
                         <span id="ins_list" class="ins_list"></span><img src="{{asset('images/ajax-loader.gif')}}" class="ajax ins_list">
                         <span id="ins_selected"></span>
-                        </span>
                     </p>
                 </div>
                 <div class="col-sm-6 col-xs-12">

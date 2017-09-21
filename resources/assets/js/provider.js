@@ -183,6 +183,7 @@ $(document).ready(function() {
         $('#form_location_code').val($(this).attr('data-code'));
         getAppointmentTypes();
         getInsuranceList();
+        getLocationPreferences();
     });
 
     $('.appointment_type_list').on('click', 'ul.appointment_dropdown>li', function() {
@@ -313,35 +314,37 @@ $(document).ready(function() {
         }
     });
 
-    $('.preferences').on('click', function() {
-        if ($('#form_location_id').val() == '') {
-            $('#location_special_instruction').html('<p>Please select a location</p>');
-            $('#special_instruction').modal('show');
-        } else {
-            var formData = {
-                'location_id': $('#form_location_id').val(),
-            };
-            $.ajax({
-                url: '/providers/get_special_instruction',
-                type: 'GET',
-                data: $.param(formData),
-                contentType: 'text/html',
-                async: false,
-                success: function(e) {
-                    $('#location_special_instruction').html(e);
-                    $('#special_instruction').modal('show');
-                },
-                error: function() {
-                    $('p.alert_message').text('Error getting location instructions');
-                    $('#alert').modal('show');
-                },
-                cache: false,
-                processData: false
-            });
-        }
-    });
-
 });
+
+function getLocationPreferences() {
+    var formData = {
+        'location_id': $('#form_location_id').val(),
+    };
+    $.ajax({
+        url: '/providers/get_special_instruction',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function(e) {
+            if (e != '') {
+                $('#location_special_instruction').html(e);
+                $('.location_preferences').show();
+            } else {
+                $('#location_special_instruction').html('');
+                $('.location_preferences').hide();
+            }
+        },
+        error: function() {
+            $('#location_special_instruction').html('');
+            $('.location_preferences').hide();
+            $('p.alert_message').text('Error getting location instructions');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+}
 
 var selectPreviousProvider = false;
 var unfillfpcFields = null;
@@ -367,6 +370,8 @@ function clearHTML() {
     $('.appointment_type_not_found').hide();
     $('#form_location_id').val('');
     $('#form_location_code').val('');
+    $('#location_special_instruction').html('');
+    $('.location_preferences').hide();
 }
 
 function showPatientInfo() {
@@ -417,6 +422,8 @@ function resetLocationData() {
     $('.availability').removeClass('active');
     $('.schedule_button').removeClass('active');
     $('.availability-text').removeClass('hide');
+    $('#location_special_instruction').html('');
+    $('.location_preferences').hide();
 }
 
 //function that is used to fetch the information of the patient that is being scheduled
@@ -576,7 +583,7 @@ function getInsuranceList() {
             e = $.parseJSON(e);
             var content = '';
             content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold custom_dropdown">Select Insurance List <img src="/images/dropdown-img.png" class="custom_dropdown_img"></span></a><ul class="dropdown-menu dropdown_ins_list" id="custom_dropdown">';
-            if (e.GetInsListResult.InsItem.length > 0) {
+            if (e.GetInsListResult.length > 0 && e.GetInsListResult.InsItem.length > 0) {
                 var insList = e.GetInsListResult.InsItem;
                 insList.forEach(function(elem) {
                     content += '<li  value="' + elem.InsKey + '" data-name=" ' + elem.InsName + ' ">' + elem.InsName + '</li>';
@@ -709,7 +716,6 @@ function getOpenSlots(week) {
         async: true,
         data: $.param(formData),
         contentType: 'text/html',
-        //        async: false,
         success: function(e) {
             e = $.parseJSON(e);
             var apptSlots = e.GetOpenApptSlotsResult;
@@ -720,15 +726,6 @@ function getOpenSlots(week) {
                 content += '<div class="weekday"><p class="date">' + elem.date + '<br>' + weekday[i] + '</p>';
                 var slot = elem.slots['ApptSlots'];
                 if (slot) {
-                    //                    content += '<div id="' + weekday[i] + '" class="carousel mycarousel"><a class="" href="#' + weekday[i] + '" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-up time_glyph" aria-hidden="true"></span></a><ul class="carousel-inner time_selector" role="listbox">';
-                    //                    slot.forEach(function (time) {
-                    //                        if (k == 0) {
-                    //                            content += '<li class="item active" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
-                    //                            k++;
-                    //                        } else
-                    //                            content += '<li class="item" data-time="' + time.ApptStartTime + '" data-date="' + elem.date + '">' + time.ApptStartTime + '</li>';
-                    //                    });
-                    //                    content += '</ul><a class="" href="#' + weekday[i] + '" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-down time_glyph" aria-hidden="true"></span></a></div>';
                     content += '<div id="' + weekday[i] + '"><ul class="time_selector">';
                     if (slot.length) {
                         slot.forEach(function(time) {
@@ -789,8 +786,6 @@ function getAppointmentTypes() {
                 $('.appointment_type_list').html(content);
             } else {
                 $('.appointment_type_not_found').show();
-                // $('p.alert_message').text('No data received');
-                // $('#alert').modal('show');
             }
             $('.ajax.appointment_type').removeClass('active');
         },

@@ -79,6 +79,8 @@ class Careconsole extends Model
             $q->orwhere('name', 'other-reasons-for-declining');
             $q->orwhere('name', 'already-seen-by-outside-dr');
             $q->orwhere('name', 'no-need-to-schedule');
+            $q->orwhere('name', 'would-not-validate-dob');
+            $q->orwhere('name', 'unaware-of-diagnosis');
             $q->orwhere('name', 'no-insurance');
             $q->orwhere('name', 'closed');
             $q->orwhere('name', 'incomplete');
@@ -1015,7 +1017,7 @@ class Careconsole extends Model
                     $sub_sub_sub_query->actionCheck(['archive']);
                     });
                     $sub_sub_query->orWhereHas('actionResult', function ($sub_sub_sub_query) {
-                        $sub_sub_sub_query->actionResultCheck(['recall-later', 'patient-declined-services', 'already-seen-by-outside-dr', 'no-need-to-schedule', 'no-insurance', 'would-not-validate-dob', 'unaware-of-diagnosis', 'other-reasons-for-declining', 'closed', 'incomplete']);
+                        $sub_sub_sub_query->actionResultCheck(['patient-declined-services', 'already-seen-by-outside-dr', 'no-need-to-schedule', 'no-insurance', 'would-not-validate-dob', 'unaware-of-diagnosis', 'other-reasons-for-declining', 'closed', 'incomplete']);
                     });
                 });
             });

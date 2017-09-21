@@ -29,6 +29,10 @@ $(document).ready(function() {
     $('#get_network_state_activity').on('click', function() {
         getReport();
     });
+    
+    $('#network_id').on('change', function() {
+        updateFilter();
+    });
 
 });
 
@@ -36,7 +40,7 @@ $(document).ready(function() {
 function getReport() {
 
     var states = [];
-    $.each($("input[name='state_list']:checked"), function() {
+    $.each($(".state_list_container input[name='state_list']:checked"), function() {
         states.push($(this).val());
     });
 
@@ -50,29 +54,20 @@ function getReport() {
     var query = $.param(formData);
     window.location = '/report/network-state-activity/get_report_data?' + query;
 
-//    $.ajax({
-//        url: '/report/network-state-activity/get_report_data',
-//        type: 'GET',
-//        data: $.param(formData),
-//        contentType: 'application/json',
-//        async: false,
-//        success: function(data) {
-//            var report_data = $.parseJSON(data);
-//
-//            var report_content = '';
-//            console.log(report_data);
-//            report_data.each(function() {
-//
-//            })
-//            for (report_field in report_data) {
-//                console.log(report_field);
-//            }
-//
-//        },
-//        error: function() {
-//            alert('Error Refreshing');
-//        },
-//        cache: false,
-//        processData: false
-//    });
+}
+
+function updateFilter() {
+    var selected_network_state = $('#network_id :selected').attr('attr-state');
+
+    var state_array = selected_network_state.split(';');
+
+    var state_filters = '';
+    
+    $.each(state_array, function(index, value) {
+        if(value !== '') {
+            state_filters += '<span class="state_wraper"><input type="checkbox" value="' + value + '" name="state_list"> ' + value + ' </span>';
+        }
+    });
+
+    $('.state_list_container').html(state_filters);
 }
