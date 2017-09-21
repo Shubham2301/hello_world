@@ -31,23 +31,22 @@ class NetworkStateActivityController extends ReportController
             $request->session()->flash('failure', 'Unauthorized Access. Please contact your administrator.');
             return redirect('/referraltype');
         }
+
         $networks = Network::all()->sortBy("name");
         foreach ($networks as $network) {
             $networkData[$network->id] = $network->name;
         }
         reset($networkData);
 
-        $list = Patient::distinct()
-                    ->get(['state'])
-                    ->toArray();
+        $networkState = Network::networkStateList();
 
-        $data['state-list'] = $list;
         $data['network-state-activity'] = true;
-        return view('reports.network_state_activity.index')->with('data', $data)->with('networkData', $networkData);
+        return view('reports.network_state_activity.index')->with('data', $data)->with('networkData', $networkData)->with('networkState', $networkState);
     }
 
     public function getReportData(Request $request)
     {
+        dd($request->all());
         $report_filter['start_date'] = Helper::formatDate($request->start_date, config('constants.report_date_format.start_date_time'));
         $report_filter['end_date'] = Helper::formatDate($request->end_date, config('constants.report_date_format.end_date_time'));
         $report_filter['network_id'] = $request->network_id;

@@ -1017,7 +1017,7 @@ class Careconsole extends Model
                     $sub_sub_sub_query->actionCheck(['archive']);
                     });
                     $sub_sub_query->orWhereHas('actionResult', function ($sub_sub_sub_query) {
-                        $sub_sub_sub_query->actionResultCheck(['recall-later', 'patient-declined-services', 'already-seen-by-outside-dr', 'no-need-to-schedule', 'no-insurance', 'would-not-validate-dob', 'unaware-of-diagnosis', 'other-reasons-for-declining', 'closed', 'incomplete']);
+                        $sub_sub_sub_query->actionResultCheck(['patient-declined-services', 'already-seen-by-outside-dr', 'no-need-to-schedule', 'no-insurance', 'would-not-validate-dob', 'unaware-of-diagnosis', 'other-reasons-for-declining', 'closed', 'incomplete']);
                     });
                 });
             });

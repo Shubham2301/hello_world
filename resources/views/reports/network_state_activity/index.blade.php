@@ -30,19 +30,16 @@
         <span class="report_option_row">
             <span class="arial_bold">Network:</span>
             <select class="network_selector" id="network_id">
+                <option selected>Select a network</option>
                 @foreach($networkData as $networkID => $network)
-                    <option value="{{ $networkID }}">{{ $network }}</option>
+                    <option value="{{ $networkID }}" attr-state="{{ isset($networkState[$networkID]) ? implode(';', $networkState[$networkID]) : '' }}">{{ $network }}</option>
                 @endforeach
             </select>
         </span>
         <span class="report_option_row">
             <span class="arial_bold">State:</span>
             <div class="state_list_container">
-            @foreach($data['state-list'] as $state)
-                @if($state['state'] != '')
-                <span class="state_wraper"><input type="checkbox" value="{{ $state['state'] }}" name="state_list"> {{ $state['state'] }} </span>
-                @endif
-            @endforeach
+
             </div>
         </span>
         <span class="report_option_row">

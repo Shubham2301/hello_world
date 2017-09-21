@@ -5,24 +5,26 @@ namespace myocuhub;
 use Illuminate\Database\Eloquent\Model;
 use myocuhub\Models\MessageTemplate;
 
-class Network extends Model {
-	protected $fillable = ['id', 'name', 'email', 'phone', 'addressline1', 'addressline2', 'city', 'state', 'zip', 'country'];
+class Network extends Model
+{
+    protected $fillable = ['id', 'name', 'email', 'phone', 'addressline1', 'addressline2', 'city', 'state', 'zip', 'country'];
 
-	/**
-	 * @return mixed
-	 */
-	public function practices() {
-		// TODO : optimize
-		return $this->hasMany('myocuhub\Models\PracticeNetwork')
-		            ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
-		            ->whereNull('practices.deleted_at')
-		            ->orderBy('practices.name');
-	}
-
-	/**
+    /**
      * @return mixed
      */
-	public function practiceNetwork()
+    public function practices()
+    {
+        // TODO : optimize
+        return $this->hasMany('myocuhub\Models\PracticeNetwork')
+                    ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
+                    ->whereNull('practices.deleted_at')
+                    ->orderBy('practices.name');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function practiceNetwork()
     {
         return $this->hasMany('myocuhub\Models\PracticeNetwork');
     }
@@ -35,52 +37,82 @@ class Network extends Model {
         return $this->hasMany('myocuhub\Models\GoalNetwork');
     }
 
-	
-	public static function practicesByName($search, $filter = null) {
-		$query = self::query()
-			->where('networks.id', session('network-id'))
-			->leftJoin('practice_network', 'networks.id', '=', 'practice_network.network_id')
-			->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
-			->where('practices.name', 'like', '%' . $search . '%');
-			if (!$filter) {
-				$query->whereNull('practices.deleted_at');
-			}
-		$query
-			->orderBy('practices.name');
-		return $query->get();
-	}
+    /**
+     * @return mixed
+     */
+    public static function networkStateList()
+    {
+        $network_states_list = array();
+        $networks = self::all();
+        foreach ($networks as $network) {
+            $state_list = Patient::whereHas('careConsole.importHistory', function ($query) use ($network) {
+                $query->where('network_id', $network->id);
+            })
+                ->distinct()
+                ->get(['state'])
+                ->toArray();
 
-	/**
-	 * @return mixed
-	 */
-	public function referralTypes() {
-		// TODO : optimize
-		return $this->hasMany('myocuhub\NetworkReferraltype')
-		            ->leftJoin('referraltypes', 'network_referraltype.referraltype_id', '=', 'referraltypes.id');
-	}
-	/**
-	 * @return mixed
-	 */
-	public function newReferralTypes() {
-		// TODO : optimize
-		return $this->hasMany('myocuhub\NetworkReferraltype')
-		            ->leftJoin('referraltypes', 'network_referraltype.referraltype_id', '=', 'referraltypes.id');
-	}
-	/**
-	 * @return mixed
-	 */
-	public function careconsoleStages() {
-		return $this->hasMany('myocuhub\Models\NetworkStage')
-		            ->leftJoin('careconsole_stages', 'network_stage.stage_id', '=', 'careconsole_stages.id')->orderBy('stage_order');
-	}
+            foreach ($state_list as $state) {
+                if (trim($state['state']) != '') {
+                    $network_states_list[$network->id][] = trim($state['state']);
+                }
+            }
+        }
 
-	public static function getColumnNames() {
-		$network = \Schema::getColumnListing('networks');
-		$dummy_array = array_fill_keys(array_keys($network), null);
-		return array_combine($network, $dummy_array);
-	}
+        return $network_states_list;
+    }
+    
+    public static function practicesByName($search, $filter = null)
+    {
+        $query = self::query()
+            ->where('networks.id', session('network-id'))
+            ->leftJoin('practice_network', 'networks.id', '=', 'practice_network.network_id')
+            ->leftJoin('practices', 'practice_network.practice_id', '=', 'practices.id')
+            ->where('practices.name', 'like', '%' . $search . '%');
+        if (!$filter) {
+            $query->whereNull('practices.deleted_at');
+        }
+        $query
+            ->orderBy('practices.name');
+        return $query->get();
+    }
 
-    public function webForms() {
+    /**
+     * @return mixed
+     */
+    public function referralTypes()
+    {
+        // TODO : optimize
+        return $this->hasMany('myocuhub\NetworkReferraltype')
+                    ->leftJoin('referraltypes', 'network_referraltype.referraltype_id', '=', 'referraltypes.id');
+    }
+    /**
+     * @return mixed
+     */
+    public function newReferralTypes()
+    {
+        // TODO : optimize
+        return $this->hasMany('myocuhub\NetworkReferraltype')
+                    ->leftJoin('referraltypes', 'network_referraltype.referraltype_id', '=', 'referraltypes.id');
+    }
+    /**
+     * @return mixed
+     */
+    public function careconsoleStages()
+    {
+        return $this->hasMany('myocuhub\Models\NetworkStage')
+                    ->leftJoin('careconsole_stages', 'network_stage.stage_id', '=', 'careconsole_stages.id')->orderBy('stage_order');
+    }
+
+    public static function getColumnNames()
+    {
+        $network = \Schema::getColumnListing('networks');
+        $dummy_array = array_fill_keys(array_keys($network), null);
+        return array_combine($network, $dummy_array);
+    }
+
+    public function webForms()
+    {
         return $this->hasMany('myocuhub\Models\NetworkWebForm')
             ->leftJoin('web_form_templates', 'network_web_form.web_form_template_id', '=', 'web_form_templates.id')
             ->select('web_form_templates.id', 'web_form_templates.name', 'web_form_templates.display_name');
