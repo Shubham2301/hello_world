@@ -129,7 +129,7 @@ class HedisExport
 
         $careconsole = Careconsole::where('patient_id', $this->patient_id)->first();
 
-        // $this->ActionService->userAction(44, null, null, '', '', $careconsole->id, '');
+        $this->ActionService->userAction(44, null, null, '', '', $careconsole->id, '');
 
         return self::sortValues($patient_file_data);
     }
