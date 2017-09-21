@@ -48,7 +48,7 @@
                 @elseif($element['type'] == 'input:date') {!! Form::text($element['id'], '', array('class' => config('webforms.class.input-text').' '.'field_date', 'placeholder' => $element['display-name'], 'id' => $element['id'] , 'data-toggle' => 'tooltip', 'title' => $element['display-name'], 'data-placement' => 'right', 'style'=>'margin:0em')) !!} @elseif($element['type'] == 'input:text:other') {!! Form::text($element['id'], '', array('class' => 'other_option_input', 'placeholder' => $element['display-name'], 'id' => $element['id'] , 'data-toggle' => 'tooltip', 'title' => $element['display-name'], 'data-placement' => 'right')) !!} @elseif($element['type'] == 'input:checkbox')
                 <div>
                     <p>
-                        <label class="input_checkbox_lable">
+                        <label class="input_checkbox_lable {{ (isset($element['checked']) && $element['checked'] == "checked") ? 'active' : '' }} ">
                             {!! Form::checkbox($element['id'], ($element['display-name'] != "") ? $element['display-name'] : true, (isset($element['checked']) && $element['checked'] == "checked") ? true : null, array('id' => $element['id'], 'class' => 'input_checkbox')); !!}
                             <span> {{ $element['display-name'] }}</span>
                         </label>
