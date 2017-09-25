@@ -436,8 +436,8 @@ function updatePractice() {
 
     if (selected != '') {
         $('#user_practice').val(selected);
+        $('#user_practice').attr('required', true);
     }
-    $('#user_practice').attr('required', true);
 }
 
 function refreshPractices(networkIDs) {
