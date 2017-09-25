@@ -93,6 +93,9 @@ class SESConnect extends SES
                     if (!$user->sesemail || $user->sesemail == '') {
                         continue;
                     }
+                    if ($user->id == Auth::user()->id) {
+                        continue;
+                    }
                     $scope[] = ['id' => $user->id, 'name' => $user->name];
                 }
             }
