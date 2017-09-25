@@ -17,7 +17,8 @@ use myocuhub\Models\PracticeUser;
 use myocuhub\Models\ProviderType;
 use myocuhub\Models\UserLevel;
 
-class User extends Model implements AuthenticatableContract,
+class User extends Model implements
+    AuthenticatableContract,
 AuthorizableContract,
 CanResetPasswordContract
 {
@@ -159,7 +160,7 @@ CanResetPasswordContract
                             case 'provider_types':
                                 $query->where('provider_type_id', null);
                                 foreach ($filter['value'] as $type) {
-                                        $query->orWhere('provider_type_id', $type);
+                                    $query->orWhere('provider_type_id', $type);
                                 }
                                 break;
                             case 'all':
@@ -236,7 +237,7 @@ CanResetPasswordContract
                     $query->where(function ($query) use ($search_val) {
                         $query->where('firstname', 'LIKE', '%' . $search_val . '%')
                             ->where('active', '=', '1');
-                        })
+                    })
                         ->orWhere(function ($query) use ($search_val) {
                             $query->where('middlename', 'LIKE', '%' . $search_val . '%')
                                 ->where('active', '=', '1');
@@ -264,23 +265,29 @@ CanResetPasswordContract
 
     public static function practiceProvidersById($practice_id, $network_id = null)
     {
-        $query = self::query()
-            ->leftjoin('practice_user', 'users.id', '=', 'practice_user.user_id')
-            ->leftjoin('practices', 'practice_user.practice_id', '=', 'practices.id');
+        $query = self::query();
+
+        $query->whereHas('userPractice', function ($sub_query) use ($practice_id) {
+            $sub_query->where('practice_id', $practice_id);
+            $sub_query->whereHas('practice', function ($sub_sub_query) {
+                $sub_sub_query->where('active', '1');
+            });
+        });
+
         if ($network_id) {
-            $query->leftjoin('network_user', 'users.id', '=', 'network_user.user_id')
-                ->where('network_id', $network_id);
+            $query->whereHas('network', function ($sub_query) use ($network_id) {
+                $sub_query->where('network_id', $network_id);
+            });
         } else {
             $user = Auth::user();
-            $query->leftjoin('network_user', 'users.id', '=', 'network_user.user_id');
-            foreach ($user->userNetwork as $network) {
-                $query->orWhere('network_id', $network->network_id);
-            }
+            $query->whereHas('network', function ($sub_query) use ($user) {
+                foreach ($user->userNetwork as $network) {
+                    $sub_query->orWhere('network_id', $network->network_id);
+                }
+            });
         }
-        $query->where('practice_id', $practice_id)
-            ->where('active', '1')
-            ->where('usertype_id', 1);
-        return $query->get(['*', 'users.*']);
+
+        return $query->get();
     }
 
     public static function networkProvidersById($network_id)
@@ -301,7 +308,7 @@ CanResetPasswordContract
 
     public function getName($type = 'system_format')
     {
-        if($type == 'print_format') {
+        if ($type == 'print_format') {
             return $this->firstname . ' ' . $this->lastname;
         }
         return $this->lastname . ', ' . $this->firstname;
@@ -310,8 +317,8 @@ CanResetPasswordContract
     public static function getCareConsoledata($networkID, $startDate, $endDate)
     {
         return self::whereHas('userNetwork', function ($query) use ($networkID) {
-                $query->where('network_id', $networkID);
-            })
+            $query->where('network_id', $networkID);
+        })
             ->whereHas('userRoles', function ($query) {
                 $query->where('role_id', 12);
             })
@@ -332,7 +339,7 @@ CanResetPasswordContract
                     $q->orwhere('name', 'contact-attempted-by-phone');
                     $q->orwhere('name', 'contact-attempted-by-email');
                 });
-                },
+            },
                 'contactHistory.action',
                 'contactHistory.actionResult',
                 'contactHistory.currentStage',
@@ -342,15 +349,14 @@ CanResetPasswordContract
             ->get();
     }
 
-    public static function getCareCoordinatorCount($networkID) {
-
+    public static function getCareCoordinatorCount($networkID)
+    {
         return self::whereHas('userNetwork', function ($query) use ($networkID) {
-                $query->where('network_id', $networkID);
-            })
+            $query->where('network_id', $networkID);
+        })
             ->whereHas('userRoles', function ($query) {
                 $query->where('role_id', 12);
             })
             ->count();
     }
-
 }
