@@ -526,7 +526,7 @@ class CareConsoleController extends Controller
         $i = 0;
         $practiceData = [];
         foreach ($practiceUsers as $user) {
-            $practiceData['provider'][$i]['id'] = $user->user_id;
+            $practiceData['provider'][$i]['id'] = $user->id;
             $practiceData['provider'][$i]['name'] = $user->lastname . ', ' . $user->firstname;
             $i++;
         }
