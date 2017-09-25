@@ -287,6 +287,9 @@ CanResetPasswordContract
             });
         }
 
+        $query->where('active', '1');
+        $query->where('usertype_id', 1);
+
         return $query->get();
     }
 
