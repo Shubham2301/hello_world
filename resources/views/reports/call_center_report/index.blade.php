@@ -57,11 +57,12 @@
         <div class="user_data">
             <h4 class="row arial_bold">User Contact Attempt Data</h4>
             <div class="row arial_bold user_heading">
-                <div class="col-xs-4">Name</div>
-                <div class="col-xs-2 align-center">Phone<br>(<span class="total_count" id="phone">12</span>)</div>
-                <div class="col-xs-2 align-center">Email<br>(<span class="total_count" id="email">12</span>)</div>
-                <div class="col-xs-2 align-center">SMS<br>(<span class="total_count" id="sms">12</span>)</div>
-                <div class="col-xs-2 align-center">Total<br>(<span class="total_count" id="all">12</span>)</div>
+                <div class="col-xs-7">Name</div>
+                <div class="col-xs-1 align-center">Phone<br>(<span class="total_count" id="phone">12</span>)</div>
+                <div class="col-xs-1 align-center">Email<br>(<span class="total_count" id="email">12</span>)</div>
+                <div class="col-xs-1 align-center">SMS<br>(<span class="total_count" id="sms">12</span>)</div>
+                <div class="col-xs-1 align-center">Total<br>(<span class="total_count" id="all">12</span>)</div>
+                <div class="col-xs-1 align-center">Appointments<br>(<span class="total_count" id="appointment_scheduled">12</span>)</div>
             </div>
             <div class="row">
                 <ul class="user_listing"></ul>

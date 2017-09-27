@@ -35,6 +35,7 @@ trait CallCenterTrait
             $userReportData['email'] = 0;
             $userReportData['phone'] = 0;
             $userReportData['sms'] = 0;
+            $userReportData['appointment_scheduled'] = 0;
             $userReportData['total'] = 0;
 
             foreach ($user->contactHistory as $ContactHistory) {
@@ -63,6 +64,7 @@ trait CallCenterTrait
                             $userReportData['phone']++;
                             $userReportData['total']++;
                         }
+                        $userReportData['appointment_scheduled']++;
                         break;
                     default:
                         break;
@@ -129,12 +131,14 @@ trait CallCenterTrait
                             $overviewData[$activityDate]['scheduled'][$lastContactType]++;
                             $overviewData[$activityDate]['scheduled']['all']++;
                             $comparisonData['scheduled'][$lastContactType]++;
+                            $comparisonData['scheduled']['all']++;
                         } else {
                             $overviewData[$activityDate]['scheduled']['phone']++;
                             $overviewData[$activityDate]['attempt']['phone']++;
                             $overviewData[$activityDate]['scheduled']['all']++;
                             $overviewData[$activityDate]['attempt']['all']++;
                             $comparisonData['scheduled']['phone']++;
+                            $comparisonData['scheduled']['all']++;
                             $comparisonData['attempt']['phone']++;
                             $comparisonData['attempt']['all']++;
                         }

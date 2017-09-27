@@ -111,7 +111,7 @@ function getReport(filter) {
                 } else {
                     var drilldownIndicator = 'drilldown_disable';
                 }
-                content += '<li class="' + drilldownIndicator + '" id="' + userData[key]['id'] + '"><div class="col-xs-4 user_name">' + userData[key]['name'] + '</div><div class="col-xs-2 align-center">' + userData[key]['phone'] + '</div><div class="col-xs-2 align-center">' + userData[key]['email'] + '</div><div class="col-xs-2 align-center">' + userData[key]['sms'] + '</div><div class="col-xs-2 align-center">' + userData[key]['total'] + '</div></li>';
+                content += '<li class="' + drilldownIndicator + '" id="' + userData[key]['id'] + '"><div class="col-xs-7 user_name">' + userData[key]['name'] + '</div><div class="col-xs-1 align-center">' + userData[key]['phone'] + '</div><div class="col-xs-1 align-center">' + userData[key]['email'] + '</div><div class="col-xs-1 align-center">' + userData[key]['sms'] + '</div><div class="col-xs-1 align-center">' + userData[key]['total'] + '</div><div class="col-xs-1 align-center">' + userData[key]['appointment_scheduled'] + '</div></li>';
 
                 if (filterOptions.userID == userData[key]['id']) {
                     filterData = '<div class="filter_section">User: ' + userData[key]['name'] + '<span class="glyphicon glyphicon-remove-circle remove_filter"></span></div>';
@@ -126,6 +126,7 @@ function getReport(filter) {
             for (var key in comparisonData.attempt) {
                 $('.total_count#' + key).text(comparisonData['attempt'][key]);
             }
+            $('.total_count#appointment_scheduled').text(comparisonData['scheduled']['all']);
             google.charts.setOnLoadCallback(drawCallCenterGraph);
         },
         error: function() {
