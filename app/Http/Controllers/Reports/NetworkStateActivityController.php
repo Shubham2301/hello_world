@@ -4,6 +4,7 @@ namespace myocuhub\Http\Controllers\Reports;
 
 use DateTime;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Facades\Helper;
 use myocuhub\Http\Controllers\Reports\ReportController;
 use myocuhub\Models\Careconsole;
@@ -53,7 +54,8 @@ class NetworkStateActivityController extends ReportController
 
         $report_fields = ReportField::where('report_name', 'network_state_export')->get(['name', 'display_name']);
 
-        $report_data[] = Careconsole::getNetworkStateActivityData($report_filter, $report_fields->toArray());
+        $report_data['Overview'] = Careconsole::getNetworkStateActivityData($report_filter, $report_fields->toArray());
+        $report_data['Patient List'] = Careconsole::getNetworkStatePatientList($report_filter);
 
         self::exportData($report_data, $report_filter);
 
@@ -68,6 +70,25 @@ class NetworkStateActivityController extends ReportController
             $file_name .= ' (' . implode(',', $report_filter['state_list']) . ')';
         }
 
-        $export = Helper::exportExcel($report_data, $file_name, '127.0.0.1');
+        $fileType = 'xlsx';
+        
+        $excel = Excel::create($file_name, function ($excel) use ($report_data) {
+            foreach ($report_data as $key => $sheet_data) {
+                $excel->sheet($key, function ($sheet) use ($sheet_data) {
+                $sheet->setWidth([]);
+                $sheet->setPageMargin(0.25);
+                $sheet->fromArray($sheet_data);
+                $sheet->cell('A1:Z1', function ($cells) {
+                        $cells->setFont(array(
+                            'family'     => 'Calibri',
+                            'size'       => '11',
+                            'bold'       =>  true
+                        ));
+                    });
+                });
+            }
+        });
+
+        $excel->export($fileType);
     }
 }
