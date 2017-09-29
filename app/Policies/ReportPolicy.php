@@ -62,4 +62,9 @@ class ReportPolicy
         $user = Auth::user();
         return ($user->checkUserLevel('Ocuhub'));
     }
+
+    public function accessAccoutingReport(){
+        $user = Auth::user();
+        return ($user->checkUserLevel('Ocuhub'));
+    }
 }

@@ -247,6 +247,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report/user_report/network_data', 'Reports\UserReportController@getNetworkData');
     Route::get('/report/user_report/generateReportExcel', 'Reports\UserReportController@generateReportExcel');
     Route::resource('/report/user_report', 'Reports\UserReportController');
+
+    Route::get('/report/accounting_report', 'Reports\AccountingReportController@index');
+    Route::get('/report/accounting_report/provider_billing', 'Reports\AccountingReportController@getProviderBilling');
+
 });
 
 Route::group(['middleware' => 'onboarding'], function () {

@@ -37,6 +37,7 @@ elixir(function(mix) {
     mix.less(['cataract_post_op.less'], 'public/css/cataract_post_op.css');
     mix.less(['user_report.less'], 'public/css/user_report.css');
     mix.less(['duplicate_maintenance.less'], 'public/css/duplicate_maintenance.css');
+    mix.less(['accounting_report.less'], 'public/css/accounting_report.css');
     mix.babel(['main.js'], 'public/js/main.js');
     mix.babel(['announcements.js'], 'public/js/announcements.js');
     mix.babel(['sesconnect.js'], 'public/js/sesconnect.js');
@@ -66,6 +67,7 @@ elixir(function(mix) {
     mix.babel(['export_patient_activity.js'], 'public/js/export_patient_activity.js');
     mix.babel(['network_state_activity.js'], 'public/js/network_state_activity.js');
     mix.babel(['hedis_export.js'], 'public/js/hedis_export.js');
+    mix.babel(['accounting_report.js'], 'public/js/accounting_report.js');
 
     mix.version(['css/style.css',
         'css/directmail.css',
@@ -91,6 +93,7 @@ elixir(function(mix) {
         'css/cataract_post_op.css',
         'css/user_report.css',
         'css/duplicate_maintenance.css',
+        'css/accounting_report.css',
         'js/main.js',
         'js/announcements.js',
         'js/sesconnect.js',
@@ -119,6 +122,7 @@ elixir(function(mix) {
         'js/export_patient_activity.js',
         'js/network_state_activity.js',
         'js/hedis_export.js',
+        'js/accounting_report.js',
         'images/*'
     ]);
 });

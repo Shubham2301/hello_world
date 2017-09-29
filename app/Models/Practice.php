@@ -51,10 +51,33 @@ class Practice extends Model
         $query = self::query();
         $query->whereNull('manually_created');
         foreach ($networkList as $networkID) {
-            $query->whereHas('practiceNetwork', function ($query) use ($networkID) {
-                $query->where('network_id', $networkID);
+            $query->whereHas('practiceNetwork', function ($sub_query) use ($networkID) {
+                $sub_query->where('network_id', $networkID);
             });
         }
         return $query->get(['practices.id', 'practices.name']);
+    }
+
+    protected static function getPracticeBillingInformation($practice_id)
+    {
+        $query = self::query();
+        $query->where('id', $practice_id);
+        $query->with(['locations', 'practiceNetwork.network']);
+        $query->with(['appointment' => function ($sub_query) {
+            $sub_query->orderBy('id');
+            $sub_query->first();
+        }]);
+        $query->with(['practiceUsers' => function ($sub_query) {
+            $sub_query->whereHas('user', function ($sub_sub_query) {
+                $sub_sub_query->where('active', '1');
+                $sub_sub_query->where('usertype_id', '1');
+            });
+        }, 'practiceUsers.user']);
+        $query->withCount(['appointment' => function ($sub_query) {
+            $sub_query->where('enable_writeback', 1);
+            $sub_query->orWhere('enable_writeback', 0);
+        }]);
+
+        return $query->first();
     }
 }

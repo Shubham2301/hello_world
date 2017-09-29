@@ -312,7 +312,7 @@ CanResetPasswordContract
     public function getName($type = 'system_format')
     {
         if ($type == 'print_format') {
-            return $this->firstname . ' ' . $this->lastname;
+            return trim($this->title . ' ' . $this->firstname . ' ' . $this->lastname);
         }
         return $this->lastname . ', ' . $this->firstname;
     }

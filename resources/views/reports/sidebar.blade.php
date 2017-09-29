@@ -112,6 +112,16 @@ Reporting
     </span>
   </a>
   @endif
+  @if(policy(new \myocuhub\Http\Controllers\Reports\ReportController)->accessAccoutingReport())
+  <a href="/report/accounting_report" class="report_sidebar_button {{ array_key_exists('accounting_reports', $data) ? 'active' : '' }}">
+    <span class="report_sidebar_image">
+      <span><img src="{{elixir('images/sidebar/historical-icon.png')}}"></span>
+    </span>
+    <span class="report_sidebar_text">
+      <span class="text">Accounting Reports</span>
+    </span>
+  </a>
+  @endif
 
 
 </div>
