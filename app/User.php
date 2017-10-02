@@ -325,22 +325,12 @@ CanResetPasswordContract
             ->whereHas('userRoles', function ($query) {
                 $query->where('role_id', 12);
             })
-            ->with(['contactHistory' => function ($query) use ($startDate, $endDate) {
-                $query->whereNotNull('user_id');
-                $query->where('contact_activity_date', '>=', $startDate);
-                $query->where('contact_activity_date', '<=', $endDate);
-                $query->has('careconsole.patient');
-                $query->whereHas('action', function ($q) {
-                    $q->where('name', 'schedule');
-                    $q->orwhere('name', 'reschedule');
-                    $q->orwhere('name', 'manually-reschedule');
-                    $q->orwhere('name', 'manually-schedule');
-                    $q->orwhere('name', 'previously-scheduled');
-                    $q->orwhere('name', 'request-patient-email');
-                    $q->orwhere('name', 'request-patient-phone');
-                    $q->orwhere('name', 'request-patient-sms');
-                    $q->orwhere('name', 'contact-attempted-by-phone');
-                    $q->orwhere('name', 'contact-attempted-by-email');
+            ->with(['contactHistory' => function ($sub_query) use ($startDate, $endDate) {
+                $sub_query->whereNotNull('user_id');
+                $sub_query->activityRange($startDate, $endDate);
+                $sub_query->has('careconsole.patient');
+                $sub_query->whereHas('action', function ($sub_sub_query) {
+                    $sub_sub_query->actionCheck(['schedule', 'manually-schedule', 'previously-scheduled', 'reschedule', 'manually-reschedule', 'request-patient-email', 'request-patient-phone', 'request-patient-sms', 'contact-attempted-by-phone', 'contact-attempted-by-email']);
                 });
             },
                 'contactHistory.action',

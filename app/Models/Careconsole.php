@@ -667,36 +667,23 @@ class Careconsole extends Model
     public static function getCallCenterReportData($networkID, $startDate, $endDate, $userID = null)
     {
         return self::where(function ($subquery) use ($startDate, $endDate) {
-            $subquery->whereHas('contactHistory', function ($query) use ($startDate, $endDate) {
-                $query->whereNotNull('user_id');
-                $query->where('contact_activity_date', '>=', $startDate);
-                $query->where('contact_activity_date', '<=', $endDate);
-            });
-        })
-            ->whereHas('importHistory', function ($query) use ($networkID) {
-                $query->where('network_id', $networkID);
-            })
-            ->has('patient')
-            ->with(['contactHistory' => function ($query) use ($startDate, $endDate, $userID) {
-                $query->whereNotNull('user_id');
-                $query->where('contact_activity_date', '>=', $startDate);
-                $query->where('contact_activity_date', '<=', $endDate);
-                if ($userID) {
-                    $query->where('user_id', $userID);
-                }
-                $query->whereHas('action', function ($q) {
-                    $q->where('name', 'schedule');
-                    $q->orwhere('name', 'reschedule');
-                    $q->orwhere('name', 'manually-reschedule');
-                    $q->orwhere('name', 'manually-schedule');
-                    $q->orwhere('name', 'previously-scheduled');
-                    $q->orwhere('name', 'request-patient-email');
-                    $q->orwhere('name', 'request-patient-phone');
-                    $q->orwhere('name', 'request-patient-sms');
-                    $q->orwhere('name', 'contact-attempted-by-phone');
-                    $q->orwhere('name', 'contact-attempted-by-email');
+                $subquery->whereHas('contactHistory', function ($sub_query) use ($startDate, $endDate) {
+                    $sub_query->whereNotNull('user_id');
+                    $sub_query->activityRange($startDate, $endDate);
                 });
-            }, 'contactHistory.action', 'contactHistory.actionResult'])
+            })
+            ->networkCheck($networkID)
+            ->has('patient')
+            ->with(['contactHistory' => function ($sub_query) use ($startDate, $endDate, $userID) {
+                $sub_query->whereNotNull('user_id');
+                $sub_query->activityRange($startDate, $endDate);
+                if ($userID) {
+                    $sub_query->where('user_id', $userID);
+                }
+                $sub_query->whereHas('action', function ($sub_sub_query) {
+                    $sub_sub_query->actionCheck(['schedule', 'manually-schedule', 'previously-scheduled', 'reschedule', 'manually-reschedule', 'request-patient-email', 'request-patient-phone', 'request-patient-sms', 'contact-attempted-by-phone', 'contact-attempted-by-email']);
+                });
+            }, 'contactHistory.action', 'contactHistory.actionResult', 'contactHistory.appointments'])
             ->get();
     }
 

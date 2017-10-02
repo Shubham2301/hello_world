@@ -38,9 +38,9 @@ trait CallCenterTrait
             $userReportData['appointment_scheduled'] = 0;
             $userReportData['total'] = 0;
 
-            foreach ($user->contactHistory as $ContactHistory) {
-                $activityDate = Helper::formatDate($ContactHistory->contact_activity_date, config('constants.date_format'));
-                switch ($ContactHistory->action->name) {
+            foreach ($user->contactHistory as $contactHistory) {
+                $activityDate = Helper::formatDate($contactHistory->contact_activity_date, config('constants.date_format'));
+                switch ($contactHistory->action->name) {
                     case 'request-patient-email':
                     case 'contact-attempted-by-email':
                         $userReportData['email']++;
@@ -60,11 +60,14 @@ trait CallCenterTrait
                     case 'manually-schedule':
                     case 'manually-reschedule':
                     case 'previously-scheduled':
-                        if (!isset($ContactHistory->actionResult) || $ContactHistory->actionResult->name != 'incoming-call') {
+                        if (!isset($contactHistory->actionResult) || $contactHistory->actionResult->name != 'incoming-call') {
                             $userReportData['phone']++;
                             $userReportData['total']++;
                         }
-                        $userReportData['appointment_scheduled']++;
+
+                        if ($contactHistory->appointments) {
+                            $userReportData['appointment_scheduled']++;
+                        }
                         break;
                     default:
                         break;
@@ -128,19 +131,23 @@ trait CallCenterTrait
                     case 'manually-reschedule':
                     case 'previously-scheduled':
                         if (isset($contactHistory->actionResult) && $contactHistory->actionResult->name == 'incoming-call') {
-                            $overviewData[$activityDate]['scheduled'][$lastContactType]++;
-                            $overviewData[$activityDate]['scheduled']['all']++;
-                            $comparisonData['scheduled'][$lastContactType]++;
-                            $comparisonData['scheduled']['all']++;
+                            if ($contactHistory->appointments) {
+                                $overviewData[$activityDate]['scheduled'][$lastContactType]++;
+                                $overviewData[$activityDate]['scheduled']['all']++;
+                                $comparisonData['scheduled'][$lastContactType]++;
+                                $comparisonData['scheduled']['all']++;
+                            }
                         } else {
-                            $overviewData[$activityDate]['scheduled']['phone']++;
                             $overviewData[$activityDate]['attempt']['phone']++;
-                            $overviewData[$activityDate]['scheduled']['all']++;
                             $overviewData[$activityDate]['attempt']['all']++;
-                            $comparisonData['scheduled']['phone']++;
-                            $comparisonData['scheduled']['all']++;
                             $comparisonData['attempt']['phone']++;
                             $comparisonData['attempt']['all']++;
+                            if ($contactHistory->appointments) {
+                                $overviewData[$activityDate]['scheduled']['phone']++;
+                                $overviewData[$activityDate]['scheduled']['all']++;
+                                $comparisonData['scheduled']['phone']++;
+                                $comparisonData['scheduled']['all']++;
+                            }
                         }
                         $lastContactType = 'phone';
                         break;
