@@ -119,7 +119,7 @@ return [
     'date_format' => 'm/d/Y',
     'db_date_format' => 'Y-m-d h:i:s',
     'report_date_format' => [
-        'start_date_time' => 'Y-m-d 00:00:01',
+        'start_date_time' => 'Y-m-d 00:00:00',
         'end_date_time' => 'Y-m-d 23:59:59'
     ],
     'schedule_notes_delimiter' => '</br>',

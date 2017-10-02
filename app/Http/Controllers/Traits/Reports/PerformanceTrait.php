@@ -18,8 +18,6 @@ use myocuhub\Services\CareConsoleService;
 
 trait PerformanceTrait
 {
-    protected $startDate;
-    protected $endDate;
     private $CareConsoleService;
 
     public function __construct(CareConsoleService $CareConsoleService)
@@ -56,7 +54,7 @@ trait PerformanceTrait
 
         $userCount = User::getCareCoordinatorCount($network);
 
-        $contactList = ContactHistory::getPerformanceReportData($network, $this->getStartDate(), $this->getEndDate());
+        $contactList = ContactHistory::getPerformanceReportData($network, self::getStartDate(), self::getEndDate());
 
         foreach ($contactList as $contact) {
             $activityDate = Helper::formatDate($contact->contact_activity_date, 'Ymd');
@@ -221,7 +219,7 @@ trait PerformanceTrait
             }
         }
 
-        $apptContactList = ContactHistory::getPerformanceReportAppointmentData($network, $this->getStartDate(), $this->getEndDate());
+        $apptContactList = ContactHistory::getPerformanceReportAppointmentData($network, self::getStartDate(), self::getEndDate());
 
         foreach ($apptContactList as $apptContact) {
             $activityDate = Helper::formatDate($apptContact->contact_activity_date, 'Ymd');
@@ -338,26 +336,6 @@ trait PerformanceTrait
             ];
         }
         return $reportResult;
-    }
-
-    public function setStartDate($startDate)
-    {
-        $this->startDate = Helper::formatDate($startDate, config('constants.db_date_format'));
-    }
-
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
-
-    public function setEndDate($endDate)
-    {
-        $this->endDate = Helper::formatDate($endDate, config('constants.db_date_format'));
-    }
-
-    public function getEndDate()
-    {
-        return $this->endDate;
     }
 
     public function graphArray()

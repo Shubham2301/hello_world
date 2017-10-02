@@ -35,12 +35,13 @@ trait ProviderBilling
             $practice_list = PracticeNetwork::has('practice')->get();
         }
         
-        $report_data = self::getReportInfo($practice_list);
+        $report_data = self::getProviderReportInfo($practice_list);
 
-        self::exportReportData($network_list, $report_data);
+        self::exportProviderReportData($network_list, $report_data);
     }
 
-    private function getReportInfo($practice_list)
+    private function getProviderReportInfo($practice_list)
+
     {
         $report_data = array();
         foreach ($practice_list as $practice) {
@@ -65,7 +66,7 @@ trait ProviderBilling
         return $practice_data;
     }
 
-    private function exportReportData($network_list, $report_data)
+    private function exportProviderReportData($network_list, $report_data)
     {
         $file_name = 'Provider Billing Export';
         if (empty($network_list)) {

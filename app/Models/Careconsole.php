@@ -942,6 +942,56 @@ class Careconsole extends Model
         return $query;
     }
 
+    public static function getPayerReportInfo($filter, $field_list)
+    {
+        $result = array();
+        foreach ($field_list as $field_value) {
+            switch ($field_value['name']) {
+                case 'scheduled_for_appointment':
+                    $query = self::query();
+                    $query->networkCheck($filter['network_id']);
+                    $query->has('patient');
+                    $query->whereHas('contactHistory', function ($sub_query) use ($filter) {
+                        $sub_query->activityRange($filter['start_date'], $filter['end_date']);
+                        $sub_query->where(function ($sub_sub_query) {
+                            $sub_sub_query->whereHas('action', function ($sub_sub_sub_query) {
+                                $sub_sub_sub_query->actionCheck(['schedule', 'manually-schedule', 'previously-scheduled', 'reschedule', 'manually-reschedule']);
+                            });
+                        });
+                    });
+                    $result[$field_value['display_name']] = $query->count();
+                    break;
+                case 'appointment_attended':
+                    $query = ContactHistory::query();
+                    $query->whereHas('careconsole', function ($sub_query) use ($filter) {
+                        $sub_query->networkCheck($filter['network_id']);
+                    });
+                    $query->activityRange($filter['start_date'], $filter['end_date']);
+                    $query->whereHas('action', function ($sub_query) {
+                        $sub_query->actionCheck(['kept-appointment']);
+                    });
+                    $result[$field_value['display_name']] = $query->count();
+                    break;
+                case 'clinical_findings_available':
+                    $query = ContactHistory::query();
+                    $query->whereHas('careconsole', function ($sub_query) use ($filter) {
+                        $sub_query->networkCheck($filter['network_id']);
+                    });
+                    $query->activityRange($filter['start_date'], $filter['end_date']);
+                    $query->whereHas('action', function ($sub_query) {
+                        $sub_query->actionCheck(['data-received']);
+                    });
+                    $result[$field_value['display_name']] = $query->count();
+                    break;
+                default:
+                    $result[$field_value['display_name']] = '';
+                    break;
+            }
+        }
+
+        return array($result);
+    }
+
 
     public static function getNetworkStateActivityData($filter, $field_list)
     {

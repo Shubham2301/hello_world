@@ -1,10 +1,10 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#provider_billing_section">Provider billing</a>
+            <a data-toggle="collapse" data-parent="#accordion" href="#provider_billing_section">Provider Billing Export</a>
         </h4>
     </div>
-    <div id="provider_billing_section" class="panel-collapse collapse in accounting_collapse_panel">
+    <div id="provider_billing_section" class="panel-collapse collapse accounting_collapse_panel">
         <div class="panel-body accounting_reports">
             <div class="reports_container arial" id="record_report">
                 <span class="report_option_row">

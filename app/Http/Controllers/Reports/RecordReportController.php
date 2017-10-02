@@ -53,8 +53,11 @@ class RecordReportController extends ReportController
 
     public function generateReportExcel(Request $request)
     {
-        $start_date = Helper::formatDate($request->start_date, config('constants.db_date_format'));
-        $end_date = Helper::formatDate($request->end_date, config('constants.db_date_format'));
+        self::setStartDate($request->start_date);
+        self::setEndDate($request->end_date);
+        
+        $start_date = Helper::formatDate(self::getStartDate(), config('constants.db_date_format'));
+        $end_date = Helper::formatDate(self::getEndDate(), config('constants.db_date_format'));
         $network_id = $request->network_id;
         $web_form_id = $request->web_form_id;
         $patientRecords = PatientRecord::getPatientRecords($start_date, $end_date, $network_id, $web_form_id);

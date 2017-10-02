@@ -43,8 +43,9 @@ class ReachRateController extends ReportController
      */
     public function show(Request $request)
     {
-        $this->setStartDate($request->start_date);
-        $this->setEndDate($request->end_date);
+        self::setStartDate($request->start_date);
+        self::setEndDate($request->end_date);
+        
         $filter = $request->filter_option;
 
         $report_data = $this->generateReport();

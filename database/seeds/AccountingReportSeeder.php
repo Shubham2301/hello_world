@@ -101,6 +101,29 @@ class AccountingReportSeeder extends Seeder
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
 
+            [
+                'name' => 'scheduled_for_appointment',
+                'display_name' => 'Scheduled for Appointment',
+                'report_name' => 'accounting_payer_billing',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+
+            [
+                'name' => 'appointment_attended',
+                'display_name' => 'Appointment Attended',
+                'report_name' => 'accounting_payer_billing',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+
+            [
+                'name' => 'clinical_findings_available',
+                'display_name' => 'Clinical Findings Available',
+                'report_name' => 'accounting_payer_billing',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
 
         ]);
     }

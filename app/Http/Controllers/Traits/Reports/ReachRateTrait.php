@@ -19,8 +19,6 @@ use myocuhub\Facades\Helper;
 
 trait ReachRateTrait
 {
-    protected $startDate;
-    protected $endDate;
     private $CareConsoleService;
 
     public function __construct(CareConsoleService $CareConsoleService)
@@ -34,7 +32,7 @@ trait ReachRateTrait
 
         $results = array(array());
 
-        $careconsole_data = Careconsole::getReachRateData($networkID, $this->getStartDate(), $this->getEndDate());
+        $careconsole_data = Careconsole::getReachRateData($networkID, self::getStartDate(), self::getEndDate());
 
         $patient_count = 0;
 
@@ -586,26 +584,6 @@ trait ReachRateTrait
         $reportMetrics['referred_by_practice'] = $referredBy;
 
         return $reportMetrics;
-    }
-
-    public function setStartDate($startDate)
-    {
-        $this->startDate = Helper::formatDate($startDate, config('constants.report_date_format.start_date_time'));
-    }
-
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
-
-    public function setEndDate($endDate)
-    {
-        $this->endDate = Helper::formatDate($endDate, config('constants.report_date_format.end_date_time'));
-    }
-
-    public function getEndDate()
-    {
-        return $this->endDate;
     }
 
     public function fillPatientDetail($requestData, $option = null)

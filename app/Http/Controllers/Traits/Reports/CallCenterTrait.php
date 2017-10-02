@@ -158,26 +158,6 @@ trait CallCenterTrait
         return $graphData;
     }
 
-    public function setStartDate($startDate)
-    {
-        $this->startDate = Helper::formatDate($startDate, config('constants.db_date_format'));
-    }
-
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
-
-    public function setEndDate($endDate)
-    {
-        $this->endDate = Helper::formatDate($endDate, config('constants.db_date_format'));
-    }
-
-    public function getEndDate()
-    {
-        return $this->endDate;
-    }
-
     public function graphArray()
     {
         $graph = array();

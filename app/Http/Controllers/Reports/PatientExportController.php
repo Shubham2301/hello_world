@@ -61,9 +61,12 @@ class PatientExportController extends ReportController
 
     public function generatePatientExcel(Request $request)
     {
+        self::setStartDate($request->start_date);
+        self::setEndDate($request->end_date);
+
         $network_id = ($request->network_id) ? $request->network_id : null;
-        $start_date = Helper::formatDate($request->start_date, config('constants.db_date_format'));
-        $end_date = Helper::formatDate($request->end_date, config('constants.db_date_format'));
+        $start_date = self::getStartDate();
+        $end_date = self::getEndDate();
         $networkName = ($request->network_id) ?  Network::find($network_id)->name : '' ;
         $networkData = [];
         $networkData = ContactHistory::getPatientExcelData($network_id, $start_date, $end_date);
