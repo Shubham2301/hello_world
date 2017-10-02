@@ -293,6 +293,12 @@ class CareConsoleService
             case 'state':
                 return $patient['state'];
                 break;
+            case 'city':
+                return $patient['city'];
+                break;
+            case 'zip':
+                return $patient['zip'];
+                break;
             case 'patient-name':
                 return $patient['firstname'].' '.$patient['lastname'];
                 break;

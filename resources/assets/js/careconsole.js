@@ -935,6 +935,9 @@ function performAction() {
             'dob': $('.update_demographic#dob').val(),
             'address_line_1': $('.update_demographic#address_line_1').val(),
             'address_line_2': $('.update_demographic#address_line_2').val(),
+            'city': $('.update_demographic#city').val(),
+            'state': $('.update_demographic#state').val(),
+            'zip': $('.update_demographic#zip').val(),
             'referred_by_provider': $('.update_demographic#referred_by_provider').val(),
             'referred_by_practice': $('.update_demographic#referred_by_practice').val(),
             'pcp': $('.update_demographic#pcp').val(),
@@ -1508,6 +1511,9 @@ function getPatientContactData(patientID) {
 
             content += '<p><span class="arial_bold">Home Address Line 1</span><br><span class="arial"><input type="text" class="update_demographic" id="address_line_1" value="' + data.address_line_1 + '"></span><br></p>';
             content += '<p><span class="arial_bold">Home Address Line 2</span><br><span class="arial"><input type="text" class="update_demographic" id="address_line_2" value="' + data.address_line_2 + '"></span><br></p>';
+            content += '<p><span class="arial_bold">City</span><br><span class="arial"><input type="text" class="update_demographic" id="city" value="' + data.city + '"></span><br></p>';
+            content += '<p><span class="arial_bold">State</span><br><span class="arial"><input type="text" class="update_demographic" id="state" value="' + data.state + '"></span><br></p>';
+            content += '<p><span class="arial_bold">ZIP</span><br><span class="arial"><input type="text" class="update_demographic" id="zip" value="' + data.zip + '"></span><br></p>';
             content += '<p><span class="arial_bold">Referred By Provider</span><br><span class="arial"><input type="text" class="update_demographic" id="referred_by_provider" value="' + data.referred_by_provider + '"></span><br></p>';
             content += '<p><span class="arial_bold">Referred By Practice</span><br><span class="arial"><input type="text" class="update_demographic" id="referred_by_practice" value="' + data.referred_by_practice + '"></span><br></p>';
             content += '<p><span class="arial_bold">Special Request</span><br><span class="arial"><input type="text" class="update_demographic" id="special_request" value="' + data.special_request + '"></span><br></p>';

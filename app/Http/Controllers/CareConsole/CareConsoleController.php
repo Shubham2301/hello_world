@@ -179,6 +179,9 @@ class CareConsoleController extends Controller
             $data['pcp'] = $patientData['pcp'];
             $data['addressline1'] = $patientData['address_line_1'];
             $data['addressline2'] = $patientData['address_line_2'];
+            $data['city'] = $patientData['city'];
+            $data['state'] = $patientData['state'];
+            $data['zip'] = $patientData['zip'];
             $patient = Patient::where('id', $patientID)->update($data);
 
             $referralHistory = ReferralHistory::find($careconsole->referral_id);
@@ -502,6 +505,9 @@ class CareConsoleController extends Controller
         $data['dob'] = $this->CareConsoleService->getPatientFieldValue($patient, 'dob');
         $data['address_line_1'] = $this->CareConsoleService->getPatientFieldValue($patient, 'address-line-1');
         $data['address_line_2'] = $this->CareConsoleService->getPatientFieldValue($patient, 'address-line-2');
+        $data['city'] = $this->CareConsoleService->getPatientFieldValue($patient, 'city');
+        $data['state'] = $this->CareConsoleService->getPatientFieldValue($patient, 'state');
+        $data['zip'] = $this->CareConsoleService->getPatientFieldValue($patient, 'zip');
         $data['last_seen_by'] = $this->CareConsoleService->getPatientFieldValue($patient, 'last-scheduled-to');
         $data['insurance_carrier'] = $this->CareConsoleService->getPatientFieldValue($patient, 'insurance-carrier');
         $data['subscriber_birthdate'] = $this->CareConsoleService->getPatientFieldValue($patient, 'subscriber-birthdate');
