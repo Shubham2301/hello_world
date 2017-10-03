@@ -74,6 +74,10 @@ class Practice extends Model
                 $sub_sub_query->where('usertype_id', '1');
             });
         }, 'practiceUsers.user']);
+        $query->withCount(['appointment' => function ($sub_query) {
+            $sub_query->where('enable_writeback', 1);
+            $sub_query->orWhere('enable_writeback', 0);
+        }]);
 
         return $query->first();
     }
