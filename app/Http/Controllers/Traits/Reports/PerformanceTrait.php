@@ -90,7 +90,8 @@ trait PerformanceTrait
                             $this->fillDetailData($contact, 'contactDate'),
                             $this->fillDetailData($contact, 'userName'),
                             $this->fillDetailData($contact, 'patientName'),
-                            $this->fillDetailData($contact, 'appointmentDate')
+                            $this->fillDetailData($contact, 'appointmentDate'),
+                            $this->fillDetailData($contact, 'actionName')
                         ];
                         $drillDownData['scheduled_vs_dropped'][] = [
                             $this->fillDetailData($contact, 'contactDate'),
@@ -301,13 +302,13 @@ trait PerformanceTrait
         foreach ($Goals as $goal) {
             $networkGraphGoal = GoalNetwork::where('goal_id', $goal->id)->where('network_id', $network)->first();
             switch ($goal->name) {
-                case 'avg_contact_attempted_per_day_per_user':
+                case 'contact_attempted_per_day':
                     $graphGoal['avgContact'] = $networkGraphGoal ? $networkGraphGoal->value : 0;
                     break;
-                case 'avg_reached_per_day_per_user':
+                case 'reached_per_day':
                     $graphGoal['avgReached'] = $networkGraphGoal ? $networkGraphGoal->value : 0;
                     break;
-                case 'avg_scheduled_per_day_per_user':
+                case 'scheduled_per_day':
                     $graphGoal['avgScheduled'] = $networkGraphGoal ? $networkGraphGoal->value : 0;
                     break;
                 default:
@@ -363,12 +364,12 @@ trait PerformanceTrait
             'goalGraph' => ['avgContact','avgReached','avgScheduled'],
             'compareGraph' => ['scheduled_vs_dropped','keptAppointment_vs_missed','receivedReport_vs_pending'],
             'graphColumn' => [
-                'avgContact' => ['Date', 'Contact per User', 'Goal'],
-                'avgReached' => ['Date', 'Reached per User', 'Goal'],
-                'avgScheduled' => ['Date', 'Scheduled per User', 'Goal'],
-                'scheduled_vs_dropped' => ['Date', 'Scheduled per User', 'Dropped per User'],
-                'keptAppointment_vs_missed' => ['Date', 'Kept Appointment per User', 'Missed Appointment per User'],
-                'receivedReport_vs_pending' => ['Date', 'Received Reports per User', 'Reports Pending per User'],
+                'avgContact' => ['Date', 'Contact', 'Goal'],
+                'avgReached' => ['Date', 'Reached', 'Goal'],
+                'avgScheduled' => ['Date', 'Scheduled', 'Goal'],
+                'scheduled_vs_dropped' => ['Date', 'Scheduled', 'Dropped'],
+                'keptAppointment_vs_missed' => ['Date', 'Kept Appointment', 'Missed Appointment'],
+                'receivedReport_vs_pending' => ['Date', 'Received Reports', 'Reports Pending'],
             ]
         ];
 
@@ -387,7 +388,7 @@ trait PerformanceTrait
                 $dataColumns = ['Date', 'User', 'Patient', 'Result'];
                 break;
             case 'avgScheduled':
-                $dataColumns = ['Scheduled Date', 'User', 'Patient', 'Appointment Date'];
+                $dataColumns = ['Scheduled Date', 'User', 'Patient', 'Appointment Date', 'Action Name'];
                 break;
             case 'scheduled_vs_dropped':
                 $dataColumns = ['Date', 'User', 'Patient', 'Result'];

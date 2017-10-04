@@ -49,7 +49,7 @@ var graphOption = {
 };
 
 $(document).ready(function() {
-    
+
     var cur_date = new Date();
     var set_start_date = new Date(cur_date.getTime());
     $('#start_date').datetimepicker({
@@ -190,7 +190,7 @@ function drawGoalChart(userCount) {
             width: '70%',
             height: '70%'
         },
-        fallingColors: 'cce3f2',
+        fallingColors: '#cce3f2',
     };
 
     $.extend(options, graphOption);
@@ -219,15 +219,15 @@ function drawGoalChart(userCount) {
             temp.push(graphData[key]['date']);
             switch (type) {
                 case 'avgContact':
-                    temp.push(Math.round(graphData[key]['contactAttempted'] / userCount));
+                    temp.push(graphData[key]['contactAttempted']);
                     temp.push(graphGoals[type]);
                     break;
                 case 'avgReached':
-                    temp.push(Math.round(graphData[key]['reached'] / userCount));
+                    temp.push(graphData[key]['reached']);
                     temp.push(graphGoals[type]);
                     break;
                 case 'avgScheduled':
-                    temp.push(Math.round(graphData[key]['appointmentScheduled'] / userCount));
+                    temp.push(graphData[key]['appointmentScheduled']);
                     temp.push(graphGoals[type]);
                     break;
             }
@@ -320,16 +320,16 @@ function drawCompareChart(userCount) {
             temp.push(graphData[key]['date']);
             switch (type) {
                 case 'scheduled_vs_dropped':
-                    temp.push(Math.round(graphData[key]['appointmentScheduled'] / userCount));
-                    temp.push(Math.round(graphData[key]['dropped'] / userCount));
+                    temp.push(graphData[key]['appointmentScheduled']);
+                    temp.push(graphData[key]['dropped']);
                     break;
                 case 'keptAppointment_vs_missed':
-                    temp.push(Math.round(graphData[key]['keptAppointment'] / userCount));
-                    temp.push(Math.round(graphData[key]['missedAppointment'] / userCount));
+                    temp.push(graphData[key]['keptAppointment']);
+                    temp.push(graphData[key]['missedAppointment']);
                     break;
                 case 'receivedReport_vs_pending':
-                    temp.push(Math.round(graphData[key]['reportsReceived'] / userCount));
-                    temp.push(Math.round(graphData[key]['reportsDue'] / userCount));
+                    temp.push(graphData[key]['reportsReceived']);
+                    temp.push(graphData[key]['reportsDue']);
                     break;
             }
 
@@ -378,7 +378,7 @@ function drawDrillDownTable() {
         }
         content += '</div>';
     }
-    content += '<//div>';
+    content += '</div>';
     $('.drilldown_data').html(content);
 }
 
