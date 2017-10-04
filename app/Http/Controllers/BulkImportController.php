@@ -6,7 +6,9 @@ ini_set('max_execution_time', 3600);
 
 use Auth;
 use Event;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Events\MakeAuditEntry;
 use myocuhub\Facades\Helper;
@@ -232,7 +234,16 @@ class BulkImportController extends Controller
 
                             if ($template != '-1') {
                                 if ($patient->email != '') {
-                                    dispatch((new ImportPatientMail($patient, $template))->onQueue('email'));
+                                    try {
+                                        dispatch((new ImportPatientMail($patient, $template))->onQueue('email'));
+                                    } catch (Exception $e) {
+                                        Log::error($e);
+                                        $action = "Error sending welcome email to " . $patient->email;
+                                        $description = '';
+                                        $filename = basename(__FILE__);
+                                        $ip = $request->getClientIp();
+                                        Event::fire(new MakeAuditEntry($action, $description, $filename, $ip));
+                                    }
                                 }
                             }
 
