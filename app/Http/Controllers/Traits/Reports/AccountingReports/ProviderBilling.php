@@ -12,6 +12,20 @@ use myocuhub\Network;
 
 trait ProviderBilling
 {
+    private $export_column_width = [
+        'A'     =>  20,
+        'B'     =>  15,
+        'C'     =>  5,
+        'D'     =>  5,
+        'E'     =>  15,
+        'F'     =>  10,
+        'G'     =>  5,
+        'H'     =>  20,
+        'I'     =>  30,
+        'J'     =>  5,
+        'K'     =>  30,
+    ];
+
     protected function getProviderBilling(Request $request)
     {
         if (!policy(new ReportController)->accessAccoutingReport()) {
@@ -76,7 +90,7 @@ trait ProviderBilling
             $file_name .= ' (' . $network->name . ')';
         }
 
-        $export = Helper::exportExcel($report_data, $file_name, '127.0.0.1');
+        $export = Helper::exportExcel($report_data, $file_name, '127.0.0.1', $this->export_column_width);
     }
 
     private function getPracticeFieldValue($practice, $field_name)
