@@ -23,6 +23,7 @@
     <div class="panel-group accounting_reports" id="accordion">
         @include('reports.accounting_reports.provider_billing')
         @include('reports.accounting_reports.payer_billing')
+        @include('reports.accounting_reports.practice_appointment')
     </div>
 </div>
 

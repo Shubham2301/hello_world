@@ -56,7 +56,7 @@ class Practice extends Model
             });
         }
 
-        return $query->get();
+        return $query->orderBy('name')->get();
     }
 
     protected static function getPracticeBillingInformation($practice_id)
@@ -65,6 +65,7 @@ class Practice extends Model
         $query->where('id', $practice_id);
         $query->with(['locations', 'practiceNetwork.network']);
         $query->with(['appointment' => function ($sub_query) {
+            $sub_query->has('patient');
             $sub_query->orderBy('id');
             $sub_query->first();
         }]);
@@ -75,8 +76,8 @@ class Practice extends Model
             });
         }, 'practiceUsers.user']);
         $query->withCount(['appointment' => function ($sub_query) {
-            $sub_query->where('enable_writeback', 1);
-            $sub_query->orWhere('enable_writeback', 0);
+            $sub_query->has('patient');
+            $sub_query->whereNotNull('enable_writeback');
         }]);
 
         return $query->first();

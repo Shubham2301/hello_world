@@ -28,6 +28,19 @@ $(document).ready(function() {
     });
 
 
+    $('.network_selector.practice_appointment').on('change', function() {
+
+        var networkList = {};
+        networkList[0] = $('.network_selector.practice_appointment').val();
+
+        var formData = {
+            'networks': networkList,
+        }
+
+        var practices = refreshPractices(formData);
+
+    });
+
     $('.export_button').on('click', function() {
         var report_type = $(this).attr('id');
         switch (report_type) {
@@ -36,6 +49,9 @@ $(document).ready(function() {
                 break;
             case 'payer_billing':
                 getPayerBillingReport();
+                break;
+            case 'practice_appointment':
+                getPracticeAppointmentReport();
                 break;
             default:
         }
@@ -64,4 +80,40 @@ function getPayerBillingReport() {
 
     var query = $.param(formData);
     window.location = '/report/accounting_report/payer_billing?' + query;
+}
+
+function getPracticeAppointmentReport() {
+    var formData = {
+        practice_id: $('.practice_selector.practice_appointment').val(),
+    };
+
+    var query = $.param(formData);
+    window.location = '/report/accounting_report/practice_appointments?' + query;
+}
+
+function refreshPractices(formData) {
+
+    $.ajax({
+        url: '/administration/practices/by-network',
+        type: 'GET',
+        data: $.param(formData),
+        contentType: 'text/html',
+        async: false,
+        success: function(e) {
+            var practices = $.parseJSON(e);
+            var content = '<option value="-1">Select a practice</option>';
+            for (var index in practices) {
+                content += '<option value="' + practices[index].id + '">' + practices[index].name + '</option>';
+            }
+            $('.practice_selector.practice_appointment').html(content);
+
+        },
+        error: function error() {
+            $('p.alert_message').text('Error getting network practices.');
+            $('#alert').modal('show');
+        },
+        cache: false,
+        processData: false
+    });
+
 }

@@ -460,8 +460,8 @@ function refreshPractices(networkIDs) {
             var practices = $.parseJSON(e);
             var practice_id;
             var content = '<option value="">Select Practice</option>';
-            for (practice_id in practices) {
-                content += '<option value="' + practice_id + '">' + practices[practice_id] + '</option>';
+            for (var index in practices) {
+                content += '<option value="' + practices[index].id + '">' + practices[index].name + '</option>';
             }
             $('#user_practice').html(content);
         },

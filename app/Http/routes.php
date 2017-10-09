@@ -251,7 +251,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report/accounting_report', 'Reports\AccountingReportController@index');
     Route::get('/report/accounting_report/provider_billing', 'Reports\AccountingReportController@getProviderBilling');
     Route::get('/report/accounting_report/payer_billing', 'Reports\AccountingReportController@getPayerBilling');
-
+    Route::get('/report/accounting_report/practice_appointments', 'Reports\AccountingReportController@getPracticeAppointments');
 
 });
 

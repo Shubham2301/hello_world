@@ -43,19 +43,33 @@ trait ProviderBilling
                 break;
         }
 
-        if (!empty($network_list)) {
-            $practice_list = PracticeNetwork::where('network_id', $network_list)->has('practice')->get();
-        } else {
-            $practice_list = PracticeNetwork::has('practice')->get();
-        }
+        $practice_list = self::getPracticeList($network_list);
         
         $report_data = self::getProviderReportInfo($practice_list);
 
         self::exportProviderReportData($network_list, $report_data);
     }
 
-    private function getProviderReportInfo($practice_list)
+    private function getPracticeList($network_list)
+    {
+        if (!empty($network_list)) {
+            $practice_list = PracticeNetwork::where('network_id', $network_list)->has('practice')->with('practice')->get();
+        } else {
+            $practice_list = PracticeNetwork::has('practice')->with('practice')->get();
+        }
 
+        $practice_list = $practice_list->sortBy(function ($practice_network) {
+            return $practice_network->practice->name;
+        });
+
+        $practice_list = $practice_list->unique(function ($practice_network) {
+            return $practice_network->practice_id;
+        });
+
+        return $practice_list;
+    }
+
+    private function getProviderReportInfo($practice_list)
     {
         $report_data = array();
         foreach ($practice_list as $practice) {

@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 use myocuhub\Facades\Helper;
 use myocuhub\Http\Controllers\Reports\ReportController;
 use myocuhub\Http\Controllers\Traits\Reports\AccountingReports\PayerBilling;
+use myocuhub\Http\Controllers\Traits\Reports\AccountingReports\PracticeAppointments;
 use myocuhub\Http\Controllers\Traits\Reports\AccountingReports\ProviderBilling;
 use myocuhub\Network;
 
 class AccountingReportController extends ReportController
 {
 
-    use ProviderBilling, PayerBilling;
+    use ProviderBilling, PayerBilling, PracticeAppointments;
     /**
      * Display a listing of the resource.
      *

@@ -507,7 +507,7 @@ class PracticeController extends Controller
 
         $practices = [];
         foreach ($networkPractices as $practice) {
-            $practices[$practice->id] = $practice->name;
+            $practices[] = ['name' => $practice->name, 'id' => $practice->id];
         }
 
         return json_encode($practices);
