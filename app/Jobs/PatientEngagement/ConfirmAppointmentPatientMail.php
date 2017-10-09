@@ -65,7 +65,7 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
         $patientDob = new DateTime($patient->birthdate);
 
         $practiceName = $practice->name ?: '';
-        $description = 'Thank you for your recent appointment request. Please remember final confirmation of the appointment will come from the practice. ' . (($location->latitude && $location->longitude) ? '\n\nTo ensure you arrive at the appointment easily, you can use the link below: \nhttp://maps.google.com?q=' . $location->latitude . ',' . $location->longitude : '') . ($location->special_instructions_plain_text ? '\n\nWe are also providing some helpful notes that the practice has provided: \n\n' . str_replace("\n", "\\n", $location->special_instructions_plain_text)  .' ' : '') . '\n\nThank you. \n\nTo cancel or reschedule this appointment please email at '. $loggedInUser->email ?: 'support@ocuhub.com';
+        $description = 'Thank you for your recent appointment request. Please remember final confirmation of the appointment will come from the practice. ' . (($location->latitude && $location->longitude) ? '\n\nTo ensure you arrive at the appointment easily, you can use the link below: \nhttp://maps.google.com?q=' . $location->latitude . ',' . $location->longitude : '') . '\n\nThank you. \n\nTo cancel or reschedule this appointment please email at '. $loggedInUser->email ?: 'support@illumacc.com';
         $vars = [
             [
                 'name' => 'USERNAME',
@@ -131,13 +131,6 @@ class ConfirmAppointmentPatientMail extends PatientEngagement implements ShouldQ
         $network_email_subject = config($config_subject_path, 'Appointment has been scheduled');
 
         $template = (new MandrillService)->templateInfo($network_email_template);
-
-        if ($location->special_instructions) {
-            $vars[] = [
-                'name' => 'SPECIALINSTRUCTIONS',
-                'content' => $location->special_instructions,
-            ];
-        }
 
         if ($loggedInUser->email) {
             $vars[] = [

@@ -185,13 +185,6 @@ class SendAppointmentRequestEmail
                 ];
             }
 
-            if ($location->special_instructions) {
-                $vars[] = [
-                    'name' => 'SPECIALINSTRUCTIONS',
-                    'content' => $location->special_instructions,
-                ];
-            }
-
             $loggedInUser = Auth::user();
 
             if ($loggedInUser->email) {

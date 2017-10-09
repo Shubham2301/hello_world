@@ -583,7 +583,7 @@ function getInsuranceList() {
             e = $.parseJSON(e);
             var content = '';
             content += '<div class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="true"><span class="bold arial_bold custom_dropdown">Select Insurance List <img src="/images/dropdown-img.png" class="custom_dropdown_img"></span></a><ul class="dropdown-menu dropdown_ins_list" id="custom_dropdown">';
-            if (e.GetInsListResult.length > 0 && e.GetInsListResult.InsItem.length > 0) {
+            if (e.GetInsListResult && e.GetInsListResult.InsItem.length > 0) {
                 var insList = e.GetInsListResult.InsItem;
                 insList.forEach(function(elem) {
                     content += '<li  value="' + elem.InsKey + '" data-name=" ' + elem.InsName + ' ">' + elem.InsName + '</li>';
