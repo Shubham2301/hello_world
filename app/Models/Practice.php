@@ -46,10 +46,12 @@ class Practice extends Model
         return $query->get(['practices.id', 'practices.name', 'practices.email']);
     }
 
-    public static function getPracticeByNetwork($networkList)
+    public static function getPracticeByNetwork($networkList, $exclude_manually_created = true)
     {
         $query = self::query();
-        $query->whereNull('manually_created');
+        if ($exclude_manually_created) {
+            $query->whereNull('manually_created');
+        }
         foreach ($networkList as $networkID) {
             $query->whereHas('practiceNetwork', function ($sub_query) use ($networkID) {
                 $sub_query->where('network_id', $networkID);
@@ -66,6 +68,7 @@ class Practice extends Model
         $query->with(['locations', 'practiceNetwork.network']);
         $query->with(['appointment' => function ($sub_query) {
             $sub_query->has('patient');
+            $sub_query->whereNotNull('enable_writeback');
             $sub_query->orderBy('id');
             $sub_query->first();
         }]);

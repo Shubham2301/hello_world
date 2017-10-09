@@ -35,6 +35,7 @@ $(document).ready(function() {
 
         var formData = {
             'networks': networkList,
+            'exclude_manually_created': false
         }
 
         var practices = refreshPractices(formData);

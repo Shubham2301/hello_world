@@ -503,7 +503,8 @@ class PracticeController extends Controller
 
     public function getPracticesByNetwork(Request $request)
     {
-        $networkPractices = Practice::getPracticeByNetwork($request->input('networks'));
+        $exclude_manually_created = $request->has('exclude_manually_created') && $request->input('exclude_manually_created') == 'false' ? false : true;
+        $networkPractices = Practice::getPracticeByNetwork($request->input('networks'), $exclude_manually_created);
 
         $practices = [];
         foreach ($networkPractices as $practice) {
