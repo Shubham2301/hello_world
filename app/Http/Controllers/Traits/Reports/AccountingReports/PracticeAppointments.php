@@ -19,20 +19,18 @@ trait PracticeAppointments
             return redirect('/referraltype');
         }
 
-        self::getAppointentsInfo($request->practice_id);
+        self::getAppointentsInfo($request->practice_id, $request->network_id);
     }
 
-    protected function getAppointentsInfo($practice_id)
+    protected function getAppointentsInfo($practice_id, $network_id)
     {
-        $appointments = Appointment::getPracticeAppointmentInformation($practice_id);
+        $appointments = Appointment::getPracticeAppointmentInformation($practice_id, $network_id);
 
         $report_fields = ReportField::where('report_name', 'practice_appointment_export')->get(['name', 'display_name'])->toArray();
 
         $report_data = self::getReportData($appointments, $report_fields);
 
-        $practice = Practice::find($practice_id);
-
-        self::exportResults($practice->name . '-appointment_information', $report_data);
+        self::exportResults($practice_id, $network_id, $report_data);
     }
 
     protected function getReportData($appointments, $report_fields)
@@ -50,8 +48,19 @@ trait PracticeAppointments
         return $report_data;
     }
 
-    protected function exportResults($file_name, $report_data)
+    protected function exportResults($practice_id, $network_id, $report_data)
     {
+        if ($practice_id != 'all') {
+            $file_name = 'Practice appointment information';
+
+            $practice = Practice::find($practice_id);
+            $file_name .= ' (' . $practice->name .')';
+        } else {
+            $file_name = 'Network appointment information';
+            
+            $network = Network::find($network_id);
+            $file_name .= ' (' . $network->name .')';
+        }
         $export = Helper::exportExcel($report_data, $file_name, '127.0.0.1');
     }
 

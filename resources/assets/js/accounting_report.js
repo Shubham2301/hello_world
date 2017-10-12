@@ -86,7 +86,16 @@ function getPayerBillingReport() {
 function getPracticeAppointmentReport() {
     var formData = {
         practice_id: $('.practice_selector.practice_appointment').val(),
+        network_id: $('.network_selector.practice_appointment').val()
     };
+
+    if (formData['practice_id'] == -1) {
+        $('p.alert_message').text('Please select a practice');
+        $('#alert').modal('show');
+
+        return;
+    }
+
 
     var query = $.param(formData);
     window.location = '/report/accounting_report/practice_appointments?' + query;
@@ -102,7 +111,8 @@ function refreshPractices(formData) {
         async: false,
         success: function(e) {
             var practices = $.parseJSON(e);
-            var content = '<option value="-1">Select a practice</option>';
+            var content = '<option value="-1" selected>Select a practice</option>';
+            content += '<option value="all">All</option>';
             for (var index in practices) {
                 content += '<option value="' + practices[index].id + '">' + practices[index].name + '</option>';
             }

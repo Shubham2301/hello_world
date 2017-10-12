@@ -93,11 +93,20 @@ class Appointment extends Model
     }
 
 
-    protected static function getPracticeAppointmentInformation($practice_id)
+    protected static function getPracticeAppointmentInformation($practice_id, $network_id)
     {
         $query = self::query();
-        $query->where('practice_id', $practice_id);
-        $query->has('patient');
+        if ($practice_id != 'all') {
+            $query->where('practice_id', $practice_id);
+            $query->has('patient');
+        } else {
+            $query->whereHas('patient', function ($sub_query) use ($network_id) {
+                $sub_query->whereHas('careconsole', function ($sub_sub_query) use ($network_id) {
+                    $sub_sub_query->networkCheck($network_id);
+                });
+            });
+        }
+        
         $query->whereNotNull('enable_writeback');
         $query->with(['patient', 'withDeletedPracticeLocation', 'provider']);
         $query->orderBy('start_datetime', 'desc');
