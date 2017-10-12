@@ -1,9 +1,8 @@
 google.load("visualization", "1", {
     packages: ["corechart"]
 });
-google.charts.load('visualization', 'current', {
-    'packages': ['corechart']
-});
+
+google.charts.load()
 
 var filterOptions = {
     'filterType': '',
