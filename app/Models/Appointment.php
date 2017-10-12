@@ -98,9 +98,12 @@ class Appointment extends Model
         $query = self::query();
         if ($practice_id != 'all') {
             $query->where('practice_id', $practice_id);
-            $query->has('patient');
+            $query->whereHas('patient', function ($sub_query) {
+                $sub_query->excludeTestPatient();
+            });
         } else {
             $query->whereHas('patient', function ($sub_query) use ($network_id) {
+                $sub_query->excludeTestPatient();
                 $sub_query->whereHas('careconsole', function ($sub_sub_query) use ($network_id) {
                     $sub_sub_query->networkCheck($network_id);
                 });

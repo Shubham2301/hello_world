@@ -48,6 +48,11 @@ class Patient extends Model
         'timezone_id',
     ];
 
+    public function scopeExcludeTestPatient($query)
+    {
+        return $query->where('mark_as_test', '=', '0');
+    }
+
     public function engagementPreference()
     {
         return $this->hasOne('myocuhub\Models\EngagementPreference');

@@ -67,7 +67,9 @@ class Practice extends Model
         $query->where('id', $practice_id);
         $query->with(['locations', 'practiceNetwork.network']);
         $query->with(['appointment' => function ($sub_query) {
-            $sub_query->has('patient');
+            $sub_query->whereHas('patient', function ($sub_sub_query) {
+                $sub_sub_query->excludeTestPatient();
+            });
             $sub_query->whereNotNull('enable_writeback');
             $sub_query->orderBy('id');
             $sub_query->first();
@@ -79,7 +81,9 @@ class Practice extends Model
             });
         }, 'practiceUsers.user']);
         $query->withCount(['appointment' => function ($sub_query) {
-            $sub_query->has('patient');
+            $sub_query->whereHas('patient', function ($sub_sub_query) {
+                $sub_sub_query->excludeTestPatient();
+            });
             $sub_query->whereNotNull('enable_writeback');
         }]);
 

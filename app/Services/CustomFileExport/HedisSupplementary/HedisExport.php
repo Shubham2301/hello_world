@@ -95,7 +95,9 @@ class HedisExport
     {
         $patient_list = array();
 
-        $careconsole_patients = CareConsole::has('patient')
+        $careconsole_patients = CareConsole::whereHas('patient', function ($sub_query) {
+                $sub_query->excludeTestPatient();
+            })
             ->where('stage_id', '5')
             ->whereHas('importHistory', function ($subquery) use ($network_id) {
                 $subquery->where('network_id', $network_id);

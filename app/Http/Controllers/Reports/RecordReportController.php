@@ -56,8 +56,8 @@ class RecordReportController extends ReportController
         self::setStartDate($request->start_date);
         self::setEndDate($request->end_date);
         
-        $start_date = Helper::formatDate(self::getStartDate(), config('constants.db_date_format'));
-        $end_date = Helper::formatDate(self::getEndDate(), config('constants.db_date_format'));
+        $start_date = self::getStartDate();
+        $end_date = self::getEndDate();
         $network_id = $request->network_id;
         $web_form_id = $request->web_form_id;
         $patientRecords = PatientRecord::getPatientRecords($start_date, $end_date, $network_id, $web_form_id);
@@ -88,7 +88,7 @@ class RecordReportController extends ReportController
         $fileName = 'Record Report - '.$webFormName.' - '.$networkName;
         $fileType = 'xlsx';
         Excel::create($fileName, function ($excel) use ($data) {
-            $excel->sheet('Audits', function ($sheet) use ($data) {
+            $excel->sheet('Records', function ($sheet) use ($data) {
                 $sheet->setPageMargin(0.25);
                 $sheet->fromArray($data);
             });

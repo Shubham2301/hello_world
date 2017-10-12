@@ -570,7 +570,7 @@ class Reports
                     left join (select console_id, archived, COUNT(*) as count from contact_history where archived is null group by console_id order by count desc) as `contact_attempts` on `contact_attempts`.`console_id` = `careconsole`.`id`
                     left join (select console_id, action_result_id as action_result_id from contact_history where action_result_id = '20' OR action_result_id = '21' OR action_result_id = '15' OR action_result_id = '16' OR action_result_id = '9' OR action_result_id = '10' OR action_result_id = '17') as `action_result_id` on `action_result_id`.`console_id` = `careconsole`.`id`
                     left join `patient_insurance` on `patient_insurance`.`patient_id` = `careconsole`.`patient_id`
-                    where `patients`.`deleted_at` is null
+                    where `patients`.`deleted_at` is null and `patients`.`mark_as_test` = 0 
                     $queryFilters";
 
         return $query;

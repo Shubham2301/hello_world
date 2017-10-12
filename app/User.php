@@ -328,7 +328,9 @@ CanResetPasswordContract
             ->with(['contactHistory' => function ($sub_query) use ($startDate, $endDate) {
                 $sub_query->whereNotNull('user_id');
                 $sub_query->activityRange($startDate, $endDate);
-                $sub_query->has('careconsole.patient');
+                $sub_query->whereHas('careconsole.patient', function ($sub_sub_query) {
+                    $sub_sub_query->excludeTestPatient();
+                });
                 $sub_query->whereHas('action', function ($sub_sub_query) {
                     $sub_sub_query->actionCheck(['schedule', 'manually-schedule', 'previously-scheduled', 'reschedule', 'manually-reschedule', 'request-patient-email', 'request-patient-phone', 'request-patient-sms', 'contact-attempted-by-phone', 'contact-attempted-by-email']);
                 });

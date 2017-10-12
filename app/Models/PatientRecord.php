@@ -44,9 +44,12 @@ class PatientRecord extends Model
 
     public static function getPatientRecords ($start_date, $end_date, $network_id, $web_form_id) {
     	return self::query()
-    		->whereHas('patient.careConsole.importHistory', function ($subquery) use ($network_id) {
-    			$subquery->where('network_id', $network_id);
-    		})
+            ->whereHas('patient', function ($sub_query) use ($network_id) {
+                $sub_query->excludeTestPatient();
+                $sub_query->whereHas('careConsole.importHistory', function ($subquery) use ($network_id) {
+                    $subquery->where('network_id', $network_id);
+                });
+            })
     		->where('created_at', '>=', $start_date)
     		->where('created_at', '<=', $end_date)
     		->where('web_form_template_id', $web_form_id)

@@ -211,6 +211,9 @@ class PatientController extends Controller
             $patient->pcp = $request->input('pcp');
             $patient->special_request = $request->input('special_request');
             $patient->timezone_id = $request->input('timezone_id');
+
+            $patient->mark_as_test = $request->has('mark_as_test') ?: '0';
+
             $patient->save();
 
             $importHistory = new ImportHistory;
@@ -354,6 +357,8 @@ class PatientController extends Controller
         $patientData['cellphone'] = $patient->cellphone ?: '';
         $patientData['workphone'] = $patient->workphone ?: '';
         $patientData['homephone'] = $patient->homephone ?: '';
+        $patientData['mark_as_test'] = $patient->mark_as_test ?: false;
+
 
         $patientData['editable'] = policy(new Patient)->canUpdate($id);
 
@@ -485,6 +490,9 @@ class PatientController extends Controller
             $patient->pcp = $request->pcp;
             $patient->special_request = $request->special_request;
             $patient->timezone_id = $request->timezone_id;
+
+            $patient->mark_as_test = $request->has('mark_as_test') ?: '0';
+
 
             $dob = new DateTime($request->birthdate);
             $patient->birthdate = $dob->format('Y-m-d 00:00:00');

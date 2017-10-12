@@ -87,11 +87,15 @@ class ContactHistory extends Model
             ->whereHas('careconsole.importHistory', function ($query) use ($networkID) {
                 $query->where('network_id', $networkID);
             })
-            ->has('careconsole.patient')
+            ->whereHas('careconsole.patient', function ($sub_query) {
+                $sub_query->excludeTestPatient();
+            })
             ->with('action')
             ->with('actionResult')
             ->with('users')
-            ->with('careconsole.patient')
+            ->with(['careconsole.patient' => function ($sub_query) {
+                $sub_query->excludeTestPatient();
+            }])
             ->with('appointments')
             ->get();
     }
@@ -106,11 +110,15 @@ class ContactHistory extends Model
             ->whereHas('careconsole.importHistory', function ($query) use ($networkID) {
                 $query->where('network_id', $networkID);
             })
-            ->has('careconsole.patient')
+            ->whereHas('careconsole.patient', function ($sub_query) {
+                $sub_query->excludeTestPatient();
+            })
             ->with('action')
             ->with('actionResult')
             ->with('users')
-            ->with('careconsole.patient')
+            ->with(['careconsole.patient' => function ($sub_query) {
+                $sub_query->excludeTestPatient();
+            }])
             ->with('appointments')
             ->get();
     }
@@ -123,7 +131,9 @@ class ContactHistory extends Model
             ->whereHas('careconsole.importHistory', function ($query) use ($networkID) {
                 $query->where('network_id', $networkID);
             })
-            ->has('careconsole.patient')
+            ->whereHas('careconsole.patient', function ($sub_query) {
+                $sub_query->excludeTestPatient();
+            })
             ->with(['careconsole.patient', 'action', 'actionResult', 'appointments'])
             ->orderBy('contact_history.id')
             ->get();
