@@ -1112,7 +1112,7 @@ class Careconsole extends Model
             $query->whereHas('careconsole', function ($sub_query) use ($filter) {
                 $sub_query->networkCheck($filter['network_id']);
                 $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
-                    $sub_query->excludeTestPatient();
+                    $sub_sub_query->excludeTestPatient();
                     if ($filter['state_list']) {
                         $sub_sub_query->statePatients($filter['state_list']);
                     }
@@ -1135,7 +1135,7 @@ class Careconsole extends Model
             $query->whereHas('careconsole', function ($sub_query) use ($filter) {
                 $sub_query->networkCheck($filter['network_id']);
                 $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
-                    $sub_query->excludeTestPatient();
+                    $sub_sub_query->excludeTestPatient();
                     if ($filter['state_list']) {
                         $sub_sub_query->statePatients($filter['state_list']);
                     }
@@ -1158,7 +1158,7 @@ class Careconsole extends Model
             $query->whereHas('careconsole', function ($sub_query) use ($filter) {
                 $sub_query->networkCheck($filter['network_id']);
                 $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
-                    $sub_query->excludeTestPatient();
+                    $sub_sub_query->excludeTestPatient();
                     if ($filter['state_list']) {
                         $sub_sub_query->statePatients($filter['state_list']);
                     }
@@ -1181,7 +1181,7 @@ class Careconsole extends Model
             $query->whereHas('careconsole', function ($sub_query) use ($filter) {
                 $sub_query->networkCheck($filter['network_id']);
                 $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
-                    $sub_query->excludeTestPatient();
+                    $sub_sub_query->excludeTestPatient();
                     if ($filter['state_list']) {
                         $sub_sub_query->statePatients($filter['state_list']);
                     }
@@ -1204,7 +1204,7 @@ class Careconsole extends Model
             $query->whereHas('careconsole', function ($sub_query) use ($filter) {
                 $sub_query->networkCheck($filter['network_id']);
                 $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
-                    $sub_query->excludeTestPatient();
+                    $sub_sub_query->excludeTestPatient();
                     if ($filter['state_list']) {
                         $sub_sub_query->statePatients($filter['state_list']);
                     }
@@ -1221,7 +1221,7 @@ class Careconsole extends Model
             $query->whereHas('careconsole', function ($sub_query) use ($filter) {
                 $sub_query->networkCheck($filter['network_id']);
                 $sub_query->whereHas('patient', function ($sub_sub_query) use ($filter) {
-                    $sub_query->excludeTestPatient();
+                    $sub_sub_query->excludeTestPatient();
                     if ($filter['state_list']) {
                         $sub_sub_query->statePatients($filter['state_list']);
                     }
