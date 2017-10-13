@@ -87,6 +87,9 @@ class PracticeController extends Controller
         $practice = new Practice;
         $practice->name = $practicedata[0]['practice_name'];
         $practice->email = $practicedata[0]['practice_email'];
+        if (session('user-level') == 1) {
+            $practice->discount = $practicedata[0]['discount'];
+        }
         $practice->save();
         $practiceid = $practice->id;
         foreach ($practicedata[0]['locations'] as $location) {
@@ -167,12 +170,15 @@ class PracticeController extends Controller
             $data = json_decode($onboardPractice->practice_form_data);
         } else {
             $data = array();
-            $practice_name = Practice::find($practice_id)->name;
-            $practice_email = Practice::find($practice_id)->email;
-            $practice_locations = Practice::find($practice_id)->locations;
+            $practice = Practice::find($practice_id);
+            $practice_name = $practice->name;
+            $practice_email = $practice->email;
+            $practice_discount = $practice->discount;
+            $practice_locations = $practice->locations;
             $practice_users = User::practiceUserById($practice_id);
             $data['practice_name'] = $practice_name;
             $data['practice_email'] = $practice_email;
+            $data['discount'] = $practice_discount;
             $data['practice_id'] = $practice_id;
             $data['locations'] = $practice_locations;
             $data['users'] = $practice_users;
@@ -251,6 +257,7 @@ class PracticeController extends Controller
         $locations = $practicedata[0]['locations'];
         $removedLocations = $practicedata[0]['removed_location'];
         $manuallyCreated = $practicedata[0]['manually_created'];
+        $practiceDiscount = $practicedata[0]['discount'];
         $onboardPractice = OnboardPractice::where('practice_id', $practiceid)->first();
         if ($practicedata[0]['discard_onboard']) {
             $onboardPractice->delete();
@@ -259,6 +266,9 @@ class PracticeController extends Controller
 
         $practice = Practice::find($practiceid);
         $practice->name = $practicename;
+        if (session('user-level') == 1) {
+            $practice->discount = $practiceDiscount;
+        }
         if ($manuallyCreated == false && $practice->manually_created != null) {
             $practice->manually_created = null;
         }

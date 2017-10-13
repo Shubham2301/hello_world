@@ -95,14 +95,14 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">License Information</a>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Accounting Information</a>
       </h4>
         </div>
         <div id="collapse3" class="panel-collapse collapse">
             <div class="panel-body">
                 <div class="row content-row-margin">
                     <div class="col-sm-6 col-xs-12">
-                        {!! Form::text('location_license', old('location_license'), array('class' => 'add_practice_input', 'placeholder' => 'Location License Count', 'id' => 'location_license' , 'data-toggle' => 'tooltip', 'title' => 'Location License', 'data-placement' => 'right')) !!}
+                        {!! Form::text('practice_discount', old('practice_discount'), array('class' => 'add_practice_input', 'placeholder' => 'Practice Discount', 'id' => 'practice_discount' , 'data-toggle' => 'tooltip', 'title' => 'Practice Discount', 'data-placement' => 'right')) !!}
                     </div>
                 </div>
             </div>

@@ -24,6 +24,9 @@ trait ProviderBilling
         'I'     =>  30,
         'J'     =>  5,
         'K'     =>  30,
+        'L'     => 10,
+        'M'     => 10,
+        'N'     => 10
     ];
 
     protected function getProviderBilling(Request $request)
@@ -53,9 +56,13 @@ trait ProviderBilling
     private function getPracticeList($network_list)
     {
         if (!empty($network_list)) {
-            $practice_list = PracticeNetwork::where('network_id', $network_list)->has('practice')->with('practice')->get();
+            $practice_list = PracticeNetwork::where('network_id', $network_list)->with(['practice' => function ($sub_query) {
+                $sub_query->withTrashed();
+            }])->get();
         } else {
-            $practice_list = PracticeNetwork::has('practice')->with('practice')->get();
+            $practice_list = PracticeNetwork::with(['practice' => function ($sub_query) {
+                $sub_query->withTrashed();
+            }])->get();
         }
 
         $practice_list = $practice_list->sortBy(function ($practice_network) {
@@ -178,6 +185,24 @@ trait ProviderBilling
                 } else {
                     return 'No';
                 }
+                break;
+            case 'contract_start_date':
+                $first_network_creation_date = $practice->practiceNetwork->first()->network->created_at;
+                $practice_creation_date = $practice->created_at;
+
+                if ($first_network_creation_date->gt($practice_creation_date)) {
+                    $contract_start_date = $first_network_creation_date;
+                } else {
+                    $contract_start_date  = $practice_creation_date;
+                }
+
+                return $contract_start_date->addDays(60)->modify('first day of next month')->toFormattedDateString();
+                break;
+            case 'contract_cancelled_date':
+                return $practice->deleted_at ? $practice->deleted_at->toFormattedDateString() : '';
+                break;
+            case 'practice_discount':
+                return $practice->discount ?: '';
                 break;
             default:
                 return '';

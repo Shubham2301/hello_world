@@ -102,6 +102,30 @@ class AccountingReportSeeder extends Seeder
             ],
 
             [
+                'name' => 'contract_start_date',
+                'display_name' => 'Contract Start Date',
+                'report_name' => 'accounting_provider_billing',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+
+            [
+                'name' => 'contract_cancelled_date',
+                'display_name' => 'Contract Cancelled Date',
+                'report_name' => 'accounting_provider_billing',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+
+            [
+                'name' => 'practice_discount',
+                'display_name' => 'Practice Discount',
+                'report_name' => 'accounting_provider_billing',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+
+            [
                 'name' => 'scheduled_for_appointment',
                 'display_name' => 'Scheduled for Appointment',
                 'report_name' => 'accounting_payer_billing',

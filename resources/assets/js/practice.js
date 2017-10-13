@@ -104,7 +104,8 @@ window.onload = function() {
                         "locations": locations,
                         "practice_email": $('#practice_email').val(),
                         "practice_network": networkList,
-                        "onboard_practice": onboard
+                        "onboard_practice": onboard,
+                        "discount": $('#practice_discount').val() ? $('#practice_discount').val() : '' 
                     });
                     setNewLocationField();
                     locations = [];
@@ -123,6 +124,7 @@ window.onload = function() {
                         "practice_network": networkList,
                         "discard_onboard": discardOnboard,
                         "manually_created": manuallyCreated,
+                        "discount": $('#practice_discount').val() ? $('#practice_discount').val() : ''
                     });
                     updatePracticedata(formdata);
                 }
@@ -735,6 +737,7 @@ function setEditMode(location_index) {
         $('.location_counter').text(0);
     $('#practice_name').val(currentPractice.practice_name);
     $('#practice_email').val(currentPractice.practice_email);
+    $('#practice_discount').val(currentPractice.discount);
 
 }
 

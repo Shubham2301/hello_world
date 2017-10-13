@@ -63,7 +63,7 @@ class Practice extends Model
 
     protected static function getPracticeBillingInformation($practice_id)
     {
-        $query = self::query();
+        $query = self::query()->withTrashed();
         $query->where('id', $practice_id);
         $query->with(['locations', 'practiceNetwork.network']);
         $query->with(['appointment' => function ($sub_query) {
