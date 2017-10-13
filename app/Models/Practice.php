@@ -65,7 +65,10 @@ class Practice extends Model
     {
         $query = self::query()->withTrashed();
         $query->where('id', $practice_id);
-        $query->with(['locations', 'practiceNetwork.network']);
+        $query->with('practiceNetwork.network');
+        $query->with(['locations' => function ($sub_query) {
+            $sub_query->withTrashed();
+        }]);
         $query->with(['appointment' => function ($sub_query) {
             $sub_query->whereHas('patient', function ($sub_sub_query) {
                 $sub_sub_query->excludeTestPatient();
