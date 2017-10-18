@@ -52,7 +52,7 @@ $(document).ready(function() {
             getPatientData();
         }
     });
-    
+
     $(document).on('click', '#remove_filter', function() {
         $(this).attr('disabled', true);
         currentPage = 1;
@@ -751,8 +751,8 @@ function getPatientData() {
     var sortOrder = $('#current_sort_order').val();
     var filterType = $('#filter_type').val();
     var filterValue = $('#filter_value').val();
-    
-    if(stageID === '') {
+
+    if (stageID === '') {
         return;
     }
 
@@ -898,6 +898,47 @@ function action() {
                 $('#form_recall_date').show();
                 $('#form_action_notes').hide();
                 showActionModel(data);
+            } else if (selected.data('name') == 'schedule') {
+                var data = [];
+                data['patient_id'] = $('#action_patient_id').val();
+                data['action_id'] = 9;
+                data['console_id'] = $('#action_console_id').val();
+                data['stage_id'] = $('#action_stage_id').val();
+                data['action_header'] = 'Schedule';
+
+                show_patient = true;
+                clearActionFields();
+                showDate = false;
+
+                updatePatientDemographic = false;
+                $('.open_patient_detail_modal').removeClass('show');
+                $('#action_name').val('schedule');
+                showActionModel(data);
+            } else if (selected.data('name') == 'manually-schedule') {
+                var data = [];
+                data['patient_id'] = $('#action_patient_id').val();
+                data['action_id'] = 29;
+                data['console_id'] = $('#action_console_id').val();
+                data['stage_id'] = $('#action_stage_id').val();
+                data['action_header'] = 'Manually Schedule';
+
+                show_patient = true;
+                clearActionFields();
+                showDate = false;
+
+                updatePatientDemographic = false;
+                $('#action_name').val('manually-schedule');
+
+                $('.open_patient_detail_modal').removeClass('show');
+                $('#form_manual_appointment_date').show();
+                $('#form_manual_appointment_practice').show();
+                $('#form_manual_appointment_provider').show();
+                $('#form_manual_appointment_location').show();
+                $('#form_manual_appointment_appointment_type').show();
+                $('#form_manual_referredby_details').show();
+                $('#form_manual_appointment_existing_relationship').show();
+                updateManualScheduleData(data['console_id']);
+                showActionModel(data);
             }
             break;
         case 'manually-schedule':
@@ -993,7 +1034,14 @@ function performAction() {
                     var selected = $('#action_result_id').find('option:selected');
                     if (selected.data('name') == 'recall-later') {
                         break;
+                    } else if (selected.data('name') == 'schedule') {
+                        getPatientData();
+                        break;
+                    } else if (selected.data('name') == 'manually-schedule') {
+                        getPatientData();
+                        break;
                     }
+
                 default:
                     var stage = $.parseJSON(e);
                     $('#actionModal').modal('hide');
