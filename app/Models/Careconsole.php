@@ -732,7 +732,7 @@ class Careconsole extends Model
 
         $query->consoleSortQuery($sortField, $sortOrder);
 
-        return $query->select('careconsole.*', 'patients.firstname', 'patients.middlename', 'patients.lastname', 'patients.email', 'patients.cellphone', 'patients.homephone', 'patients.workphone', 'patients.pcp', 'patients.state', 'patients.special_request', 'patients.addressline1', 'patients.addressline2', 'patients.birthdate', 'appointments.practice_id', 'appointments.provider_id', 'appointments.location_id', 'appointments.start_datetime', 'appointments.appointmenttype', 'careconsole_stages.display_name')->get();
+        return $query->select('careconsole.*', 'patients.firstname', 'patients.middlename', 'patients.lastname', 'patients.email', 'patients.cellphone', 'patients.homephone', 'patients.workphone', 'patients.pcp', 'patients.state', 'patients.zip', 'patients.special_request', 'patients.addressline1', 'patients.addressline2', 'patients.birthdate', 'appointments.practice_id', 'appointments.provider_id', 'appointments.location_id', 'appointments.start_datetime', 'appointments.appointmenttype', 'careconsole_stages.display_name')->get();
     }
 
     public static function scopeConsoleStagePatientQuery($query, $networkID, $stageName)
@@ -864,6 +864,11 @@ class Careconsole extends Model
                 $subquery->where('state', 'LIKE', '%' . $filterValue . '%');
             });
             break;
+          case 'zip':
+            $query->whereHas('patient', function ($subquery) use ($filterValue) {
+                $subquery->where('zip', 'LIKE', '%' . $filterValue . '%');
+            });
+            break;
           case 'archive-reason':
             $query->whereHas('contactHistory', function ($subquery) use ($filterValue) {
                 $subquery->whereHas('actionResult', function ($subquery) use ($filterValue) {
@@ -905,6 +910,9 @@ class Careconsole extends Model
             break;
         case 'state':
             $query->orderBy('state', $sortType);
+            break;
+        case 'zip':
+            $query->orderBy('zip', $sortType);
             break;
         case 'request-received':
             $query->orderBy('careconsole.created_at', $sortType);
