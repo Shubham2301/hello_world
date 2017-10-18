@@ -2,16 +2,22 @@
 $(document).ready(function() {
 
     $('#search_patient_button').on('click', function() {
-        var searchText = $('#search_patient_input').val();
+        var searchText = $.trim($('#search_patient_input').val());
         $('.search_section').addClass('active');
         $('.form_section').html('');
         $('.form_section').removeClass('active');
         if (searchText != '') {
             var searchType = 'name';
             var searchdata = [];
-            searchdata.push({
-                "type": searchType,
-                "value": searchText
+
+            var explodedSearchText = searchText.split(' ');
+
+            explodedSearchText.forEach(function(searchVal) {
+                searchdata.push({
+                    "type": searchType,
+                    "value": searchVal
+                });
+
             });
 
             getPatients(searchdata, 0);
@@ -185,7 +191,6 @@ $(document).ready(function() {
 
         $('[data-toggle="tooltip"]').tooltip();
     });
-
 });
 
 var templateID = 0;
@@ -203,7 +208,8 @@ function getPatients(formData, page) {
         type: 'GET',
         data: $.param({
             data: tojson,
-            tosort: sortInfo
+            tosort: sortInfo,
+            countresult: 1000
         }),
         contentType: 'text/html',
         async: false,

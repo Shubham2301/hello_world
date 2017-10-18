@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     $('.care_timeline').html(defaultCareTimeline());
 
@@ -8,7 +8,7 @@ $(document).ready(function () {
         searchReportPatient();
     }
 
-    $('#search_patient_button').on('click', function () {
+    $('#search_patient_button').on('click', function() {
         var searchText = $('#search_patient_input').val();
         searchValue = searchText;
         $('.search_section').addClass('active');
@@ -17,27 +17,39 @@ $(document).ready(function () {
         if (searchText != '') {
             var searchType = 'name';
             var searchdata = [];
-            searchdata.push({
-                "type": searchType,
-                "value": searchText
+
+            var explodedSearchText = searchText.split(' ');
+
+            explodedSearchText.forEach(function(searchVal) {
+                searchdata.push({
+                    "type": searchType,
+                    "value": searchVal
+                });
+
             });
 
             getPatients(searchdata, 0);
         }
     });
 
-    $('.listing_section').on('click', '#pagination>img', function () {
+    $('.listing_section').on('click', '#pagination>img', function() {
         var page = $(this).attr('data-index');
         var searchdata = [];
-        searchdata.push({
-            "type": 'name',
-            "value": searchValue
+
+        var explodedSearchText = searchValue.split(' ');
+
+        explodedSearchText.forEach(function(searchVal) {
+            searchdata.push({
+                "type": searchType,
+                "value": searchVal
+            });
+
         });
 
         getPatients(searchdata, page);
     });
 
-    $('.listing_section').on('click', '.list_item_name', function () {
+    $('.listing_section').on('click', '.list_item_name', function() {
         var patientID = $(this).attr('data-id');
         if (!$(this).attr('aria-expanded') || $(this).attr('aria-expanded') === "false") {
             showCareTimeLine(patientID);
@@ -47,13 +59,13 @@ $(document).ready(function () {
         }
     });
 
-    $('.listing_section').on('click', '.show_more_text', function () {
+    $('.listing_section').on('click', '.show_more_text', function() {
         var patientID = $(this).attr('data-id');
         showCareTimeLine(patientID);
         $('.timeline_section').scrollTop($('.timeline_section')[0].scrollHeight);
     });
 
-    $(document).keypress(function (e) {
+    $(document).keypress(function(e) {
         if (e.which == 13) {
             $('#search_patient_button').trigger("click");
         }
@@ -155,9 +167,14 @@ function searchReportPatient() {
     if (searchText != '') {
         var searchType = 'id';
         var searchdata = [];
-        searchdata.push({
-            "type": searchType,
-            "value": searchText
+
+        var explodedSearchText = searchText.split(' ');
+
+        explodedSearchText.forEach(function(searchVal) {
+            searchdata.push({
+                "type": searchType,
+                "value": searchVal
+            });
         });
 
         getPatients(searchdata, 0);
