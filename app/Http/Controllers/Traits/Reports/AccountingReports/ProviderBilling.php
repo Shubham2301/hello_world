@@ -95,7 +95,7 @@ trait ProviderBilling
         $report_fields = ReportField::where('report_name', 'accounting_provider_billing')->get(['name', 'display_name'])->toArray();
         
         foreach ($report_fields as $field) {
-            $practice_data[$field['display_name']] = self::getPracticeFieldValue($practice, $field['name']);
+            $practice_data[$field['display_name']] = self::getFieldValue($practice, $field['name']);
         }
 
         return $practice_data;
@@ -112,101 +112,5 @@ trait ProviderBilling
         }
 
         $export = Helper::exportExcel($report_data, $file_name, '127.0.0.1', $this->export_column_width);
-    }
-
-    private function getPracticeFieldValue($practice, $field_name)
-    {
-        switch ($field_name) {
-            case 'practice_name':
-                return $practice->name;
-                break;
-            case 'practice_first_appointment_date':
-                $first_appointment = $practice->appointment->first();
-                if ($first_appointment) {
-                    return $first_appointment->start_datetime;
-                } else {
-                    return '';
-                }
-                break;
-            case 'practice_state':
-                $state = array();
-                $locations = $practice->locations;
-                foreach ($locations as $location) {
-                    $state[] = trim(strtoupper($location->state));
-                }
-                $state = array_unique($state);
-                return implode('; ', $state);
-                break;
-            case 'location_names':
-                $location_names = array();
-                $locations = $practice->locations;
-                foreach ($locations as $location) {
-                    $location_names[] = trim($location->locationname);
-                }
-                return implode('; ', $location_names);
-                break;
-            case 'loc':
-                $loc = array();
-                $locations = $practice->locations;
-                foreach ($locations as $location) {
-                    $loc[] = trim(strtoupper($location->location_code));
-                }
-                $loc = array_unique($loc);
-                return implode('; ', $loc);
-                break;
-            case 'location_count':
-                return $practice->locations->count();
-                break;
-            case 'practice_networks':
-                $network = array();
-                $network_list = $practice->practiceNetwork;
-                foreach ($network_list as $network_info) {
-                    $network[] = trim($network_info->network->name);
-                }
-                return implode('; ', $network);
-                break;
-            case 'provider_count':
-                return $practice->practiceUsers->count();
-                break;
-            case 'provider_names':
-                $provider_name = array();
-                $providers = $practice->practiceUsers;
-                foreach ($providers as $provider) {
-                    $provider_name[] = trim($provider->user->getName('print_format'));
-                }
-                return implode('; ', $provider_name);
-                break;
-            case 'appointment_count':
-                return $practice->appointment_count;
-                break;
-            case 'manually_added':
-                if ($practice->manually_created) {
-                    return 'Yes';
-                } else {
-                    return 'No';
-                }
-                break;
-            case 'contract_start_date':
-                $first_network_creation_date = $practice->practiceNetwork->first()->network->created_at;
-                $practice_creation_date = $practice->created_at;
-
-                if ($first_network_creation_date->gt($practice_creation_date)) {
-                    $contract_start_date = $first_network_creation_date;
-                } else {
-                    $contract_start_date  = $practice_creation_date;
-                }
-
-                return $contract_start_date->addDays(60)->modify('first day of next month')->toFormattedDateString();
-                break;
-            case 'contract_cancelled_date':
-                return $practice->deleted_at ? $practice->deleted_at->toFormattedDateString() : '';
-                break;
-            case 'practice_discount':
-                return $practice->discount ?: '';
-                break;
-            default:
-                return '';
-                break;
-        }
     }
 }

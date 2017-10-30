@@ -38,5 +38,4 @@ class AccountingReportController extends ReportController
         $data['accounting_reports'] = true;
         return view('reports.accounting_reports.index')->with('data', $data)->with('networkData', $networkData);
     }
-
 }

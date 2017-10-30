@@ -5,12 +5,16 @@ namespace myocuhub\Http\Controllers\Reports;
 use Illuminate\Http\Request;
 use myocuhub\Facades\Helper;
 use myocuhub\Http\Controllers\Controller;
+use myocuhub\Http\Controllers\Traits\FieldValueTrait;
 use myocuhub\Http\Requests;
 
 class ReportController extends Controller
 {
+    use FieldValueTrait;
+    
     protected $start_date;
     protected $end_date;
+    
 
     protected function setStartDate($start_date)
     {

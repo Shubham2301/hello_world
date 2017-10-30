@@ -3,6 +3,7 @@
 namespace myocuhub\Http\Controllers\Traits\Reports\AccountingReports;
 
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use myocuhub\Facades\Helper;
 use myocuhub\Http\Controllers\Reports\ReportController;
 use myocuhub\Models\Careconsole;
@@ -31,11 +32,39 @@ trait PayerBilling
         $filter['end_date'] = self::getEndDate();
         $filter['network_id'] = $network_id;
 
+        $result = array();
+        $result['Payer Overview Data'] = self::getPayerOverviewData($filter);
+        $result['Payer Patient Data'] = self::getPayerPatientData($filter);
+
+        self::exportPayerReportData($network_id, $result);
+    }
+
+    private function getPayerOverviewData($filter)
+    {
         $report_fields = ReportField::where('report_name', 'accounting_payer_billing')->get(['name', 'display_name'])->toArray();
 
         $result = Careconsole::getPayerReportInfo($filter, $report_fields);
 
-        self::exportPayerReportData($network_id, $result);
+        return $result;
+    }
+
+    private function getPayerPatientData($filter)
+    {
+        $report_fields = ReportField::where('report_name', 'accounting_payer_billing_patient_detail')->get(['name', 'display_name'])->toArray();
+
+        $careconsole_results = Careconsole::getPayerReportPatientInfo($filter);
+
+        $result = array();
+        foreach ($careconsole_results as $careconsole) {
+            $result_row = array();
+            foreach ($report_fields as $field) {
+                $result_row[$field['display_name']] = self::getFieldValue($careconsole, $field['name']);
+            }
+
+            $result[] = $result_row;
+        }
+
+        return $result;
     }
 
     private function exportPayerReportData($network_id, $result)
@@ -44,6 +73,23 @@ trait PayerBilling
         $network = Network::find($network_id);
         $file_name .= ' (' . $network->name . ')';
 
-        $export = Helper::exportExcel($result, $file_name, '127.0.0.1');
+        $excel = Excel::create($file_name, function ($excel) use ($result) {
+            foreach ($result as $key => $sheet_data) {
+                $excel->sheet($key, function ($sheet) use ($sheet_data) {
+                    $sheet->setWidth([]);
+                    $sheet->setPageMargin(0.25);
+                    $sheet->fromArray($sheet_data);
+                    $sheet->cell('A1:Z1', function ($cells) {
+                        $cells->setFont(array(
+                            'family'     => 'Calibri',
+                            'size'       => '11',
+                            'bold'       =>  true
+                        ));
+                    });
+                });
+            }
+        });
+
+        $excel->export('xlsx');
     }
 }

@@ -1005,6 +1005,20 @@ class Careconsole extends Model
         return array($result);
     }
 
+    public static function getPayerReportPatientInfo($filter)
+    {
+        $query = self::query();
+        $query->networkCheck($filter['network_id']);
+        $query->whereHas('patient', function ($sub_query) {
+            $sub_query->excludeTestPatient();
+        });
+        $query->consoleActivityRange($filter['start_date'], $filter['end_date']);
+        $query->has('appointment');
+        $query->with(['patient', 'appointment']);
+
+        return $query->get();
+    }
+
 
     public static function getNetworkStateActivityData($filter, $field_list)
     {

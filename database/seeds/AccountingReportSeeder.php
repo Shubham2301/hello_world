@@ -197,6 +197,54 @@ class AccountingReportSeeder extends Seeder
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
 
+            [
+                'name' => 'subscriber-id',
+                'display_name' => 'Subscriber ID',
+                'report_name' => 'accounting_payer_billing_patient_detail',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+
+            [
+                'name' => 'patient-name',
+                'display_name' => 'Patient Name',
+                'report_name' => 'accounting_payer_billing_patient_detail',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+
+            [
+                'name' => 'appointment-date',
+                'display_name' => 'Appointment Date',
+                'report_name' => 'accounting_payer_billing_patient_detail',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+
+            [
+                'name' => 'provider-name',
+                'display_name' => 'Provider Name',
+                'report_name' => 'accounting_payer_billing_patient_detail',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+
+            [
+                'name' => 'appointment-status',
+                'display_name' => 'Appointment Status',
+                'report_name' => 'accounting_payer_billing_patient_detail',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+
+            [
+                'name' => 'clinical-findings-status',
+                'display_name' => 'Clinical Findings Status',
+                'report_name' => 'accounting_payer_billing_patient_detail',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+
         ]);
     }
 }
