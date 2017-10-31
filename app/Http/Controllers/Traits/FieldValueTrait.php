@@ -32,7 +32,7 @@ trait FieldValueTrait
         return '-';
     }
 
-    private function getCareConsoleValues(Careconsole $careconsole, String $field)
+    private function getCareConsoleValues(Careconsole $careconsole, $field)
     {
         switch ($field) {
             case 'patient_name':
@@ -57,7 +57,7 @@ trait FieldValueTrait
         return '-';
     }
 
-    private function getContactHistoryFieldValues(ContactHistory $contact_history, String $field)
+    private function getContactHistoryFieldValues(ContactHistory $contact_history, $field)
     {
         switch ($field) {
             case 'patient_name':
@@ -100,7 +100,7 @@ trait FieldValueTrait
         return '-';
     }
 
-    private function getPatientFieldValues(Patient $patient, String $field)
+    private function getPatientFieldValues(Patient $patient, $field)
     {
         switch ($field) {
             case 'patient_name':
@@ -116,7 +116,7 @@ trait FieldValueTrait
         return '-';
     }
 
-    private function getAppointmentFieldValues(Appointment $appointment, String $field)
+    private function getAppointmentFieldValues(Appointment $appointment, $field)
     {
         switch ($field) {
             case 'patient_name':
@@ -165,7 +165,7 @@ trait FieldValueTrait
         return '-';
     }
 
-    private function getPracticeFieldValues(Practice $practice, String $field)
+    private function getPracticeFieldValues(Practice $practice, $field)
     {
         switch ($field) {
             case 'practice_name':
@@ -252,7 +252,7 @@ trait FieldValueTrait
         return '-';
     }
 
-    private function getUserFieldValues(User $user, String $field)
+    private function getUserFieldValues(User $user, $field)
     {
         switch ($field) {
             case 'provider-name':
