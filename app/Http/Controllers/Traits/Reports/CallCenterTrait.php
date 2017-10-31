@@ -135,6 +135,9 @@ trait CallCenterTrait
             }
         }
 
-        $export = Helper::exportExcel($export_data, 'Call Center Export', '127.0.0.1');
+        $user = User::find($user_id);
+        $file_name = 'Call Center Export - ' . $user->getName('print_format'); 
+
+        $export = Helper::exportExcel($export_data, $file_name, '127.0.0.1');
     }
 }

@@ -987,7 +987,12 @@ class Careconsole extends Model
         $query->whereHas('patient', function ($sub_query) {
             $sub_query->excludeTestPatient();
         });
-        $query->consoleActivityRange($filter['start_date'], $filter['end_date']);
+        $query->whereHas('contactHistory', function ($sub_query) use ($filter) {
+            $sub_query->activityRange($filter['start_date'], $filter['end_date']);
+            $sub_query->whereHas('action', function ($sub_sub_query) {
+                $sub_sub_query->actionCheck(['schedule', 'manually-schedule', 'previously-scheduled', 'reschedule', 'manually-reschedule']);
+            });
+        });
         $query->has('appointment');
         $query->with(['patient', 'appointment']);
 
