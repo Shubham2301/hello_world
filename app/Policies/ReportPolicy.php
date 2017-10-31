@@ -21,7 +21,8 @@ class ReportPolicy
     }
 
     public function accessCallCenterReport(){
-    	return $this->networkReportAccessPolicy();
+        $user = Auth::user();
+        return ($this->networkReportAccessPolicy() || $user->checkUserLevel('Ocuhub'));
     }
 
     public function accessCareconsoleReport(){

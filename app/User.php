@@ -317,31 +317,44 @@ CanResetPasswordContract
         return $this->lastname . ', ' . $this->firstname;
     }
 
-    public static function getCareConsoledata($networkID, $startDate, $endDate)
+    public static function getCareConsoledata($network_id, $start_data, $end_Data, $user_id = null)
     {
-        return self::whereHas('userNetwork', function ($query) use ($networkID) {
-            $query->where('network_id', $networkID);
+        $query = self::whereHas('userNetwork', function ($query) use ($network_id) {
+            $query->where('network_id', $network_id);
         })
             ->whereHas('userRoles', function ($query) {
                 $query->where('role_id', 12);
-            })
-            ->with(['contactHistory' => function ($sub_query) use ($startDate, $endDate) {
+            });
+        if ($user_id) {
+            $query->where('id', $user_id);
+        }
+        $query->with(['contactHistory' => function ($sub_query) use ($start_data, $end_Data, $user_id, $network_id) {
+            if ($user_id) {
+                $sub_query->where('user_id', $user_id);
+            } else {
                 $sub_query->whereNotNull('user_id');
-                $sub_query->activityRange($startDate, $endDate);
-                $sub_query->whereHas('careconsole.patient', function ($sub_sub_query) {
-                    $sub_sub_query->excludeTestPatient();
+            }
+            $sub_query->activityRange($start_data, $end_Data);
+            $sub_query->whereHas('careconsole.patient', function ($sub_sub_query) {
+                $sub_sub_query->excludeTestPatient();
+            });
+            $sub_query->whereHas('careconsole', function ($sub_sub_query) use ($network_id) {
+                $sub_sub_query->whereHas('patient', function ($sub_sub_sub_query) {
+                    $sub_sub_sub_query->excludeTestPatient();
                 });
-                $sub_query->whereHas('action', function ($sub_sub_query) {
-                    $sub_sub_query->actionCheck(['schedule', 'manually-schedule', 'previously-scheduled', 'reschedule', 'manually-reschedule', 'request-patient-email', 'request-patient-phone', 'request-patient-sms', 'contact-attempted-by-phone', 'contact-attempted-by-email']);
-                });
-            },
+                $sub_sub_query->networkCheck($network_id);
+            });
+            $sub_query->whereHas('action', function ($sub_sub_query) {
+                $sub_sub_query->actionCheck(['schedule', 'manually-schedule', 'previously-scheduled', 'reschedule', 'manually-reschedule', 'request-patient-email', 'request-patient-phone', 'request-patient-sms', 'contact-attempted-by-phone', 'contact-attempted-by-email']);
+            });
+        },
                 'contactHistory.action',
                 'contactHistory.actionResult',
-                'contactHistory.currentStage',
-                'contactHistory.previousStage',
                 'contactHistory.appointments',
-            ])
-            ->get();
+                'contactHistory.careconsole'
+            ]);
+
+        return $query->get();
     }
 
     public static function getCareCoordinatorCount($networkID)

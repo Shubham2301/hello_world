@@ -1,8 +1,9 @@
 google.charts.load('current', {
     'packages': ['line', 'bar']
 });
-
-var graphColumn = [];
+google.charts.load("current", {
+    packages: ['corechart']
+});
 
 var filterOptions = {
     "chartType": "overview",
@@ -10,12 +11,10 @@ var filterOptions = {
     "userID": "",
 };
 
-var filter = '';
-var graphData = [];
-var comparisonData = [];
+var reportData = [];
 
 $(document).ready(function() {
-    
+
     var cur_date = new Date();
     var set_start_date = new Date(cur_date.getTime());
     $('#start_date').datetimepicker({
@@ -38,7 +37,6 @@ $(document).ready(function() {
         $('#end_date').data("DateTimePicker").minDate(new Date(start_date));
         if (start_date != old_start_date) {
             old_start_date = $('#start_date').val();
-            filter = '';
             getReport();
         }
     });
@@ -47,27 +45,16 @@ $(document).ready(function() {
         $('#start_date').data("DateTimePicker").maxDate(new Date(end_date));
         if (end_date != old_end_date) {
             old_end_date = $('#end_date').val();
-            filter = '';
             getReport();
         }
     });
 
-    $('.overview_controls>li').on('click', function() {
-        $('.overview_controls>li').removeClass('arial_bold');
-        $(this).addClass('arial_bold');
-        filterOptions.overviewChart = $(this).attr('id');
-        google.charts.setOnLoadCallback(drawCallCenterGraph);
-    });
-
     $('.user_listing').on('click', 'li.drilldown_item', function() {
-        filterOptions.userID = $(this).attr('id');
-        getReport();
+        var user_id = $(this).attr('id');
+        exportUserData(user_id);
     });
 
-    $('.filter_row').on('click', '.remove_filter', function() {
-        filterOptions.userID = '';
-        getReport();
-    });
+    $('.report_header_row').on('change', '#network_id', getReport);
 
     getReport();
 
@@ -87,12 +74,12 @@ $(document).ready(function() {
 
 });
 
-function getReport(filter) {
+function getReport() {
 
     var formData = {
         start_date: $('#start_date').val(),
         end_date: $('#end_date').val(),
-        filter_option: filterOptions,
+        network_id: $('#network_id').val(),
     };
 
     $.ajax({
@@ -103,30 +90,21 @@ function getReport(filter) {
         async: false,
         success: function(data) {
             var content = '';
-            var filterData = '';
-            var userData = data.user;
-            for (var key in userData) {
-                if (userData[key]['total'] != 0) {
+            reportData = JSON.parse(data);
+            var call_center_data = reportData['call_center_data'];
+            call_center_data.forEach(function(user) {
+
+                var total = user['contact_attempts'] + user['appointment_scheduled_outgoing'] + user['appointment_scheduled_incoming'];
+
+                if (total !== 0) {
                     var drilldownIndicator = 'drilldown_item';
                 } else {
-                    var drilldownIndicator = 'drilldown_disable';
+                    var drilldownIndicator = '';
                 }
-                content += '<li class="' + drilldownIndicator + '" id="' + userData[key]['id'] + '"><div class="col-xs-7 user_name">' + userData[key]['name'] + '</div><div class="col-xs-1 align-center">' + userData[key]['phone'] + '</div><div class="col-xs-1 align-center">' + userData[key]['email'] + '</div><div class="col-xs-1 align-center">' + userData[key]['sms'] + '</div><div class="col-xs-1 align-center">' + userData[key]['total'] + '</div><div class="col-xs-1 align-center">' + userData[key]['appointment_scheduled'] + '</div></li>';
-
-                if (filterOptions.userID == userData[key]['id']) {
-                    filterData = '<div class="filter_section">User: ' + userData[key]['name'] + '<span class="glyphicon glyphicon-remove-circle remove_filter"></span></div>';
-                }
-            }
+                content += '<li class="' + drilldownIndicator + '" id="' + user['user_id'] + '"><div class="col-xs-6 user_name">' + user['user_name'] + '</div><div class="col-xs-2 align-center">' + user['contact_attempts'] + '</div><div class="col-xs-2 align-center">' + user['appointment_scheduled_outgoing'] + '</div><div class="col-xs-2 align-center">' + user['appointment_scheduled_incoming'] + '</div></li>';
+            });
             $('.user_listing').html(content);
-            $('.filter_row').html(filterData);
-            graphData = data.graphData.overview;
-            comparisonData = data.graphData.comparison;
-            graphColumn = data.graphColumn;
 
-            for (var key in comparisonData.attempt) {
-                $('.total_count#' + key).text(comparisonData['attempt'][key]);
-            }
-            $('.total_count#appointment_scheduled').text(comparisonData['scheduled']['all']);
             google.charts.setOnLoadCallback(drawCallCenterGraph);
         },
         error: function() {
@@ -137,41 +115,48 @@ function getReport(filter) {
     });
 }
 
-function drawCallCenterGraph() {
+function exportUserData(user_id) {
+    var formData = {
+        start_date: $('#start_date').val(),
+        end_date: $('#end_date').val(),
+        network_id: $('#network_id').val(),
+        user_id: user_id,
+    };
 
+    var query = $.param(formData);
+    window.location = '/report/call_center/export_user_data?' + query;
+}
+
+function drawCallCenterGraph() {
 
     if (filterOptions.chartType == "overview") {
         var data_graph = new google.visualization.DataTable();
         var chartColor = [];
-        for (var key in graphColumn) {
-            if (key == 'Date')
-                data_graph.addColumn('string', key);
-            else {
-                data_graph.addColumn('number', key);
-                chartColor.push(graphColumn[key]);
-            }
-        }
+        data_graph.addColumn('string', 'Date');
+        data_graph.addColumn('number', 'Attempts');
+        data_graph.addColumn('number', 'Scheduled (Outgoing)');
+        data_graph.addColumn('number', 'Scheduled (Incoming)');
+        chartColor.push('#22b573');
+        chartColor.push('#e28413');
+        chartColor.push('#de3c4b');
+
+
+        var graphData = reportData['overview_graph_data'];
 
         for (var key in graphData) {
 
             var temp = [];
             temp.push(graphData[key]['date']);
-            temp.push(graphData[key]['scheduled'][filterOptions.overviewChart]);
-            temp.push(graphData[key]['attempt'][filterOptions.overviewChart]);
+            temp.push(graphData[key]['contact_attempts']);
+            temp.push(graphData[key]['appointment_scheduled_outgoing']);
+            temp.push(graphData[key]['appointment_scheduled_incoming']);
 
             data_graph.addRow(temp);
 
         }
 
         var options = {
-            hAxis: {
-                title: 'Date'
-            },
-            vAxis: {
-                title: 'Contact Attempts'
-            },
             colors: chartColor,
-            width: 780,
             height: 230,
         };
 
@@ -182,20 +167,45 @@ function drawCallCenterGraph() {
         chart.draw(data_graph, options);
     } else {
 
-        var data = google.visualization.arrayToDataTable([
-            ['Type', 'Attempt', 'Scheduled'],
-            ['Phone', comparisonData['attempt']['phone'], comparisonData['scheduled']['phone']],
-            ['Email', comparisonData['attempt']['email'], comparisonData['scheduled']['email']],
-            ['SMS', comparisonData['attempt']['sms'], comparisonData['scheduled']['sms']],
-        ]);
+
+        var data = new google.visualization.DataTable();
+        var chartColor = [];
+        data.addColumn('string', 'Name');
+        data.addColumn('number', 'Attempts');
+        data.addColumn('number', 'Outgoing Scheduled');
+        data.addColumn('number', 'Incoming Scheduled');
+        chartColor.push('#22b573');
+        chartColor.push('#e28413');
+        chartColor.push('#de3c4b');
+
+
+        var graphData = reportData['call_center_data'];
+
+        for (var key in graphData) {
+
+            var temp = [];
+            var total = graphData[key]['contact_attempts'] + graphData[key]['appointment_scheduled_outgoing'] + graphData[key]['appointment_scheduled_incoming'];
+
+            if (total === 0) {
+                continue;
+            }
+            temp.push(graphData[key]['user_name']);
+            temp.push(graphData[key]['contact_attempts']);
+            temp.push(graphData[key]['appointment_scheduled_outgoing']);
+            temp.push(graphData[key]['appointment_scheduled_incoming']);
+
+            data.addRow(temp);
+
+        }
+
 
         var options = {
-            width: 780,
             height: 230,
             colors: chartColor,
+            isStacked: true,
         };
 
-        var chart = new google.charts.Bar(document.getElementById('chart_div'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
 
         chart.draw(data, options);
     }

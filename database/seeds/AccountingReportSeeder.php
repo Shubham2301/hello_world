@@ -148,54 +148,6 @@ class AccountingReportSeeder extends Seeder
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
-            
-            [
-                'name' => 'patient_name',
-                'display_name' => 'Patient Name',
-                'report_name' => 'practice_appointment_export',
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ],
-
-            [
-                'name' => 'appointment_date',
-                'display_name' => 'Appointment Date',
-                'report_name' => 'practice_appointment_export',
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ],
-
-            [
-                'name' => 'appointment_type',
-                'display_name' => 'Appointment Type',
-                'report_name' => 'practice_appointment_export',
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ],
-
-            [
-                'name' => 'scheduled_to_practice_location',
-                'display_name' => 'Location Name',
-                'report_name' => 'practice_appointment_export',
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ],
-
-            [
-                'name' => 'scheduled_to_provider',
-                'display_name' => 'Provder Name',
-                'report_name' => 'practice_appointment_export',
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ],
-
-            [
-                'name' => 'scheduled_to_practice',
-                'display_name' => 'Practice Name',
-                'report_name' => 'practice_appointment_export',
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ],
 
             [
                 'name' => 'subscriber-id',

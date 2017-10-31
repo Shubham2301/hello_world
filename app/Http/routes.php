@@ -225,6 +225,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report/reach_report/generateReportExcel', 'Reports\ReachRateController@generateReportExcel');
     Route::resource('/report/reach_report', 'Reports\ReachRateController');
 
+    Route::get('/report/call_center/export_user_data', 'Reports\CallCenterController@exportUserData');
     Route::resource('/report/call_center', 'Reports\CallCenterController');
 
     Route::get('/report/performance/generateReportExcel', 'Reports\PerformanceController@generateReportExcel');

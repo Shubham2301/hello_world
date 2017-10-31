@@ -669,31 +669,6 @@ class Careconsole extends Model
             ->get();
     }
 
-    public static function getCallCenterReportData($networkID, $startDate, $endDate, $userID = null)
-    {
-        return self::where(function ($subquery) use ($startDate, $endDate) {
-            $subquery->whereHas('contactHistory', function ($sub_query) use ($startDate, $endDate) {
-                $sub_query->whereNotNull('user_id');
-                $sub_query->activityRange($startDate, $endDate);
-            });
-        })
-            ->networkCheck($networkID)
-            ->whereHas('patient', function ($sub_query) {
-                $sub_query->excludeTestPatient();
-            })
-            ->with(['contactHistory' => function ($sub_query) use ($startDate, $endDate, $userID) {
-                $sub_query->whereNotNull('user_id');
-                $sub_query->activityRange($startDate, $endDate);
-                if ($userID) {
-                    $sub_query->where('user_id', $userID);
-                }
-                $sub_query->whereHas('action', function ($sub_sub_query) {
-                    $sub_sub_query->actionCheck(['schedule', 'manually-schedule', 'previously-scheduled', 'reschedule', 'manually-reschedule', 'request-patient-email', 'request-patient-phone', 'request-patient-sms', 'contact-attempted-by-phone', 'contact-attempted-by-email']);
-                });
-            }, 'contactHistory.action', 'contactHistory.actionResult', 'contactHistory.appointments'])
-            ->get();
-    }
-
     public static function getTotalPatientCount($networkID)
     {
         return self::whereHas('importHistory', function ($query) use ($networkID) {

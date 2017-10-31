@@ -5,6 +5,7 @@ namespace myocuhub\Http\Controllers\Traits;
 use myocuhub\Facades\Helper;
 use myocuhub\Models\Appointment;
 use myocuhub\Models\Careconsole;
+use myocuhub\Models\ContactHistory;
 use myocuhub\Models\PatientInsurance;
 use myocuhub\Models\Practice;
 use myocuhub\Patient;
@@ -16,6 +17,8 @@ trait FieldValueTrait
     {
         if ($input instanceof Careconsole) {
             return self::getCareConsoleValues($input, $field);
+        } elseif ($input instanceof ContactHistory) {
+            return self::getContactHistoryFieldValues($input, $field);
         } elseif ($input instanceof Patient) {
             return self::getPatientFieldValues($input, $field);
         } elseif ($input instanceof Appointment) {
@@ -48,6 +51,49 @@ trait FieldValueTrait
             case 'appointment-status':
             case 'clinical-findings-status':
                 return $careconsole->appointment ? self::getAppointmentFieldValues($careconsole->appointment, $field) : '-';
+                break;
+            }
+
+        return '-';
+    }
+
+    private function getContactHistoryFieldValues(ContactHistory $contact_history, String $field)
+    {
+        switch ($field) {
+            case 'patient_name':
+            case 'patient-name':
+            case 'subscriber-id':
+                return $contact_history->careconsole ? self::getCareConsoleValues($contact_history->careconsole, $field) : '-';
+                break;
+            case 'appointment_date':
+            case 'appointment-date':
+            case 'appointment_type':
+            case 'provider-name':
+            case 'scheduled_to_provider':
+            case 'scheduled_to_practice_location':
+            case 'practice_name':
+            case 'scheduled_to_practice':
+            case 'appointment-status':
+            case 'clinical-findings-status':
+                return $contact_history->appointments ? self::getAppointmentFieldValues($contact_history->appointments, $field) : '-';
+                break;
+            case 'action_name':
+                return $contact_history->action ? $contact_history->action->display_name : '';
+                break;
+            case 'action_result_name':
+                return $contact_history->actionResult ? $contact_history->actionResult->display_name : '';
+                break;
+            case 'action_date_time':
+                return Helper::formatDate($contact_history->created_at, config('constants.date_time')) ?: '-';
+                break;
+            case 'notes':
+                $note = trim($contact_history->notes);
+                $note = str_replace('</br>', ' ', $note);
+                return $note;
+                return ;
+                break;
+            case 'user_name':
+                return $contact_history->users ? self::getUserFieldValues($contact_history->users, $field) : '-';
                 break;
             }
 
@@ -211,6 +257,7 @@ trait FieldValueTrait
         switch ($field) {
             case 'provider-name':
             case 'scheduled_to_provider':
+            case 'user_name':
                 return $user->getName('print_format');
                 break;
             }

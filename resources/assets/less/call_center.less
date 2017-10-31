@@ -18,15 +18,19 @@
         }
     }
 }
+
 .content-right {
     padding: 0;
 }
+
 .reports_header {
     font-size: 1.4em;
 }
+
 #chart_div {
     margin: 1em 0;
 }
+
 .user_data {
     margin-top: 1em;
     &>.user_heading {
@@ -48,6 +52,7 @@
         padding-bottom: 1em;
     }
 }
+
 .overview_controls {
     list-style: none;
     padding-left: 0;
@@ -56,13 +61,13 @@
         cursor: pointer;
         color: @font-color-black;
         padding: .1em 0;
-        &:hover,
-        &.active {
+        &:hover, &.active {
             color: @font-color-black-hover;
             .arial_bold;
         }
     }
 }
+
 .user_listing {
     list-style: none;
     padding-left: 0;
@@ -76,12 +81,11 @@
         }
         &.drilldown_item {
             cursor: pointer;
-            &:hover {
-                .arial_bold;
-            }
+            .arial_bold;
         }
     }
 }
+
 .filter_section {
     margin-top: .7em;
     display: inline-block;
@@ -93,12 +97,14 @@
         cursor: pointer;
     }
 }
+
 .overview_graph_control {
     display: flex;
     flex-direction: column;
     justify-content: center;
     flex-grow: 1;
 }
+
 .graph_row {
     margin: 2em 0;
     display: flex;
