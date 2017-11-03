@@ -27,6 +27,11 @@
                         <input id="onboarding_token" type="hidden" value="{{$data['onboarding_token']}}"> @endif
                         <input id="editmode" type="hidden" value="{{$data['id']}}">
                         <input id="location_index" type="hidden" value="{{$data['location_index']}}"> {!! Form::text('practice_name', old('practice_name'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Name*', 'id' => 'practice_name' , 'data-toggle' => 'tooltip', 'title' => 'Practice Name', 'data-placement' => 'right', 'maxlength' => '50')) !!} {!! Form::text('practice_email', old('practice_email'), array('class' => 'add_practice_input', 'required' => 'required', 'placeholder' => 'Practice Email*', 'id' => 'practice_email', 'data-toggle' => 'tooltip', 'title' => 'Practice Email', 'data-placement' => 'right')) !!}
+                        @if(session('user-level') == 1)
+                        {!! Form::checkbox('enable_external_scheduling', '1', null , array('id' => 'enable_external_scheduling')) !!}
+                        <label>Enable external scheduling</label>
+                        {!! Form::text('external_scheduling_link', old('external_scheduling_link'), array('class' => 'add_practice_input', 'placeholder' => 'Enter scheduling link', 'id' => 'external_scheduling_link', 'data-toggle' => 'tooltip', 'title' => 'External scheduling link', 'data-placement' => 'right')) !!}
+                        @endif
                         @if(array_key_exists('manually_created', $data) && $data['manually_created'] == true && session('user-level') == 1)
                         <div class="manually_created arial">
                             {!! Form::checkbox('manuall_created', '1', true, array('id' => 'manually_created')) !!}

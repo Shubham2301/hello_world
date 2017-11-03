@@ -77,6 +77,10 @@ window.onload = function() {
         var formdata = [];
         var practice_name = $('#practice_name').val();
         $('#practice_email').val($('#practice_email').val().trim());
+        var external_schedule_checkbox = $('#enable_external_scheduling').val();
+        // var external_schedule_link = $('#external_scheduling_link').val();
+        // console.log(external_schedule_link);
+        
         var patt = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
         var i = 0;
         $.each($("input[class='practice_network']:checked"), function() {
@@ -105,7 +109,9 @@ window.onload = function() {
                         "practice_email": $('#practice_email').val(),
                         "practice_network": networkList,
                         "onboard_practice": onboard,
-                        "discount": $('#practice_discount').val() ? $('#practice_discount').val() : '' 
+                        "discount": $('#practice_discount').val() ? $('#practice_discount').val() : '',
+                        'external_scheduling': $('#enable_external_scheduling').val(),
+                        'external_scheduling_link': $('#external_scheduling_link').val()
                     });
                     setNewLocationField();
                     locations = [];
@@ -114,6 +120,7 @@ window.onload = function() {
                     if (locations[counter]) {
                         updateLocationData(counter);
                     }
+                    // console.log(external_schedule_checkbox);
                     var manuallyCreated = $('#manually_created').prop('checked') ? $('#manually_created').prop('checked') : false;
                     formdata.push({
                         "practice_id": practice_id,
@@ -124,7 +131,8 @@ window.onload = function() {
                         "practice_network": networkList,
                         "discard_onboard": discardOnboard,
                         "manually_created": manuallyCreated,
-                        "discount": $('#practice_discount').val() ? $('#practice_discount').val() : ''
+                        "discount": $('#practice_discount').val() ? $('#practice_discount').val() : '',
+                        "external_scheduling": $('#enable_external_scheduling').val()
                     });
                     updatePracticedata(formdata);
                 }
@@ -594,7 +602,7 @@ function createPractice(formData) {
         async: false,
         success: function success(e) {
             var practiceid = $.parseJSON(e);
-            window.location = "/administration/practices";
+            // window.location = "/administration/practices";
         },
         error: function error() {
             $('p.alert_message').text('Error creating practices');

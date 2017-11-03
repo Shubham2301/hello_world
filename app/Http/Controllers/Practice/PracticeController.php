@@ -78,17 +78,20 @@ class PracticeController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         if (!policy(new Practice)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
         }
 
         $practicedata = json_decode($request->input('data'), true);
+        $external_scheduling_link = $practicedata[0]['external_scheduling_link'];
         $practice = new Practice;
         $practice->name = $practicedata[0]['practice_name'];
         $practice->email = $practicedata[0]['practice_email'];
         if (session('user-level') == 1) {
             $practice->discount = $practicedata[0]['discount'];
+            $practice->enable_external_scheduling = $practicedata[0]['external_scheduling'];
         }
         $practice->save();
         $practiceid = $practice->id;
