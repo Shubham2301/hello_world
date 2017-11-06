@@ -14,6 +14,7 @@ use myocuhub\Models\NetworkUser;
 use myocuhub\Models\OnboardPractice;
 use myocuhub\Models\Practice;
 use myocuhub\Models\PracticeLocation;
+use myocuhub\Models\External_scheduling;
 use myocuhub\Models\PracticeNetwork;
 use myocuhub\Models\PracticeUser;
 use myocuhub\Models\ReferralHistory;
@@ -78,7 +79,6 @@ class PracticeController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         if (!policy(new Practice)->administration()) {
             session()->flash('failure', 'Unauthorized Access!');
             return redirect('/home');
@@ -93,7 +93,14 @@ class PracticeController extends Controller
             $practice->discount = $practicedata[0]['discount'];
             $practice->enable_external_scheduling = $practicedata[0]['external_scheduling'];
         }
+
         $practice->save();
+        if($practicedata[0]['external_scheduling'] == '1') {
+            External_scheduling::create([
+                'practice_id' => $practice->id,
+                'external_link' => $external_scheduling_link
+            ]);
+        }
         $practiceid = $practice->id;
         foreach ($practicedata[0]['locations'] as $location) {
             $practicelocation = new PracticeLocation;
@@ -169,6 +176,8 @@ class PracticeController extends Controller
     {
         $practice_id = $request->input('practice_id');
         $onboardPractice = OnboardPractice::where('practice_id', $practice_id)->first();
+        $external_schedule_data = External_scheduling::where('practice_id', $practice_id)->get();
+        $ext_sch_link = $external_schedule_data[0]['external_link'];
         if ($onboardPractice && $onboardPractice->practice_form_data) {
             $data = json_decode($onboardPractice->practice_form_data);
         } else {
@@ -179,12 +188,14 @@ class PracticeController extends Controller
             $practice_discount = $practice->discount;
             $practice_locations = $practice->locations;
             $practice_users = User::practiceUserById($practice_id);
+            $data = $practice->toArray();
             $data['practice_name'] = $practice_name;
             $data['practice_email'] = $practice_email;
             $data['discount'] = $practice_discount;
             $data['practice_id'] = $practice_id;
             $data['locations'] = $practice_locations;
             $data['users'] = $practice_users;
+            $data['external_scheduling_link'] = $ext_sch_link;
         }
 
         return json_encode($data);
@@ -232,10 +243,8 @@ class PracticeController extends Controller
                 $networkData[$network->id] = $network->name;
             }
         }
-
         $practice = Practice::find($id);
         $data['manually_created'] = $practice->manually_created ? true : false;
-
         return view('practice.create')->with('data', $data)->with('networks', $networkData);
     }
 
@@ -262,6 +271,9 @@ class PracticeController extends Controller
         $manuallyCreated = $practicedata[0]['manually_created'];
         $practiceDiscount = $practicedata[0]['discount'];
         $onboardPractice = OnboardPractice::where('practice_id', $practiceid)->first();
+        $enable_external_link = $practicedata[0]['external_scheduling'];
+        $external_scheduling_link = $practicedata[0]['external_scheduling_link'];
+
         if ($practicedata[0]['discard_onboard']) {
             $onboardPractice->delete();
             return json_encode($practiceid);
@@ -269,6 +281,7 @@ class PracticeController extends Controller
 
         $practice = Practice::find($practiceid);
         $practice->name = $practicename;
+        $practice->enable_external_scheduling = $enable_external_link;
         if (session('user-level') == 1) {
             $practice->discount = $practiceDiscount;
         }

@@ -30,6 +30,7 @@ use myocuhub\Services\CareConsoleService;
 use myocuhub\Services\CustomFileExport\HedisSupplementary\HedisExport;
 use myocuhub\Services\KPI\KPIService;
 use myocuhub\User;
+use myocuhub\Models\External_scheduling;
 
 class CareConsoleController extends Controller
 {
@@ -536,8 +537,10 @@ class CareConsoleController extends Controller
             $practiceData['provider'][$i]['name'] = $user->lastname . ', ' . $user->firstname;
             $i++;
         }
+        if(External_scheduling::find($practiceID) != null){
+            $practiceData['external_link'] = External_scheduling::find($practiceID)->external_link;
+        }
         $practiceData['locations'] = [];
-
         if (Practice::find($practiceID)) {
             $practiceData['locations'] = Practice::find($practiceID)->locations;
         }

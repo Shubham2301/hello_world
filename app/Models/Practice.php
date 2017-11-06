@@ -34,6 +34,11 @@ class Practice extends Model
         return $this->hasMany('myocuhub\Models\PracticeNetwork');
     }
 
+    public function External_scheduling()
+    {
+        return $this->hasOne('myocuhub\Models\External_scheduling');
+    }
+
     public static function getPracticeByUserID($userID, $filter = null)
     {
         $query = self::query();

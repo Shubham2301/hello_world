@@ -80,6 +80,17 @@
                                     </div>
                                     <div class="col-md-1"></div>
                                 </div>
+                                <div class="row input_row" id="external_link_section" style="display: none;">
+                                     <div class="col-md-4 form-group">
+                                            <label for="external-link"><span class="arial_bold" style="color:black;padding-left:1em;">External Scheduling</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        <div class="external-link">
+                                            <a href="" id="external_link" target="_blank" style="color:blue;" >External Schedule</a> 
+                                        </div>
+                                    </div>
+                                </div>
+
 
                                 <div class="row input_row" id="form_manual_custom_appointment_practice" style="display:none">
                                     <div class="col-md-4 form-group">
